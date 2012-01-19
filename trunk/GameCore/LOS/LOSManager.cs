@@ -18,18 +18,23 @@ namespace GameCore.LOS
 			var alreadyDone = new Dictionary<Point, LosCell> { { Point.Zero, m_root } };
 			var radius = Math.Max(screenWidth, screenHeght) / 2;
 
-			var dRo = 1.0/(2 * Math.PI * radius);
+			var dRo = Math.PI / 8;// 1.0 / (2 * Math.PI * radius);
 			for (var ro = 0.0; ro < Math.PI*2; ro += dRo)
 			{
-				var x = Math.Sin(ro);
-				var y = Math.Cos(ro);
+				var x = Math.Sin(ro) * radius;
+				var y = Math.Cos(ro) * radius;
+				var end = new Point((int)x,(int)y);
+				foreach(var pnt in Point.Zero.GetLineToPoints(end))
+				{
+					Debug.WriteLine(pnt);
+				}
 
 				if (x<0&&y<0)
 				{
 					
 				}
 
-				m_root.Process(1, x, y, alreadyDone, radius, 0.999);
+				//m_root.Process(1, x, y, alreadyDone, radius, 0.999);
 			}
 
 			foreach (var pair in alreadyDone)

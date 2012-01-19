@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameCore
 {
@@ -52,6 +53,60 @@ namespace GameCore
 		public override int GetHashCode()
 		{
 			return X^(Y<<16);
+		}
+
+		public IEnumerable<Point> GetLineToPoints(Point _point)
+		{
+			var lx = Math.Abs(_point.X - X);
+			var ly = Math.Abs(_point.Y - Y);
+			var onX = lx >= ly;
+			var max = onX ? lx : ly;
+			var min = onX ? ly : lx;
+
+			if (lx == 0) lx = 1;
+			if (ly == 0) ly = 1;
+
+
+			var dC = Math.Round(onX ? ((double)lx / ly) : ((double)ly / lx));
+			var dD = onX ? lx % ly : ly % lx;
+
+			var sx = Math.Sign(_point.X - X);
+			var sy = Math.Sign(_point.Y - Y);
+
+			//var s = onX?sx:sy;
+
+			var a = 0;
+
+			if (onX)
+			{
+				var j = Y;
+				for (int i = X; i != _point.X; i += sx)
+				{
+					yield return new Point(i, j);
+					a += min;
+					if (a >= max)
+					{
+						j += sy;
+						a = a % max;
+					}
+				}
+			}
+			else
+			{
+				var i = X;
+				for (int j = Y; j != _point.Y; j += sy)
+				{
+					yield return new Point(i, j);
+					a += min;
+					if (a >= max)
+					{
+						i += sx;
+						a = a % max;
+					}
+				}
+			}
+
+			yield return _point;
 		}
 	}
 }
