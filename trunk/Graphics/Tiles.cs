@@ -46,6 +46,13 @@ namespace Graphics
 		public static Tile WeaponTile = new Tile(14, 14, Color.SteelBlue);
 		public static Tile ChestTile = new Tile(TextureSet.RR_BRICK_01, 2, 9, Color.Gold);
 
-		public static Tile LB
+		public static Tile Frame_L = new Tile(TextureSet.GP_X16, 3, 11, Color.Gold);
+		public static Tile Frame_R = new Tile(TextureSet.GP_X16, 3, 11, Color.Gold);
+		public static Tile Frame_B = new Tile(TextureSet.GP_X16, 4, 12, Color.Gold);
+		public static Tile Frame_T = new Tile(TextureSet.GP_X16, 4, 12, Color.Gold);
+		public static Tile Frame_BL = new Tile(TextureSet.GP_X16, 0, 12, Color.Gold);
+		public static Tile Frame_BR = new Tile(TextureSet.GP_X16, 9, 13, Color.Gold);
+		public static Tile Frame_TL = new Tile(TextureSet.GP_X16, 10, 13, Color.Gold);
+		public static Tile Frame_TR = new Tile(TextureSet.GP_X16, 15, 11, Color.Gold);
 	}
 }

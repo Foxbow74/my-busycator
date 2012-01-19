@@ -7,12 +7,24 @@ namespace RGL1
 {
 	static class DrawHelper
 	{
-		public static void DrawAtPoint(this Tile _tile, SpriteBatch _spriteBatch, int _x, int _y)
+		private static void DrawAtPoint(this Tile _tile, SpriteBatch _spriteBatch, int _x, int _y, Color _color)
 		{
-			if(_tile==null) return;
+			if (_tile == null) return;
 
 			var destination = new Rectangle(_x, _y, Tile.Size, Tile.Size);
-			_spriteBatch.Draw(_tile.Texture, destination, _tile.Rectangle, _tile.Color);
+			_spriteBatch.Draw(_tile.Texture, destination, _tile.Rectangle, _color);
+		}
+
+		public static void DrawAtCell(this Tile _tile, SpriteBatch _spriteBatch, int _col, int _row)
+		{
+			if (_tile == null) return;
+			_tile.DrawAtPoint(_spriteBatch, _col * Tile.Size, _row * Tile.Size, _tile.Color);
+		}
+
+		public static void DrawAtCell(this Tile _tile, SpriteBatch _spriteBatch, int _col, int _row, Color _color)
+		{
+			if (_tile == null) return;
+			_tile.DrawAtPoint(_spriteBatch, _col * Tile.Size, _row * Tile.Size, _color);
 		}
 
 		public static void Fill(this UIBlock _frame, SpriteBatch _spriteBatch, Tile _tile, Color _color)
@@ -29,10 +41,12 @@ namespace RGL1
 			}
 		}
 
-		public static void DrawAtCell(this Tile _tile, SpriteBatch _spriteBatch, int _col, int _row)
+		public static void Clear(this UIBlock _frame, SpriteBatch _spriteBatch, Color _color)
 		{
-			if (_tile==null) return;
-			_tile.DrawAtPoint(_spriteBatch, _col * Tile.Size, _row * Tile.Size);
+			var rect = new Rectangle(_frame.Rectangle.Left * Tile.Size + Tile.Size / 2, _frame.Rectangle.Top * Tile.Size + Tile.Size / 2, (_frame.Rectangle.Width - 1) * Tile.Size, (_frame.Rectangle.Height - 1) * Tile.Size);
+			var srcRect = Tiles.SolidTile.Rectangle;
+			srcRect.Inflate(-1, -1);
+			_spriteBatch.Draw(Tiles.SolidTile.Texture, rect, srcRect, _color);
 		}
 
 		public static void WriteString(this SpriteBatch _spriteBatch, string _string, int _x, int _y, Color _fore, Color _back, SpriteFont _spriteFont)
@@ -55,15 +69,15 @@ namespace RGL1
 			_frame.BottomLeft.DrawAtCell(_spriteBatch, _col, _row + _height - 1);
 			_frame.BottmoRight.DrawAtCell(_spriteBatch, _col + _width - 1, _row + _height - 1);
 
-			for (int i = 1; i < _width; i++)
+			for (int i = 1; i < _width-1; i++)
 			{
 				_frame.Top.DrawAtCell(_spriteBatch, _col + i, _row);
 				_frame.Bottom.DrawAtCell(_spriteBatch, _col + i, _row + _height - 1);
 			}
-			for (int j = 1; j < _height; j++)
+			for (int j = 1; j < _height-1; j++)
 			{
-				_frame.Top.DrawAtCell(_spriteBatch, _col , _row +j);
-				_frame.Bottom.DrawAtCell(_spriteBatch, _col + _width - 1, _row + j);
+				_frame.Left.DrawAtCell(_spriteBatch, _col , _row +j);
+				_frame.Right.DrawAtCell(_spriteBatch, _col + _width - 1, _row + j);
 			}
 		}
 	}

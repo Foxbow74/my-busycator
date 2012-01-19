@@ -26,10 +26,15 @@ namespace RGL1.UIBlocks
 
 		public virtual void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
 		{
-			if (BlockFrame != null) BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+			DrawFrame(_spriteBatch);
 		}
 
-		public void PreDraw(SpriteBatch _spriteBatch)
+		public virtual void DrawBackground(SpriteBatch _spriteBatch)
+		{
+			this.Clear(_spriteBatch, Color.Black);
+		}
+
+		public void DrawFrame(SpriteBatch _spriteBatch)
 		{
 			if (BlockFrame != null) BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
 		}
@@ -95,6 +100,10 @@ namespace RGL1.UIBlocks
 		}
 
 		public virtual void Dispose()
+		{
+		}
+
+		public virtual void DrawContent(SpriteBatch _spriteBatch)
 		{
 		}
 	}
