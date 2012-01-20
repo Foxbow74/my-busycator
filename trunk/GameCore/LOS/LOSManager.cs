@@ -5,6 +5,20 @@ using Graphics;
 
 namespace GameCore.LOS
 {
+	public class CColor
+	{
+		public int R { get; set; }
+		public int G { get; set; }
+		public int B { get; set; }
+
+		public CColor(int _r,int _g, int _b)
+		{
+			R = _r;
+			G = _g;
+			B = _b;
+		}
+	}
+
 	public class LosManager
 	{
 		private readonly LosCell m_root;
@@ -14,17 +28,21 @@ namespace GameCore.LOS
 			var screenWidth = _mapCells.GetLength(0);
 			var screenHeght = _mapCells.GetLength(1);
 
-			m_root = new LosCell();
+			var rnd = new Random(1);
+
+			m_root = new LosCell(new CColor(64,64,64));
 			var alreadyDone = new Dictionary<Point, LosCell> { { Point.Zero, m_root } };
 			var radius = Math.Max(screenWidth, screenHeght) / 2;
 
-			const double dRo = Math.PI / 1024;
+			const double dRo = Math.PI /1024;
 			
 			for (var ro = 0.0; ro < Math.PI*2; ro += dRo)
 			{
 				var x = Math.Sin(ro) * radius;
 				var y = Math.Cos(ro) * radius;
 				var end = new Point((int)x,(int)y);
+
+				var ccolor = new CColor(rnd.Next(255), rnd.Next(255), rnd.Next(255));
 
 				var parent = m_root;
 				var closedByParent = 1.0;
@@ -35,7 +53,7 @@ namespace GameCore.LOS
 					LosCell cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
 					{
-						cell = new LosCell();
+						cell = new LosCell(ccolor);
 						alreadyDone.Add(pnt, cell);
 					}
 
@@ -47,9 +65,9 @@ namespace GameCore.LOS
 			}
 		}
 
-		public Dictionary<Point, double> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
+		public Dictionary<Point, Tuple<double, CColor>> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
 		{
-			var alreadyDone = new Dictionary<Point, double>();
+			var alreadyDone = new Dictionary<Point, Tuple<double, CColor>>();
 			m_root.GetVisibleCelss(_mapCells, _dx, _dy, alreadyDone, 1.0);
 			return alreadyDone;
 		}
@@ -57,12 +75,19 @@ namespace GameCore.LOS
 
 	class LosCell
 	{
+		public CColor Ccolor { get; set; }
+
 		/// <summary>
 		/// double хранит величину - насколько та или иная ячейка видна через текущую
 		/// </summary>
 		readonly Dictionary<Tuple<Point, double>, LosCell> m_cells = new Dictionary<Tuple<Point, double>, LosCell>();
 
-		public void GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy, Dictionary<Point, double> _alreadyDone, double _visibilityCoeff)
+		public LosCell(CColor _ccolor)
+		{
+			Ccolor = _ccolor;
+		}
+
+		public void GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy, Dictionary<Point, Tuple<double, CColor>> _alreadyDone, double _visibilityCoeff)
 		{
 			var maxX = _mapCells.GetLength(0)-1;
 			var maxY = _mapCells.GetLength(1)-1;
@@ -75,17 +100,29 @@ namespace GameCore.LOS
 				if (pnt.Y < 0 || pnt.Y >= maxY) continue;
 
 				var visible = (1.0 - (_mapCells[pnt.X, pnt.Y].Terrain.IsPassable() ? 0 : pair.Key.Item2)) * _visibilityCoeff;
+				var ccolor = pair.Value.Ccolor;
 
+				Tuple<double, CColor> tuple;
 				double visibility;
-				if (_alreadyDone.TryGetValue(pnt, out visibility))
+				if (_alreadyDone.TryGetValue(pnt, out tuple))
 				{
+					visibility = tuple.Item1;
 					if(visibility>=visible) continue;
 				}
 
-				_alreadyDone[pnt] = _mapCells[pnt.X, pnt.Y].Terrain.IsPassable() ? visible : _visibilityCoeff;
+				if (_mapCells[pnt.X, pnt.Y].Terrain.IsPassable())
+				{
+					_alreadyDone[pnt] = new Tuple<double, CColor>(visible, ccolor);	
+				}
+				else
+				{
+					_alreadyDone[pnt] = new Tuple<double, CColor>(_visibilityCoeff,new CColor(0,0,0));
+					continue;
+				}
+				
 				if (visible < 0.1) continue;
 
-				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, visible * 0.99);
+				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, visible * 0.999);
 			}
 		}
 

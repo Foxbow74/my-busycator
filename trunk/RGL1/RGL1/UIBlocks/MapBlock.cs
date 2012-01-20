@@ -36,12 +36,18 @@ namespace RGL1.UIBlocks
 			{
 				var pnt = tuple.Key;
 				var tile = m_mapCells[pnt.X, pnt.Y].Terrain.Tile(m_mapCells[pnt.X, pnt.Y].WorldCoords, m_mapCells[pnt.X, pnt.Y].BlockRandomSeed);
-
-				var visibility = (float) tuple.Value;// *3;
+				var visibility = (float)tuple.Value.Item1;
 				var color = Color.Multiply(tile.Color, visibility);
-
-				tile.DrawAtCell(_spriteBatch, pnt.X + 1, pnt.Y + 1, color);//(int)(tuple.Value * 255)
+				tile.DrawAtCell(_spriteBatch, pnt.X + 1, pnt.Y + 1, color);
 			}
+
+
+			//foreach (var tuple in visibleCelss)
+			//{
+			//    var pnt = tuple.Key;
+			//    var color = new Color(tuple.Value.Item2.R, tuple.Value.Item2.G, tuple.Value.Item2.B, 20);
+			//    Tiles.SolidTile.DrawAtCell(_spriteBatch, pnt.X + 1, pnt.Y + 1, color);
+			//}
 			Tiles.HeroTile.DrawAtCell(_spriteBatch, centerX + 1, centerY + 1);
 			_spriteBatch.End();
 		}
