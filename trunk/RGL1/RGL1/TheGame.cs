@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using GameCore;
 using Graphics;
 using Microsoft.Xna.Framework;
@@ -26,7 +27,8 @@ namespace RGL1
 		private int m_frames = 0;
 		private int m_fps = 0;
 
-		const int MILLISECONDS = 100;
+		const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
+		private DateTime m_moveKeyHoldedSince;
 
 		private readonly GraphicsDeviceManager m_graphics;
 		private SpriteBatch m_spriteBatch;
@@ -38,11 +40,19 @@ namespace RGL1
 
 		private World m_world;
 
+		private Keys[] m_moveKeys = new Keys[]
+			               	{
+			               		Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4,
+			               		Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.NumPad5, Keys.Home, Keys.PageUp,
+			               		Keys.PageDown, Keys.End
+			               	};
+
+
 		public TheGame()
 		{
-			
+			IsMouseVisible = true;
 			MessageManager.NewMessage += MessageManagerNewMessage;
-
+			
 			m_graphics = new GraphicsDeviceManager(this);
 			if(!InitGraphicsMode(1024, 768, false)) Exit();
 			Content.RootDirectory = "Content";
@@ -207,6 +217,19 @@ namespace RGL1
 
 			m_keyModifiers = keyModifiers;
 
+			if(m_downKeys.Except(m_moveKeys).Any() || pressedKeys.Any())
+			{
+				m_moveKeyHoldedSince = DateTime.Now;
+			}
+			else
+			{
+				if((DateTime.Now-m_moveKeyHoldedSince).TotalMilliseconds>AUTO_MOVE_REPEAT_MILLISECONDS)
+				{
+					m_moveKeyHoldedSince = DateTime.Now;
+					pressedKeys.AddRange(m_downKeys);
+				}
+			}
+
 			foreach (var pressedKey in pressedKeys)
 			{
 				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey)pressedKey, m_keyModifiers));
@@ -247,7 +270,7 @@ namespace RGL1
 				m_second = tm.Second;
 			}
 
-			m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+			m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
 			var format = string.Format("тоя:{0} XY:{1}", m_fps, m_mainBlock.World.Avatar.Point);
 
