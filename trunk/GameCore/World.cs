@@ -1,4 +1,5 @@
 ﻿using System;
+using RGL1.Messages;
 
 namespace GameCore
 {
@@ -43,6 +44,7 @@ namespace GameCore
 				Avatar.Point.X = newX;
 				Avatar.Point.Y = newY;
 			}
+			MessageManager.SendMessage(this, new TurnMessage());
 		}
 	}
 }

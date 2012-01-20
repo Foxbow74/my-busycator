@@ -193,12 +193,14 @@ namespace RGL1
 			keyModifiers |= (state.IsKeyDown(Keys.LeftControl) || state.IsKeyDown(Keys.RightControl)) ? EKeyModifiers.CTRL : EKeyModifiers.NONE;
 			keyModifiers |= (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) ? EKeyModifiers.ALT : EKeyModifiers.NONE;
 
-			if(keyModifiers!=m_keyModifiers) m_downKeys.Clear();
+			
+			var downKeys = state.GetPressedKeys().Except(m_keyModificators).ToArray();
+
+			if (keyModifiers != m_keyModifiers) m_downKeys.Clear();
 
 			var pressedKeys = new List<Keys>();
 			var prevDownKeys = m_downKeys.ToArray();
 
-			var downKeys = state.GetPressedKeys().Except(m_keyModificators);
 			foreach (var key in prevDownKeys)
 			{
 				if(!downKeys.Contains(key))

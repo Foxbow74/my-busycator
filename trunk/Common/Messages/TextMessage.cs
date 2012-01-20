@@ -9,4 +9,11 @@ namespace RGL1.Messages
 		{
 		}
 	}
+
+	public class TurnMessage : Message
+	{
+		public TurnMessage() : base(EMessageType.INFO, null, null)
+		{
+		}
+	}
 }
