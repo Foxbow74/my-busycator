@@ -40,6 +40,7 @@ namespace RGL1
 
 		public TheGame()
 		{
+			
 			MessageManager.NewMessage += MessageManagerNewMessage;
 
 			m_graphics = new GraphicsDeviceManager(this);

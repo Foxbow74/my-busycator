@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 
-namespace GameCore
+namespace Graphics
 {
 	public class Point
 	{
@@ -107,6 +108,27 @@ namespace GameCore
 			}
 
 			yield return _point;
+		}
+
+		public float GetDistanceToVector(Point _point)
+		{
+			var lineVector = new Vector2(_point.X,_point.Y);
+			lineVector.Normalize();
+
+			var myVector = new Vector2(X, Y);
+
+			float distanceAlongLine = Vector2.Dot(myVector, lineVector) - Vector2.Dot(Vector2.Zero, lineVector);
+			Vector2 nearestPoint;
+			if (distanceAlongLine < 0)
+			{
+				nearestPoint = Vector2.Zero;
+			}
+			else
+			{
+				nearestPoint = distanceAlongLine * lineVector;
+			}
+
+			return Vector2.Distance(nearestPoint, myVector);
 		}
 	}
 }

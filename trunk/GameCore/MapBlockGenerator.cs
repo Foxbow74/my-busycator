@@ -1,5 +1,6 @@
 ﻿using System;
 using GameCore.Objects;
+using Graphics;
 using Object = GameCore.Objects.Object;
 
 namespace GameCore

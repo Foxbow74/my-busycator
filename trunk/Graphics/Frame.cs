@@ -1,4 +1,6 @@
-﻿namespace Graphics
+﻿using Microsoft.Xna.Framework;
+
+namespace Graphics
 {
 	public class Frame
 	{

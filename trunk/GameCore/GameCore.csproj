@@ -49,7 +49,6 @@
     <Compile Include="MapBlock.cs" />
     <Compile Include="MapBlockGenerator.cs" />
     <Compile Include="MapCell.cs" />
-    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Objects.cs" />
     <Compile Include="ETerrains.cs" />
