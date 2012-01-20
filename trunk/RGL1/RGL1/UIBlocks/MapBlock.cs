@@ -33,7 +33,7 @@ namespace RGL1.UIBlocks
 		{
 			if(_message is TurnMessage)
 			{
-				m_fogD = 0.1f;
+				m_fogD = 0.05f;
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace RGL1.UIBlocks
 				var mapCell = m_mapCells[pnt.X, pnt.Y];
 				var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 				var visibility = (float)tuple.Value.Item1;
-				var color = Color.Multiply(tile.Color, visibility);
+				var color = Color.Multiply(tile.Color, visibility * 1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + 1, pnt.Y + 1, color);
 
 				m_foggedTiles[mapCell.WorldCoords.GetHashCode()] = 1;

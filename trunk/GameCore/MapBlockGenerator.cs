@@ -19,11 +19,13 @@ namespace GameCore
 				}
 			}
 
-			//for (int i = 3; i < 17; i++)
-			//{
-			//    _block.Map[i, 10] = ETerrains.MUSHROOM;
-			//    _block.Map[10, i] = ETerrains.MUSHROOM;
-			//}
+			for (int i = 10; i <= 15; i++)
+			{
+				_block.Map[i, 10] = ETerrains.BRICK;
+				_block.Map[10, i] = ETerrains.BRICK;
+				_block.Map[i, 15] = ETerrains.BRICK;
+				_block.Map[15, i] = ETerrains.BRICK;
+			}
 
 
 			var cnt = rnd.Next(rnd.Next(40));

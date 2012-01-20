@@ -26,6 +26,8 @@ namespace RGL1
 					return Tiles.GrassTiles[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed) % Tiles.GrassTiles.Length)];
 				case ETerrains.MUSHROOM:
 					return Tiles.MashtoomTiles[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed) % Tiles.MashtoomTiles.Length)];
+				case ETerrains.BRICK:
+					return Tiles.BrickTile;
 				default:
 					throw new ArgumentOutOfRangeException("_terrain");
 			}

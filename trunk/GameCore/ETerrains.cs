@@ -1,4 +1,6 @@
-﻿namespace GameCore
+﻿using System;
+
+namespace GameCore
 {
 	public enum ETerrains
 	{
@@ -8,13 +10,22 @@
 		SWAMP,
 		ROAD,
 		MUSHROOM,
+		BRICK
 	}
 
 	public static class TerrainsHelper
 	{
 		public static bool IsPassable(this ETerrains _terrains)
 		{
-			return _terrains != ETerrains.MUSHROOM;
+			switch (_terrains)
+			{
+				case ETerrains.GROUND:
+				case ETerrains.GRASS:
+				case ETerrains.SWAMP:
+				case ETerrains.ROAD:
+					return true;
+			}
+			return false;
 		}
 	}
 
