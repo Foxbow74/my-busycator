@@ -27,7 +27,7 @@ namespace RGL1
 		private int m_frames = 0;
 		private int m_fps = 0;
 
-		const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
+		const int AUTO_MOVE_REPEAT_MILLISECONDS = 200;
 		private DateTime m_moveKeyHoldedSince;
 
 		private readonly GraphicsDeviceManager m_graphics;

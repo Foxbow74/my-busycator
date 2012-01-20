@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.LOS;
@@ -7,18 +8,52 @@ using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RGL1.Messages;
-using Point = Graphics.Point;
 
 namespace RGL1.UIBlocks
 {
 	class MapBlock:UIBlock
 	{
+		private class  FoggedCell
+		{
+			private float m_fog;
+			private Tile m_tile;
+			private Color m_color;
+
+			public FoggedCell(Tile _tile, Color _color)
+			{
+				m_fog = 1f;
+				m_tile = _tile;
+				m_color = _color;
+			}
+
+			public void Draw(SpriteBatch _spriteBatch, int _x, int _y)
+			{
+				var color = m_color * m_fog;
+				m_tile.DrawAtCell(_spriteBatch, _x + 1, _y + 1, color);
+				Tiles.FogTile.DrawAtCell(_spriteBatch, _x + 1, _y + 1);
+			}
+
+			public bool UpdateFog()
+			{
+				m_fog -= 0.05f;
+				return m_fog<=0;
+			}
+
+			public bool IsFresh { get { return m_fog == 1; } }
+
+			public void Update(Tile _tile, Color _color)
+			{
+				m_fog = 1;
+				m_tile = _tile;
+				m_color = _color;
+			}
+		}
+
 		private readonly World m_world;
 		private readonly MapCell[,] m_mapCells;
 		private readonly LosManager m_losManager;
 
-		private readonly Dictionary<int, float> m_foggedTiles = new Dictionary<int, float>();
-		private float m_fogD = 0f;
+		private readonly Dictionary<int, FoggedCell> m_foggedCells = new Dictionary<int, FoggedCell>();
 
 		public MapBlock(Rectangle _rectangle, World _world) : base(_rectangle, null, Color.Black)
 		{
@@ -29,11 +64,21 @@ namespace RGL1.UIBlocks
 			MessageManager.NewMessage += MessageManager_NewMessage;
 		}
 
+		
+
 		void MessageManager_NewMessage(object _sender, Message _message)
 		{
 			if(_message is TurnMessage)
 			{
-				m_fogD = 0.05f;
+				var pairs = m_foggedCells.ToArray();
+
+				foreach (var pair in pairs)
+				{
+					if(pair.Value.UpdateFog())
+					{
+						m_foggedCells.Remove(pair.Key);
+					}
+				}
 			}
 		}
 
@@ -58,39 +103,37 @@ namespace RGL1.UIBlocks
 				var color = Color.Multiply(tile.Color, visibility * 1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + 1, pnt.Y + 1, color);
 
-				m_foggedTiles[mapCell.WorldCoords.GetHashCode()] = 1;
+				var key = mapCell.WorldCoords.GetHashCode();
+				FoggedCell cell;
+				if(!m_foggedCells.TryGetValue(key, out cell))
+				{
+					cell = new FoggedCell(tile, color);
+					m_foggedCells[key] = cell;
+				}
+				else
+				{
+					cell.Update(tile, color);
+				}
 			}
 
 			for (var x = 0; x < m_mapCells.GetLength(0); ++x)
 			{
 				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
 				{
-					var mapCell = m_mapCells[x,y];
-					float state;
+					var mapCell = m_mapCells[x, y];
+					FoggedCell foggedCell;
 					var key = mapCell.WorldCoords.GetHashCode();
-					if(!m_foggedTiles.TryGetValue(key, out state))
+					if (!m_foggedCells.TryGetValue(key, out foggedCell))
 					{
 						continue;
 					}
-					
-					if(state==0)
+					if (!foggedCell.IsFresh)
 					{
-						m_foggedTiles.Remove(key);
-						continue;
+						foggedCell.Draw(_spriteBatch, x, y);
 					}
-					if (state < 1)
-					{
-						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-						var color = tile.Color*state;
-						//color = Color.Lerp(tile.Color, Color.Black, state);
-						tile.DrawAtCell(_spriteBatch, x + 1, y + 1, color);
-						Tiles.FogTile.DrawAtCell(_spriteBatch, x + 1, y + 1);
-					}
-					m_foggedTiles[key] = state - m_fogD;
 				}
 			}
 
-			m_fogD = 0;
 			Tiles.HeroTile.DrawAtCell(_spriteBatch, centerX + 1, centerY + 1);
 			_spriteBatch.End();
 		}
