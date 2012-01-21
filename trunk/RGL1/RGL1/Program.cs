@@ -1,6 +1,8 @@
+using System;
+
 namespace RGL1
 {
-#if WINDOWS || XBOX
+#if WINDOWS
     static class Program
     {
         /// <summary>
@@ -8,10 +10,17 @@ namespace RGL1
         /// </summary>
         static void Main(string[] _args)
         {
-            using (var game = new TheGame())
-            {
-                game.Run();
-            }
+			try
+			{
+				using (var game = new TheGame())
+				{
+					game.Run();
+				}
+			}
+			catch(Exception exception)
+			{
+				Console.WriteLine(exception);
+			}
         }
     }
 #endif

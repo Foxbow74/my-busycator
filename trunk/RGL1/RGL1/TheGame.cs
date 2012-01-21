@@ -27,7 +27,10 @@ namespace RGL1
 		private int m_frames = 0;
 		private int m_fps = 0;
 
-		const int AUTO_MOVE_REPEAT_MILLISECONDS = 200;
+		const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
+		const int AUTO_MOVE_REPEAT_AFTER = 200;
+		private bool m_isAutoRepeateMode = false;
+
 		private DateTime m_moveKeyHoldedSince;
 
 		private readonly GraphicsDeviceManager m_graphics;
@@ -213,6 +216,7 @@ namespace RGL1
 			{
 				if(!m_downKeys.Contains(key))
 				{
+					m_moveKeyHoldedSince = DateTime.Now;
 					m_downKeys.Add(key);
 				}
 			}
@@ -221,14 +225,28 @@ namespace RGL1
 
 			if(m_downKeys.Except(m_moveKeys).Any() || pressedKeys.Any())
 			{
-				m_moveKeyHoldedSince = DateTime.Now;
+				m_isAutoRepeateMode = false;
 			}
 			else
 			{
-				if((DateTime.Now-m_moveKeyHoldedSince).TotalMilliseconds>AUTO_MOVE_REPEAT_MILLISECONDS)
+				if (m_downKeys.Intersect(m_moveKeys).Any())
 				{
-					m_moveKeyHoldedSince = DateTime.Now;
-					pressedKeys.AddRange(m_downKeys);
+					double totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
+					if (m_isAutoRepeateMode)
+					{
+						if (totalMilliseconds > AUTO_MOVE_REPEAT_MILLISECONDS)
+						{
+							m_moveKeyHoldedSince = DateTime.Now;
+							pressedKeys.AddRange(m_downKeys);
+						}
+					}
+					else
+					{
+						if (totalMilliseconds > AUTO_MOVE_REPEAT_AFTER)
+						{
+							m_isAutoRepeateMode = true;
+						}
+					}
 				}
 			}
 
