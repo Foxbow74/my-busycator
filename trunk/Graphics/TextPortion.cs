@@ -15,15 +15,20 @@ namespace Graphics
 	{
 		private TextLine[] m_textLines;
 
+		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?'};
+
 		public class TextLine
 		{
+			public Dictionary<string, Color> Highlights { get; private set; }
+
 			public float Left { get; private set; }
 
 			public string Text { get; set; }
 
-			public TextLine(float _left)
+			public TextLine(float _left, Dictionary<string, Color> _highlights)
 			{
 				Left = _left;
+				Highlights = _highlights;
 			}
 		}
 
@@ -77,10 +82,10 @@ namespace Graphics
 				sb.Clear();
 				var x = _newLineIndent;
 				
-				var tl = new TextLine(x);
+				var tl = new TextLine(x, Highlights);
 				textLines.Add(tl);
 
-				var part = paragraph.Split(new[] { ' ', ',', '.', ':', ';' });
+				var part = paragraph.Split(TextPortion.Punctuation);
 				var processedChars = 0;
 				for (var partIndex = 0; partIndex < part.Length; partIndex++)
 				{
@@ -95,7 +100,7 @@ namespace Graphics
 						tl.Text = sb.ToString();
 						sb.Clear();
 						x = 0;
-						tl = new TextLine(x);
+						tl = new TextLine(x, Highlights);
 						textLines.Add(tl);
 					}
 					sb.Append(addStr);

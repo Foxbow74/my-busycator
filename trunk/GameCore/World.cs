@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Microsoft.Xna.Framework;
 using RGL1.Messages;
 
 namespace GameCore
@@ -45,6 +47,7 @@ namespace GameCore
 				Avatar.Point.Y = newY;
 			}
 			MessageManager.SendMessage(this, new TurnMessage());
+			MessageManager.SendMessage(this, new TextMessage(EMessageType.DEBUG, "Идет!", new Dictionary<string, Color>{{"Идет",Color.Red}}));
 		}
 	}
 }

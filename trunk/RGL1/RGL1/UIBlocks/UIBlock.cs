@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GameCore;
 using Graphics;
 using Microsoft.Xna.Framework;
@@ -54,31 +55,38 @@ namespace RGL1.UIBlocks
 
 			foreach (var textLine in _textPortion.TextLines)
 			{
-				var x = textLine.Left;
-				var line = textLine.Text;
-				var part = line.Split(new[] { ' ', ',', '.', ':', ';' });
-				var processedChars = 0;
-				for (var partIndex = 0; partIndex < part.Length; partIndex++)
-				{
-					var color = _color;
-					var addStr = part[partIndex];
-					Color highlight;
-					if (_textPortion.Highlights != null && _textPortion.Highlights.TryGetValue(addStr, out highlight))
-					{
-						color = highlight;
-					}
-					processedChars += addStr.Length;
-					addStr += (processedChars == 0 || processedChars >= line.Length) ? "" : line[processedChars].ToString();
-					processedChars++;
-					var size = _font.MeasureString(addStr);
-					_spriteBatch.DrawString(_font, addStr, new Vector2(left + x, top + _y), color);
-					x += size.X;
-				}
+
+				DrawLine(textLine, _font, _color, _spriteBatch, left, top + _y);
+
 				_y += lineHeight + 2;
 				if (_y >= height)
 				{
 					return;
 				}
+			}
+		}
+
+		protected static void DrawLine(TextPortion.TextLine _textLine, SpriteFont _font, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
+		{
+			var line = _textLine.Text;
+			var part = line.Split(TextPortion.Punctuation).ToArray();
+			var processedChars = 0;
+			var x = _x + _textLine.Left;
+			for (var partIndex = 0; partIndex < part.Length; partIndex++)
+			{
+				var color = _color;
+				var addStr = part[partIndex];
+				Color highlight;
+				if (_textLine.Highlights != null && _textLine.Highlights.TryGetValue(addStr, out highlight))
+				{
+					color = highlight;
+				}
+				processedChars += addStr.Length;
+				addStr += (processedChars == 0 || processedChars >= line.Length) ? "" : line[processedChars].ToString();
+				processedChars++;
+				var size = _font.MeasureString(addStr);
+				_spriteBatch.DrawString(_font, addStr, new Vector2(x, _y), color);
+				x += size.X;
 			}
 		}
 
