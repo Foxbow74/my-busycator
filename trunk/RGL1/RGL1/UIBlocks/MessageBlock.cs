@@ -23,7 +23,7 @@ namespace RGL1.UIBlocks
 			{
 				var tm = (TextMessage) _message;
 				m_portions.Add(tm.Text);
-				tm.Text.SplitByLines((Rectangle.Width  - 1) * Tile.Size, Tile.Font, 0);
+				tm.Text.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Tile.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
 		}
@@ -34,14 +34,14 @@ namespace RGL1.UIBlocks
 			
 			var lineHeight = Tile.Font.MeasureString("!g").Y;
 
-			var height = Rectangle.Height * Tile.Size - Tile.Size;
-			var y = height - m_lines.Count*lineHeight;
+			var height = (ContentRectangle.Height - 1) * Tile.Size;
+			var y = height - m_lines.Count*lineHeight + Tile.Size/2;
 
 			foreach (var textLine in m_lines)
 			{
 				if(y>0)
 				{
-					DrawLine(textLine, Tile.Font, Color.Gray, _spriteBatch, Tile.Size, Rectangle.Top*Tile.Size + y);
+					DrawLine(textLine, Tile.Font, Color.Gray, _spriteBatch, Tile.Size, ContentRectangle.Top * Tile.Size + y);
 				}
 				y+=lineHeight;
 

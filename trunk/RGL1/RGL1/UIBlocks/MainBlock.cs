@@ -21,16 +21,16 @@ namespace RGL1.UIBlocks
 		{
 			World = _world;
 			m_device = _device;
-			var width = Rectangle.Width;
-			var height = Rectangle.Height;
+			var width = ContentRectangle.Width;
+			var height = ContentRectangle.Height;
 
 			const int messagesHeight = 10;
 			const int statWidth = 15;
 
-			m_stats = new UIBlock(new Rectangle(width - statWidth, 0, statWidth, height - messagesHeight + 1), Frame.GoldFrame, Color.Gray);
-			m_messages = new MessageBlock(new Rectangle(0, height - messagesHeight, width, messagesHeight));
+			m_stats = new UIBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1), Frame.GoldFrame, Color.Gray);
+			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
 
-			m_map = new MapBlock(new Rectangle(0, 0, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1), _world);
+			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, ContentRectangle.Top, m_stats.ContentRectangle.Left + 1, m_messages.ContentRectangle.Top + 1), _world);
 
 		}
 

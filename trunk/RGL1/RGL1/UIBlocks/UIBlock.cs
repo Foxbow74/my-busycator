@@ -14,12 +14,16 @@ namespace RGL1.UIBlocks
 
 		public UIBlock(Rectangle _rectangle, Frame _frame, Color _color)
 		{
-			Rectangle = _rectangle;
 			BlockFrame = _frame;
 			Color = _color;
+			Rectangle = _rectangle;
+			ContentRectangle = _rectangle;
+			if(_frame!=null) ContentRectangle.Inflate(1,1);
 		}
 
 		public Rectangle Rectangle { get; private set; }
+
+		public Rectangle ContentRectangle { get; private set; }
 
 		protected internal Color Color { get; private set; }
 
@@ -43,15 +47,15 @@ namespace RGL1.UIBlocks
 		public void DrawText(TextPortion _textPortion, SpriteBatch _spriteBatch, SpriteFont _font, Color _color, float _y)
 		{
 			var lineHeight = _font.MeasureString("!g").Y;
-			
-			float width = (Rectangle.Width - 2) * Tile.Size;
+
+			float width = (ContentRectangle.Width - 1) * Tile.Size;
 			_textPortion.SplitByLines(width, _font, NEW_LINE);
 
 
-			float left = (Rectangle.Left + 1) * Tile.Size;
+			float left = ContentRectangle.Left * Tile.Size;
 
-			float top = (Rectangle.Top + 1) * Tile.Size;
-			float height = (Rectangle.Height - 2) * Tile.Size - _y;
+			var top = ContentRectangle.Top  * Tile.Size;
+			var height = (ContentRectangle.Height - 1) * Tile.Size - _y;
 
 			foreach (var textLine in _textPortion.TextLines)
 			{

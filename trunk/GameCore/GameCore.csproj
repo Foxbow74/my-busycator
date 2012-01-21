@@ -46,7 +46,7 @@
     <Compile Include="ECommands.cs" />
     <Compile Include="Creature.cs" />
     <Compile Include="KeyTranslator.cs" />
-    <Compile Include="LOS\LOSManager.cs" />
+    <Compile Include="LOSManager.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapBlock.cs" />
     <Compile Include="MapBlockGenerator.cs" />

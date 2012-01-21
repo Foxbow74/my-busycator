@@ -31,9 +31,10 @@ namespace RGL1
 		{
 			if (_tile == null) return;
 
-			for (var i = _frame.Rectangle.Left + 1; i < _frame.Rectangle.Right; ++i)
+			var rectangle = _frame.ContentRectangle;
+			for (var i = rectangle.Left + 1; i < rectangle.Right; ++i)
 			{
-				for (var j = _frame.Rectangle.Top + 1; j < _frame.Rectangle.Bottom;++j )
+				for (var j = rectangle.Top + 1; j < rectangle.Bottom;++j )
 				{
 					var destination = new Rectangle(i*Tile.Size, j*Tile.Size, Tile.Size, Tile.Size);
 					_spriteBatch.Draw(_tile.Texture, destination, _tile.Rectangle, _color);
