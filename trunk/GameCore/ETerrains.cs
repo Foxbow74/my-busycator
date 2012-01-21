@@ -1,31 +1,45 @@
 ﻿using System;
+using Common;
+using System.Linq;
+using System.Reflection;
 
 namespace GameCore
 {
 	public enum ETerrains
 	{
+		[Terrain("почва")]
 		GROUND,
+		[Terrain("вода")]
 		WATER,
+		[Terrain("трава")]
 		GRASS,
+		[Terrain("болото")]
 		SWAMP,
+		[Terrain("дорога")]
 		ROAD,
+		[Terrain("гриб", false)]
 		MUSHROOM,
-		BRICK
+		[Terrain("кирпичная стена", false)]
+		BRICK_WALL
 	}
 
-	public static class TerrainsHelper
+	public class TerrainAttribute : Attribute
 	{
-		public static bool IsPassable(this ETerrains _terrains)
+		public string DisplayName { get; private set; }
+		public bool IsPassable { get; private set; }
+
+		public TerrainAttribute(string _displayName):this(_displayName, true)
+		{}
+
+		public TerrainAttribute(string _displayName, bool _isPassable)
 		{
-			switch (_terrains)
-			{
-				case ETerrains.GROUND:
-				case ETerrains.GRASS:
-				case ETerrains.SWAMP:
-				case ETerrains.ROAD:
-					return true;
-			}
-			return false;
+			DisplayName = _displayName;
+			IsPassable = _isPassable;
+		}
+
+		public static TerrainAttribute GetAttribute(ETerrains _enum)
+		{
+			return _enum.GetAttribute<ETerrains, TerrainAttribute>();
 		}
 	}
 

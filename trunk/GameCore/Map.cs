@@ -74,15 +74,14 @@ namespace GameCore
 			return block;
 		}
 
-		public bool IsPassable(int _newX, int _newY)
+		public ETerrains GetTerrain(int _newX, int _newY)
 		{
 			var point = new Point(_newX, _newY);
-
 			var blockCoords = MapBlock.GetBlockCoords(point);
 			var block = m_blocks[blockCoords];
 			var coords = MapBlock.GetInBlockCoords(point);
 			var content = block.Map[coords.X, coords.Y];
-			return content.IsPassable();
+			return content;
 		}
 	}
 }

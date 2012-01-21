@@ -1,6 +1,7 @@
 ﻿using System;
 using GameCore.Objects;
 using Graphics;
+using Common;
 using Object = GameCore.Objects.Object;
 
 namespace GameCore
@@ -21,10 +22,10 @@ namespace GameCore
 
 			for (int i = 10; i <= 15; i++)
 			{
-				_block.Map[i, 10] = ETerrains.BRICK;
-				_block.Map[10, i] = ETerrains.BRICK;
-				_block.Map[i, 15] = ETerrains.BRICK;
-				_block.Map[15, i] = ETerrains.BRICK;
+				_block.Map[i, 10] = ETerrains.BRICK_WALL;
+				_block.Map[10, i] = ETerrains.BRICK_WALL;
+				_block.Map[i, 15] = ETerrains.BRICK_WALL;
+				_block.Map[15, i] = ETerrains.BRICK_WALL;
 			}
 
 
@@ -41,7 +42,9 @@ namespace GameCore
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				if (_block.Map[x, y].IsPassable())
+
+				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+				if (attr.IsPassable)
 				{
 					_block.Objects.Add(new Tuple<Object, Point>(GenerateFakeItem(rnd), new Point(x, y)));
 				}

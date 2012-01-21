@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common;
 using Graphics;
 
 namespace GameCore.LOS
@@ -99,18 +100,19 @@ namespace GameCore.LOS
 				if (pnt.X < 0 || pnt.X >= maxX) continue;
 				if (pnt.Y < 0 || pnt.Y >= maxY) continue;
 
-				var visible = (1.0 - (_mapCells[pnt.X, pnt.Y].Terrain.IsPassable() ? 0 : pair.Key.Item2)) * _visibilityCoeff;
+				var attr = TerrainAttribute.GetAttribute(_mapCells[pnt.X, pnt.Y].Terrain);
+
+				var visible = (1.0 - (attr.IsPassable ? 0 : pair.Key.Item2)) * _visibilityCoeff;
 				var ccolor = pair.Value.Ccolor;
 
 				Tuple<double, CColor> tuple;
-				double visibility;
 				if (_alreadyDone.TryGetValue(pnt, out tuple))
 				{
-					visibility = tuple.Item1;
+					var visibility = tuple.Item1;
 					if(visibility>=visible) continue;
 				}
 
-				if (_mapCells[pnt.X, pnt.Y].Terrain.IsPassable())
+				if (attr.IsPassable)
 				{
 					_alreadyDone[pnt] = new Tuple<double, CColor>(visible, ccolor);	
 				}
@@ -122,7 +124,7 @@ namespace GameCore.LOS
 				
 				if (visible < 0.1) continue;
 
-				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, visible * 0.999);
+				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, visible * 0.95);
 			}
 		}
 

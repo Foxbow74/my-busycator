@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using RGL1.Messages;
+using Common;
 
 namespace GameCore
 {
@@ -35,19 +34,27 @@ namespace GameCore
 			
 		}
 
-
 		public void MoveCommandReceived(int _dx, int _dy)
 		{
 			var newX = Avatar.Point.X + _dx;
 			var newY = Avatar.Point.Y + _dy;
 
-			if (Map.IsPassable(newX, newY))
+			var terrain = Map.GetTerrain(newX, newY);
+
+			var attr = terrain.GetAttribute<ETerrains, TerrainAttribute>();
+
+			if (attr.IsPassable)
 			{
 				Avatar.Point.X = newX;
 				Avatar.Point.Y = newY;
+				MessageManager.SendMessage(this, new TextMessage(EMessageType.DEBUG, attr.DisplayName, null));
+			}
+			else
+			{
+				MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "неа, " + attr.DisplayName, null));
 			}
 			MessageManager.SendMessage(this, new TurnMessage());
-			MessageManager.SendMessage(this, new TextMessage(EMessageType.DEBUG, "Идет!", new Dictionary<string, Color>{{"Идет",Color.Red}}));
+
 		}
 	}
 }

@@ -23,7 +23,7 @@ namespace RGL1.UIBlocks
 			{
 				var tm = (TextMessage) _message;
 				m_portions.Add(tm.Text);
-				tm.Text.SplitByLines(Rectangle.Width - Tile.Size, Tile.Font, 0);
+				tm.Text.SplitByLines((Rectangle.Width  - 1) * Tile.Size, Tile.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
 		}
