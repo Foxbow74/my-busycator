@@ -38,7 +38,7 @@ namespace RGL1.UIBlocks
 - Да, - сказал старик. - А вот мы верим. Правда?";
 
 			var highlights = new Dictionary<string, Color> { { "Старик", Color.Crimson }, { "он", Color.Green } };
-			DrawText(new TextPortion(str, highlights), _spriteBatch, Tile.Font, Color.White);
+			DrawText(new TextPortion(str, highlights), _spriteBatch, Tile.Font, Color.White, 0);
 
 			_spriteBatch.End();
 		}

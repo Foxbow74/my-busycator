@@ -55,6 +55,6 @@ namespace Graphics
 		public static Tile Frame_TL = new Tile(TextureSet.GP_X16, 10, 13, Color.Gold);
 		public static Tile Frame_TR = new Tile(TextureSet.GP_X16, 15, 11, Color.Gold);
 
-		public static Tile FogTile = new Tile(1,11, new Color(10,10,20));
+		public static Tile FogTile = new Tile(1,11, new Color(5,5,10));
 	}
 }

@@ -18,7 +18,7 @@ namespace RGL1.UIBlocks
 			_spriteBatch.Begin();
 			this.Fill(_spriteBatch, Tiles.SolidTile, Color.Black);
 			base.Draw(_gameTime, _spriteBatch);
-			DrawText(new TextPortion("Are you sure?"), _spriteBatch, Tile.Font, Color.Red);
+			DrawText(new TextPortion("Are you sure?"), _spriteBatch, Tile.Font, Color.Red, Tile.Size / 2);
 			_spriteBatch.End();
 		}
 
