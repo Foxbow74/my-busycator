@@ -102,6 +102,13 @@ namespace RGL1.UIBlocks
 				var color = Color.Multiply(tile.Color, visibility * 1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
+				if(mapCell.Item!=EItems.NONE)
+				{
+					tile = mapCell.Item.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+					color = Color.Multiply(tile.Color, visibility * 1.1f);
+					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+				}
+
 				var key = mapCell.WorldCoords.GetHashCode();
 				FoggedCell cell;
 				if(!m_foggedCells.TryGetValue(key, out cell))
