@@ -1,8 +1,7 @@
 ﻿using System;
-using GameCore;
 using Graphics;
 
-namespace RGL1
+namespace GameCore
 {
 	public static class MapVisualizator
 	{
@@ -18,6 +17,8 @@ namespace RGL1
 					return Tiles.MashtoomTiles[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed) % Tiles.MashtoomTiles.Length)];
 				case ETerrains.BRICK_WALL:
 					return Tiles.BrickTile;
+				case ETerrains.WINDOW:
+					return Tiles.BrickWindowTile;
 				default:
 					throw new ArgumentOutOfRangeException("_terrain");
 			}

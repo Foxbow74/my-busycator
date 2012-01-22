@@ -25,6 +25,7 @@ namespace Graphics
 												new Tile(TextureSet.GP_X16, 7, 0, new Color(65, 68, 60)),
 								};
 
+		public static Tile BrickWindowTile = new Tile(1, 12, Color.DarkRed);
 		public static Tile BrickTile = new Tile(0, 12, Color.DarkRed);
 		public static Tile FrameTile = new Tile(0, 12, Color.Green);
 		public static Tile DoorTile = new Tile(5, 12, Color.Brown);

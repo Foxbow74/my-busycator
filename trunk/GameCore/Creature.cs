@@ -11,5 +11,15 @@ namespace GameCore
 		}
 
 		public Point Point { get; private set; }
+
+		public override Tile Tile
+		{
+			get { throw new System.NotImplementedException(); }
+		}
+
+		public override string Name
+		{
+			get { return "существо"; }
+		}
 	}
 }

@@ -15,37 +15,33 @@ namespace GameCore
 		SWAMP,
 		[Terrain("дорога")]
 		ROAD,
-		[Terrain("гриб", false)]
+		[Terrain("гриб", 0.4f,0.3f)]
 		MUSHROOM,
-		[Terrain("кирпичная стена", false)]
-		BRICK_WALL
+		[Terrain("кирпичная стена", 0, 1)]
+		BRICK_WALL,
+		[Terrain("окно", 0, 0.2f)]
+		WINDOW,
 	}
 
 	public class TerrainAttribute : Attribute
 	{
 		public string DisplayName { get; private set; }
-		public bool IsPassable { get; private set; }
+		public float IsPassable { get; private set; }
+		public float Opaque { get; private set; }
 
-		public TerrainAttribute(string _displayName):this(_displayName, true)
+		public TerrainAttribute(string _displayName):this(_displayName, 1.0f, 0.0f)
 		{}
 
-		public TerrainAttribute(string _displayName, bool _isPassable)
+		public TerrainAttribute(string _displayName, float _isPassable, float _transparency)
 		{
 			DisplayName = _displayName;
 			IsPassable = _isPassable;
+			Opaque = _transparency;
 		}
 
 		public static TerrainAttribute GetAttribute(ETerrains _enum)
 		{
 			return _enum.GetAttribute<ETerrains, TerrainAttribute>();
 		}
-	}
-
-	public enum EItems
-	{
-		NONE,
-		WEAPON,
-		CHEST,
-		DOOR,
 	}
 }

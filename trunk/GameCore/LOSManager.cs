@@ -101,7 +101,7 @@ namespace GameCore
 
 				var attr = TerrainAttribute.GetAttribute(_mapCells[pnt.X, pnt.Y].Terrain);
 
-				var visible = (1.0 - (attr.IsPassable ? 0 : pair.Key.Item2)) * _visibilityCoeff;
+				var visible = (1.0 - attr.Opaque * pair.Key.Item2) * _visibilityCoeff;
 				var ccolor = pair.Value.Ccolor;
 
 				Tuple<double, CColor> tuple;
@@ -111,7 +111,7 @@ namespace GameCore
 					if(visibility>=visible) continue;
 				}
 
-				if (attr.IsPassable)
+				if (attr.Opaque<0.999f)
 				{
 					_alreadyDone[pnt] = new Tuple<double, CColor>(visible, ccolor);	
 				}

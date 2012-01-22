@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using Graphics;
@@ -102,9 +100,9 @@ namespace RGL1.UIBlocks
 				var color = Color.Multiply(tile.Color, visibility * 1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
-				if(mapCell.Item!=EItems.NONE)
+				if(mapCell.Object!=null)
 				{
-					tile = mapCell.Item.Tile();
+					tile = mapCell.Object.Tile;
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 				}

@@ -74,14 +74,13 @@ namespace GameCore
 			return block;
 		}
 
-		public ETerrains GetTerrain(int _newX, int _newY)
+		public MapCell GetMapCell(int _worldX, int _worldY)
 		{
-			var point = new Point(_newX, _newY);
+			var point = new Point(_worldX, _worldY);
 			var blockCoords = MapBlock.GetBlockCoords(point);
 			var block = m_blocks[blockCoords];
 			var coords = MapBlock.GetInBlockCoords(point);
-			var content = block.Map[coords.X, coords.Y];
-			return content;
+			return new MapCell(block, coords.X, coords.Y, new Point(_worldX, _worldY));
 		}
 	}
 }

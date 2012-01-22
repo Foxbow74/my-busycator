@@ -1,6 +1,8 @@
 ﻿using System;
+using GameCore.Objects;
 using RGL1.Messages;
 using Common;
+using Object = GameCore.Objects.Object;
 
 namespace GameCore
 {
@@ -39,15 +41,29 @@ namespace GameCore
 			var newX = Avatar.Point.X + _dx;
 			var newY = Avatar.Point.Y + _dy;
 
-			var terrain = Map.GetTerrain(newX, newY);
+			var mapCell = Map.GetMapCell(newX, newY);
 
-			var attr = terrain.GetAttribute<ETerrains, TerrainAttribute>();
+			var attr = mapCell.Terrain.GetAttribute<ETerrains, TerrainAttribute>();
 
-			if (attr.IsPassable)
+			if (attr.IsPassable>0)
 			{
 				Avatar.Point.X = newX;
 				Avatar.Point.Y = newY;
-				MessageManager.SendMessage(this, new TextMessage(EMessageType.DEBUG, attr.DisplayName, null));
+
+				var o = mapCell.Object;
+				if (o == null)
+				{
+					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, attr.DisplayName, null));
+				}
+				else
+				{
+
+					if(o is FakeItem)
+					{
+						o = mapCell.ResolveFakeItem((FakeItem)o);
+					}
+					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, o.Name, null));
+				}
 			}
 			else
 			{

@@ -83,7 +83,7 @@ namespace RGL1.UIBlocks
 			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
 			Frame.SimpleFrame.Draw(_spriteBatch, 0,0,Rectangle.Width, Rectangle.Height);
-			m_map.Clear(_spriteBatch, new Color(0, 0, 0));
+			m_map.Clear(_spriteBatch, new Color(10, 5, 0));
 			m_messages.Clear(_spriteBatch, new Color(30, 30, 30));
 			m_stats.Clear(_spriteBatch, new Color(0, 30, 30));
 
@@ -96,7 +96,6 @@ namespace RGL1.UIBlocks
 
 			m_stats.DrawFrame(_spriteBatch);
 			m_messages.DrawFrame(_spriteBatch);
-			//m_map.PreDraw(_spriteBatch);
 
 			_spriteBatch.End();
 		}
