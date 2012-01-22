@@ -43,7 +43,7 @@ namespace GameCore
 
 			var mapCell = Map.GetMapCell(newX, newY);
 
-			var attr = mapCell.Terrain.GetAttribute<ETerrains, TerrainAttribute>();
+			var attr = TerrainAttribute.GetAttribute(mapCell.Terrain);
 
 			if (attr.IsPassable>0)
 			{

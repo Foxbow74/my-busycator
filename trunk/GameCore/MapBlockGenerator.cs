@@ -57,9 +57,10 @@ namespace GameCore
 		{
 			switch (_random.Next(3))
 			{
-				case 0: return FakeItem.Weapon;
-				case 1: return FakeItem.Chest;
-				case 2: return FakeItem.Door;
+				case 0: return FakeItem.Sword;
+				case 1: return FakeItem.Axe;
+				case 2: return FakeItem.Chest;
+				case 3: return FakeItem.Door;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

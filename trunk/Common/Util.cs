@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -6,13 +7,16 @@ namespace Common
 {
 	public static class Util
 	{
-		public static TAttribute GetAttribute<TEnum, TAttribute>(this TEnum _enum) where TAttribute:Attribute
+		static readonly Dictionary<Tuple<Type,Type, object>,Attribute> m_attrs = new Dictionary<Tuple<Type, Type, object>, Attribute>();
+
+		public static Dictionary<TEnum, TAttribute> Fill<TEnum, TAttribute>() where TAttribute : Attribute
 		{
-			foreach (var field in typeof(TEnum).GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
+			var result = new Dictionary<TEnum, TAttribute>();
+			foreach (var field in typeof (TEnum).GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
 			{
-				if(field.GetValue(null).Equals(_enum))return field.GetCustomAttributes(true).OfType<TAttribute>().FirstOrDefault();
+				result[(TEnum) field.GetValue(null)] = field.GetCustomAttributes(true).OfType<TAttribute>().Single();
 			}
-			throw new NotImplementedException();
+			return result;
 		}
 	}
 

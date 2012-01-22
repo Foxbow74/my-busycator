@@ -22,26 +22,28 @@ namespace GameCore.Objects
 			get { throw new System.NotImplementedException(); }
 		}
 
-		public Item Resolve()
+		public Object Resolve()
 		{
 			switch (ItemType)
 			{
 				case EItems.NONE:
 					break;
-				case EItems.WEAPON:
-					return new Weapon();
-					break;
+				case EItems.SWORD:
+					return new Sword();
+				case EItems.AXE:
+					return new Axe();
 				case EItems.CHEST:
-					break;
+					return new Chest();
 				case EItems.DOOR:
-					break;
+					return new Door();
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 			throw new NotImplementedException();
 		}
 
-		public static readonly FakeItem Weapon = new FakeItem(EItems.WEAPON);
+		public static readonly FakeItem Sword = new FakeItem(EItems.SWORD);
+		public static readonly FakeItem Axe = new FakeItem(EItems.AXE);
 		public static readonly FakeItem Chest = new FakeItem(EItems.CHEST);
 		public static readonly FakeItem Door = new FakeItem(EItems.DOOR);
 	}

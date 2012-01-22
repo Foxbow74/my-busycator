@@ -28,8 +28,10 @@ namespace GameCore
 		{
 			switch (_item)
 			{
-				case EItems.WEAPON:
-					return Tiles.WeaponTile;
+				case EItems.AXE:
+					return Tiles.Axe;
+				case EItems.SWORD:
+					return Tiles.SwordTile;
 				case EItems.CHEST:
 					return Tiles.ChestTile;
 				case EItems.DOOR:

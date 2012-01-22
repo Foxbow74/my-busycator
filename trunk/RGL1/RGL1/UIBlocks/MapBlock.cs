@@ -61,8 +61,6 @@ namespace RGL1.UIBlocks
 			MessageManager.NewMessage += MessageManager_NewMessage;
 		}
 
-		
-
 		void MessageManager_NewMessage(object _sender, Message _message)
 		{
 			if(_message is TurnMessage)
@@ -78,7 +76,6 @@ namespace RGL1.UIBlocks
 				}
 			}
 		}
-
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
@@ -100,7 +97,7 @@ namespace RGL1.UIBlocks
 				var color = Color.Multiply(tile.Color, visibility * 1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
-				if(mapCell.Object!=null)
+				if (mapCell.Object != null)
 				{
 					tile = mapCell.Object.Tile;
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
@@ -109,7 +106,7 @@ namespace RGL1.UIBlocks
 
 				var key = mapCell.WorldCoords.GetHashCode();
 				FoggedCell cell;
-				if(!m_foggedCells.TryGetValue(key, out cell))
+				if (!m_foggedCells.TryGetValue(key, out cell))
 				{
 					cell = new FoggedCell(tile, color);
 					m_foggedCells[key] = cell;

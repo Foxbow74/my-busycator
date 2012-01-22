@@ -53,6 +53,8 @@
     <Compile Include="MapBlockGenerator.cs" />
     <Compile Include="MapCell.cs" />
     <Compile Include="MapVisualizator.cs" />
+    <Compile Include="Objects\Container.cs" />
+    <Compile Include="Objects\Door.cs" />
     <Compile Include="Objects\FakeItem.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\Weapon.cs" />

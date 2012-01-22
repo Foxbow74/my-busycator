@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common;
 
 namespace GameCore
@@ -39,9 +40,15 @@ namespace GameCore
 			Opaque = _transparency;
 		}
 
+		static Dictionary<ETerrains, TerrainAttribute> m_attrs;
+
 		public static TerrainAttribute GetAttribute(ETerrains _enum)
 		{
-			return _enum.GetAttribute<ETerrains, TerrainAttribute>();
+			if(m_attrs==null)
+			{
+				m_attrs = Util.Fill<ETerrains, TerrainAttribute>();
+			}
+			return m_attrs[_enum];
 		}
 	}
 }
