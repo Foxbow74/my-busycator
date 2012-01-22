@@ -43,7 +43,7 @@ namespace Graphics
 		
 		public static Tile GrowndTile = new Tile(0, 0, new Color(10, 20, 10));
 
-		public static Tile WeaponTile = new Tile(14, 14, Color.SteelBlue);
+		public static Tile WeaponTile = new Tile(TextureSet.NH, 20, 10, Color.White);
 		public static Tile ChestTile = new Tile(TextureSet.RR_BRICK_01, 2, 9, Color.Gold);
 
 		public static Tile Frame_L = new Tile(TextureSet.GP_X16, 3, 11, Color.Gold);

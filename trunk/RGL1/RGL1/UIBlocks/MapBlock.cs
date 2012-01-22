@@ -104,7 +104,7 @@ namespace RGL1.UIBlocks
 
 				if(mapCell.Item!=EItems.NONE)
 				{
-					tile = mapCell.Item.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+					tile = mapCell.Item.Tile();
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 				}

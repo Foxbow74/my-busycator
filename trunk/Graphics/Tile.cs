@@ -14,6 +14,7 @@ namespace Graphics
 		RR_NATURAL_01,
 		RR_NATURAL_02,
 		GP_X16,
+		NH,
 	}
 
 	public class Tile
@@ -51,6 +52,9 @@ namespace Graphics
 						break;
 					case TextureSet.GP_X16:
 						texture = _content.Load<Texture2D>("gold_plated_16x16");
+						break;
+					case TextureSet.NH:
+						texture = _content.Load<Texture2D>("nethack");
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

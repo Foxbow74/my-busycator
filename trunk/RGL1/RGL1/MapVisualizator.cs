@@ -1,21 +1,11 @@
 ﻿using System;
 using GameCore;
 using Graphics;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1
 {
 	public static class MapVisualizator
 	{
-		public static void Draw(this MapCell _mapCell, SpriteBatch _spriteBatch, int _x, int _y)
-		{
-			_mapCell.Terrain.Tile(_mapCell.WorldCoords, _mapCell.BlockRandomSeed).DrawAtCell(_spriteBatch, _x, _y);
-			if(_mapCell.Item!=EItems.NONE)
-			{
-				_mapCell.Item.Tile(_mapCell.WorldCoords, _mapCell.BlockRandomSeed).DrawAtCell(_spriteBatch, _x, _y);
-			}
-		}
-
 		public static Tile Tile(this ETerrains _terrain, Point _worldCoords, int _blockRandomSeed)
 		{
 			switch (_terrain)
@@ -33,7 +23,7 @@ namespace RGL1
 			}
 		}
 
-		public static Tile Tile(this EItems _item, Point _worldCoords, int _blockRandomSeed)
+		public static Tile Tile(this EItems _item)
 		{
 			switch (_item)
 			{
