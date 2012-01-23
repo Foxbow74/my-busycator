@@ -14,11 +14,10 @@ namespace RGL1.UIBlocks
 			ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top, ContentRectangle.Width - 1*2, ContentRectangle.Height);
 		}
 
-		public override void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
+		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
-			this.Clear(_spriteBatch, Color.DimGray);
-			base.Draw(_gameTime, _spriteBatch);
+			//base.Draw(_gameTime, _spriteBatch);
 			DrawText(new TextPortion("Уверен?"), _spriteBatch, Tile.Font, Color.White, Tile.Size * 2);
 			_spriteBatch.End();
 		}

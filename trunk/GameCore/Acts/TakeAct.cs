@@ -13,7 +13,9 @@ namespace GameCore.Acts
 
 		public override void Do(Creature _creatures, World _world, bool _silence)
 		{
-			var mapCell = _world.Map.GetMapCell(_creatures.Coords.X, _creatures.Coords.Y);
+			var intelligent = (Intelligent)_creatures;
+
+			var mapCell = _world.Map.GetMapCell(intelligent.Coords.X, intelligent.Coords.Y);
 			var o = mapCell.Object;
 			if(o==null)
 			{
@@ -23,12 +25,12 @@ namespace GameCore.Acts
 			{
 				throw new NotImplementedException();
 			}
-			else
+			else if(o is Item)
 			{
 				mapCell.RemoveObjectFromBlock();
-				_creatures.ObjectTaken(o);
+				intelligent.ObjectTaken((Item)o);
 
-				if(_creatures is Avatar)
+				if (intelligent is Avatar)
 				{
 					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, o + " взят."));
 				}
@@ -36,6 +38,10 @@ namespace GameCore.Acts
 				{
 					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, _creatures + " взял " + o));
 				}
+			}
+			else
+			{
+				throw new NotImplementedException();
 			}
 		}
 	}

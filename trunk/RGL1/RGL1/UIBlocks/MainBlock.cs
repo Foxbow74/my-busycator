@@ -27,17 +27,17 @@ namespace RGL1.UIBlocks
 			const int messagesHeight = 10;
 			const int statWidth = 15;
 
-			m_stats = new UIBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1), Frame.GoldFrame, Color.Gray);
+			m_stats = new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
 			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
 
 			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, ContentRectangle.Top, m_stats.ContentRectangle.Left + 1, m_messages.ContentRectangle.Top + 1), _world);
 
 		}
 
-		public override void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
+		public void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
 		{
 			DrawBackground(_gameTime, _spriteBatch);
-			DrawContent(_gameTime, _spriteBatch, World);
+			DrawContent(_spriteBatch);
 			DrawFrames(_spriteBatch);
 		}
 
@@ -83,8 +83,7 @@ namespace RGL1.UIBlocks
 			}
 		}
 
-
-		private void DrawContent(GameTime _gameTime, SpriteBatch _spriteBatch, World _world)
+		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			m_map.DrawContent(_spriteBatch);
 			m_messages.DrawContent(_spriteBatch);
@@ -92,14 +91,10 @@ namespace RGL1.UIBlocks
 
 		private void DrawBackground(GameTime _gameTime, SpriteBatch _spriteBatch)
 		{
-			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
-
 			Frame.SimpleFrame.Draw(_spriteBatch, 0,0,Rectangle.Width, Rectangle.Height);
 			m_map.Clear(_spriteBatch, new Color(10, 5, 0));
 			m_messages.Clear(_spriteBatch, new Color(30, 30, 30));
 			m_stats.Clear(_spriteBatch, new Color(0, 30, 30));
-
-			_spriteBatch.End();
 		}
 
 		private void DrawFrames(SpriteBatch _spriteBatch)

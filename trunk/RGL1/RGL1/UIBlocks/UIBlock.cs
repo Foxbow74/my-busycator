@@ -8,11 +8,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks
 {
-	class UIBlock:IDisposable
+	abstract class UIBlock:IDisposable
 	{
 		const float NEW_LINE = 20;
 
-		public UIBlock(Rectangle _rectangle, Frame _frame, Color _color)
+		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color)
 		{
 			BlockFrame = _frame;
 			Color = _color;
@@ -28,11 +28,6 @@ namespace RGL1.UIBlocks
 		protected internal Color Color { get; private set; }
 
 		protected Frame BlockFrame { get; private set; }
-
-		public virtual void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
-		{
-			DrawFrame(_spriteBatch);
-		}
 
 		public virtual void DrawBackground(SpriteBatch _spriteBatch)
 		{
@@ -103,9 +98,7 @@ namespace RGL1.UIBlocks
 		{
 		}
 
-		public virtual void DrawContent(SpriteBatch _spriteBatch)
-		{
-		}
+		public abstract void DrawContent(SpriteBatch _spriteBatch);
 	}
 
 

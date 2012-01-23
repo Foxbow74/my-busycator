@@ -1,11 +1,10 @@
 ﻿using System;
-using Common.Messages;
 using GameCore.Acts;
 using Graphics;
 
 namespace GameCore.Creatures
 {
-	public class Avatar : Creature
+	public class Avatar : Intelligent
 	{
 		public Avatar(World _world): base(_world, Point.Zero, 100)
 		{

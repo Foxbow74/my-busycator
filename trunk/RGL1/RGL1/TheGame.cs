@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mime;
 using Common.Messages;
 using GameCore;
 using Graphics;
@@ -17,19 +16,18 @@ namespace RGL1
 	/// </summary>
 	public class TheGame : Game
 	{
-		DateTime m_lastMove = DateTime.Now;
 		readonly List<Keys> m_downKeys = new List<Keys>();
 		readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
 		EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
 		readonly Keys[] m_keyModificators = new[] { Keys.RightShift, Keys.LeftShift, Keys.RightControl, Keys.LeftControl, Keys.RightAlt, Keys.LeftAlt };
 
-		private int m_second = 0;
-		private int m_frames = 0;
-		private int m_fps = 0;
+		private int m_second;
+		private int m_frames;
+		private int m_fps;
 
 		const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
 		const int AUTO_MOVE_REPEAT_AFTER = 200;
-		private bool m_isAutoRepeateMode = false;
+		private bool m_isAutoRepeateMode;
 
 		private DateTime m_moveKeyHoldedSince;
 
@@ -43,7 +41,7 @@ namespace RGL1
 
 		private World m_world;
 
-		private Keys[] m_moveKeys = new Keys[]
+		private readonly Keys[] m_moveKeys = new[]
 			               	{
 			               		Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4,
 			               		Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.NumPad5, Keys.Home, Keys.PageUp,
@@ -53,6 +51,7 @@ namespace RGL1
 
 		public TheGame()
 		{
+			m_frames = 0;
 			IsMouseVisible = true;
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			
@@ -131,20 +130,7 @@ namespace RGL1
 			}
 			return false;
 		}
-
-		/// <summary>
-		/// Allows the game to perform any initialization it needs to before starting to run.
-		/// This is where it can query for any required services and load any non-graphic
-		/// related content.  Calling base.Initialize will enumerate through any components
-		/// and initialize them as well.
-		/// </summary>
-		protected override void Initialize()
-		{
-			// TODO: Add your initialization logic here
-
-			base.Initialize();
-		}
-
+		
 		/// <summary>
 		/// LoadContent will be called once per game and is the place to load
 		/// all of your content.
@@ -272,8 +258,14 @@ namespace RGL1
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{
-				uiBlock.Draw(_gameTime, m_spriteBatch);
+				m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+				uiBlock.DrawBackground(m_spriteBatch);
+				m_spriteBatch.End();
+
+				uiBlock.DrawContent(m_spriteBatch);
+				uiBlock.DrawFrame(m_spriteBatch);
 			}
+
 			base.Draw(_gameTime);
 
 			var tm = DateTime.Now;

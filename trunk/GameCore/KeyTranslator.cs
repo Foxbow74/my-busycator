@@ -19,7 +19,7 @@ namespace GameCore
 			{
 				case ConsoleKey.I:	
 					return ECommands.INVENTORY;
-				case ConsoleKey.T:
+				case ConsoleKey.OemComma:
 					return ECommands.TAKE;
 
 			}

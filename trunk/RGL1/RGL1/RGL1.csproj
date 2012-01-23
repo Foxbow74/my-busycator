@@ -132,10 +132,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="TheGame.cs" />
     <Compile Include="UIBlocks\ConfirmQuitBlock.cs" />
+    <Compile Include="UIBlocks\InventoryBlock.cs" />
     <Compile Include="UIBlocks\MainBlock.cs" />
     <Compile Include="UIBlocks\MapBlock.cs" />
     <Compile Include="UIBlocks\MapBlock_Fog.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
+    <Compile Include="UIBlocks\StatsBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
   </ItemGroup>
   <ItemGroup>

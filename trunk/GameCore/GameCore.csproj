@@ -46,6 +46,7 @@
     <Compile Include="Acts\MoveAct.cs" />
     <Compile Include="Acts\TakeAct.cs" />
     <Compile Include="Creatures\Avatar.cs" />
+    <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Monster.cs" />
     <Compile Include="ECommands.cs" />
     <Compile Include="Creatures\Creature.cs" />

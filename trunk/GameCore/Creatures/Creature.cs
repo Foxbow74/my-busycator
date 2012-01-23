@@ -1,7 +1,4 @@
-﻿using System;
-using Common.Messages;
-using GameCore.Acts;
-using GameCore.Objects;
+﻿using GameCore.Acts;
 using Graphics;
 using Object = GameCore.Objects.Object;
 
@@ -74,11 +71,6 @@ namespace GameCore.Creatures
 
 		protected virtual void ActDone()
 		{
-		}
-
-		public void ObjectTaken(Object _o)
-		{
-			//throw new NotImplementedException();
 		}
 	}
 }
