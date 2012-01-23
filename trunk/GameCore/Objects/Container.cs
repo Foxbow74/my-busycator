@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Graphics;
+﻿using Graphics;
 
 namespace GameCore.Objects
 {
-	public abstract class Container:Object
+	public abstract class Container:Item
 	{
 	}
 

@@ -2,7 +2,7 @@
 
 namespace GameCore.Objects
 {
-	public class Door:Object
+	class Door:Object
 	{
 		public override Tile Tile
 		{
