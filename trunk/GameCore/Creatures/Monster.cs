@@ -9,13 +9,15 @@ namespace GameCore.Creatures
 	/// </summary>
 	public class Monster:Creature
 	{
+		protected static Random m_rnd = new Random(1);
+
 		internal Monster(World _world, Point _coords): base(_world, _coords, 80)
 		{
 		}
 
 		public override Act GetNextAct()
 		{
-			return new MoveAct(new Point(0, -1));
+			return new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3)-1));
 		}
 
 		public override Tile Tile
