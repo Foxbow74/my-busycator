@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
+using Common.Messages;
 using GameCore;
 using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
@@ -23,7 +23,7 @@ namespace RGL1.UIBlocks
 
 		public Rectangle Rectangle { get; private set; }
 
-		public Rectangle ContentRectangle { get; private set; }
+		public Rectangle ContentRectangle { get; protected set; }
 
 		protected internal Color Color { get; private set; }
 

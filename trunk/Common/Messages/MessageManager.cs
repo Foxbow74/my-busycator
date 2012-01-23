@@ -1,4 +1,4 @@
-﻿namespace RGL1.Messages
+﻿namespace Common.Messages
 {
 	public static class MessageManager
 	{

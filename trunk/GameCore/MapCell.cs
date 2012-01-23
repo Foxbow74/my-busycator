@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GameCore.Creatures;
 using GameCore.Objects;
 using Graphics;
 using Object = GameCore.Objects.Object;
@@ -10,15 +11,22 @@ namespace GameCore
 	{
 		public Point WorldCoords { get; private set; }
 
+		public Point BlockCoords { get { return Block.Point; } }
+
 		public ETerrains Terrain { get; private set; }
 
 		public Object Object { get; private set; }
+
+		public Creature Creature { get; private set; }
 
 		public int BlockRandomSeed { get { return Block.RandomSeed; } }
 
 		private MapBlock Block { get; set; }
 
-		private Point m_localPoint;
+		/// <summary>
+		/// Координаты ячейки в блоке
+		/// </summary>
+		private readonly Point m_localPoint;
 
 		internal MapCell(MapBlock _block, int _x, int _y, Point _worldCoords)
 		{
@@ -37,6 +45,15 @@ namespace GameCore
 					Object = tuple.Item1;
 				}
 			}
+
+			if (_block.CreaturesExists)
+			{
+				var creature = _block.Creatures.FirstOrDefault(_creature => MapBlock.GetInBlockCoords(_creature.Coords)==m_localPoint);
+				if (creature != null)
+				{
+					Creature = creature;
+				}
+			}
 		}
 
 		public Object ResolveFakeItem(FakeItem _o)
@@ -45,7 +62,12 @@ namespace GameCore
 			Block.Objects.Add(new Tuple<Object, Point>(o, m_localPoint));
 			Block.Objects.Remove(new Tuple<Object, Point>(_o, m_localPoint));
 			return o;
+		}
 
+		public void RemoveObjectFromBlock()
+		{
+			if(Object==null) throw new ArgumentNullException();
+			Block.Objects.Remove(new Tuple<Object, Point>(Object, m_localPoint));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.Creatures;
 using GameCore.Objects;
 using Graphics;
 using Object = GameCore.Objects.Object;
@@ -7,7 +8,7 @@ namespace GameCore
 {
 	static class MapBlockGenerator
 	{
-		public static void Generate(MapBlock _block, Point _blockId)
+		public static void Generate(MapBlock _block, Point _blockId, World _world)
 		{
 			var rnd = new Random(_block.RandomSeed);
 
@@ -30,27 +31,36 @@ namespace GameCore
 			_block.Map[13, 10] = ETerrains.WINDOW;
 			_block.Map[10, 13] = ETerrains.WINDOW;
 
-
-			var cnt = rnd.Next(rnd.Next(40));
-			for (var i = 0; i < cnt; ++i)
 			{
-				var x = rnd.Next(MapBlock.SIZE);
-				var y = rnd.Next(MapBlock.SIZE);
-				_block.Map[x, y] = ETerrains.MUSHROOM;
-			}
-
-			var itmcnt = rnd.Next(rnd.Next(5));
-			for (var i = 0; i < itmcnt; ++i)
-			{
-				var x = rnd.Next(MapBlock.SIZE);
-				var y = rnd.Next(MapBlock.SIZE);
-
-				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
-				if (attr.IsPassable>0)
+				var cnt = rnd.Next(rnd.Next(40));
+				for (var i = 0; i < cnt; ++i)
 				{
-					_block.Objects.Add(new Tuple<Object, Point>(GenerateFakeItem(rnd), new Point(x, y)));
+					var x = rnd.Next(MapBlock.SIZE);
+					var y = rnd.Next(MapBlock.SIZE);
+					_block.Map[x, y] = ETerrains.MUSHROOM;
 				}
 			}
+
+			{
+				var itmcnt = rnd.Next(rnd.Next(5));
+				for (var i = 0; i < itmcnt; ++i)
+				{
+					var x = rnd.Next(MapBlock.SIZE);
+					var y = rnd.Next(MapBlock.SIZE);
+
+					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+					if (attr.IsPassable > 0)
+					{
+						_block.Objects.Add(new Tuple<Object, Point>(GenerateFakeItem(rnd), new Point(x, y)));
+					}
+				}
+			}
+
+			//{
+			//    var x = rnd.Next(MapBlock.SIZE);
+			//    var y = rnd.Next(MapBlock.SIZE);
+			//    _block.Creatures.Add(new Monster(_world, new Point(x,y)));
+			//}
 		}
 
 		public static FakeItem GenerateFakeItem(Random _random)

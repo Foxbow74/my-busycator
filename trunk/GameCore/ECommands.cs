@@ -3,5 +3,7 @@
 	public enum ECommands
 	{
 		INVENTORY,
+		NONE,
+		TAKE
 	}
 }

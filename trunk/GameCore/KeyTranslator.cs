@@ -15,7 +15,15 @@ namespace GameCore
 	{
 		public static ECommands TranslateKey(ConsoleKey _keys, EKeyModifiers _modifiers)
 		{
-			return ECommands.INVENTORY;
+			switch (_keys)
+			{
+				case ConsoleKey.I:	
+					return ECommands.INVENTORY;
+				case ConsoleKey.T:
+					return ECommands.TAKE;
+
+			}
+			return ECommands.NONE;
 		}
 	}
 }

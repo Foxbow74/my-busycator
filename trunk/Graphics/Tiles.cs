@@ -29,7 +29,7 @@ namespace Graphics
 		public static Tile BrickTile = new Tile(0, 12, Color.DarkRed);
 		public static Tile FrameTile = new Tile(0, 12, Color.Green);
 		public static Tile DoorTile = new Tile(5, 12, Color.Brown);
-		public static Tile HeroTile = new Tile(2, 0, Color.White);
+		public static Tile Avatar = new Tile(2, 0, Color.White);
 
 		public static Tile[] MashtoomTiles = new Tile[]
 		                                    	{
@@ -59,5 +59,7 @@ namespace Graphics
 		public static Tile FogTile = new Tile(1,11, new Color(5,5,10));
 
 		public static Tile Axe = new Tile(15, 2, Color.LightSteelBlue);
+
+		public static Tile Monster = new Tile(TextureSet.NH, 0,6, Color.White);
 	}
 }

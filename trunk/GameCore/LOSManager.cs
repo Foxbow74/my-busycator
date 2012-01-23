@@ -48,7 +48,7 @@ namespace GameCore
 				var closedByParent = 1.0;
 				foreach (var pnt in Point.Zero.GetLineToPoints(end))
 				{
-					if(pnt.Equals(Point.Zero)) continue;
+					if(pnt==Point.Zero) continue;
 
 					LosCell cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
@@ -129,7 +129,7 @@ namespace GameCore
 
 		public void Add(Point _pnt, double _closedByParent, LosCell _cell)
 		{
-			var have = m_cells.Keys.FirstOrDefault(_tuple => _tuple.Item1.Equals(_pnt));
+			var have = m_cells.Keys.FirstOrDefault(_tuple => _tuple.Item1==_pnt);
 			if(have!=null)
 			{
 				if (have.Item2 < _closedByParent)

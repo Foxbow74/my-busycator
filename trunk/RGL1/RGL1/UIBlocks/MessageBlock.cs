@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Common.Messages;
 using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {

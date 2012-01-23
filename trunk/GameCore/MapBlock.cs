@@ -1,23 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.Creatures;
 using Graphics;
 using Object = GameCore.Objects.Object;
 
 namespace GameCore
 {
-	class MapBlock
+	public class MapBlock
 	{
+		//Координаты блока в блочных координатах
+		public Point Point { get; private set; }
+
 		public const int SIZE = 20;
 
 		public int RandomSeed { get; private set; }
 
-		public MapBlock()
+		public ETerrains[,] Map { get; private set; }
+
+		private List<Tuple<Object, Point>> m_objects;
+		private List<Creature> m_creatures;
+
+		public MapBlock(Point _point)
 		{
+			Point = _point;
 			Map = new ETerrains[SIZE, SIZE];
 			RandomSeed = World.Rnd.Next();
 		}
-
-		public ETerrains[,] Map { get; private set; }
 
 		public static Point GetBlockCoords(Point _point)
 		{
@@ -39,11 +47,23 @@ namespace GameCore
 			return new Point((SIZE + (_point.X % SIZE)) % SIZE, (SIZE + (_point.Y % SIZE)) % SIZE);
 		}
 
-		private List<Tuple<Object, Point>> m_objects;
-
 		public bool ObjectsExists
 		{
 			get { return m_objects != null && m_objects.Count > 0; }
+		}
+
+		public bool CreaturesExists
+		{
+			get { return m_creatures != null && m_creatures.Count > 0; }
+		}
+
+
+		public List<Creature> Creatures
+		{
+			get
+			{
+				return m_creatures ?? (m_creatures = new List<Creature>());
+			}
 		}
 
 		public List<Tuple<Object, Point>> Objects

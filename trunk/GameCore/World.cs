@@ -1,13 +1,22 @@
 ﻿using System;
-using GameCore.Objects;
-using RGL1.Messages;
-using Common;
-using Object = GameCore.Objects.Object;
+using System.Linq;
+using System.Collections.Generic;
+using Common.Messages;
+using GameCore.Acts;
+using GameCore.Creatures;
+using Graphics;
 
 namespace GameCore
 {
 	public class World
 	{
+		public long WorldTick { get; private set; }
+
+		/// <summary>
+		/// содержит список активных в данный момент существ
+		/// </summary>
+		private readonly List<Creature> m_activeCreatures = new List<Creature>();
+
 		static World()
 		{
 			Rnd = new Random(1);
@@ -15,15 +24,35 @@ namespace GameCore
 
 		public World()
 		{
-			Avatar = new Avatar();
-			Map = new Map();
+			MessageManager.NewMessage += MessageManagerOnNewMessage;
+			Map = new Map(this);
+
+			Map[Point.Zero].Creatures.Add(new Monster(this, new Point(2, 2)));
+
+			WorldTick = 0;
+
+			Avatar = new Avatar(this);
+			m_activeCreatures.Add(Avatar);
+			MessageManager.SendMessage(this, new AvatarMovedMessage());
 		}
 
-		/// <summary>
-		/// Ход в игре с точки зрения игрока
-		/// Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе
-		/// </summary>
-		public long Turn { get; private set; }
+		private void MessageManagerOnNewMessage(object _sender, Message _message)
+		{
+			if(_message is TurnMessage)
+			{
+				Act();
+			}
+			else if(_message is AvatarMovedMessage)
+			{
+				UpdateActiveCreatures();
+			}
+		}
+
+		private void UpdateActiveCreatures()
+		{
+			m_activeCreatures.Clear();
+			m_activeCreatures.AddRange(Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures));
+		}
 
 		public Map Map { get; private set; }
 
@@ -31,46 +60,49 @@ namespace GameCore
 
 		public static Random Rnd{ get; private set; }
 
-		public void CommandReceived(ECommands _command)
+		/// <summary>
+		/// Запускает мир до следующего хода игрока
+		/// </summary>
+		public void Act()
 		{
-			
+			var act = Avatar.GetNextAct();
+			ExecuteCreatureAct(Avatar, act);
+
+			while (true)
+			{
+				var creature = m_activeCreatures[0];
+				if (creature is Avatar)
+				{
+					break;
+				}
+				act = creature.GetNextAct();
+				ExecuteCreatureAct(creature, act);
+			}
 		}
 
-		public void MoveCommandReceived(int _dx, int _dy)
+		private void ExecuteCreatureAct(Creature _creature, Act _act)
 		{
-			var newX = Avatar.Point.X + _dx;
-			var newY = Avatar.Point.Y + _dy;
+			if (_act==null) throw new ArgumentNullException("_act");
 
-			var mapCell = Map.GetMapCell(newX, newY);
-
-			var attr = TerrainAttribute.GetAttribute(mapCell.Terrain);
-
-			if (attr.IsPassable>0)
+			WorldTick = _creature.BusyTill;
+			_creature.DoAct(_act);
+			m_activeCreatures.Remove(_creature);
+			var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > _creature.BusyTill);
+			if (nextCreatureIndex < 0) 
 			{
-				Avatar.Point.X = newX;
-				Avatar.Point.Y = newY;
-
-				var o = mapCell.Object;
-				if (o == null)
+				if (m_activeCreatures.Count > 0)
 				{
-					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, attr.DisplayName, null));
+					m_activeCreatures.Add(_creature);
 				}
 				else
 				{
-
-					if(o is FakeItem)
-					{
-						o = mapCell.ResolveFakeItem((FakeItem)o);
-					}
-					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, o.Name, null));
+					m_activeCreatures.Insert(nextCreatureIndex + 1, _creature);
 				}
 			}
 			else
 			{
-				MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "неа, " + attr.DisplayName, null));
+				m_activeCreatures.Insert(nextCreatureIndex, _creature);
 			}
-			MessageManager.SendMessage(this, new TurnMessage());
-
 		}
 	}
 }

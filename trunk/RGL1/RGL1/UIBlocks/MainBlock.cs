@@ -1,9 +1,9 @@
 ﻿using System;
+using Common.Messages;
 using GameCore;
 using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
@@ -43,7 +43,7 @@ namespace RGL1.UIBlocks
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
-			if (_key==ConsoleKey.Q && _modifiers==EKeyModifiers.CTRL)
+			if (_key == ConsoleKey.Q && _modifiers == EKeyModifiers.CTRL)
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new ConfirmQuitBlock()));
 				return;
@@ -68,7 +68,19 @@ namespace RGL1.UIBlocks
 			dy += (_key == ConsoleKey.Home ? -1 : 0) + (_key == ConsoleKey.End ? 1 : 0);
 			dy += (_key == ConsoleKey.PageUp ? -1 : 0) + (_key == ConsoleKey.PageDown ? 1 : 0);
 
-			if (dx != 0 || dy != 0) World.MoveCommandReceived(dx, dy);
+			if (dx != 0 || dy != 0)
+			{
+				World.Avatar.MoveCommandReceived(dx, dy);
+				MessageManager.SendMessage(this, new TurnMessage());
+				return;
+			}
+			var command = KeyTranslator.TranslateKey(_key, _modifiers);
+			if (command != ECommands.NONE)
+			{
+				World.Avatar.CommandReceived(command);
+				MessageManager.SendMessage(this, new TurnMessage());
+				return;
+			}
 		}
 
 

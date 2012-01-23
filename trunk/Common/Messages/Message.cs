@@ -2,7 +2,7 @@
 using Graphics;
 using Microsoft.Xna.Framework;
 
-namespace RGL1.Messages
+namespace Common.Messages
 {
 	public enum EMessageType
 	{

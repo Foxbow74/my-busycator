@@ -10,5 +10,10 @@ namespace GameCore.Objects
 
 		public abstract Tile Tile { get; }
 		public abstract string Name { get; }
+
+		public override string ToString()
+		{
+			return Name;
+		}
 	}
 }

@@ -42,9 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Avatar.cs" />
+    <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\MoveAct.cs" />
+    <Compile Include="Acts\TakeAct.cs" />
+    <Compile Include="Creatures\Avatar.cs" />
+    <Compile Include="Creatures\Monster.cs" />
     <Compile Include="ECommands.cs" />
-    <Compile Include="Creature.cs" />
+    <Compile Include="Creatures\Creature.cs" />
     <Compile Include="EItems.cs" />
     <Compile Include="KeyTranslator.cs" />
     <Compile Include="LOSManager.cs" />

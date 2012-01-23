@@ -45,11 +45,62 @@ namespace Graphics
 
 		public override bool Equals(object _obj)
 		{
-			//var pnt = (Point) _obj;
-
-			//return pnt.X == X && pnt.Y == Y;
 			return GetHashCode() == _obj.GetHashCode();
 		}
+
+		#region overrides
+
+		public static Point operator +(Point _a, Point _b)
+		{
+			return new Point(_a.X + _b.X, _a.Y + _b.Y);
+		}
+
+		public static Point operator -(Point _a, Point _b)
+		{
+			return new Point(_a.X - _b.X, _a.Y - _b.Y);
+		}
+
+		public static bool operator ==(Point _a, Point _b)
+		{
+			if (ReferenceEquals(_a, _b))
+			{
+				return true;
+			}
+
+			if (((object)_a == null) && ((object)_b == null))
+			{
+				return true;
+			}
+
+			if (((object)_a == null) || ((object)_b == null))
+			{
+				return false;
+			}
+
+			return _a.X == _b.X && _a.Y == _b.Y;
+		}
+
+		public static bool operator !=(Point _a, Point _b)
+		{
+			if (ReferenceEquals(_a, _b))
+			{
+				return false;
+			}
+
+			if (((object)_a == null) && ((object)_b == null))
+			{
+				return false;
+			} 
+			
+			if (((object)_a == null) || ((object)_b == null))
+			{
+				return true;
+			}
+
+			return _a.X != _b.X || _a.Y != _b.Y;
+		}
+
+		#endregion
 
 		public override int GetHashCode()
 		{

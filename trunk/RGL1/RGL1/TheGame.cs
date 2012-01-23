@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using Common.Messages;
 using GameCore;
 using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using RGL1.Messages;
 using RGL1.UIBlocks;
 
 namespace RGL1
@@ -206,19 +206,17 @@ namespace RGL1
 
 			foreach (var key in prevDownKeys)
 			{
-				if(!downKeys.Contains(key))
-				{
-					pressedKeys.Add(key);
-					m_downKeys.Remove(key);
-				}
+				if (downKeys.Contains(key)) continue;
+
+				pressedKeys.Add(key);
+				m_downKeys.Remove(key);
 			}
 			foreach (var key in downKeys)
 			{
-				if(!m_downKeys.Contains(key))
-				{
-					m_moveKeyHoldedSince = DateTime.Now;
-					m_downKeys.Add(key);
-				}
+				if (m_downKeys.Contains(key)) continue;
+
+				m_moveKeyHoldedSince = DateTime.Now;
+				m_downKeys.Add(key);
 			}
 
 			m_keyModifiers = keyModifiers;
@@ -231,7 +229,7 @@ namespace RGL1
 			{
 				if (m_downKeys.Intersect(m_moveKeys).Any())
 				{
-					double totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
+					var totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
 					if (m_isAutoRepeateMode)
 					{
 						if (totalMilliseconds > AUTO_MOVE_REPEAT_MILLISECONDS)
@@ -292,7 +290,7 @@ namespace RGL1
 
 			m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
-			var format = string.Format("тоя:{0} XY:{1}", m_fps, m_mainBlock.World.Avatar.Point);
+			var format = string.Format("тоя:{0} XY:{1}", m_fps, m_mainBlock.World.Avatar.Coords);
 
 			m_spriteBatch.WriteString(format, 1, 1, Color.White, Color.Gray, Tile.Font);
 

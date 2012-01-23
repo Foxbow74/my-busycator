@@ -2,22 +2,25 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Common.Messages;
+using GameCore.Creatures;
 using Graphics;
 
 namespace GameCore
 {
 	public class Map
 	{
+		private readonly World m_world;
 		const int ACTIVE_SIZE_HALF = 2;
 
 		readonly Dictionary<Point, MapBlock> m_blocks = new Dictionary<Point, MapBlock>();
 
-		public Map()
+		public Map(World _world)
 		{
-			var initialized = GetBlocksNear(new Point()).Count();
+			m_world = _world;
 		}
 
-		private IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _point)
+		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _point)
 		{
 			var centralBlockCoord = MapBlock.GetBlockCoords(_point);
 			for (var i = -ACTIVE_SIZE_HALF; i < ACTIVE_SIZE_HALF; ++i)
@@ -25,18 +28,38 @@ namespace GameCore
 				for (var j = -ACTIVE_SIZE_HALF; j < ACTIVE_SIZE_HALF; ++j)
 				{
 					var blockId = new Point(centralBlockCoord.X + i, centralBlockCoord.Y + j);
-					MapBlock block;
-					if (!m_blocks.TryGetValue(blockId, out block))
-					{
-						block = GenerateBlock(blockId);
-						m_blocks.Add(blockId, block);
-						Debug.WriteLine("Generated new in " + blockId);
-					}
-					yield return new Tuple<Point, MapBlock>(blockId, block);
+					yield return new Tuple<Point, MapBlock>(blockId, this[blockId]);
 				}
 			}
 		}
 
+		public MapBlock this[Point _blockId]
+		{
+			get
+			{
+				MapBlock block;
+				if (!m_blocks.TryGetValue(_blockId, out block))
+				{
+					block = GenerateBlock(_blockId, m_world);
+					m_blocks.Add(_blockId, block);
+					Debug.WriteLine("Generated new in " + _blockId);
+				}
+				return block;
+			}
+		}
+
+		private static MapBlock GenerateBlock(Point _blockId, World _world)
+		{
+			var block = new MapBlock(_blockId);
+			MapBlockGenerator.Generate(block, _blockId, _world);
+			return block;
+		}
+
+		/// <summary>
+		/// Заполняет двумерный массив значениями из карты вокруг игрока
+		/// </summary>
+		/// <param name="_mapTiles"></param>
+		/// <param name="_avatarPoint"></param>
 		public void SetData(MapCell[,] _mapTiles, Point _avatarPoint)
 		{
 			var w = _mapTiles.GetLength(0);
@@ -67,20 +90,20 @@ namespace GameCore
 			}
 		}
 
-		private MapBlock GenerateBlock(Point _blockId)
-		{
-			var block = new MapBlock();
-			MapBlockGenerator.Generate(block, _blockId);
-			return block;
-		}
-
 		public MapCell GetMapCell(int _worldX, int _worldY)
 		{
 			var point = new Point(_worldX, _worldY);
 			var blockCoords = MapBlock.GetBlockCoords(point);
-			var block = m_blocks[blockCoords];
+			var block = this[blockCoords];
 			var coords = MapBlock.GetInBlockCoords(point);
 			return new MapCell(block, coords.X, coords.Y, new Point(_worldX, _worldY));
+		}
+
+		public void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
+		{
+			this[_fromBlock].Creatures.Remove(_creature);
+			this[_toBlock].Creatures.Add(_creature);
+			MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, _creature + " ушел в блок " + _toBlock));
 		}
 	}
 }
