@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Common.Messages;
 using GameCore.Creatures;
 using GameCore.Objects;
 using Graphics;
+using MS.Internal.Xml.XPath;
+using Object = GameCore.Objects.Object;
 
 namespace GameCore.Acts
 {
@@ -57,16 +61,32 @@ namespace GameCore.Acts
 		{
 			var mapCell = _world.Map.GetMapCell(_creatures.Coords);
 
+			var list=new List<Object>();
 			var o = mapCell.Object;
 			if (o == null)
 			{
-				foreach (Point point in _creatures.Coords.NearestPoints)
+				list.AddRange(_creatures.Coords.NearestPoints.Select(_point => _world.Map.GetMapCell(_point).Object).Where(_o => _o!=null));
+				if(list.Count==0)
+				{
+					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "открыть что?"));	
+					return;
+				}
+				if(list.Count==1)
 				{
 					
 				}
+				else 
+				foreach (var cell in )
+				{
+					if(cell.Object!=null);
+				}
 				
 
-				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "взять что?"));
+				
+			}
+			else
+			{
+				
 			}
 		}
 	}
