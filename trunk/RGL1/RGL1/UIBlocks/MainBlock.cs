@@ -30,7 +30,7 @@ namespace RGL1.UIBlocks
 			m_stats = new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
 			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
 
-			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, ContentRectangle.Top, m_stats.ContentRectangle.Left + 1, m_messages.ContentRectangle.Top + 1), _world);
+			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1), _world);
 
 		}
 

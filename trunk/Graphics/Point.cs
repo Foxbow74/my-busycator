@@ -33,6 +33,21 @@ namespace Graphics
 			get { return Math.Max(Math.Abs(X), Math.Abs(Y)); }
 		}
 
+		public IEnumerable<Point> NearestPoints
+		{
+			get
+			{
+				for (int i = -1; i <= 1; ++i)
+				{
+					for(int j=-1;j<=1;++j)
+					{
+						if(i==0 && j==0) continue;
+						yield return new Point(X+i,Y+j);
+					}
+				}
+			}
+		}
+
 		public double GetDistTill(Point _point)
 		{
 			return Math.Sqrt((X - _point.X) * (X - _point.X) + (Y - _point.Y)*(Y - _point.Y));

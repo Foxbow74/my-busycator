@@ -15,7 +15,7 @@ namespace RGL1.UIBlocks
 		private readonly LosManager m_losManager;
 		private long m_lastFogUpdateWorldTick;
 
-		public MapBlock(Rectangle _rectangle, World _world) : base(_rectangle, null, Color.Black)
+		public MapBlock(Rectangle _rectangle, World _world) : base(_rectangle, Frame.SimpleFrame, Color.Black)
 		{
 			m_world = _world;
 			m_mapCells = new MapCell[ContentRectangle.Width, ContentRectangle.Height];
@@ -32,6 +32,10 @@ namespace RGL1.UIBlocks
 					UpdateFog();
 					break;
 			}
+		}
+
+		public override void DrawFrame(SpriteBatch _spriteBatch)
+		{
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)

@@ -2,6 +2,7 @@
 using Common.Messages;
 using GameCore.Creatures;
 using GameCore.Objects;
+using Graphics;
 
 namespace GameCore.Acts
 {
@@ -55,6 +56,18 @@ namespace GameCore.Acts
 		public override void Do(Creature _creatures, World _world, bool _silence)
 		{
 			var mapCell = _world.Map.GetMapCell(_creatures.Coords);
+
+			var o = mapCell.Object;
+			if (o == null)
+			{
+				foreach (Point point in _creatures.Coords.NearestPoints)
+				{
+					
+				}
+				
+
+				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "взять что?"));
+			}
 		}
 	}
 }
