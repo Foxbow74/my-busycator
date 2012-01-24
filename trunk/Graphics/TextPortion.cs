@@ -15,7 +15,7 @@ namespace Graphics
 	{
 		private TextLine[] m_textLines;
 
-		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?'};
+		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?', '[', ']'};
 
 		public class TextLine
 		{

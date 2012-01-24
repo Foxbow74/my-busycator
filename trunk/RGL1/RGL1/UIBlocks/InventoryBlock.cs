@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Common.Messages;
 using GameCore;
 using Graphics;
@@ -27,12 +28,13 @@ namespace RGL1.UIBlocks
 			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, _spriteBatch, 2, 0, EAlignment.RIGHT);
 
 			var c = 'A';
-			for (int index = 0; index < inventory.Items.Count; index++)
+			for (var index = 0; index < inventory.Items.Count; index++)
 			{
 				var item = inventory.Items[index];
-				DrawLine(new string((char)(c + index), 1), Color.White, _spriteBatch, 4 + index, 10, EAlignment.LEFT);
-				DrawLine("-", Color, _spriteBatch, 4 + index, 30, EAlignment.LEFT);
-				DrawLine(item.Name, Color.SkyBlue, _spriteBatch, 4 + index, 50, EAlignment.LEFT);
+				var s = new string((char)(c + index), 1);
+				DrawLine(new TextPortion.TextLine("[" + s + "]", 0, new Dictionary<string, Color>(){{s,Color.White}}), Color, _spriteBatch, 4 + index, 10, EAlignment.LEFT);
+				DrawLine("-", Color, _spriteBatch, 4 + index, 40, EAlignment.LEFT);
+				DrawLine(item.Name, Color.SkyBlue, _spriteBatch, 4 + index, 70, EAlignment.LEFT);
 			}
 
 			_spriteBatch.End();

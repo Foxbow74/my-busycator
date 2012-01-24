@@ -31,7 +31,7 @@ namespace GameCore
 			}
 		}
 
-		private TerrainAttribute m_terrainAttribute = null;
+		private TerrainAttribute m_terrainAttribute;
 		public TerrainAttribute TerrainAttribute
 		{
 			get
@@ -51,18 +51,18 @@ namespace GameCore
 		/// </summary>
 		private readonly Point m_localPoint;
 
-		internal MapCell(MapBlock _block, int _x, int _y, Point _worldCoords)
+		internal MapCell(MapBlock _block, Point _inBlockCoords, Point _worldCoords)
 		{
-			m_localPoint = new Point(_x, _y);
+			m_localPoint = _inBlockCoords;
 
 			Block = _block;
 			WorldCoords = _worldCoords;
-			Terrain = _block.Map[_x, _y];
+			Terrain = _block.Map[_inBlockCoords.X, _inBlockCoords.Y];
 			Object = null;
 
 			if (_block.ObjectsExists)
 			{
-				var tuple = _block.Objects.FirstOrDefault(_tuple => _tuple.Item2.X == _x && _tuple.Item2.Y == _y);
+				var tuple = _block.Objects.FirstOrDefault(_tuple => _tuple.Item2==_inBlockCoords);
 				if (tuple != null)
 				{
 					Object = tuple.Item1;

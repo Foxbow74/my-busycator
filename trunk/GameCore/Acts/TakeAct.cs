@@ -15,7 +15,7 @@ namespace GameCore.Acts
 		{
 			var intelligent = (Intelligent)_creatures;
 
-			var mapCell = _world.Map.GetMapCell(intelligent.Coords.X, intelligent.Coords.Y);
+			var mapCell = _world.Map.GetMapCell(intelligent.Coords);
 			var o = mapCell.Object;
 			if(o==null)
 			{
@@ -43,6 +43,18 @@ namespace GameCore.Acts
 			{
 				throw new NotImplementedException();
 			}
+		}
+	}
+
+	public class OpenAct:Act
+	{
+		public OpenAct(int _takeTicks) : base(_takeTicks)
+		{
+		}
+
+		public override void Do(Creature _creatures, World _world, bool _silence)
+		{
+			var mapCell = _world.Map.GetMapCell(_creatures.Coords);
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace GameCore.Acts
 
 			var isAvatar = _creatures is Avatar;
 
-			var mapCell = _world.Map.GetMapCell(pnt.X, pnt.Y);
+			var mapCell = _world.Map.GetMapCell(pnt);
 
 			if (mapCell.IsPassable > 0)
 			{

@@ -82,19 +82,18 @@ namespace GameCore
 						{
 							continue;
 						}
-						_mapTiles[x, y] = new MapCell(block, i, j, new Point(worldX, worldY));
+						_mapTiles[x, y] = new MapCell(block, new Point(i, j), new Point(worldX, worldY));
 					}
 				}
 			}
 		}
 
-		public MapCell GetMapCell(int _worldX, int _worldY)
+		public MapCell GetMapCell(Point _worldCoords)
 		{
-			var point = new Point(_worldX, _worldY);
-			var blockCoords = MapBlock.GetBlockCoords(point);
+			var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
 			var block = this[blockCoords];
-			var coords = MapBlock.GetInBlockCoords(point);
-			return new MapCell(block, coords.X, coords.Y, new Point(_worldX, _worldY));
+			var coords = MapBlock.GetInBlockCoords(_worldCoords);
+			return new MapCell(block, coords, _worldCoords);
 		}
 
 		public void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
