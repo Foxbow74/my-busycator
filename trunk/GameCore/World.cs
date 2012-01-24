@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 using Common.Messages;
-using GameCore.Acts;
 using GameCore.Creatures;
-using Graphics;
 
 namespace GameCore
 {
@@ -24,34 +23,30 @@ namespace GameCore
 
 		public World()
 		{
-			MessageManager.NewMessage += MessageManagerOnNewMessage;
+			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
 			Map = new Map(this);
-
-			Map[Point.Zero].Creatures.Add(new Monster(this, new Point(2, 2)));
 
 			WorldTick = 0;
 
 			Avatar = new Avatar(this);
 			m_activeCreatures.Add(Avatar);
-			MessageManager.SendMessage(this, new AvatarMovedMessage());
+			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
 
-		private void MessageManagerOnNewMessage(object _sender, Message _message)
+		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
 		{
-			if(_message is TurnMessage)
+			switch (_message.Type)
 			{
-				Act();
-			}
-			else if(_message is AvatarMovedMessage)
-			{
-				UpdateActiveCreatures();
+				case WorldMessage.EType.AVATAR_MOVE:
+					UpdateActiveCreatures();
+					break;
 			}
 		}
 
 		private void UpdateActiveCreatures()
 		{
 			m_activeCreatures.Clear();
-			m_activeCreatures.AddRange(Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures));
+			m_activeCreatures.AddRange(Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).OrderBy(_creature => _creature.BusyTill));
 		}
 
 		public Map Map { get; private set; }
@@ -60,49 +55,51 @@ namespace GameCore
 
 		public static Random Rnd{ get; private set; }
 
-		/// <summary>
-		/// Запускает мир до следующего хода игрока
-		/// </summary>
-		public void Act()
+		public void GameUpdated()
 		{
-			var act = Avatar.GetNextAct();
-			ExecuteCreatureAct(Avatar, act);
-
+			var done = new List<Creature>();
 			while (true)
 			{
-				var creature = m_activeCreatures[0];
-				if (creature is Avatar)
+				var creature = m_activeCreatures.FirstOrDefault();
+				if (done.Contains(creature)) break;
+				done.Add(creature);
+
+				if (creature == null || creature.BusyTill > Avatar.BusyTill)
+				{
+					creature = Avatar;
+				}
+
+				var act = creature.GetNextAct();
+
+				if (act==null)
 				{
 					break;
 				}
-				act = creature.GetNextAct();
-				ExecuteCreatureAct(creature, act);
-			}
-		}
 
-		private void ExecuteCreatureAct(Creature _creature, Act _act)
-		{
-			if (_act==null) throw new ArgumentNullException("_act");
+				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
+				creature.DoAct(act);
 
-			WorldTick = _creature.BusyTill;
-			_creature.DoAct(_act);
-			m_activeCreatures.Remove(_creature);
-			var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > _creature.BusyTill);
-			if (nextCreatureIndex < 0) 
-			{
-				if (m_activeCreatures.Count > 0)
+				if(creature==Avatar) continue;
+
+				m_activeCreatures.Remove(creature);
+				var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > creature.BusyTill);
+				if (nextCreatureIndex < 0)
 				{
-					m_activeCreatures.Add(_creature);
+					if (m_activeCreatures.Count > 0)
+					{
+						m_activeCreatures.Add(creature);
+					}
+					else
+					{
+						m_activeCreatures.Insert(nextCreatureIndex + 1, creature);
+					}
 				}
 				else
 				{
-					m_activeCreatures.Insert(nextCreatureIndex + 1, _creature);
+					m_activeCreatures.Insert(nextCreatureIndex, creature);
 				}
 			}
-			else
-			{
-				m_activeCreatures.Insert(nextCreatureIndex, _creature);
-			}
+			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 	}
 }

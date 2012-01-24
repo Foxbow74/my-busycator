@@ -23,6 +23,7 @@ namespace Graphics
 
 		private readonly TextureSet m_set;
 		public static SpriteFont Font { get; private set; }
+		public static SpriteFont SmallFont { get; private set; }
 	
 		public static int Size = 16;
 
@@ -63,6 +64,7 @@ namespace Graphics
 			}
 			
 			Font = _content.Load<SpriteFont>("micross");
+			SmallFont = _content.Load<SpriteFont>("consolas");
 		}
 
 

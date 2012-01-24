@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Messages;
 using GameCore.Acts;
 using Graphics;
 
@@ -35,6 +36,7 @@ namespace GameCore.Creatures
 		protected override void ActDone()
 		{
 			m_nextAct = null;
+			MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
 		}
 
 		public override Act GetNextAct()

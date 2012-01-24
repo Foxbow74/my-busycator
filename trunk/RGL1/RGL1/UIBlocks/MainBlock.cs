@@ -34,13 +34,6 @@ namespace RGL1.UIBlocks
 
 		}
 
-		public void Draw(GameTime _gameTime, SpriteBatch _spriteBatch)
-		{
-			DrawBackground(_gameTime, _spriteBatch);
-			DrawContent(_spriteBatch);
-			DrawFrames(_spriteBatch);
-		}
-
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
 			if (_key == ConsoleKey.Q && _modifiers == EKeyModifiers.CTRL)
@@ -71,14 +64,14 @@ namespace RGL1.UIBlocks
 			if (dx != 0 || dy != 0)
 			{
 				World.Avatar.MoveCommandReceived(dx, dy);
-				MessageManager.SendMessage(this, new TurnMessage());
+				//MessageManager.SendMessage(this, new TurnMessage());
 				return;
 			}
 			var command = KeyTranslator.TranslateKey(_key, _modifiers);
 			if (command != ECommands.NONE)
 			{
 				World.Avatar.CommandReceived(command);
-				MessageManager.SendMessage(this, new TurnMessage());
+				//MessageManager.SendMessage(this, new TurnMessage());
 				return;
 			}
 		}
@@ -89,15 +82,16 @@ namespace RGL1.UIBlocks
 			m_messages.DrawContent(_spriteBatch);
 		}
 
-		private void DrawBackground(GameTime _gameTime, SpriteBatch _spriteBatch)
+		public override void DrawBackground(SpriteBatch _spriteBatch)
 		{
-			Frame.SimpleFrame.Draw(_spriteBatch, 0,0,Rectangle.Width, Rectangle.Height);
+			Frame.SimpleFrame.Draw(_spriteBatch, 0, 0, Rectangle.Width, Rectangle.Height);
 			m_map.Clear(_spriteBatch, new Color(10, 5, 0));
 			m_messages.Clear(_spriteBatch, new Color(30, 30, 30));
 			m_stats.Clear(_spriteBatch, new Color(0, 30, 30));
+			base.DrawBackground(_spriteBatch);
 		}
 
-		private void DrawFrames(SpriteBatch _spriteBatch)
+		public override void DrawFrame(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
@@ -105,6 +99,7 @@ namespace RGL1.UIBlocks
 			m_messages.DrawFrame(_spriteBatch);
 
 			_spriteBatch.End();
+			base.DrawFrame(_spriteBatch);
 		}
 	}
 }

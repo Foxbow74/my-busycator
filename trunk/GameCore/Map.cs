@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using Common.Messages;
 using GameCore.Creatures;
 using Graphics;
 
@@ -103,7 +101,6 @@ namespace GameCore
 		{
 			this[_fromBlock].Creatures.Remove(_creature);
 			this[_toBlock].Creatures.Add(_creature);
-			MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, _creature + " ушел в блок " + _toBlock));
 		}
 	}
 }

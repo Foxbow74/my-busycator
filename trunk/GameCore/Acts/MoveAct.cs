@@ -22,16 +22,14 @@ namespace GameCore.Acts
 
 			var mapCell = _world.Map.GetMapCell(pnt.X, pnt.Y);
 
-			var attr = TerrainAttribute.GetAttribute(mapCell.Terrain);
-
-			if (attr.IsPassable > 0)
+			if (mapCell.IsPassable > 0)
 			{
 				_creatures.Coords = pnt;
 
 				var o = mapCell.Object;
 				if (o == null)
 				{
-					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, attr.DisplayName));
+					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
 				}
 				else
 				{
@@ -44,12 +42,12 @@ namespace GameCore.Acts
 
 				if (isAvatar)
 				{
-					MessageManager.SendMessage(this, new AvatarMovedMessage());
+					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 				}
 			}
 			else
 			{
-				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "неа, " + attr.DisplayName));
+				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
 			}
 		}
 	}

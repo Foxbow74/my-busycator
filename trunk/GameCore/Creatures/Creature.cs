@@ -1,4 +1,5 @@
-﻿using GameCore.Acts;
+﻿using System.Diagnostics;
+using GameCore.Acts;
 using Graphics;
 using Object = GameCore.Objects.Object;
 
@@ -43,14 +44,14 @@ namespace GameCore.Creatures
 			get { return m_coords; }
 			set
 			{
-				m_coords = value;
 				var newCoords = MapBlock.GetBlockCoords(value);
+				if (!(this is Avatar) && newCoords != m_inBlock)
+				{
+					if (m_inBlock != null) m_world.Map.MoveCreature(this, m_inBlock, newCoords);
+					m_inBlock = newCoords;
+				}
 
-				if (this is Avatar || newCoords == m_inBlock) return;
-
-				if (m_inBlock != null)m_world.Map.MoveCreature(this, m_inBlock, newCoords);
-
-				m_inBlock = newCoords;
+				m_coords = value;
 			}
 		}
 

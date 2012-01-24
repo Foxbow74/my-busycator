@@ -20,16 +20,16 @@ namespace GameCore
 				}
 			}
 
-			for (var i = 10; i <= 15; i++)
+			for (var i = 3; i <= 8; i++)
 			{
-				_block.Map[i, 10] = ETerrains.BRICK_WALL;
-				_block.Map[10, i] = ETerrains.BRICK_WALL;
-				_block.Map[i, 15] = ETerrains.BRICK_WALL;
-				_block.Map[15, i] = ETerrains.BRICK_WALL;
+				_block.Map[i, 3] = ETerrains.BRICK_WALL;
+				_block.Map[3, i] = ETerrains.BRICK_WALL;
+				_block.Map[i, 8] = ETerrains.BRICK_WALL;
+				_block.Map[8, i] = ETerrains.BRICK_WALL;
 			}
 
-			_block.Map[13, 10] = ETerrains.WINDOW;
-			_block.Map[10, 13] = ETerrains.WINDOW;
+			_block.Map[6, 3] = ETerrains.WINDOW;
+			_block.Map[3, 6] = ETerrains.WINDOW;
 
 			{
 				var cnt = rnd.Next(rnd.Next(40));
@@ -56,11 +56,12 @@ namespace GameCore
 				}
 			}
 
-			//{
-			//    var x = rnd.Next(MapBlock.SIZE);
-			//    var y = rnd.Next(MapBlock.SIZE);
-			//    _block.Creatures.Add(new Monster(_world, new Point(x,y)));
-			//}
+			//if(rnd.NextDouble()<)
+			{
+				var x = rnd.Next(MapBlock.SIZE);
+				var y = rnd.Next(MapBlock.SIZE);
+				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X + x, _blockId.Y + y)));
+			}
 		}
 
 		public static FakeItem GenerateFakeItem(Random _random)

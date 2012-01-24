@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Common.Messages;
 using GameCore;
@@ -31,6 +32,8 @@ namespace RGL1
 
 		private DateTime m_moveKeyHoldedSince;
 
+		private DateTime m_lastUpdate;
+
 		private readonly GraphicsDeviceManager m_graphics;
 		private SpriteBatch m_spriteBatch;
 
@@ -54,18 +57,19 @@ namespace RGL1
 			m_frames = 0;
 			IsMouseVisible = true;
 			MessageManager.NewMessage += MessageManagerNewMessage;
+			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 			
 			m_graphics = new GraphicsDeviceManager(this);
 			if(!InitGraphicsMode(1024, 768, false)) Exit();
 			Content.RootDirectory = "Content";
 		}
 
+		static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
+		{
+		}
+
 		void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if(_message.Type!=EMessageType.SYSTEM)
-			{
-				return;
-			}
 			if (_message is OpenUIBlockMessage)
 			{
 				m_uiBlocks.Push(((OpenUIBlockMessage)_message).UIBlock);	
@@ -86,10 +90,6 @@ namespace RGL1
 						throw new ArgumentOutOfRangeException();
 				}
 			}
-			else
-			{
-				throw new NotImplementedException("Can't process " + _message.GetType() + " message.");
-			}
 		}
 
 		private bool InitGraphicsMode(int _width, int _height, bool _fullScreen)
@@ -97,8 +97,6 @@ namespace RGL1
 			_width = (int)Math.Round((decimal)_width / Tile.Size) * Tile.Size;
 			_height = (int)Math.Round((decimal)_height / Tile.Size) * Tile.Size;
 
-			// If we aren't using a full screen mode, the height and width of the window can
-			// be set to anything equal to or smaller than the actual screen size.)
 			if (_fullScreen == false)
 			{
 				if ((_width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
@@ -119,7 +117,6 @@ namespace RGL1
 
 				if (dm != default(DisplayMode))
 				{
-					// The mode is supported, so set the buffer formats, apply changes and return
 					m_graphics.PreferredBackBufferWidth = _width;
 					m_graphics.PreferredBackBufferHeight = _height;
 					m_graphics.PreferredBackBufferFormat = dm.Format;
@@ -239,10 +236,17 @@ namespace RGL1
 				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey)pressedKey, m_keyModifiers));
 			}
 
-			if (m_pressed.Count>0)
+			if (m_pressed.Count>0 && m_world.Avatar.GetNextAct()==null)
 			{
 				var tuple = m_pressed.Dequeue();
 				m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
+			}
+
+			//if ((DateTime.Now - m_lastUpdate).TotalMilliseconds>10)
+			{
+				//Debug.WriteLine((DateTime.Now - m_lastUpdate).TotalMilliseconds);
+				m_lastUpdate = DateTime.Now;
+				m_world.GameUpdated();
 			}
 
 			base.Update(_gameTime);

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Common.Messages;
 using GameCore;
+using GameCore.Creatures;
 using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -20,14 +21,16 @@ namespace RGL1.UIBlocks
 			m_mapCells = new MapCell[ContentRectangle.Width, ContentRectangle.Height];
 			m_losManager = new LosManager(m_mapCells);
 
-			MessageManager.NewMessage += MessageManagerNewMessage;
+			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
-		void MessageManagerNewMessage(object _sender, Message _message)
+		void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
-			if(_message is TurnMessage)
+			switch (_message.Type)
 			{
-				UpdateFog();
+				case WorldMessage.EType.AVATAR_TURN:
+					UpdateFog();
+					break;
 			}
 		}
 
@@ -73,6 +76,10 @@ namespace RGL1.UIBlocks
 					tile = mapCell.Creature.Tile;
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+					if (mapCell.Creature is Monster)
+					{
+						_spriteBatch.DrawString(Tile.SmallFont, ((Monster)mapCell.Creature).NN, new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*Tile.Size, Microsoft.Xna.Framework.Color.White);
+					}
 				}
 
 				UpdateFogCell(mapCell, tile, color);

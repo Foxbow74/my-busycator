@@ -34,7 +34,7 @@ namespace RGL1.UIBlocks
 			this.Clear(_spriteBatch, Color.Black);
 		}
 
-		public void DrawFrame(SpriteBatch _spriteBatch)
+		public virtual void DrawFrame(SpriteBatch _spriteBatch)
 		{
 			if (BlockFrame != null) BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
 		}
@@ -101,13 +101,11 @@ namespace RGL1.UIBlocks
 		public abstract void DrawContent(SpriteBatch _spriteBatch);
 	}
 
-
 	class OpenUIBlockMessage : Message
 	{
 		public UIBlock UIBlock { get; private set; }
 
 		public OpenUIBlockMessage(UIBlock _block)
-			: base(EMessageType.SYSTEM, null, null)
 		{
 			UIBlock = _block;
 		}
@@ -124,7 +122,6 @@ namespace RGL1.UIBlocks
 		}
 
 		public SystemMessage(ESystemMessage _message)
-			: base(EMessageType.SYSTEM, null, null)
 		{
 			Message = _message;
 		}

@@ -9,11 +9,16 @@ namespace GameCore.Creatures
 	/// </summary>
 	public class Monster:Creature
 	{
+		private static int n = 0;
+
 		protected static Random m_rnd = new Random(1);
 
-		internal Monster(World _world, Point _coords): base(_world, _coords, 80)
+		internal Monster(World _world, Point _coords): base(_world, _coords, 50)
 		{
+			NN = (n++).ToString();
 		}
+
+		public string NN { get; private set; }
 
 		public override Act GetNextAct()
 		{
@@ -27,7 +32,7 @@ namespace GameCore.Creatures
 
 		public override string Name
 		{
-			get { return "существо"; }
+			get { return "существо" + NN; }
 		}
 	}
 }

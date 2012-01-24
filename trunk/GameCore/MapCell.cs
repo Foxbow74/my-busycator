@@ -21,6 +21,29 @@ namespace GameCore
 
 		public int BlockRandomSeed { get { return Block.RandomSeed; } }
 
+		public float IsPassable
+		{
+			get
+			{
+				if (Creature != null) return 0f;
+				if (Object != null) return 0f;
+				return TerrainAttribute.IsPassable;
+			}
+		}
+
+		private TerrainAttribute m_terrainAttribute = null;
+		public TerrainAttribute TerrainAttribute
+		{
+			get
+			{
+				if(m_terrainAttribute==null)
+				{
+					m_terrainAttribute = TerrainAttribute.GetAttribute(Terrain);
+				}
+				return m_terrainAttribute;
+			}
+		}
+
 		private MapBlock Block { get; set; }
 
 		/// <summary>
@@ -48,7 +71,7 @@ namespace GameCore
 
 			if (_block.CreaturesExists)
 			{
-				var creature = _block.Creatures.FirstOrDefault(_creature => MapBlock.GetInBlockCoords(_creature.Coords)==m_localPoint);
+				var creature = _block.Creatures.FirstOrDefault(_creature => _creature.Coords == _worldCoords);
 				if (creature != null)
 				{
 					Creature = creature;

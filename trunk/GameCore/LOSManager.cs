@@ -99,7 +99,7 @@ namespace GameCore
 				if (pnt.X < 0 || pnt.X >= maxX) continue;
 				if (pnt.Y < 0 || pnt.Y >= maxY) continue;
 
-				var attr = TerrainAttribute.GetAttribute(_mapCells[pnt.X, pnt.Y].Terrain);
+				var attr = _mapCells[pnt.X, pnt.Y].TerrainAttribute;
 
 				var visible = (1.0 - attr.Opaque * pair.Key.Item2) * _visibilityCoeff;
 				var ccolor = pair.Value.Ccolor;
