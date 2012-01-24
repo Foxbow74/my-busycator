@@ -60,7 +60,7 @@ namespace GameCore
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X + x, _blockId.Y + y)));
+				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
 			}
 		}
 

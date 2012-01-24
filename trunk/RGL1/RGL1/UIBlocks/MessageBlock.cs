@@ -41,7 +41,7 @@ namespace RGL1.UIBlocks
 			{
 				if(y>0)
 				{
-					DrawLine(textLine, Tile.Font, Color.Gray, _spriteBatch, Tile.Size, ContentRectangle.Top * Tile.Size + y);
+					DrawLine(textLine, Color.Gray, _spriteBatch, Tile.Size, ContentRectangle.Top * Tile.Size + y);
 				}
 				y+=lineHeight;
 

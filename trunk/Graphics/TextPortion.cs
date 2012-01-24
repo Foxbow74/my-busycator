@@ -30,6 +30,13 @@ namespace Graphics
 				Left = _left;
 				Highlights = _highlights;
 			}
+
+			public TextLine(string _text, float _left, Dictionary<string, Color> _highlights)
+			{
+				Text = _text;
+				Left = _left;
+				Highlights = _highlights;
+			}
 		}
 
 		public string Text { get; private set; }

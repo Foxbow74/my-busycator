@@ -26,7 +26,7 @@ namespace GameCore
 			get
 			{
 				if (Creature != null) return 0f;
-				if (Object != null) return 0f;
+				//if (Object != null) return 0f;
 				return TerrainAttribute.IsPassable;
 			}
 		}

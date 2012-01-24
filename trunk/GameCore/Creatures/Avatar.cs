@@ -21,8 +21,6 @@ namespace GameCore.Creatures
 		{
 			switch (_command)
 			{
-				case ECommands.INVENTORY:
-					break;
 				case ECommands.TAKE:
 					m_nextAct = new TakeAct();
 					break;

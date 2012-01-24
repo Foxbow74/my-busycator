@@ -42,6 +42,12 @@ namespace RGL1.UIBlocks
 				return;
 			}
 
+			if(_key==ConsoleKey.I)
+			{
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new InventoryBlock(World, Rectangle)));
+				return;
+			}
+
 			var dx = (_key == ConsoleKey.LeftArrow ? -1 : 0) + (_key == ConsoleKey.RightArrow ? 1 : 0);
 			var dy = (_key == ConsoleKey.UpArrow ? -1 : 0) + (_key == ConsoleKey.DownArrow ? 1 : 0);
 

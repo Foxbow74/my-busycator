@@ -17,8 +17,6 @@ namespace GameCore
 		{
 			switch (_keys)
 			{
-				case ConsoleKey.I:	
-					return ECommands.INVENTORY;
 				case ConsoleKey.OemComma:
 					return ECommands.TAKE;
 

@@ -9,7 +9,7 @@ namespace RGL1.UIBlocks
 {
 	class ConfirmQuitBlock:UIBlock
 	{
-		public ConfirmQuitBlock() : base(new Rectangle(2,2,10,5), Frame.SimpleFrame, Color.Black)
+		public ConfirmQuitBlock() : base(new Rectangle(2,2,15,5), Frame.SimpleFrame, Color.Black)
 		{
 			ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top, ContentRectangle.Width - 1*2, ContentRectangle.Height);
 		}
@@ -17,8 +17,14 @@ namespace RGL1.UIBlocks
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
-			//base.Draw(_gameTime, _spriteBatch);
-			DrawText(new TextPortion("Уверен?"), _spriteBatch, Tile.Font, Color.White, Tile.Size * 2);
+			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0,null), Color.White, _spriteBatch, 1, 0, EAlignment.CENTER );
+			_spriteBatch.End();
+		}
+
+		public override void DrawFrame(SpriteBatch _spriteBatch)
+		{
+			_spriteBatch.Begin();
+			base.DrawFrame(_spriteBatch);
 			_spriteBatch.End();
 		}
 

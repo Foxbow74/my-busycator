@@ -10,15 +10,21 @@ namespace RGL1.UIBlocks
 {
 	abstract class UIBlock:IDisposable
 	{
+		protected readonly SpriteFont m_font;
+		protected readonly float m_lineHeight;
+
 		const float NEW_LINE = 20;
 
-		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color)
+		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color, SpriteFont _font = null)
 		{
+			m_font = _font ?? Tile.Font;
+
+			m_lineHeight = m_font.MeasureString("!g").Y;
 			BlockFrame = _frame;
 			Color = _color;
 			Rectangle = _rectangle;
 			ContentRectangle = _rectangle;
-			if(_frame!=null) ContentRectangle.Inflate(1,1);
+			if(_frame!=null) ContentRectangle = new Rectangle(_rectangle.Left + 1,_rectangle.Top + 1, _rectangle.Width - 2, _rectangle.Height - 2);
 		}
 
 		public Rectangle Rectangle { get; private set; }
@@ -39,33 +45,7 @@ namespace RGL1.UIBlocks
 			if (BlockFrame != null) BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
 		}
 
-		public void DrawText(TextPortion _textPortion, SpriteBatch _spriteBatch, SpriteFont _font, Color _color, float _y)
-		{
-			var lineHeight = _font.MeasureString("!g").Y;
-
-			float width = (ContentRectangle.Width - 1) * Tile.Size;
-			_textPortion.SplitByLines(width, _font, NEW_LINE);
-
-
-			float left = ContentRectangle.Left * Tile.Size;
-
-			var top = ContentRectangle.Top  * Tile.Size;
-			var height = (ContentRectangle.Height - 1) * Tile.Size - _y;
-
-			foreach (var textLine in _textPortion.TextLines)
-			{
-
-				DrawLine(textLine, _font, _color, _spriteBatch, left, top + _y);
-
-				_y += lineHeight + 2;
-				if (_y >= height)
-				{
-					return;
-				}
-			}
-		}
-
-		protected static void DrawLine(TextPortion.TextLine _textLine, SpriteFont _font, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
+		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
@@ -83,11 +63,69 @@ namespace RGL1.UIBlocks
 				processedChars += addStr.Length;
 				addStr += (processedChars == 0 || processedChars >= line.Length) ? "" : line[processedChars].ToString();
 				processedChars++;
-				var size = _font.MeasureString(addStr);
-				_spriteBatch.DrawString(_font, addStr, new Vector2(x, _y), color);
+				var size = m_font.MeasureString(addStr);
+				_spriteBatch.DrawString(m_font, addStr, new Vector2(x, _y), color);
 				x += size.X;
 			}
 		}
+
+
+		internal enum EAlignment
+		{
+			NORMAL,
+			LEFT,
+			RIGHT,
+			CENTER,
+			JUSTIFY
+		}
+
+		protected void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent, EAlignment _alignment)
+		{
+			DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
+		}
+
+		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent, EAlignment _alignment)
+		{
+			var line = _textLine.Text;
+			var part = line.Split(TextPortion.Punctuation).ToArray();
+			var processedChars = 0;
+			var x = (float)ContentRectangle.Left * Tile.Size;
+
+			var lineSize = m_font.MeasureString(line);
+			switch (_alignment)
+			{
+				case EAlignment.NORMAL:
+					x += _indent + _textLine.Left;
+					break;
+				case EAlignment.LEFT:
+					x += (float)_indent;
+					break;
+				case EAlignment.RIGHT:
+					x += ContentRectangle.Width * Tile.Size - lineSize.X - _indent;
+					break;
+				case EAlignment.CENTER:
+					x += ContentRectangle.Left*Tile.Size + ContentRectangle.Width*Tile.Size/2 - lineSize.X/2;
+					break;
+			}
+
+			for (var partIndex = 0; partIndex < part.Length; partIndex++)
+			{
+				var color = _color;
+				var addStr = part[partIndex];
+				Color highlight;
+				if (_textLine.Highlights != null && _textLine.Highlights.TryGetValue(addStr, out highlight))
+				{
+					color = highlight;
+				}
+				processedChars += addStr.Length;
+				addStr += (processedChars == 0 || processedChars >= line.Length) ? "" : line[processedChars].ToString();
+				processedChars++;
+				var size = m_font.MeasureString(addStr);
+				_spriteBatch.DrawString(m_font, addStr, new Vector2(x, ContentRectangle.Top * Tile.Size + _lineNumber*m_lineHeight), color);
+				x += size.X;
+			}
+		}
+
 
 		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{

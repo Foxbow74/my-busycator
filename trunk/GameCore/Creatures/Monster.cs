@@ -13,7 +13,7 @@ namespace GameCore.Creatures
 
 		protected static Random m_rnd = new Random(1);
 
-		internal Monster(World _world, Point _coords): base(_world, _coords, 50)
+		internal Monster(World _world, Point _coords): base(_world, _coords, 100)
 		{
 			NN = (n++).ToString();
 		}
