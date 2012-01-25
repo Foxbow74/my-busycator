@@ -12,6 +12,8 @@ namespace GameCore
 {
 	public class World
 	{
+		public static World TheWorld { get; private set; }
+
 		/// <summary>
 		/// 	содержит список активных в данный момент существ
 		/// </summary>
@@ -25,18 +27,18 @@ namespace GameCore
 		public World()
 		{
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
-			Map = new Map.Map(this);
+			Map = new Mapping.Map();
 
 			WorldTick = 0;
 
-			Avatar = new Avatar(this);
+			Avatar = new Avatar();
 			m_activeCreatures.Add(Avatar);
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
 
 		public long WorldTick { get; private set; }
 
-		public Map.Map Map { get; private set; }
+		public Mapping.Map Map { get; private set; }
 
 		public Avatar Avatar { get; private set; }
 
@@ -74,7 +76,17 @@ namespace GameCore
 					creature = Avatar;
 				}
 
-				var act = creature.GetNextAct();
+				if (creature==null)
+				{
+					throw new ApplicationException();
+				}
+
+				if(creature!=Avatar)
+				{
+					creature.Thinking();
+				}
+
+				var act = creature.NextAct;
 
 				if (act == null)
 				{
@@ -105,6 +117,11 @@ namespace GameCore
 				}
 			}
 			MessageManager.SendMessage(this, WorldMessage.Turn);
+		}
+
+		public static void LetItBeeee()
+		{
+			TheWorld = new World();
 		}
 	}
 }

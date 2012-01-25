@@ -1,11 +1,13 @@
 ﻿using System;
 using GameCore.Creatures;
-using GameCore.Map;
+using GameCore.Mapping;
+using GameCore.Messages;
 
 namespace GameCore.Objects
 {
 	public class Chest : Container, ICanbeOpened
 	{
+
 		public Chest()
 		{
 			LockType = LockType.SIMPLE;
@@ -33,10 +35,8 @@ namespace GameCore.Objects
 				{
 					case LockType.OPEN:
 						return false;
-						break;
 					case LockType.SIMPLE:
 						return true;
-						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -45,7 +45,13 @@ namespace GameCore.Objects
 
 		public void Open(Creature _creature, MapCell _mapCell)
 		{
-			throw new NotImplementedException();
+			LockType = LockType.OPEN;
+			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
+			for (var i = 0; i < cnt; i++)
+			{
+				Items.Add((Item)MapBlockGenerator.GenerateFakeItem(_creature.MapBlock).Resolve(_creature));
+			}
+			MessageManager.SendMessage(this, new SelectItemsMessage(Items));
 		}
 
 		#endregion

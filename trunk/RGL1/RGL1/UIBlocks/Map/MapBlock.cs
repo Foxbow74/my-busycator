@@ -3,7 +3,7 @@
 using System.Linq;
 using GameCore;
 using GameCore.Creatures;
-using GameCore.Map;
+using GameCore.Mapping;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,12 +16,10 @@ namespace RGL1.UIBlocks.Map
 	{
 		private readonly LosManager m_losManager;
 		private readonly MapCell[,] m_mapCells;
-		private readonly World m_world;
 		private long m_lastFogUpdateWorldTick;
 
-		public MapBlock(Rectangle _rectangle, World _world) : base(_rectangle, Frame.SimpleFrame, Color.Black)
+		public MapBlock(Rectangle _rectangle) : base(_rectangle, Frame.SimpleFrame, Color.Black)
 		{
-			m_world = _world;
 			m_mapCells = new MapCell[ContentRectangle.Width,ContentRectangle.Height];
 			m_losManager = new LosManager(m_mapCells);
 
@@ -44,7 +42,7 @@ namespace RGL1.UIBlocks.Map
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
-			m_world.Map.SetData(m_mapCells, m_world.Avatar.Coords);
+			World.TheWorld.Map.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
 
 			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
 
@@ -55,7 +53,7 @@ namespace RGL1.UIBlocks.Map
 
 			DrawFoggedCells(_spriteBatch);
 
-			m_world.Avatar.Tile.DrawAtCell(_spriteBatch, centerX + ContentRectangle.Left, centerY + ContentRectangle.Top);
+			World.TheWorld.Avatar.Tile.DrawAtCell(_spriteBatch, centerX + ContentRectangle.Left, centerY + ContentRectangle.Top);
 			_spriteBatch.End();
 		}
 

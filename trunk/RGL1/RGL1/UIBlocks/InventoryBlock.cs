@@ -13,18 +13,15 @@ namespace RGL1.UIBlocks
 {
 	internal class InventoryBlock : UIBlock
 	{
-		private readonly World m_world;
-
-		public InventoryBlock(World _world, Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.Green)
+		public InventoryBlock(Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.Green)
 		{
-			m_world = _world;
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
 
-			var inventory = m_world.Avatar.Inventory;
+			var inventory = World.TheWorld.Avatar.Inventory;
 
 			DrawLine("СНАРЯЖЕНИЕ", Color, _spriteBatch, 0, 0, EAlignment.CENTER);
 			DrawLine("ВЕС:", Color, _spriteBatch, 2, 0, EAlignment.LEFT);

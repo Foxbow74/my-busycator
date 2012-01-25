@@ -8,7 +8,7 @@ using GameCore.Objects;
 
 #endregion
 
-namespace GameCore.Map
+namespace GameCore.Mapping
 {
 	public class MapCell
 	{
@@ -89,9 +89,9 @@ namespace GameCore.Map
 
 		private MapBlock Block { get; set; }
 
-		public Thing ResolveFakeItem()
+		public Thing ResolveFakeItem(Creature _creature)
 		{
-			var o = ((FakeItem) Thing).Resolve();
+			var o = ((FakeThing)Thing).Resolve(_creature);
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
 			Block.Objects.Add(new Tuple<Thing, Point>(o, m_localPoint));
 			Thing = o;

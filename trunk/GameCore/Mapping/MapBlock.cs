@@ -8,7 +8,7 @@ using GameCore.Objects;
 
 #endregion
 
-namespace GameCore.Map
+namespace GameCore.Mapping
 {
 	public class MapBlock
 	{

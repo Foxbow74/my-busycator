@@ -7,16 +7,13 @@ using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
-	/// <summary>
-	/// 	В отличие от аватара, остальные существа живут в блоках?
-	/// </summary>
 	public class Monster : Creature
 	{
-		private static int n;
+		private static int m_n;
 
-		internal Monster(World _world, Point _coords) : base(_world, _coords, 100)
+		internal Monster(Point _coords) : base(_coords, 100)
 		{
-			NN = (n++).ToString();
+			NN = (m_n++).ToString();
 		}
 
 		public string NN { get; private set; }
@@ -31,9 +28,9 @@ namespace GameCore.Creatures
 			get { return "существо" + NN; }
 		}
 
-		public override Act GetNextAct()
+		public override void Thinking()
 		{
-			return new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1));
+			NextAct = new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1));
 		}
 	}
 }

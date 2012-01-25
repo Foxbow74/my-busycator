@@ -19,10 +19,9 @@ namespace RGL1.UIBlocks
 		private readonly UIBlock m_messages;
 		private readonly UIBlock m_stats;
 
-		public MainBlock(GraphicsDevice _device, World _world)
+		public MainBlock(GraphicsDevice _device)
 			: base(new Rectangle(0, 0, _device.Viewport.Width/Tile.Size, _device.Viewport.Height/Tile.Size), null, Color.White)
 		{
-			World = _world;
 			m_device = _device;
 			var width = ContentRectangle.Width;
 			var height = ContentRectangle.Height;
@@ -34,13 +33,8 @@ namespace RGL1.UIBlocks
 				new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
 			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
 
-			m_map =
-				new MapBlock(
-					new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1),
-					_world);
+			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1));
 		}
-
-		public World World { get; private set; }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -52,7 +46,7 @@ namespace RGL1.UIBlocks
 
 			if (_key == ConsoleKey.I)
 			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new InventoryBlock(World, Rectangle)));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new InventoryBlock(Rectangle)));
 				return;
 			}
 
@@ -77,15 +71,13 @@ namespace RGL1.UIBlocks
 
 			if (dx != 0 || dy != 0)
 			{
-				World.Avatar.MoveCommandReceived(dx, dy);
-				//MessageManager.SendMessage(this, new TurnMessage());
+				World.TheWorld.Avatar.MoveCommandReceived(dx, dy);
 				return;
 			}
 			var command = KeyTranslator.TranslateKey(_key, _modifiers);
 			if (command != ECommands.NONE)
 			{
-				World.Avatar.CommandReceived(command);
-				//MessageManager.SendMessage(this, new TurnMessage());
+				World.TheWorld.Avatar.CommandReceived(command);
 				return;
 			}
 		}

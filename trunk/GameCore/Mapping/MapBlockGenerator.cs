@@ -7,7 +7,7 @@ using GameCore.Objects;
 
 #endregion
 
-namespace GameCore.Map
+namespace GameCore.Mapping
 {
 	internal static class MapBlockGenerator
 	{
@@ -54,7 +54,7 @@ namespace GameCore.Map
 					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 					if (attr.IsPassable > 0)
 					{
-						_block.Objects.Add(new Tuple<Thing, Point>(GenerateFakeItem(rnd), new Point(x, y)));
+						_block.Objects.Add(new Tuple<Thing, Point>(GenerateFakeThing(_block, rnd), new Point(x, y)));
 					}
 				}
 			}
@@ -63,22 +63,44 @@ namespace GameCore.Map
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X*MapBlock.SIZE + x, _blockId.Y*MapBlock.SIZE + y)));
+				_block.Creatures.Add(new Monster(new Point(_blockId.X*MapBlock.SIZE + x, _blockId.Y*MapBlock.SIZE + y)));
 			}
 		}
 
-		public static FakeItem GenerateFakeItem(Random _random)
+		public static FakeThing GenerateFakeItem(MapBlock _block,  Random _random=null)
 		{
+			if(_random==null)
+			{
+				_random = World.Rnd;
+			}
+			switch (_random.Next(2))
+			{
+				case 0:
+					return FakeThing.Sword;
+				case 1:
+					return FakeThing.Axe;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+
+		public static FakeThing GenerateFakeThing(MapBlock _block, Random _random = null)
+		{
+			if (_random == null)
+			{
+				_random = World.Rnd;
+			}
 			switch (_random.Next(3))
 			{
 				case 0:
-					return FakeItem.Sword;
+					return FakeThing.Sword;
 				case 1:
-					return FakeItem.Axe;
+					return FakeThing.Axe;
 				case 2:
-					return FakeItem.Chest;
+					return FakeThing.Chest;
 				case 3:
-					return FakeItem.Door;
+					return FakeThing.Door;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

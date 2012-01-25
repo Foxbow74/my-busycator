@@ -8,19 +8,13 @@ using GameCore.Misc;
 
 #endregion
 
-namespace GameCore.Map
+namespace GameCore.Mapping
 {
 	public class Map
 	{
 		private const int ACTIVE_SIZE_HALF = 2;
 
 		private readonly Dictionary<Point, MapBlock> m_blocks = new Dictionary<Point, MapBlock>();
-		private readonly World m_world;
-
-		public Map(World _world)
-		{
-			m_world = _world;
-		}
 
 		public MapBlock this[Point _blockId]
 		{
@@ -29,7 +23,7 @@ namespace GameCore.Map
 				MapBlock block;
 				if (!m_blocks.TryGetValue(_blockId, out block))
 				{
-					block = GenerateBlock(_blockId, m_world);
+					block = GenerateBlock(_blockId);
 					m_blocks.Add(_blockId, block);
 					Debug.WriteLine("Generated new in " + _blockId);
 				}
@@ -50,10 +44,10 @@ namespace GameCore.Map
 			}
 		}
 
-		private static MapBlock GenerateBlock(Point _blockId, World _world)
+		private static MapBlock GenerateBlock(Point _blockId)
 		{
 			var block = new MapBlock(_blockId);
-			MapBlockGenerator.Generate(block, _blockId, _world);
+			MapBlockGenerator.Generate(block, _blockId, World.TheWorld);
 			return block;
 		}
 
@@ -92,18 +86,25 @@ namespace GameCore.Map
 			}
 		}
 
-		public MapCell GetMapCell(Point _worldCoords)
+		public static MapBlock GetMapBlock(Point _worldCoords)
 		{
 			var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
-			var block = this[blockCoords];
+			var block = World.TheWorld.Map[blockCoords];
+			return block;
+		}
+
+		public static MapCell GetMapCell(Point _worldCoords)
+		{
+			var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
+			var block = World.TheWorld.Map[blockCoords];
 			var coords = MapBlock.GetInBlockCoords(_worldCoords);
 			return new MapCell(block, coords, _worldCoords);
 		}
 
-		public void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
+		public static void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
 		{
-			this[_fromBlock].Creatures.Remove(_creature);
-			this[_toBlock].Creatures.Add(_creature);
+			World.TheWorld.Map[_fromBlock].Creatures.Remove(_creature);
+			World.TheWorld.Map[_toBlock].Creatures.Add(_creature);
 		}
 	}
 }

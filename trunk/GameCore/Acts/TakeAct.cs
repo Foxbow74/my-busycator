@@ -2,6 +2,7 @@
 
 using System;
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Objects;
 
@@ -15,37 +16,31 @@ namespace GameCore.Acts
 		{
 		}
 
-		public override void Do(Creature _creature, World _world, bool _silence)
+		public override void Do(Creature _creature, bool _silence)
 		{
 			var intelligent = (Intelligent) _creature;
 
-			var mapCell = _world.Map.GetMapCell(intelligent.Coords);
-			var o = mapCell.Thing;
-			if (o == null)
-			{
-				if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "взять что?"));
-			}
-			else if (o is Container)
-			{
-				throw new NotImplementedException();
-			}
-			else if (o is Item)
-			{
-				mapCell.RemoveObjectFromBlock();
-				intelligent.ObjectTaken((Item) o);
+			var mapCell = Map.GetMapCell(intelligent.Coords);
+			var thing = mapCell.Thing;
 
-				if (intelligent is Avatar)
+			if (thing == null || !(thing is Item))
+			{
+				if (!_silence)
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, o + " взят."));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "взять что?"));
 				}
-				else
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + o));
-				}
+				return;
+			}
+			mapCell.RemoveObjectFromBlock();
+			intelligent.ObjectTaken((Item) thing);
+
+			if (intelligent is Avatar)
+			{
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thing + " взят."));
 			}
 			else
 			{
-				throw new NotImplementedException();
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thing));
 			}
 		}
 	}

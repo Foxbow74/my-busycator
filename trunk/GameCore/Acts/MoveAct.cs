@@ -1,6 +1,7 @@
 ﻿#region
 
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -18,13 +19,13 @@ namespace GameCore.Acts
 
 		public Point Delta { get; set; }
 
-		public override void Do(Creature _creature, World _world, bool _silence)
+		public override void Do(Creature _creature, bool _silence)
 		{
 			var pnt = _creature.Coords + Delta;
 
-			var isAvatar = _creature is Avatar;
+			var isAvatar = _creature==World.TheWorld.Avatar;
 
-			var mapCell = _world.Map.GetMapCell(pnt);
+			var mapCell = Map.GetMapCell(pnt);
 
 			if (mapCell.IsPassable > 0)
 			{
@@ -33,16 +34,15 @@ namespace GameCore.Acts
 				var o = mapCell.Thing;
 				if (o == null)
 				{
-					if (!_silence)
-						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
+					if (!_silence)MessageManager.SendMessage(this, mapCell.TerrainAttribute.DisplayName);
 				}
 				else
 				{
-					if (o is FakeItem)
+					if (o is FakeThing)
 					{
-						o = mapCell.ResolveFakeItem();
+						o = mapCell.ResolveFakeItem(World.TheWorld.Avatar);
 					}
-					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, o.Name));
+					if (!_silence) MessageManager.SendMessage(this, o.Name);
 				}
 
 				if (isAvatar)
@@ -52,9 +52,7 @@ namespace GameCore.Acts
 			}
 			else
 			{
-				if (!_silence)
-					MessageManager.SendMessage(this,
-					                           new SimpleTextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
+				if (!_silence)MessageManager.SendMessage(this, "неа, " + mapCell.TerrainAttribute.DisplayName);
 			}
 		}
 	}

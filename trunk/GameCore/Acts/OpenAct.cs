@@ -1,10 +1,9 @@
 ﻿#region
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Map;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Objects;
 
@@ -18,20 +17,20 @@ namespace GameCore.Acts
 		{
 		}
 
-		public override void Do(Creature _creature, World _world, bool _silence)
+		public override void Do(Creature _creature, bool _silence)
 		{
-			var mapCell = _world.Map.GetMapCell(_creature.Coords);
+			var mapCell = Map.GetMapCell(_creature.Coords);
 
 			var list = new List<MapCell>();
 			var o = mapCell.Thing;
 			if (o == null)
 			{
-				foreach (var cell in _creature.Coords.NearestPoints.Select(_point => _world.Map.GetMapCell(_point)))
+				foreach (var cell in _creature.Coords.NearestPoints.Select(Map.GetMapCell))
 				{
 					if (cell.Thing == null) continue;
-					if (cell.Thing is FakeItem)
+					if (cell.Thing is FakeThing)
 					{
-						cell.ResolveFakeItem();
+						cell.ResolveFakeItem(World.TheWorld.Avatar);
 					}
 					if (cell.Thing is ICanbeOpened)
 					{
@@ -61,11 +60,6 @@ namespace GameCore.Acts
 			else
 			{
 			}
-		}
-
-		private void Open(MapCell _mapCell)
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

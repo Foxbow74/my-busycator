@@ -150,6 +150,7 @@
     <Compile Include="VectorHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentations\Ideas.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
     <Content Include="Documentations\Plan.txt" />

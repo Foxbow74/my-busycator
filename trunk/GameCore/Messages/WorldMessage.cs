@@ -1,4 +1,6 @@
-﻿namespace GameCore.Messages
+﻿using GameCore.Objects;
+
+namespace GameCore.Messages
 {
 	public class WorldMessage
 	{
@@ -23,5 +25,23 @@
 		}
 
 		public EType Type { get; private set; }
+	}
+
+	public abstract class AskMessage : Message
+	{
+	}
+
+	public class AskDirectionMessage : AskMessage
+	{
+	}
+
+	public class SelectItemsMessage : AskMessage
+	{
+		public SelectItemsMessage(ItemsCollection _itemsCollection)
+		{
+			ItemsCollection = _itemsCollection;
+		}
+
+		public ItemsCollection ItemsCollection { get; private set; }
 	}
 }

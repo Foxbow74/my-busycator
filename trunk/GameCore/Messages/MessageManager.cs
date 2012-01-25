@@ -21,6 +21,12 @@
 		}
 
 
+		public static void SendMessage(object _sender, string _message)
+		{
+			var mess = NewMessage;
+			if (mess != null) mess(_sender, new SimpleTextMessage(EMessageType.INFO, _message));
+		}
+
 		public static void SendMessage(object _sender, WorldMessage _message)
 		{
 			var mess = NewWorldMessage;

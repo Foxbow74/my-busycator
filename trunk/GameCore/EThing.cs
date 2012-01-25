@@ -6,7 +6,7 @@ using System;
 
 namespace GameCore
 {
-	public enum EItems
+	public enum EThing
 	{
 		NONE,
 		CHEST,
@@ -17,20 +17,20 @@ namespace GameCore
 
 	public static class ItemTipeTileResolver
 	{
-		public static ETiles Tile(this EItems _item)
+		public static ETiles Tile(this EThing _thing)
 		{
-			switch (_item)
+			switch (_thing)
 			{
-				case EItems.AXE:
+				case EThing.AXE:
 					return ETiles.AXE;
-				case EItems.SWORD:
+				case EThing.SWORD:
 					return ETiles.SWORD;
-				case EItems.CHEST:
+				case EThing.CHEST:
 					return ETiles.CHEST;
-				case EItems.DOOR:
+				case EThing.DOOR:
 					return ETiles.DOOR;
 				default:
-					throw new ArgumentOutOfRangeException("_item");
+					throw new ArgumentOutOfRangeException("_thing");
 			}
 		}
 	}

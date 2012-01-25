@@ -2,7 +2,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Map;
+using GameCore;
+using GameCore.Mapping;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,7 +17,7 @@ namespace RGL1.UIBlocks.Map
 
 		private void UpdateFog()
 		{
-			var k = (m_world.WorldTick - m_lastFogUpdateWorldTick)/10000.0f;
+			var k = (World.TheWorld.WorldTick - m_lastFogUpdateWorldTick) / 10000.0f;
 			var pairs = m_foggedCells.ToArray();
 
 			foreach (var pair in pairs)
@@ -26,7 +27,7 @@ namespace RGL1.UIBlocks.Map
 					m_foggedCells.Remove(pair.Key);
 				}
 			}
-			m_lastFogUpdateWorldTick = m_world.WorldTick;
+			m_lastFogUpdateWorldTick = World.TheWorld.WorldTick;
 		}
 
 		private void UpdateFogCell(MapCell _mapCell, Tile _tile, Color _color)

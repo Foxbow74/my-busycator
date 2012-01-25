@@ -2,29 +2,29 @@
 
 using System;
 using GameCore.Creatures;
-using GameCore.Map;
+using GameCore.Mapping;
 
 #endregion
 
 namespace GameCore.Objects
 {
-	public class FakeItem : Thing, ICanbeOpened
+	public class FakeThing : Thing, ICanbeOpened
 	{
-		public static readonly FakeItem Sword = new FakeItem(EItems.SWORD);
-		public static readonly FakeItem Axe = new FakeItem(EItems.AXE);
-		public static readonly FakeItem Chest = new FakeItem(EItems.CHEST);
-		public static readonly FakeItem Door = new FakeItem(EItems.DOOR);
+		public static readonly FakeThing Sword = new FakeThing(EThing.SWORD);
+		public static readonly FakeThing Axe = new FakeThing(EThing.AXE);
+		public static readonly FakeThing Chest = new FakeThing(EThing.CHEST);
+		public static readonly FakeThing Door = new FakeThing(EThing.DOOR);
 
-		public FakeItem(EItems _item)
+		public FakeThing(EThing _thing)
 		{
-			ItemType = _item;
+			ThingType = _thing;
 		}
 
-		public EItems ItemType { get; private set; }
+		public EThing ThingType { get; private set; }
 
 		public override ETiles Tile
 		{
-			get { return ItemType.Tile(); }
+			get { return ThingType.Tile(); }
 		}
 
 		public override string Name
@@ -38,12 +38,11 @@ namespace GameCore.Objects
 		{
 			get
 			{
-				switch (ItemType)
+				switch (ThingType)
 				{
-					case EItems.CHEST:
-					case EItems.DOOR:
+					case EThing.CHEST:
+					case EThing.DOOR:
 						return true;
-						break;
 					default:
 						return false;
 				}
@@ -57,19 +56,19 @@ namespace GameCore.Objects
 
 		#endregion
 
-		public Thing Resolve()
+		public Thing Resolve(Creature _creature)
 		{
-			switch (ItemType)
+			switch (ThingType)
 			{
-				case EItems.NONE:
+				case EThing.NONE:
 					break;
-				case EItems.SWORD:
+				case EThing.SWORD:
 					return new Sword();
-				case EItems.AXE:
+				case EThing.AXE:
 					return new Axe();
-				case EItems.CHEST:
+				case EThing.CHEST:
 					return new Chest();
-				case EItems.DOOR:
+				case EThing.DOOR:
 					return new Door();
 				default:
 					throw new ArgumentOutOfRangeException();

@@ -2,7 +2,7 @@
 
 using System;
 using GameCore.Creatures;
-using GameCore.Map;
+using GameCore.Mapping;
 
 #endregion
 

@@ -57,9 +57,6 @@ namespace RGL1
 		private int m_second;
 		private SpriteBatch m_spriteBatch;
 
-		private World m_world;
-
-
 		public TheGame()
 		{
 			m_frames = 0;
@@ -145,9 +142,9 @@ namespace RGL1
 			TileHelper.Init(Content);
 			Fonts.Init(Content);
 
-			m_world = new World();
+			World.LetItBeeee();
 
-			m_mainBlock = new MainBlock(GraphicsDevice, m_world);
+			m_mainBlock = new MainBlock(GraphicsDevice);
 
 			m_uiBlocks.Push(m_mainBlock);
 
@@ -254,7 +251,7 @@ namespace RGL1
 				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey) pressedKey, m_keyModifiers));
 			}
 
-			if (m_pressed.Count > 0 && m_world.Avatar.GetNextAct() == null)
+			if (m_pressed.Count > 0 && World.TheWorld.Avatar.NextAct == null)
 			{
 				var tuple = m_pressed.Dequeue();
 				m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
@@ -264,7 +261,7 @@ namespace RGL1
 			{
 				//Debug.WriteLine((DateTime.Now - m_lastUpdate).TotalMilliseconds);
 				m_lastUpdate = DateTime.Now;
-				m_world.GameUpdated();
+				World.TheWorld.GameUpdated();
 			}
 
 			base.Update(_gameTime);
@@ -304,7 +301,7 @@ namespace RGL1
 
 			m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
 
-			var format = string.Format("тоя:{0} XY:{1}", m_fps, m_mainBlock.World.Avatar.Coords);
+			var format = string.Format("тоя:{0} XY:{1}", m_fps, World.TheWorld.Avatar.Coords);
 
 			m_spriteBatch.WriteString(format, 1, 1, Color.White, Color.Gray, Fonts.Font);
 

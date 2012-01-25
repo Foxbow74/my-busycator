@@ -2,7 +2,8 @@
 
 using System;
 using GameCore.Acts;
-using GameCore.Map;
+using GameCore.Mapping;
+using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -14,7 +15,6 @@ namespace GameCore.Creatures
 	{
 		protected static Random m_rnd = new Random(1);
 
-		protected readonly World m_world;
 		private Point m_coords;
 		private Point m_inBlock;
 
@@ -23,11 +23,10 @@ namespace GameCore.Creatures
 		/// </summary>
 		protected bool m_silence = true;
 
-		protected Creature(World _world, Point _coords, int _speed)
+		protected Creature(Point _coords, int _speed)
 		{
-			m_world = _world;
 			Speed = _speed;
-
+			Luck = 100;
 			Coords = _coords;
 		}
 
@@ -51,9 +50,12 @@ namespace GameCore.Creatures
 			set
 			{
 				var newCoords = MapBlock.GetBlockCoords(value);
-				if (!(this is Avatar) && newCoords != m_inBlock)
+				if (newCoords != m_inBlock)
 				{
-					if (m_inBlock != null) m_world.Map.MoveCreature(this, m_inBlock, newCoords);
+					if (!(this is Avatar) && m_inBlock != null)
+					{
+						Map.MoveCreature(this, m_inBlock, newCoords);
+					}
 					m_inBlock = newCoords;
 				}
 
@@ -66,18 +68,66 @@ namespace GameCore.Creatures
 		/// </summary>
 		public long BusyTill { get; protected set; }
 
-		public abstract Act GetNextAct();
+		public int GetLuckRandom
+		{
+			get { return World.Rnd.Next(Luck); }
+		}
+
+		public int Luck { get; protected set; }
+
+		public Act NextAct { get; protected set; }
 
 		public void DoAct(Act _act)
 		{
-			_act.Do(this, m_world, m_silence);
-			BusyTill = m_world.WorldTick + _act.TakeTicks*Speed;
+			_act.Do(this, m_silence);
+			BusyTill = World.TheWorld.WorldTick + _act.TakeTicks * Speed;
 			Turn++;
 			ActDone();
 		}
 
 		protected virtual void ActDone()
 		{
+			NextAct = null;
+
+			if (this == World.TheWorld.Avatar)
+			{
+				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
+			}
+		}
+
+		public MapBlock MapBlock
+		{
+			get { return World.TheWorld.Map[m_inBlock]; }
+		}
+
+		public MapCell MapCell
+		{
+			get { return Map.GetMapCell(Coords); }
+		}
+
+		public void MoveCommandReceived(int _dx, int _dy)
+		{
+			NextAct = new MoveAct(new Point(_dx, _dy));
+		}
+
+		public void CommandReceived(ECommands _command)
+		{
+			switch (_command)
+			{
+				case ECommands.TAKE:
+					NextAct = new TakeAct();
+					break;
+				case ECommands.OPEN:
+					NextAct = new OpenAct();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("_command");
+			}
+		}
+
+		public virtual void Thinking()
+		{
+			
 		}
 	}
 }

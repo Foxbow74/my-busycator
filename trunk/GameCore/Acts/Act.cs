@@ -15,6 +15,6 @@ namespace GameCore.Acts
 
 		public int TakeTicks { get; private set; }
 
-		public abstract void Do(Creature _creature, World _world, bool _silence);
+		public abstract void Do(Creature _creature, bool _silence);
 	}
 }
