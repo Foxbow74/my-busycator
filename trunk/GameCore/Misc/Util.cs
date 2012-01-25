@@ -11,9 +11,6 @@ namespace GameCore.Misc
 {
 	public static class Util
 	{
-		private static readonly Dictionary<Tuple<Type, Type, object>, Attribute> m_attrs =
-			new Dictionary<Tuple<Type, Type, object>, Attribute>();
-
 		public static Dictionary<TEnum, TAttribute> Fill<TEnum, TAttribute>() where TAttribute : Attribute
 		{
 			var result = new Dictionary<TEnum, TAttribute>();

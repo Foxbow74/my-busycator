@@ -26,9 +26,5 @@ namespace GameCore.Creatures
 		{
 			get { return "аватар"; }
 		}
-
-		protected override void ActDone()
-		{
-		}
 	}
 }

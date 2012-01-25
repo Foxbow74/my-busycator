@@ -12,6 +12,8 @@ using RGL1.UIBlocks;
 
 #endregion
 
+using fbDeprofiler;
+
 namespace RGL1
 {
 	/// <summary>
@@ -64,9 +66,12 @@ namespace RGL1
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 
+			Content.RootDirectory = "Content";
+
+			//DeProfiler.Run();
+
 			m_graphics = new GraphicsDeviceManager(this);
 			if (!InitGraphicsMode(1024, 768, false)) Exit();
-			Content.RootDirectory = "Content";
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
@@ -99,6 +104,7 @@ namespace RGL1
 
 		private bool InitGraphicsMode(int _width, int _height, bool _fullScreen)
 		{
+			return true;
 			_width = (int) Math.Round((decimal) _width/Tile.Size)*Tile.Size;
 			_height = (int) Math.Round((decimal) _height/Tile.Size)*Tile.Size;
 
@@ -151,13 +157,13 @@ namespace RGL1
 			// Create a new SpriteBatch, which can be used to draw textures.
 			GraphicsDevice.Clear(Color.Orange);
 
-			var pixels =
-				new Color[
-					GraphicsDevice.PresentationParameters.BackBufferWidth*GraphicsDevice.PresentationParameters.BackBufferHeight];
-			m_sceneTexture = new Texture2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
-			                               GraphicsDevice.PresentationParameters.BackBufferHeight);
-			GraphicsDevice.GetBackBufferData(pixels);
-			m_sceneTexture.SetData(pixels);
+			//var pixels =
+			//    new Color[
+			//        GraphicsDevice.PresentationParameters.BackBufferWidth*GraphicsDevice.PresentationParameters.BackBufferHeight];
+			//m_sceneTexture = new Texture2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
+			//                               GraphicsDevice.PresentationParameters.BackBufferHeight);
+			//GraphicsDevice.GetBackBufferData(pixels);
+			//m_sceneTexture.SetData(pixels);
 
 
 			m_spriteBatch = new SpriteBatch(GraphicsDevice);

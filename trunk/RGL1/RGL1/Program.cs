@@ -1,6 +1,7 @@
 #region
 
 using System;
+using System.IO;
 
 #endregion
 
@@ -23,7 +24,7 @@ namespace RGL1
 			}
 			catch (Exception exception)
 			{
-				Console.WriteLine(exception);
+				File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "file.err"), exception.Message);
 			}
 		}
 	}
