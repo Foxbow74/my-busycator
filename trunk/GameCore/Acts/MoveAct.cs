@@ -1,41 +1,46 @@
-﻿using GameCore.Creatures;
+﻿#region
+
+using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
+#endregion
+
 namespace GameCore.Acts
 {
-	public class MoveAct:Act
+	public class MoveAct : Act
 	{
-		public Point Delta { get; set; }
-
-		public MoveAct(Point _delta):base(100)
+		public MoveAct(Point _delta) : base(100)
 		{
 			Delta = _delta;
 		}
 
-		public override void Do(Creature _creatures, World _world, bool _silence)
-		{
-			var pnt = _creatures.Coords + Delta;
+		public Point Delta { get; set; }
 
-			var isAvatar = _creatures is Avatar;
+		public override void Do(Creature _creature, World _world, bool _silence)
+		{
+			var pnt = _creature.Coords + Delta;
+
+			var isAvatar = _creature is Avatar;
 
 			var mapCell = _world.Map.GetMapCell(pnt);
 
 			if (mapCell.IsPassable > 0)
 			{
-				_creatures.Coords = pnt;
+				_creature.Coords = pnt;
 
-				var o = mapCell.Object;
+				var o = mapCell.Thing;
 				if (o == null)
 				{
-					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
+					if (!_silence)
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
 				}
 				else
 				{
 					if (o is FakeItem)
 					{
-						o = mapCell.ResolveFakeItem((FakeItem)o);
+						o = mapCell.ResolveFakeItem();
 					}
 					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, o.Name));
 				}
@@ -47,7 +52,9 @@ namespace GameCore.Acts
 			}
 			else
 			{
-				if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
+				if (!_silence)
+					MessageManager.SendMessage(this,
+					                           new SimpleTextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
 			}
 		}
 	}

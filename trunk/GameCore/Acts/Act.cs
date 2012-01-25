@@ -1,16 +1,20 @@
-﻿using GameCore.Creatures;
+﻿#region
+
+using GameCore.Creatures;
+
+#endregion
 
 namespace GameCore.Acts
 {
 	public abstract class Act
 	{
-		public int TakeTicks { get; private set; }
-
 		protected Act(int _takeTicks)
 		{
 			TakeTicks = _takeTicks;
 		}
 
-		public abstract void Do(Creature _creatures, World _world, bool _silence);
+		public int TakeTicks { get; private set; }
+
+		public abstract void Do(Creature _creature, World _world, bool _silence);
 	}
 }

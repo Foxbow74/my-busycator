@@ -2,11 +2,15 @@
 {
 	public static class MessageManager
 	{
+		#region Delegates
+
 		public delegate void MessageDelegate(object _sender, Message _message);
 
-		public static event MessageDelegate NewMessage;
-
 		public delegate void WorldMessageDelegate(object _sender, WorldMessage _message);
+
+		#endregion
+
+		public static event MessageDelegate NewMessage;
 
 		public static event WorldMessageDelegate NewWorldMessage;
 

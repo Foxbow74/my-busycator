@@ -1,5 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region
+
+using Microsoft.Xna.Framework;
 using Point = GameCore.Misc.Point;
+
+#endregion
 
 namespace RGL1
 {
@@ -7,7 +11,7 @@ namespace RGL1
 	{
 		public static float GetDistanceToVector(this Point _pnt, Point _point)
 		{
-			var lineVector = new Vector2(_point.X,_point.Y);
+			var lineVector = new Vector2(_point.X, _point.Y);
 			lineVector.Normalize();
 
 			var myVector = new Vector2(_pnt.X, _pnt.Y);
@@ -20,11 +24,10 @@ namespace RGL1
 			}
 			else
 			{
-				nearestPoint = distanceAlongLine * lineVector;
+				nearestPoint = distanceAlongLine*lineVector;
 			}
 
 			return Vector2.Distance(nearestPoint, myVector);
 		}
-
 	}
 }

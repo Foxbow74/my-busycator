@@ -1,5 +1,8 @@
+#region
+
 using System;
-using GameCore.Misc;
+
+#endregion
 
 namespace GameCore
 {

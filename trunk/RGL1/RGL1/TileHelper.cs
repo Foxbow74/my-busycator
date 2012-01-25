@@ -1,10 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using GameCore;
-using GameCore.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+
+#endregion
 
 namespace RGL1
 {
@@ -12,20 +15,20 @@ namespace RGL1
 	{
 		public static Tile FogTile = new Tile(1, 11, new Color(5, 5, 10));
 
-		public static Tile SolidTile
-		{
-			get { return m_frameTiles[EFrameTiles.SOLID]; }
-		}
-
 		private static readonly Dictionary<TextureSet, Texture2D> m_textures = new Dictionary<TextureSet, Texture2D>();
 
 		private static readonly Dictionary<ETiles, Tile> m_tiles = new Dictionary<ETiles, Tile>();
 
 		private static readonly Dictionary<EFrameTiles, Tile> m_frameTiles = new Dictionary<EFrameTiles, Tile>();
 
+		public static Tile SolidTile
+		{
+			get { return m_frameTiles[EFrameTiles.SOLID]; }
+		}
+
 		public static void Init(ContentManager _content)
 		{
-			foreach (TextureSet set in Enum.GetValues(typeof(TextureSet)))
+			foreach (TextureSet set in Enum.GetValues(typeof (TextureSet)))
 			{
 				Texture2D texture;
 				switch (set)
@@ -57,7 +60,7 @@ namespace RGL1
 				m_textures.Add(set, texture);
 			}
 
-			foreach (ETiles tile in Enum.GetValues(typeof(ETiles)))
+			foreach (ETiles tile in Enum.GetValues(typeof (ETiles)))
 			{
 				Tile tl;
 				switch (tile)
@@ -70,16 +73,13 @@ namespace RGL1
 						                 		new Tile(7, 2, new Color(20, 80, 20)),
 						                 		new Tile(12, 2, new Color(20, 100, 20)),
 						                 		new Tile(14, 2, new Color(20, 120, 20)),
-
 						                 		new Tile(TextureSet.RR_BRICK_01, 5, 2, new Color(30, 60, 30)),
 						                 		new Tile(TextureSet.RR_BRICK_01, 7, 2, new Color(20, 80, 20)),
 						                 		new Tile(TextureSet.RR_BRICK_01, 12, 2, new Color(20, 100, 20)),
 						                 		new Tile(TextureSet.RR_BRICK_01, 14, 2, new Color(20, 120, 20)),
-
 						                 		new Tile(TextureSet.GP_X16, 7, 2, new Color(20, 80, 20)),
 						                 		new Tile(TextureSet.GP_X16, 12, 2, new Color(20, 100, 20)),
 						                 		new Tile(TextureSet.GP_X16, 14, 2, new Color(20, 120, 20)),
-
 						                 		new Tile(7, 0, new Color(55, 58, 50)),
 						                 		new Tile(TextureSet.GP_X16, 7, 0, new Color(65, 68, 60)),
 						                 	});
@@ -127,7 +127,7 @@ namespace RGL1
 				m_tiles.Add(tile, tl);
 			}
 
-			foreach (EFrameTiles tile in Enum.GetValues(typeof(EFrameTiles)))
+			foreach (EFrameTiles tile in Enum.GetValues(typeof (EFrameTiles)))
 			{
 				Tile tl;
 				switch (tile)
@@ -160,7 +160,7 @@ namespace RGL1
 						tl = new Tile(TextureSet.GP_X16, 9, 13, Color.Gold);
 						break;
 					case EFrameTiles.SOLID:
-						tl = new Tile(11 , 13, Color.White);
+						tl = new Tile(11, 13, Color.White);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -201,13 +201,13 @@ namespace RGL1
 		public static void DrawAtCell(this Tile _tile, SpriteBatch _spriteBatch, int _col, int _row)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_spriteBatch, _col * Tile.Size, _row * Tile.Size, _tile.Color);
+			_tile.DrawAtPoint(_spriteBatch, _col*Tile.Size, _row*Tile.Size, _tile.Color);
 		}
 
 		public static void DrawAtCell(this Tile _tile, SpriteBatch _spriteBatch, int _col, int _row, Color _color)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_spriteBatch, _col * Tile.Size, _row * Tile.Size, _color);
+			_tile.DrawAtPoint(_spriteBatch, _col*Tile.Size, _row*Tile.Size, _color);
 		}
 
 		public static void DrawAtPoint(this ETiles _tile, SpriteBatch _spriteBatch, int _x, int _y, Color _color)

@@ -1,5 +1,3 @@
-using GameCore.Misc;
-
 namespace GameCore.Objects
 {
 	public abstract class Weapon : Item
@@ -10,10 +8,7 @@ namespace GameCore.Objects
 	{
 		public override ETiles Tile
 		{
-			get
-			{
-				return ETiles.AXE;
-			}
+			get { return ETiles.AXE; }
 		}
 
 		public override string Name
@@ -24,7 +19,10 @@ namespace GameCore.Objects
 
 	public class Sword : Weapon
 	{
-		public override ETiles Tile { get { return ETiles.SWORD; } }
+		public override ETiles Tile
+		{
+			get { return ETiles.SWORD; }
+		}
 
 		public override string Name
 		{

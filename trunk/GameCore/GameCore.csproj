@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
     <Compile Include="Acts\MoveAct.cs" />
+    <Compile Include="Acts\OpenAct.cs" />
     <Compile Include="Acts\TakeAct.cs" />
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
@@ -51,14 +52,15 @@
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="EItems.cs" />
     <Compile Include="KeyTranslator.cs" />
-    <Compile Include="Map.cs" />
-    <Compile Include="MapBlock.cs" />
-    <Compile Include="MapBlockGenerator.cs" />
-    <Compile Include="MapCell.cs" />
+    <Compile Include="Map\Map.cs" />
+    <Compile Include="Map\MapBlock.cs" />
+    <Compile Include="Map\MapBlockGenerator.cs" />
+    <Compile Include="Map\MapCell.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageManager.cs" />
     <Compile Include="Messages\SimpleTextMessage.cs" />
     <Compile Include="Messages\WorldMessage.cs" />
+    <Compile Include="Objects\Chest.cs" />
     <Compile Include="Objects\Container.cs" />
     <Compile Include="Objects\Door.cs" />
     <Compile Include="Objects\FakeItem.cs" />

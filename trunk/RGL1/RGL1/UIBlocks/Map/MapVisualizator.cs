@@ -1,6 +1,10 @@
-﻿using System;
+﻿#region
+
+using System;
 using GameCore;
 using GameCore.Misc;
+
+#endregion
 
 namespace RGL1.UIBlocks.Map
 {

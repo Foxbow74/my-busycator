@@ -1,13 +1,7 @@
-﻿using GameCore.Misc;
-
-namespace GameCore.Objects
+﻿namespace GameCore.Objects
 {
-	public abstract class Object
+	public abstract class Thing
 	{
-		protected Object()
-		{
-		}
-
 		public abstract ETiles Tile { get; }
 		public abstract string Name { get; }
 

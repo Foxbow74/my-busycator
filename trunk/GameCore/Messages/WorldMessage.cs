@@ -2,9 +2,7 @@
 {
 	public class WorldMessage
 	{
-		public static WorldMessage Turn = new WorldMessage(EType.TURN);
-		public static WorldMessage AvatarTurn = new WorldMessage(EType.AVATAR_TURN);
-		public static WorldMessage AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
+		#region EType enum
 
 		public enum EType
 		{
@@ -13,11 +11,17 @@
 			AVATAR_MOVE,
 		}
 
-		public EType Type { get; private set; }
+		#endregion
+
+		public static WorldMessage Turn = new WorldMessage(EType.TURN);
+		public static WorldMessage AvatarTurn = new WorldMessage(EType.AVATAR_TURN);
+		public static WorldMessage AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
 
 		public WorldMessage(EType _type)
 		{
 			Type = _type;
 		}
+
+		public EType Type { get; private set; }
 	}
 }

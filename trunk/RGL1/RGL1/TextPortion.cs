@@ -1,58 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+#endregion
+
 namespace RGL1
 {
-
 	/// <summary>
-	/// Используется для вывода текста
+	/// 	Используется для вывода текста
 	/// </summary>
 	public class TextPortion
 	{
+		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?', '[', ']'};
 		private TextLine[] m_textLines;
 
-		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?', '[', ']'};
-
-		public class TextLine
-		{
-			public Dictionary<string, Color> Highlights { get; private set; }
-
-			public float Left { get; private set; }
-
-			public string Text { get; set; }
-
-			public TextLine(float _left, Dictionary<string, Color> _highlights)
-			{
-				Left = _left;
-				Highlights = _highlights;
-			}
-
-			public TextLine(string _text, float _left, Dictionary<string, Color> _highlights)
-			{
-				Text = _text;
-				Left = _left;
-				Highlights = _highlights;
-			}
-		}
-
-		public string Text { get; private set; }
-		public Dictionary<string, Color> Highlights { get; private set; }
-
-		/// <summary>
-		/// Указывает с какой строки продолжать вывод порции текста если весь текст не влез в окно
-		/// </summary>
-		public int FromLine { get; private set; }
-
-		/// <summary>
-		/// Указывает с какого слова продолжать вывод порции текста если весь текст не влез в окно
-		/// </summary>
-		public int FromPart { get; private set; }
-
-		public TextPortion(string _text):this(_text, null)
+		public TextPortion(string _text) : this(_text, null)
 		{
 		}
 
@@ -61,6 +28,24 @@ namespace RGL1
 			Text = _text;
 			Highlights = _highlights;
 			Reset();
+		}
+
+		public string Text { get; private set; }
+		public Dictionary<string, Color> Highlights { get; private set; }
+
+		/// <summary>
+		/// 	Указывает с какой строки продолжать вывод порции текста если весь текст не влез в окно
+		/// </summary>
+		public int FromLine { get; private set; }
+
+		/// <summary>
+		/// 	Указывает с какого слова продолжать вывод порции текста если весь текст не влез в окно
+		/// </summary>
+		public int FromPart { get; private set; }
+
+		public IEnumerable<TextLine> TextLines
+		{
+			get { return m_textLines; }
 		}
 
 		public void Update(int _newFromLine, int _newFromPart)
@@ -75,20 +60,18 @@ namespace RGL1
 			FromPart = 0;
 		}
 
-		public IEnumerable<TextLine> TextLines { get { return m_textLines; } }
-
 		public void SplitByLines(float _width, SpriteFont _font, float _newLineIndent)
 		{
 			var textLines = new List<TextLine>();
 
-			var paragraphs = Text.Split(new[] { Environment.NewLine, "\t" }, StringSplitOptions.RemoveEmptyEntries);
+			var paragraphs = Text.Split(new[] {Environment.NewLine, "\t"}, StringSplitOptions.RemoveEmptyEntries);
 
 			var sb = new StringBuilder();
 			foreach (var paragraph in paragraphs)
 			{
 				sb.Clear();
 				var x = _newLineIndent;
-				
+
 				var tl = new TextLine(x, Highlights);
 				textLines.Add(tl);
 
@@ -98,7 +81,9 @@ namespace RGL1
 				{
 					var addStr = part[partIndex];
 					processedChars += addStr.Length;
-					addStr += (processedChars == 0 || processedChars >= paragraph.Length) ? "" : paragraph[processedChars].ToString(CultureInfo.InvariantCulture);
+					addStr += (processedChars == 0 || processedChars >= paragraph.Length)
+					          	? ""
+					          	: paragraph[processedChars].ToString(CultureInfo.InvariantCulture);
 					processedChars++;
 					var size = _font.MeasureString(addStr);
 
@@ -114,12 +99,38 @@ namespace RGL1
 					x += size.X;
 				}
 
-				if(sb.Length>0)
+				if (sb.Length > 0)
 				{
 					tl.Text = sb.ToString();
 				}
 			}
 			m_textLines = textLines.ToArray();
 		}
+
+		#region Nested type: TextLine
+
+		public class TextLine
+		{
+			public TextLine(float _left, Dictionary<string, Color> _highlights)
+			{
+				Left = _left;
+				Highlights = _highlights;
+			}
+
+			public TextLine(string _text, float _left, Dictionary<string, Color> _highlights)
+			{
+				Text = _text;
+				Left = _left;
+				Highlights = _highlights;
+			}
+
+			public Dictionary<string, Color> Highlights { get; private set; }
+
+			public float Left { get; private set; }
+
+			public string Text { get; set; }
+		}
+
+		#endregion
 	}
 }

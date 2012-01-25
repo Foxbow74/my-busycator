@@ -1,14 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+
+#endregion
 
 namespace GameCore.Misc
 {
 	public class Point
 	{
 		public static Point Zero = new Point();
-
-		public int X { get; set; }
-		public int Y { get; set; }
 
 		public Point(int _x, int _y)
 		{
@@ -22,9 +23,12 @@ namespace GameCore.Misc
 			Y = 0;
 		}
 
+		public int X { get; set; }
+		public int Y { get; set; }
+
 		public double Lenght
 		{
-			get { return Math.Sqrt(X * X + Y * Y); }
+			get { return Math.Sqrt(X*X + Y*Y); }
 		}
 
 		public double QLenght
@@ -38,10 +42,10 @@ namespace GameCore.Misc
 			{
 				for (var i = -1; i <= 1; ++i)
 				{
-					for(var j=-1;j<=1;++j)
+					for (var j = -1; j <= 1; ++j)
 					{
-						if(i==0 && j==0) continue;
-						yield return new Point(X+i,Y+j);
+						if (i == 0 && j == 0) continue;
+						yield return new Point(X + i, Y + j);
 					}
 				}
 			}
@@ -49,12 +53,12 @@ namespace GameCore.Misc
 
 		public double GetDistTill(Point _point)
 		{
-			return Math.Sqrt((X - _point.X) * (X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
+			return Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
 		}
 
 		public override string ToString()
 		{
-			return string.Format("P({0};{1})", X,Y);
+			return string.Format("P({0};{1})", X, Y);
 		}
 
 		public override bool Equals(object _obj)
@@ -62,63 +66,9 @@ namespace GameCore.Misc
 			return GetHashCode() == _obj.GetHashCode();
 		}
 
-		#region overrides
-
-		public static Point operator +(Point _a, Point _b)
-		{
-			return new Point(_a.X + _b.X, _a.Y + _b.Y);
-		}
-
-		public static Point operator -(Point _a, Point _b)
-		{
-			return new Point(_a.X - _b.X, _a.Y - _b.Y);
-		}
-
-		public static bool operator ==(Point _a, Point _b)
-		{
-			if (ReferenceEquals(_a, _b))
-			{
-				return true;
-			}
-
-			if (((object)_a == null) && ((object)_b == null))
-			{
-				return true;
-			}
-
-			if (((object)_a == null) || ((object)_b == null))
-			{
-				return false;
-			}
-
-			return _a.X == _b.X && _a.Y == _b.Y;
-		}
-
-		public static bool operator !=(Point _a, Point _b)
-		{
-			if (ReferenceEquals(_a, _b))
-			{
-				return false;
-			}
-
-			if (((object)_a == null) && ((object)_b == null))
-			{
-				return false;
-			} 
-			
-			if (((object)_a == null) || ((object)_b == null))
-			{
-				return true;
-			}
-
-			return _a.X != _b.X || _a.Y != _b.Y;
-		}
-
-		#endregion
-
 		public override int GetHashCode()
 		{
-			return X^(Y<<16);
+			return X ^ (Y << 16);
 		}
 
 		public IEnumerable<Point> GetLineToPoints(Point _point)
@@ -142,7 +92,7 @@ namespace GameCore.Misc
 					a += min;
 					if (a < max) continue;
 					j += sy;
-					a = a % max;
+					a = a%max;
 				}
 			}
 			else
@@ -154,11 +104,65 @@ namespace GameCore.Misc
 					a += min;
 					if (a < max) continue;
 					i += sx;
-					a = a % max;
+					a = a%max;
 				}
 			}
 
 			yield return _point;
 		}
+
+		#region overrides
+
+		public static Point operator +(Point _a, Point _b)
+		{
+			return new Point(_a.X + _b.X, _a.Y + _b.Y);
+		}
+
+		public static Point operator -(Point _a, Point _b)
+		{
+			return new Point(_a.X - _b.X, _a.Y - _b.Y);
+		}
+
+		public static bool operator ==(Point _a, Point _b)
+		{
+			if (ReferenceEquals(_a, _b))
+			{
+				return true;
+			}
+
+			if (((object) _a == null) && ((object) _b == null))
+			{
+				return true;
+			}
+
+			if (((object) _a == null) || ((object) _b == null))
+			{
+				return false;
+			}
+
+			return _a.X == _b.X && _a.Y == _b.Y;
+		}
+
+		public static bool operator !=(Point _a, Point _b)
+		{
+			if (ReferenceEquals(_a, _b))
+			{
+				return false;
+			}
+
+			if (((object) _a == null) && ((object) _b == null))
+			{
+				return false;
+			}
+
+			if (((object) _a == null) || ((object) _b == null))
+			{
+				return true;
+			}
+
+			return _a.X != _b.X || _a.Y != _b.Y;
+		}
+
+		#endregion
 	}
 }

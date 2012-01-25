@@ -1,18 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿#region
+
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Messages;
+
+#endregion
 
 namespace GameCore
 {
 	public class World
 	{
-		public long WorldTick { get; private set; }
-
 		/// <summary>
-		/// содержит список активных в данный момент существ
+		/// 	содержит список активных в данный момент существ
 		/// </summary>
 		private readonly List<Creature> m_activeCreatures = new List<Creature>();
 
@@ -24,7 +25,7 @@ namespace GameCore
 		public World()
 		{
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
-			Map = new Map(this);
+			Map = new Map.Map(this);
 
 			WorldTick = 0;
 
@@ -32,6 +33,14 @@ namespace GameCore
 			m_activeCreatures.Add(Avatar);
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
+
+		public long WorldTick { get; private set; }
+
+		public Map.Map Map { get; private set; }
+
+		public Avatar Avatar { get; private set; }
+
+		public static Random Rnd { get; private set; }
 
 		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
 		{
@@ -46,14 +55,10 @@ namespace GameCore
 		private void UpdateActiveCreatures()
 		{
 			m_activeCreatures.Clear();
-			m_activeCreatures.AddRange(Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).OrderBy(_creature => _creature.BusyTill));
+			m_activeCreatures.AddRange(
+				Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).OrderBy(
+					_creature => _creature.BusyTill));
 		}
-
-		public Map Map { get; private set; }
-
-		public Avatar Avatar { get; private set; }
-
-		public static Random Rnd{ get; private set; }
 
 		public void GameUpdated()
 		{
@@ -71,7 +76,7 @@ namespace GameCore
 
 				var act = creature.GetNextAct();
 
-				if (act==null)
+				if (act == null)
 				{
 					break;
 				}
@@ -79,7 +84,7 @@ namespace GameCore
 				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 				creature.DoAct(act);
 
-				if(creature==Avatar) continue;
+				if (creature == Avatar) continue;
 
 				m_activeCreatures.Remove(creature);
 				var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > creature.BusyTill);

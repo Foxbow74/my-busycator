@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+#endregion
+
 namespace RGL1.UIBlocks
 {
-	class InventoryBlock:UIBlock
+	internal class InventoryBlock : UIBlock
 	{
 		private readonly World m_world;
 
@@ -30,8 +34,9 @@ namespace RGL1.UIBlocks
 			for (var index = 0; index < inventory.Items.Count; index++)
 			{
 				var item = inventory.Items[index];
-				var s = new string((char)(c + index), 1);
-				DrawLine(new TextPortion.TextLine("[" + s + "]", 0, new Dictionary<string, Color>(){{s,Color.White}}), Color, _spriteBatch, 4 + index, 10, EAlignment.LEFT);
+				var s = new string((char) (c + index), 1);
+				DrawLine(new TextPortion.TextLine("[" + s + "]", 0, new Dictionary<string, Color> {{s, Color.White}}), Color,
+				         _spriteBatch, 4 + index, 10, EAlignment.LEFT);
 				DrawLine("-", Color, _spriteBatch, 4 + index, 40, EAlignment.LEFT);
 				DrawLine(item.Name, Color.SkyBlue, _spriteBatch, 4 + index, 70, EAlignment.LEFT);
 			}

@@ -1,12 +1,15 @@
-﻿using System;
+﻿#region
+
+using System;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-using Object = GameCore.Objects.Object;
 
-namespace GameCore
+#endregion
+
+namespace GameCore.Map
 {
-	static class MapBlockGenerator
+	internal static class MapBlockGenerator
 	{
 		public static void Generate(MapBlock _block, Point _blockId, World _world)
 		{
@@ -51,7 +54,7 @@ namespace GameCore
 					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 					if (attr.IsPassable > 0)
 					{
-						_block.Objects.Add(new Tuple<Object, Point>(GenerateFakeItem(rnd), new Point(x, y)));
+						_block.Objects.Add(new Tuple<Thing, Point>(GenerateFakeItem(rnd), new Point(x, y)));
 					}
 				}
 			}
@@ -60,7 +63,7 @@ namespace GameCore
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+				_block.Creatures.Add(new Monster(_world, new Point(_blockId.X*MapBlock.SIZE + x, _blockId.Y*MapBlock.SIZE + y)));
 			}
 		}
 
@@ -68,10 +71,14 @@ namespace GameCore
 		{
 			switch (_random.Next(3))
 			{
-				case 0: return FakeItem.Sword;
-				case 1: return FakeItem.Axe;
-				case 2: return FakeItem.Chest;
-				case 3: return FakeItem.Door;
+				case 0:
+					return FakeItem.Sword;
+				case 1:
+					return FakeItem.Axe;
+				case 2:
+					return FakeItem.Chest;
+				case 3:
+					return FakeItem.Door;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

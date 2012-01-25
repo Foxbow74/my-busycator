@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RGL1.Messages;
 
+#endregion
+
 namespace RGL1.UIBlocks
 {
-	class MessageBlock:UIBlock
+	internal class MessageBlock : UIBlock
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 		private readonly List<TextPortion> m_portions = new List<TextPortion>();
@@ -17,43 +21,41 @@ namespace RGL1.UIBlocks
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}
 
-		void MessageManagerNewMessage(object _sender, Message _message)
+		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
 			if (_message is SimpleTextMessage)
 			{
-				var tm = (SimpleTextMessage)_message;
+				var tm = (SimpleTextMessage) _message;
 				var tp = new TextPortion(tm.Text, null);
 				m_portions.Add(tp);
-				tp.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Fonts.Font, 0);
+				tp.SplitByLines((ContentRectangle.Width - 1)*Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tp.TextLines);
 			}
 			else if (_message is TextMessage)
 			{
-				var tm = (TextMessage)_message;
+				var tm = (TextMessage) _message;
 				m_portions.Add(tm.Text);
-				tm.Text.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Fonts.Font, 0);
+				tm.Text.SplitByLines((ContentRectangle.Width - 1)*Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
-			
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
-			
+
 			var lineHeight = Fonts.Font.MeasureString("!g").Y;
 
-			var height = (ContentRectangle.Height - 1) * Tile.Size;
+			var height = (ContentRectangle.Height - 1)*Tile.Size;
 			var y = height - m_lines.Count*lineHeight + Tile.Size/2;
 
 			foreach (var textLine in m_lines)
 			{
-				if(y>0)
+				if (y > 0)
 				{
-					DrawLine(textLine, Color.Gray, _spriteBatch, Tile.Size, ContentRectangle.Top * Tile.Size + y);
+					DrawLine(textLine, Color.Gray, _spriteBatch, Tile.Size, ContentRectangle.Top*Tile.Size + y);
 				}
-				y+=lineHeight;
-
+				y += lineHeight;
 			}
 
 

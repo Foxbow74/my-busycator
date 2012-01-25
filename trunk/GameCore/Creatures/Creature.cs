@@ -1,19 +1,25 @@
-﻿using System;
+﻿#region
+
+using System;
 using GameCore.Acts;
+using GameCore.Map;
 using GameCore.Misc;
-using Object = GameCore.Objects.Object;
+using GameCore.Objects;
+
+#endregion
 
 namespace GameCore.Creatures
 {
-	public abstract class Creature: Object
+	public abstract class Creature : Thing
 	{
 		protected static Random m_rnd = new Random(1);
 
-		private Point m_inBlock;
 		protected readonly World m_world;
+		private Point m_coords;
+		private Point m_inBlock;
 
 		/// <summary>
-		/// Кидает ли существо сообщения в лог (true для аватара)
+		/// 	Кидает ли существо сообщения в лог (true для аватара)
 		/// </summary>
 		protected bool m_silence = true;
 
@@ -26,20 +32,18 @@ namespace GameCore.Creatures
 		}
 
 		/// <summary>
-		/// Ход в игре с точки зрения существа
-		/// Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе
+		/// 	Ход в игре с точки зрения существа
+		/// 	Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе
 		/// </summary>
 		public long Turn { get; private set; }
 
 		/// <summary>
-		/// Скорость существа, валидно значение >0, множитель, на который умножается время выполнения действия, 100 - нормальная скорость человека
+		/// 	Скорость существа, валидно значение >0, множитель, на который умножается время выполнения действия, 100 - нормальная скорость человека
 		/// </summary>
 		public int Speed { get; private set; }
 
-		private Point m_coords;
-
 		/// <summary>
-		/// Мировые координаты
+		/// 	Мировые координаты
 		/// </summary>
 		public Point Coords
 		{
@@ -58,12 +62,12 @@ namespace GameCore.Creatures
 		}
 
 		/// <summary>
-		/// Время до которого существо будет выполнять текущее действие
+		/// 	Время до которого существо будет выполнять текущее действие
 		/// </summary>
 		public long BusyTill { get; protected set; }
 
 		public abstract Act GetNextAct();
-		
+
 		public void DoAct(Act _act)
 		{
 			_act.Do(this, m_world, m_silence);

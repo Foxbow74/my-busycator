@@ -1,11 +1,15 @@
-﻿using Microsoft.Xna.Framework;
+﻿#region
+
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+#endregion
 
 namespace RGL1.UIBlocks
 {
-	class StatsBlock:UIBlock
+	internal class StatsBlock : UIBlock
 	{
-		public StatsBlock(Rectangle _rectangle): base(_rectangle, Frame.GoldFrame, Color.Gray)
+		public StatsBlock(Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.Gray)
 		{
 		}
 

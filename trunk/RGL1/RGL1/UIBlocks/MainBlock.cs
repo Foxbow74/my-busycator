@@ -1,14 +1,18 @@
-﻿using System;
+﻿#region
+
+using System;
 using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RGL1.UIBlocks.Map;
+
+#endregion
 
 namespace RGL1.UIBlocks
 {
-	class MainBlock:UIBlock
+	internal class MainBlock : UIBlock
 	{
-		public World World { get; private set; }
 		private readonly GraphicsDevice m_device;
 
 		private readonly UIBlock m_map;
@@ -16,7 +20,7 @@ namespace RGL1.UIBlocks
 		private readonly UIBlock m_stats;
 
 		public MainBlock(GraphicsDevice _device, World _world)
-			: base(new Rectangle(0, 0, _device.Viewport.Width / Tile.Size, _device.Viewport.Height / Tile.Size), null, Color.White)
+			: base(new Rectangle(0, 0, _device.Viewport.Width/Tile.Size, _device.Viewport.Height/Tile.Size), null, Color.White)
 		{
 			World = _world;
 			m_device = _device;
@@ -26,12 +30,17 @@ namespace RGL1.UIBlocks
 			const int messagesHeight = 10;
 			const int statWidth = 15;
 
-			m_stats = new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
+			m_stats =
+				new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
 			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
 
-			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1), _world);
-
+			m_map =
+				new MapBlock(
+					new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1),
+					_world);
 		}
+
+		public World World { get; private set; }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -41,7 +50,7 @@ namespace RGL1.UIBlocks
 				return;
 			}
 
-			if(_key==ConsoleKey.I)
+			if (_key == ConsoleKey.I)
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new InventoryBlock(World, Rectangle)));
 				return;

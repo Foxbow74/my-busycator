@@ -1,3 +1,5 @@
+#region
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,46 +10,54 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RGL1.UIBlocks;
 
+#endregion
+
 namespace RGL1
 {
 	/// <summary>
-	/// This is the main type for your game
+	/// 	This is the main type for your game
 	/// </summary>
 	public class TheGame : Game
 	{
-		readonly List<Keys> m_downKeys = new List<Keys>();
-		readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
-		EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
-		readonly Keys[] m_keyModificators = new[] { Keys.RightShift, Keys.LeftShift, Keys.RightControl, Keys.LeftControl, Keys.RightAlt, Keys.LeftAlt };
+		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
+		private const int AUTO_MOVE_REPEAT_AFTER = 200;
+		private readonly List<Keys> m_downKeys = new List<Keys>();
+		private readonly GraphicsDeviceManager m_graphics;
 
-		private int m_second;
-		private int m_frames;
+		private readonly Keys[] m_keyModificators = new[]
+		                                            	{
+		                                            		Keys.RightShift, Keys.LeftShift, Keys.RightControl, Keys.LeftControl,
+		                                            		Keys.RightAlt, Keys.LeftAlt
+		                                            	};
+
+		private readonly Keys[] m_moveKeys = new[]
+		                                     	{
+		                                     		Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.NumPad1, Keys.NumPad2,
+		                                     		Keys.NumPad3, Keys.NumPad4,
+		                                     		Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.NumPad5, Keys.Home
+		                                     		, Keys.PageUp,
+		                                     		Keys.PageDown, Keys.End
+		                                     	};
+
+		private readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
+		private readonly Stack<UIBlock> m_uiBlocks = new Stack<UIBlock>();
+
 		private int m_fps;
+		private int m_frames;
 
-		const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
-		const int AUTO_MOVE_REPEAT_AFTER = 200;
 		private bool m_isAutoRepeateMode;
-
-		private DateTime m_moveKeyHoldedSince;
+		private EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
 
 		private DateTime m_lastUpdate;
 
-		private readonly GraphicsDeviceManager m_graphics;
-		private SpriteBatch m_spriteBatch;
-
-		private readonly Stack<UIBlock> m_uiBlocks = new Stack<UIBlock>();
 		private MainBlock m_mainBlock;
+		private DateTime m_moveKeyHoldedSince;
 
 		private Texture2D m_sceneTexture;
+		private int m_second;
+		private SpriteBatch m_spriteBatch;
 
 		private World m_world;
-
-		private readonly Keys[] m_moveKeys = new[]
-			               	{
-			               		Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.NumPad1, Keys.NumPad2, Keys.NumPad3, Keys.NumPad4,
-			               		Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.NumPad5, Keys.Home, Keys.PageUp,
-			               		Keys.PageDown, Keys.End
-			               	};
 
 
 		public TheGame()
@@ -56,25 +66,25 @@ namespace RGL1
 			IsMouseVisible = true;
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
-			
+
 			m_graphics = new GraphicsDeviceManager(this);
-			if(!InitGraphicsMode(1024, 768, false)) Exit();
+			if (!InitGraphicsMode(1024, 768, false)) Exit();
 			Content.RootDirectory = "Content";
 		}
 
-		static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
+		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
 		}
 
-		void MessageManagerNewMessage(object _sender, Message _message)
+		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
 			if (_message is OpenUIBlockMessage)
 			{
-				m_uiBlocks.Push(((OpenUIBlockMessage)_message).UIBlock);	
+				m_uiBlocks.Push(((OpenUIBlockMessage) _message).UIBlock);
 			}
 			else if (_message is SystemMessage)
 			{
-				switch (((SystemMessage)_message).Message)
+				switch (((SystemMessage) _message).Message)
 				{
 					case SystemMessage.ESystemMessage.EXIT_GAME:
 						Exit();
@@ -92,13 +102,13 @@ namespace RGL1
 
 		private bool InitGraphicsMode(int _width, int _height, bool _fullScreen)
 		{
-			_width = (int)Math.Round((decimal)_width / Tile.Size) * Tile.Size;
-			_height = (int)Math.Round((decimal)_height / Tile.Size) * Tile.Size;
+			_width = (int) Math.Round((decimal) _width/Tile.Size)*Tile.Size;
+			_height = (int) Math.Round((decimal) _height/Tile.Size)*Tile.Size;
 
 			if (_fullScreen == false)
 			{
 				if ((_width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
-					&& (_height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height))
+				    && (_height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height))
 				{
 					m_graphics.PreferredBackBufferWidth = _width;
 					m_graphics.PreferredBackBufferHeight = _height;
@@ -110,7 +120,7 @@ namespace RGL1
 			else
 			{
 				var dms = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes
-						.Where(_mode => _mode.Width == _width && _mode.Height == _height);
+					.Where(_mode => _mode.Width == _width && _mode.Height == _height);
 				var dm = dms.FirstOrDefault();
 
 				if (dm != default(DisplayMode))
@@ -125,18 +135,18 @@ namespace RGL1
 			}
 			return false;
 		}
-		
+
 		/// <summary>
-		/// LoadContent will be called once per game and is the place to load
-		/// all of your content.
+		/// 	LoadContent will be called once per game and is the place to load
+		/// 	all of your content.
 		/// </summary>
 		protected override void LoadContent()
 		{
 			TileHelper.Init(Content);
 			Fonts.Init(Content);
-			
+
 			m_world = new World();
-	
+
 			m_mainBlock = new MainBlock(GraphicsDevice, m_world);
 
 			m_uiBlocks.Push(m_mainBlock);
@@ -144,10 +154,13 @@ namespace RGL1
 			// Create a new SpriteBatch, which can be used to draw textures.
 			GraphicsDevice.Clear(Color.Orange);
 
-			var pixels = new Color[GraphicsDevice.PresentationParameters.BackBufferWidth * GraphicsDevice.PresentationParameters.BackBufferHeight];
-			m_sceneTexture = new Texture2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth, GraphicsDevice.PresentationParameters.BackBufferHeight);
+			var pixels =
+				new Color[
+					GraphicsDevice.PresentationParameters.BackBufferWidth*GraphicsDevice.PresentationParameters.BackBufferHeight];
+			m_sceneTexture = new Texture2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
+			                               GraphicsDevice.PresentationParameters.BackBufferHeight);
 			GraphicsDevice.GetBackBufferData(pixels);
-			m_sceneTexture.SetData(pixels); 
+			m_sceneTexture.SetData(pixels);
 
 
 			m_spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -155,8 +168,8 @@ namespace RGL1
 		}
 
 		/// <summary>
-		/// UnloadContent will be called once per game and is the place to unload
-		/// all content.
+		/// 	UnloadContent will be called once per game and is the place to unload
+		/// 	all content.
 		/// </summary>
 		protected override void UnloadContent()
 		{
@@ -164,21 +177,27 @@ namespace RGL1
 		}
 
 		/// <summary>
-		/// Allows the game to run logic such as updating the world,
-		/// checking for collisions, gathering input, and playing audio.
+		/// 	Allows the game to run logic such as updating the world,
+		/// 	checking for collisions, gathering input, and playing audio.
 		/// </summary>
-		/// <param name="_gameTime">Provides a snapshot of timing values.</param>
+		/// <param name = "_gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime _gameTime)
 		{
 			// TODO: Add your update logic here
 
 			var state = Keyboard.GetState();
 
-			var keyModifiers = (state.IsKeyDown(Keys.LeftShift) || state.IsKeyDown(Keys.RightShift)) ? EKeyModifiers.SHIFT : EKeyModifiers.NONE;
-			keyModifiers |= (state.IsKeyDown(Keys.LeftControl) || state.IsKeyDown(Keys.RightControl)) ? EKeyModifiers.CTRL : EKeyModifiers.NONE;
-			keyModifiers |= (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt)) ? EKeyModifiers.ALT : EKeyModifiers.NONE;
+			var keyModifiers = (state.IsKeyDown(Keys.LeftShift) || state.IsKeyDown(Keys.RightShift))
+			                   	? EKeyModifiers.SHIFT
+			                   	: EKeyModifiers.NONE;
+			keyModifiers |= (state.IsKeyDown(Keys.LeftControl) || state.IsKeyDown(Keys.RightControl))
+			                	? EKeyModifiers.CTRL
+			                	: EKeyModifiers.NONE;
+			keyModifiers |= (state.IsKeyDown(Keys.LeftAlt) || state.IsKeyDown(Keys.RightAlt))
+			                	? EKeyModifiers.ALT
+			                	: EKeyModifiers.NONE;
 
-			
+
 			var downKeys = state.GetPressedKeys().Except(m_keyModificators).ToArray();
 
 			if (keyModifiers != m_keyModifiers) m_downKeys.Clear();
@@ -203,7 +222,7 @@ namespace RGL1
 
 			m_keyModifiers = keyModifiers;
 
-			if(m_downKeys.Except(m_moveKeys).Any() || pressedKeys.Any())
+			if (m_downKeys.Except(m_moveKeys).Any() || pressedKeys.Any())
 			{
 				m_isAutoRepeateMode = false;
 			}
@@ -232,10 +251,10 @@ namespace RGL1
 
 			foreach (var pressedKey in pressedKeys)
 			{
-				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey)pressedKey, m_keyModifiers));
+				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey) pressedKey, m_keyModifiers));
 			}
 
-			if (m_pressed.Count>0 && m_world.Avatar.GetNextAct()==null)
+			if (m_pressed.Count > 0 && m_world.Avatar.GetNextAct() == null)
 			{
 				var tuple = m_pressed.Dequeue();
 				m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
@@ -252,12 +271,12 @@ namespace RGL1
 		}
 
 		/// <summary>
-		/// This is called when the game should draw itself.
+		/// 	This is called when the game should draw itself.
 		/// </summary>
-		/// <param name="_gameTime">Provides a snapshot of timing values.</param>
+		/// <param name = "_gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime _gameTime)
 		{
-			if(!IsActive) return;
+			if (!IsActive) return;
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{

@@ -1,15 +1,19 @@
+#region
+
 using System;
+
+#endregion
 
 namespace RGL1
 {
 #if WINDOWS
-    static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main(string[] _args)
-        {
+	internal static class Program
+	{
+		/// <summary>
+		/// 	The main entry point for the application.
+		/// </summary>
+		private static void Main(string[] _args)
+		{
 			try
 			{
 				using (var game = new TheGame())
@@ -17,12 +21,11 @@ namespace RGL1
 					game.Run();
 				}
 			}
-			catch(Exception exception)
+			catch (Exception exception)
 			{
 				Console.WriteLine(exception);
 			}
-        }
-    }
+		}
+	}
 #endif
 }
-

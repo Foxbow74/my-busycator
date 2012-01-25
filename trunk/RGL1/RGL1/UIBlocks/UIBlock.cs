@@ -1,13 +1,17 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+#endregion
+
 namespace RGL1.UIBlocks
 {
-	abstract class UIBlock:IDisposable
+	internal abstract class UIBlock : IDisposable
 	{
 		protected readonly SpriteFont m_font;
 		protected readonly float m_lineHeight;
@@ -21,7 +25,9 @@ namespace RGL1.UIBlocks
 			Color = _color;
 			Rectangle = _rectangle;
 			ContentRectangle = _rectangle;
-			if(_frame!=null) ContentRectangle = new Rectangle(_rectangle.Left + 1,_rectangle.Top + 1, _rectangle.Width - 2, _rectangle.Height - 2);
+			if (_frame != null)
+				ContentRectangle = new Rectangle(_rectangle.Left + 1, _rectangle.Top + 1, _rectangle.Width - 2,
+				                                 _rectangle.Height - 2);
 		}
 
 		public Rectangle Rectangle { get; private set; }
@@ -32,6 +38,14 @@ namespace RGL1.UIBlocks
 
 		protected Frame BlockFrame { get; private set; }
 
+		#region IDisposable Members
+
+		public virtual void Dispose()
+		{
+		}
+
+		#endregion
+
 		public virtual void DrawBackground(SpriteBatch _spriteBatch)
 		{
 			this.Clear(_spriteBatch, Color.Black);
@@ -39,7 +53,8 @@ namespace RGL1.UIBlocks
 
 		public virtual void DrawFrame(SpriteBatch _spriteBatch)
 		{
-			if (BlockFrame != null) BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+			if (BlockFrame != null)
+				BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
 		}
 
 		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
@@ -67,26 +82,19 @@ namespace RGL1.UIBlocks
 		}
 
 
-		internal enum EAlignment
-		{
-			NORMAL,
-			LEFT,
-			RIGHT,
-			CENTER,
-			JUSTIFY
-		}
-
-		protected void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent, EAlignment _alignment)
+		protected void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent,
+		                        EAlignment _alignment)
 		{
 			DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
 		}
 
-		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent, EAlignment _alignment)
+		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber,
+		                         int _indent, EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
 			var processedChars = 0;
-			var x = (float)ContentRectangle.Left * Tile.Size;
+			var x = (float) ContentRectangle.Left*Tile.Size;
 
 			var lineSize = m_font.MeasureString(line);
 			switch (_alignment)
@@ -98,14 +106,14 @@ namespace RGL1.UIBlocks
 					x += _indent;
 					break;
 				case EAlignment.RIGHT:
-					x += ContentRectangle.Width * Tile.Size - lineSize.X - _indent;
+					x += ContentRectangle.Width*Tile.Size - lineSize.X - _indent;
 					break;
 				case EAlignment.CENTER:
 					x += ContentRectangle.Left*Tile.Size + ContentRectangle.Width*Tile.Size/2 - lineSize.X/2;
 					break;
 			}
 
-			var y = ContentRectangle.Top * Tile.Size + _lineNumber * m_lineHeight;
+			var y = ContentRectangle.Top*Tile.Size + _lineNumber*m_lineHeight;
 
 			for (var partIndex = 0; partIndex < part.Length; partIndex++)
 			{
@@ -133,29 +141,37 @@ namespace RGL1.UIBlocks
 
 		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
-			
-		}
-
-		public virtual void Dispose()
-		{
 		}
 
 		public abstract void DrawContent(SpriteBatch _spriteBatch);
+
+		#region Nested type: EAlignment
+
+		internal enum EAlignment
+		{
+			NORMAL,
+			LEFT,
+			RIGHT,
+			CENTER,
+			JUSTIFY
+		}
+
+		#endregion
 	}
 
-	class OpenUIBlockMessage : Message
+	internal class OpenUIBlockMessage : Message
 	{
-		public UIBlock UIBlock { get; private set; }
-
 		public OpenUIBlockMessage(UIBlock _block)
 		{
 			UIBlock = _block;
 		}
+
+		public UIBlock UIBlock { get; private set; }
 	}
 
-	class SystemMessage : Message
+	internal class SystemMessage : Message
 	{
-		public ESystemMessage Message { get; private set; }
+		#region ESystemMessage enum
 
 		public enum ESystemMessage
 		{
@@ -163,9 +179,13 @@ namespace RGL1.UIBlocks
 			CLOSE_TOP_UI_BLOCK,
 		}
 
+		#endregion
+
 		public SystemMessage(ESystemMessage _message)
 		{
 			Message = _message;
 		}
+
+		public ESystemMessage Message { get; private set; }
 	}
 }

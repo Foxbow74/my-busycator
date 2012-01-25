@@ -1,54 +1,22 @@
-﻿using System.Collections.Generic;
+﻿#region
+
+using System.Collections.Generic;
 using System.Linq;
-using GameCore;
+using GameCore.Map;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RGL1.UIBlocks
+#endregion
+
+namespace RGL1.UIBlocks.Map
 {
-	partial class MapBlock
+	internal partial class MapBlock
 	{
-		private class FoggedCell
-		{
-			private float m_fog;
-			private Tile m_tile;
-			private Color m_color;
-
-			public FoggedCell(Tile _tile, Color _color)
-			{
-				m_fog = 1f;
-				m_tile = _tile;
-				m_color = _color;
-			}
-
-			public void Draw(SpriteBatch _spriteBatch, int _x, int _y)
-			{
-				var color = m_color * m_fog;
-				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
-				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y);
-			}
-
-			public bool UpdateFog(float _d)
-			{
-				m_fog -= 0.05f * _d;
-				return m_fog <= 0;
-			}
-
-			public bool IsFresh { get { return m_fog == 1; } }
-
-			public void Update(Tile _tile, Color _color)
-			{
-				m_fog = 1;
-				m_tile = _tile;
-				m_color = _color;
-			}
-		}
-
 		private readonly Dictionary<int, FoggedCell> m_foggedCells = new Dictionary<int, FoggedCell>();
 
 		private void UpdateFog()
 		{
-			var k = (m_world.WorldTick - m_lastFogUpdateWorldTick) / 10000.0f;
+			var k = (m_world.WorldTick - m_lastFogUpdateWorldTick)/10000.0f;
 			var pairs = m_foggedCells.ToArray();
 
 			foreach (var pair in pairs)
@@ -96,5 +64,48 @@ namespace RGL1.UIBlocks
 				}
 			}
 		}
+
+		#region Nested type: FoggedCell
+
+		private class FoggedCell
+		{
+			private Color m_color;
+			private float m_fog;
+			private Tile m_tile;
+
+			public FoggedCell(Tile _tile, Color _color)
+			{
+				m_fog = 1f;
+				m_tile = _tile;
+				m_color = _color;
+			}
+
+			public bool IsFresh
+			{
+				get { return m_fog == 1; }
+			}
+
+			public void Draw(SpriteBatch _spriteBatch, int _x, int _y)
+			{
+				var color = m_color*m_fog;
+				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
+				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y);
+			}
+
+			public bool UpdateFog(float _d)
+			{
+				m_fog -= 0.05f*_d;
+				return m_fog <= 0;
+			}
+
+			public void Update(Tile _tile, Color _color)
+			{
+				m_fog = 1;
+				m_tile = _tile;
+				m_color = _color;
+			}
+		}
+
+		#endregion
 	}
 }

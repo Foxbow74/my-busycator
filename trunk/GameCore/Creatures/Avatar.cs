@@ -1,15 +1,31 @@
-﻿using System;
+﻿#region
+
+using System;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
+
+#endregion
 
 namespace GameCore.Creatures
 {
 	public class Avatar : Intelligent
 	{
-		public Avatar(World _world): base(_world, Point.Zero, 100)
+		private Act m_nextAct;
+
+		public Avatar(World _world) : base(_world, Point.Zero, 100)
 		{
 			m_silence = false;
+		}
+
+		public override ETiles Tile
+		{
+			get { return ETiles.AVATAR; }
+		}
+
+		public override string Name
+		{
+			get { return "аватар"; }
 		}
 
 		public void MoveCommandReceived(int _dx, int _dy)
@@ -32,8 +48,6 @@ namespace GameCore.Creatures
 			}
 		}
 
-		private Act m_nextAct;
-
 		protected override void ActDone()
 		{
 			m_nextAct = null;
@@ -43,16 +57,6 @@ namespace GameCore.Creatures
 		public override Act GetNextAct()
 		{
 			return m_nextAct;
-		}
-
-		public override ETiles Tile
-		{
-			get { return ETiles.AVATAR; }
-		}
-
-		public override string Name
-		{
-			get { return "аватар"; }
 		}
 	}
 }

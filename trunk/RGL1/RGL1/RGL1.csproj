@@ -143,7 +143,7 @@
     <Compile Include="UIBlocks\InventoryBlock.cs" />
     <Compile Include="UIBlocks\MainBlock.cs" />
     <Compile Include="UIBlocks\Map\MapBlock.cs" />
-    <Compile Include="UIBlocks\MapBlock_Fog.cs" />
+    <Compile Include="UIBlocks\Map\MapBlock_Fog.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\StatsBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
