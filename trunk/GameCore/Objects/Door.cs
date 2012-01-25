@@ -1,17 +1,28 @@
-﻿using Graphics;
+﻿using System;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	class Door:Object
+	internal interface ICanbeOpened
 	{
-		public override Tile Tile
+		bool IsClosed { get; }
+	}
+
+	class Door : Object, ICanbeOpened
+	{
+		public override ETiles Tile
 		{
-			get { return Tiles.DoorTile; }
+			get { return ETiles.DOOR; }
 		}
 
 		public override string Name
 		{
 			get { return "дверь"; }
+		}
+
+		public bool IsClosed
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

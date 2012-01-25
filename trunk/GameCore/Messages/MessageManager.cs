@@ -1,4 +1,4 @@
-﻿namespace Common.Messages
+﻿namespace GameCore.Messages
 {
 	public static class MessageManager
 	{

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Messages;
 using GameCore;
-using Graphics;
+using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 

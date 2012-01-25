@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using Common.Messages;
 using GameCore;
-using Graphics;
+using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -134,7 +132,8 @@ namespace RGL1
 		/// </summary>
 		protected override void LoadContent()
 		{
-			Tile.Init(Content);
+			TileHelper.Init(Content);
+			Fonts.Init(Content);
 			
 			m_world = new World();
 	
@@ -288,7 +287,7 @@ namespace RGL1
 
 			var format = string.Format("тоя:{0} XY:{1}", m_fps, m_mainBlock.World.Avatar.Coords);
 
-			m_spriteBatch.WriteString(format, 1, 1, Color.White, Color.Gray, Tile.Font);
+			m_spriteBatch.WriteString(format, 1, 1, Color.White, Color.Gray, Fonts.Font);
 
 			m_spriteBatch.End();
 		}

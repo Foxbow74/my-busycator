@@ -128,17 +128,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DrawHelper.cs" />
+    <Compile Include="Fonts.cs" />
+    <Compile Include="Frame.cs" />
+    <Compile Include="UIBlocks\Map\LOSManager.cs" />
+    <Compile Include="UIBlocks\Map\MapVisualizator.cs" />
+    <Compile Include="Messages\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="TextPortion.cs" />
     <Compile Include="TheGame.cs" />
+    <Compile Include="Tile.cs" />
+    <Compile Include="TileHelper.cs" />
     <Compile Include="UIBlocks\ConfirmQuitBlock.cs" />
     <Compile Include="UIBlocks\InventoryBlock.cs" />
     <Compile Include="UIBlocks\MainBlock.cs" />
-    <Compile Include="UIBlocks\MapBlock.cs" />
+    <Compile Include="UIBlocks\Map\MapBlock.cs" />
     <Compile Include="UIBlocks\MapBlock_Fog.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\StatsBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
+    <Compile Include="VectorHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -147,17 +156,9 @@
     <Content Include="Documentations\Story.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common.csproj">
-      <Project>{060521C7-DF51-4ED2-B29F-1AF1CF034394}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\GameCore\GameCore.csproj">
       <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
       <Name>GameCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Graphics\Graphics.csproj">
-      <Project>{0169782B-3522-43B6-A23F-CFC700C3D7C8}</Project>
-      <Name>Graphics</Name>
     </ProjectReference>
     <ProjectReference Include="..\RGL1Content\RGL1Content.contentproj">
       <Name>RGL1Content</Name>

@@ -2,8 +2,8 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
-using Common.Messages;
 using GameCore.Creatures;
+using GameCore.Messages;
 
 namespace GameCore
 {

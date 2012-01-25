@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using GameCore.Creatures;
-using Graphics;
+using GameCore.Misc;
 
 namespace GameCore
 {

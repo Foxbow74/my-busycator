@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Common.Messages;
 using GameCore;
-using Graphics;
+using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,7 +14,7 @@ namespace RGL1.UIBlocks
 
 		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color, SpriteFont _font = null)
 		{
-			m_font = _font ?? Tile.Font;
+			m_font = _font ?? Fonts.Font;
 
 			m_lineHeight = m_font.MeasureString("!g").Y;
 			BlockFrame = _frame;

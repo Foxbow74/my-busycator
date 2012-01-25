@@ -1,12 +1,14 @@
-﻿using System.Diagnostics;
+﻿using System;
 using GameCore.Acts;
-using Graphics;
+using GameCore.Misc;
 using Object = GameCore.Objects.Object;
 
 namespace GameCore.Creatures
 {
 	public abstract class Creature: Object
 	{
+		protected static Random m_rnd = new Random(1);
+
 		private Point m_inBlock;
 		protected readonly World m_world;
 

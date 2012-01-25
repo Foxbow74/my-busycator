@@ -5,7 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Graphics
+namespace RGL1
 {
 
 	/// <summary>
@@ -92,7 +92,7 @@ namespace Graphics
 				var tl = new TextLine(x, Highlights);
 				textLines.Add(tl);
 
-				var part = paragraph.Split(TextPortion.Punctuation);
+				var part = paragraph.Split(Punctuation);
 				var processedChars = 0;
 				for (var partIndex = 0; partIndex < part.Length; partIndex++)
 				{

@@ -1,6 +1,6 @@
 ﻿using System;
 using GameCore.Acts;
-using Graphics;
+using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
@@ -10,8 +10,6 @@ namespace GameCore.Creatures
 	public class Monster:Creature
 	{
 		private static int n = 0;
-
-		protected static Random m_rnd = new Random(1);
 
 		internal Monster(World _world, Point _coords): base(_world, _coords, 100)
 		{
@@ -25,9 +23,9 @@ namespace GameCore.Creatures
 			return new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3)-1));
 		}
 
-		public override Tile Tile
+		public override ETiles Tile
 		{
-			get { return Tiles.Monster; }
+			get { return ETiles.MONSTER; }
 		}
 
 		public override string Name

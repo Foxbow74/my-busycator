@@ -1,5 +1,5 @@
 using System;
-using Graphics;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -12,7 +12,7 @@ namespace GameCore.Objects
 			ItemType = _item;
 		}
 
-		public override Tile Tile
+		public override ETiles Tile
 		{
 			get { return ItemType.Tile(); }
 		}

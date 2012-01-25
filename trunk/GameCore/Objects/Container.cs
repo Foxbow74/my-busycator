@@ -1,4 +1,5 @@
-﻿using Graphics;
+﻿using System;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -6,16 +7,21 @@ namespace GameCore.Objects
 	{
 	}
 
-	public class Chest:Container
+	public class Chest : Container, ICanbeOpened
 	{
-		public override Tile Tile
+		public override ETiles Tile
 		{
-			get { return Tiles.ChestTile; }
+			get { return ETiles.CHEST; }
 		}
 
 		public override string Name
 		{
 			get { return "сундук"; }
+		}
+
+		public bool IsClosed
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

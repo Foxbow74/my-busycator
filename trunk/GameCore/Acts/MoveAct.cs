@@ -1,7 +1,7 @@
-﻿using Common.Messages;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
+using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
-using Graphics;
 
 namespace GameCore.Acts
 {
@@ -29,7 +29,7 @@ namespace GameCore.Acts
 				var o = mapCell.Object;
 				if (o == null)
 				{
-					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
+					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, mapCell.TerrainAttribute.DisplayName));
 				}
 				else
 				{
@@ -37,7 +37,7 @@ namespace GameCore.Acts
 					{
 						o = mapCell.ResolveFakeItem((FakeItem)o);
 					}
-					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, o.Name));
+					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, o.Name));
 				}
 
 				if (isAvatar)
@@ -47,7 +47,7 @@ namespace GameCore.Acts
 			}
 			else
 			{
-				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
+				if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "неа, " + mapCell.TerrainAttribute.DisplayName));
 			}
 		}
 	}

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using Common.Messages;
-using Graphics;
+using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
@@ -19,20 +19,29 @@ namespace RGL1.UIBlocks
 
 		void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if(_message is TextMessage)
+			if (_message is SimpleTextMessage)
 			{
-				var tm = (TextMessage) _message;
+				var tm = (SimpleTextMessage)_message;
+				var tp = new TextPortion(tm.Text, null);
+				m_portions.Add(tp);
+				tp.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Fonts.Font, 0);
+				m_lines.AddRange(tp.TextLines);
+			}
+			else if (_message is TextMessage)
+			{
+				var tm = (TextMessage)_message;
 				m_portions.Add(tm.Text);
-				tm.Text.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Tile.Font, 0);
+				tm.Text.SplitByLines((ContentRectangle.Width - 1) * Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
+			
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
 			
-			var lineHeight = Tile.Font.MeasureString("!g").Y;
+			var lineHeight = Fonts.Font.MeasureString("!g").Y;
 
 			var height = (ContentRectangle.Height - 1) * Tile.Size;
 			var y = height - m_lines.Count*lineHeight + Tile.Size/2;
@@ -62,7 +71,7 @@ namespace RGL1.UIBlocks
 //- Да, - сказал старик. - А вот мы верим. Правда?";
 
 //            var highlights = new Dictionary<string, Color> { { "Старик", Color.Crimson }, { "он", Color.Green } };
-//            DrawText(new TextPortion(str, highlights), _spriteBatch, Tile.Font, Color.White, 0);
+//            DrawText(new TextPortion(str, highlights), _spriteBatch, Fonts.Font, Color.White, 0);
 
 			_spriteBatch.End();
 		}

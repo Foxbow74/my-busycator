@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 
-namespace Graphics
+namespace GameCore.Misc
 {
 	public class Point
 	{
@@ -37,9 +36,9 @@ namespace Graphics
 		{
 			get
 			{
-				for (int i = -1; i <= 1; ++i)
+				for (var i = -1; i <= 1; ++i)
 				{
-					for(int j=-1;j<=1;++j)
+					for(var j=-1;j<=1;++j)
 					{
 						if(i==0 && j==0) continue;
 						yield return new Point(X+i,Y+j);
@@ -129,72 +128,37 @@ namespace Graphics
 			var onX = lx >= ly;
 			var max = onX ? lx : ly;
 			var min = onX ? ly : lx;
-
-			if (lx == 0) lx = 1;
-			if (ly == 0) ly = 1;
-
-
-			var dC = Math.Round(onX ? ((double)lx / ly) : ((double)ly / lx));
-			var dD = onX ? lx % ly : ly % lx;
-
 			var sx = Math.Sign(_point.X - X);
 			var sy = Math.Sign(_point.Y - Y);
-
-			//var s = onX?sx:sy;
 
 			var a = 0;
 
 			if (onX)
 			{
 				var j = Y;
-				for (int i = X; i != _point.X; i += sx)
+				for (var i = X; i != _point.X; i += sx)
 				{
 					yield return new Point(i, j);
 					a += min;
-					if (a >= max)
-					{
-						j += sy;
-						a = a % max;
-					}
+					if (a < max) continue;
+					j += sy;
+					a = a % max;
 				}
 			}
 			else
 			{
 				var i = X;
-				for (int j = Y; j != _point.Y; j += sy)
+				for (var j = Y; j != _point.Y; j += sy)
 				{
 					yield return new Point(i, j);
 					a += min;
-					if (a >= max)
-					{
-						i += sx;
-						a = a % max;
-					}
+					if (a < max) continue;
+					i += sx;
+					a = a % max;
 				}
 			}
 
 			yield return _point;
-		}
-
-		public float GetDistanceToVector(Point _point)
-		{
-			var lineVector = new Vector2(_point.X,_point.Y);
-			lineVector.Normalize();
-
-			var myVector = new Vector2(X, Y);
-
-			float distanceAlongLine = Vector2.Dot(myVector, lineVector) - Vector2.Dot(Vector2.Zero, lineVector);
-			Vector2 nearestPoint;
-			if (distanceAlongLine < 0)
-			{
-				nearestPoint = Vector2.Zero;
-			}
-			else
-			{
-				nearestPoint = distanceAlongLine * lineVector;
-			}
-
-			return Vector2.Distance(nearestPoint, myVector);
 		}
 	}
 }

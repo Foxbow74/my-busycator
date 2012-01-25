@@ -1,7 +1,7 @@
 ﻿using System;
-using Common.Messages;
 using GameCore.Acts;
-using Graphics;
+using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
@@ -24,6 +24,9 @@ namespace GameCore.Creatures
 				case ECommands.TAKE:
 					m_nextAct = new TakeAct();
 					break;
+				case ECommands.OPEN:
+					m_nextAct = new OpenAct();
+					break;
 				default:
 					throw new ArgumentOutOfRangeException("_command");
 			}
@@ -42,9 +45,9 @@ namespace GameCore.Creatures
 			return m_nextAct;
 		}
 
-		public override Tile Tile
+		public override ETiles Tile
 		{
-			get { return Tiles.Avatar; }
+			get { return ETiles.AVATAR; }
 		}
 
 		public override string Name

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Common
+namespace GameCore.Misc
 {
 	public static class Util
 	{

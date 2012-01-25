@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using Graphics;
+using GameCore.Misc;
 using Object = GameCore.Objects.Object;
 
 namespace GameCore

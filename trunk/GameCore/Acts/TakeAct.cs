@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Messages;
 using GameCore.Creatures;
+using GameCore.Messages;
 using GameCore.Objects;
-using Graphics;
-using MS.Internal.Xml.XPath;
-using Object = GameCore.Objects.Object;
 
 namespace GameCore.Acts
 {
@@ -24,7 +21,7 @@ namespace GameCore.Acts
 			var o = mapCell.Object;
 			if(o==null)
 			{
-				if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "взять что?"));
+				if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "взять что?"));
 			}
 			else if(o is Container)
 			{
@@ -37,11 +34,11 @@ namespace GameCore.Acts
 
 				if (intelligent is Avatar)
 				{
-					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, o + " взят."));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, o + " взят."));
 				}
 				else
 				{
-					MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, _creatures + " взял " + o));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creatures + " взял " + o));
 				}
 			}
 			else
@@ -53,7 +50,7 @@ namespace GameCore.Acts
 
 	public class OpenAct:Act
 	{
-		public OpenAct(int _takeTicks) : base(_takeTicks)
+		public OpenAct() : base(40)
 		{
 		}
 
@@ -61,33 +58,37 @@ namespace GameCore.Acts
 		{
 			var mapCell = _world.Map.GetMapCell(_creatures.Coords);
 
-			var list=new List<Object>();
+			var list=new List<MapCell>();
 			var o = mapCell.Object;
 			if (o == null)
 			{
-				list.AddRange(_creatures.Coords.NearestPoints.Select(_point => _world.Map.GetMapCell(_point).Object).Where(_o => _o!=null));
+				list.AddRange(_creatures.Coords.NearestPoints.Select(_point => _world.Map.GetMapCell(_point)).Where(_cell => _cell.Object != null && _cell.Object is ICanbeOpened && ((ICanbeOpened)_cell.Object).IsClosed));
 				if(list.Count==0)
 				{
-					if (!_silence) MessageManager.SendMessage(this, new TextMessage(EMessageType.INFO, "открыть что?"));	
+					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "открыть что?"));	
 					return;
 				}
 				if(list.Count==1)
 				{
-					
+					Open(list[0]);
 				}
-				else 
-				foreach (var cell in )
+				else
 				{
-					if(cell.Object!=null);
+					//foreach (var cell in)
+					//{
+					//    if (cell.Object != null) ;
+					//}
 				}
-				
-
-				
 			}
 			else
 			{
 				
 			}
+		}
+
+		private void Open(MapCell _mapCell)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

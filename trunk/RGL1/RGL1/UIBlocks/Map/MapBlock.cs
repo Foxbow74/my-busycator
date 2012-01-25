@@ -1,12 +1,11 @@
 ﻿using System.Linq;
-using Common.Messages;
 using GameCore;
 using GameCore.Creatures;
-using Graphics;
+using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RGL1.UIBlocks
+namespace RGL1.UIBlocks.Map
 {
 	partial class MapBlock:UIBlock
 	{
@@ -70,19 +69,19 @@ namespace RGL1.UIBlocks
 
 				if (mapCell.Object != null)
 				{
-					tile = mapCell.Object.Tile;
+					tile = mapCell.Object.Tile.GetTile();
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 				}
 
 				if (mapCell.Creature != null)
 				{
-					tile = mapCell.Creature.Tile;
+					tile = mapCell.Creature.Tile.GetTile();
 					color = Color.Multiply(tile.Color, visibility * 1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 					if (mapCell.Creature is Monster)
 					{
-						_spriteBatch.DrawString(Tile.SmallFont, ((Monster)mapCell.Creature).NN, new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*Tile.Size, Microsoft.Xna.Framework.Color.White);
+						_spriteBatch.DrawString(Fonts.SmallFont, ((Monster)mapCell.Creature).NN, new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*Tile.Size, Color.White);
 					}
 				}
 

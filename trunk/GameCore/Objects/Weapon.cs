@@ -1,4 +1,4 @@
-using Graphics;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -8,7 +8,13 @@ namespace GameCore.Objects
 
 	public class Axe : Weapon
 	{
-		public override Tile Tile { get { return Tiles.Axe; } }
+		public override ETiles Tile
+		{
+			get
+			{
+				return ETiles.AXE;
+			}
+		}
 
 		public override string Name
 		{
@@ -18,7 +24,7 @@ namespace GameCore.Objects
 
 	public class Sword : Weapon
 	{
-		public override Tile Tile { get { return Tiles.SwordTile; } }
+		public override ETiles Tile { get { return ETiles.SWORD; } }
 
 		public override string Name
 		{

@@ -1,4 +1,4 @@
-﻿using Graphics;
+﻿using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -8,7 +8,7 @@ namespace GameCore.Objects
 		{
 		}
 
-		public abstract Tile Tile { get; }
+		public abstract ETiles Tile { get; }
 		public abstract string Name { get; }
 
 		public override string ToString()

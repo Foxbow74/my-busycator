@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
-using Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -27,7 +25,7 @@ namespace RGL1.UIBlocks
 			{
 				var color = m_color * m_fog;
 				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
-				Tiles.FogTile.DrawAtCell(_spriteBatch, _x, _y);
+				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y);
 			}
 
 			public bool UpdateFog(float _d)

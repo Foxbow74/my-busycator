@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using Graphics;
-using Microsoft.Xna.Framework;
-
-namespace Common.Messages
+﻿namespace GameCore.Messages
 {
 	public enum EMessageType
 	{

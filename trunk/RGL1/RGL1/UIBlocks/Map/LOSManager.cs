@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Graphics;
+using GameCore;
+using GameCore.Misc;
 
-namespace GameCore
+namespace RGL1.UIBlocks.Map
 {
 	public class CColor
 	{

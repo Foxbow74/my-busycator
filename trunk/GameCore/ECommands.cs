@@ -3,6 +3,7 @@
 	public enum ECommands
 	{
 		NONE,
-		TAKE
+		TAKE,
+		OPEN
 	}
 }
