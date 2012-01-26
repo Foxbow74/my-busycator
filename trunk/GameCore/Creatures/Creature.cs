@@ -1,13 +1,10 @@
-﻿#region
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using GameCore.Acts;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Creatures
 {
@@ -75,26 +72,6 @@ namespace GameCore.Creatures
 
 		public int Luck { get; protected set; }
 
-		public Act NextAct { get; protected set; }
-
-		public void DoAct(Act _act)
-		{
-			_act.Do(this, m_silence);
-			BusyTill = World.TheWorld.WorldTick + _act.TakeTicks * Speed;
-			Turn++;
-			ActDone();
-		}
-
-		protected virtual void ActDone()
-		{
-			NextAct = null;
-
-			if (this == World.TheWorld.Avatar)
-			{
-				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
-			}
-		}
-
 		public MapBlock MapBlock
 		{
 			get { return World.TheWorld.Map[m_inBlock]; }
@@ -105,9 +82,66 @@ namespace GameCore.Creatures
 			get { return Map.GetMapCell(Coords); }
 		}
 
+		#region Act functionality
+
+		private readonly Queue<Act> m_actPool = new Queue<Act>();
+
+		public void AddActToPool(Act _act)
+		{
+			m_actPool.Enqueue(_act);
+		}
+
+		public Act NextAct
+		{
+			get
+			{
+				while (m_actPool.Count>0 && m_actPool.Peek().IsCancelled)
+				{
+					m_actPool.Dequeue();
+				}
+				return m_actPool.Count == 0 ? null : m_actPool.Peek();
+			}
+		}
+
+		public EActResults ActResult { get; protected set; }
+
+		public EActResults DoAct(Act _act)
+		{
+			ActResult = _act.Do(this, m_silence);
+			var price = _act.TakeTicks*Speed;
+			switch (ActResult)
+			{
+				case EActResults.NOTHING_HAPPENS:
+					price /= 2;
+					break;
+				case EActResults.DONE:
+					break;
+				case EActResults.FAIL:
+					price *= 2;
+					break;
+				case EActResults.NEED_ADDITIONAL_PARAMETERS:
+					return ActResult;
+			}
+			BusyTill = World.TheWorld.WorldTick + price;
+			Turn++;
+			ActDone();
+			return ActResult;
+		}
+
+		protected virtual void ActDone()
+		{
+			var act = m_actPool.Dequeue();
+			if (!act.IsCancelled && this == World.TheWorld.Avatar)
+			{
+				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
+			}
+		}
+
+		#endregion
+
 		public void MoveCommandReceived(int _dx, int _dy)
 		{
-			NextAct = new MoveAct(new Point(_dx, _dy));
+			AddActToPool(new MoveAct(new Point(_dx, _dy)));
 		}
 
 		public void CommandReceived(ECommands _command)
@@ -115,10 +149,10 @@ namespace GameCore.Creatures
 			switch (_command)
 			{
 				case ECommands.TAKE:
-					NextAct = new TakeAct();
+					AddActToPool(new TakeAct());
 					break;
 				case ECommands.OPEN:
-					NextAct = new OpenAct();
+					AddActToPool(new OpenAct());
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("_command");
@@ -127,7 +161,6 @@ namespace GameCore.Creatures
 
 		public virtual void Thinking()
 		{
-			
 		}
 	}
 }

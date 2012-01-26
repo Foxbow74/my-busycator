@@ -12,7 +12,7 @@ namespace GameCore.Mapping
 {
 	public class Map
 	{
-		private const int ACTIVE_SIZE_HALF = 2;
+		private const int ACTIVE_SIZE_HALF = 4;
 
 		private readonly Dictionary<Point, MapBlock> m_blocks = new Dictionary<Point, MapBlock>();
 

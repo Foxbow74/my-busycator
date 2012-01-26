@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
@@ -17,7 +18,7 @@ namespace RGL1.UIBlocks.Map
 
 		private void UpdateFog()
 		{
-			var k = (World.TheWorld.WorldTick - m_lastFogUpdateWorldTick) / 10000.0f;
+			var k = (World.TheWorld.WorldTick - m_lastFogUpdateWorldTick)/10000.0f;
 			var pairs = m_foggedCells.ToArray();
 
 			foreach (var pair in pairs)
@@ -64,6 +65,11 @@ namespace RGL1.UIBlocks.Map
 					}
 				}
 			}
+		}
+
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		{
+			throw new NotImplementedException();
 		}
 
 		#region Nested type: FoggedCell

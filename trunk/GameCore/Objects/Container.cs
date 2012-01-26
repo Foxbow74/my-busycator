@@ -1,14 +1,29 @@
-﻿namespace GameCore.Objects
+﻿using System.Collections.Generic;
+using GameCore.Creatures;
+
+namespace GameCore.Objects
 {
 	public abstract class Container : Item
 	{
 		private ItemsCollection m_items;
 
-		public ItemsCollection Items
+		public ItemsCollection GetItems(Creature _creature)
 		{
-			get { return m_items ?? (m_items = new ItemsCollection()); }
+			if (m_items == null)
+			{
+				m_items = new ItemsCollection();
+				foreach (var item in GenerateItems(_creature))
+				{
+					m_items.Add(item);
+				}
+			}
+			return m_items;
 		}
 
+		protected virtual IEnumerable<Item> GenerateItems(Creature _creature)
+		{
+			yield break;
+		}
 	}
 
 	public enum LockType

@@ -13,8 +13,8 @@ namespace RGL1.UIBlocks
 {
 	internal abstract class UIBlock : IDisposable
 	{
+		protected static float m_lineHeight = 10;
 		protected readonly SpriteFont m_font;
-		protected readonly float m_lineHeight;
 
 		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color, SpriteFont _font = null)
 		{
@@ -24,13 +24,10 @@ namespace RGL1.UIBlocks
 			BlockFrame = _frame;
 			Color = _color;
 			Rectangle = _rectangle;
-			ContentRectangle = _rectangle;
-			if (_frame != null)
-				ContentRectangle = new Rectangle(_rectangle.Left + 1, _rectangle.Top + 1, _rectangle.Width - 2,
-				                                 _rectangle.Height - 2);
+			UpdateContentRectangle();
 		}
 
-		public Rectangle Rectangle { get; private set; }
+		public Rectangle Rectangle { get; protected set; }
 
 		public Rectangle ContentRectangle { get; protected set; }
 
@@ -46,6 +43,19 @@ namespace RGL1.UIBlocks
 
 		#endregion
 
+		protected void CloseTopBlock()
+		{
+			MessageManager.SendMessage(this, new SystemMessage(SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK));
+		}
+
+		protected void UpdateContentRectangle()
+		{
+			if (BlockFrame != null)
+			{
+				ContentRectangle = new Rectangle(Rectangle.Left + 1, Rectangle.Top + 1, Rectangle.Width - 2, Rectangle.Height - 2);
+			}
+		}
+
 		public virtual void DrawBackground(SpriteBatch _spriteBatch)
 		{
 			this.Clear(_spriteBatch, Color.Black);
@@ -57,7 +67,7 @@ namespace RGL1.UIBlocks
 				BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
 		}
 
-		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
+		internal void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, float _x, float _y)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
@@ -82,14 +92,14 @@ namespace RGL1.UIBlocks
 		}
 
 
-		protected void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent,
-		                        EAlignment _alignment)
+		internal void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent,
+		                       EAlignment _alignment)
 		{
 			DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
 		}
 
-		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber,
-		                         int _indent, EAlignment _alignment)
+		internal float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber,
+		                        int _indent, EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
@@ -139,9 +149,7 @@ namespace RGL1.UIBlocks
 		}
 
 
-		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
-		{
-		}
+		public abstract void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers);
 
 		public abstract void DrawContent(SpriteBatch _spriteBatch);
 

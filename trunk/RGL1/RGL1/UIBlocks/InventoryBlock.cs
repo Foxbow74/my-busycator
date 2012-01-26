@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using GameCore;
-using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -28,7 +27,7 @@ namespace RGL1.UIBlocks
 			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, _spriteBatch, 2, 0, EAlignment.RIGHT);
 
 			var c = 'A';
-			for (var index = 0; index < inventory.Items.Count; index++)
+			for (var index = 0; index < inventory.Count; index++)
 			{
 				var item = inventory.Items[index];
 				var s = new string((char) (c + index), 1);
@@ -54,7 +53,7 @@ namespace RGL1.UIBlocks
 			if (_modifiers != EKeyModifiers.NONE) return;
 			if (_key == ConsoleKey.Escape)
 			{
-				MessageManager.SendMessage(this, new SystemMessage(SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK));
+				CloseTopBlock();
 			}
 		}
 	}

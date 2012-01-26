@@ -91,7 +91,7 @@ namespace GameCore.Mapping
 
 		public Thing ResolveFakeItem(Creature _creature)
 		{
-			var o = ((FakeThing)Thing).Resolve(_creature);
+			var o = ((FakeThing) Thing).Resolve(_creature);
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
 			Block.Objects.Add(new Tuple<Thing, Point>(o, m_localPoint));
 			Thing = o;

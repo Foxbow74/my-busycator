@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -16,7 +15,7 @@ namespace GameCore.Acts
 		{
 		}
 
-		public override void Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature, bool _silence)
 		{
 			var intelligent = (Intelligent) _creature;
 
@@ -29,7 +28,7 @@ namespace GameCore.Acts
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "взять что?"));
 				}
-				return;
+				return EActResults.NOTHING_HAPPENS;
 			}
 			mapCell.RemoveObjectFromBlock();
 			intelligent.ObjectTaken((Item) thing);
@@ -42,6 +41,7 @@ namespace GameCore.Acts
 			{
 				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thing));
 			}
+			return EActResults.DONE;
 		}
 	}
 }

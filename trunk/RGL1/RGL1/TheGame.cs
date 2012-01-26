@@ -12,8 +12,6 @@ using RGL1.UIBlocks;
 
 #endregion
 
-using fbDeprofiler;
-
 namespace RGL1
 {
 	/// <summary>
@@ -50,8 +48,6 @@ namespace RGL1
 		private bool m_isAutoRepeateMode;
 		private EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
 
-		private DateTime m_lastUpdate;
-
 		private MainBlock m_mainBlock;
 		private DateTime m_moveKeyHoldedSince;
 
@@ -68,10 +64,43 @@ namespace RGL1
 
 			Content.RootDirectory = "Content";
 
-			//DeProfiler.Run();
-
 			m_graphics = new GraphicsDeviceManager(this);
-			if (!InitGraphicsMode(1024, 768, false)) Exit();
+			if (!InitGraphicsMode(800 - Tile.Size*2, 600 - Tile.Size*2)) Exit();
+		}
+
+		private bool InitGraphicsMode(int _width, int _height)
+		{
+			_width = (int) Math.Round((decimal) _width/Tile.Size)*Tile.Size;
+			_height = (int) Math.Round((decimal) _height/Tile.Size)*Tile.Size;
+
+			m_graphics.PreferredBackBufferWidth = _width;
+			m_graphics.PreferredBackBufferHeight = _height;
+
+			Window.AllowUserResizing = true;
+			Window.ClientSizeChanged += WindowClientSizeChanged;
+
+			return true;
+		}
+
+		private void WindowClientSizeChanged(object _sender, EventArgs _e)
+		{
+			var blocks = new Stack<UIBlock>();
+			do
+			{
+				var pop = m_uiBlocks.Pop();
+				if (pop is MainBlock)
+				{
+					m_mainBlock = new MainBlock(GraphicsDevice);
+					pop = m_mainBlock;
+				}
+				blocks.Push(pop);
+			} while (m_uiBlocks.Count > 0);
+
+			do
+			{
+				var pop = blocks.Pop();
+				m_uiBlocks.Push(pop);
+			} while (blocks.Count > 0);
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
@@ -100,43 +129,15 @@ namespace RGL1
 						throw new ArgumentOutOfRangeException();
 				}
 			}
-		}
-
-		private bool InitGraphicsMode(int _width, int _height, bool _fullScreen)
-		{
-			return true;
-			_width = (int) Math.Round((decimal) _width/Tile.Size)*Tile.Size;
-			_height = (int) Math.Round((decimal) _height/Tile.Size)*Tile.Size;
-
-			if (_fullScreen == false)
+			else if (_message is SelectItemsMessage)
 			{
-				if ((_width <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width)
-				    && (_height <= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height))
-				{
-					m_graphics.PreferredBackBufferWidth = _width;
-					m_graphics.PreferredBackBufferHeight = _height;
-					m_graphics.IsFullScreen = false;
-					m_graphics.ApplyChanges();
-					return true;
-				}
+				var mess = (SelectItemsMessage) _message;
+				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemsCollection, mess.Act));
 			}
-			else
+			else if (_message is AskDirectionMessage)
 			{
-				var dms = GraphicsAdapter.DefaultAdapter.SupportedDisplayModes
-					.Where(_mode => _mode.Width == _width && _mode.Height == _height);
-				var dm = dms.FirstOrDefault();
-
-				if (dm != default(DisplayMode))
-				{
-					m_graphics.PreferredBackBufferWidth = _width;
-					m_graphics.PreferredBackBufferHeight = _height;
-					m_graphics.PreferredBackBufferFormat = dm.Format;
-					m_graphics.IsFullScreen = true;
-					m_graphics.ApplyChanges();
-					return true;
-				}
+				//wefw
 			}
-			return false;
 		}
 
 		/// <summary>
@@ -147,27 +148,13 @@ namespace RGL1
 		{
 			TileHelper.Init(Content);
 			Fonts.Init(Content);
-
 			World.LetItBeeee();
 
 			m_mainBlock = new MainBlock(GraphicsDevice);
-
 			m_uiBlocks.Push(m_mainBlock);
 
-			// Create a new SpriteBatch, which can be used to draw textures.
 			GraphicsDevice.Clear(Color.Orange);
-
-			//var pixels =
-			//    new Color[
-			//        GraphicsDevice.PresentationParameters.BackBufferWidth*GraphicsDevice.PresentationParameters.BackBufferHeight];
-			//m_sceneTexture = new Texture2D(GraphicsDevice, GraphicsDevice.PresentationParameters.BackBufferWidth,
-			//                               GraphicsDevice.PresentationParameters.BackBufferHeight);
-			//GraphicsDevice.GetBackBufferData(pixels);
-			//m_sceneTexture.SetData(pixels);
-
-
 			m_spriteBatch = new SpriteBatch(GraphicsDevice);
-			// TODO: use this.Content to load your game content here
 		}
 
 		/// <summary>
@@ -257,16 +244,17 @@ namespace RGL1
 				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey) pressedKey, m_keyModifiers));
 			}
 
-			if (m_pressed.Count > 0 && World.TheWorld.Avatar.NextAct == null)
+			if (m_pressed.Count > 0)
 			{
-				var tuple = m_pressed.Dequeue();
-				m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
+				if (m_uiBlocks.Peek() != m_mainBlock || World.TheWorld.Avatar.NextAct == null)
+				{
+					var tuple = m_pressed.Dequeue();
+					m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
+				}
 			}
 
-			//if ((DateTime.Now - m_lastUpdate).TotalMilliseconds>10)
+			if (m_uiBlocks.Peek() == m_mainBlock)
 			{
-				//Debug.WriteLine((DateTime.Now - m_lastUpdate).TotalMilliseconds);
-				m_lastUpdate = DateTime.Now;
 				World.TheWorld.GameUpdated();
 			}
 

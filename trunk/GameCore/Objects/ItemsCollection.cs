@@ -7,19 +7,29 @@ namespace GameCore.Objects
 	{
 		private readonly List<Item> m_items = new List<Item>();
 
-		public List<Item> Items
+		public Item[] Items
 		{
-			get { return m_items; }
+			get { return m_items.ToArray(); }
+		}
+
+		public int Count
+		{
+			get { return m_items.Count; }
+		}
+
+		public bool Any
+		{
+			get { return m_items.Count > 0; }
 		}
 
 		public void Add(Item _item)
 		{
-			Items.Add(_item);
+			m_items.Add(_item);
 		}
 
 		public void Remove(Item _item)
 		{
-			if (!Items.Remove(_item))
+			if (!m_items.Remove(_item))
 			{
 				throw new ApplicationException("Такого предмета в инвентаре нет.");
 			}

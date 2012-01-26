@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -7,7 +8,6 @@ namespace GameCore.Objects
 {
 	public class Chest : Container, ICanbeOpened
 	{
-
 		public Chest()
 		{
 			LockType = LockType.SIMPLE;
@@ -27,33 +27,28 @@ namespace GameCore.Objects
 
 		#region ICanbeOpened Members
 
-		public bool IsClosed
-		{
-			get
-			{
-				switch (LockType)
-				{
-					case LockType.OPEN:
-						return false;
-					case LockType.SIMPLE:
-						return true;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-			}
-		}
-
-		public void Open(Creature _creature, MapCell _mapCell)
+		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			LockType = LockType.OPEN;
-			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
-			for (var i = 0; i < cnt; i++)
+			var items = GetItems(_creature);
+			if (!items.Any)
 			{
-				Items.Add((Item)MapBlockGenerator.GenerateFakeItem(_creature.MapBlock).Resolve(_creature));
+				if (!_silence) MessageManager.SendMessage(this, "пусто");
+				return EActResults.FAIL;
 			}
-			MessageManager.SendMessage(this, new SelectItemsMessage(Items));
+			MessageManager.SendMessage(this, new SelectItemsMessage(items, _creature.NextAct));
+			return EActResults.NEED_ADDITIONAL_PARAMETERS;
 		}
 
 		#endregion
+
+		protected override IEnumerable<Item> GenerateItems(Creature _creature)
+		{
+			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
+			for (var i = 0; i < cnt; i++)
+			{
+				yield return (Item) MapBlockGenerator.GenerateFakeItem(_creature.MapBlock).Resolve(_creature);
+			}
+		}
 	}
 }

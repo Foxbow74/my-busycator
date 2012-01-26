@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 
@@ -10,8 +11,7 @@ namespace GameCore.Objects
 {
 	internal interface ICanbeOpened
 	{
-		bool IsClosed { get; }
-		void Open(Creature _creature, MapCell _mapCell);
+		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
 	}
 
 	internal class Door : Thing, ICanbeOpened
@@ -28,12 +28,7 @@ namespace GameCore.Objects
 
 		#region ICanbeOpened Members
 
-		public bool IsClosed
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public void Open(Creature _creature, MapCell _mapCell)
+		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			throw new NotImplementedException();
 		}

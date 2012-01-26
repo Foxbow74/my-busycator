@@ -1,6 +1,8 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
+using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,7 +18,7 @@ namespace RGL1.UIBlocks
 		private readonly List<TextPortion> m_portions = new List<TextPortion>();
 
 		public MessageBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.GoldFrame, Color.Yellow)
+			: base(_rectangle, null, Color.Yellow)
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}
@@ -38,6 +40,11 @@ namespace RGL1.UIBlocks
 				tm.Text.SplitByLines((ContentRectangle.Width - 1)*Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
+		}
+
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		{
+			throw new NotImplementedException();
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)

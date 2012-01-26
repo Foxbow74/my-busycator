@@ -1,9 +1,5 @@
-﻿#region
-
-using GameCore.Misc;
+﻿using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Creatures
 {

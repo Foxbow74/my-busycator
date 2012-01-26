@@ -26,14 +26,15 @@ namespace RGL1.UIBlocks
 			var width = ContentRectangle.Width;
 			var height = ContentRectangle.Height;
 
-			const int messagesHeight = 10;
-			const int statWidth = 15;
+			const int messagesHeight = 3;
+			const int statHeight = 2;
 
-			m_stats =
-				new StatsBlock(new Rectangle(width - statWidth, ContentRectangle.Top, statWidth, height - messagesHeight + 1));
-			m_messages = new MessageBlock(new Rectangle(ContentRectangle.Left, height - messagesHeight, width, messagesHeight));
+			m_messages = new MessageBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight));
+			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight));
 
-			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, Rectangle.Top, m_stats.Rectangle.Left + 1, m_messages.Rectangle.Top + 1));
+			m_map =
+				new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width,
+				                           Rectangle.Height - m_messages.Rectangle.Height - m_stats.Rectangle.Height));
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

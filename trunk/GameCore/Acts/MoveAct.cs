@@ -19,11 +19,11 @@ namespace GameCore.Acts
 
 		public Point Delta { get; set; }
 
-		public override void Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature, bool _silence)
 		{
 			var pnt = _creature.Coords + Delta;
 
-			var isAvatar = _creature==World.TheWorld.Avatar;
+			var isAvatar = _creature == World.TheWorld.Avatar;
 
 			var mapCell = Map.GetMapCell(pnt);
 
@@ -34,7 +34,7 @@ namespace GameCore.Acts
 				var o = mapCell.Thing;
 				if (o == null)
 				{
-					if (!_silence)MessageManager.SendMessage(this, mapCell.TerrainAttribute.DisplayName);
+					if (!_silence) MessageManager.SendMessage(this, mapCell.TerrainAttribute.DisplayName);
 				}
 				else
 				{
@@ -49,10 +49,12 @@ namespace GameCore.Acts
 				{
 					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 				}
+				return EActResults.DONE;
 			}
 			else
 			{
-				if (!_silence)MessageManager.SendMessage(this, "неа, " + mapCell.TerrainAttribute.DisplayName);
+				if (!_silence) MessageManager.SendMessage(this, "неа, " + mapCell.TerrainAttribute.DisplayName);
+				return EActResults.NOTHING_HAPPENS;
 			}
 		}
 	}

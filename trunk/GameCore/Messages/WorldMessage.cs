@@ -1,4 +1,5 @@
-﻿using GameCore.Objects;
+﻿using GameCore.Acts;
+using GameCore.Objects;
 
 namespace GameCore.Messages
 {
@@ -37,11 +38,13 @@ namespace GameCore.Messages
 
 	public class SelectItemsMessage : AskMessage
 	{
-		public SelectItemsMessage(ItemsCollection _itemsCollection)
+		public SelectItemsMessage(ItemsCollection _itemsCollection, Act _act)
 		{
 			ItemsCollection = _itemsCollection;
+			Act = _act;
 		}
 
 		public ItemsCollection ItemsCollection { get; private set; }
+		public Act Act { get; private set; }
 	}
 }

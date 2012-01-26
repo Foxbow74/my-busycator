@@ -30,7 +30,7 @@ namespace GameCore.Creatures
 
 		public override void Thinking()
 		{
-			NextAct = new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1));
+			AddActToPool(new MoveAct(new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1)));
 		}
 	}
 }

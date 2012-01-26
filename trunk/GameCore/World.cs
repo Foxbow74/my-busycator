@@ -1,19 +1,15 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Acts;
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Messages;
-
-#endregion
 
 namespace GameCore
 {
 	public class World
 	{
-		public static World TheWorld { get; private set; }
-
 		/// <summary>
 		/// 	содержит список активных в данный момент существ
 		/// </summary>
@@ -27,7 +23,7 @@ namespace GameCore
 		public World()
 		{
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
-			Map = new Mapping.Map();
+			Map = new Map();
 
 			WorldTick = 0;
 
@@ -36,9 +32,11 @@ namespace GameCore
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
 
+		public static World TheWorld { get; private set; }
+
 		public long WorldTick { get; private set; }
 
-		public Mapping.Map Map { get; private set; }
+		public Map Map { get; private set; }
 
 		public Avatar Avatar { get; private set; }
 
@@ -58,8 +56,8 @@ namespace GameCore
 		{
 			m_activeCreatures.Clear();
 			m_activeCreatures.AddRange(
-				Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).OrderBy(
-					_creature => _creature.BusyTill));
+				Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).Union(new[] {Avatar}).Distinct().
+					OrderBy(_creature => _creature.BusyTill));
 		}
 
 		public void GameUpdated()
@@ -71,17 +69,12 @@ namespace GameCore
 				if (done.Contains(creature)) break;
 				done.Add(creature);
 
-				if (creature == null || creature.BusyTill > Avatar.BusyTill)
-				{
-					creature = Avatar;
-				}
-
-				if (creature==null)
+				if (creature == null)
 				{
 					throw new ApplicationException();
 				}
 
-				if(creature!=Avatar)
+				if (creature != Avatar && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS)
 				{
 					creature.Thinking();
 				}
@@ -94,9 +87,13 @@ namespace GameCore
 				}
 
 				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
-				creature.DoAct(act);
 
-				if (creature == Avatar) continue;
+				var actResult = creature.DoAct(act);
+
+				if (actResult == EActResults.NEED_ADDITIONAL_PARAMETERS)
+				{
+					return;
+				}
 
 				m_activeCreatures.Remove(creature);
 				var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > creature.BusyTill);

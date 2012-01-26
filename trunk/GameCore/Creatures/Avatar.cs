@@ -1,8 +1,5 @@
 ﻿#region
 
-using System;
-using GameCore.Acts;
-using GameCore.Messages;
 using GameCore.Misc;
 
 #endregion
@@ -11,7 +8,6 @@ namespace GameCore.Creatures
 {
 	public class Avatar : Intelligent
 	{
-
 		public Avatar() : base(Point.Zero, 100)
 		{
 			m_silence = false;

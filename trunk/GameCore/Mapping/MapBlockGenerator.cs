@@ -67,9 +67,9 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public static FakeThing GenerateFakeItem(MapBlock _block,  Random _random=null)
+		public static FakeThing GenerateFakeItem(MapBlock _block, Random _random = null)
 		{
-			if(_random==null)
+			if (_random == null)
 			{
 				_random = World.Rnd;
 			}

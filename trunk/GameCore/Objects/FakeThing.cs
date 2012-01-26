@@ -1,6 +1,7 @@
 #region
 
 using System;
+using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 
@@ -32,8 +33,6 @@ namespace GameCore.Objects
 			get { throw new NotImplementedException(); }
 		}
 
-		#region ICanbeOpened Members
-
 		public bool IsClosed
 		{
 			get
@@ -49,7 +48,9 @@ namespace GameCore.Objects
 			}
 		}
 
-		public void Open(Creature _creature, MapCell _mapCell)
+		#region ICanbeOpened Members
+
+		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			throw new ApplicationException();
 		}
