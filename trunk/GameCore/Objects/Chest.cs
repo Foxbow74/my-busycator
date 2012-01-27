@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -29,15 +30,13 @@ namespace GameCore.Objects
 
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
-			LockType = LockType.OPEN;
-			var items = GetItems(_creature);
-			if (!items.Any)
+			if (LockType != LockType.OPEN)
 			{
-				if (!_silence) MessageManager.SendMessage(this, "пусто");
-				return EActResults.FAIL;
+				if (!_silence) MessageManager.SendMessage(this, "готово");
+				LockType = LockType.OPEN;
+				return EActResults.DONE;
 			}
-			MessageManager.SendMessage(this, new SelectItemsMessage(items, _creature.NextAct));
-			return EActResults.NEED_ADDITIONAL_PARAMETERS;
+			throw new NotImplementedException();
 		}
 
 		#endregion

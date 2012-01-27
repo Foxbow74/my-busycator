@@ -1,12 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Mapping
 {
@@ -28,7 +25,7 @@ namespace GameCore.Mapping
 			Terrain = _block.Map[_inBlockCoords.X, _inBlockCoords.Y];
 			Thing = null;
 
-			if (_block.ObjectsExists)
+			if (_block.IsObjectsExists)
 			{
 				var tuple = _block.Objects.FirstOrDefault(_tuple => _tuple.Item2 == _inBlockCoords);
 				if (tuple != null)
@@ -70,21 +67,20 @@ namespace GameCore.Mapping
 			get
 			{
 				if (Creature != null) return 0f;
-				//if (Object != null) return 0f;
+				if(Thing!=null)
+				{
+					if(Thing is Door && ((Door) Thing).LockType != LockType.OPEN)
+					{
+						return 0f;
+					}
+				}
 				return TerrainAttribute.IsPassable;
 			}
 		}
 
 		public TerrainAttribute TerrainAttribute
 		{
-			get
-			{
-				if (m_terrainAttribute == null)
-				{
-					m_terrainAttribute = TerrainAttribute.GetAttribute(Terrain);
-				}
-				return m_terrainAttribute;
-			}
+			get { return m_terrainAttribute ?? (m_terrainAttribute = TerrainAttribute.GetAttribute(Terrain)); }
 		}
 
 		private MapBlock Block { get; set; }
@@ -103,6 +99,27 @@ namespace GameCore.Mapping
 			if (Thing == null) throw new ArgumentNullException();
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
 			Thing = null;
+		}
+
+		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)
+		{
+			if(Thing==null) yield break;
+			if (Thing.IsItem(this, _creature))
+			{
+				if (Thing is FakeThing)
+				{
+					ResolveFakeItem(_creature);
+				}
+				yield return new ThingDescriptor(Thing, WorldCoords, null);
+			}
+			if (Thing is Container && !Thing.IsClosed(this, _creature))
+			{
+				var container = (Container) Thing;
+				foreach (var item in container.GetItems(_creature).Items)
+				{
+					yield return new ThingDescriptor(item, WorldCoords, container);
+				}
+			}
 		}
 	}
 }

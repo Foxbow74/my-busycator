@@ -1,12 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Mapping
 {
@@ -31,7 +27,7 @@ namespace GameCore.Mapping
 
 		public ETerrains[,] Map { get; private set; }
 
-		public bool ObjectsExists
+		public bool IsObjectsExists
 		{
 			get { return m_objects != null && m_objects.Count > 0; }
 		}

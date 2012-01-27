@@ -54,6 +54,10 @@ namespace RGL1.UIBlocks
 			{
 				ContentRectangle = new Rectangle(Rectangle.Left + 1, Rectangle.Top + 1, Rectangle.Width - 2, Rectangle.Height - 2);
 			}
+			else
+			{
+				ContentRectangle = Rectangle;
+			}
 		}
 
 		public virtual void DrawBackground(SpriteBatch _spriteBatch)
@@ -119,7 +123,7 @@ namespace RGL1.UIBlocks
 					x += ContentRectangle.Width*Tile.Size - lineSize.X - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRectangle.Left*Tile.Size + ContentRectangle.Width*Tile.Size/2 - lineSize.X/2;
+					x += ContentRectangle.Width*Tile.Size/2 - lineSize.X/2;
 					break;
 			}
 

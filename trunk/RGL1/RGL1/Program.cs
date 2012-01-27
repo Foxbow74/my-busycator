@@ -24,7 +24,7 @@ namespace RGL1
 			}
 			catch (Exception exception)
 			{
-				File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "file.err"), exception.Message);
+				File.AppendAllText(Path.Combine(Environment.CurrentDirectory, "errorfile.txt"), exception.Message);
 			}
 		}
 	}

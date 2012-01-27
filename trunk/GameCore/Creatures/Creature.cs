@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -161,6 +162,31 @@ namespace GameCore.Creatures
 
 		public virtual void Thinking()
 		{
+		}
+
+
+		/// <summary>
+		/// Возвращает шмотк
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
+		{
+			return GetBackPackItems().Union(GetNotTakenAvailableItems(_intersect));
+		}
+
+		public IEnumerable<ThingDescriptor> GetNotTakenAvailableItems(IEnumerable<Point> _intersect = null)
+		{
+			var points = Coords.NearestPoints;
+			if (_intersect != null && _intersect.Any())
+			{
+				points = points.Intersect(_intersect);
+			}
+			return points.Select(Map.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItems(this));
+		}
+
+		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
+		{
+			yield break;
 		}
 	}
 }

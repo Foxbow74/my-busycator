@@ -1,20 +1,14 @@
-﻿#region
-
-using System;
+﻿using System;
 using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RGL1.UIBlocks.Map;
 
-#endregion
-
 namespace RGL1.UIBlocks
 {
 	internal class MainBlock : UIBlock
 	{
-		private readonly GraphicsDevice m_device;
-
 		private readonly UIBlock m_map;
 		private readonly UIBlock m_messages;
 		private readonly UIBlock m_stats;
@@ -22,9 +16,6 @@ namespace RGL1.UIBlocks
 		public MainBlock(GraphicsDevice _device)
 			: base(new Rectangle(0, 0, _device.Viewport.Width/Tile.Size, _device.Viewport.Height/Tile.Size), null, Color.White)
 		{
-			m_device = _device;
-			var width = ContentRectangle.Width;
-			var height = ContentRectangle.Height;
 
 			const int messagesHeight = 3;
 			const int statHeight = 2;

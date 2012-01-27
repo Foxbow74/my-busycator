@@ -1,5 +1,3 @@
-#region
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RGL1.UIBlocks;
 
-#endregion
-
 namespace RGL1
 {
-	/// <summary>
-	/// 	This is the main type for your game
-	/// </summary>
 	public class TheGame : Game
 	{
 		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
@@ -129,10 +122,10 @@ namespace RGL1
 						throw new ArgumentOutOfRangeException();
 				}
 			}
-			else if (_message is SelectItemsMessage)
+			else if (_message is AskSelectThingsMessage)
 			{
-				var mess = (SelectItemsMessage) _message;
-				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemsCollection, mess.Act));
+				var mess = (AskSelectThingsMessage) _message;
+				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act));
 			}
 			else if (_message is AskDirectionMessage)
 			{
@@ -297,7 +290,7 @@ namespace RGL1
 
 			var format = string.Format("тоя:{0} XY:{1}", m_fps, World.TheWorld.Avatar.Coords);
 
-			m_spriteBatch.WriteString(format, 1, 1, Color.White, Color.Gray, Fonts.Font);
+			m_spriteBatch.WriteString(format, 2, GraphicsDevice.Viewport.Height - 17, Color.White, Color.Gray, Fonts.Font);
 
 			m_spriteBatch.End();
 		}

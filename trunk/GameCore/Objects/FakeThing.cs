@@ -1,11 +1,7 @@
-#region
-
 using System;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
-
-#endregion
 
 namespace GameCore.Objects
 {
@@ -53,6 +49,11 @@ namespace GameCore.Objects
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			throw new ApplicationException();
+		}
+
+		public LockType LockType
+		{
+			get { throw new NotImplementedException(); }
 		}
 
 		#endregion

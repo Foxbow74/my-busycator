@@ -1,4 +1,5 @@
-﻿using GameCore.Acts;
+﻿using System.Collections.Generic;
+using GameCore.Acts;
 using GameCore.Objects;
 
 namespace GameCore.Messages
@@ -16,9 +17,16 @@ namespace GameCore.Messages
 
 		#endregion
 
-		public static WorldMessage Turn = new WorldMessage(EType.TURN);
-		public static WorldMessage AvatarTurn = new WorldMessage(EType.AVATAR_TURN);
-		public static WorldMessage AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
+		public static WorldMessage Turn { get; private set; }
+		public static WorldMessage AvatarTurn { get; private set; }
+		public static WorldMessage AvatarMove { get; private set; } 
+
+		static WorldMessage()
+		{
+			Turn = new WorldMessage(EType.TURN);
+			AvatarTurn = new WorldMessage(EType.AVATAR_TURN);
+			AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
+		}
 
 		public WorldMessage(EType _type)
 		{
@@ -30,21 +38,28 @@ namespace GameCore.Messages
 
 	public abstract class AskMessage : Message
 	{
+		protected AskMessage(Act _act)
+		{
+			Act = _act;
+		}
+		public Act Act { get; private set; }
 	}
 
 	public class AskDirectionMessage : AskMessage
 	{
+		public AskDirectionMessage(Act _act) : base(_act)
+		{
+		}
 	}
 
-	public class SelectItemsMessage : AskMessage
+	public class AskSelectThingsMessage : AskMessage
 	{
-		public SelectItemsMessage(ItemsCollection _itemsCollection, Act _act)
+		public AskSelectThingsMessage(IEnumerable<ThingDescriptor> _items, Act _act)
+			: base(_act)
 		{
-			ItemsCollection = _itemsCollection;
-			Act = _act;
+			ItemDescriptors = _items;
 		}
 
-		public ItemsCollection ItemsCollection { get; private set; }
-		public Act Act { get; private set; }
+		public IEnumerable<ThingDescriptor> ItemDescriptors { get; private set; }
 	}
 }

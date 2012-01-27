@@ -1,21 +1,19 @@
-﻿#region
-
-using System;
-using GameCore.Acts;
+﻿using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
-
-#endregion
 
 namespace GameCore.Objects
 {
 	internal interface ICanbeOpened
 	{
 		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
+		LockType LockType { get; }
 	}
 
 	internal class Door : Thing, ICanbeOpened
 	{
+		private LockType m_lockType = LockType.SIMPLE;
+
 		public override ETiles Tile
 		{
 			get { return ETiles.DOOR; }
@@ -30,7 +28,13 @@ namespace GameCore.Objects
 
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
-			throw new NotImplementedException();
+			m_lockType = LockType.OPEN;
+			return EActResults.DONE;
+		}
+
+		public LockType LockType
+		{
+			get { return m_lockType; }
 		}
 
 		#endregion

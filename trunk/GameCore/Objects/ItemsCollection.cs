@@ -31,7 +31,7 @@ namespace GameCore.Objects
 		{
 			if (!m_items.Remove(_item))
 			{
-				throw new ApplicationException("Такого предмета в инвентаре нет.");
+				throw new ApplicationException("Такого предмета нет.");
 			}
 		}
 	}

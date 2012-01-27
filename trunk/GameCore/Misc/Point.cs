@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 #endregion
 
@@ -9,7 +10,12 @@ namespace GameCore.Misc
 {
 	public class Point
 	{
-		public static Point Zero = new Point();
+		public static Point Zero { get; private set; }
+
+		static Point()
+		{
+			 Zero = new Point();
+		}
 
 		public Point(int _x, int _y)
 		{
@@ -44,10 +50,17 @@ namespace GameCore.Misc
 				{
 					for (var j = -1; j <= 1; ++j)
 					{
-						if (i == 0 && j == 0) continue;
 						yield return new Point(X + i, Y + j);
 					}
 				}
+			}
+		}
+
+		public IEnumerable<Point> AroundPoints
+		{
+			get 
+			{
+				return NearestPoints.Where(_point => _point != Zero);
 			}
 		}
 
