@@ -27,21 +27,21 @@ namespace GameCore.Acts
 					{
 						list.Add(cc.WorldCoords);
 					}
-					else if (cc.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.IsClosed(cc, _creature)).Any())
+					else if (cc.GetAllAvailableItems(_creature).Any(_descriptor => _descriptor.Thing.IsClosed(cc, _creature)))
 					{
 						list.Add(cc.WorldCoords);
 					}
 				}
-				if (_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.IsClosed(null, _creature)).Any())
+				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.IsClosed(null, _creature)))
 				{
 					list.Add(_creature.Coords);
 				}
 
-				var coords = list.Distinct();
+				var coords = list.Distinct().ToList();
 
 				if(GetParameter<Point>().Any())
 				{
-					coords = coords.Intersect(GetParameter<Point>());
+					coords = coords.Intersect(GetParameter<Point>()).ToList();
 				}
 
 				if (!coords.Any())
@@ -52,7 +52,7 @@ namespace GameCore.Acts
 				}
 				if (coords.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskDirectionMessage(this));
+					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
 				}
 				mapCell = Map.GetMapCell(coords.First());
 			}
@@ -72,7 +72,7 @@ namespace GameCore.Acts
 				var descriptors = list.Distinct();
 				if(GetParameter<ThingDescriptor>().Any())
 				{
-					descriptors = descriptors.Intersect(GetParameter<ThingDescriptor>());
+					descriptors = GetParameter<ThingDescriptor>().Intersect(descriptors);
 				}
 				if (descriptors.Count() > 1)
 				{

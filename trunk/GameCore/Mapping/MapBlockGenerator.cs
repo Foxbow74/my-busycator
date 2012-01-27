@@ -35,17 +35,21 @@ namespace GameCore.Mapping
 			_block.Map[3, 6] = ETerrains.WINDOW;
 
 			{
-				var cnt = rnd.Next(rnd.Next(40));
+				var cnt = rnd.Next(rnd.Next(70));
 				for (var i = 0; i < cnt; ++i)
 				{
 					var x = rnd.Next(MapBlock.SIZE);
 					var y = rnd.Next(MapBlock.SIZE);
-					_block.Map[x, y] = ETerrains.MUSHROOM;
+					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+					if (attr.IsPassable > 0)
+					{
+						_block.Map[x, y] = ETerrains.MUSHROOM;
+					}
 				}
 			}
 
 			{
-				var itmcnt = rnd.Next(rnd.Next(5));
+				var itmcnt = rnd.Next(rnd.Next(20));
 				for (var i = 0; i < itmcnt; ++i)
 				{
 					var x = rnd.Next(MapBlock.SIZE);

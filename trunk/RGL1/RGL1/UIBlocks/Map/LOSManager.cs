@@ -37,7 +37,7 @@ namespace RGL1.UIBlocks.Map
 
 			m_root = new LosCell(new CColor(64, 64, 64));
 			var alreadyDone = new Dictionary<Point, LosCell> {{Point.Zero, m_root}};
-			var radius = Math.Max(screenWidth, screenHeght)/2;
+			var radius = 20;// Math.Max(screenWidth, screenHeght) / 2;
 
 			const double dRo = Math.PI/1024;
 

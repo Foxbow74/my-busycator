@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Acts;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameCore.Messages
@@ -47,9 +48,12 @@ namespace GameCore.Messages
 
 	public class AskDirectionMessage : AskMessage
 	{
-		public AskDirectionMessage(Act _act)
+		public Point Point { get; private set; }
+
+		public AskDirectionMessage(Act _act, Point _point)
 			: base(_act)
 		{
+			Point = _point;
 		}
 	}
 

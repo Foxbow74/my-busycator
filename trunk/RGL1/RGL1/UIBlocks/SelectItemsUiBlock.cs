@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
@@ -18,7 +19,7 @@ namespace RGL1.UIBlocks
 			: base(_rectangle, Frame.GoldFrame, Color.DeepSkyBlue, Fonts.Font)
 		{
 			m_act = _act;
-			m_presenter = new ThingsPresenter(_items);
+			m_presenter = new ThingsPresenter(_items.ToList());
 			var count = m_presenter.Items.OfType<ThingDescriptorFromCollection>().Count();
 			var whereCnt = m_presenter.Items.OfType<WhereDescriptorFromCollection>().Count();
 			if (whereCnt > 1) count += whereCnt*2 - 1;
@@ -39,21 +40,29 @@ namespace RGL1.UIBlocks
 			if (_modifiers != EKeyModifiers.NONE) return;
 			if (_key == ConsoleKey.Escape)
 			{
-				var items = m_presenter.Items.OfType<ThingDescriptorFromCollection>().Where(_itemFromCollection => _itemFromCollection.IsChecked).Select(_collection => _collection.ThingDescriptor);
-				if (items.Any())
+				m_act.IsCancelled = true;
+				CloseTopBlock();
+				return;
+			}
+			
+			if (_key == ConsoleKey.Enter)
+			{
+				var items = m_presenter.Items.OfType<ThingDescriptorFromCollection>().Where(_itemFromCollection => _itemFromCollection.IsChecked).Select(_collection => _collection.ThingDescriptor).ToList();
+				if (items.Count>0)
 				{
 					foreach (var item in items)
 					{
 						m_act.AddParameter(item);
 					}
+					CloseTopBlock();
+					return;
 				}
-				else
-				{
-					m_act.IsCancelled = true;
-				}
-				CloseTopBlock();
+				m_act.IsCancelled = true;
 			}
-			m_presenter.KeysPressed(_key);
+			else
+			{
+				m_presenter.KeysPressed(_key);
+			}
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
@@ -75,10 +84,12 @@ namespace RGL1.UIBlocks
 	{
 		private readonly List<IDescriptorFromCollection> m_items = new List<IDescriptorFromCollection>();
 
-		public ThingsPresenter(IEnumerable<ThingDescriptor> _descriptors)
+		public ThingsPresenter(List<ThingDescriptor> _descriptors)
 		{
 			var key = ConsoleKey.A;
-			var containers = _descriptors.Select(_descriptor => _descriptor.Container).Distinct();
+			if (_descriptors == null) return;
+			
+			var containers = _descriptors.Select(_descriptor => _descriptor.Container).Distinct().ToList();
 			foreach (var container in containers)
 			{
 				var cntnr = container;
@@ -162,8 +173,8 @@ namespace RGL1.UIBlocks
 		{
 			get
 			{
-				var count = m_descriptors.Where(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode()).Count();
-				return (count>1?count.ToString():"") + " " + m_thingDescriptor.Thing.Name;
+				var count = m_descriptors.Count(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode());
+				return (count>1?count.ToString(CultureInfo.InvariantCulture):"") + " " + m_thingDescriptor.Thing.Name;
 			}
 		}
 

@@ -43,7 +43,7 @@ namespace GameCore.Acts
 					var coords = notTaken.Select(_descriptor => _descriptor.WorldCoords).Distinct();
 					if(coords.Count()>1)
 					{
-						MessageManager.SendMessage(this, new AskDirectionMessage(this));
+						MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
 					}
 					else
 					{

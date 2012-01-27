@@ -17,21 +17,6 @@ namespace RGL1
 		private readonly List<Keys> m_downKeys = new List<Keys>();
 		private readonly GraphicsDeviceManager m_graphics;
 
-		private readonly Keys[] m_keyModificators = new[]
-		                                            	{
-		                                            		Keys.RightShift, Keys.LeftShift, Keys.RightControl, Keys.LeftControl,
-		                                            		Keys.RightAlt, Keys.LeftAlt
-		                                            	};
-
-		private readonly Keys[] m_moveKeys = new[]
-		                                     	{
-		                                     		Keys.Up, Keys.Down, Keys.Left, Keys.Right, Keys.NumPad1, Keys.NumPad2,
-		                                     		Keys.NumPad3, Keys.NumPad4,
-		                                     		Keys.NumPad6, Keys.NumPad7, Keys.NumPad8, Keys.NumPad9, Keys.NumPad5, Keys.Home
-		                                     		, Keys.PageUp,
-		                                     		Keys.PageDown, Keys.End
-		                                     	};
-
 		private readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
 		private readonly Stack<UIBlock> m_uiBlocks = new Stack<UIBlock>();
 
@@ -129,7 +114,7 @@ namespace RGL1
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				//wefw
+				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage)_message));
 			}
 			else if(_message is AskHowMuchMessage)
 			{
@@ -185,7 +170,7 @@ namespace RGL1
 			                	: EKeyModifiers.NONE;
 
 
-			var downKeys = state.GetPressedKeys().Except(m_keyModificators).ToArray();
+			var downKeys = state.GetPressedKeys().Except(KeyHelper.KeyModificators).ToArray();
 
 			if (keyModifiers != m_keyModifiers) m_downKeys.Clear();
 
@@ -209,13 +194,13 @@ namespace RGL1
 
 			m_keyModifiers = keyModifiers;
 
-			if (m_downKeys.Except(m_moveKeys).Any() || pressedKeys.Any())
+			if (m_downKeys.Except(KeyHelper.MoveKeys).Any() || pressedKeys.Any())
 			{
 				m_isAutoRepeateMode = false;
 			}
 			else
 			{
-				if (m_downKeys.Intersect(m_moveKeys).Any())
+				if (m_downKeys.Intersect(KeyHelper.MoveKeys).Any())
 				{
 					var totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
 					if (m_isAutoRepeateMode)

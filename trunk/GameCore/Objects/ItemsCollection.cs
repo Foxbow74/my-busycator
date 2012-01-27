@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace GameCore.Objects
@@ -29,7 +30,8 @@ namespace GameCore.Objects
 
 		public void Remove(Item _item)
 		{
-			if (!m_items.Remove(_item))
+			var first = m_items.FirstOrDefault(_item1 => _item1.GetHashCode() == _item.GetHashCode());
+			if (!m_items.Remove(first))
 			{
 				throw new ApplicationException("Такого предмета нет.");
 			}

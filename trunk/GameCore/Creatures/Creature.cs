@@ -140,9 +140,9 @@ namespace GameCore.Creatures
 
 		#endregion
 
-		public void MoveCommandReceived(int _dx, int _dy)
+		public void MoveCommandReceived(Point _dPoint)
 		{
-			AddActToPool(new MoveAct(new Point(_dx, _dy)));
+			AddActToPool(new MoveAct(_dPoint));
 		}
 
 		public void CommandReceived(ECommands _command)
