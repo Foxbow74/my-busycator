@@ -15,6 +15,7 @@ namespace GameCore.Creatures
 
 		public void ObjectTaken(Item _item)
 		{
+			m_backPack.GetItems(this).Add(_item);
 		}
 
 		public override IEnumerable<ThingDescriptor> GetBackPackItems()

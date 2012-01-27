@@ -42,7 +42,10 @@ namespace RGL1.UIBlocks
 				var items = m_presenter.Items.OfType<ThingDescriptorFromCollection>().Where(_itemFromCollection => _itemFromCollection.IsChecked).Select(_collection => _collection.ThingDescriptor);
 				if (items.Any())
 				{
-					m_act.AddParameter(items);
+					foreach (var item in items)
+					{
+						m_act.AddParameter(item);
+					}
 				}
 				else
 				{
@@ -157,7 +160,11 @@ namespace RGL1.UIBlocks
 
 		public string Text
 		{
-			get { return m_descriptors.Where(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode()).Count() + " " + m_thingDescriptor.Thing.Name; }
+			get
+			{
+				var count = m_descriptors.Where(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode()).Count();
+				return (count>1?count.ToString():"") + " " + m_thingDescriptor.Thing.Name;
+			}
 		}
 
 		public void DrawLine(int _line, SpriteBatch _spriteBatch, SelectItemsUiBlock _selectItemsUiBlock)

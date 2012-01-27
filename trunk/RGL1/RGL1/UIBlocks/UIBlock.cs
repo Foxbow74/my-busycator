@@ -1,17 +1,13 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-#endregion
-
 namespace RGL1.UIBlocks
 {
-	internal abstract class UIBlock : IDisposable
+	abstract class UIBlock : IDisposable
 	{
 		protected static float m_lineHeight = 10;
 		protected readonly SpriteFont m_font;

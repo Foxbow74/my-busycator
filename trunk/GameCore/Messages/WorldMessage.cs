@@ -47,9 +47,24 @@ namespace GameCore.Messages
 
 	public class AskDirectionMessage : AskMessage
 	{
-		public AskDirectionMessage(Act _act) : base(_act)
+		public AskDirectionMessage(Act _act)
+			: base(_act)
 		{
 		}
+	}
+
+	public class AskHowMuchMessage : AskMessage
+	{
+		public AskHowMuchMessage(Act _act, ThingDescriptor _descriptor, int _total)
+			: base(_act)
+		{
+			Descriptor = _descriptor;
+			Total = _total;
+		}
+
+		public ThingDescriptor Descriptor { get; private set; }
+
+		public int Total { get; private set; }
 	}
 
 	public class AskSelectThingsMessage : AskMessage

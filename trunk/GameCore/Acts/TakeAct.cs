@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -29,14 +28,14 @@ namespace GameCore.Acts
 				return EActResults.NOTHING_HAPPENS;
 			}
 
-			var toTakeParameter = GetParameter<IEnumerable<ThingDescriptor>>().ToList();
+			var toTake = GetParameter<ThingDescriptor>().ToList();
 
-			if (!toTakeParameter.Any())
+			if (toTake.Count==0)
 			{
 				// Если в параметрах нет уточнений
 				if (notTaken.Count()==1)
 				{
-					toTakeParameter.Add(notTaken);
+					toTake.AddRange(notTaken);
 				}
 				else
 				{
@@ -53,33 +52,61 @@ namespace GameCore.Acts
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 			}
-
-			foreach (var descriptors in toTakeParameter)
+			
+			if (toTake.Count>1)
 			{
-				foreach (var itemDescriptor in descriptors)
+				foreach (var descr in toTake)
 				{
-					var thing = itemDescriptor.Thing;
-					if (itemDescriptor.Container == null)
+					var act = new TakeAct();
+					act.AddParameter(descr);
+					act.AddParameter(GetParameter<Point>());
+					_creature.AddActToPool(act);
+				}
+				return EActResults.NOTHING_HAPPENS;
+			}
+
+			var descriptor = toTake.First();
+			var count = 1;
+			if(descriptor.Container==null)
+			{
+				Map.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
+			}
+			else
+			{
+				var get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == descriptor.Thing.GetHashCode());
+				if (get.Count() > 1)
+				{
+					var cnt = GetParameter<int>();
+					if (cnt.Any())
 					{
-						//шмотка на земле
-						Map.GetMapCell(itemDescriptor.WorldCoords).RemoveObjectFromBlock();
+						count = cnt.Single();
 					}
 					else
 					{
-						itemDescriptor.Container.GetItems(_creature).Remove((Item)thing);
+						MessageManager.SendMessage(this, new AskHowMuchMessage(this, descriptor, get.Count()));
+						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
-					intelligent.ObjectTaken((Item)thing);
-					if(_silence)
-					{
-						if (intelligent is Avatar)
-						{
-							MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thing + " взят."));
-						}
-						else
-						{
-							MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thing));
-						}
-					}
+
+				}
+				for (var i = 0; i < count; ++i)
+				{
+					descriptor.Container.GetItems(_creature).Remove((Item)descriptor.Thing);
+				}
+			}
+			for (var i = 0; i < count; ++i)
+			{
+				intelligent.ObjectTaken((Item)descriptor.Thing);
+			}
+			if (!_silence && count>0)
+			{
+				var suffix = count > 1 ? (", " + count + " штук.") : ".";
+				if (intelligent is Avatar)
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, descriptor.Thing + " взят" + suffix));
+				}
+				else
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + descriptor.Thing + suffix));
 				}
 			}
 			return EActResults.DONE;

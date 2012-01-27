@@ -27,8 +27,8 @@ namespace RGL1
 
 		public static void Clear(this UIBlock _frame, SpriteBatch _spriteBatch, Color _color)
 		{
-			var rect = new Rectangle(_frame.Rectangle.Left*Tile.Size + Tile.Size/2, _frame.Rectangle.Top*Tile.Size + Tile.Size/2,
-			                         (_frame.Rectangle.Width - 1)*Tile.Size, (_frame.Rectangle.Height - 1)*Tile.Size);
+			var rect = new Rectangle(_frame.Rectangle.Left*Tile.Size, _frame.Rectangle.Top*Tile.Size,
+			                         (_frame.Rectangle.Width)*Tile.Size, (_frame.Rectangle.Height)*Tile.Size);
 			var srcRect = TileHelper.SolidTile.Rectangle;
 			srcRect.Inflate(-1, -1);
 			_spriteBatch.Draw(TileHelper.SolidTile.GetTexture(), rect, srcRect, _color);

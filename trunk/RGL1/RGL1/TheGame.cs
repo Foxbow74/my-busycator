@@ -131,6 +131,10 @@ namespace RGL1
 			{
 				//wefw
 			}
+			else if(_message is AskHowMuchMessage)
+			{
+				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.Rectangle, (AskHowMuchMessage)_message));
+			}
 		}
 
 		/// <summary>
