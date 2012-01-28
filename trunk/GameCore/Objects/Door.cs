@@ -11,7 +11,7 @@ namespace GameCore.Objects
 		LockType LockType { get; }
 	}
 
-	internal class Door : Thing, ICanbeOpened
+	public class Door : Thing, ICanbeOpened
 	{
 		private LockType m_lockType = LockType.SIMPLE;
 
@@ -23,6 +23,11 @@ namespace GameCore.Objects
 		public override string Name
 		{
 			get { return "дверь"; }
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			
 		}
 
 		#region ICanbeOpened Members

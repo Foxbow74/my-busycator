@@ -5,6 +5,7 @@ using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
+using GameCore.Objects;
 
 namespace GameCore
 {
@@ -18,6 +19,7 @@ namespace GameCore
 		static World()
 		{
 			Rnd = new Random(1);
+			ThingHelper.RegisterThings();
 		}
 
 		public World()

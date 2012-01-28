@@ -87,7 +87,7 @@ namespace GameCore.Mapping
 
 		public Thing ResolveFakeItem(Creature _creature)
 		{
-			var o = ((FakeThing) Thing).Resolve(_creature);
+			var o = ((IFaked) Thing).ResolveFake(_creature);
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
 			Block.Objects.Add(new Tuple<Thing, Point>(o, m_localPoint));
 			Thing = o;
@@ -106,7 +106,7 @@ namespace GameCore.Mapping
 			if(Thing==null) yield break;
 			if (Thing.IsItem(this, _creature))
 			{
-				if (Thing is FakeThing)
+				if (Thing is IFaked)
 				{
 					ResolveFakeItem(_creature);
 				}

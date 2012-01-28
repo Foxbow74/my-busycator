@@ -58,7 +58,7 @@ namespace GameCore.Mapping
 					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 					if (attr.IsPassable > 0)
 					{
-						_block.Objects.Add(new Tuple<Thing, Point>(GenerateFakeThing(_block, rnd), new Point(x, y)));
+						_block.Objects.Add(new Tuple<Thing, Point>(ThingHelper.GetFaketThing(_block), new Point(x, y)));
 					}
 				}
 			}
@@ -68,49 +68,6 @@ namespace GameCore.Mapping
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
 				_block.Creatures.Add(new Monster(new Point(_blockId.X*MapBlock.SIZE + x, _blockId.Y*MapBlock.SIZE + y)));
-			}
-		}
-
-		public static FakeThing GenerateFakeItem(MapBlock _block, Random _random = null)
-		{
-			if (_random == null)
-			{
-				_random = World.Rnd;
-			}
-			switch (_random.Next(3))
-			{
-				case 0:
-					return FakeThing.Sword;
-				case 1:
-					return FakeThing.Axe;
-				case 2:
-					return FakeThing.Crossbow;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
-		}
-
-
-		public static FakeThing GenerateFakeThing(MapBlock _block, Random _random = null)
-		{
-			if (_random == null)
-			{
-				_random = World.Rnd;
-			}
-			switch (_random.Next(5))
-			{
-				case 0:
-					return FakeThing.Sword;
-				case 1:
-					return FakeThing.Axe;
-				case 2:
-					return FakeThing.Chest;
-				case 3:
-					return FakeThing.Door;
-				case 4:
-					return FakeThing.Crossbow;
-				default:
-					throw new ArgumentOutOfRangeException();
 			}
 		}
 	}

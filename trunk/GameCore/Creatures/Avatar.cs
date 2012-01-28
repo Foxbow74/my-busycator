@@ -22,5 +22,10 @@ namespace GameCore.Creatures
 		{
 			get { return "аватар"; }
 		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new System.NotImplementedException();
+		}
 	}
 }

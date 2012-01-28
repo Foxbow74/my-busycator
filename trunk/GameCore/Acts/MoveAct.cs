@@ -38,7 +38,7 @@ namespace GameCore.Acts
 				}
 				else
 				{
-					if (o is FakeThing)
+					if (o is FakedThing)
 					{
 						o = mapCell.ResolveFakeItem(World.TheWorld.Avatar);
 					}

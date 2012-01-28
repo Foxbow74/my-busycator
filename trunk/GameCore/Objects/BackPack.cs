@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.Creatures;
 
 namespace GameCore.Objects
 {
@@ -12,6 +13,11 @@ namespace GameCore.Objects
 		public override string Name
 		{
 			get { return "рюкзак"; }
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

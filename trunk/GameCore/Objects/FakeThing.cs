@@ -1,28 +1,33 @@
 using System;
-using GameCore.Acts;
+using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Mapping;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	public class FakeThing : Thing, ICanbeOpened
+	public interface IFaked
 	{
-		public static readonly FakeThing Sword = new FakeThing(EThing.SWORD);
-		public static readonly FakeThing Axe = new FakeThing(EThing.AXE);
-		public static readonly FakeThing Chest = new FakeThing(EThing.CHEST);
-		public static readonly FakeThing Door = new FakeThing(EThing.DOOR);
-		public static readonly FakeThing Crossbow = new FakeThing(EThing.CROSSBOW);
+		Thing ResolveFake(Creature _creature);
+	}
 
-		public FakeThing(EThing _thing)
+	public class FakedThing : Thing, IFaked
+	{
+		private readonly ETiles m_tile;
+		private readonly List<Type> m_types = new List<Type>();
+
+		public FakedThing(ETiles _tile)
 		{
-			ThingType = _thing;
+			m_tile = _tile;
 		}
 
-		public EThing ThingType { get; private set; }
+		public void Add(Type _type)
+		{
+			m_types.Add(_type);
+		}
 
 		public override ETiles Tile
 		{
-			get { return ThingType.Tile(); }
+			get { return m_tile; }
 		}
 
 		public override string Name
@@ -30,55 +35,89 @@ namespace GameCore.Objects
 			get { throw new NotImplementedException(); }
 		}
 
-		public bool IsClosed
+		public override void Resolve(Creature _creature)
 		{
-			get
-			{
-				switch (ThingType)
-				{
-					case EThing.CHEST:
-					case EThing.DOOR:
-						return true;
-					default:
-						return false;
-				}
-			}
+			throw new NotImplementedException();
 		}
 
-		#region ICanbeOpened Members
-
-		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
+		public Thing ResolveFake(Creature _creature)
 		{
-			throw new ApplicationException();
+			var type = m_types[World.Rnd.Next(m_types.Count)];
+			return ThingHelper.ResolveThing(type, _creature);
+		}
+	}
+
+	public class FakedItem : Item, IFaked
+	{
+		private readonly ETiles m_tile;
+		private readonly List<Type> m_types = new List<Type>();
+
+		public FakedItem(ETiles _tile)
+		{
+			m_tile = _tile;
 		}
 
-		public LockType LockType
+		public void Add(Type _type)
+		{
+			m_types.Add(_type);
+		}
+
+		public override ETiles Tile
+		{
+			get { return m_tile; }
+		}
+
+		public override string Name
 		{
 			get { throw new NotImplementedException(); }
 		}
 
-		#endregion
-
-		public Thing Resolve(Creature _creature)
+		public override void Resolve(Creature _creature)
 		{
-			switch (ThingType)
-			{
-				case EThing.NONE:
-					break;
-				case EThing.SWORD:
-					return new Sword();
-				case EThing.AXE:
-					return new Axe();
-				case EThing.CROSSBOW:
-					return new CrossBow();
-				case EThing.CHEST:
-					return new Chest();
-				case EThing.DOOR:
-					return new Door();
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
 			throw new NotImplementedException();
+		}
+
+		public Thing ResolveFake(Creature _creature)
+		{
+			var type = m_types[World.Rnd.Next(m_types.Count)];
+			return (Item)ThingHelper.ResolveThing(type, _creature);
+		}
+	}
+
+	public class FakedMonster : Creature, IFaked
+	{
+		private readonly ETiles m_tile;
+		private readonly List<Type> m_types = new List<Type>();
+
+		public FakedMonster(ETiles _tile):base(Point.Zero, int.MinValue)
+		{
+			m_tile = _tile;
+		}
+
+		public void Add(Type _type)
+		{
+			m_types.Add(_type);
+		}
+
+		public override ETiles Tile
+		{
+			get { return m_tile; }
+		}
+
+		public override string Name
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Thing ResolveFake(Creature _creature)
+		{
+			var type = m_types[World.Rnd.Next(m_types.Count)];
+			return (Item)ThingHelper.ResolveThing(type, _creature);
 		}
 	}
 }
