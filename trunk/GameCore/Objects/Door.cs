@@ -1,6 +1,7 @@
 ﻿using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
+using GameCore.Messages;
 
 namespace GameCore.Objects
 {
@@ -29,6 +30,7 @@ namespace GameCore.Objects
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			m_lockType = LockType.OPEN;
+			if (!_silence) MessageManager.SendMessage(this, Name + " открыта.");
 			return EActResults.DONE;
 		}
 

@@ -115,6 +115,9 @@ namespace RGL1
 					case ETiles.AXE:
 						tl = new Tile(15, 2, Color.LightSteelBlue);
 						break;
+					case ETiles.CROSSBOW:
+						tl = new Tile(TextureSet.GP_X16 , 14, 14, Color.SkyBlue);
+						break;
 					case ETiles.CHEST:
 						tl = new Tile(TextureSet.RR_BRICK_01, 2, 9, Color.Gold);
 						break;

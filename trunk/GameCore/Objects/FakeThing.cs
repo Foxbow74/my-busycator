@@ -11,6 +11,7 @@ namespace GameCore.Objects
 		public static readonly FakeThing Axe = new FakeThing(EThing.AXE);
 		public static readonly FakeThing Chest = new FakeThing(EThing.CHEST);
 		public static readonly FakeThing Door = new FakeThing(EThing.DOOR);
+		public static readonly FakeThing Crossbow = new FakeThing(EThing.CROSSBOW);
 
 		public FakeThing(EThing _thing)
 		{
@@ -68,6 +69,8 @@ namespace GameCore.Objects
 					return new Sword();
 				case EThing.AXE:
 					return new Axe();
+				case EThing.CROSSBOW:
+					return new CrossBow();
 				case EThing.CHEST:
 					return new Chest();
 				case EThing.DOOR:

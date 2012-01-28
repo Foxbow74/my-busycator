@@ -12,7 +12,8 @@ namespace GameCore
 		CHEST,
 		DOOR,
 		SWORD,
-		AXE
+		AXE,
+		CROSSBOW
 	}
 
 	public static class ItemTipeTileResolver
@@ -29,6 +30,8 @@ namespace GameCore
 					return ETiles.CHEST;
 				case EThing.DOOR:
 					return ETiles.DOOR;
+				case EThing.CROSSBOW:
+					return ETiles.CROSSBOW;
 				default:
 					throw new ArgumentOutOfRangeException("_thing");
 			}

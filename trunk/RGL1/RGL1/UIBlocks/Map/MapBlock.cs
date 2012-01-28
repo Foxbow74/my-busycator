@@ -1,14 +1,11 @@
-﻿#region
-
-using System.Linq;
+﻿using System.Linq;
 using GameCore;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
+using GameCore.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-#endregion
 
 namespace RGL1.UIBlocks.Map
 {
@@ -18,10 +15,10 @@ namespace RGL1.UIBlocks.Map
 		private readonly MapCell[,] m_mapCells;
 		private long m_lastFogUpdateWorldTick;
 
-		public MapBlock(Rectangle _rectangle) : base(_rectangle, Frame.SimpleFrame, Color.Black)
+		public MapBlock(Rectangle _rectangle) : base(_rectangle, null, Color.Black)
 		{
 			m_mapCells = new MapCell[ContentRectangle.Width,ContentRectangle.Height];
-			m_losManager = new LosManager(m_mapCells);
+			m_losManager = new LosManager(VectorHelpers.GetDistanceToVector);
 
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
@@ -67,7 +64,7 @@ namespace RGL1.UIBlocks.Map
 				var pnt = tuple.Key;
 				var mapCell = m_mapCells[pnt.X, pnt.Y];
 				var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-				var visibility = (float) tuple.Value.Item1;
+				var visibility = (float) tuple.Value;
 				var color = Color.Multiply(tile.Color, visibility*1.1f);
 				tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 

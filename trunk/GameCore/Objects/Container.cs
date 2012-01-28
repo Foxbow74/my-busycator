@@ -3,7 +3,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Objects
 {
-	public abstract class Container : Item
+	public abstract class Container : Thing
 	{
 		private ItemsCollection m_items;
 

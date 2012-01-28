@@ -49,6 +49,7 @@
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
+    <Compile Include="Misc\LOSManager.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\ThingDescriptor.cs" />
     <Compile Include="Objects\ItemsCollection.cs" />

@@ -60,7 +60,7 @@ namespace GameCore.Acts
 			//выясняем, что нужно открыть
 			{
 				var list = new List<ThingDescriptor>();
-				if (mapCell.Thing.IsDoor(mapCell, _creature) && mapCell.Thing.IsClosed(mapCell, _creature))
+				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) && mapCell.Thing.IsClosed(mapCell, _creature))
 				{
 					list.Add(new ThingDescriptor(mapCell.Thing, mapCell.WorldCoords, null));
 				}

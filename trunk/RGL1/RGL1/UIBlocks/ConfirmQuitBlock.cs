@@ -25,13 +25,6 @@ namespace RGL1.UIBlocks
 			_spriteBatch.End();
 		}
 
-		public override void DrawFrame(SpriteBatch _spriteBatch)
-		{
-			_spriteBatch.Begin();
-			base.DrawFrame(_spriteBatch);
-			_spriteBatch.End();
-		}
-
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
 			if (_modifiers != EKeyModifiers.NONE) return;

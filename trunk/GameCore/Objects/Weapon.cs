@@ -29,4 +29,17 @@ namespace GameCore.Objects
 			get { return "меч"; }
 		}
 	}
+
+	public class CrossBow: Weapon
+	{
+		public override ETiles Tile
+		{
+			get { return ETiles.CROSSBOW; }
+		}
+
+		public override string Name
+		{
+			get { return "арбалет"; }
+		}
+	}
 }

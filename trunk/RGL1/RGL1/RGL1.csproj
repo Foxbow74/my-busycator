@@ -14,7 +14,7 @@
     </TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>40cd0c68-defc-4001-9fbd-38e4a980e0db</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -134,7 +134,6 @@
     <Compile Include="KeyHelper.cs" />
     <Compile Include="UIBlocks\AskDirectionUiBlock.cs" />
     <Compile Include="UIBlocks\AskHowMuchUiBlock.cs" />
-    <Compile Include="UIBlocks\Map\LOSManager.cs" />
     <Compile Include="UIBlocks\Map\MapVisualizator.cs" />
     <Compile Include="Messages\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

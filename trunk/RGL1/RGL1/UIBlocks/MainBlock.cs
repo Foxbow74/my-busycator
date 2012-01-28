@@ -20,12 +20,9 @@ namespace RGL1.UIBlocks
 			const int messagesHeight = 3;
 			const int statHeight = 2;
 
-			m_messages = new MessageBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight));
-			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight));
-
-			m_map =
-				new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width,
-				                           Rectangle.Height - m_messages.Rectangle.Height - m_stats.Rectangle.Height));
+			m_messages = new MessageBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight)) { BackgroundColor = new Color(30, 30, 30) };
+			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width, Rectangle.Height - m_messages.Rectangle.Height - statHeight)) { BackgroundColor = new Color(0, 15, 0) };
+			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight + 2)) { BackgroundColor = new Color(0, 30, 30) };
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -65,21 +62,15 @@ namespace RGL1.UIBlocks
 
 		public override void DrawBackground(SpriteBatch _spriteBatch)
 		{
-			Frame.SimpleFrame.Draw(_spriteBatch, 0, 0, Rectangle.Width, Rectangle.Height);
-			m_map.Clear(_spriteBatch, new Color(10, 5, 0));
-			m_messages.Clear(_spriteBatch, new Color(30, 30, 30));
-			m_stats.Clear(_spriteBatch, new Color(0, 30, 30));
-			base.DrawBackground(_spriteBatch);
+			m_map.Clear(_spriteBatch);
+			m_messages.Clear(_spriteBatch);
+			m_stats.Clear(_spriteBatch);
 		}
 
 		public override void DrawFrame(SpriteBatch _spriteBatch)
 		{
-			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-
 			m_stats.DrawFrame(_spriteBatch);
 			m_messages.DrawFrame(_spriteBatch);
-
-			_spriteBatch.End();
 			base.DrawFrame(_spriteBatch);
 		}
 	}

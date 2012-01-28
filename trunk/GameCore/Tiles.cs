@@ -13,5 +13,6 @@
 		AXE,
 		CHEST,
 		MONSTER,
+		CROSSBOW
 	}
 }

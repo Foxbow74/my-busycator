@@ -21,7 +21,10 @@ namespace RGL1.UIBlocks
 			Color = _color;
 			Rectangle = _rectangle;
 			UpdateContentRectangle();
+			BackgroundColor = Color.Black;
 		}
+
+		public Color BackgroundColor { get; set; }
 
 		public Rectangle Rectangle { get; protected set; }
 
@@ -58,13 +61,17 @@ namespace RGL1.UIBlocks
 
 		public virtual void DrawBackground(SpriteBatch _spriteBatch)
 		{
-			this.Clear(_spriteBatch, Color.Black);
+			this.Clear(_spriteBatch);
 		}
 
 		public virtual void DrawFrame(SpriteBatch _spriteBatch)
 		{
 			if (BlockFrame != null)
+			{
+				_spriteBatch.Begin();
 				BlockFrame.Draw(_spriteBatch, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+				_spriteBatch.End();
+			}
 		}
 
 		internal void DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, float _x, float _y)

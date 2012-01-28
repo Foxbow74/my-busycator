@@ -77,12 +77,14 @@ namespace GameCore.Mapping
 			{
 				_random = World.Rnd;
 			}
-			switch (_random.Next(2))
+			switch (_random.Next(3))
 			{
 				case 0:
 					return FakeThing.Sword;
 				case 1:
 					return FakeThing.Axe;
+				case 2:
+					return FakeThing.Crossbow;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
@@ -95,7 +97,7 @@ namespace GameCore.Mapping
 			{
 				_random = World.Rnd;
 			}
-			switch (_random.Next(3))
+			switch (_random.Next(5))
 			{
 				case 0:
 					return FakeThing.Sword;
@@ -105,6 +107,8 @@ namespace GameCore.Mapping
 					return FakeThing.Chest;
 				case 3:
 					return FakeThing.Door;
+				case 4:
+					return FakeThing.Crossbow;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

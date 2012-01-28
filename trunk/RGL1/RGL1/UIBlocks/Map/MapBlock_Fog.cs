@@ -1,14 +1,10 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.Mapping;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
-#endregion
 
 namespace RGL1.UIBlocks.Map
 {
@@ -61,7 +57,7 @@ namespace RGL1.UIBlocks.Map
 					}
 					if (!foggedCell.IsFresh)
 					{
-						foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top);
+						foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, BackgroundColor);
 					}
 				}
 			}
@@ -92,11 +88,11 @@ namespace RGL1.UIBlocks.Map
 				get { return m_fog == 1; }
 			}
 
-			public void Draw(SpriteBatch _spriteBatch, int _x, int _y)
+			public void Draw(SpriteBatch _spriteBatch, int _x, int _y, Color _backgroundColor)
 			{
-				var color = m_color*m_fog;
+				var color = Color.Lerp(_backgroundColor, m_color, m_fog);
 				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
-				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y);
+				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y, _backgroundColor);
 			}
 
 			public bool UpdateFog(float _d)

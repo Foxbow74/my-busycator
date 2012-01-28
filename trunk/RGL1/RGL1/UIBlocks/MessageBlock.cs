@@ -45,10 +45,12 @@ namespace RGL1.UIBlocks
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
+			if(m_lines.Count==0) return;
 			_spriteBatch.Begin();
 			var lineNumber = 0;
 			var max = TextLinesMax;
-			var fromLine = Math.Max(m_lines.Count - max,0);
+			//var fromLine = Math.Max(m_lines.Count - max,0);
+			var fromLine = m_lines.Count - 1;
 			for (var index = fromLine; index < m_lines.Count; index++)
 			{
 				var textLine = m_lines[index];

@@ -62,6 +62,17 @@ namespace GameCore.Objects
 			return _thing is Door;
 		}
 
+		public static bool IsChest(this Thing _thing, MapCell _cell, Creature _creature)
+		{
+			if (_thing == null) return false;
+			if (_thing.IsFake())
+			{
+				var fth = (FakeThing)_thing;
+				return fth.ThingType == EThing.CHEST;
+			}
+			return _thing is Chest;
+		}
+
 		public static bool IsFake(this Thing _thing)
 		{
 			return _thing is FakeThing;

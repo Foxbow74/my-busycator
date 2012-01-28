@@ -43,7 +43,7 @@ namespace RGL1
 			Content.RootDirectory = "Content";
 
 			m_graphics = new GraphicsDeviceManager(this);
-			if (!InitGraphicsMode(800 - Tile.Size*2, 600 - Tile.Size*2)) Exit();
+			if (!InitGraphicsMode(800, 600)) Exit();
 		}
 
 		private bool InitGraphicsMode(int _width, int _height)
@@ -54,8 +54,12 @@ namespace RGL1
 			m_graphics.PreferredBackBufferWidth = _width;
 			m_graphics.PreferredBackBufferHeight = _height;
 
+			m_graphics.SynchronizeWithVerticalRetrace = false;
+			//m_graphics.IsFullScreen = true;
 			Window.AllowUserResizing = true;
 			Window.ClientSizeChanged += WindowClientSizeChanged;
+
+			m_graphics.ApplyChanges();
 
 			return true;
 		}
@@ -253,10 +257,9 @@ namespace RGL1
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{
-				m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+				m_spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.Opaque);
 				uiBlock.DrawBackground(m_spriteBatch);
 				m_spriteBatch.End();
-
 				uiBlock.DrawContent(m_spriteBatch);
 				uiBlock.DrawFrame(m_spriteBatch);
 			}

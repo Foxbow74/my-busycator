@@ -32,8 +32,22 @@ namespace GameCore.Objects
 		{
 			if (LockType != LockType.OPEN)
 			{
-				if (!_silence) MessageManager.SendMessage(this, "готово");
+				if (!_silence) MessageManager.SendMessage(this, Name + " открыт.");
 				LockType = LockType.OPEN;
+
+				var takeAct = new TakeAct();
+				var collection = GetItems(_creature);
+
+				if (collection.Any)
+				{
+					takeAct.AddParameter(collection.Items);
+					_creature.AddActToPool(takeAct);
+				}
+				else
+				{
+					if (!_silence) MessageManager.SendMessage(this, "Увы, пусто.");
+				}
+
 				return EActResults.DONE;
 			}
 			throw new NotImplementedException();
