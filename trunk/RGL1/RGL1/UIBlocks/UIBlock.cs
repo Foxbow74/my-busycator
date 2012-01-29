@@ -16,7 +16,7 @@ namespace RGL1.UIBlocks
 		{
 			m_font = _font ?? Fonts.Font;
 
-			m_lineHeight = m_font.MeasureString("!g").Y;
+			m_lineHeight = m_font.MeasureString("!р").Y;
 			BlockFrame = _frame;
 			Color = _color;
 			Rectangle = _rectangle;

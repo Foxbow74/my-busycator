@@ -13,6 +13,8 @@
 		AXE,
 		CHEST,
 		MONSTER,
-		CROSSBOW
+		CROSSBOW,
+		RING,
+		HEAP_OF_ITEMS,
 	}
 }

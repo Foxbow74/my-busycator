@@ -3,14 +3,8 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 
-namespace GameCore.Objects
+namespace GameCore.Objects.Furniture
 {
-	internal interface ICanbeOpened
-	{
-		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
-		LockType LockType { get; }
-	}
-
 	public class Door : Thing, ICanbeOpened
 	{
 		private LockType m_lockType = LockType.SIMPLE;

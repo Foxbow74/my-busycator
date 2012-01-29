@@ -116,13 +116,19 @@ namespace RGL1
 						tl = new Tile(15, 2, Color.LightSteelBlue);
 						break;
 					case ETiles.CROSSBOW:
-						tl = new Tile(TextureSet.GP_X16 , 14, 14, Color.SkyBlue);
+						tl = new Tile(TextureSet.GP_X16, 14, 14, Color.SkyBlue);
 						break;
 					case ETiles.CHEST:
 						tl = new Tile(TextureSet.RR_BRICK_01, 2, 9, Color.Gold);
 						break;
 					case ETiles.MONSTER:
 						tl = new Tile(TextureSet.NH, 0, 6, Color.White);
+						break;
+					case ETiles.RING:
+						tl = new Tile(TextureSet.NH, 28, 13, Color.White);
+						break;
+					case ETiles.HEAP_OF_ITEMS:
+						tl = new Tile(TextureSet.GP_X16, 11, 0, Color.DarkOrchid);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

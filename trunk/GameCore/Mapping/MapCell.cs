@@ -4,35 +4,31 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Mapping
 {
 	public class MapCell
 	{
+		private readonly UInt32 m_seenMask;
+
 		/// <summary>
-		/// 	Координаты ячейки в блоке
+		/// Координаты ячейки в блоке
 		/// </summary>
-		private readonly Point m_localPoint;
+		private readonly Point m_inBlockCoords;
 
 		private TerrainAttribute m_terrainAttribute;
 
 		internal MapCell(MapBlock _block, Point _inBlockCoords, Point _worldCoords)
 		{
-			m_localPoint = _inBlockCoords;
+			m_inBlockCoords = _inBlockCoords;
+
+			m_seenMask = ((UInt32)1) << m_inBlockCoords.X;
+			IsSeenBefore = (_block.SeenCells[m_inBlockCoords.Y] & m_seenMask) != 0;
 
 			Block = _block;
 			WorldCoords = _worldCoords;
 			Terrain = _block.Map[_inBlockCoords.X, _inBlockCoords.Y];
-			Thing = null;
-
-			if (_block.IsObjectsExists)
-			{
-				var tuple = _block.Objects.FirstOrDefault(_tuple => _tuple.Item2 == _inBlockCoords);
-				if (tuple != null)
-				{
-					Thing = tuple.Item1;
-				}
-			}
 
 			if (_block.CreaturesExists)
 			{
@@ -53,7 +49,26 @@ namespace GameCore.Mapping
 
 		public ETerrains Terrain { get; private set; }
 
-		public Thing Thing { get; private set; }
+		public Thing Thing
+		{
+			get
+			{
+				if (!Block.IsObjectsExists) return null;
+				var tuples = Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).ToArray();
+				if(!tuples.Any())
+				{
+					return null;
+				}
+				if(tuples.Length==1)
+				{
+					return tuples[0].Item1;
+				}
+				else
+				{
+					return new Heap(Block, m_inBlockCoords);
+				}
+			}
+		}
 
 		public Creature Creature { get; private set; }
 
@@ -88,17 +103,15 @@ namespace GameCore.Mapping
 		public Thing ResolveFakeItem(Creature _creature)
 		{
 			var o = ((IFaked) Thing).ResolveFake(_creature);
-			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
-			Block.Objects.Add(new Tuple<Thing, Point>(o, m_localPoint));
-			Thing = o;
+			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
+			Block.Objects.Add(new Tuple<Thing, Point>(o, m_inBlockCoords));
 			return o;
 		}
 
 		public void RemoveObjectFromBlock()
 		{
 			if (Thing == null) throw new ArgumentNullException();
-			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_localPoint));
-			Thing = null;
+			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
 		}
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)
@@ -120,6 +133,18 @@ namespace GameCore.Mapping
 					yield return new ThingDescriptor(item, WorldCoords, container);
 				}
 			}
+		}
+
+		public bool IsSeenBefore
+		{
+			get; private set;
+		}
+
+		public bool IsVisibleNow { get; set; }
+
+		public void SetIsSeenBefore()
+		{
+			Block.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
 		}
 	}
 }

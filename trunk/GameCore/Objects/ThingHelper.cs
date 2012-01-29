@@ -4,6 +4,7 @@ using System.Diagnostics;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Misc;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Objects
 {
@@ -58,8 +59,7 @@ namespace GameCore.Objects
 		{
 			foreach (var type in GetThingTtypes())
 			{
-				if (typeof(IFaked).IsAssignableFrom(type)) continue;
-				if (typeof(BackPack).IsAssignableFrom(type)) continue;
+				if (typeof(ISpecial).IsAssignableFrom(type)) continue;
 
 				if (typeof(Creature).IsAssignableFrom(type))
 				{
@@ -78,10 +78,6 @@ namespace GameCore.Objects
 
 		private static void RegisterCreatureType(Type _type)
 		{
-			if(typeof(Avatar).IsAssignableFrom(_type))
-			{
-				return;
-			}
 			var thing = (Thing)Activator.CreateInstance(_type, new object[]{Point.Zero});
 			FakedMonster value;
 			if (!m_fakedMonsters.TryGetValue(thing.Tile, out value))

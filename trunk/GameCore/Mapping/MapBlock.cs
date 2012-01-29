@@ -20,6 +20,7 @@ namespace GameCore.Mapping
 			Point = _point;
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
+			SeenCells = new uint[SIZE];
 		}
 
 		public Point Point { get; private set; }
@@ -47,6 +48,8 @@ namespace GameCore.Mapping
 		{
 			get { return m_objects ?? (m_objects = new List<Tuple<Thing, Point>>()); }
 		}
+
+		public UInt32[] SeenCells { get; private set; }
 
 		public static Point GetBlockCoords(Point _point)
 		{

@@ -5,7 +5,7 @@ using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	public interface IFaked
+	public interface IFaked: ISpecial
 	{
 		Thing ResolveFake(Creature _creature);
 	}

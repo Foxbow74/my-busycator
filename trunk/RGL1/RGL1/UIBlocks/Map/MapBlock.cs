@@ -56,8 +56,7 @@ namespace RGL1.UIBlocks.Map
 
 		private void DrawVisibleCells(SpriteBatch _spriteBatch, int _centerX, int _centerY)
 		{
-			var visibleCelss =
-				m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY).ToArray();
+			var visibleCelss = m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY).ToArray();
 
 			foreach (var tuple in visibleCelss)
 			{
@@ -80,13 +79,16 @@ namespace RGL1.UIBlocks.Map
 					tile = mapCell.Creature.Tile.GetTile();
 					color = Color.Multiply(tile.Color, visibility*1.1f);
 					tile.DrawAtCell(_spriteBatch, pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
-					if (mapCell.Creature is Monster)
-					{
-						_spriteBatch.DrawString(Fonts.SmallFont, ((Monster) mapCell.Creature).NN,
-						                        new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*Tile.Size,
-						                        Color.White);
-					}
+					//if (mapCell.Creature is Monster)
+					//{
+					//    _spriteBatch.DrawString(Fonts.SmallFont, ((Monster) mapCell.Creature).NN,
+					//                            new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*Tile.Size,
+					//                            Color.White);
+					//}
 				}
+
+				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
+				mapCell.IsVisibleNow = true;
 
 				UpdateFogCell(mapCell, tile, color);
 			}

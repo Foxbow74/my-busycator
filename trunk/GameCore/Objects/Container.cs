@@ -12,15 +12,24 @@ namespace GameCore.Objects
 			if (m_items == null)
 			{
 				m_items = new ItemsCollection();
-				foreach (var faked in GenerateItems(_creature))
+				foreach (var item in GenerateItems(_creature))
 				{
-					m_items.Add((Item)faked.ResolveFake(_creature));
+					if (item is IFaked)
+					{
+						m_items.Add((Item) ((IFaked)item).ResolveFake(_creature));
+					}
+					else
+					{
+						m_items.Add(item);
+					}
 				}
 			}
 			return m_items;
 		}
 
-		protected virtual IEnumerable<IFaked> GenerateItems(Creature _creature)
+
+
+		protected virtual IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			yield break;
 		}

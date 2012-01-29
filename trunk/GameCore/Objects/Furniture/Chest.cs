@@ -5,7 +5,7 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 
-namespace GameCore.Objects
+namespace GameCore.Objects.Furniture
 {
 	public class Chest : Container, ICanbeOpened
 	{
@@ -45,6 +45,7 @@ namespace GameCore.Objects
 				if (collection.Any)
 				{
 					takeAct.AddParameter(collection.Items);
+					takeAct.AddParameter(_mapCell.WorldCoords);// - _creature.Coords);
 					_creature.AddActToPool(takeAct);
 				}
 				else
@@ -59,12 +60,12 @@ namespace GameCore.Objects
 
 		#endregion
 
-		protected override IEnumerable<IFaked> GenerateItems(Creature _creature)
+		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (IFaked)ThingHelper.GetFaketItem(_creature.MapBlock);
+				yield return (Item)ThingHelper.GetFaketItem(_creature.MapBlock);
 			}
 		}
 	}

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RGL1.UIBlocks.ThingPresenter;
 
 namespace RGL1.UIBlocks
 {
@@ -70,114 +70,6 @@ namespace RGL1.UIBlocks
 				line++;
 			}
 			_spriteBatch.End();
-		}
-	}
-
-	internal class ThingsPresenter
-	{
-		private readonly List<IDescriptorFromCollection> m_items = new List<IDescriptorFromCollection>();
-
-		public ThingsPresenter(List<ThingDescriptor> _descriptors)
-		{
-			var key = ConsoleKey.A;
-			if (_descriptors == null) return;
-			
-			var containers = _descriptors.Select(_descriptor => _descriptor.Container).Distinct().ToList();
-			foreach (var container in containers)
-			{
-				var cntnr = container;
-
-				if (containers.Count() > 1)
-				{
-					m_items.Add(new WhereDescriptorFromCollection(cntnr));
-				}
-				var local = _descriptors.Where(_descriptor => _descriptor.Container == cntnr).ToArray();
-				var hacheCodes = local.Select(_item => _item.GetHashCode()).Distinct();
-				var list = hacheCodes.Select(_code => local.First(_item => _item.GetHashCode() == _code)).OrderBy(_item => _item.UiOrderIndex).ToList();
-				foreach (var item in list)
-				{
-					m_items.Add(new ThingDescriptorFromCollection(key, item, _descriptors));
-					key++;
-				}
-			}
-		}
-
-		public IEnumerable<IDescriptorFromCollection> Items
-		{
-			get { return m_items; }
-		}
-
-		public void KeysPressed(ConsoleKey _key)
-		{
-			foreach (var fromCollection in m_items.OfType<ThingDescriptorFromCollection>().Where(_itemFromCollection => _itemFromCollection.Key == _key))
-			{
-				fromCollection.IsChecked = !fromCollection.IsChecked;
-			}
-		}
-	}
-
-	internal interface IDescriptorFromCollection
-	{
-		void DrawLine(int _line, SpriteBatch _spriteBatch, SelectItemsUiBlock _selectItemsUiBlock);
-	}
-
-	internal class WhereDescriptorFromCollection : IDescriptorFromCollection
-	{
-		private readonly Container m_container;
-
-		public WhereDescriptorFromCollection(Container _container)
-		{
-			m_container = _container;
-		}
-
-		public virtual void DrawLine(int _line, SpriteBatch _spriteBatch, SelectItemsUiBlock _selectItemsUiBlock)
-		{
-			var cntnr = m_container == null ? "на земле" : m_container.Name;
-			_selectItemsUiBlock.DrawLine("*** " + cntnr.ToUpper() + " ***", Color.White, _spriteBatch, _line, 0, UIBlock.EAlignment.CENTER);
-		}
-	}
-
-	internal class ThingDescriptorFromCollection : IDescriptorFromCollection
-	{
-		private readonly IEnumerable<ThingDescriptor> m_descriptors;
-		private readonly ThingDescriptor m_thingDescriptor;
-		private readonly ConsoleKey m_key;
-
-		public ThingDescriptorFromCollection(ConsoleKey _key, ThingDescriptor _thingDescriptor, IEnumerable<ThingDescriptor> _descriptors)
-		{
-			m_key = _key;
-			m_thingDescriptor = _thingDescriptor;
-			m_descriptors = _descriptors;
-		}
-
-		public bool IsChecked { get; set; }
-
-		public ConsoleKey Key
-		{
-			get { return m_key; }
-		}
-
-		public ThingDescriptor ThingDescriptor
-		{
-			get { return m_thingDescriptor; }
-		}
-
-		public string Text
-		{
-			get
-			{
-				var count = m_descriptors.Count(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode());
-				return (count>1?count.ToString(CultureInfo.InvariantCulture):"") + " " + m_thingDescriptor.Thing.Name;
-			}
-		}
-
-		public void DrawLine(int _line, SpriteBatch _spriteBatch, SelectItemsUiBlock _selectItemsUiBlock)
-		{
-			_selectItemsUiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _spriteBatch, _line, 10,
-			                             UIBlock.EAlignment.LEFT);
-			_selectItemsUiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key), Color.White, _spriteBatch, _line, 30,
-			                             UIBlock.EAlignment.LEFT);
-			_selectItemsUiBlock.DrawLine(Text, Color.Gray, _spriteBatch, _line, 50, UIBlock.EAlignment.LEFT);
 		}
 	}
 }

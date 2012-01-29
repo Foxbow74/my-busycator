@@ -23,7 +23,7 @@ namespace GameCore.Acts
 				// Если ничего не доступно
 				if (!_silence)
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "тут ничего нет?"));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "тут ничего нет."));
 				}
 				return EActResults.NOTHING_HAPPENS;
 			}

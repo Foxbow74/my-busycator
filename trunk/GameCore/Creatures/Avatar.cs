@@ -1,12 +1,13 @@
 ﻿#region
 
 using GameCore.Misc;
+using GameCore.Objects;
 
 #endregion
 
 namespace GameCore.Creatures
 {
-	public class Avatar : Intelligent
+	public class Avatar : Intelligent, ISpecial
 	{
 		public Avatar() : base(Point.Zero, 100)
 		{

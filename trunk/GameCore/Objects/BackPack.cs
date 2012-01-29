@@ -3,7 +3,10 @@ using GameCore.Creatures;
 
 namespace GameCore.Objects
 {
-	public class BackPack : Container
+	/// <summary>
+	/// Символизирует инвентарь существа.
+	/// </summary>
+	public class BackPack : Container, ISpecial
 	{
 		public override ETiles Tile
 		{

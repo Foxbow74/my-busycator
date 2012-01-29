@@ -53,7 +53,15 @@ with.
     -->
     <CharacterRegions>
 		<CharacterRegion>
+			<Start>[</Start>
+			<End>]</End>
+		</CharacterRegion>
+		<CharacterRegion>
 			<Start> </Start>
+			<End>Z</End>
+		</CharacterRegion>
+		<CharacterRegion>
+			<Start>А</Start>
 			<End>Я</End>
 		</CharacterRegion>
 		<CharacterRegion>

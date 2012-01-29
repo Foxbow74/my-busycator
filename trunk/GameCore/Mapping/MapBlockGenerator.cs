@@ -1,11 +1,8 @@
-﻿#region
-
-using System;
+﻿using System;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Mapping
 {
@@ -58,12 +55,25 @@ namespace GameCore.Mapping
 					var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 					if (attr.IsPassable > 0)
 					{
-						_block.Objects.Add(new Tuple<Thing, Point>(ThingHelper.GetFaketThing(_block), new Point(x, y)));
+						var point = new Point(x, y);
+						var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
+						var thig = World.Rnd.Next(2) == 0 ? ThingHelper.GetFaketThing(_block) : ThingHelper.GetFaketItem(_block);
+						if (thig is Item)
+						{
+							if (any.Any(_thing => !(thig is Item)))
+							{
+								continue;
+							}
+						}
+						else if (any.Any())
+						{
+							continue;
+						}
+						_block.Objects.Add(new Tuple<Thing, Point>(thig, point));
 					}
 				}
 			}
 
-			//if(rnd.NextDouble()<)
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);

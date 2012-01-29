@@ -10,6 +10,8 @@ namespace RGL1.UIBlocks.Map
 {
 	internal partial class MapBlock
 	{
+		private const float FOG_VISIBILITY_LOWEST = 0.1f;
+
 		private readonly Dictionary<int, FoggedCell> m_foggedCells = new Dictionary<int, FoggedCell>();
 
 		private void UpdateFog()
@@ -44,6 +46,8 @@ namespace RGL1.UIBlocks.Map
 
 		private void DrawFoggedCells(SpriteBatch _spriteBatch)
 		{
+			var foggedBackColor = new Color(40, 40, 40); //BackgroundColor
+
 			for (var x = 0; x < m_mapCells.GetLength(0); ++x)
 			{
 				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
@@ -51,13 +55,17 @@ namespace RGL1.UIBlocks.Map
 					var mapCell = m_mapCells[x, y];
 					FoggedCell foggedCell;
 					var key = mapCell.WorldCoords.GetHashCode();
-					if (!m_foggedCells.TryGetValue(key, out foggedCell))
+
+					if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh)
 					{
-						continue;
+						foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, foggedBackColor);
 					}
-					if (!foggedCell.IsFresh)
+					else if (mapCell.IsSeenBefore && !mapCell.IsVisibleNow)
 					{
-						foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, BackgroundColor);
+						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+						var color = Color.Lerp(foggedBackColor, tile.Color, FOG_VISIBILITY_LOWEST);
+						tile.DrawAtCell(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, color);
+						TileHelper.FogTile.DrawAtCell(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, Color.Black);
 					}
 				}
 			}
@@ -92,13 +100,13 @@ namespace RGL1.UIBlocks.Map
 			{
 				var color = Color.Lerp(_backgroundColor, m_color, m_fog);
 				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
-				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y, _backgroundColor);
+				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y, Color.Black);
 			}
 
 			public bool UpdateFog(float _d)
 			{
 				m_fog -= 0.05f*_d;
-				return m_fog <= 0;
+				return m_fog <= FOG_VISIBILITY_LOWEST;
 			}
 
 			public void Update(Tile _tile, Color _color)
