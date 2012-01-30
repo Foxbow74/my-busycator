@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
-namespace GameCore.Acts
+namespace GameCore.Acts.Movement
 {
 	public class MoveAct : Act
 	{
@@ -105,6 +106,11 @@ namespace GameCore.Acts
 			{
 				return "стрелки";
 			}
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.MOVEMENT;}
 		}
 	}
 }

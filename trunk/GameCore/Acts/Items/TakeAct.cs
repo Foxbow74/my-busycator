@@ -7,7 +7,7 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
-namespace GameCore.Acts
+namespace GameCore.Acts.Items
 {
 	public class TakeAct : Act
 	{
@@ -133,6 +133,11 @@ namespace GameCore.Acts
 		public override string HelpText
 		{
 			get { throw new NotImplementedException(); }
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.ITEMS;}
 		}
 	}
 }

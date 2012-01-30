@@ -1,4 +1,5 @@
 ﻿using GameCore.Acts;
+using GameCore.Acts.Movement;
 using GameCore.Misc;
 
 namespace GameCore.Creatures

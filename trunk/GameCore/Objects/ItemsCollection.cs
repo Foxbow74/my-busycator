@@ -95,6 +95,11 @@ namespace GameCore.Objects
 				return Item.GetHashCode();
 			}
 
+			public override EItemCategory Category
+			{
+				get { throw new NotImplementedException(); }
+			}
+
 			public override ETiles Tile
 			{
 				get { throw new NotImplementedException(); }

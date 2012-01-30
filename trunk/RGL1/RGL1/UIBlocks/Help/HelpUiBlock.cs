@@ -35,7 +35,7 @@ namespace RGL1.UIBlocks.Help
 			DrawLine("b. Предметы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
 			DrawLine("с. Классы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
 			DrawLine("d. Рассы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
-			DrawLine("[z, Esc] - выход", Color, _spriteBatch, TextLinesMax-1, indent, EAlignment.RIGHT);
+			DrawLine("[z|Esc] - выход", Color, _spriteBatch, TextLinesMax - 2, indent, EAlignment.RIGHT);
 			_spriteBatch.End();
 		}
 	}

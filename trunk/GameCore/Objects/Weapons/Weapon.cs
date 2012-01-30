@@ -6,5 +6,10 @@ namespace GameCore.Objects.Weapons
 		{
 			
 		}
+
+		public override EItemCategory Category
+		{
+			get { return EItemCategory.WEAPON; }
+		}
 	}
 }

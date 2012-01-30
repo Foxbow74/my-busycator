@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Acts;
+using GameCore.Acts.Items;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;

@@ -1,34 +1,10 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using GameCore.Creatures;
 
-#endregion
-
 namespace GameCore.Acts
 {
-	public enum EActResults
-	{
-		/// <summary>
-		/// 	происходит, если действие невозможно, например съесть еду которой нет
-		/// </summary>
-		NOTHING_HAPPENS,
-		/// <summary>
-		/// 	выполнено успешно
-		/// </summary>
-		DONE,
-		/// <summary>
-		/// 	требуется уточнение
-		/// </summary>
-		NEED_ADDITIONAL_PARAMETERS,
-		/// <summary>
-		/// 	Действие провалилось
-		/// </summary>
-		FAIL,
-	}
-
 	public abstract class Act
 	{
 		private List<Tuple<Type, object>> m_parameters;
@@ -140,5 +116,7 @@ namespace GameCore.Acts
 				return sb.ToString();
 			}
 		}
+
+		public abstract EActionCategory Category { get; }
 	}
 }

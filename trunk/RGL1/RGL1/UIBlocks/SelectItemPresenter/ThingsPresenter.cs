@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Objects;
+using RGL1.UIBlocks.SelectItemPresenter;
 
 namespace RGL1.UIBlocks.ThingPresenter
 {

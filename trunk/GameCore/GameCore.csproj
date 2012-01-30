@@ -43,11 +43,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
-    <Compile Include="Acts\CloseAct.cs" />
-    <Compile Include="Acts\Inventory.cs" />
-    <Compile Include="Acts\MoveAct.cs" />
-    <Compile Include="Acts\OpenAct.cs" />
-    <Compile Include="Acts\TakeAct.cs" />
+    <Compile Include="Acts\Interact\CloseAct.cs" />
+    <Compile Include="Acts\EActionCategory.cs" />
+    <Compile Include="Acts\EActResults.cs" />
+    <Compile Include="Acts\Info\HelpAct.cs" />
+    <Compile Include="Acts\Info\Inventory.cs" />
+    <Compile Include="Acts\Movement\MoveAct.cs" />
+    <Compile Include="Acts\Interact\OpenAct.cs" />
+    <Compile Include="Acts\System\QuitAct.cs" />
+    <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
@@ -92,7 +96,8 @@
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Objects\Weapons\Ammo\" />
+    <Folder Include="Acts\Combat\" />
+    <Folder Include="Objects\Ammo\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

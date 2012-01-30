@@ -82,6 +82,11 @@ namespace GameCore.Objects
 			var type = m_types[World.Rnd.Next(m_types.Count)];
 			return (Item)ThingHelper.ResolveThing(type, _creature);
 		}
+
+		public override EItemCategory Category
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 
 	public class FakedMonster : Creature, IFaked

@@ -7,7 +7,7 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
-namespace GameCore.Acts
+namespace GameCore.Acts.Interact
 {
 	public class CloseAct:Act
 	{
@@ -98,6 +98,11 @@ namespace GameCore.Acts
 		public override string HelpText
 		{
 			get { throw new NotImplementedException(); }
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.WORLD_INTERACTIONS; }
 		}
 	}
 }

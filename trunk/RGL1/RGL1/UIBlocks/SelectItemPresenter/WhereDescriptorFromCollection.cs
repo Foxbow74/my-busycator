@@ -1,8 +1,9 @@
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RGL1.UIBlocks.ThingPresenter;
 
-namespace RGL1.UIBlocks.ThingPresenter
+namespace RGL1.UIBlocks.SelectItemPresenter
 {
 	internal class WhereDescriptorFromCollection : IDescriptorFromCollection
 	{
