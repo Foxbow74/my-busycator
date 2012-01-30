@@ -135,36 +135,9 @@ namespace GameCore.Creatures
 		protected virtual void ActDone()
 		{
 			var act = m_actPool.Dequeue();
-			if (!act.IsCancelled && this == World.TheWorld.Avatar)
-			{
-//				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
-			}
 		}
 
 		#endregion
-
-		public void MoveCommandReceived(Point _dPoint)
-		{
-			AddActToPool(new MoveAct(_dPoint));
-		}
-
-		public void CommandReceived(ECommands _command)
-		{
-			switch (_command)
-			{
-				case ECommands.TAKE:
-					AddActToPool(new TakeAct());
-					break;
-				case ECommands.OPEN:
-					AddActToPool(new OpenAct());
-					break;
-				case ECommands.CLOSE:
-					AddActToPool(new CloseAct());
-					break;
-				default:
-					throw new ArgumentOutOfRangeException("_command");
-			}
-		}
 
 		public virtual void Thinking()
 		{

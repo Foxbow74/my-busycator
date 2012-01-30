@@ -61,6 +61,14 @@ with.
 			<End>Z</End>
 		</CharacterRegion>
 		<CharacterRegion>
+			<Start>a</Start>
+			<End>z</End>
+		</CharacterRegion>
+		<CharacterRegion>
+			<Start>^</Start>
+			<End>^</End>
+		</CharacterRegion>		
+		<CharacterRegion>
 			<Start>А</Start>
 			<End>Я</End>
 		</CharacterRegion>

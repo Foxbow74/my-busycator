@@ -104,14 +104,13 @@ namespace RGL1.UIBlocks
 		}
 
 
-		internal void DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, int _indent,
-		                       EAlignment _alignment)
+		internal float DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, float _indent, EAlignment _alignment)
 		{
-			DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
+			return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
 		}
 
 		internal float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber,
-		                        int _indent, EAlignment _alignment)
+								float _indent, EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();

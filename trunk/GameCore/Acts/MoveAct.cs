@@ -1,4 +1,7 @@
-﻿using GameCore.Creatures;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -8,16 +11,22 @@ namespace GameCore.Acts
 {
 	public class MoveAct : Act
 	{
-		public MoveAct(Point _delta) : base(100)
+		protected override int TakeTicksOnSingleAction
 		{
-			Delta = _delta;
+			get { return 100; }
 		}
-
-		public Point Delta { get; set; }
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			var pnt = _creature.Coords + Delta;
+			var delta = GetParameter<Point>().FirstOrDefault();
+
+			if(delta==null)
+			{
+				var key = GetParameter<ConsoleKey>().Single();
+				delta = KeyTranslator.GetDirection(key);
+			}
+
+			var pnt = _creature.Coords + delta;
 
 			var isAvatar = _creature == World.TheWorld.Avatar;
 
@@ -72,6 +81,29 @@ namespace GameCore.Acts
 					MessageManager.SendMessage(this, "неа, " + mess);
 				}
 				return EActResults.NOTHING_HAPPENS;
+			}
+		}
+
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); }
+		}
+
+		public override string Name
+		{
+			get { return "Движение (стороны света)"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public override string HelpKeys
+		{
+			get
+			{
+				return "стрелки";
 			}
 		}
 	}

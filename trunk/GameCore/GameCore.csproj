@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
     <Compile Include="Acts\CloseAct.cs" />
+    <Compile Include="Acts\Inventory.cs" />
     <Compile Include="Acts\MoveAct.cs" />
     <Compile Include="Acts\OpenAct.cs" />
     <Compile Include="Acts\TakeAct.cs" />
@@ -62,7 +63,6 @@
     <Compile Include="Objects\ThingDescriptor.cs" />
     <Compile Include="Objects\ItemsCollection.cs" />
     <Compile Include="Creatures\Monster.cs" />
-    <Compile Include="ECommands.cs" />
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="KeyTranslator.cs" />
     <Compile Include="Mapping\Map.cs" />

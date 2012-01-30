@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts
 {
 	public class OpenAct : Act
 	{
-		public OpenAct() : base(40)
+		protected override int TakeTicksOnSingleAction
 		{
+			get { return 40; }
 		}
 
 		public override EActResults Do(Creature _creature, bool _silence)
@@ -82,6 +83,21 @@ namespace GameCore.Acts
 				}
 				return ((ICanbeOpened) descriptors.First().Thing).Open(_creature, mapCell, _silence);
 			}
+		}
+
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE);}
+		}
+
+		public override string Name
+		{
+			get { return "Открыть сундук/дверь"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

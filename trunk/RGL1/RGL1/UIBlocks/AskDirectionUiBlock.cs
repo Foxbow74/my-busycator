@@ -18,7 +18,7 @@ namespace RGL1.UIBlocks
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
-			var dPoint = KeyHelper.GetDirection(_key);
+			var dPoint = KeyTranslator.GetDirection(_key);
 			if(dPoint!=null)
 			{
 				m_message.Act.AddParameter(m_message.Point + dPoint);

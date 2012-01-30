@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -10,8 +11,9 @@ namespace GameCore.Acts
 {
 	public class CloseAct:Act
 	{
-		public CloseAct() : base(20)
+		protected override int TakeTicksOnSingleAction
 		{
+			get { return 20; }
 		}
 
 		public override EActResults Do(Creature _creature, bool _silence)
@@ -81,6 +83,21 @@ namespace GameCore.Acts
 				}
 				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, mapCell, _silence);
 			}
+		}
+
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.C, EKeyModifiers.NONE); }
+		}
+
+		public override string Name
+		{
+			get { return "Закрыть сундук/дверь"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

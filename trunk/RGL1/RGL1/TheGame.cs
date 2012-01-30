@@ -198,13 +198,13 @@ namespace RGL1
 
 			m_keyModifiers = keyModifiers;
 
-			if (m_downKeys.Except(KeyHelper.MoveKeys).Any() || pressedKeys.Any())
+			if (m_downKeys.Except(KeyTranslator.MoveKeys.Cast<Keys>()).Any() || pressedKeys.Any())
 			{
 				m_isAutoRepeateMode = false;
 			}
 			else
 			{
-				if (m_downKeys.Intersect(KeyHelper.MoveKeys).Any())
+				if (m_downKeys.Intersect(KeyTranslator.MoveKeys.Cast<Keys>()).Any())
 				{
 					var totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
 					if (m_isAutoRepeateMode)

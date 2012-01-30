@@ -65,9 +65,10 @@ namespace GameCore.Objects
 		private static readonly Dictionary<ETiles, FakedItem> m_fakedItems = new Dictionary<ETiles, FakedItem>();
 		private static readonly Dictionary<ETiles, FakedMonster> m_fakedMonsters = new Dictionary<ETiles, FakedMonster>();
 
-		public static void RegisterThings()
+		//public static void RegisterThings()
+		static ThingHelper()
 		{
-			foreach (var type in GetThingTtypes())
+			foreach (var type in GetThingTypes())
 			{
 				if (typeof(ISpecial).IsAssignableFrom(type)) continue;
 
@@ -140,7 +141,7 @@ namespace GameCore.Objects
 			Debug.WriteLine(thing.Name);
 		}
 
-		private static IEnumerable<Type> GetThingTtypes()
+		private static IEnumerable<Type> GetThingTypes()
 		{
 			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 			{

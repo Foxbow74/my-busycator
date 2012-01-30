@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -9,8 +11,9 @@ namespace GameCore.Acts
 {
 	public class TakeAct : Act
 	{
-		public TakeAct() : base(20)
+		protected override int TakeTicksOnSingleAction
 		{
+			get { return 20; }
 		}
 
 		public override EActResults Do(Creature _creature, bool _silence)
@@ -115,6 +118,21 @@ namespace GameCore.Acts
 				}
 			}
 			return EActResults.DONE;
+		}
+
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.OemComma, EKeyModifiers.NONE); }
+		}
+
+		public override string Name
+		{
+			get { return "Взять/подобрать предмет"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

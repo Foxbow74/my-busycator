@@ -3,6 +3,7 @@ using GameCore;
 using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RGL1.UIBlocks.Help;
 using RGL1.UIBlocks.Map;
 
 namespace RGL1.UIBlocks
@@ -41,19 +42,13 @@ namespace RGL1.UIBlocks
 				return;
 			}
 
-			var dPoint = KeyHelper.GetDirection(_key);
+			if (_key == ConsoleKey.Oem2)
+			{
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rectangle)));
+				return;
+			}
 
-			if (dPoint != null)
-			{
-				World.TheWorld.Avatar.MoveCommandReceived(dPoint);
-				return;
-			}
-			var command = KeyTranslator.TranslateKey(_key, _modifiers);
-			if (command != ECommands.NONE)
-			{
-				World.TheWorld.Avatar.CommandReceived(command);
-				return;
-			}
+			World.TheWorld.KeyPressed(_key, _modifiers);
 		}
 
 		public override void DrawContent(SpriteBatch _spriteBatch)

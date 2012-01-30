@@ -19,7 +19,6 @@ namespace GameCore
 		static World()
 		{
 			Rnd = new Random(1);
-			ThingHelper.RegisterThings();
 		}
 
 		public World()
@@ -121,6 +120,14 @@ namespace GameCore
 		public static void LetItBeeee()
 		{
 			TheWorld = new World();
+		}
+
+		public void KeyPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		{
+			var act = KeyTranslator.TranslateKey(_key, _modifiers);
+			if(act==null) return;
+
+			Avatar.AddActToPool(act);
 		}
 	}
 }

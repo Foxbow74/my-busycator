@@ -56,11 +56,5 @@ namespace RGL1.UIBlocks
 			}
 			_spriteBatch.End();
 		}
-
-		public int TextLinesMax
-		{
-			get { return (int)Math.Round((double)ContentRectangle.Height * Tile.Size / m_lineHeight); }
-
-		}
 	}
 }
