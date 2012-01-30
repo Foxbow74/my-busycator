@@ -17,6 +17,7 @@ namespace RGL1.UIBlocks.Help
 			switch (_key)
 			{
 				case ConsoleKey.Z:
+				case ConsoleKey.Escape:
 					CloseTopBlock();
 					break;
 			}

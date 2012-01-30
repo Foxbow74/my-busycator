@@ -9,6 +9,14 @@ namespace GameCore.Objects.Furniture
 	{
 		private LockType m_lockType = LockType.SIMPLE;
 
+		public override float Opaque
+		{
+			get
+			{
+				return 0f;
+			}
+		}
+
 		public override ETiles Tile
 		{
 			get { return ETiles.OPEN_DOOR; }

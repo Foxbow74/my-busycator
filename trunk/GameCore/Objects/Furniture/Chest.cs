@@ -9,6 +9,14 @@ namespace GameCore.Objects.Furniture
 {
 	public class Chest : Container, ICanbeOpened
 	{
+		public override float Opaque
+		{
+			get
+			{
+				return 0.5f;
+			}
+		}
+
 		public Chest()
 		{
 			LockType = LockType.SIMPLE;

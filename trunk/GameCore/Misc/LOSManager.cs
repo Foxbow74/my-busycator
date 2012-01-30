@@ -72,9 +72,12 @@ namespace GameCore.Misc
 				if (pnt.X < 0 || pnt.X >= maxX) continue;
 				if (pnt.Y < 0 || pnt.Y >= maxY) continue;
 
-				var attr = _mapCells[pnt.X, pnt.Y].TerrainAttribute;
+				var mapCell = _mapCells[pnt.X, pnt.Y];
 
-				var visible = (1.0 - attr.Opaque*pair.Key.Item2)*_visibilityCoeff;
+				var opaque = mapCell.Opaque;
+
+				var visible = 1.0 * _visibilityCoeff;
+				var nextVisible = (1.0 - opaque*pair.Key.Item2)*_visibilityCoeff;
 
 				double tuple;
 				if (_alreadyDone.TryGetValue(pnt, out tuple))
@@ -83,7 +86,7 @@ namespace GameCore.Misc
 					if (visibility >= visible) continue;
 				}
 
-				if (attr.Opaque < 0.999f)
+				if (opaque < 0.999f)
 				{
 					_alreadyDone[pnt] = visible;
 				}
@@ -95,7 +98,7 @@ namespace GameCore.Misc
 
 				if (visible < 0.1) continue;
 
-				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, visible*0.99);//95);
+				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, nextVisible * 0.99);
 			}
 		}
 

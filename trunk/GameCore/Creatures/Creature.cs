@@ -27,6 +27,14 @@ namespace GameCore.Creatures
 			Coords = _coords;
 		}
 
+		public override float Opaque
+		{
+			get
+			{
+				return 0.8f;
+			}
+		}
+
 		/// <summary>
 		/// 	Ход в игре с точки зрения существа
 		/// 	Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе

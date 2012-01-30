@@ -151,5 +151,24 @@ namespace GameCore.Mapping
 		{
 			Block.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
 		}
+
+
+		public float Opaque
+		{
+			get
+			{
+				var attr = TerrainAttribute;
+				var opaque = attr.Opaque;
+				if (opaque < 1 && Thing != null)
+				{
+					opaque = Math.Max(opaque, Thing.Opaque);
+				}
+				if (opaque < 1 && Creature != null)
+				{
+					opaque = Math.Max(opaque, Creature.Opaque);
+				}
+				return opaque;
+			}
+		}
 	}
 }

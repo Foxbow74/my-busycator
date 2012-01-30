@@ -282,11 +282,10 @@ namespace RGL1
 				m_second = tm.Second;
 			}
 
-			m_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Opaque);
+			m_spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend);
 
 			var format = string.Format("тоя:{0} XY:{1}", m_fps, World.TheWorld.Avatar.Coords);
-
-			m_spriteBatch.WriteString(format, 2, GraphicsDevice.Viewport.Height - 17, Color.White, Color.Gray, Fonts.Font);
+			m_spriteBatch.WriteString(format, 2, GraphicsDevice.Viewport.Height - 18, Color.White, Color.Gray, Fonts.Font);
 
 			m_spriteBatch.End();
 		}

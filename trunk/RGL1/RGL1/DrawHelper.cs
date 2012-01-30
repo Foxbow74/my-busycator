@@ -36,14 +36,6 @@ namespace RGL1
 		public static void WriteString(this SpriteBatch _spriteBatch, string _string, int _x, int _y, Color _fore, Color _back,
 		                               SpriteFont _spriteFont)
 		{
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x - 1, _y - 1), _back);
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x - 1, _y), _back);
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x, _y - 1), _back);
-
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x + 1, _y + 1), _back);
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x + 1, _y), _back);
-			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x, _y + 1), _back);
-
 			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x, _y), _fore);
 		}
 	}

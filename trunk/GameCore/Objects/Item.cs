@@ -11,5 +11,13 @@ namespace GameCore.Objects
 		{
 			return GetType().GetHashCode();
 		}
+
+		public override float Opaque
+		{
+			get
+			{
+				return 0;
+			}
+		}
 	}
 }
