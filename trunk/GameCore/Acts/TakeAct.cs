@@ -35,7 +35,8 @@ namespace GameCore.Acts
 				// Если в параметрах нет уточнений
 				if (notTaken.Count()==1)
 				{
-					if (GetParameter<bool>().Single())
+					var needToShow = GetParameter<bool>();
+					if (needToShow.Any() && needToShow.Single())
 					{
 						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this));
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
@@ -64,9 +65,8 @@ namespace GameCore.Acts
 				foreach (var descr in toTake)
 				{
 					var act = new TakeAct();
-					act.AddParameter(descr);
 					act.AddParameter(GetParameter<Point>());
-					_creature.AddActToPool(act);
+					_creature.AddActToPool(act, descr);
 				}
 				return EActResults.NOTHING_HAPPENS;
 			}

@@ -1,8 +1,4 @@
-﻿#region
-
-using System;
-
-#endregion
+﻿using System;
 
 namespace GameCore
 {
@@ -25,6 +21,8 @@ namespace GameCore
 					return ECommands.TAKE;
 				case ConsoleKey.O:
 					return ECommands.OPEN;
+				case ConsoleKey.C:
+					return ECommands.CLOSE;
 			}
 			return ECommands.NONE;
 		}

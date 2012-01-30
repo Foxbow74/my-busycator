@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\CloseAct.cs" />
     <Compile Include="Acts\MoveAct.cs" />
     <Compile Include="Acts\OpenAct.cs" />
     <Compile Include="Acts\TakeAct.cs" />
@@ -52,10 +53,12 @@
     <Compile Include="Misc\LOSManager.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\Furniture\Heap.cs" />
+    <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\ICanbeOpened.cs" />
     <Compile Include="Objects\ISpecial.cs" />
     <Compile Include="Objects\Jewelry\Jevelry.cs" />
     <Compile Include="Objects\Jewelry\Ring.cs" />
+    <Compile Include="Objects\Potions\Potion.cs" />
     <Compile Include="Objects\ThingDescriptor.cs" />
     <Compile Include="Objects\ItemsCollection.cs" />
     <Compile Include="Creatures\Monster.cs" />

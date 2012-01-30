@@ -32,7 +32,7 @@ namespace GameCore.Acts
 	{
 		private List<Tuple<Type, object>> m_parameters;
 
-		private int m_takeTicks;
+		private readonly int m_takeTicks;
 
 		protected Act(int _takeTicks)
 		{
@@ -54,7 +54,13 @@ namespace GameCore.Acts
 		public void AddParameter<T>(T _param)
 		{
 			if (m_parameters == null) m_parameters = new List<Tuple<Type, object>>();
-			m_parameters.Add(new Tuple<Type, object>(typeof (T), _param));
+			m_parameters.Add(new Tuple<Type, object>(typeof(T), _param));
+		}
+
+		public void AddParameter(Type _type, object _param)
+		{
+			if (m_parameters == null) m_parameters = new List<Tuple<Type, object>>();
+			m_parameters.Add(new Tuple<Type, object>(_type, _param));
 		}
 
 		public IEnumerable<T> GetParameter<T>()

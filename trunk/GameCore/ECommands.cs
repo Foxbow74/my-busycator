@@ -4,6 +4,7 @@
 	{
 		NONE,
 		TAKE,
-		OPEN
+		OPEN,
+		CLOSE,
 	}
 }

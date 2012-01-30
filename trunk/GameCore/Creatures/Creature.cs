@@ -86,9 +86,13 @@ namespace GameCore.Creatures
 
 		private readonly Queue<Act> m_actPool = new Queue<Act>();
 
-		public void AddActToPool(Act _act)
+		public void AddActToPool(Act _act, params object[] _params)
 		{
 			m_actPool.Enqueue(_act);
+			foreach (var o in _params)
+			{
+				_act.AddParameter(o.GetType(), o);
+			}
 		}
 
 		public Act NextAct
@@ -153,6 +157,9 @@ namespace GameCore.Creatures
 					break;
 				case ECommands.OPEN:
 					AddActToPool(new OpenAct());
+					break;
+				case ECommands.CLOSE:
+					AddActToPool(new CloseAct());
 					break;
 				default:
 					throw new ArgumentOutOfRangeException("_command");

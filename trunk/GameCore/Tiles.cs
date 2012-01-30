@@ -6,6 +6,7 @@
 		BRICK,
 		BRICK_WINDOW,
 		DOOR,
+		OPEN_DOOR,
 		AVATAR,
 		MASHROOM,
 		GROUND,
@@ -16,5 +17,6 @@
 		CROSSBOW,
 		RING,
 		HEAP_OF_ITEMS,
+		POTION,
 	}
 }

@@ -84,7 +84,7 @@ namespace GameCore.Mapping
 				if (Creature != null) return 0f;
 				if(Thing!=null)
 				{
-					if(Thing is Door && ((Door) Thing).LockType != LockType.OPEN)
+					if (Thing.IsDoor(this, Creature) && Thing.CanBeOpened(this, Creature))
 					{
 						return 0f;
 					}
@@ -114,6 +114,11 @@ namespace GameCore.Mapping
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
 		}
 
+		public void AddObjectFromBlock(Thing _thing)
+		{
+			Block.Objects.Add(new Tuple<Thing, Point>(_thing, m_inBlockCoords));
+		}
+
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)
 		{
 			if(Thing==null) yield break;
@@ -125,7 +130,7 @@ namespace GameCore.Mapping
 				}
 				yield return new ThingDescriptor(Thing, WorldCoords, null);
 			}
-			if (Thing is Container && !Thing.IsClosed(this, _creature))
+			if (Thing is Container && !Thing.CanBeOpened(this, _creature))
 			{
 				var container = (Container) Thing;
 				foreach (var item in container.GetItems(_creature).Items)

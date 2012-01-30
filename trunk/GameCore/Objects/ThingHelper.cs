@@ -16,7 +16,7 @@ namespace GameCore.Objects
 			return _thing is Item;
 		}
 
-		public static bool IsClosed(this Thing _thing, MapCell _cell, Creature _creature)
+		public static bool CanBeOpened(this Thing _thing, MapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
@@ -26,6 +26,16 @@ namespace GameCore.Objects
 			return _thing is ICanbeOpened && ((ICanbeOpened)_thing).LockType != LockType.OPEN;
 		}
 
+		public static bool CanBeClosed(this Thing _thing, MapCell _cell, Creature _creature)
+		{
+			if (_thing == null) return false;
+			if (_thing.IsFake())
+			{
+				_thing = _cell.ResolveFakeItem(_creature);
+			}
+			return _thing is ICanbeClosed && ((ICanbeClosed)_thing).LockType == LockType.OPEN;
+		}
+
 		public static bool IsDoor(this Thing _thing, MapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
@@ -33,7 +43,7 @@ namespace GameCore.Objects
 			{
 				_thing = _cell.ResolveFakeItem(_creature);
 			}
-			return _thing is Door;
+			return _thing is Door || _thing is OpenDoor;
 		}
 
 		public static bool IsChest(this Thing _thing, MapCell _cell, Creature _creature)
@@ -74,6 +84,21 @@ namespace GameCore.Objects
 					RegisterThingType(type);
 				}
 			}
+		}
+
+		public static FakedThing GetThing(this ETiles _tile)
+		{
+			return m_fakedThings[_tile];
+		}
+
+		public static FakedItem GetItem(this ETiles _tile)
+		{
+			return m_fakedItems[_tile];
+		}
+
+		public static FakedMonster GetMonster(this ETiles _tile)
+		{
+			return m_fakedMonsters[_tile];
 		}
 
 		private static void RegisterCreatureType(Type _type)

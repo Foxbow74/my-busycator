@@ -5,13 +5,12 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts
 {
-	public class OpenAct : Act
+	public class CloseAct:Act
 	{
-		public OpenAct() : base(40)
+		public CloseAct() : base(20)
 		{
 		}
 
@@ -24,16 +23,16 @@ namespace GameCore.Acts
 				foreach (var cell in _creature.Coords.NearestPoints.Select(Map.GetMapCell))
 				{
 					var cc = cell;
-					if (cc.Thing.CanBeOpened(cc, _creature))
+					if (cc.Thing.CanBeClosed(cc, _creature))
 					{
 						list.Add(cc.WorldCoords);
 					}
-					else if (cc.GetAllAvailableItems(_creature).Any(_descriptor => _descriptor.Thing.CanBeOpened(cc, _creature)))
+					else if (cc.GetAllAvailableItems(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cc, _creature)))
 					{
 						list.Add(cc.WorldCoords);
 					}
 				}
-				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeOpened(null, _creature)))
+				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeClosed(null, _creature)))
 				{
 					list.Add(_creature.Coords);
 				}
@@ -47,8 +46,8 @@ namespace GameCore.Acts
 
 				if (!coords.Any())
 				{
-					//если нечего открывать
-					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "открыть что?"));
+					//если нечего закрывать
+					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
 					return EActResults.NOTHING_HAPPENS;
 				}
 				if (coords.Count() > 1)
@@ -59,17 +58,17 @@ namespace GameCore.Acts
 				mapCell = Map.GetMapCell(coords.First());
 			}
 
-			//выясняем, что нужно открыть
+			//выясняем, что нужно закрыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) && mapCell.Thing.CanBeOpened(mapCell, _creature))
+				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) && mapCell.Thing.CanBeClosed(mapCell, _creature))
 				{
 					list.Add(new ThingDescriptor(mapCell.Thing, mapCell.WorldCoords, null));
 				}
-				list.AddRange(mapCell.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.CanBeOpened(mapCell, _creature)));
+				list.AddRange(mapCell.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
 				if (mapCell.WorldCoords == _creature.Coords)
 				{
-					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeOpened(mapCell, _creature)));
+					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
 				}
 				var descriptors = list.Distinct();
 				if(GetParameter<ThingDescriptor>().Any())
@@ -80,7 +79,7 @@ namespace GameCore.Acts
 				{
 					MessageManager.SendMessage(this, new AskSelectThingsMessage(descriptors, this));
 				}
-				return ((ICanbeOpened) descriptors.First().Thing).Open(_creature, mapCell, _silence);
+				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, mapCell, _silence);
 			}
 		}
 	}

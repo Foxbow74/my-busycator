@@ -93,6 +93,9 @@ namespace RGL1
 					case ETiles.DOOR:
 						tl = new Tile(5, 12, Color.Brown);
 						break;
+					case ETiles.OPEN_DOOR:
+						tl = new Tile(4, 12, Color.Brown);
+						break;
 					case ETiles.AVATAR:
 						tl = new Tile(2, 0, Color.White);
 						break;
@@ -129,6 +132,9 @@ namespace RGL1
 						break;
 					case ETiles.HEAP_OF_ITEMS:
 						tl = new Tile(TextureSet.GP_X16, 11, 0, Color.DarkOrchid);
+						break;
+					case ETiles.POTION:
+						tl = new Tile(TextureSet.RR_BRICK_01, 13, 10, Color.Gray);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

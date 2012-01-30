@@ -9,4 +9,10 @@ namespace GameCore.Objects
 		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
 		LockType LockType { get; }
 	}
+
+	internal interface ICanbeClosed
+	{
+		EActResults Close(Creature _creature, MapCell _mapCell, bool _silence);
+		LockType LockType { get; }
+	}
 }

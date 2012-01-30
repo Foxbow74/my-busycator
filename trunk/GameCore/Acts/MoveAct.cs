@@ -1,12 +1,8 @@
-﻿#region
-
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
-
-#endregion
 
 namespace GameCore.Acts
 {
@@ -27,22 +23,27 @@ namespace GameCore.Acts
 
 			var mapCell = Map.GetMapCell(pnt);
 
+			var mess = mapCell.TerrainAttribute.DisplayName;
+
 			if (mapCell.IsPassable > 0)
 			{
 				_creature.Coords = pnt;
 
-				var o = mapCell.Thing;
-				if (o == null)
+				if (!_silence)
 				{
-					if (!_silence) MessageManager.SendMessage(this, mapCell.TerrainAttribute.DisplayName);
-				}
-				else
-				{
-					if (o is IFaked)
+					var o = mapCell.Thing;
+					if (o == null)
 					{
-						o = mapCell.ResolveFakeItem(World.TheWorld.Avatar);
+						MessageManager.SendMessage(this, mess);
 					}
-					if (!_silence) MessageManager.SendMessage(this, o.Name);
+					else
+					{
+						if (o is IFaked)
+						{
+							o = mapCell.ResolveFakeItem(World.TheWorld.Avatar);
+						}
+						MessageManager.SendMessage(this, mess + ", " + o.Name);
+					}
 				}
 
 				if (isAvatar)
@@ -53,7 +54,23 @@ namespace GameCore.Acts
 			}
 			else
 			{
-				if (!_silence) MessageManager.SendMessage(this, "неа, " + mapCell.TerrainAttribute.DisplayName);
+				if (!_silence)
+				{
+					var o = mapCell.Thing;
+
+					if(o.IsDoor(mapCell, _creature) && o.CanBeOpened(mapCell, _creature))
+					{
+						_creature.AddActToPool(new OpenAct(), pnt);
+						return EActResults.DONE;
+					}
+
+					if (o != null)
+					{
+						mess = o.Name;
+					}
+
+					MessageManager.SendMessage(this, "неа, " + mess);
+				}
 				return EActResults.NOTHING_HAPPENS;
 			}
 		}

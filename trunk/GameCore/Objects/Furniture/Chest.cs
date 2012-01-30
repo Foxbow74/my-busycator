@@ -39,17 +39,11 @@ namespace GameCore.Objects.Furniture
 				if (!_silence) MessageManager.SendMessage(this, Name + " открыт.");
 				LockType = LockType.OPEN;
 
-				var takeAct = new TakeAct();
 				var collection = GetItems(_creature);
-
 				if (collection.Any)
 				{
-					takeAct.AddParameter(collection.Items);
-					takeAct.AddParameter(_mapCell.WorldCoords);
-					
 					//обязать по любасу показать диалог выбора предметов
-					takeAct.AddParameter(true);
-					_creature.AddActToPool(takeAct);
+					_creature.AddActToPool(new TakeAct(), true, collection.Items, _mapCell.WorldCoords);
 				}
 				else
 				{

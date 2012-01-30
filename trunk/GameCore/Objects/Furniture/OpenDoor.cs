@@ -1,18 +1,17 @@
-﻿using System;
-using GameCore.Acts;
+﻿using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 
 namespace GameCore.Objects.Furniture
 {
-	public class Door : Thing, ICanbeOpened
+	public class OpenDoor : Thing, ICanbeClosed
 	{
 		private LockType m_lockType = LockType.SIMPLE;
 
 		public override ETiles Tile
 		{
-			get { return ETiles.DOOR; }
+			get { return ETiles.OPEN_DOOR; }
 		}
 
 		public override string Name
@@ -29,27 +28,21 @@ namespace GameCore.Objects.Furniture
 			m_lockType = _lockType;
 		}
 
-		#region ICanbeOpened Members
+		#region ICanbeClosed Members
 
-		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
+		public EActResults Close(Creature _creature, MapCell _mapCell, bool _silence)
 		{
 			_mapCell.RemoveObjectFromBlock();
-			var door = new OpenDoor();
+			var door = new Door();
 			door.SetLockType(m_lockType);
 			_mapCell.AddObjectFromBlock(door);
-
-			if (!_silence) MessageManager.SendMessage(this, Name + " открыта.");
-			return EActResults.DONE; 
+			if (!_silence) MessageManager.SendMessage(this, Name + " закрыта.");
+			return EActResults.DONE;
 		}
 
-		public virtual EActResults Close(Creature _creature, MapCell _mapCell, bool _silence)
+		public LockType LockType
 		{
-			throw new NotImplementedException();
-		}
-
-		public virtual LockType LockType
-		{
-			get { return m_lockType; }
+			get { return LockType.OPEN; }
 		}
 
 		#endregion

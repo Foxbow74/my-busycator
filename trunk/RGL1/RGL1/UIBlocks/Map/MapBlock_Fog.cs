@@ -53,18 +53,20 @@ namespace RGL1.UIBlocks.Map
 				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
 				{
 					var mapCell = m_mapCells[x, y];
-					FoggedCell foggedCell;
-					var key = mapCell.WorldCoords.GetHashCode();
-
-					if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh)
-					{
-						foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, foggedBackColor);
-					}
-					else if (mapCell.IsSeenBefore && !mapCell.IsVisibleNow)
+					if (mapCell.IsSeenBefore && !mapCell.IsVisibleNow)
 					{
 						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 						var color = Color.Lerp(foggedBackColor, tile.Color, FOG_VISIBILITY_LOWEST);
 						tile.DrawAtCell(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, color);
+
+						FoggedCell foggedCell;
+						var key = mapCell.WorldCoords.GetHashCode();
+
+						if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh && foggedCell.Tile != tile)
+						{
+							foggedCell.Draw(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, foggedBackColor);
+						}
+
 						TileHelper.FogTile.DrawAtCell(_spriteBatch, x + ContentRectangle.Left, y + ContentRectangle.Top, Color.Black);
 					}
 				}
@@ -82,12 +84,11 @@ namespace RGL1.UIBlocks.Map
 		{
 			private Color m_color;
 			private float m_fog;
-			private Tile m_tile;
 
 			public FoggedCell(Tile _tile, Color _color)
 			{
 				m_fog = 1f;
-				m_tile = _tile;
+				Tile = _tile;
 				m_color = _color;
 			}
 
@@ -96,11 +97,13 @@ namespace RGL1.UIBlocks.Map
 				get { return m_fog == 1; }
 			}
 
+			public Tile Tile { get; private set; }
+
 			public void Draw(SpriteBatch _spriteBatch, int _x, int _y, Color _backgroundColor)
 			{
 				var color = Color.Lerp(_backgroundColor, m_color, m_fog);
-				m_tile.DrawAtCell(_spriteBatch, _x, _y, color);
-				TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y, Color.Black);
+				Tile.DrawAtCell(_spriteBatch, _x, _y, color);
+				//TileHelper.FogTile.DrawAtCell(_spriteBatch, _x, _y, Color.Black);
 			}
 
 			public bool UpdateFog(float _d)
@@ -112,7 +115,7 @@ namespace RGL1.UIBlocks.Map
 			public void Update(Tile _tile, Color _color)
 			{
 				m_fog = 1;
-				m_tile = _tile;
+				Tile = _tile;
 				m_color = _color;
 			}
 		}
