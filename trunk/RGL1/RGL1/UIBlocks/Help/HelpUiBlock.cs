@@ -33,7 +33,7 @@ namespace RGL1.UIBlocks.Help
 			DrawLine("a. Привязка клавишь", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
 			DrawLine("b. Предметы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
 			DrawLine("с. Классы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
-			DrawLine("с. Рассы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
+			DrawLine("d. Рассы", Color, _spriteBatch, line++, indent, EAlignment.LEFT);
 			DrawLine("[z] - выход", Color, _spriteBatch, TextLinesMax-1, indent, EAlignment.RIGHT);
 			_spriteBatch.End();
 		}

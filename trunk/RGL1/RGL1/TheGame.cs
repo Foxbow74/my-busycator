@@ -141,6 +141,8 @@ namespace RGL1
 
 			GraphicsDevice.Clear(Color.Orange);
 			m_spriteBatch = new SpriteBatch(GraphicsDevice);
+
+			MessageManager.SendMessage(this, " [?] - экран помощи");
 		}
 
 		/// <summary>
