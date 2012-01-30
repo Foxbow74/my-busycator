@@ -24,6 +24,11 @@ namespace RGL1.UIBlocks
 			BackgroundColor = Color.Black;
 		}
 
+		public int TextLinesMax
+		{
+			get { return (int)Math.Round((double)ContentRectangle.Height * Tile.Size / m_lineHeight); }
+		}
+
 		public Color BackgroundColor { get; set; }
 
 		public Rectangle Rectangle { get; protected set; }

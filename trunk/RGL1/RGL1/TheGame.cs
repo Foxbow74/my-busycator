@@ -114,15 +114,15 @@ namespace RGL1
 			else if (_message is AskSelectThingsMessage)
 			{
 				var mess = (AskSelectThingsMessage) _message;
-				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act));
+				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.MapRectangle, mess.ItemDescriptors, mess.Act));
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage)_message));
+				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.MapRectangle, (AskDirectionMessage)_message));
 			}
 			else if(_message is AskHowMuchMessage)
 			{
-				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.Rectangle, (AskHowMuchMessage)_message));
+				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.MapRectangle, (AskHowMuchMessage)_message));
 			}
 		}
 
@@ -234,6 +234,8 @@ namespace RGL1
 			{
 				if (m_uiBlocks.Peek() != m_mainBlock || World.TheWorld.Avatar.NextAct == null)
 				{
+					MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
+
 					var tuple = m_pressed.Dequeue();
 					m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
 				}

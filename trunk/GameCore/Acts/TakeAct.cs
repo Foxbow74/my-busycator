@@ -35,6 +35,12 @@ namespace GameCore.Acts
 				// Если в параметрах нет уточнений
 				if (notTaken.Count()==1)
 				{
+					if (GetParameter<bool>().Single())
+					{
+						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this));
+						return EActResults.NEED_ADDITIONAL_PARAMETERS;
+					}
+
 					toTake.AddRange(notTaken);
 				}
 				else
@@ -66,7 +72,6 @@ namespace GameCore.Acts
 			}
 
 			var descriptor = toTake.First();
-			var count = 1;
 			if(descriptor.Container==null)
 			{
 				Map.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
@@ -79,7 +84,7 @@ namespace GameCore.Acts
 					var cnt = GetParameter<int>();
 					if (cnt.Any())
 					{
-						count = cnt.Single();
+						Count = cnt.Single();
 					}
 					else
 					{
@@ -88,18 +93,18 @@ namespace GameCore.Acts
 					}
 
 				}
-				for (var i = 0; i < count; ++i)
+				for (var i = 0; i < Count; ++i)
 				{
 					descriptor.Container.GetItems(_creature).Remove((Item)descriptor.Thing);
 				}
 			}
-			for (var i = 0; i < count; ++i)
+			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.ObjectTaken((Item)descriptor.Thing);
 			}
-			if (!_silence && count>0)
+			if (!_silence && Count > 0)
 			{
-				var suffix = count > 1 ? (", " + count + " штук.") : ".";
+				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 				if (intelligent is Avatar)
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, descriptor.Thing + " взят" + suffix));

@@ -153,6 +153,7 @@
     <Compile Include="UIBlocks\StatsBlock.cs" />
     <Compile Include="UIBlocks\SelectItemPresenter\ThingDescriptorFromCollection.cs" />
     <Compile Include="UIBlocks\SelectItemPresenter\ThingsPresenter.cs" />
+    <Compile Include="UIBlocks\TurnMessageUiBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
     <Compile Include="UIBlocks\SelectItemPresenter\WhereDescriptorFromCollection.cs" />
     <Compile Include="VectorHelpers.cs" />

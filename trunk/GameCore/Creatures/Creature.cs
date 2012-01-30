@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
-using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -24,7 +23,7 @@ namespace GameCore.Creatures
 		protected Creature(Point _coords, int _speed)
 		{
 			Speed = _speed;
-			Luck = 100;
+			Luck = 5;
 			Coords = _coords;
 		}
 
@@ -134,7 +133,7 @@ namespace GameCore.Creatures
 			var act = m_actPool.Dequeue();
 			if (!act.IsCancelled && this == World.TheWorld.Avatar)
 			{
-				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
+//				MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
 			}
 		}
 

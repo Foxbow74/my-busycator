@@ -32,12 +32,21 @@ namespace GameCore.Acts
 	{
 		private List<Tuple<Type, object>> m_parameters;
 
+		private int m_takeTicks;
+
 		protected Act(int _takeTicks)
 		{
-			TakeTicks = _takeTicks;
+			m_takeTicks = _takeTicks;
+			Count = 1;
 		}
 
-		public int TakeTicks { get; private set; }
+		/// <summary>
+		/// Сколько раз произведено действие (например взято 10 топоров)
+		/// </summary>
+		public int Count { get; protected set; }
+
+		public int TakeTicks { get { return m_takeTicks*Count; } }
+
 		public bool IsCancelled { get; set; }
 
 		public abstract EActResults Do(Creature _creature, bool _silence);

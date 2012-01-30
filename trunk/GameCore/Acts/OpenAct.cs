@@ -54,6 +54,7 @@ namespace GameCore.Acts
 				if (coords.Count() > 1)
 				{
 					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
+					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 				mapCell = Map.GetMapCell(coords.First());
 			}

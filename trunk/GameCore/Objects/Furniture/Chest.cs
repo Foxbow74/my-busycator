@@ -45,7 +45,10 @@ namespace GameCore.Objects.Furniture
 				if (collection.Any)
 				{
 					takeAct.AddParameter(collection.Items);
-					takeAct.AddParameter(_mapCell.WorldCoords);// - _creature.Coords);
+					takeAct.AddParameter(_mapCell.WorldCoords);
+					
+					//обязать по любасу показать диалог выбора предметов
+					takeAct.AddParameter(true);
 					_creature.AddActToPool(takeAct);
 				}
 				else

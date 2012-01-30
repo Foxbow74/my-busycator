@@ -8,10 +8,9 @@ using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
-	internal class MessageBlock : UIBlock
+	class MessageBlock : UIBlock
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
-		private readonly List<TextPortion> m_portions = new List<TextPortion>();
 
 		public MessageBlock(Rectangle _rectangle)
 			: base(_rectangle, null, Color.Yellow)
@@ -25,14 +24,12 @@ namespace RGL1.UIBlocks
 			{
 				var tm = (SimpleTextMessage) _message;
 				var tp = new TextPortion(tm.Text, null);
-				m_portions.Add(tp);
 				tp.SplitByLines((ContentRectangle.Width - 1)*Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tp.TextLines);
 			}
 			else if (_message is TextMessage)
 			{
 				var tm = (TextMessage) _message;
-				m_portions.Add(tm.Text);
 				tm.Text.SplitByLines((ContentRectangle.Width - 1)*Tile.Size, Fonts.Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
