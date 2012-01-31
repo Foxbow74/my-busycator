@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	class ThingCategoryPresenter : ILinePresenter
+	internal class ThingCategoryPresenter : ILinePresenter
 	{
 		private readonly ThingCategoryAttribute m_attribute;
 
@@ -16,9 +16,14 @@ namespace RGL1.UIBlocks.Items
 
 		public EThingCategory Category { get; private set; }
 
+		#region ILinePresenter Members
+
 		public virtual void DrawLine(int _line, SpriteBatch _spriteBatch, UIBlock _uiBlock)
 		{
-			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')", Color.Yellow, _spriteBatch, _line, 0, UIBlock.EAlignment.LEFT);
+			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')", Color.Yellow, _spriteBatch, _line, 0,
+			                  UIBlock.EAlignment.LEFT);
 		}
+
+		#endregion
 	}
 }

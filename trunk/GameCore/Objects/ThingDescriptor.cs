@@ -4,16 +4,7 @@ namespace GameCore.Objects
 {
 	public class ThingDescriptor
 	{
-		private static readonly ThingDescriptor m_empty = new ThingDescriptor(null,null,null);
-
-		/// <summary>
-		/// Где лежит (если null - на земле)
-		/// </summary>
-		public Container Container { get; private set; }
-
-		public Point WorldCoords { get; private set; }
-
-		public Thing Thing { get; private set; }
+		private static readonly ThingDescriptor m_empty = new ThingDescriptor(null, null, null);
 
 		public ThingDescriptor(Thing _thing, Point _worldCoords, Container _container)
 		{
@@ -21,6 +12,15 @@ namespace GameCore.Objects
 			WorldCoords = _worldCoords;
 			Container = _container;
 		}
+
+		/// <summary>
+		/// 	Где лежит (если null - на земле)
+		/// </summary>
+		public Container Container { get; private set; }
+
+		public Point WorldCoords { get; private set; }
+
+		public Thing Thing { get; private set; }
 
 		public string UiOrderIndex
 		{

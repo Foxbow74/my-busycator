@@ -119,11 +119,11 @@ namespace RGL1
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.MapRectangle, (AskDirectionMessage)_message));
+				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.MapRectangle, (AskDirectionMessage) _message));
 			}
-			else if(_message is AskHowMuchMessage)
+			else if (_message is AskHowMuchMessage)
 			{
-				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.MapRectangle, (AskHowMuchMessage)_message));
+				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.MapRectangle, (AskHowMuchMessage) _message));
 			}
 		}
 

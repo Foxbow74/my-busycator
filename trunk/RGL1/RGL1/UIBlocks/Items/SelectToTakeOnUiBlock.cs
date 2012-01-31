@@ -2,16 +2,20 @@
 using GameCore.Creatures;
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	class SelectToTakeOnUiBlock : ItemsSelectorUiBlock
+	internal class SelectToTakeOnUiBlock : ItemsSelectorUiBlock
 	{
 		private readonly EquipmentPresenter m_equipmentPresenter;
 		private readonly EquipmentUiBlock m_equipmentUiBlock;
 
-		public SelectToTakeOnUiBlock(Rectangle _rectangle, EquipmentUiBlock _equipmentUiBlock, EquipmentPresenter _equipmentPresenter) :
-			base(_rectangle, EBehavior.SELECT_ONE, null, _equipmentUiBlock.Intelligent.GetBackPackItems())
+		public SelectToTakeOnUiBlock(Rectangle _rectangle, EquipmentUiBlock _equipmentUiBlock,
+		                             EquipmentPresenter _equipmentPresenter) :
+		                             	base(
+		                             	_rectangle, EBehavior.SELECT_ONE, null, _equipmentUiBlock.Intelligent.GetBackPackItems()
+		                             	)
 		{
 			m_equipmentPresenter = _equipmentPresenter;
 			m_equipmentUiBlock = _equipmentUiBlock;
@@ -19,21 +23,15 @@ namespace RGL1.UIBlocks.Items
 
 		protected override IEnumerable<EThingCategory> AllowedCategories
 		{
-			get
-			{
-				return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip;
-			}
+			get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; }
 		}
 
 		protected override int HeaderTakesLine
 		{
-			get
-			{
-				return 4;
-			}
+			get { return 4; }
 		}
 
-		protected override void DrawHeader(Microsoft.Xna.Framework.Graphics.SpriteBatch _spriteBatch)
+		protected override void DrawHeader(SpriteBatch _spriteBatch)
 		{
 			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White, _spriteBatch, 0, 0, EAlignment.CENTER);
 			DrawLine("ВЕС:", Color, _spriteBatch, 2, 0, EAlignment.LEFT);
@@ -42,7 +40,7 @@ namespace RGL1.UIBlocks.Items
 
 		protected override void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)
 		{
-			m_equipmentUiBlock.Intelligent.TakeOn(m_equipmentPresenter.Place, (Item)_thingDescriptor.Thing);
+			m_equipmentUiBlock.Intelligent.TakeOn(m_equipmentPresenter.Place, (Item) _thingDescriptor.Thing);
 			m_equipmentUiBlock.Rebuild();
 		}
 	}

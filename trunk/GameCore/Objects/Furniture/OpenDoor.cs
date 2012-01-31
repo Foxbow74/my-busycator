@@ -16,10 +16,7 @@ namespace GameCore.Objects.Furniture
 
 		public override float Opaque
 		{
-			get
-			{
-				return 0f;
-			}
+			get { return 0f; }
 		}
 
 		public override ETiles Tile
@@ -30,15 +27,6 @@ namespace GameCore.Objects.Furniture
 		public override string Name
 		{
 			get { return "дверь"; }
-		}
-
-		public override void Resolve(Creature _creature)
-		{
-		}
-
-		internal void SetLockType(LockType _lockType)
-		{
-			m_lockType = _lockType;
 		}
 
 		#region ICanbeClosed Members
@@ -59,5 +47,14 @@ namespace GameCore.Objects.Furniture
 		}
 
 		#endregion
+
+		public override void Resolve(Creature _creature)
+		{
+		}
+
+		internal void SetLockType(LockType _lockType)
+		{
+			m_lockType = _lockType;
+		}
 	}
 }

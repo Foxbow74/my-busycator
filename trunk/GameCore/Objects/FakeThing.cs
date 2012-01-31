@@ -5,7 +5,7 @@ using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	public interface IFaked: ISpecial
+	public interface IFaked : ISpecial
 	{
 		Thing ResolveFake(Creature _creature);
 	}
@@ -20,11 +20,6 @@ namespace GameCore.Objects
 			m_tile = _tile;
 		}
 
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
-
 		public override ETiles Tile
 		{
 			get { return m_tile; }
@@ -35,20 +30,29 @@ namespace GameCore.Objects
 			get { throw new NotImplementedException(); }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override EThingCategory Category
 		{
 			get { throw new NotImplementedException(); }
 		}
 
+		#region IFaked Members
+
 		public Thing ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
 			return ThingHelper.ResolveThing(type, _creature);
+		}
+
+		#endregion
+
+		public void Add(Type _type)
+		{
+			m_types.Add(_type);
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
 		}
 	}
 
@@ -62,11 +66,6 @@ namespace GameCore.Objects
 			m_tile = _tile;
 		}
 
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
-
 		public override ETiles Tile
 		{
 			get { return m_tile; }
@@ -77,20 +76,29 @@ namespace GameCore.Objects
 			get { throw new NotImplementedException(); }
 		}
 
-		public override void Resolve(Creature _creature)
+		public override EThingCategory Category
 		{
-			throw new NotImplementedException();
+			get { throw new NotImplementedException(); }
 		}
+
+		#region IFaked Members
 
 		public Thing ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
-			return (Item)ThingHelper.ResolveThing(type, _creature);
+			return ThingHelper.ResolveThing(type, _creature);
 		}
 
-		public override EThingCategory Category
+		#endregion
+
+		public void Add(Type _type)
 		{
-			get { throw new NotImplementedException(); }
+			m_types.Add(_type);
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
 		}
 	}
 
@@ -99,14 +107,9 @@ namespace GameCore.Objects
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedMonster(ETiles _tile):base(Point.Zero, int.MinValue)
+		public FakedMonster(ETiles _tile) : base(Point.Zero, int.MinValue)
 		{
 			m_tile = _tile;
-		}
-
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
 		}
 
 		public override ETiles Tile
@@ -119,15 +122,24 @@ namespace GameCore.Objects
 			get { throw new NotImplementedException(); }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
+		#region IFaked Members
 
 		public Thing ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
-			return (Item)ThingHelper.ResolveThing(type, _creature);
+			return ThingHelper.ResolveThing(type, _creature);
+		}
+
+		#endregion
+
+		public void Add(Type _type)
+		{
+			m_types.Add(_type);
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

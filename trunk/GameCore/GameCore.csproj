@@ -87,6 +87,7 @@
     <Compile Include="Objects\ThingHelper.cs" />
     <Compile Include="Objects\Weapons\Axe.cs" />
     <Compile Include="Objects\Weapons\CrossBow.cs" />
+    <Compile Include="Objects\Weapons\RangedWeapon.cs" />
     <Compile Include="Objects\Weapons\Sword.cs" />
     <Compile Include="Objects\Weapons\Weapon.cs" />
     <Compile Include="Misc\Point.cs" />

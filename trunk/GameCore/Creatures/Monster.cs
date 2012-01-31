@@ -1,5 +1,4 @@
-﻿using GameCore.Acts;
-using GameCore.Acts.Movement;
+﻿using GameCore.Acts.Movement;
 using GameCore.Misc;
 
 namespace GameCore.Creatures
@@ -28,7 +27,6 @@ namespace GameCore.Creatures
 
 		public override void Resolve(Creature _creature)
 		{
-			
 		}
 
 		public override void Thinking()

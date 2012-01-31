@@ -29,10 +29,7 @@ namespace GameCore.Creatures
 
 		public override float Opaque
 		{
-			get
-			{
-				return 0.8f;
-			}
+			get { return 0.8f; }
 		}
 
 		/// <summary>
@@ -90,9 +87,28 @@ namespace GameCore.Creatures
 			get { return Map.GetMapCell(Coords); }
 		}
 
+		public override EThingCategory Category
+		{
+			get { throw new NotImplementedException(); }
+		}
+
 		#region Act functionality
 
 		private readonly Queue<Act> m_actPool = new Queue<Act>();
+
+		public Act NextAct
+		{
+			get
+			{
+				while (m_actPool.Count > 0 && m_actPool.Peek().IsCancelled)
+				{
+					m_actPool.Dequeue();
+				}
+				return m_actPool.Count == 0 ? null : m_actPool.Peek();
+			}
+		}
+
+		public EActResults ActResult { get; protected set; }
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{
@@ -102,20 +118,6 @@ namespace GameCore.Creatures
 				_act.AddParameter(o.GetType(), o);
 			}
 		}
-
-		public Act NextAct
-		{
-			get
-			{
-				while (m_actPool.Count>0 && m_actPool.Peek().IsCancelled)
-				{
-					m_actPool.Dequeue();
-				}
-				return m_actPool.Count == 0 ? null : m_actPool.Peek();
-			}
-		}
-
-		public EActResults ActResult { get; protected set; }
 
 		public EActResults DoAct(Act _act)
 		{
@@ -153,7 +155,7 @@ namespace GameCore.Creatures
 
 
 		/// <summary>
-		/// Возвращает шмотк
+		/// 	Возвращает шмотк
 		/// </summary>
 		/// <returns></returns>
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
@@ -174,11 +176,6 @@ namespace GameCore.Creatures
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
 		{
 			yield break;
-		}
-
-		public override EThingCategory Category
-		{
-			get { throw new NotImplementedException(); }
 		}
 	}
 }

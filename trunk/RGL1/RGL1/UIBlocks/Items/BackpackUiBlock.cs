@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.Objects;
@@ -8,9 +7,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	internal class BackpackUiBlock:ItemsSelectorUiBlock
+	internal class BackpackUiBlock : ItemsSelectorUiBlock
 	{
-		public BackpackUiBlock(Rectangle _rectangle): base(_rectangle, EBehavior.ALLOW_CHANGE_FILTER, null, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
+		public BackpackUiBlock(Rectangle _rectangle)
+			: base(
+				_rectangle, EBehavior.ALLOW_CHANGE_FILTER, null,
+				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
 		{
 		}
 

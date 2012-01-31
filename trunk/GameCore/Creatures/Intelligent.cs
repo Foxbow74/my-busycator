@@ -8,7 +8,7 @@ namespace GameCore.Creatures
 {
 	public abstract class Intelligent : Creature
 	{
-		private readonly EIntellectGrades m_intellectGrades;
+		#region EIntellectGrades enum
 
 		public enum EIntellectGrades
 		{
@@ -18,9 +18,12 @@ namespace GameCore.Creatures
 			INT,
 		}
 
-		readonly BackPack m_backPack;
+		#endregion
 
-		private Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
+		private readonly BackPack m_backPack;
+
+		private readonly Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
+		private readonly EIntellectGrades m_intellectGrades;
 
 		protected Intelligent(Point _coords, int _speed, EIntellectGrades _intellectGrades) : base(_coords, _speed)
 		{

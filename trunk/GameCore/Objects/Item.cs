@@ -1,10 +1,15 @@
 namespace GameCore.Objects
 {
 	/// <summary>
-	/// То, что существо может взять и положить в инвентарь
+	/// 	То, что существо может взять и положить в инвентарь
 	/// </summary>
 	public abstract class Item : Thing
 	{
+		public override float Opaque
+		{
+			get { return 0; }
+		}
+
 		public override int GetHashCode()
 		{
 			return CalcHashCode();
@@ -13,14 +18,6 @@ namespace GameCore.Objects
 		protected int CalcHashCode()
 		{
 			return GetType().GetHashCode();
-		}
-
-		public override float Opaque
-		{
-			get
-			{
-				return 0;
-			}
 		}
 	}
 }

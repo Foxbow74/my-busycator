@@ -16,6 +16,26 @@ namespace GameCore.Acts.Interact
 			get { return 40; }
 		}
 
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE); }
+		}
+
+		public override string Name
+		{
+			get { return "Открыть сундук/дверь"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.WORLD_INTERACTIONS; }
+		}
+
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
 			MapCell mapCell; // = Map.GetMapCell(_creature.Coords);
@@ -41,7 +61,7 @@ namespace GameCore.Acts.Interact
 
 				var coords = list.Distinct().ToList();
 
-				if(GetParameter<Point>().Any())
+				if (GetParameter<Point>().Any())
 				{
 					coords = coords.Intersect(GetParameter<Point>()).ToList();
 				}
@@ -63,17 +83,19 @@ namespace GameCore.Acts.Interact
 			//выясняем, что нужно открыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) && mapCell.Thing.CanBeOpened(mapCell, _creature))
+				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) &&
+				    mapCell.Thing.CanBeOpened(mapCell, _creature))
 				{
 					list.Add(new ThingDescriptor(mapCell.Thing, mapCell.WorldCoords, null));
 				}
-				list.AddRange(mapCell.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.CanBeOpened(mapCell, _creature)));
+				list.AddRange(
+					mapCell.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.CanBeOpened(mapCell, _creature)));
 				if (mapCell.WorldCoords == _creature.Coords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeOpened(mapCell, _creature)));
 				}
 				var descriptors = list.Distinct();
-				if(GetParameter<ThingDescriptor>().Any())
+				if (GetParameter<ThingDescriptor>().Any())
 				{
 					descriptors = GetParameter<ThingDescriptor>().Intersect(descriptors);
 				}
@@ -83,26 +105,6 @@ namespace GameCore.Acts.Interact
 				}
 				return ((ICanbeOpened) descriptors.First().Thing).Open(_creature, mapCell, _silence);
 			}
-		}
-
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE);}
-		}
-
-		public override string Name
-		{
-			get { return "Открыть сундук/дверь"; }
-		}
-
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.WORLD_INTERACTIONS; }
 		}
 	}
 }

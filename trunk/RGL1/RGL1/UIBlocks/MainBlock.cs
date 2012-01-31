@@ -18,16 +18,23 @@ namespace RGL1.UIBlocks
 		public MainBlock(GraphicsDevice _device)
 			: base(new Rectangle(0, 0, _device.Viewport.Width/Tile.Size, _device.Viewport.Height/Tile.Size), null, Color.White)
 		{
-
 			const int messagesHeight = 3;
 			const int statHeight = 2;
 
-			m_messages = new TurnMessageUiBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight)) { BackgroundColor = new Color(30, 30, 30) };
-			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width, Rectangle.Height - m_messages.Rectangle.Height - statHeight)) { BackgroundColor = new Color(0, 15, 0) };
-			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight + 2)) { BackgroundColor = new Color(0, 30, 30) };
+			m_messages = new TurnMessageUiBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight))
+			             	{BackgroundColor = new Color(30, 30, 30)};
+			m_map =
+				new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width,
+				                           Rectangle.Height - m_messages.Rectangle.Height - statHeight))
+					{BackgroundColor = new Color(0, 15, 0)};
+			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight + 2))
+			          	{BackgroundColor = new Color(0, 30, 30)};
 		}
 
-		public Rectangle MapRectangle { get { return m_map.Rectangle; } }
+		public Rectangle MapRectangle
+		{
+			get { return m_map.Rectangle; }
+		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -43,7 +50,7 @@ namespace RGL1.UIBlocks
 				return;
 			}
 
-			if (_key == ConsoleKey.Oem2 && _modifiers==EKeyModifiers.SHIFT)
+			if (_key == ConsoleKey.Oem2 && _modifiers == EKeyModifiers.SHIFT)
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rectangle)));
 				return;

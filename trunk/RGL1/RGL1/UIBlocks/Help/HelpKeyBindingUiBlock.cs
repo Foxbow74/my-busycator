@@ -33,7 +33,7 @@ namespace RGL1.UIBlocks.Help
 			foreach (var act in acts)
 			{
 				var category = ActionCategoryAttribute.GetAttribute(act.Category).DisplayName;
-				if(category!=currentCategory)
+				if (category != currentCategory)
 				{
 					currentCategory = category;
 					line++;

@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Help
 {
-	class HelpUiBlock:UIBlock
+	internal class HelpUiBlock : UIBlock
 	{
 		public HelpUiBlock(Rectangle _rectangle) : base(_rectangle, Frame.SimpleFrame, Color.White, Fonts.Font)
 		{

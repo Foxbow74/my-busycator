@@ -4,16 +4,11 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.Info
 {
-	class HelpAct : Act
+	internal class HelpAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
 			get { throw new NotImplementedException(); }
-		}
-
-		public override EActResults Do(Creature _creature, bool _silence)
-		{
-			throw new NotImplementedException();
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
@@ -34,6 +29,11 @@ namespace GameCore.Acts.Info
 		public override EActionCategory Category
 		{
 			get { return EActionCategory.INFORMATION; }
+		}
+
+		public override EActResults Do(Creature _creature, bool _silence)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

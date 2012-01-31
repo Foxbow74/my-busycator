@@ -3,7 +3,6 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
 
 namespace GameCore.Mapping
 {
@@ -32,7 +31,7 @@ namespace GameCore.Mapping
 			_block.Map[6, 3] = ETerrains.WINDOW;
 			_block.Map[3, 6] = ETerrains.WINDOW;
 			_block.Map[6, 8] = ETerrains.GROUND;
-			_block.Objects.Add(new Tuple<Thing, Point>(ETiles.DOOR.GetThing(), new Point(6,8)));
+			_block.Objects.Add(new Tuple<Thing, Point>(ETiles.DOOR.GetThing(), new Point(6, 8)));
 
 			{
 				var cnt = rnd.Next(rnd.Next(70));

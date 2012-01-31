@@ -16,7 +16,7 @@ namespace GameCore.Objects
 				{
 					if (item is IFaked)
 					{
-						m_items.Add((Item) ((IFaked)item).ResolveFake(_creature));
+						m_items.Add((Item) ((IFaked) item).ResolveFake(_creature));
 					}
 					else
 					{
@@ -26,7 +26,6 @@ namespace GameCore.Objects
 			}
 			return m_items;
 		}
-
 
 
 		protected virtual IEnumerable<Item> GenerateItems(Creature _creature)

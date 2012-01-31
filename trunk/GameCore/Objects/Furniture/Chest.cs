@@ -10,20 +10,15 @@ namespace GameCore.Objects.Furniture
 {
 	public class Chest : Container, ICanbeOpened
 	{
-		public override float Opaque
-		{
-			get
-			{
-				return 0.5f;
-			}
-		}
-
 		public Chest()
 		{
 			LockType = LockType.SIMPLE;
 		}
 
-		public LockType LockType { get; private set; }
+		public override float Opaque
+		{
+			get { return 0.5f; }
+		}
 
 		public override ETiles Tile
 		{
@@ -35,16 +30,14 @@ namespace GameCore.Objects.Furniture
 			get { return "сундук"; }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-		}
-
 		public override EThingCategory Category
 		{
-			get { return EThingCategory.FURNITURE;}
+			get { return EThingCategory.FURNITURE; }
 		}
 
 		#region ICanbeOpened Members
+
+		public LockType LockType { get; private set; }
 
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
@@ -71,12 +64,16 @@ namespace GameCore.Objects.Furniture
 
 		#endregion
 
+		public override void Resolve(Creature _creature)
+		{
+		}
+
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (Item)ThingHelper.GetFaketItem(_creature.MapBlock);
+				yield return (Item) ThingHelper.GetFaketItem(_creature.MapBlock);
 			}
 		}
 	}

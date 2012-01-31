@@ -18,10 +18,6 @@ namespace GameCore.Messages
 
 		#endregion
 
-		public static WorldMessage Turn { get; private set; }
-		public static WorldMessage AvatarTurn { get; private set; }
-		public static WorldMessage AvatarMove { get; private set; } 
-
 		static WorldMessage()
 		{
 			Turn = new WorldMessage(EType.TURN);
@@ -34,6 +30,10 @@ namespace GameCore.Messages
 			Type = _type;
 		}
 
+		public static WorldMessage Turn { get; private set; }
+		public static WorldMessage AvatarTurn { get; private set; }
+		public static WorldMessage AvatarMove { get; private set; }
+
 		public EType Type { get; private set; }
 	}
 
@@ -43,18 +43,19 @@ namespace GameCore.Messages
 		{
 			Act = _act;
 		}
+
 		public Act Act { get; private set; }
 	}
 
 	public class AskDirectionMessage : AskMessage
 	{
-		public Point Point { get; private set; }
-
 		public AskDirectionMessage(Act _act, Point _point)
 			: base(_act)
 		{
 			Point = _point;
 		}
+
+		public Point Point { get; private set; }
 	}
 
 	public class AskHowMuchMessage : AskMessage

@@ -6,13 +6,13 @@ namespace GameCore.Objects
 {
 	internal interface ICanbeOpened
 	{
-		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
 		LockType LockType { get; }
+		EActResults Open(Creature _creature, MapCell _mapCell, bool _silence);
 	}
 
 	internal interface ICanbeClosed
 	{
-		EActResults Close(Creature _creature, MapCell _mapCell, bool _silence);
 		LockType LockType { get; }
+		EActResults Close(Creature _creature, MapCell _mapCell, bool _silence);
 	}
 }

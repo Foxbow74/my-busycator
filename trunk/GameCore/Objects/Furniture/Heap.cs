@@ -7,7 +7,7 @@ using GameCore.Misc;
 
 namespace GameCore.Objects.Furniture
 {
-	public class Heap: Container, ISpecial
+	public class Heap : Container, ISpecial
 	{
 		private readonly MapBlock m_block;
 		private readonly Point m_localPoint;
@@ -28,19 +28,19 @@ namespace GameCore.Objects.Furniture
 			get { return "куча вещей"; }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-		}
-
 		public override EThingCategory Category
 		{
 			get { throw new NotImplementedException(); }
 		}
 
+		public override void Resolve(Creature _creature)
+		{
+		}
+
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			var enumerable = m_block.Objects.Where(_tuple => _tuple.Item2 == m_localPoint);
-			return enumerable.Select(_tuple => (Item)_tuple.Item1);
+			return enumerable.Select(_tuple => (Item) _tuple.Item1);
 		}
 	}
 }

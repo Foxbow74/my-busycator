@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks
 {
-	abstract class UIBlock : IDisposable
+	internal abstract class UIBlock : IDisposable
 	{
 		protected static float m_lineHeight = 10;
 		protected readonly SpriteFont m_font;
@@ -26,7 +26,7 @@ namespace RGL1.UIBlocks
 
 		public int TextLinesMax
 		{
-			get { return (int)Math.Round((double)ContentRectangle.Height * Tile.Size / m_lineHeight); }
+			get { return (int) Math.Round((double) ContentRectangle.Height*Tile.Size/m_lineHeight); }
 		}
 
 		public Color BackgroundColor { get; set; }
@@ -109,13 +109,14 @@ namespace RGL1.UIBlocks
 		}
 
 
-		internal float DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, float _indent, EAlignment _alignment)
+		internal float DrawLine(string _text, Color _color, SpriteBatch _spriteBatch, int _lineNumber, float _indent,
+		                        EAlignment _alignment)
 		{
 			return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _spriteBatch, _lineNumber, _indent, _alignment);
 		}
 
 		internal float DrawLine(TextPortion.TextLine _textLine, Color _color, SpriteBatch _spriteBatch, int _lineNumber,
-								float _indent, EAlignment _alignment)
+		                        float _indent, EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();

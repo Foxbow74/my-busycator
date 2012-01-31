@@ -4,16 +4,11 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.System
 {
-	class QuitAct : Act
+	internal class QuitAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
 			get { throw new NotImplementedException(); }
-		}
-
-		public override EActResults Do(Creature _creature, bool _silence)
-		{
-			throw new NotImplementedException();
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
@@ -33,7 +28,12 @@ namespace GameCore.Acts.System
 
 		public override EActionCategory Category
 		{
-			get { return EActionCategory.SYSTEM;}
+			get { return EActionCategory.SYSTEM; }
+		}
+
+		public override EActResults Do(Creature _creature, bool _silence)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

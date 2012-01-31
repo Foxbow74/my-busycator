@@ -6,9 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	class SelectItemsUiBlock : ItemsSelectorUiBlock
+	internal class SelectItemsUiBlock : ItemsSelectorUiBlock
 	{
-		public SelectItemsUiBlock(Rectangle _rectangle, IEnumerable<ThingDescriptor> _items, Act _act):base(_rectangle, EBehavior.SELECT_MULTIPLE|EBehavior.ALLOW_CHANGE_FILTER, _act, _items)
+		public SelectItemsUiBlock(Rectangle _rectangle, IEnumerable<ThingDescriptor> _items, Act _act)
+			: base(_rectangle, EBehavior.SELECT_MULTIPLE | EBehavior.ALLOW_CHANGE_FILTER, _act, _items)
 		{
 		}
 

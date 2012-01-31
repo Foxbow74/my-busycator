@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Acts;
 using GameCore.Misc;
 
@@ -18,13 +18,30 @@ namespace GameCore
 	public static class KeyTranslator
 	{
 		private static readonly ConsoleKey[] m_moveKeys = new[]
-		                                     	{
-		                                     		ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow, ConsoleKey.RightArrow, ConsoleKey.NumPad1, ConsoleKey.NumPad2,
-		                                     		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5,
-		                                     		ConsoleKey.NumPad6, ConsoleKey.NumPad7, ConsoleKey.NumPad8, ConsoleKey.NumPad9, ConsoleKey.Home
-		                                     		, ConsoleKey.PageUp,
-		                                     		ConsoleKey.PageDown, ConsoleKey.End
-		                                     	};
+		                                                  	{
+		                                                  		ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow,
+		                                                  		ConsoleKey.RightArrow, ConsoleKey.NumPad1, ConsoleKey.NumPad2,
+		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5,
+		                                                  		ConsoleKey.NumPad6, ConsoleKey.NumPad7, ConsoleKey.NumPad8,
+		                                                  		ConsoleKey.NumPad9, ConsoleKey.Home
+		                                                  		, ConsoleKey.PageUp,
+		                                                  		ConsoleKey.PageDown, ConsoleKey.End
+		                                                  	};
+
+		private static readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, Type> m_acts =
+			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, Type>();
+
+		static KeyTranslator()
+		{
+			foreach (var type in GetActTypes())
+			{
+				var act = GetAct(type);
+				foreach (var tuple in act.ConsoleKeys)
+				{
+					m_acts.Add(tuple, type);
+				}
+			}
+		}
 
 		public static ConsoleKey[] MoveKeys
 		{
@@ -40,7 +57,7 @@ namespace GameCore
 		{
 			var tuple = new Tuple<ConsoleKey, EKeyModifiers>(_key, _modifiers);
 			Type type;
-			if(!m_acts.TryGetValue(tuple, out type))
+			if (!m_acts.TryGetValue(tuple, out type))
 			{
 				return null;
 			}
@@ -50,23 +67,9 @@ namespace GameCore
 			return act;
 		}
 
-		private static readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, Type> m_acts = new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, Type>();
-
-		static KeyTranslator()
-		{
-			foreach (var type in GetActTypes())
-			{
-				var act = GetAct(type);
-				foreach (var tuple in act.ConsoleKeys)
-				{
-					m_acts.Add(tuple, type);	
-				}
-			}
-		}
-
 		private static Act GetAct(Type _type)
 		{
-			return (Act)Activator.CreateInstance(_type);
+			return (Act) Activator.CreateInstance(_type);
 		}
 
 		private static IEnumerable<Type> GetActTypes()
@@ -75,7 +78,7 @@ namespace GameCore
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (typeof(Act).IsAssignableFrom(type) && !type.IsAbstract)
+					if (typeof (Act).IsAssignableFrom(type) && !type.IsAbstract)
 					{
 						yield return type;
 					}

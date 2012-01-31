@@ -8,11 +8,11 @@ using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
-	class TurnMessageUiBlock : UIBlock
+	internal class TurnMessageUiBlock : UIBlock
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
-		private int m_linesShown = 0;
-		private int m_visibleTill = 0;
+		private int m_linesShown;
+		private int m_visibleTill;
 
 		public TurnMessageUiBlock(Rectangle _rectangle)
 			: base(_rectangle, null, Color.Yellow)
@@ -21,7 +21,7 @@ namespace RGL1.UIBlocks
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
-		void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
+		private void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
 			if (_message.Type == WorldMessage.EType.AVATAR_TURN)
 			{
@@ -55,7 +55,7 @@ namespace RGL1.UIBlocks
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
-			if(m_lines.Count==0) return;
+			if (m_lines.Count == 0) return;
 			_spriteBatch.Begin();
 			var lineNumber = 0;
 			var max = Math.Min(TextLinesMax, m_lines.Count);

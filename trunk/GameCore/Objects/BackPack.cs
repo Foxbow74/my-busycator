@@ -4,7 +4,7 @@ using GameCore.Creatures;
 namespace GameCore.Objects
 {
 	/// <summary>
-	/// Символизирует инвентарь существа.
+	/// 	Символизирует инвентарь существа.
 	/// </summary>
 	public class BackPack : Container, ISpecial
 	{
@@ -18,14 +18,14 @@ namespace GameCore.Objects
 			get { return "рюкзак"; }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
-
 		public override EThingCategory Category
 		{
 			get { throw new NotImplementedException(); }
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

@@ -5,7 +5,6 @@ using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.Objects;
 
 namespace GameCore
 {
@@ -125,7 +124,7 @@ namespace GameCore
 		public void KeyPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
 			var act = KeyTranslator.TranslateKey(_key, _modifiers);
-			if(act==null) return;
+			if (act == null) return;
 
 			Avatar.AddActToPool(act);
 		}

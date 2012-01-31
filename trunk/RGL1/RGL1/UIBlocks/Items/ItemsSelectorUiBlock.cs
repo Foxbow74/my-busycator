@@ -9,10 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	abstract class ItemsSelectorUiBlock : UIBlock
+	internal abstract class ItemsSelectorUiBlock : UIBlock
 	{
-		private readonly EBehavior m_behavior;
-		private readonly Act m_act;
+		#region EBehavior enum
 
 		[Flags]
 		public enum EBehavior
@@ -22,14 +21,22 @@ namespace RGL1.UIBlocks.Items
 			ALLOW_CHANGE_FILTER = 4,
 		}
 
-		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory> m_filters = new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory>();
+		#endregion
+
+		private readonly Act m_act;
+		private readonly EBehavior m_behavior;
+		private readonly IEnumerable<ThingDescriptor> m_descriptors;
+
+		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory> m_filters =
+			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory>();
+
 		private char m_currentFilter = '*';
 
-		private readonly IEnumerable<ThingDescriptor> m_descriptors;
-		Dictionary<int, List<ILinePresenter>> m_pages = null;
 		private int m_currentPage;
+		private Dictionary<int, List<ILinePresenter>> m_pages;
 
-		protected ItemsSelectorUiBlock(Rectangle _rectangle, EBehavior _behavior, Act _act, IEnumerable<ThingDescriptor> _descriptors)
+		protected ItemsSelectorUiBlock(Rectangle _rectangle, EBehavior _behavior, Act _act,
+		                               IEnumerable<ThingDescriptor> _descriptors)
 			: base(_rectangle, Frame.GoldFrame, Color.Green)
 		{
 			m_behavior = _behavior;
@@ -39,7 +46,7 @@ namespace RGL1.UIBlocks.Items
 		}
 
 		/// <summary>
-		/// Empty if no filter
+		/// 	Empty if no filter
 		/// </summary>
 		protected abstract IEnumerable<EThingCategory> AllowedCategories { get; }
 
@@ -57,9 +64,10 @@ namespace RGL1.UIBlocks.Items
 
 			m_pages.Clear();
 
-			var categories = m_descriptors.Select(_descriptor => _descriptor.Thing.Category).Distinct().OrderBy(_category => _category);
+			var categories =
+				m_descriptors.Select(_descriptor => _descriptor.Thing.Category).Distinct().OrderBy(_category => _category);
 
-			if(AllowedCategories.Any())
+			if (AllowedCategories.Any())
 			{
 				categories = categories.Intersect(AllowedCategories).OrderBy(_category => _category);
 			}
@@ -67,7 +75,7 @@ namespace RGL1.UIBlocks.Items
 			foreach (var cat in categories)
 			{
 				var attribute = ThingCategoryAttribute.GetAttribute(cat);
-				if (m_currentFilter != '*' && attribute.C!=m_currentFilter) continue;
+				if (m_currentFilter != '*' && attribute.C != m_currentFilter) continue;
 				foreach (var descriptor in m_descriptors.Where(_descriptor => _descriptor.Thing.Category == cat))
 				{
 					if (done.Contains(descriptor.Thing.GetHashCode())) continue;
@@ -101,7 +109,7 @@ namespace RGL1.UIBlocks.Items
 		{
 			_spriteBatch.Begin();
 
-			if(m_pages==null)
+			if (m_pages == null)
 			{
 				m_pages = new Dictionary<int, List<ILinePresenter>>();
 				Rebuild();
@@ -113,7 +121,7 @@ namespace RGL1.UIBlocks.Items
 
 			var bottomString = new List<string> {"[PgUp/PgDown] листать", "[z|Esc] - выход"};
 
-			if((m_behavior&EBehavior.SELECT_MULTIPLE)==EBehavior.SELECT_MULTIPLE)
+			if ((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
 			{
 				bottomString.Insert(1, "[Enter] выбрать");
 			}
@@ -123,7 +131,7 @@ namespace RGL1.UIBlocks.Items
 				var page = m_pages[m_currentPage];
 				foreach (var presenter in page)
 				{
-					if(presenter is ThingCategoryPresenter)
+					if (presenter is ThingCategoryPresenter)
 					{
 						var category = ((ThingCategoryPresenter) presenter).Category;
 						var attribute = ThingCategoryAttribute.GetAttribute(category);
@@ -133,7 +141,10 @@ namespace RGL1.UIBlocks.Items
 				}
 				if ((m_behavior & EBehavior.ALLOW_CHANGE_FILTER) == EBehavior.ALLOW_CHANGE_FILTER)
 				{
-					var filters = "*" + string.Join("", m_filters.Values.Select(_category => ThingCategoryAttribute.GetAttribute(_category).C.ToString()));
+					var filters = "*" +
+					              string.Join("",
+					                          m_filters.Values.Select(
+					                          	_category => ThingCategoryAttribute.GetAttribute(_category).C.ToString()));
 					bottomString.Insert(0, "[" + filters + "] фильтровать");
 				}
 			}
@@ -182,7 +193,7 @@ namespace RGL1.UIBlocks.Items
 					m_currentPage = Math.Min(m_pages.Count - 1, m_currentPage + 1);
 					break;
 				case ConsoleKey.Enter:
-					if((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
+					if ((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
 					{
 						CloseTopBlock(_key);
 					}
@@ -205,11 +216,10 @@ namespace RGL1.UIBlocks.Items
 
 		protected override void OnClosing(ConsoleKey _consoleKey)
 		{
-			
-
 			if (_consoleKey == ConsoleKey.Enter)
 			{
-				var presenters = m_pages.SelectMany(_pair => _pair.Value).OfType<ThingPresenter>().Where(_presenter => _presenter.IsChecked);
+				var presenters =
+					m_pages.SelectMany(_pair => _pair.Value).OfType<ThingPresenter>().Where(_presenter => _presenter.IsChecked);
 
 				if (presenters.Any())
 				{

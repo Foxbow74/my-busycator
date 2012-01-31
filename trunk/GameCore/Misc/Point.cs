@@ -10,11 +10,9 @@ namespace GameCore.Misc
 {
 	public class Point
 	{
-		public static Point Zero { get; private set; }
-
 		static Point()
 		{
-			 Zero = new Point();
+			Zero = new Point();
 		}
 
 		public Point(int _x, int _y)
@@ -28,6 +26,8 @@ namespace GameCore.Misc
 			X = 0;
 			Y = 0;
 		}
+
+		public static Point Zero { get; private set; }
 
 		public int X { get; set; }
 		public int Y { get; set; }
@@ -58,10 +58,7 @@ namespace GameCore.Misc
 
 		public IEnumerable<Point> AroundPoints
 		{
-			get 
-			{
-				return NearestPoints.Where(_point => _point != Zero);
-			}
+			get { return NearestPoints.Where(_point => _point != Zero); }
 		}
 
 		public double GetDistTill(Point _point)

@@ -76,7 +76,7 @@ namespace GameCore.Misc
 
 				var opaque = mapCell.Opaque;
 
-				var visible = 1.0 * _visibilityCoeff;
+				var visible = 1.0*_visibilityCoeff;
 				var nextVisible = (1.0 - opaque*pair.Key.Item2)*_visibilityCoeff;
 
 				double tuple;
@@ -98,7 +98,7 @@ namespace GameCore.Misc
 
 				if (visible < 0.1) continue;
 
-				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, nextVisible * 0.99);
+				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, nextVisible*0.99);
 			}
 		}
 

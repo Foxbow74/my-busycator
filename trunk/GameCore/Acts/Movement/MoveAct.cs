@@ -17,11 +17,36 @@ namespace GameCore.Acts.Movement
 			get { return 100; }
 		}
 
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); }
+		}
+
+		public override string Name
+		{
+			get { return "Движение (стороны света)"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public override string HelpKeys
+		{
+			get { return "стрелки"; }
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.MOVEMENT; }
+		}
+
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
 			var delta = GetParameter<Point>().FirstOrDefault();
 
-			if(delta==null)
+			if (delta == null)
 			{
 				var key = GetParameter<ConsoleKey>().Single();
 				delta = KeyTranslator.GetDirection(key);
@@ -68,7 +93,7 @@ namespace GameCore.Acts.Movement
 				{
 					var o = mapCell.Thing;
 
-					if(o.IsDoor(mapCell, _creature) && o.CanBeOpened(mapCell, _creature))
+					if (o.IsDoor(mapCell, _creature) && o.CanBeOpened(mapCell, _creature))
 					{
 						_creature.AddActToPool(new OpenAct(), pnt);
 						return EActResults.DONE;
@@ -83,34 +108,6 @@ namespace GameCore.Acts.Movement
 				}
 				return EActResults.NOTHING_HAPPENS;
 			}
-		}
-
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); }
-		}
-
-		public override string Name
-		{
-			get { return "Движение (стороны света)"; }
-		}
-
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
-
-		public override string HelpKeys
-		{
-			get
-			{
-				return "стрелки";
-			}
-		}
-
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.MOVEMENT;}
 		}
 	}
 }

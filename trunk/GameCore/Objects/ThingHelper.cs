@@ -10,6 +10,32 @@ namespace GameCore.Objects
 {
 	public static class ThingHelper
 	{
+		private static readonly Dictionary<ETiles, FakedThing> m_fakedThings = new Dictionary<ETiles, FakedThing>();
+		private static readonly Dictionary<ETiles, FakedItem> m_fakedItems = new Dictionary<ETiles, FakedItem>();
+		private static readonly Dictionary<ETiles, FakedMonster> m_fakedMonsters = new Dictionary<ETiles, FakedMonster>();
+
+		//public static void RegisterThings()
+		static ThingHelper()
+		{
+			foreach (var type in GetThingTypes())
+			{
+				if (typeof (ISpecial).IsAssignableFrom(type)) continue;
+
+				if (typeof (Creature).IsAssignableFrom(type))
+				{
+					RegisterCreatureType(type);
+				}
+				else if (typeof (Item).IsAssignableFrom(type))
+				{
+					RegisterItemType(type);
+				}
+				else
+				{
+					RegisterThingType(type);
+				}
+			}
+		}
+
 		public static bool IsItem(this Thing _thing, MapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
@@ -23,7 +49,7 @@ namespace GameCore.Objects
 			{
 				_thing = _cell.ResolveFakeItem(_creature);
 			}
-			return _thing is ICanbeOpened && ((ICanbeOpened)_thing).LockType != LockType.OPEN;
+			return _thing is ICanbeOpened && ((ICanbeOpened) _thing).LockType != LockType.OPEN;
 		}
 
 		public static bool CanBeClosed(this Thing _thing, MapCell _cell, Creature _creature)
@@ -33,7 +59,7 @@ namespace GameCore.Objects
 			{
 				_thing = _cell.ResolveFakeItem(_creature);
 			}
-			return _thing is ICanbeClosed && ((ICanbeClosed)_thing).LockType == LockType.OPEN;
+			return _thing is ICanbeClosed && ((ICanbeClosed) _thing).LockType == LockType.OPEN;
 		}
 
 		public static bool IsDoor(this Thing _thing, MapCell _cell, Creature _creature)
@@ -61,32 +87,6 @@ namespace GameCore.Objects
 			return _thing is IFaked;
 		}
 
-		private static readonly Dictionary<ETiles, FakedThing> m_fakedThings = new Dictionary<ETiles, FakedThing>();
-		private static readonly Dictionary<ETiles, FakedItem> m_fakedItems = new Dictionary<ETiles, FakedItem>();
-		private static readonly Dictionary<ETiles, FakedMonster> m_fakedMonsters = new Dictionary<ETiles, FakedMonster>();
-
-		//public static void RegisterThings()
-		static ThingHelper()
-		{
-			foreach (var type in GetThingTypes())
-			{
-				if (typeof(ISpecial).IsAssignableFrom(type)) continue;
-
-				if (typeof(Creature).IsAssignableFrom(type))
-				{
-					RegisterCreatureType(type);
-				}
-				else if (typeof(Item).IsAssignableFrom(type))
-				{
-					RegisterItemType(type);
-				}
-				else 
-				{
-					RegisterThingType(type);
-				}
-			}
-		}
-
 		public static FakedThing GetThing(this ETiles _tile)
 		{
 			return m_fakedThings[_tile];
@@ -104,7 +104,7 @@ namespace GameCore.Objects
 
 		private static void RegisterCreatureType(Type _type)
 		{
-			var thing = (Thing)Activator.CreateInstance(_type, new object[]{Point.Zero});
+			var thing = (Thing) Activator.CreateInstance(_type, new object[] {Point.Zero});
 			FakedMonster value;
 			if (!m_fakedMonsters.TryGetValue(thing.Tile, out value))
 			{
@@ -117,7 +117,7 @@ namespace GameCore.Objects
 
 		private static void RegisterItemType(Type _type)
 		{
-			var thing = (Thing)Activator.CreateInstance(_type);
+			var thing = (Thing) Activator.CreateInstance(_type);
 			FakedItem value;
 			if (!m_fakedItems.TryGetValue(thing.Tile, out value))
 			{
@@ -130,7 +130,7 @@ namespace GameCore.Objects
 
 		private static void RegisterThingType(Type _type)
 		{
-			var thing = (Thing)Activator.CreateInstance(_type);
+			var thing = (Thing) Activator.CreateInstance(_type);
 			FakedThing value;
 			if (!m_fakedThings.TryGetValue(thing.Tile, out value))
 			{
@@ -147,7 +147,7 @@ namespace GameCore.Objects
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (typeof(Thing).IsAssignableFrom(type) && !type.IsAbstract && !type.IsNotPublic)
+					if (typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract && !type.IsNotPublic)
 					{
 						yield return type;
 					}
@@ -157,7 +157,7 @@ namespace GameCore.Objects
 
 		public static Thing ResolveThing(Type _type, Creature _creature)
 		{
-			var thing = (Thing)Activator.CreateInstance(_type);
+			var thing = (Thing) Activator.CreateInstance(_type);
 			thing.Resolve(_creature);
 			Debug.WriteLine(thing.Name);
 			return thing;

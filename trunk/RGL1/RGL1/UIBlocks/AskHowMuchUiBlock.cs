@@ -6,11 +6,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks
 {
-	class AskHowMuchUiBlock : UIBlock
+	internal class AskHowMuchUiBlock : UIBlock
 	{
 		private readonly AskHowMuchMessage m_message;
 
-		
+
 		private string m_count;
 
 		public AskHowMuchUiBlock(Rectangle _rectangle, AskHowMuchMessage _message)
@@ -25,7 +25,7 @@ namespace RGL1.UIBlocks
 			switch (_key)
 			{
 				case ConsoleKey.Backspace:
-					m_count = m_count.Length > 0 ? (m_count.Substring(0, m_count.Length - 1)):"";
+					m_count = m_count.Length > 0 ? (m_count.Substring(0, m_count.Length - 1)) : "";
 					break;
 				case ConsoleKey.NumPad0:
 				case ConsoleKey.NumPad1:
@@ -68,7 +68,8 @@ namespace RGL1.UIBlocks
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin();
-			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), Color, _spriteBatch, 0, 0, EAlignment.LEFT);
+			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), Color,
+			         _spriteBatch, 0, 0, EAlignment.LEFT);
 			_spriteBatch.End();
 		}
 	}

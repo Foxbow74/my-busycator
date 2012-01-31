@@ -12,17 +12,17 @@ namespace GameCore.Objects
 			get { return 1; }
 		}
 
+		public abstract EThingCategory Category { get; }
+
 		public override string ToString()
 		{
 			return Name;
 		}
 
 		/// <summary>
-		/// Заполнить параметры вещи, происходит один раз
+		/// 	Заполнить параметры вещи, происходит один раз
 		/// </summary>
-		/// <param name="_creature"></param>
+		/// <param name = "_creature"></param>
 		public abstract void Resolve(Creature _creature);
-
-		public abstract EThingCategory Category { get; }
 	}
 }

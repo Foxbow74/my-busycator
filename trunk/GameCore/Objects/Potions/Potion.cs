@@ -1,16 +1,12 @@
-﻿using System;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
 
 namespace GameCore.Objects.Potions
 {
-	public class Potion:Item
+	public class Potion : Item
 	{
 		public override ETiles Tile
 		{
-			get
-			{
-				return ETiles.POTION;
-			}
+			get { return ETiles.POTION; }
 		}
 
 		public override string Name
@@ -18,14 +14,13 @@ namespace GameCore.Objects.Potions
 			get { return "булька"; }
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-			
-		}
-
 		public override EThingCategory Category
 		{
 			get { return EThingCategory.POTION; }
+		}
+
+		public override void Resolve(Creature _creature)
+		{
 		}
 	}
 }

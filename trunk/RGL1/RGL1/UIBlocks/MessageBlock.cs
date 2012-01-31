@@ -8,7 +8,7 @@ using RGL1.Messages;
 
 namespace RGL1.UIBlocks
 {
-	class MessageBlock : UIBlock
+	internal class MessageBlock : UIBlock
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 
@@ -42,7 +42,7 @@ namespace RGL1.UIBlocks
 
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
-			if(m_lines.Count==0) return;
+			if (m_lines.Count == 0) return;
 			_spriteBatch.Begin();
 			var lineNumber = 0;
 			var max = TextLinesMax;

@@ -10,12 +10,12 @@ namespace GameCore.Mapping
 {
 	public class MapCell
 	{
-		private readonly UInt32 m_seenMask;
-
 		/// <summary>
-		/// Координаты ячейки в блоке
+		/// 	Координаты ячейки в блоке
 		/// </summary>
 		private readonly Point m_inBlockCoords;
+
+		private readonly UInt32 m_seenMask;
 
 		private TerrainAttribute m_terrainAttribute;
 
@@ -23,7 +23,7 @@ namespace GameCore.Mapping
 		{
 			m_inBlockCoords = _inBlockCoords;
 
-			m_seenMask = ((UInt32)1) << m_inBlockCoords.X;
+			m_seenMask = ((UInt32) 1) << m_inBlockCoords.X;
 			IsSeenBefore = (_block.SeenCells[m_inBlockCoords.Y] & m_seenMask) != 0;
 
 			Block = _block;
@@ -55,11 +55,11 @@ namespace GameCore.Mapping
 			{
 				if (!Block.IsObjectsExists) return null;
 				var tuples = Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).ToArray();
-				if(!tuples.Any())
+				if (!tuples.Any())
 				{
 					return null;
 				}
-				if(tuples.Length==1)
+				if (tuples.Length == 1)
 				{
 					return tuples[0].Item1;
 				}
@@ -82,7 +82,7 @@ namespace GameCore.Mapping
 			get
 			{
 				if (Creature != null) return 0f;
-				if(Thing!=null)
+				if (Thing != null)
 				{
 					if (Thing.IsDoor(this, Creature) && Thing.CanBeOpened(this, Creature))
 					{
@@ -99,6 +99,27 @@ namespace GameCore.Mapping
 		}
 
 		private MapBlock Block { get; set; }
+		public bool IsSeenBefore { get; private set; }
+
+		public bool IsVisibleNow { get; set; }
+
+		public float Opaque
+		{
+			get
+			{
+				var attr = TerrainAttribute;
+				var opaque = attr.Opaque;
+				if (opaque < 1 && Thing != null)
+				{
+					opaque = Math.Max(opaque, Thing.Opaque);
+				}
+				if (opaque < 1 && Creature != null)
+				{
+					opaque = Math.Max(opaque, Creature.Opaque);
+				}
+				return opaque;
+			}
+		}
 
 		public Thing ResolveFakeItem(Creature _creature)
 		{
@@ -121,7 +142,7 @@ namespace GameCore.Mapping
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)
 		{
-			if(Thing==null) yield break;
+			if (Thing == null) yield break;
 			if (Thing.IsItem(this, _creature))
 			{
 				if (Thing is IFaked)
@@ -140,35 +161,9 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public bool IsSeenBefore
-		{
-			get; private set;
-		}
-
-		public bool IsVisibleNow { get; set; }
-
 		public void SetIsSeenBefore()
 		{
 			Block.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
-		}
-
-
-		public float Opaque
-		{
-			get
-			{
-				var attr = TerrainAttribute;
-				var opaque = attr.Opaque;
-				if (opaque < 1 && Thing != null)
-				{
-					opaque = Math.Max(opaque, Thing.Opaque);
-				}
-				if (opaque < 1 && Creature != null)
-				{
-					opaque = Math.Max(opaque, Creature.Opaque);
-				}
-				return opaque;
-			}
 		}
 	}
 }

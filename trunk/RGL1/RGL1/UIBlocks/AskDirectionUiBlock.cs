@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks
 {
-	class AskDirectionUiBlock: UIBlock
+	internal class AskDirectionUiBlock : UIBlock
 	{
 		private readonly AskDirectionMessage m_message;
 
@@ -19,14 +19,14 @@ namespace RGL1.UIBlocks
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
 			var dPoint = KeyTranslator.GetDirection(_key);
-			if(dPoint!=null)
+			if (dPoint != null)
 			{
 				m_message.Act.AddParameter(m_message.Point + dPoint);
 				CloseTopBlock();
 				return;
 			}
 
-			if(_key==ConsoleKey.Escape)
+			if (_key == ConsoleKey.Escape)
 			{
 				m_message.Act.IsCancelled = true;
 				CloseTopBlock();

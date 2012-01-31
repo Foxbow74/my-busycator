@@ -1,6 +1,6 @@
 ﻿namespace GameCore.Objects.Jewelry
 {
-	public abstract class Jevelry:Item
+	public abstract class Jevelry : Item
 	{
 	}
 }

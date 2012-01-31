@@ -10,11 +10,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace RGL1.UIBlocks.Items
 {
-	class EquipmentUiBlock : UIBlock
+	internal class EquipmentUiBlock : UIBlock
 	{
-		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
-
 		private readonly Intelligent m_intelligent;
+		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
 
 		public EquipmentUiBlock(Rectangle _rectangle)
 			: base(_rectangle, Frame.SimpleFrame, Color.White, Fonts.Font)
@@ -53,7 +52,10 @@ namespace RGL1.UIBlocks.Items
 				linePresenter.DrawLine(line++, _spriteBatch, this);
 			}
 
-			DrawLine("[A-" + m_presenters.Max(_presenter => _presenter.C) + "] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", Color, _spriteBatch, TextLinesMax - 2, 20, EAlignment.CENTER);
+			DrawLine(
+				"[A-" + m_presenters.Max(_presenter => _presenter.C) +
+				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", Color, _spriteBatch, TextLinesMax - 2, 20,
+				EAlignment.CENTER);
 
 			_spriteBatch.End();
 		}
@@ -73,13 +75,13 @@ namespace RGL1.UIBlocks.Items
 			}
 			var presenter = m_presenters.SingleOrDefault(_presenter => _presenter.Key == _key);
 
-			if (presenter!=null)
+			if (presenter != null)
 			{
 				if (presenter.Item == null)
 				{
 					MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectToTakeOnUiBlock(Rectangle, this, presenter)));
 				}
-				else 
+				else
 				{
 					Intelligent.TakeOff(presenter.Place);
 					Rebuild();
@@ -88,7 +90,7 @@ namespace RGL1.UIBlocks.Items
 		}
 	}
 
-	class EquipmentPresenter:ILinePresenter
+	internal class EquipmentPresenter : ILinePresenter
 	{
 		public static float m_maxIndent;
 
@@ -108,10 +110,14 @@ namespace RGL1.UIBlocks.Items
 
 		public EEquipmentPlaces Place { get; private set; }
 
+		#region ILinePresenter Members
+
 		public void DrawLine(int _line, SpriteBatch _spriteBatch, UIBlock _uiBlock)
 		{
 			_uiBlock.DrawLine(C.ToString(), Color.White, _spriteBatch, _line, 20, UIBlock.EAlignment.LEFT);
-			var indent = _uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray, _spriteBatch, _line, 40, UIBlock.EAlignment.LEFT) + 2;
+			var indent =
+				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray, _spriteBatch, _line, 40,
+				                  UIBlock.EAlignment.LEFT) + 2;
 			m_maxIndent = Math.Max(m_maxIndent, indent);
 			indent = _uiBlock.DrawLine(":", Color.DarkGray, _spriteBatch, _line, m_maxIndent, UIBlock.EAlignment.LEFT) + 5;
 			if (Item == null)
@@ -123,5 +129,7 @@ namespace RGL1.UIBlocks.Items
 				_uiBlock.DrawLine(Item.Name, Color.DarkGray, _spriteBatch, _line, indent, UIBlock.EAlignment.LEFT);
 			}
 		}
+
+		#endregion
 	}
 }

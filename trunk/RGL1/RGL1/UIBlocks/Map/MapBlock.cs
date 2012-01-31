@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using GameCore;
-using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;

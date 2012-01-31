@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 
 namespace GameCore.Objects
@@ -15,10 +15,10 @@ namespace GameCore.Objects
 			{
 				foreach (var item in m_items)
 				{
-					if(item is StackOfItems)
+					if (item is StackOfItems)
 					{
 						var stack = (StackOfItems) item;
-						for(var i=0;i<stack.Count;++i)
+						for (var i = 0; i < stack.Count; ++i)
 						{
 							yield return stack.Item;
 						}
@@ -50,7 +50,7 @@ namespace GameCore.Objects
 			}
 			else if (have is StackOfItems)
 			{
-				((StackOfItems)have).Count++;
+				((StackOfItems) have).Count++;
 			}
 			else
 			{
@@ -68,32 +68,29 @@ namespace GameCore.Objects
 			}
 			else if (have is StackOfItems)
 			{
-				((StackOfItems)have).Count--;
-				if(((StackOfItems)have).Count==0)
+				((StackOfItems) have).Count--;
+				if (((StackOfItems) have).Count == 0)
 				{
 					m_items.Remove(have);
 				}
 			}
-			else 
+			else
 			{
-				m_items.Remove(have);	
+				m_items.Remove(have);
 			}
 		}
 
-		class StackOfItems : Item, ISpecial
-		{
-			public int Count { get; set; }
+		#region Nested type: StackOfItems
 
+		private class StackOfItems : Item, ISpecial
+		{
 			public StackOfItems(Item _item, int _count)
 			{
 				Item = _item;
 				Count = _count;
 			}
 
-			public override int GetHashCode()
-			{
-				return Item.GetHashCode();
-			}
+			public int Count { get; set; }
 
 			public override EThingCategory Category
 			{
@@ -112,6 +109,11 @@ namespace GameCore.Objects
 
 			public Item Item { get; private set; }
 
+			public override int GetHashCode()
+			{
+				return Item.GetHashCode();
+			}
+
 			public override void Resolve(Creature _creature)
 			{
 				throw new NotImplementedException();
@@ -122,5 +124,7 @@ namespace GameCore.Objects
 				return "stack of " + Item.Name + " (" + Count + ")";
 			}
 		}
+
+		#endregion
 	}
 }

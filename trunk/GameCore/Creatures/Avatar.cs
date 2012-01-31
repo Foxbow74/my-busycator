@@ -1,4 +1,5 @@
-﻿using GameCore.Misc;
+﻿using System;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameCore.Creatures
@@ -22,7 +23,7 @@ namespace GameCore.Creatures
 
 		public override void Resolve(Creature _creature)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 	}
 }

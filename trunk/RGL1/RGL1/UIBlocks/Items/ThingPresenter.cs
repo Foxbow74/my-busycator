@@ -11,8 +11,8 @@ namespace RGL1.UIBlocks.Items
 	internal class ThingPresenter : ILinePresenter
 	{
 		private readonly IEnumerable<ThingDescriptor> m_descriptors;
-		private readonly ThingDescriptor m_thingDescriptor;
 		private readonly ConsoleKey m_key;
+		private readonly ThingDescriptor m_thingDescriptor;
 
 		public ThingPresenter(ConsoleKey _key, ThingDescriptor _thingDescriptor, IEnumerable<ThingDescriptor> _descriptors)
 		{
@@ -38,15 +38,20 @@ namespace RGL1.UIBlocks.Items
 			get
 			{
 				var count = m_descriptors.Count(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode());
-				return (count>1?count.ToString(CultureInfo.InvariantCulture):"") + " " + m_thingDescriptor.Thing.Name;
+				return (count > 1 ? count.ToString(CultureInfo.InvariantCulture) : "") + " " + m_thingDescriptor.Thing.Name;
 			}
 		}
+
+		#region ILinePresenter Members
 
 		public void DrawLine(int _line, SpriteBatch _spriteBatch, UIBlock _uiBlock)
 		{
 			_uiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _spriteBatch, _line, 10, UIBlock.EAlignment.LEFT);
-			_uiBlock.DrawLine(Enum.GetName(typeof(ConsoleKey), Key), Color.White, _spriteBatch, _line, 20, UIBlock.EAlignment.LEFT);
+			_uiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key), Color.White, _spriteBatch, _line, 20,
+			                  UIBlock.EAlignment.LEFT);
 			_uiBlock.DrawLine(Text, Color.DarkGray, _spriteBatch, _line, 40, UIBlock.EAlignment.LEFT);
 		}
+
+		#endregion
 	}
 }
