@@ -1,0 +1,240 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GameCore;
+using GameCore.Acts;
+using GameCore.Objects;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace RGL1.UIBlocks.Items
+{
+	abstract class ItemsSelectorUiBlock : UIBlock
+	{
+		private readonly EBehavior m_behavior;
+		private readonly Act m_act;
+
+		[Flags]
+		public enum EBehavior
+		{
+			SELECT_ONE = 1,
+			SELECT_MULTIPLE = 2,
+			ALLOW_CHANGE_FILTER = 4,
+		}
+
+		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory> m_filters = new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory>();
+		private char m_currentFilter = '*';
+
+		private readonly IEnumerable<ThingDescriptor> m_descriptors;
+		Dictionary<int, List<ILinePresenter>> m_pages = null;
+		private int m_currentPage;
+
+		protected ItemsSelectorUiBlock(Rectangle _rectangle, EBehavior _behavior, Act _act, IEnumerable<ThingDescriptor> _descriptors)
+			: base(_rectangle, Frame.GoldFrame, Color.Green)
+		{
+			m_behavior = _behavior;
+			m_act = _act;
+			m_currentFilter = '*';
+			m_descriptors = _descriptors;
+		}
+
+		/// <summary>
+		/// Empty if no filter
+		/// </summary>
+		protected abstract IEnumerable<EThingCategory> AllowedCategories { get; }
+
+		protected abstract int HeaderTakesLine { get; }
+
+		protected void Rebuild()
+		{
+			var key = ConsoleKey.A;
+
+			var linesPerPage = TextLinesMax - HeaderTakesLine;
+			var currentCategory = "";
+
+			var done = new List<int>();
+			List<ILinePresenter> page = null;
+
+			m_pages.Clear();
+
+			var categories = m_descriptors.Select(_descriptor => _descriptor.Thing.Category).Distinct().OrderBy(_category => _category);
+
+			if(AllowedCategories.Any())
+			{
+				categories = categories.Intersect(AllowedCategories).OrderBy(_category => _category);
+			}
+
+			foreach (var cat in categories)
+			{
+				var attribute = ThingCategoryAttribute.GetAttribute(cat);
+				if (m_currentFilter != '*' && attribute.C!=m_currentFilter) continue;
+				foreach (var descriptor in m_descriptors.Where(_descriptor => _descriptor.Thing.Category == cat))
+				{
+					if (done.Contains(descriptor.Thing.GetHashCode())) continue;
+					done.Add(descriptor.Thing.GetHashCode());
+
+					if (page == null)
+					{
+						page = new List<ILinePresenter>();
+						m_pages.Add(m_pages.Count, page);
+						currentCategory = "";
+						key = ConsoleKey.A;
+					}
+					if (attribute.DisplayName != currentCategory)
+					{
+						page.Add(new ThingCategoryPresenter(cat));
+						currentCategory = attribute.DisplayName;
+					}
+					page.Add(new ThingPresenter(key, descriptor, m_descriptors));
+					key++;
+					if (page.Count == linesPerPage - 1)
+					{
+						page = null;
+					}
+				}
+			}
+		}
+
+		protected abstract void DrawHeader(SpriteBatch _spriteBatch);
+
+		public override void DrawContent(SpriteBatch _spriteBatch)
+		{
+			_spriteBatch.Begin();
+
+			if(m_pages==null)
+			{
+				m_pages = new Dictionary<int, List<ILinePresenter>>();
+				Rebuild();
+			}
+
+			DrawHeader(_spriteBatch);
+
+			var line = HeaderTakesLine;
+
+			var bottomString = new List<string> {"[PgUp/PgDown] листать", "[z|Esc] - выход"};
+
+			if((m_behavior&EBehavior.SELECT_MULTIPLE)==EBehavior.SELECT_MULTIPLE)
+			{
+				bottomString.Insert(1, "[Enter] выбрать");
+			}
+
+			if (m_pages.Count > 0)
+			{
+				var page = m_pages[m_currentPage];
+				foreach (var presenter in page)
+				{
+					if(presenter is ThingCategoryPresenter)
+					{
+						var category = ((ThingCategoryPresenter) presenter).Category;
+						var attribute = ThingCategoryAttribute.GetAttribute(category);
+						m_filters[new Tuple<ConsoleKey, EKeyModifiers>(attribute.Key, attribute.Modifiers)] = category;
+					}
+					presenter.DrawLine(line++, _spriteBatch, this);
+				}
+				if ((m_behavior & EBehavior.ALLOW_CHANGE_FILTER) == EBehavior.ALLOW_CHANGE_FILTER)
+				{
+					var filters = "*" + string.Join("", m_filters.Values.Select(_category => ThingCategoryAttribute.GetAttribute(_category).C.ToString()));
+					bottomString.Insert(0, "[" + filters + "] фильтровать");
+				}
+			}
+			else
+			{
+				DrawLine("(ничего нет)", Color.White, _spriteBatch, line, 0, EAlignment.CENTER);
+			}
+			DrawLine(string.Join("   -   ", bottomString), Color, _spriteBatch, TextLinesMax - 2, 0, EAlignment.CENTER);
+
+			_spriteBatch.End();
+		}
+
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		{
+			if ((m_behavior & EBehavior.ALLOW_CHANGE_FILTER) == EBehavior.ALLOW_CHANGE_FILTER)
+			{
+				if (_key == ConsoleKey.Multiply || (_key == ConsoleKey.D8 && _modifiers == EKeyModifiers.SHIFT))
+				{
+					m_currentFilter = '*';
+					Rebuild();
+					return;
+				}
+				foreach (var pair in m_filters)
+				{
+					if (pair.Key.Item1 == _key && pair.Key.Item2 == _modifiers)
+					{
+						m_currentFilter = ThingCategoryAttribute.GetAttribute(pair.Value).C;
+						Rebuild();
+						return;
+					}
+				}
+			}
+
+			if (_modifiers != EKeyModifiers.NONE) return;
+
+			switch (_key)
+			{
+				case ConsoleKey.Z:
+				case ConsoleKey.Escape:
+					CloseTopBlock();
+					return;
+				case ConsoleKey.PageUp:
+					m_currentPage = Math.Max(0, m_currentPage - 1);
+					break;
+				case ConsoleKey.PageDown:
+					m_currentPage = Math.Min(m_pages.Count - 1, m_currentPage + 1);
+					break;
+				case ConsoleKey.Enter:
+					if((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
+					{
+						CloseTopBlock(_key);
+					}
+					return;
+			}
+
+			foreach (var presenter in m_pages[m_currentPage].OfType<ThingPresenter>())
+			{
+				if (presenter.Key == _key)
+				{
+					presenter.IsChecked = !presenter.IsChecked;
+					if ((m_behavior & EBehavior.SELECT_ONE) == EBehavior.SELECT_ONE)
+					{
+						CloseTopBlock(ConsoleKey.Enter);
+						return;
+					}
+				}
+			}
+		}
+
+		protected override void OnClosing(ConsoleKey _consoleKey)
+		{
+			
+
+			if (_consoleKey == ConsoleKey.Enter)
+			{
+				var presenters = m_pages.SelectMany(_pair => _pair.Value).OfType<ThingPresenter>().Where(_presenter => _presenter.IsChecked);
+
+				if (presenters.Any())
+				{
+					foreach (var linePresenter in presenters)
+					{
+						if (linePresenter.IsChecked)
+						{
+							AddCheckedItemToResult(linePresenter.ThingDescriptor);
+						}
+					}
+					return;
+				}
+			}
+			if (m_act != null)
+			{
+				m_act.AddParameter(ThingDescriptor.Empty);
+			}
+		}
+
+		protected virtual void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)
+		{
+			if (m_act != null)
+			{
+				m_act.AddParameter(_thingDescriptor);
+			}
+		}
+	}
+}

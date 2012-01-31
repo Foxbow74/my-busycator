@@ -53,10 +53,12 @@
     <Compile Include="Acts\System\QuitAct.cs" />
     <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="Creatures\Avatar.cs" />
+    <Compile Include="Creatures\EEquipmentPlaces.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
     <Compile Include="Misc\LOSManager.cs" />
     <Compile Include="Objects\BackPack.cs" />
+    <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\Furniture\Heap.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\ICanbeOpened.cs" />

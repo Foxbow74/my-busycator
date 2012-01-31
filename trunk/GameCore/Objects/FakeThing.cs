@@ -40,6 +40,11 @@ namespace GameCore.Objects
 			throw new NotImplementedException();
 		}
 
+		public override EThingCategory Category
+		{
+			get { throw new NotImplementedException(); }
+		}
+
 		public Thing ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
@@ -83,7 +88,7 @@ namespace GameCore.Objects
 			return (Item)ThingHelper.ResolveThing(type, _creature);
 		}
 
-		public override EItemCategory Category
+		public override EThingCategory Category
 		{
 			get { throw new NotImplementedException(); }
 		}

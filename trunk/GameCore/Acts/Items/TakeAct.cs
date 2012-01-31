@@ -33,6 +33,11 @@ namespace GameCore.Acts.Items
 
 			var toTake = GetParameter<ThingDescriptor>().ToList();
 
+			if (toTake.Any(_thingDescriptor => _thingDescriptor==ThingDescriptor.Empty))
+			{
+				return EActResults.NOTHING_HAPPENS;
+			}
+
 			if (toTake.Count==0)
 			{
 				// Если в параметрах нет уточнений
@@ -108,7 +113,7 @@ namespace GameCore.Acts.Items
 			if (!_silence && Count > 0)
 			{
 				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
-				if (intelligent is Avatar)
+				if (intelligent==World.TheWorld.Avatar)
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, descriptor.Thing + " взят" + suffix));
 				}

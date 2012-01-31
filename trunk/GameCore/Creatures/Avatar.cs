@@ -5,7 +5,7 @@ namespace GameCore.Creatures
 {
 	public class Avatar : Intelligent, ISpecial
 	{
-		public Avatar() : base(Point.Zero, 100)
+		public Avatar() : base(Point.Zero, 100, EIntellectGrades.INT)
 		{
 			m_silence = false;
 		}

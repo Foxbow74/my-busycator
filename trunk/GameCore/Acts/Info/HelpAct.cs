@@ -18,7 +18,7 @@ namespace GameCore.Acts.Info
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
 		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Oem2, EKeyModifiers.NONE); }
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Oem2, EKeyModifiers.SHIFT); }
 		}
 
 		public override string Name

@@ -142,7 +142,7 @@ namespace GameCore.Creatures
 
 		protected virtual void ActDone()
 		{
-			var act = m_actPool.Dequeue();
+			m_actPool.Dequeue();
 		}
 
 		#endregion
@@ -174,6 +174,11 @@ namespace GameCore.Creatures
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
 		{
 			yield break;
+		}
+
+		public override EThingCategory Category
+		{
+			get { throw new NotImplementedException(); }
 		}
 	}
 }

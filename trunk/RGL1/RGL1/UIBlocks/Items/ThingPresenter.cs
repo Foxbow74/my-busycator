@@ -6,15 +6,15 @@ using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace RGL1.UIBlocks.ThingPresenter
+namespace RGL1.UIBlocks.Items
 {
-	internal class ThingDescriptorFromCollection : IDescriptorFromCollection
+	internal class ThingPresenter : ILinePresenter
 	{
 		private readonly IEnumerable<ThingDescriptor> m_descriptors;
 		private readonly ThingDescriptor m_thingDescriptor;
 		private readonly ConsoleKey m_key;
 
-		public ThingDescriptorFromCollection(ConsoleKey _key, ThingDescriptor _thingDescriptor, IEnumerable<ThingDescriptor> _descriptors)
+		public ThingPresenter(ConsoleKey _key, ThingDescriptor _thingDescriptor, IEnumerable<ThingDescriptor> _descriptors)
 		{
 			m_key = _key;
 			m_thingDescriptor = _thingDescriptor;
@@ -42,13 +42,11 @@ namespace RGL1.UIBlocks.ThingPresenter
 			}
 		}
 
-		public void DrawLine(int _line, SpriteBatch _spriteBatch, SelectItemsUiBlock _selectItemsUiBlock)
+		public void DrawLine(int _line, SpriteBatch _spriteBatch, UIBlock _uiBlock)
 		{
-			_selectItemsUiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _spriteBatch, _line, 10,
-			                             UIBlock.EAlignment.LEFT);
-			_selectItemsUiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key), Color.White, _spriteBatch, _line, 30,
-			                             UIBlock.EAlignment.LEFT);
-			_selectItemsUiBlock.DrawLine(Text, Color.Gray, _spriteBatch, _line, 50, UIBlock.EAlignment.LEFT);
+			_uiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _spriteBatch, _line, 10, UIBlock.EAlignment.LEFT);
+			_uiBlock.DrawLine(Enum.GetName(typeof(ConsoleKey), Key), Color.White, _spriteBatch, _line, 20, UIBlock.EAlignment.LEFT);
+			_uiBlock.DrawLine(Text, Color.DarkGray, _spriteBatch, _line, 40, UIBlock.EAlignment.LEFT);
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
@@ -29,6 +30,11 @@ namespace GameCore.Objects.Furniture
 
 		public override void Resolve(Creature _creature)
 		{
+		}
+
+		public override EThingCategory Category
+		{
+			get { throw new NotImplementedException(); }
 		}
 
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)

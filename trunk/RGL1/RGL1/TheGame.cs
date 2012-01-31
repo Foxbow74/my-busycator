@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using RGL1.UIBlocks;
+using RGL1.UIBlocks.Items;
 
 namespace RGL1
 {
@@ -29,7 +30,7 @@ namespace RGL1
 		private MainBlock m_mainBlock;
 		private DateTime m_moveKeyHoldedSince;
 
-		private Texture2D m_sceneTexture;
+		//private Texture2D m_sceneTexture;
 		private int m_second;
 		private SpriteBatch m_spriteBatch;
 

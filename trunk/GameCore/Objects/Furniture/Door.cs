@@ -8,6 +8,11 @@ namespace GameCore.Objects.Furniture
 {
 	public class Door : Thing, ICanbeOpened
 	{
+		public override EThingCategory Category
+		{
+			get { return EThingCategory.FURNITURE; }
+		}
+
 		private LockType m_lockType = LockType.SIMPLE;
 
 		public override ETiles Tile

@@ -4,6 +4,7 @@ using GameCore.Messages;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RGL1.UIBlocks.Help;
+using RGL1.UIBlocks.Items;
 using RGL1.UIBlocks.Map;
 
 namespace RGL1.UIBlocks
@@ -38,11 +39,11 @@ namespace RGL1.UIBlocks
 
 			if (_key == ConsoleKey.I)
 			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new InventoryBlock(Rectangle)));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new EquipmentUiBlock(Rectangle)));
 				return;
 			}
 
-			if (_key == ConsoleKey.Oem2)
+			if (_key == ConsoleKey.Oem2 && _modifiers==EKeyModifiers.SHIFT)
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rectangle)));
 				return;

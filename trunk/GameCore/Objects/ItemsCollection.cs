@@ -95,7 +95,7 @@ namespace GameCore.Objects
 				return Item.GetHashCode();
 			}
 
-			public override EItemCategory Category
+			public override EThingCategory Category
 			{
 				get { throw new NotImplementedException(); }
 			}

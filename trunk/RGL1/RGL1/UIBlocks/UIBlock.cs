@@ -47,9 +47,14 @@ namespace RGL1.UIBlocks
 
 		#endregion
 
-		protected void CloseTopBlock()
+		protected void CloseTopBlock(ConsoleKey _consoleKey = ConsoleKey.Escape)
 		{
+			OnClosing(_consoleKey);
 			MessageManager.SendMessage(this, new SystemMessage(SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK));
+		}
+
+		protected virtual void OnClosing(ConsoleKey _consoleKey)
+		{
 		}
 
 		protected void UpdateContentRectangle()
@@ -130,7 +135,7 @@ namespace RGL1.UIBlocks
 					x += ContentRectangle.Width*Tile.Size - lineSize.X - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRectangle.Width*Tile.Size/2 - lineSize.X/2;
+					x += ContentRectangle.Width*Tile.Size/2f - lineSize.X/2f;
 					break;
 			}
 

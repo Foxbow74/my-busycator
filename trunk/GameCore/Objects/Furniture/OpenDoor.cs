@@ -9,6 +9,11 @@ namespace GameCore.Objects.Furniture
 	{
 		private LockType m_lockType = LockType.SIMPLE;
 
+		public override EThingCategory Category
+		{
+			get { return EThingCategory.FURNITURE; }
+		}
+
 		public override float Opaque
 		{
 			get

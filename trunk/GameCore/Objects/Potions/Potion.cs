@@ -23,9 +23,9 @@ namespace GameCore.Objects.Potions
 			
 		}
 
-		public override EItemCategory Category
+		public override EThingCategory Category
 		{
-			get { return EItemCategory.POTION; }
+			get { return EThingCategory.POTION; }
 		}
 	}
 }

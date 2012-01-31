@@ -7,9 +7,9 @@ namespace GameCore.Objects.Weapons
 			
 		}
 
-		public override EItemCategory Category
+		public override EThingCategory Category
 		{
-			get { return EItemCategory.WEAPON; }
+			get { return EThingCategory.WEAPON; }
 		}
 	}
 }

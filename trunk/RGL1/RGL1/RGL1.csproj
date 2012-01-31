@@ -136,7 +136,11 @@
     <Compile Include="UIBlocks\AskHowMuchUiBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpKeyBindingUiBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpUiBlock.cs" />
-    <Compile Include="UIBlocks\SelectItemPresenter\IDescriptorFromCollection.cs" />
+    <Compile Include="UIBlocks\Items\EquipmentUiBlock.cs" />
+    <Compile Include="UIBlocks\Items\ItemsSelectorUiBlock.cs" />
+    <Compile Include="UIBlocks\Items\SelectToTakeOnUiBlock.cs" />
+    <Compile Include="UIBlocks\Items\ThingCategoryPresenter.cs" />
+    <Compile Include="UIBlocks\Items\ILinePresenter.cs" />
     <Compile Include="UIBlocks\Map\MapVisualizator.cs" />
     <Compile Include="Messages\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,18 +150,17 @@
     <Compile Include="Tile.cs" />
     <Compile Include="TileHelper.cs" />
     <Compile Include="UIBlocks\ConfirmQuitBlock.cs" />
-    <Compile Include="UIBlocks\InventoryBlock.cs" />
+    <Compile Include="UIBlocks\Items\BackpackUiBlock.cs" />
     <Compile Include="UIBlocks\MainBlock.cs" />
     <Compile Include="UIBlocks\Map\MapBlock.cs" />
     <Compile Include="UIBlocks\Map\MapBlock_Fog.cs" />
-    <Compile Include="UIBlocks\SelectItemsUiBlock.cs" />
+    <Compile Include="UIBlocks\Items\SelectItemsUiBlock.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\StatsBlock.cs" />
-    <Compile Include="UIBlocks\SelectItemPresenter\ThingDescriptorFromCollection.cs" />
-    <Compile Include="UIBlocks\SelectItemPresenter\ThingsPresenter.cs" />
+    <Compile Include="UIBlocks\Items\ThingPresenter.cs" />
     <Compile Include="UIBlocks\TurnMessageUiBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
-    <Compile Include="UIBlocks\SelectItemPresenter\WhereDescriptorFromCollection.cs" />
+    <Compile Include="UIBlocks\Items\ContainerPresenter.cs" />
     <Compile Include="VectorHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -207,9 +210,7 @@
   <ItemGroup>
     <None Include="Properties\app.manifest" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UIBlocks\InventoryItemPresenter\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <PropertyGroup>

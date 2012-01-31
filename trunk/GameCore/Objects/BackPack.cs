@@ -22,5 +22,10 @@ namespace GameCore.Objects
 		{
 			throw new NotImplementedException();
 		}
+
+		public override EThingCategory Category
+		{
+			get { throw new NotImplementedException(); }
+		}
 	}
 }

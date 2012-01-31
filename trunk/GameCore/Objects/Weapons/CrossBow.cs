@@ -7,6 +7,14 @@ namespace GameCore.Objects.Weapons
 			get { return ETiles.CROSSBOW; }
 		}
 
+		public override EThingCategory Category
+		{
+			get
+			{
+				return EThingCategory.MISSILE_WEAPON;
+			}
+		}
+
 		public override string Name
 		{
 			get { return "арбалет"; }

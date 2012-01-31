@@ -4,6 +4,8 @@ namespace GameCore.Objects
 {
 	public class ThingDescriptor
 	{
+		private static readonly ThingDescriptor m_empty = new ThingDescriptor(null,null,null);
+
 		/// <summary>
 		/// Где лежит (если null - на земле)
 		/// </summary>
@@ -23,6 +25,11 @@ namespace GameCore.Objects
 		public string UiOrderIndex
 		{
 			get { return Thing.Name; }
+		}
+
+		public static ThingDescriptor Empty
+		{
+			get { return m_empty; }
 		}
 
 		public override int GetHashCode()

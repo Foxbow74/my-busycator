@@ -39,6 +39,11 @@ namespace GameCore.Objects.Furniture
 		{
 		}
 
+		public override EThingCategory Category
+		{
+			get { return EThingCategory.FURNITURE;}
+		}
+
 		#region ICanbeOpened Members
 
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)

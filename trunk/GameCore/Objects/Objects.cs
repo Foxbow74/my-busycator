@@ -22,5 +22,7 @@ namespace GameCore.Objects
 		/// </summary>
 		/// <param name="_creature"></param>
 		public abstract void Resolve(Creature _creature);
+
+		public abstract EThingCategory Category { get; }
 	}
 }
