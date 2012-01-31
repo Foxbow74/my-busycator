@@ -1,8 +1,8 @@
 using GameCore.Creatures;
 
-namespace GameCore.Objects.Jewelry
+namespace GameCore.Objects.Rings
 {
-	public class Ring : Jevelry
+	class Ring : Thing
 	{
 		public override ETiles Tile
 		{

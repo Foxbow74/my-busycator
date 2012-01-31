@@ -147,7 +147,7 @@ namespace GameCore.Objects
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract && !type.IsNotPublic)
+					if (typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract)
 					{
 						yield return type;
 					}

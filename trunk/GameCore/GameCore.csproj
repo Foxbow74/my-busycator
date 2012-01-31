@@ -63,8 +63,7 @@
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\ICanbeOpened.cs" />
     <Compile Include="Objects\ISpecial.cs" />
-    <Compile Include="Objects\Jewelry\Jevelry.cs" />
-    <Compile Include="Objects\Jewelry\Ring.cs" />
+    <Compile Include="Objects\Rings\Ring.cs" />
     <Compile Include="Objects\Potions\Potion.cs" />
     <Compile Include="Objects\ThingDescriptor.cs" />
     <Compile Include="Objects\ItemsCollection.cs" />

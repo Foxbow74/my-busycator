@@ -132,6 +132,7 @@
     <Compile Include="Fonts.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="KeyHelper.cs" />
+    <Compile Include="TileSet.cs" />
     <Compile Include="UIBlocks\AskDirectionUiBlock.cs" />
     <Compile Include="UIBlocks\AskHowMuchUiBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpKeyBindingUiBlock.cs" />
