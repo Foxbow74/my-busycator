@@ -165,12 +165,8 @@
     <Compile Include="VectorHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Documentations\Ideas.txt" />
-    <Content Include="Documentations\Story\Forge of Gods.txt" />
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="Documentations\Plan.txt" />
-    <Content Include="Documentations\Story\Zomby.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameCore\GameCore.csproj">

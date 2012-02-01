@@ -101,6 +101,13 @@
     <Folder Include="Acts\Combat\" />
     <Folder Include="Objects\Ammo\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentations\development.txt" />
+    <Content Include="Documentations\Ideas.txt" />
+    <Content Include="Documentations\Plan.txt" />
+    <Content Include="Documentations\Story\Forge of Gods.txt" />
+    <Content Include="Documentations\Story\Zomby.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

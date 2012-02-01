@@ -1,9 +1,6 @@
-﻿#region
-
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-#endregion
 
 namespace RGL1
 {
