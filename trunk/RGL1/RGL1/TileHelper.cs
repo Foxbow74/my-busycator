@@ -1,13 +1,9 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using GameCore;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-#endregion
 
 namespace RGL1
 {
