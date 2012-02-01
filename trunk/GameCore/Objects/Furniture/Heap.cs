@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Misc;
@@ -38,10 +39,18 @@ namespace GameCore.Objects.Furniture
 
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
-			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
-			for (var i = 0; i < cnt; i++)
+			var enumerable = m_block.Objects.Where(_tuple => _tuple.Item2 == m_localPoint);
+			foreach (var tuple in enumerable)
 			{
-				yield return (Item)ThingHelper.GetFaketItem(_creature.MapBlock);
+				if (tuple.Item1 is FakedItem)
+				{
+					var fake = ((FakedItem) tuple.Item1);
+					yield return (Item)fake.ResolveFake(_creature);
+				}
+				else
+				{
+					yield return (Item)tuple.Item1;
+				}
 			}
 		}
 	}
