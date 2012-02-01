@@ -42,19 +42,30 @@ namespace GameCore.Acts
 				foreach (var tuple in ConsoleKeys)
 				{
 					var keyName = tuple.Item1.ToString().ToLower();
+					var keyModifiers = tuple.Item2;
+
 					switch (tuple.Item1)
 					{
 						case ConsoleKey.OemComma:
 							keyName = ",";
 							break;
 						case ConsoleKey.Oem2:
-							keyName = "?";
+							if ((keyModifiers & EKeyModifiers.SHIFT) == EKeyModifiers.SHIFT)
+							{
+								keyName = "?";
+								keyModifiers ^= EKeyModifiers.SHIFT;
+							}
+							else
+							{
+								keyName = "/";
+							}
+
 							break;
 					}
 					var modifierName = "";
 					foreach (EKeyModifiers modifiers in Enum.GetValues(typeof (EKeyModifiers)))
 					{
-						if ((tuple.Item2 & modifiers) == modifiers)
+						if ((keyModifiers & modifiers) == modifiers)
 						{
 							switch (modifiers)
 							{
