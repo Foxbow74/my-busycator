@@ -2,7 +2,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Objects.Rings
 {
-	class Ring : Thing
+	class Ring : Item
 	{
 		public override ETiles Tile
 		{
