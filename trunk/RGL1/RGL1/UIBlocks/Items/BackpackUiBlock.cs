@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.Acts;
+using GameCore.Messages;
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,16 +11,23 @@ namespace RGL1.UIBlocks.Items
 {
 	internal class BackpackUiBlock : ItemsSelectorUiBlock
 	{
+		private readonly IEnumerable<EThingCategory> m_allowedCategories;
+
 		public BackpackUiBlock(Rectangle _rectangle)
-			: base(
-				_rectangle, EBehavior.ALLOW_CHANGE_FILTER, null,
-				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
+			: base(_rectangle, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
 		{
+			m_allowedCategories = new EThingCategory[0];
+		}
+
+		public BackpackUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior, IEnumerable<EThingCategory> _allowedCategory, Act _act)
+			: base(_rectangle, _behavior, _act, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
+		{
+			m_allowedCategories = _allowedCategory ?? new EThingCategory[0];
 		}
 
 		protected override IEnumerable<EThingCategory> AllowedCategories
 		{
-			get { yield break; }
+			get { return m_allowedCategories; }
 		}
 
 		protected override int HeaderTakesLine

@@ -32,7 +32,7 @@ namespace GameCore.Objects.Furniture
 			_mapCell.RemoveObjectFromBlock();
 			var door = new OpenDoor();
 			door.SetLockType(m_lockType);
-			_mapCell.AddObjectFromBlock(door);
+			_mapCell.AddObjectToBlock(door);
 
 			if (!_silence) MessageManager.SendMessage(this, Name + " открыта.");
 			return EActResults.DONE;

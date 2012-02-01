@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Messages;
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,9 +14,7 @@ namespace RGL1.UIBlocks.Items
 
 		public SelectToTakeOnUiBlock(Rectangle _rectangle, EquipmentUiBlock _equipmentUiBlock,
 		                             EquipmentPresenter _equipmentPresenter) :
-		                             	base(
-		                             	_rectangle, EBehavior.SELECT_ONE, null, _equipmentUiBlock.Intelligent.GetBackPackItems()
-		                             	)
+		                             	base(_rectangle, ESelectItemDialogBehavior.SELECT_ONE, null, _equipmentUiBlock.Intelligent.GetBackPackItems())
 		{
 			m_equipmentPresenter = _equipmentPresenter;
 			m_equipmentUiBlock = _equipmentUiBlock;

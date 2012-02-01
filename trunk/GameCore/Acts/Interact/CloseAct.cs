@@ -101,7 +101,7 @@ namespace GameCore.Acts.Interact
 				}
 				if (descriptors.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskSelectThingsMessage(descriptors, this));
+					MessageManager.SendMessage(this, new AskSelectThingsMessage(descriptors, this, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
 				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, mapCell, _silence);
 			}

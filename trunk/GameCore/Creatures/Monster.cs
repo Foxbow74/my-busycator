@@ -5,15 +5,11 @@ namespace GameCore.Creatures
 {
 	public class Monster : Creature
 	{
-		private static int m_n;
 
 		public Monster(Point _coords)
 			: base(_coords, 100)
 		{
-			NN = (m_n++).ToString();
 		}
-
-		public string NN { get; private set; }
 
 		public override ETiles Tile
 		{

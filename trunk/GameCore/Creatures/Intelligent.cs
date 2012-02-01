@@ -91,5 +91,10 @@ namespace GameCore.Creatures
 			m_backPack.GetItems(this).Remove(_item);
 			m_equipment[_place] = _item;
 		}
+
+		public void ObjectDroped(Item _item)
+		{
+			m_backPack.GetItems(this).Remove(_item);
+		}
 	}
 }

@@ -114,8 +114,13 @@ namespace RGL1
 			}
 			else if (_message is AskSelectThingsMessage)
 			{
-				var mess = (AskSelectThingsMessage) _message;
-				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.MapRectangle, mess.ItemDescriptors, mess.Act));
+				var mess = (AskSelectThingsMessage)_message;
+				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.MapRectangle, mess.ItemDescriptors, mess.Act, mess.Behavior));
+			}
+			else if (_message is AskSelectThingsFromBackPackMessage)
+			{
+				var mess = (AskSelectThingsFromBackPackMessage)_message;
+				m_uiBlocks.Push(new BackpackUiBlock(m_mainBlock.MapRectangle, mess.Behavior, mess.AllowedCategory, mess.Act));
 			}
 			else if (_message is AskDirectionMessage)
 			{

@@ -18,6 +18,14 @@ namespace GameCore.Objects.Furniture
 			m_localPoint = _localPoint;
 		}
 
+		public override float Opaque
+		{
+			get
+			{
+				return m_block.Objects.Count(_tuple => _tuple.Item2 == m_localPoint)*0.1f;
+			}
+		}
+
 		public override ETiles Tile
 		{
 			get { return ETiles.HEAP_OF_ITEMS; }

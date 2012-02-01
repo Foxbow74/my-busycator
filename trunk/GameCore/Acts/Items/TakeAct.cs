@@ -23,7 +23,7 @@ namespace GameCore.Acts.Items
 
 		public override string Name
 		{
-			get { return "Взять/подобрать предмет"; }
+			get { return "подобрать предмет"; }
 		}
 
 		public override string HelpText
@@ -66,7 +66,7 @@ namespace GameCore.Acts.Items
 					var needToShow = GetParameter<bool>();
 					if (needToShow.Any() && needToShow.Single())
 					{
-						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this));
+						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this, ESelectItemDialogBehavior.SELECT_MULTIPLE|ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
 
@@ -82,7 +82,7 @@ namespace GameCore.Acts.Items
 					}
 					else
 					{
-						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this));
+						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 					}
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
@@ -106,8 +106,7 @@ namespace GameCore.Acts.Items
 			}
 			else
 			{
-				var get =
-					descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == descriptor.Thing.GetHashCode());
+				var get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == descriptor.Thing.GetHashCode());
 				if (get.Count() > 1)
 				{
 					var cnt = GetParameter<int>();

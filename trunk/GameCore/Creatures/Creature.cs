@@ -10,6 +10,9 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Thing
 	{
+		private static int m_n;
+		public int NN { get; private set; }
+
 		protected static Random m_rnd = new Random(1);
 
 		private Point m_coords;
@@ -23,8 +26,9 @@ namespace GameCore.Creatures
 		protected Creature(Point _coords, int _speed)
 		{
 			Speed = _speed;
-			Luck = 5;
+			Luck = 25;
 			Coords = _coords;
+			NN = m_n++;
 		}
 
 		public override float Opaque
@@ -176,6 +180,11 @@ namespace GameCore.Creatures
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
 		{
 			yield break;
+		}
+
+		protected override int CalcHashCode()
+		{
+			return base.CalcHashCode()^NN;
 		}
 	}
 }

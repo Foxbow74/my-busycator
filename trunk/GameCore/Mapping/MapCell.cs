@@ -135,7 +135,7 @@ namespace GameCore.Mapping
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
 		}
 
-		public void AddObjectFromBlock(Thing _thing)
+		public void AddObjectToBlock(Thing _thing)
 		{
 			Block.Objects.Add(new Tuple<Thing, Point>(_thing, m_inBlockCoords));
 		}

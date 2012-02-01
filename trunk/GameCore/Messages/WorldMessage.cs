@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using GameCore.Acts;
-using GameCore.Misc;
-using GameCore.Objects;
-
-namespace GameCore.Messages
+﻿namespace GameCore.Messages
 {
 	public class WorldMessage
 	{
@@ -35,51 +30,5 @@ namespace GameCore.Messages
 		public static WorldMessage AvatarMove { get; private set; }
 
 		public EType Type { get; private set; }
-	}
-
-	public abstract class AskMessage : Message
-	{
-		protected AskMessage(Act _act)
-		{
-			Act = _act;
-		}
-
-		public Act Act { get; private set; }
-	}
-
-	public class AskDirectionMessage : AskMessage
-	{
-		public AskDirectionMessage(Act _act, Point _point)
-			: base(_act)
-		{
-			Point = _point;
-		}
-
-		public Point Point { get; private set; }
-	}
-
-	public class AskHowMuchMessage : AskMessage
-	{
-		public AskHowMuchMessage(Act _act, ThingDescriptor _descriptor, int _total)
-			: base(_act)
-		{
-			Descriptor = _descriptor;
-			Total = _total;
-		}
-
-		public ThingDescriptor Descriptor { get; private set; }
-
-		public int Total { get; private set; }
-	}
-
-	public class AskSelectThingsMessage : AskMessage
-	{
-		public AskSelectThingsMessage(IEnumerable<ThingDescriptor> _items, Act _act)
-			: base(_act)
-		{
-			ItemDescriptors = _items;
-		}
-
-		public IEnumerable<ThingDescriptor> ItemDescriptors { get; private set; }
 	}
 }

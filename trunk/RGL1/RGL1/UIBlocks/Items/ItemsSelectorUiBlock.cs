@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
+using GameCore.Messages;
 using GameCore.Objects;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,18 +14,10 @@ namespace RGL1.UIBlocks.Items
 	{
 		#region EBehavior enum
 
-		[Flags]
-		public enum EBehavior
-		{
-			SELECT_ONE = 1,
-			SELECT_MULTIPLE = 2,
-			ALLOW_CHANGE_FILTER = 4,
-		}
-
 		#endregion
 
 		private readonly Act m_act;
-		private readonly EBehavior m_behavior;
+		private readonly ESelectItemDialogBehavior m_behavior;
 		private readonly IEnumerable<ThingDescriptor> m_descriptors;
 
 		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory> m_filters =
@@ -35,7 +28,7 @@ namespace RGL1.UIBlocks.Items
 		private int m_currentPage;
 		private Dictionary<int, List<ILinePresenter>> m_pages;
 
-		protected ItemsSelectorUiBlock(Rectangle _rectangle, EBehavior _behavior, Act _act,
+		protected ItemsSelectorUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior, Act _act,
 		                               IEnumerable<ThingDescriptor> _descriptors)
 			: base(_rectangle, Frame.GoldFrame, Color.Green)
 		{
@@ -121,7 +114,7 @@ namespace RGL1.UIBlocks.Items
 
 			var bottomString = new List<string> {"[PgUp/PgDown] листать", "[z|Esc] - выход"};
 
-			if ((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
+			if ((m_behavior & ESelectItemDialogBehavior.SELECT_MULTIPLE) == ESelectItemDialogBehavior.SELECT_MULTIPLE)
 			{
 				bottomString.Insert(1, "[Enter] выбрать");
 			}
@@ -139,7 +132,7 @@ namespace RGL1.UIBlocks.Items
 					}
 					presenter.DrawLine(line++, _spriteBatch, this);
 				}
-				if ((m_behavior & EBehavior.ALLOW_CHANGE_FILTER) == EBehavior.ALLOW_CHANGE_FILTER)
+				if ((m_behavior & ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER) == ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER)
 				{
 					var filters = "*" +
 					              string.Join("",
@@ -159,7 +152,7 @@ namespace RGL1.UIBlocks.Items
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
-			if ((m_behavior & EBehavior.ALLOW_CHANGE_FILTER) == EBehavior.ALLOW_CHANGE_FILTER)
+			if ((m_behavior & ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER) == ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER)
 			{
 				if (_key == ConsoleKey.Multiply || (_key == ConsoleKey.D8 && _modifiers == EKeyModifiers.SHIFT))
 				{
@@ -193,7 +186,7 @@ namespace RGL1.UIBlocks.Items
 					m_currentPage = Math.Min(m_pages.Count - 1, m_currentPage + 1);
 					break;
 				case ConsoleKey.Enter:
-					if ((m_behavior & EBehavior.SELECT_MULTIPLE) == EBehavior.SELECT_MULTIPLE)
+					if ((m_behavior & ESelectItemDialogBehavior.SELECT_MULTIPLE) == ESelectItemDialogBehavior.SELECT_MULTIPLE)
 					{
 						CloseTopBlock(_key);
 					}
@@ -205,7 +198,7 @@ namespace RGL1.UIBlocks.Items
 				if (presenter.Key == _key)
 				{
 					presenter.IsChecked = !presenter.IsChecked;
-					if ((m_behavior & EBehavior.SELECT_ONE) == EBehavior.SELECT_ONE)
+					if ((m_behavior & ESelectItemDialogBehavior.SELECT_ONE) == ESelectItemDialogBehavior.SELECT_ONE)
 					{
 						CloseTopBlock(ConsoleKey.Enter);
 						return;
