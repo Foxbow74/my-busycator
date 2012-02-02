@@ -60,7 +60,7 @@ namespace GameCore.Acts.Movement
 
 			var mess = mapCell.TerrainAttribute.DisplayName;
 
-			if (mapCell.IsPassable > 0)
+			if (mapCell.GetIsPassable(_creature) > 0)
 			{
 				_creature.Coords = pnt;
 

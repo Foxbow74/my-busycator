@@ -133,6 +133,16 @@ namespace GameCore.Misc
 			return new Point(_a.X - _b.X, _a.Y - _b.Y);
 		}
 
+		public static Point operator *(Point _a, double _c)
+		{
+			return new Point((int)Math.Round(_a.X * _c), (int)Math.Round(_a.Y * _c));
+		}
+
+		public static Point operator /(Point _a, double _c)
+		{
+			return new Point((int)Math.Round(_a.X / _c + 0.5), (int)Math.Round(_a.Y / _c + 0.5));
+		}
+
 		public static bool operator ==(Point _a, Point _b)
 		{
 			if (ReferenceEquals(_a, _b))

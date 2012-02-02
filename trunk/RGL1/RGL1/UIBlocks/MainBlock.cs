@@ -31,9 +31,14 @@ namespace RGL1.UIBlocks
 			          	{BackgroundColor = new Color(0, 30, 30)};
 		}
 
-		public Rectangle MapRectangle
+		public UIBlock Map
 		{
-			get { return m_map.Rectangle; }
+			get { return m_map; }
+		}
+
+		public TurnMessageUiBlock Messages
+		{
+			get { return m_messages; }
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

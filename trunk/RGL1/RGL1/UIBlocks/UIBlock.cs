@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -165,6 +166,10 @@ namespace RGL1.UIBlocks
 			return x;
 		}
 
+		protected static string JoinCommandCaptions(IEnumerable<string> _s)
+		{
+			return string.Join("   -   ", _s);
+		}
 
 		public abstract void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers);
 

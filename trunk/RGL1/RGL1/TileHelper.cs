@@ -4,6 +4,7 @@ using GameCore;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Point = GameCore.Misc.Point;
 
 namespace RGL1
 {
@@ -132,6 +133,15 @@ namespace RGL1
 					case ETiles.POTION:
 						tl = new Tile(TextureSet.RR_BRICK_01, 13, 10, Color.Gray);
 						break;
+					case ETiles.CROSSBOW_BOLT:
+						tl = new Tile(TextureSet.NH, 0, 10, Color.White);
+						break;
+					case ETiles.TARGET_DOT:
+						tl = new Tile(TextureSet.GP_X16, 10, 15, Color.Gold);
+						break;
+					case ETiles.TARGET_CROSS:
+						tl = new Tile(TextureSet.RR_BRICK_01, 8, 5, Color.Gold);
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -231,9 +241,19 @@ namespace RGL1
 			DrawAtCell(m_tiles[_tile], _spriteBatch, _col, _row);
 		}
 
+		public static void DrawAtCell(this ETiles _tile, SpriteBatch _spriteBatch, Point _point)
+		{
+			DrawAtCell(m_tiles[_tile], _spriteBatch, _point.X, _point.Y);
+		}
+
 		public static void DrawAtCell(this ETiles _tile, SpriteBatch _spriteBatch, int _col, int _row, Color _color)
 		{
 			DrawAtCell(m_tiles[_tile], _spriteBatch, _col, _row, _color);
+		}
+
+		public static void DrawAtCell(this ETiles _tile, SpriteBatch _spriteBatch, Point _point, Color _color)
+		{
+			DrawAtCell(m_tiles[_tile], _spriteBatch, _point.X, _point.Y, _color);
 		}
 
 		public static void DrawAtPoint(this EFrameTiles _tile, SpriteBatch _spriteBatch, int _x, int _y, Color _color)
@@ -244,6 +264,11 @@ namespace RGL1
 		public static void DrawAtCell(this EFrameTiles _tile, SpriteBatch _spriteBatch, int _col, int _row)
 		{
 			DrawAtCell(m_frameTiles[_tile], _spriteBatch, _col, _row);
+		}
+
+		public static void DrawAtCell(this EFrameTiles _tile, SpriteBatch _spriteBatch, Point _point)
+		{
+			DrawAtCell(m_frameTiles[_tile], _spriteBatch, _point.X, _point.Y);
 		}
 
 		public static void DrawAtCell(this EFrameTiles _tile, SpriteBatch _spriteBatch, int _col, int _row, Color _color)

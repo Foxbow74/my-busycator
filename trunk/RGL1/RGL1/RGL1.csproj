@@ -158,6 +158,7 @@
     <Compile Include="UIBlocks\Items\SelectItemsUiBlock.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\MiniMapUiBlock.cs" />
+    <Compile Include="UIBlocks\SelectTargetUiBlock.cs" />
     <Compile Include="UIBlocks\StatsBlock.cs" />
     <Compile Include="UIBlocks\Items\ThingPresenter.cs" />
     <Compile Include="UIBlocks\TurnMessageUiBlock.cs" />

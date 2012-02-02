@@ -145,7 +145,7 @@ namespace RGL1.UIBlocks.Items
 			{
 				DrawLine("(ничего нет)", Color.White, _spriteBatch, line, 0, EAlignment.CENTER);
 			}
-			DrawLine(string.Join("   -   ", bottomString), Color, _spriteBatch, TextLinesMax - 2, 0, EAlignment.CENTER);
+			DrawLine(JoinCommandCaptions(bottomString), Color, _spriteBatch, TextLinesMax - 2, 0, EAlignment.CENTER);
 
 			_spriteBatch.End();
 		}

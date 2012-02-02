@@ -115,20 +115,25 @@ namespace RGL1
 			else if (_message is AskSelectThingsMessage)
 			{
 				var mess = (AskSelectThingsMessage)_message;
-				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.MapRectangle, mess.ItemDescriptors, mess.Act, mess.Behavior));
+				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act, mess.Behavior));
 			}
 			else if (_message is AskSelectThingsFromBackPackMessage)
 			{
 				var mess = (AskSelectThingsFromBackPackMessage)_message;
-				m_uiBlocks.Push(new BackpackUiBlock(m_mainBlock.MapRectangle, mess.Behavior, mess.AllowedCategory, mess.Act));
+				m_uiBlocks.Push(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior, mess.AllowedCategory, mess.Act));
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.MapRectangle, (AskDirectionMessage) _message));
+				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage) _message));
 			}
 			else if (_message is AskHowMuchMessage)
 			{
-				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.MapRectangle, (AskHowMuchMessage) _message));
+				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle, (AskHowMuchMessage) _message));
+			}
+			else if (_message is AskShootTargerMessage)
+			{
+				var askShootTargerMessage = (AskShootTargerMessage)_message;
+				m_uiBlocks.Push(new SelectTargetUiBlock(m_mainBlock.Messages, m_mainBlock.Map.Rectangle, askShootTargerMessage.MaxDistance, askShootTargerMessage.Act));
 			}
 		}
 

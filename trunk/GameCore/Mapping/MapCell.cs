@@ -77,20 +77,17 @@ namespace GameCore.Mapping
 			get { return Block.RandomSeed; }
 		}
 
-		public float IsPassable
+		public float GetIsPassable(Creature _creature)
 		{
-			get
+			if (Creature != null) return 0f;
+			if (Thing != null)
 			{
-				if (Creature != null) return 0f;
-				if (Thing != null)
+				if (Thing.IsDoor(this, _creature) && Thing.CanBeOpened(this, _creature))
 				{
-					if (Thing.IsDoor(this, Creature) && Thing.CanBeOpened(this, Creature))
-					{
-						return 0f;
-					}
+					return 0f;
 				}
-				return TerrainAttribute.IsPassable;
 			}
+			return TerrainAttribute.IsPassable;
 		}
 
 		public TerrainAttribute TerrainAttribute
@@ -108,6 +105,10 @@ namespace GameCore.Mapping
 			get
 			{
 				var attr = TerrainAttribute;
+				if(attr.Opaque>0)
+				{
+					
+				}
 				var opaque = attr.Opaque;
 				if (opaque < 1 && Thing != null)
 				{
@@ -119,6 +120,11 @@ namespace GameCore.Mapping
 				}
 				return opaque;
 			}
+		}
+
+		public bool IsCanShootThrough
+		{
+			get { return TerrainAttribute.IsCanShootThrough; }
 		}
 
 		public Thing ResolveFakeItem(Creature _creature)

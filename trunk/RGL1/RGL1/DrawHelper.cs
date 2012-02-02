@@ -21,13 +21,17 @@ namespace RGL1
 			}
 		}
 
-		public static void Clear(this UIBlock _frame, SpriteBatch _spriteBatch)
+		public static void Clear(this Rectangle _rectangle, SpriteBatch _spriteBatch, Color _color)
 		{
-			var rect = new Rectangle(_frame.Rectangle.Left*Tile.Size, _frame.Rectangle.Top*Tile.Size,
-			                         (_frame.Rectangle.Width)*Tile.Size, (_frame.Rectangle.Height)*Tile.Size);
+			var rect = new Rectangle(_rectangle.Left * Tile.Size, _rectangle.Top * Tile.Size, (_rectangle.Width) * Tile.Size, (_rectangle.Height) * Tile.Size);
 			var srcRect = TileHelper.SolidTile.Rectangle;
 			srcRect.Inflate(-1, -1);
-			_spriteBatch.Draw(TileHelper.SolidTile.GetTexture(), rect, srcRect, _frame.BackgroundColor);
+			_spriteBatch.Draw(TileHelper.SolidTile.GetTexture(), rect, srcRect, _color);
+		}
+
+		public static void Clear(this UIBlock _frame, SpriteBatch _spriteBatch)
+		{
+			_frame.Rectangle.Clear(_spriteBatch, _frame.BackgroundColor);
 		}
 
 		public static void WriteString(this SpriteBatch _spriteBatch, string _string, int _x, int _y, Color _fore, Color _back,

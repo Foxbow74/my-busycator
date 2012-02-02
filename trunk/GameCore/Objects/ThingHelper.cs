@@ -125,7 +125,7 @@ namespace GameCore.Objects
 				m_fakedItems.Add(thing.Tile, value);
 			}
 			value.Add(_type);
-			Debug.WriteLine(thing.Name);
+			//Debug.WriteLine(thing.Name);
 		}
 
 		private static void RegisterThingType(Type _type)

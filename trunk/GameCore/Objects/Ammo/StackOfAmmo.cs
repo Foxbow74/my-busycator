@@ -1,4 +1,5 @@
-﻿using GameCore.Creatures;
+﻿using System;
+using GameCore.Creatures;
 
 namespace GameCore.Objects.Ammo
 {
@@ -13,7 +14,21 @@ namespace GameCore.Objects.Ammo
 
 		public override void Resolve(Creature _creature)
 		{
-			Count = (int)(_creature.GetLuckRandom * 25);
+			Count = (int)(_creature.GetLuckRandom * 25) + 1;
 		}
+
+		public override string Name
+		{
+			get
+			{
+				if(Count==0)
+				{
+					throw new ApplicationException("Стек пуст");
+				}
+				return InternalName + " * " + Count;
+			}
+		}
+
+		protected abstract string InternalName { get; }
 	}
 }

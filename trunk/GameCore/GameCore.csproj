@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\Combat\ShootAct.cs" />
     <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />
     <Compile Include="Acts\Interact\CloseAct.cs" />
     <Compile Include="Acts\EActionCategory.cs" />
@@ -64,10 +65,12 @@
     <Compile Include="Messages\AskHowMuchMessage.cs" />
     <Compile Include="Messages\AskMessage.cs" />
     <Compile Include="Messages\AskSelectThingsMessage.cs" />
+    <Compile Include="Messages\AskShootTargerMessage.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
     <Compile Include="Misc\LOSManager.cs" />
     <Compile Include="Objects\Ammo\StackOfAmmo.cs" />
+    <Compile Include="Objects\Ammo\StackOfCrossBowBolts.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\Furniture\Heap.cs" />
@@ -108,9 +111,7 @@
     <Compile Include="Misc\Util.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Acts\Combat\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Documentations\development.txt" />
     <Content Include="Documentations\Ideas.txt" />
