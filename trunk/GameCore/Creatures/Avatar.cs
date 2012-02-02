@@ -1,6 +1,7 @@
 ﻿using System;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Weapons;
 
 namespace GameCore.Creatures
 {
@@ -9,6 +10,8 @@ namespace GameCore.Creatures
 		public Avatar() : base(Point.Zero, 100, EIntellectGrades.INT)
 		{
 			m_silence = false;
+			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow());
+			//Equip(EEquipmentPlaces.MISSILES, new CrossBow());
 		}
 
 		public override ETiles Tile

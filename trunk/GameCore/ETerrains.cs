@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using GameCore.Misc;
-
-#endregion
 
 namespace GameCore
 {
@@ -24,7 +20,8 @@ namespace GameCore
 	{
 		private static Dictionary<ETerrains, TerrainAttribute> m_attrs;
 
-		public TerrainAttribute(string _displayName) : this(_displayName, 1.0f, 0.0f)
+		public TerrainAttribute(string _displayName)
+			: this(_displayName, 1.0f, 0.0f)
 		{
 		}
 

@@ -1,20 +1,32 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using GameCore.Creatures;
 using GameCore.Misc;
 
-#endregion
-
 namespace GameCore.Mapping
 {
 	public class Map
 	{
+		/// <summary>
+		/// Сколько блоков вокруг игрока считаются активными и отображаются на карте
+		/// </summary>
 		private const int ACTIVE_SIZE_HALF = 4;
 
+		private readonly EMapBlockTypes[,] m_worldMap;
+
+		public int WorldMapSize
+		{
+			get { return 150; }
+		}
+
 		private readonly Dictionary<Point, MapBlock> m_blocks = new Dictionary<Point, MapBlock>();
+
+		public Map()
+		{
+			var wmg = new WorldMapGenerator(WorldMapSize);
+			m_worldMap = wmg.Generate();
+		}
 
 		public MapBlock this[Point _blockId]
 		{
@@ -29,6 +41,11 @@ namespace GameCore.Mapping
 				}
 				return block;
 			}
+		}
+
+		public EMapBlockTypes[,] WorldMap
+		{
+			get { return m_worldMap; }
 		}
 
 		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _point)

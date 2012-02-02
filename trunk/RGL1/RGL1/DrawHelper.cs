@@ -1,10 +1,6 @@
-﻿#region
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using RGL1.UIBlocks;
-
-#endregion
 
 namespace RGL1
 {
@@ -38,6 +34,13 @@ namespace RGL1
 		                               SpriteFont _spriteFont)
 		{
 			_spriteBatch.DrawString(_spriteFont, _string, new Vector2(_x, _y), _fore);
+		}
+
+		public static void FillRect(SpriteBatch _spriteBatch, Rectangle _rect, Color _color)
+		{
+			var srcRect = TileHelper.SolidTile.Rectangle;
+			srcRect.Inflate(-1, -1);
+			_spriteBatch.Draw(TileHelper.SolidTile.GetTexture(), _rect, srcRect, _color);
 		}
 	}
 }

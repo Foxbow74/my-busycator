@@ -47,6 +47,17 @@ namespace GameCore.Creatures
 			}
 		}
 
+		/// <summary>
+		/// Добавить в рюкзак и затем экипироваться
+		/// </summary>
+		/// <param name="_place"></param>
+		/// <param name="_item"></param>
+		protected void Equip(EEquipmentPlaces _place, Item _item)
+		{
+			ObjectTaken(_item);
+			TakeOn(_place, _item);
+		}
+
 		public void ObjectTaken(Item _item)
 		{
 			if (m_intellectGrades >= EIntellectGrades.INT)
@@ -83,6 +94,12 @@ namespace GameCore.Creatures
 
 		public void TakeOn(EEquipmentPlaces _place, Item _item)
 		{
+			var equipmentPlacesAttribute = EquipmentPlacesAttribute.GetAttribute(_place);
+			if(!equipmentPlacesAttribute.AbleToEquip.Contains(_item.Category))
+			{
+				throw new ApplicationException("Нельзя экипировать '" + _item.Name + "' как '" + equipmentPlacesAttribute.DisplayName + "'");
+			}
+
 			var item = m_equipment[_place];
 			if (item != null)
 			{

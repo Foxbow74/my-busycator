@@ -74,9 +74,9 @@ namespace GameCore.Creatures
 		/// </summary>
 		public long BusyTill { get; protected set; }
 
-		public int GetLuckRandom
+		public double GetLuckRandom
 		{
-			get { return World.Rnd.Next(Luck); }
+			get { return Luck * World.Rnd.NextDouble() /100.0; }
 		}
 
 		public int Luck { get; protected set; }

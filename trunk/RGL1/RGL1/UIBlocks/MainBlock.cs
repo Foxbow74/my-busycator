@@ -50,6 +50,12 @@ namespace RGL1.UIBlocks
 				return;
 			}
 
+			if (_key == ConsoleKey.M)
+			{
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(Rectangle)));
+				return;
+			}
+
 			if (_key == ConsoleKey.Oem2 && _modifiers == EKeyModifiers.SHIFT)
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rectangle)));

@@ -10,6 +10,8 @@ namespace GameCore
 {
 	public class World
 	{
+		private const int WORLD_SEED = 1;
+
 		/// <summary>
 		/// 	содержит список активных в данный момент существ
 		/// </summary>
@@ -17,7 +19,7 @@ namespace GameCore
 
 		static World()
 		{
-			Rnd = new Random(1);
+			Rnd = new Random(WorldSeed);
 		}
 
 		public World()
@@ -41,6 +43,11 @@ namespace GameCore
 		public Avatar Avatar { get; private set; }
 
 		public static Random Rnd { get; private set; }
+
+		public static int WorldSeed
+		{
+			get { return WORLD_SEED; }
+		}
 
 		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
 		{

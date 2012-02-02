@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />
     <Compile Include="Acts\Interact\CloseAct.cs" />
     <Compile Include="Acts\EActionCategory.cs" />
     <Compile Include="Acts\EActResults.cs" />
@@ -57,6 +58,8 @@
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
+    <Compile Include="EMapBlockTypes.cs" />
+    <Compile Include="Mapping\WorldMapGenerator.cs" />
     <Compile Include="Messages\AskDirectionMessage.cs" />
     <Compile Include="Messages\AskHowMuchMessage.cs" />
     <Compile Include="Messages\AskMessage.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
     <Compile Include="Misc\LOSManager.cs" />
+    <Compile Include="Objects\Ammo\StackOfAmmo.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\Furniture\Heap.cs" />
@@ -100,13 +104,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Objects.cs" />
     <Compile Include="ETerrains.cs" />
-    <Compile Include="Tiles.cs" />
+    <Compile Include="ETiles.cs" />
     <Compile Include="Misc\Util.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Acts\Combat\" />
-    <Folder Include="Objects\Ammo\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documentations\development.txt" />

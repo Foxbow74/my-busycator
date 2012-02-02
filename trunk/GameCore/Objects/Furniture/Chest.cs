@@ -70,7 +70,7 @@ namespace GameCore.Objects.Furniture
 
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
-			var cnt = World.Rnd.Next(_creature.GetLuckRandom);
+			var cnt = _creature.GetLuckRandom*5.0;
 			for (var i = 0; i < cnt; i++)
 			{
 				yield return (Item) ThingHelper.GetFaketItem(_creature.MapBlock);
