@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -20,7 +21,7 @@ namespace GameCore.Creatures
 		[EquipmentPlaces("Перчатки", EThingCategory.GAUNTLETS)] GAUNTLETS,
 		[EquipmentPlaces("Обувь", EThingCategory.BOOTS)] BOOTS,
 		[EquipmentPlaces("Метательное оружие", EThingCategory.MISSILE_WEAPON)] MISSILE_WEAPON,
-		[EquipmentPlaces("Снаряды", EThingCategory.MISSILES)] MISSILES,
+		[EquipmentPlaces("Снаряды")] MISSILES,
 		[EquipmentPlaces("Инструмент", EThingCategory.TOOLS)] TOOL,
 	}
 
@@ -38,6 +39,11 @@ namespace GameCore.Creatures
 		public string DisplayName { get; private set; }
 
 		public EThingCategory[] AbleToEquip { get; set; }
+
+		public bool IsAbleToEquip(EThingCategory _category)
+		{
+			return AbleToEquip.Length == 0 || AbleToEquip.Contains(_category);
+		}
 
 		public static IEnumerable<EEquipmentPlaces> AllValues
 		{

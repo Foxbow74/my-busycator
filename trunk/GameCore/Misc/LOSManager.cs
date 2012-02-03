@@ -25,10 +25,8 @@ namespace GameCore.Misc
 
 				var parent = m_root;
 				var closedByParent = 1.0;
-				foreach (var pnt in Point.Zero.GetLineToPoints(end))
+				foreach (var pnt in Point.Zero.GetLineToPoints(end).Where(_pnt => _pnt != Point.Zero))
 				{
-					if (pnt == Point.Zero) continue;
-
 					LosCell cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
 					{

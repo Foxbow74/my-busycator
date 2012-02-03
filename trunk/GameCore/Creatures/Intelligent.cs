@@ -103,7 +103,7 @@ namespace GameCore.Creatures
 		public void TakeOn(EEquipmentPlaces _place, Item _item)
 		{
 			var equipmentPlacesAttribute = EquipmentPlacesAttribute.GetAttribute(_place);
-			if(!equipmentPlacesAttribute.AbleToEquip.Contains(_item.Category))
+			if(!equipmentPlacesAttribute.IsAbleToEquip(_item.Category))
 			{
 				throw new ApplicationException("Нельзя экипировать '" + _item.Name + "' как '" + equipmentPlacesAttribute.DisplayName + "'");
 			}
