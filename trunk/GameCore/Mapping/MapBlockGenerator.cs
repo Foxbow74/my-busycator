@@ -31,7 +31,7 @@ namespace GameCore.Mapping
 			_block.Map[6, 3] = ETerrains.WINDOW;
 			_block.Map[3, 6] = ETerrains.WINDOW;
 			_block.Map[6, 8] = ETerrains.GROUND;
-			_block.Objects.Add(new Tuple<Thing, Point>(ETiles.DOOR.GetThing(), new Point(6, 8)));
+			_block.AddObject(new Point(6, 8), ETiles.DOOR.GetThing());
 
 			{
 				var cnt = rnd.Next(rnd.Next(70));
@@ -71,7 +71,7 @@ namespace GameCore.Mapping
 						{
 							continue;
 						}
-						_block.Objects.Add(new Tuple<Thing, Point>(thig, point));
+						_block.AddObject(point, thig);
 					}
 				}
 			}
@@ -79,7 +79,7 @@ namespace GameCore.Mapping
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				_block.Creatures.Add(new Monster(new Point(_blockId.X*MapBlock.SIZE + x, _blockId.Y*MapBlock.SIZE + y)));
+				_block.Creatures.Add(new Monster(new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
 			}
 		}
 	}

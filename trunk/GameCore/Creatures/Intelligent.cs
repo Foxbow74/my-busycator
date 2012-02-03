@@ -76,10 +76,17 @@ namespace GameCore.Creatures
 			return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, Coords, m_backPack));
 		}
 
-
 		public IEnumerable<Tuple<EEquipmentPlaces, Item>> GetEquipment()
 		{
 			return m_equipment.Select(_item => new Tuple<EEquipmentPlaces, Item>(_item.Key, _item.Value));
+		}
+
+		public Item this[EEquipmentPlaces _places]
+		{
+			get
+			{
+				return m_equipment[_places];
+			}
 		}
 
 		public void TakeOff(EEquipmentPlaces _place)
@@ -110,7 +117,7 @@ namespace GameCore.Creatures
 			m_equipment[_place] = _item;
 		}
 
-		public void ObjectDroped(Item _item)
+		public void ObjectDropedFromBackpack(Item _item)
 		{
 			m_backPack.GetItems(this).Remove(_item);
 		}

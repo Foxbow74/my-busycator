@@ -18,5 +18,9 @@ namespace GameCore.Acts
 		/// 	Действие провалилось
 		/// </summary>
 		FAIL,
+		/// <summary>
+		/// Существо самоуничтожилось
+		/// </summary>
+		SHOULD_BE_REMOVED_FROM_QUEUE
 	}
 }

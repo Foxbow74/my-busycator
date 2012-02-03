@@ -193,15 +193,18 @@ namespace RGL1.UIBlocks.Items
 					return;
 			}
 
-			foreach (var presenter in m_pages[m_currentPage].OfType<ThingPresenter>())
+			if (m_pages.Count > 0)
 			{
-				if (presenter.Key == _key)
+				foreach (var presenter in m_pages[m_currentPage].OfType<ThingPresenter>())
 				{
-					presenter.IsChecked = !presenter.IsChecked;
-					if ((m_behavior & ESelectItemDialogBehavior.SELECT_ONE) == ESelectItemDialogBehavior.SELECT_ONE)
+					if (presenter.Key == _key)
 					{
-						CloseTopBlock(ConsoleKey.Enter);
-						return;
+						presenter.IsChecked = !presenter.IsChecked;
+						if ((m_behavior & ESelectItemDialogBehavior.SELECT_ONE) == ESelectItemDialogBehavior.SELECT_ONE)
+						{
+							CloseTopBlock(ConsoleKey.Enter);
+							return;
+						}
 					}
 				}
 			}

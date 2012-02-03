@@ -25,9 +25,10 @@ namespace GameCore.Creatures
 		{
 		}
 
-		public override void Thinking()
+		public override EThinkingResult Thinking()
 		{
 			AddActToPool(new MoveAct(), new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1));
+			return EThinkingResult.NORMAL;
 		}
 	}
 }

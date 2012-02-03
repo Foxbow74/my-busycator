@@ -1,10 +1,6 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-#endregion
 
 namespace GameCore.Misc
 {
@@ -80,45 +76,35 @@ namespace GameCore.Misc
 		{
 			return X ^ (Y << 16);
 		}
-
 		public IEnumerable<Point> GetLineToPoints(Point _point)
 		{
-			var lx = Math.Abs(_point.X - X);
-			var ly = Math.Abs(_point.Y - Y);
-			var onX = lx >= ly;
-			var max = onX ? lx : ly;
-			var min = onX ? ly : lx;
-			var sx = Math.Sign(_point.X - X);
-			var sy = Math.Sign(_point.Y - Y);
+			double lx = Math.Abs(_point.X - X);
+			double ly = Math.Abs(_point.Y - Y);
 
-			var a = 0;
+			var max = Math.Max(lx, ly);
 
-			if (onX)
+			double dx = Math.Sign(_point.X - X);
+			double dy = Math.Sign(_point.Y - Y); ;
+
+			double x = X;
+			double y = Y;
+
+			if (lx > ly)
 			{
-				var j = Y;
-				for (var i = X; i != _point.X; i += sx)
-				{
-					yield return new Point(i, j);
-					a += min;
-					if (a < max) continue;
-					j += sy;
-					a = a%max;
-				}
+				dy *= ly / lx;
 			}
-			else
+			else if ((lx < ly))
 			{
-				var i = X;
-				for (var j = Y; j != _point.Y; j += sy)
-				{
-					yield return new Point(i, j);
-					a += min;
-					if (a < max) continue;
-					i += sx;
-					a = a%max;
-				}
+				dx *= lx / ly;
 			}
 
-			yield return _point;
+			yield return this;
+			for(var i = 0;i<max;++i)
+			{
+				x += dx;
+				y += dy;
+				yield return new Point((int)Math.Round(x), (int)Math.Round(y));
+			}
 		}
 
 		#region overrides

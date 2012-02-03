@@ -22,6 +22,7 @@ namespace RGL1.UIBlocks
 		private readonly Point m_addPoint;
 		readonly List<Point> m_targets =new List<Point>();
 		private readonly TurnMessageUiBlock m_messages;
+		private Point m_realTarget;
 
 		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rectangle _mapRectangle, int _maxDistance, Act _act)
 			: base(_mapRectangle, null, Color.Gray)
@@ -76,6 +77,7 @@ namespace RGL1.UIBlocks
 			{
 				case ConsoleKey.Escape:
 				case ConsoleKey.Z:
+					m_act.IsCancelled = true;
 					CloseTopBlock();
 					break;
 				case ConsoleKey.OemPlus:
@@ -97,7 +99,8 @@ namespace RGL1.UIBlocks
 					SelectTargetFromList();
 					break;
 				case ConsoleKey.Enter:
-					m_act.AddParameter(m_targetPoint);
+				case ConsoleKey.T:
+					m_act.AddParameter(m_realTarget);
 					CloseTopBlock();
 					return;
 			}
@@ -113,7 +116,7 @@ namespace RGL1.UIBlocks
 		public override void DrawContent(SpriteBatch _spriteBatch)
 		{
 			_spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-			var strings = new List<string>() { "[Enter] цель", "[z|Esc] - выход" };
+			var strings = new List<string>() { "[Enter|T] цель", "[z|Esc] - выход" };
 			if (m_targets.Count > 0)
 			{
 				strings.Insert(1, "[-] - предыдущая цель");
@@ -125,24 +128,27 @@ namespace RGL1.UIBlocks
 			var pnt = Point.Zero;
 			var done = false;
 			var color = Color.Gold;
-			foreach (var point in Point.Zero.GetLineToPoints(m_targetPoint))
+			var lineToPoints = Point.Zero.GetLineToPoints(m_targetPoint).ToArray();
+			for (var index = 1; index < lineToPoints.Length; index++)
 			{
+				var point = lineToPoints[index];
 				var mapCell = m_mapCells[m_center.X + point.X, m_center.Y + point.Y];
-				if (point.Lenght >= m_maxDistance || (!mapCell.IsCanShootThrough && mapCell.Creature==null))
+				if (point.Lenght >= m_maxDistance || (!mapCell.IsCanShootThrough && mapCell.Creature == null))
 				{
 					color = Color.Red;
 					done = true;
 				}
-				if(!done) pnt = point;
+				if (!done) pnt = point;
 				if (mapCell.Creature != null)
 				{
 					color = Color.Red;
 					done = true;
 				}
-				if(point.Lenght<1) continue;
+				if (point.Lenght < 1) continue;
 				ETiles.TARGET_DOT.DrawAtCell(_spriteBatch, point + m_addPoint, color);
 			}
 			ETiles.TARGET_CROSS.DrawAtCell(_spriteBatch, pnt + m_addPoint, Color.Gold);
+			m_realTarget = pnt;
 			_spriteBatch.End();
 		}
 	}

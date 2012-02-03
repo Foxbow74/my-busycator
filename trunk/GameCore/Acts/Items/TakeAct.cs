@@ -100,13 +100,15 @@ namespace GameCore.Acts.Items
 			}
 
 			var descriptor = toTake.First();
+			var thing = descriptor.Thing;
+			var thingString = thing.ToString();
 			if (descriptor.Container == null)
 			{
 				Map.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
 			}
 			else
 			{
-				var get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == descriptor.Thing.GetHashCode());
+				var get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == thing.GetHashCode());
 				if (get.Count() > 1)
 				{
 					var cnt = GetParameter<int>();
@@ -122,25 +124,25 @@ namespace GameCore.Acts.Items
 				}
 				for (var i = 0; i < Count; ++i)
 				{
-					descriptor.Container.GetItems(_creature).Remove((Item) descriptor.Thing);
+					descriptor.Container.GetItems(_creature).Remove((Item) thing);
 				}
 			}
 			for (var i = 0; i < Count; ++i)
 			{
-				intelligent.ObjectTaken((Item) descriptor.Thing);
+				intelligent.ObjectTaken((Item) thing);
 			}
 			if (!_silence && Count > 0)
 			{
 				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 				if (intelligent == World.TheWorld.Avatar)
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, descriptor.Thing + " взят" + suffix));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " взят" + suffix));
 				}
 				else
 				{
 					MessageManager.SendMessage(this,
 					                           new SimpleTextMessage(EMessageType.INFO,
-					                                                 _creature + " взял " + descriptor.Thing + suffix));
+																	 _creature + " взял " + thingString + suffix));
 				}
 			}
 			return EActResults.DONE;

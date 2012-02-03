@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Misc;
@@ -33,7 +34,7 @@ namespace GameCore.Mapping
 			get { return m_objects != null && m_objects.Count > 0; }
 		}
 
-		public bool CreaturesExists
+		internal bool CreaturesExists
 		{
 			get { return m_creatures != null && m_creatures.Count > 0; }
 		}
@@ -47,6 +48,23 @@ namespace GameCore.Mapping
 		public List<Tuple<Thing, Point>> Objects
 		{
 			get { return m_objects ?? (m_objects = new List<Tuple<Thing, Point>>()); }
+		}
+
+		public void AddObject(Point _inBlockCoords, Thing _thing)
+		{
+			if (_thing is StackOfItems)
+			{
+				var stack = Objects.Where(_tuple => _tuple.Item2 == _inBlockCoords && _tuple.Item1.Equals(_thing))
+					.Select(_tuple => _tuple.Item1).OfType<StackOfItems>()
+					.FirstOrDefault();
+				if (stack != null)
+				{
+					stack.Add((StackOfItems) _thing);
+					return;
+				}
+			}
+
+			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
 		}
 
 		public UInt32[] SeenCells { get; private set; }

@@ -17,5 +17,10 @@ namespace GameCore.Misc
 			}
 			return result;
 		}
+
+		public static T As<TSource, T>(this TSource _d) where T : TSource
+		{
+			return (T) _d;
+		}
 	}
 }

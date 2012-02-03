@@ -87,6 +87,10 @@ namespace GameCore.Mapping
 					return 0f;
 				}
 			}
+			if(_creature is Missile)
+			{
+				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
+			}
 			return TerrainAttribute.IsPassable;
 		}
 
@@ -131,7 +135,7 @@ namespace GameCore.Mapping
 		{
 			var o = ((IFaked) Thing).ResolveFake(_creature);
 			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
-			Block.Objects.Add(new Tuple<Thing, Point>(o, m_inBlockCoords));
+			Block.AddObject(m_inBlockCoords, o);
 			return o;
 		}
 
@@ -143,7 +147,7 @@ namespace GameCore.Mapping
 
 		public void AddObjectToBlock(Thing _thing)
 		{
-			Block.Objects.Add(new Tuple<Thing, Point>(_thing, m_inBlockCoords));
+			Block.AddObject(m_inBlockCoords, _thing);
 		}
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)

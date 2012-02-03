@@ -125,7 +125,7 @@ namespace RGL1
 						tl = new Tile(TextureSet.NH, 0, 6, Color.White);
 						break;
 					case ETiles.RING:
-						tl = new Tile(TextureSet.NH, 28, 13, Color.White);
+						tl = new Tile(TextureSet.GP_X16, 8, 15, Color.Gold);
 						break;
 					case ETiles.HEAP_OF_ITEMS:
 						tl = new Tile(TextureSet.GP_X16, 11, 0, Color.DarkOrchid);

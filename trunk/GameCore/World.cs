@@ -5,6 +5,7 @@ using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameCore
 {
@@ -73,17 +74,32 @@ namespace GameCore
 			while (true)
 			{
 				var creature = m_activeCreatures.FirstOrDefault();
+
+				#region не давать ходить дважды до перерисовки
+
 				if (done.Contains(creature)) break;
 				done.Add(creature);
+
+				#endregion
 
 				if (creature == null)
 				{
 					throw new ApplicationException();
 				}
 
-				if (creature != Avatar && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS)
+				if (creature != Avatar && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS && creature.NextAct==null)
 				{
-					creature.Thinking();
+					var thinkingResult = creature.Thinking();
+					switch (thinkingResult)
+					{
+						case EThinkingResult.NORMAL:
+							break;
+						case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
+							m_activeCreatures.Remove(creature);
+							continue;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
 				}
 
 				var act = creature.NextAct;
@@ -97,30 +113,47 @@ namespace GameCore
 
 				var actResult = creature.DoAct(act);
 
-				if (actResult == EActResults.NEED_ADDITIONAL_PARAMETERS)
+				switch (actResult)
 				{
-					return;
+					case EActResults.NOTHING_HAPPENS:
+						break;
+					case EActResults.DONE:
+						break;
+					case EActResults.NEED_ADDITIONAL_PARAMETERS:
+						return;
+					case EActResults.FAIL:
+						break;
+					case EActResults.SHOULD_BE_REMOVED_FROM_QUEUE:
+						m_activeCreatures.Remove(creature);
+						continue;
+					default:
+						throw new ArgumentOutOfRangeException();
 				}
 
 				m_activeCreatures.Remove(creature);
-				var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > creature.BusyTill);
-				if (nextCreatureIndex < 0)
+				AddToActiveCreatures(creature);
+			}
+			MessageManager.SendMessage(this, WorldMessage.Turn);
+		}
+
+		private void AddToActiveCreatures(Creature _creature)
+		{
+			var nextCreatureIndex = m_activeCreatures.FindIndex(_c => _c.BusyTill > _creature.BusyTill);
+			if (nextCreatureIndex < 0)
+			{
+				if (m_activeCreatures.Count > 0)
 				{
-					if (m_activeCreatures.Count > 0)
-					{
-						m_activeCreatures.Add(creature);
-					}
-					else
-					{
-						m_activeCreatures.Insert(nextCreatureIndex + 1, creature);
-					}
+					m_activeCreatures.Add(_creature);
 				}
 				else
 				{
-					m_activeCreatures.Insert(nextCreatureIndex, creature);
+					m_activeCreatures.Insert(nextCreatureIndex + 1, _creature);
 				}
 			}
-			MessageManager.SendMessage(this, WorldMessage.Turn);
+			else
+			{
+				m_activeCreatures.Insert(nextCreatureIndex, _creature);
+			}
 		}
 
 		public static void LetItBeeee()
@@ -134,6 +167,26 @@ namespace GameCore
 			if (act == null) return;
 
 			Avatar.AddActToPool(act);
+		}
+
+		public void AddToBlockAndActiveCreatures(Creature _creature)
+		{
+			var block = Map.GetMapBlock(_creature.Coords);
+			block.Creatures.Add(_creature);
+			if (Map.GetBlocksNear(Avatar.Coords).Any(_tuple => _tuple.Item2 == block))
+			{
+				AddToActiveCreatures(_creature);
+			}
+		}
+
+		public void RemoveCreature(Creature _creature)
+		{
+			var block = Map.GetMapBlock(_creature.Coords);
+			if (!block.Creatures.Contains(_creature))
+			{
+				throw new ApplicationException("нет тут таких");
+			}
+			block.Creatures.Remove(_creature);
 		}
 	}
 }

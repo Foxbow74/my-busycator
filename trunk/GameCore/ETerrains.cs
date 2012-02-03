@@ -11,7 +11,7 @@ namespace GameCore
 		[Terrain("трава")] GRASS,
 		[Terrain("болото")] SWAMP,
 		[Terrain("дорога")] ROAD,
-		[Terrain("гриб", 0.7f, 0.8f, false)]MUSHROOM,
+		[Terrain("гриб", 0.7f, 0.4f, false)]MUSHROOM,
 		[Terrain("кирпичная стена", 0, 1, false)]BRICK_WALL,
 		[Terrain("окно", 0, 0.2f,true)] WINDOW,
 	}

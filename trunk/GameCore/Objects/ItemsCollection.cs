@@ -15,9 +15,9 @@ namespace GameCore.Objects
 			{
 				foreach (var item in m_items)
 				{
-					if (item is StackOfItems)
+					if (item is Stacked)
 					{
-						var stack = (StackOfItems) item;
+						var stack = (Stacked) item;
 						for (var i = 0; i < stack.Count; ++i)
 						{
 							yield return stack.Item;
@@ -50,12 +50,16 @@ namespace GameCore.Objects
 			}
 			else if (have is StackOfItems)
 			{
-				((StackOfItems) have).Count++;
+				((StackOfItems)have).Add((StackOfItems)_item);
+			}
+			else if (have is Stacked)
+			{
+				((Stacked) have).Count++;
 			}
 			else
 			{
 				m_items.Remove(have);
-				m_items.Add(new StackOfItems(_item, 2));
+				m_items.Add(new Stacked(_item, 2));
 			}
 		}
 
@@ -66,10 +70,10 @@ namespace GameCore.Objects
 			{
 				throw new ApplicationException("Такого предмета нет.");
 			}
-			else if (have is StackOfItems)
+			if (have is Stacked)
 			{
-				((StackOfItems) have).Count--;
-				if (((StackOfItems) have).Count == 0)
+				((Stacked)have).Count--;
+				if (((Stacked)have).Count == 0)
 				{
 					m_items.Remove(have);
 				}
@@ -82,9 +86,9 @@ namespace GameCore.Objects
 
 		#region Nested type: StackOfItems
 
-		private class StackOfItems : Item, ISpecial
+		private class Stacked : Item, ISpecial
 		{
-			public StackOfItems(Item _item, int _count)
+			public Stacked(Item _item, int _count)
 			{
 				Item = _item;
 				Count = _count;

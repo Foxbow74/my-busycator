@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\Combat\AtackAct.cs" />
     <Compile Include="Acts\Combat\ShootAct.cs" />
     <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />
     <Compile Include="Acts\Interact\CloseAct.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
+    <Compile Include="Creatures\Missile.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="Mapping\WorldMapGenerator.cs" />
     <Compile Include="Messages\AskDirectionMessage.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Objects\ISpecial.cs" />
     <Compile Include="Objects\Rings\Ring.cs" />
     <Compile Include="Objects\Potions\Potion.cs" />
+    <Compile Include="Objects\StackOfItems.cs" />
     <Compile Include="Objects\ThingDescriptor.cs" />
     <Compile Include="Objects\ItemsCollection.cs" />
     <Compile Include="Creatures\Monster.cs" />

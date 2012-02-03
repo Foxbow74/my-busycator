@@ -64,6 +64,12 @@ namespace GameCore.Acts.Items
 			}
 
 			var descriptor = descriptors[0];
+
+			if(descriptor == ThingDescriptor.Empty)
+			{
+				return EActResults.NOTHING_HAPPENS;
+			}
+
 			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).Count();
 			var toTake = 1;
 			if(total==0)
@@ -85,7 +91,7 @@ namespace GameCore.Acts.Items
 			var item = (Item)descriptor.Thing;
 			for (var i = 0; i < toTake; ++i)
 			{
-				intelligent.ObjectDroped(item);
+				intelligent.ObjectDropedFromBackpack(item);
 				Map.GetMapCell(_creature.Coords).AddObjectToBlock(item);
 			}
 			return EActResults.DONE;

@@ -33,7 +33,7 @@ namespace GameCore.Creatures
 
 		public override float Opaque
 		{
-			get { return 0.8f; }
+			get { return 0.3f; }
 		}
 
 		/// <summary>
@@ -153,8 +153,9 @@ namespace GameCore.Creatures
 
 		#endregion
 
-		public virtual void Thinking()
+		public virtual EThinkingResult Thinking()
 		{
+			return EThinkingResult.NORMAL;
 		}
 
 
@@ -186,5 +187,20 @@ namespace GameCore.Creatures
 		{
 			return base.CalcHashCode()^NN;
 		}
+
+		public virtual EActResults Atack(Creature _victim)
+		{
+			return EActResults.NOTHING_HAPPENS;
+		}
+	}
+
+
+	public enum EThinkingResult
+	{
+		NORMAL,
+		/// <summary>
+		/// Существо самоуничтожилось
+		/// </summary>
+		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}
 }
