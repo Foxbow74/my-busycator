@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using GameUi;
 using OpenTKUi;
 
@@ -40,7 +41,6 @@ namespace Busycator
 		protected override void OnRenderFrame(OpenTK.FrameEventArgs _e)
 		{
 			Title = "Busycator FPS: " + (1 / _e.Time).ToString("0.");
-			//Clear(Color.Black);
 			m_game.Draw();
 			SwapBuffers();
 		}
@@ -48,9 +48,21 @@ namespace Busycator
 		[STAThread]
 		static void Main()
 		{
-			using (var game = new GameProvider())
 			{
-				game.Run(0.0, 0.0);
+				try
+				{
+					using (var game = new GameProvider())
+					{
+						game.Run(0.0, 0.0);
+					}
+				}
+				catch (Exception exception)
+				{
+					var path = Path.Combine(Environment.CurrentDirectory, "error_file.txt");
+					File.Delete(path);
+					File.AppendAllText(path, exception.Message);
+					File.AppendAllText(path, exception.StackTrace);
+				}
 			}
 		}
 	}
