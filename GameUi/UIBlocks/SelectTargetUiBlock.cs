@@ -17,7 +17,6 @@ namespace GameUi.UIBlocks
 		private int m_currentTarget;
 		private readonly int m_maxDistance;
 		private readonly Act m_act;
-		private readonly Rectangle m_rectangle;
 		private readonly MapCell[,] m_mapCells;
 		private Point m_targetPoint;
 		private readonly Point m_addPoint;
@@ -31,7 +30,6 @@ namespace GameUi.UIBlocks
 			m_messages = _messages;
 			m_maxDistance = _maxDistance;
 			m_act = _act;
-			m_rectangle = new Rectangle(0,0,_messages.Rectangle.Width, 1);
 			m_targetPoint = Point.Zero;
 			m_addPoint = new Point(ContentRectangle.Left + ContentRectangle.Width/2, ContentRectangle.Top + ContentRectangle.Height/2);
 			m_center = new Point(m_maxDistance, m_maxDistance);
@@ -109,9 +107,13 @@ namespace GameUi.UIBlocks
 			m_targetPoint = m_targets[m_currentTarget];
 		}
 
+		public override void DrawBackground()
+		{
+		}
+
 		public override void DrawContent()
 		{
-			var strings = new List<string>() { "[Enter|T] цель", "[z|Esc] - выход" };
+			var strings = new List<string> { "[Enter|T] цель", "[z|Esc] - выход" };
 			if (m_targets.Count > 0)
 			{
 				strings.Insert(1, "[-] - предыдущая цель");
