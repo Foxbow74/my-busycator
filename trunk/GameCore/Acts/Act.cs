@@ -47,7 +47,26 @@ namespace GameCore.Acts
 					switch (tuple.Item1)
 					{
 						case ConsoleKey.OemComma:
-							keyName = ",";
+							if ((keyModifiers & EKeyModifiers.SHIFT) == EKeyModifiers.SHIFT)
+							{
+								keyName = "<";
+								keyModifiers ^= EKeyModifiers.SHIFT;
+							}
+							else
+							{
+								keyName = ",";
+							}
+							break;
+						case ConsoleKey.OemPeriod:
+							if ((keyModifiers & EKeyModifiers.SHIFT) == EKeyModifiers.SHIFT)
+							{
+								keyName = ">";
+								keyModifiers ^= EKeyModifiers.SHIFT;
+							}
+							else
+							{
+								keyName = ".";
+							}
 							break;
 						case ConsoleKey.Oem2:
 							if ((keyModifiers & EKeyModifiers.SHIFT) == EKeyModifiers.SHIFT)

@@ -194,6 +194,9 @@ namespace OpenTKUi
 				case Key.Comma:
 					_consoleKey = ConsoleKey.OemComma;
 					break;
+				case Key.Period:
+					_consoleKey = ConsoleKey.OemPeriod;
+					break;
 				case Key.Escape:
 					_consoleKey = ConsoleKey.Escape;
 					break;

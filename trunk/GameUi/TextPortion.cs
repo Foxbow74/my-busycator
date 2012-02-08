@@ -11,7 +11,7 @@ namespace GameUi
 	/// </summary>
 	public class TextPortion
 	{
-		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?', '[', ']'};
+		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?'};
 		private TextLine[] m_textLines;
 
 		public TextPortion(string _text) : this(_text, null)

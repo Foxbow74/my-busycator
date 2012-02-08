@@ -48,6 +48,8 @@
     <Compile Include="Acts\Info\Inventory.cs" />
     <Compile Include="Acts\Items\DrinkAct.cs" />
     <Compile Include="Acts\Items\DropAct.cs" />
+    <Compile Include="Acts\Movement\Ascend.cs" />
+    <Compile Include="Acts\Movement\Descend.cs" />
     <Compile Include="Acts\Movement\MoveAct.cs" />
     <Compile Include="Acts\Interact\OpenAct.cs" />
     <Compile Include="Acts\System\QuitAct.cs" />

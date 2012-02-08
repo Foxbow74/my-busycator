@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -46,6 +47,7 @@ namespace OpenTKUi
 			var font = m_resourceProvider[_font];
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
+				gr.SmoothingMode = SmoothingMode.HighSpeed;
 				return gr.MeasureString(_string, font);
 			}
 		}
@@ -55,7 +57,8 @@ namespace OpenTKUi
 			var font = m_resourceProvider[_font];
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
-				gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+				gr.SmoothingMode = SmoothingMode.HighSpeed;
+				//gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				using (var br = new SolidBrush(_color))
 				{
 					gr.DrawString(_string, font, br, _x, _y);
