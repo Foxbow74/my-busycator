@@ -1,0 +1,26 @@
+﻿namespace GameCore
+{
+	public enum ETiles
+	{
+		FOG,
+		GRASS,
+		BRICK,
+		BRICK_WINDOW,
+		DOOR,
+		OPEN_DOOR,
+		AVATAR,
+		MASHROOM,
+		GROUND,
+		SWORD,
+		AXE,
+		CHEST,
+		MONSTER,
+		CROSSBOW,
+		RING,
+		HEAP_OF_ITEMS,
+		POTION,
+		CROSSBOW_BOLT,
+		TARGET_DOT,
+		TARGET_CROSS
+	}
+}

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GameCore</RootNamespace>
+    <AssemblyName>GameCore</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Acts\Act.cs" />
+    <Compile Include="Acts\Combat\AtackAct.cs" />
+    <Compile Include="Acts\Combat\ShootAct.cs" />
+    <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />
+    <Compile Include="Acts\Interact\CloseAct.cs" />
+    <Compile Include="Acts\EActionCategory.cs" />
+    <Compile Include="Acts\EActResults.cs" />
+    <Compile Include="Acts\Info\HelpAct.cs" />
+    <Compile Include="Acts\Info\Inventory.cs" />
+    <Compile Include="Acts\Items\DrinkAct.cs" />
+    <Compile Include="Acts\Items\DropAct.cs" />
+    <Compile Include="Acts\Movement\MoveAct.cs" />
+    <Compile Include="Acts\Interact\OpenAct.cs" />
+    <Compile Include="Acts\System\QuitAct.cs" />
+    <Compile Include="Acts\Items\TakeAct.cs" />
+    <Compile Include="Creatures\Avatar.cs" />
+    <Compile Include="Creatures\EEquipmentPlaces.cs" />
+    <Compile Include="Creatures\Intelligent.cs" />
+    <Compile Include="Creatures\Inventory.cs" />
+    <Compile Include="Creatures\Missile.cs" />
+    <Compile Include="EMapBlockTypes.cs" />
+    <Compile Include="Mapping\WorldMapGenerator.cs" />
+    <Compile Include="Messages\AskDirectionMessage.cs" />
+    <Compile Include="Messages\AskHowMuchMessage.cs" />
+    <Compile Include="Messages\AskMessage.cs" />
+    <Compile Include="Messages\AskSelectThingsMessage.cs" />
+    <Compile Include="Messages\AskShootTargerMessage.cs" />
+    <Compile Include="Messages\EMessageType.cs" />
+    <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
+    <Compile Include="Misc\LOSManager.cs" />
+    <Compile Include="Misc\MathHelper.cs" />
+    <Compile Include="Misc\Vector2.cs" />
+    <Compile Include="Objects\Ammo\StackOfAmmo.cs" />
+    <Compile Include="Objects\Ammo\StackOfCrossBowBolts.cs" />
+    <Compile Include="Objects\BackPack.cs" />
+    <Compile Include="Objects\EThingCategory.cs" />
+    <Compile Include="Objects\Furniture\Heap.cs" />
+    <Compile Include="Objects\Furniture\OpenDoor.cs" />
+    <Compile Include="Objects\ICanbeOpened.cs" />
+    <Compile Include="Objects\ISpecial.cs" />
+    <Compile Include="Objects\Rings\Ring.cs" />
+    <Compile Include="Objects\Potions\Potion.cs" />
+    <Compile Include="Objects\StackOfItems.cs" />
+    <Compile Include="Objects\ThingDescriptor.cs" />
+    <Compile Include="Objects\ItemsCollection.cs" />
+    <Compile Include="Creatures\Monster.cs" />
+    <Compile Include="Creatures\Creature.cs" />
+    <Compile Include="KeyTranslator.cs" />
+    <Compile Include="Mapping\Map.cs" />
+    <Compile Include="Mapping\MapBlock.cs" />
+    <Compile Include="Mapping\MapBlockGenerator.cs" />
+    <Compile Include="Mapping\MapCell.cs" />
+    <Compile Include="Messages\Message.cs" />
+    <Compile Include="Messages\MessageManager.cs" />
+    <Compile Include="Messages\SimpleTextMessage.cs" />
+    <Compile Include="Messages\WorldMessage.cs" />
+    <Compile Include="Objects\Furniture\Chest.cs" />
+    <Compile Include="Objects\Container.cs" />
+    <Compile Include="Objects\Furniture\Door.cs" />
+    <Compile Include="Objects\FakeThing.cs" />
+    <Compile Include="Objects\Item.cs" />
+    <Compile Include="Objects\ThingHelper.cs" />
+    <Compile Include="Objects\Weapons\Axe.cs" />
+    <Compile Include="Objects\Weapons\CrossBow.cs" />
+    <Compile Include="Objects\Weapons\RangedWeapon.cs" />
+    <Compile Include="Objects\Weapons\Sword.cs" />
+    <Compile Include="Objects\Weapons\Weapon.cs" />
+    <Compile Include="Misc\Point.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Objects\Objects.cs" />
+    <Compile Include="ETerrains.cs" />
+    <Compile Include="ETiles.cs" />
+    <Compile Include="Misc\Util.cs" />
+    <Compile Include="World.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Documentations\development.txt" />
+    <Content Include="Documentations\Ideas.txt" />
+    <Content Include="Documentations\MainPoints.txt" />
+    <Content Include="Documentations\Plan.txt" />
+    <Content Include="Documentations\Story\Forge of Gods.txt" />
+    <Content Include="Documentations\Story\Zomby.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
