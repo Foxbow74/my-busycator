@@ -107,7 +107,7 @@ namespace GameCore.Objects
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedMonster(ETiles _tile) : base(Point.Zero, int.MinValue)
+		public FakedMonster(ETiles _tile) : base(null, Point.Zero, int.MinValue)
 		{
 			m_tile = _tile;
 		}

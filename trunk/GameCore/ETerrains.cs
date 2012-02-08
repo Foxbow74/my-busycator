@@ -14,6 +14,7 @@ namespace GameCore
 		[Terrain("гриб", 0.7f, 0.4f, false)]MUSHROOM,
 		[Terrain("кирпичная стена", 0, 1, false)]BRICK_WALL,
 		[Terrain("окно", 0, 0.2f,true)] WINDOW,
+		[Terrain("каменный пол")]STONE_FLOOR,
 	}
 
 	public class TerrainAttribute : Attribute

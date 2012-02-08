@@ -25,7 +25,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var map = World.TheWorld.Map.WorldMap;
+			var map = World.TheWorld.Surface.WorldMap;
 			var size = new Vector2(map.GetLength(0), map.GetLength(1));
 
 			var halfSize = new Vector2(size.X / 2, size.Y / 2);

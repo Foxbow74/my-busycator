@@ -55,7 +55,7 @@ namespace GameCore.Objects.Furniture
 					var fake = ((FakedItem) tuple.Item1);
 					yield return (Item)fake.ResolveFake(_creature);
 				}
-				else
+				else if (tuple.Item1 is Item)
 				{
 					yield return (Item)tuple.Item1;
 				}

@@ -4,13 +4,17 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
+using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.Objects.Furniture;
 
 namespace GameCore
 {
 	public class World
 	{
+		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
+
 		private const int WORLD_SEED = 1;
 
 		/// <summary>
@@ -26,11 +30,11 @@ namespace GameCore
 		public World()
 		{
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
-			Map = new Map();
-
+			m_layers.Add(Surface = new Surface());
+			
 			WorldTick = 0;
 
-			Avatar = new Avatar();
+			Avatar = new Avatar(Surface);
 			m_activeCreatures.Add(Avatar);
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
@@ -38,8 +42,6 @@ namespace GameCore
 		public static World TheWorld { get; private set; }
 
 		public long WorldTick { get; private set; }
-
-		public Map Map { get; private set; }
 
 		public Avatar Avatar { get; private set; }
 
@@ -49,6 +51,8 @@ namespace GameCore
 		{
 			get { return WORLD_SEED; }
 		}
+
+		public Surface Surface { get; private set; }
 
 		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
 		{
@@ -64,12 +68,17 @@ namespace GameCore
 		{
 			m_activeCreatures.Clear();
 			m_activeCreatures.AddRange(
-				Map.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).Union(new[] {Avatar}).Distinct().
+				Avatar.Layer.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).Union(new[] {Avatar}).Distinct().
 					OrderBy(_creature => _creature.BusyTill));
 		}
 
-		public void GameUpdated()
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns>true, if something changed</returns>
+		public bool GameUpdated()
 		{
+			var result = false;
 			var done = new List<Creature>();
 			while (true)
 			{
@@ -118,13 +127,16 @@ namespace GameCore
 					case EActResults.NOTHING_HAPPENS:
 						break;
 					case EActResults.DONE:
+						result = true;
 						break;
 					case EActResults.NEED_ADDITIONAL_PARAMETERS:
-						return;
+						return true;
 					case EActResults.FAIL:
+						result = true;
 						break;
 					case EActResults.SHOULD_BE_REMOVED_FROM_QUEUE:
 						m_activeCreatures.Remove(creature);
+						result = true;
 						continue;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -134,6 +146,7 @@ namespace GameCore
 				AddToActiveCreatures(creature);
 			}
 			MessageManager.SendMessage(this, WorldMessage.Turn);
+			return result;
 		}
 
 		private void AddToActiveCreatures(Creature _creature)
@@ -171,9 +184,9 @@ namespace GameCore
 
 		public void AddToBlockAndActiveCreatures(Creature _creature)
 		{
-			var block = Map.GetMapBlock(_creature.Coords);
+			var block = _creature.Layer.GetMapBlock(_creature.Coords);
 			block.Creatures.Add(_creature);
-			if (Map.GetBlocksNear(Avatar.Coords).Any(_tuple => _tuple.Item2 == block))
+			if (_creature.Layer.GetBlocksNear(Avatar.Coords).Any(_tuple => _tuple.Item2 == block))
 			{
 				AddToActiveCreatures(_creature);
 			}
@@ -181,12 +194,17 @@ namespace GameCore
 
 		public void RemoveCreature(Creature _creature)
 		{
-			var block = Map.GetMapBlock(_creature.Coords);
+			var block = _creature.Layer.GetMapBlock(_creature.Coords);
 			if (!block.Creatures.Contains(_creature))
 			{
 				throw new ApplicationException("нет тут таких");
 			}
 			block.Creatures.Remove(_creature);
+		}
+
+		internal WorldLayer GenerateNewLayer(Creature _creature, Stair _stair)
+		{
+			return new DungeonLayer(_creature.Layer, _creature.Coords, _stair);
 		}
 	}
 }

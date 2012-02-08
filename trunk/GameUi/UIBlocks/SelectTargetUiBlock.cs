@@ -35,7 +35,7 @@ namespace GameUi.UIBlocks
 			m_center = new Point(m_maxDistance, m_maxDistance);
 
 			m_mapCells = new MapCell[m_maxDistance * 2 + 1, m_maxDistance * 2 + 1];
-			World.TheWorld.Map.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
+			World.TheWorld.Avatar.Layer.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
 
 			var points = new List<Point>();
 			for (var x = 0; x < m_mapCells.GetLength(0); ++x)

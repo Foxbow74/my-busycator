@@ -17,6 +17,7 @@ namespace GameUi
 		bool IsActive { get; }
 		IResourceProvider ResourceProvider { get; }
 		KeyState KeyState { get; }
+		void DrawTextLayer();
 	}
 
 	public class KeyState

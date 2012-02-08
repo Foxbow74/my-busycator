@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -56,7 +55,7 @@ namespace GameCore.Acts.Movement
 
 			var isAvatar = _creature == World.TheWorld.Avatar;
 
-			var mapCell = Map.GetMapCell(pnt);
+			var mapCell = _creature.Layer.GetMapCell(pnt);
 
 			var mess = mapCell.TerrainAttribute.DisplayName;
 
