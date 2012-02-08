@@ -28,14 +28,14 @@ namespace OpenTKUi
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
-			GL.Vertex2(_rectangle.Left * ATile.Size, _rectangle.Top * ATile.Size);
-			GL.Vertex2(_rectangle.Right * ATile.Size, _rectangle.Top * ATile.Size);
-			GL.Vertex2(_rectangle.Right * ATile.Size, _rectangle.Bottom * ATile.Size);
-			GL.Vertex2(_rectangle.Left * ATile.Size, _rectangle.Bottom * ATile.Size);
+			GL.Vertex2(_rectangle.Left , _rectangle.Top );
+			GL.Vertex2(_rectangle.Right , _rectangle.Top );
+			GL.Vertex2(_rectangle.Right , _rectangle.Bottom );
+			GL.Vertex2(_rectangle.Left , _rectangle.Bottom );
 			GL.End();
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
-				gr.Clip = new Region(new Rectangle(_rectangle.Left * ATile.Size, _rectangle.Top * ATile.Size, _rectangle.Width * ATile.Size, _rectangle.Height * ATile.Size));
+				gr.Clip = new Region(new Rectangle(_rectangle.Left , _rectangle.Top , _rectangle.Width , _rectangle.Height ));
 				gr.Clear(Color.Empty);
 			}
 			m_isTextBitmapChanged = true;

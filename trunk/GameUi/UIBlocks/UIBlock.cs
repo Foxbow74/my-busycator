@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
-using GameCore.Misc;
 
 
 namespace GameUi.UIBlocks
@@ -25,11 +24,9 @@ namespace GameUi.UIBlocks
 
 		public EFonts Font { get; private set; }
 
-		private static IDrawHelper m_drawHelper;
-
 		public static void Init(IDrawHelper _drawHelper)
 		{
-			m_drawHelper = _drawHelper;
+			DrawHelper = _drawHelper;
 		}
 
 		protected void UpdateContentRectangle()
@@ -69,7 +66,7 @@ namespace GameUi.UIBlocks
 			Rectangle = _rectangle;
 			BackgroundColor = Color.Black;
 			UpdateContentRectangle();
-			LineHeight = m_drawHelper.MeasureString(_font, "Ay").Height;
+			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
 		}
 
 		protected void CloseTopBlock(ConsoleKey _consoleKey = ConsoleKey.Escape)
@@ -80,7 +77,7 @@ namespace GameUi.UIBlocks
 
 		public virtual void DrawBackground()
 		{
-			TileHelper.DrawHelper.Clear(new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height), BackgroundColor);
+			TileHelper.DrawHelper.Clear(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
 		}
 
 		public void Dispose()
@@ -92,6 +89,8 @@ namespace GameUi.UIBlocks
 		{
 			get { return (int)Math.Round((double)ContentRectangle.Height * ATile.Size / LineHeight); }
 		}
+
+		public static IDrawHelper DrawHelper { get; private set; }
 
 		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -125,8 +124,8 @@ namespace GameUi.UIBlocks
 				processedChars += addStr.Length;
 				addStr += (processedChars == 0 || processedChars >= line.Length) ? "" : line[processedChars].ToString();
 				processedChars++;
-				var size = m_drawHelper.MeasureString(Font, addStr);
-				m_drawHelper.DrawString(Font, addStr, x, _y, color);
+				var size = DrawHelper.MeasureString(Font, addStr);
+				DrawHelper.DrawString(Font, addStr, x, _y, color);
 				x += size.Width;
 			}
 		}
@@ -138,7 +137,7 @@ namespace GameUi.UIBlocks
 			var processedChars = 0;
 			var x = (float)ContentRectangle.Left * ATile.Size;
 
-			var lineSize = m_drawHelper.MeasureString(Font, line);
+			var lineSize = DrawHelper.MeasureString(Font, line);
 			switch (_alignment)
 			{
 				case EAlignment.NORMAL:
@@ -173,8 +172,8 @@ namespace GameUi.UIBlocks
 					addStr += (processedChars >= line.Length) ? "" : line[processedChars].ToString();
 					processedChars++;
 				}
-				var size = m_drawHelper.MeasureString(Font, addStr);
-				m_drawHelper.DrawString(Font, addStr, x, y, color);
+				var size = DrawHelper.MeasureString(Font, addStr);
+				DrawHelper.DrawString(Font, addStr, x, y, color);
 				x += size.Width + 2;
 			}
 		    return x;
