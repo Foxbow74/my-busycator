@@ -26,7 +26,7 @@ namespace OpenTKUi
 			m_tileSizeY = _tileSizeY;
 			m_core.Reset();
 			Keyboard.KeyDown += KeyboardKeyDown;
-			Keyboard.KeyUp += Keyboard_KeyUp;
+			Keyboard.KeyUp += KeyboardKeyUp;
 		}
 
 		#region IGameProvider Members
@@ -69,9 +69,8 @@ namespace OpenTKUi
 
 		#endregion
 
-		protected override void OnRenderFrame(FrameEventArgs _e)
+		public void DrawTextLayer()
 		{
-			base.OnRenderFrame(_e);
 			m_drawHelper.DrawTextBitmap();
 		}
 
@@ -98,9 +97,9 @@ namespace OpenTKUi
 			base.OnResize(_e);
 		}
 
-		private void Keyboard_KeyUp(object sender, KeyboardKeyEventArgs e)
+		private void KeyboardKeyUp(object _sender, KeyboardKeyEventArgs _e)
 		{
-			var key = e.Key;
+			var key = _e.Key;
 
 			m_keyState.KeyModifiers ^= (key == Key.ShiftLeft || key == Key.ShiftRight)
 			                           	? EKeyModifiers.SHIFT
@@ -119,9 +118,9 @@ namespace OpenTKUi
 			}
 		}
 
-		private void KeyboardKeyDown(object sender, KeyboardKeyEventArgs e)
+		private void KeyboardKeyDown(object _sender, KeyboardKeyEventArgs _e)
 		{
-			var key = e.Key;
+			var key = _e.Key;
 
 			m_keyState.KeyModifiers |= (key == Key.ShiftLeft || key == Key.ShiftRight)
 			                           	? EKeyModifiers.SHIFT
@@ -159,6 +158,9 @@ namespace OpenTKUi
 			}
 			switch (_key)
 			{
+				case Key.Slash:
+					_consoleKey = ConsoleKey.Oem2;
+					break;
 				case Key.Down:
 					_consoleKey = ConsoleKey.DownArrow;
 					break;

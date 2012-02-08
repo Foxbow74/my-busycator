@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using GameUi;
 using OpenTKUi;
 
@@ -41,9 +40,8 @@ namespace Busycator
 		protected override void OnRenderFrame(OpenTK.FrameEventArgs _e)
 		{
 			Title = "Busycator FPS: " + (1 / _e.Time).ToString("0.");
-			Clear(Color.Black);
+			//Clear(Color.Black);
 			m_game.Draw();
-			base.OnRenderFrame(_e);
 			SwapBuffers();
 		}
 

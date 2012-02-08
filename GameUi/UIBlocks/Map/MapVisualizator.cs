@@ -10,6 +10,8 @@ namespace GameUi.UIBlocks.Map
 		{
 			switch (_terrain)
 			{
+				case ETerrains.STONE_FLOOR:
+					return ETiles.STONE_FLOOR.GetTile();
 				case ETerrains.GROUND:
 					return ETiles.GROUND.GetTile();
 				case ETerrains.GRASS:

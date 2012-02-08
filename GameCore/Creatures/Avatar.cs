@@ -1,4 +1,6 @@
 ﻿using System;
+using GameCore.Mapping;
+using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Ammo;
@@ -8,9 +10,10 @@ namespace GameCore.Creatures
 {
 	public class Avatar : Intelligent, ISpecial
 	{
-		public Avatar() : base(Point.Zero, 100, EIntellectGrades.INT)
+		public Avatar(WorldLayer _surface)
+			: base(_surface, Point.Zero, 100, EIntellectGrades.INT)
 		{
-			m_silence = false;
+			Silence = false;
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts());
 		}

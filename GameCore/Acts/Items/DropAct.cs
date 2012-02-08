@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Objects;
 
@@ -93,7 +92,7 @@ namespace GameCore.Acts.Items
 			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.RemoveFromBackpack(item);
-				Map.GetMapCell(_creature.Coords).AddObjectToBlock(item);
+				_creature.Layer.GetMapCell(_creature.Coords).AddObjectToBlock(item);
 			}
 			var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 			if (intelligent == World.TheWorld.Avatar)

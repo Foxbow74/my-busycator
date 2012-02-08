@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -104,7 +103,7 @@ namespace GameCore.Acts.Items
 			var thingString = thing.ToString();
 			if (descriptor.Container == null)
 			{
-				Map.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
+				_creature.Layer.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
 			}
 			else
 			{

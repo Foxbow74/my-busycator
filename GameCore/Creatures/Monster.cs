@@ -1,4 +1,6 @@
 ﻿using GameCore.Acts.Movement;
+using GameCore.Mapping;
+using GameCore.Mapping.Layers;
 using GameCore.Misc;
 
 namespace GameCore.Creatures
@@ -6,8 +8,8 @@ namespace GameCore.Creatures
 	public class Monster : Creature
 	{
 
-		public Monster(Point _coords)
-			: base(_coords, 100)
+		public Monster(WorldLayer _layer, Point _coords)
+			: base(_layer, _coords, 100)
 		{
 		}
 
@@ -18,7 +20,7 @@ namespace GameCore.Creatures
 
 		public override string Name
 		{
-			get { return "существо" + NN; }
+			get { return "существо" + Nn; }
 		}
 
 		public override void Resolve(Creature _creature)
@@ -27,7 +29,7 @@ namespace GameCore.Creatures
 
 		public override EThinkingResult Thinking()
 		{
-			AddActToPool(new MoveAct(), new Point(m_rnd.Next(3) - 1, m_rnd.Next(3) - 1));
+			AddActToPool(new MoveAct(), new Point(Rnd.Next(3) - 1, Rnd.Next(3) - 1));
 			return EThinkingResult.NORMAL;
 		}
 	}

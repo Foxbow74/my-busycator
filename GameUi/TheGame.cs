@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -19,22 +18,15 @@ namespace GameUi
 		private readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
 		private readonly Stack<UIBlock> m_uiBlocks = new Stack<UIBlock>();
 
-		private int m_fps;
-		private int m_frames;
-
 		private bool m_isAutoRepeateMode;
 		private EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
 
 		private MainBlock m_mainBlock;
 		private DateTime m_moveKeyHoldedSince;
 
-		//private Texture2D m_sceneTexture;
-		private int m_second;
-
 		public TheGame(IGameProvider _gameProvider)
 		{
 			m_gameProvider = _gameProvider;
-			m_frames = 0;
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
@@ -69,6 +61,7 @@ namespace GameUi
 			if (_message is OpenUIBlockMessage)
 			{
 				m_uiBlocks.Push(((OpenUIBlockMessage) _message).UIBlock);
+				m_needRedraws = 4;
 			}
 			else if (_message is SystemMessage)
 			{
@@ -89,33 +82,28 @@ namespace GameUi
 			else if (_message is AskSelectThingsMessage)
 			{
 				var mess = (AskSelectThingsMessage)_message;
-				m_uiBlocks.Push(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act, mess.Behavior));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act, mess.Behavior)));
 			}
 			else if (_message is AskSelectThingsFromBackPackMessage)
 			{
 				var mess = (AskSelectThingsFromBackPackMessage)_message;
-				m_uiBlocks.Push(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior, mess.AllowedCategory, mess.Act));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior, mess.AllowedCategory, mess.Act)));
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				m_uiBlocks.Push(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage) _message));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage) _message)));
 			}
 			else if (_message is AskHowMuchMessage)
 			{
-				m_uiBlocks.Push(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle, (AskHowMuchMessage) _message));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle, (AskHowMuchMessage) _message)));
 			}
 			else if (_message is AskShootTargerMessage)
 			{
 				var askShootTargerMessage = (AskShootTargerMessage)_message;
-				m_uiBlocks.Push(new SelectTargetUiBlock(m_mainBlock.Messages, m_mainBlock.Map.Rectangle, askShootTargerMessage.MaxDistance, askShootTargerMessage.Act));
+				MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainBlock.Messages, m_mainBlock.Map.Rectangle, askShootTargerMessage.MaxDistance, askShootTargerMessage.Act)));
 			}
 		}
 
-		/// <summary>
-		/// 	LoadContent will be called once per game and is the place to load
-		/// 	all of your content.
-		/// </summary>
-		/// <param name="_resourceProvider"> </param>
 		public void LoadContent(IResourceProvider _resourceProvider)
 		{
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
@@ -128,34 +116,16 @@ namespace GameUi
 			MessageManager.SendMessage(this, " [?] - экран помощи");
 		}
 
-		/// <summary>
-		/// 	UnloadContent will be called once per game and is the place to unload
-		/// 	all content.
-		/// </summary>
 		public void UnloadContent()
 		{
-			// TODO: Unload any non ContentManager content here
 		}
 
+		private int m_needRedraws = 2;
 		public void Update(KeyState _keyState)
 		{
-			// TODO: Add your update logic here
-
-			var state = _keyState;
-
 			var keyModifiers = _keyState.KeyModifiers;
-			//(state.IsKeyDown(ConsoleKey.LeftShift) || state.IsKeyDown(ConsoleKey.RightShift))
-			//                    ? EKeyModifiers.SHIFT
-			//                    : EKeyModifiers.NONE;
-			//keyModifiers |= (state.IsKeyDown(ConsoleKey.LeftControl) || state.IsKeyDown(ConsoleKey.RightControl))
-			//                    ? EKeyModifiers.CTRL
-			//                    : EKeyModifiers.NONE;
-			//keyModifiers |= (state.IsKeyDown(ConsoleKey.LeftAlt) || state.IsKeyDown(ConsoleKey.RightAlt))
-			//                    ? EKeyModifiers.ALT
-			//                    : EKeyModifiers.NONE;
 
-
-			var downKeys = _keyState.PressedKeys;// state.GetPressedKeys().Except(KeyHelper.KeyModificators).ToArray();
+			var downKeys = _keyState.PressedKeys;
 
 			if (keyModifiers != m_keyModifiers) m_downKeys.Clear();
 
@@ -208,7 +178,8 @@ namespace GameUi
 
 			foreach (var pressedKey in pressedKeys)
 			{
-				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>((ConsoleKey) pressedKey, m_keyModifiers));
+				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>(pressedKey, m_keyModifiers));
+				m_needRedraws = 2;
 			}
 
 			if (m_pressed.Count > 0)
@@ -224,12 +195,14 @@ namespace GameUi
 
 			if (m_uiBlocks.Peek() == m_mainBlock)
 			{
-				World.TheWorld.GameUpdated();
+				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
 		}
 
 		public void Draw()
 		{
+			if (m_needRedraws < 1) return;
+			m_needRedraws--;
 			if (!m_gameProvider.IsActive) return;
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())
@@ -238,21 +211,7 @@ namespace GameUi
 				uiBlock.DrawContent();
 				uiBlock.DrawFrame();
 			}
-
-			var tm = DateTime.Now;
-			if (tm.Second == m_second)
-			{
-				m_frames++;
-			}
-			else
-			{
-				m_fps = m_frames;
-				m_frames = 0;
-				m_second = tm.Second;
-			}
-
-			//var format = string.Format("ФПС:{0} XY:{1}", m_fps, World.TheWorld.Avatar.Coords);
-			//WriteString(format, 2, GraphicsDevice.Viewport.Height - 18, Color.White, Color.Gray, EFonts.COMMON);
+			m_gameProvider.DrawTextLayer();
 		}
 	}
 }

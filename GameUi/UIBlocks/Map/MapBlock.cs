@@ -39,7 +39,7 @@ namespace GameUi.UIBlocks.Map
 
 		public override void DrawContent()
 		{
-			World.TheWorld.Map.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
+			World.TheWorld.Avatar.Layer.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
 
 			var centerX = m_mapCells.GetLength(0)/2;
 			var centerY = m_mapCells.GetLength(1)/2;
@@ -63,20 +63,20 @@ namespace GameUi.UIBlocks.Map
 				var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 				var visibility = (float) tuple.Value;
 				var color = tile.Color.Multiply(visibility * 1.1f);
-				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+				//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
 				if (mapCell.Thing != null)
 				{
 					tile = mapCell.Thing.Tile.GetTile();
 					color = tile.Color.Multiply(visibility * 1.1f);
-					tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+					//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 				}
 
 				if (mapCell.Creature != null)
 				{
 					tile = mapCell.Creature.Tile.GetTile();
 					color = tile.Color.Multiply(visibility * 1.1f);
-					tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+					//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 					//if (mapCell.Creature is Monster)
 					//{
 					//    _spriteBatch.DrawString(Fonts.SmallFont, ((Monster) mapCell.Creature).NN,
@@ -84,6 +84,7 @@ namespace GameUi.UIBlocks.Map
 					//                            Color.White);
 					//}
 				}
+				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
 				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
 				mapCell.IsVisibleNow = true;

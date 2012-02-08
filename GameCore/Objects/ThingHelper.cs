@@ -104,7 +104,7 @@ namespace GameCore.Objects
 
 		private static void RegisterCreatureType(Type _type)
 		{
-			var thing = (Thing) Activator.CreateInstance(_type, new object[] {Point.Zero});
+			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null, Point.Zero});
 			FakedMonster value;
 			if (!m_fakedMonsters.TryGetValue(thing.Tile, out value))
 			{

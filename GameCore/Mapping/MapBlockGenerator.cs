@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -8,17 +9,11 @@ namespace GameCore.Mapping
 {
 	internal static class MapBlockGenerator
 	{
-		public static void Generate(MapBlock _block, Point _blockId, World _world)
+		public static void Generate(WorldLayer _layer, MapBlock _block, Point _blockId, World _world)
 		{
 			var rnd = new Random(_block.RandomSeed);
 
-			for (var i = 0; i < MapBlock.SIZE; ++i)
-			{
-				for (var j = 0; j < MapBlock.SIZE; ++j)
-				{
-					_block.Map[i, j] = rnd.Next(3) == 0 ? ETerrains.GRASS : ETerrains.GROUND;
-				}
-			}
+			Clear(_block, rnd, _layer);
 
 			for (var i = 3; i <= 8; i++)
 			{
@@ -79,7 +74,19 @@ namespace GameCore.Mapping
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				_block.Creatures.Add(new Monster(new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+				_block.Creatures.Add(new Monster(_layer, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+			}
+		}
+
+		public static void Clear(MapBlock _block, Random _rnd, WorldLayer _layer)
+		{
+			var def = _layer.DefaultEmptyTerrains.ToArray();
+			for (var i = 0; i < MapBlock.SIZE; ++i)
+			{
+				for (var j = 0; j < MapBlock.SIZE; ++j)
+				{
+					_block.Map[i, j] = def[_rnd.Next(def.Length)];
+				}
 			}
 		}
 	}

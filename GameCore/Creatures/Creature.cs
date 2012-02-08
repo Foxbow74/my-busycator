@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
+using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -10,10 +11,12 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Thing
 	{
-		private static int m_n;
-		public int NN { get; private set; }
+		public WorldLayer Layer { get; private set; }
 
-		protected static Random m_rnd = new Random(1);
+		private static int m_n;
+		public int Nn { get; private set; }
+
+		protected static Random Rnd = new Random(1);
 
 		private Point m_coords;
 		private Point m_inBlock;
@@ -21,14 +24,15 @@ namespace GameCore.Creatures
 		/// <summary>
 		/// 	Кидает ли существо сообщения в лог (true для аватара)
 		/// </summary>
-		protected bool m_silence = true;
+		protected bool Silence = true;
 
-		protected Creature(Point _coords, int _speed)
+		protected Creature(WorldLayer _layer, Point _coords, int _speed)
 		{
 			Speed = _speed;
 			Luck = 25;
 			Coords = _coords;
-			NN = m_n++;
+			Nn = m_n++;
+			Layer = _layer;
 		}
 
 		public override float Opaque
@@ -60,7 +64,7 @@ namespace GameCore.Creatures
 				{
 					if (!(this is Avatar) && m_inBlock != null)
 					{
-						Map.MoveCreature(this, m_inBlock, newCoords);
+						Layer.MoveCreature(this, m_inBlock, newCoords);
 					}
 					m_inBlock = newCoords;
 				}
@@ -83,12 +87,12 @@ namespace GameCore.Creatures
 
 		public MapBlock MapBlock
 		{
-			get { return World.TheWorld.Map[m_inBlock]; }
+			get { return Layer[m_inBlock]; }
 		}
 
 		public MapCell MapCell
 		{
-			get { return Map.GetMapCell(Coords); }
+			get { return Layer.GetMapCell(Coords); }
 		}
 
 		public override EThingCategory Category
@@ -125,7 +129,7 @@ namespace GameCore.Creatures
 
 		public EActResults DoAct(Act _act)
 		{
-			ActResult = _act.Do(this, m_silence);
+			ActResult = _act.Do(this, Silence);
 			var price = _act.TakeTicks*Speed;
 			switch (ActResult)
 			{
@@ -175,7 +179,7 @@ namespace GameCore.Creatures
 			{
 				points = points.Intersect(_intersect);
 			}
-			return points.Select(Map.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItems(this));
+			return points.Select(Layer.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItems(this));
 		}
 
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
@@ -185,7 +189,7 @@ namespace GameCore.Creatures
 
 		protected override int CalcHashCode()
 		{
-			return base.CalcHashCode()^NN;
+			return base.CalcHashCode()^Nn;
 		}
 
 		public virtual EActResults Atack(Creature _victim)

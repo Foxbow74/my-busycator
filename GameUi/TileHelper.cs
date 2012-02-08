@@ -145,6 +145,15 @@ namespace GameUi
 					case ETiles.FOG:
 						tl = Rp.CreateTile(1, 11, Color.FromArgb(255, 5, 5, 10));
 						break;
+					case ETiles.STAIR_DOWN:
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 3, Color.FromArgb(255, 100, 100, 50));
+						break;
+					case ETiles.STAIR_UP:
+						tl = Rp.CreateTile(ETextureSet.REDJACK, 12, 3, Color.FromArgb(255, 100, 100, 50));
+						break;
+					case ETiles.STONE_FLOOR:
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 100, 100, 200));
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}

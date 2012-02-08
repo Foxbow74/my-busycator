@@ -42,7 +42,7 @@ namespace GameCore.Acts.Interact
 			{
 				//собираем координаты всех закрытых вещей
 				var list = new List<Point>();
-				foreach (var cell in _creature.Coords.NearestPoints.Select(Map.GetMapCell))
+				foreach (var cell in _creature.Coords.NearestPoints.Select(_creature.Layer.GetMapCell))
 				{
 					var cc = cell;
 					if (cc.Thing.CanBeClosed(cc, _creature))
@@ -77,7 +77,7 @@ namespace GameCore.Acts.Interact
 					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
-				mapCell = Map.GetMapCell(coords.First());
+				mapCell = _creature.Layer.GetMapCell(coords.First());
 			}
 
 			//выясняем, что нужно закрыть
