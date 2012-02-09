@@ -9,7 +9,7 @@ namespace Busycator
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider(): base(16, 16, 800, 600)
+		public GameProvider(): base(16, 16, 1024, 768)
 		{
 			m_game = new TheGame(this);
 		}
