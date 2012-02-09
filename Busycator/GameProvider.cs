@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using GameCore;
 using GameUi;
 using OpenTK;
 using OpenTKUi;
@@ -41,7 +42,7 @@ namespace Busycator
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			Title = "Busycator FPS: " + (1/_e.Time).ToString("0.");
+			Title = "Busycator FPS:" + (1/_e.Time).ToString("0.") + " Avatar:" + World.TheWorld.Avatar.Coords;
 			m_game.Draw();
 			SwapBuffers();
 		}

@@ -125,14 +125,13 @@ namespace GameCore
 
 				switch (actResult)
 				{
+					case EActResults.NEED_ADDITIONAL_PARAMETERS:
+						return true;
 					case EActResults.NOTHING_HAPPENS:
 						break;
 					case EActResults.DONE:
-						result = true;
-						break;
-					case EActResults.NEED_ADDITIONAL_PARAMETERS:
-						return true;
 					case EActResults.FAIL:
+					case EActResults.QUICK_FAIL:
 						result = true;
 						break;
 					case EActResults.SHOULD_BE_REMOVED_FROM_QUEUE:

@@ -1,13 +1,11 @@
-using GameCore.Creatures;
 using GameCore.Mapping.Layers;
 
 namespace GameCore.Objects.Furniture
 {
 	internal class StairUp : Stair
 	{
-		public StairUp(WorldLayer _leadToLayer)
+		public StairUp(WorldLayer _leadToLayer):base(_leadToLayer)
 		{
-			LeadToLayer = _leadToLayer;
 		}
 
 		public StairUp()
@@ -22,11 +20,6 @@ namespace GameCore.Objects.Furniture
 		public override string Name
 		{
 			get { return "лестница вверх"; }
-		}
-
-		public override void Resolve(Creature _creature)
-		{
-			LeadToLayer = World.TheWorld.GenerateNewLayer(_creature, this);
 		}
 	}
 }
