@@ -140,7 +140,10 @@ namespace GameCore.Mapping
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
 			var item = (Item) _fakeItem.ResolveFake(_creature);
-			Block.Objects.Remove(new Tuple<Thing, Point>(_fakeItem, m_inBlockCoords));
+			if(!Block.Objects.Remove(new Tuple<Thing, Point>(_fakeItem, m_inBlockCoords)))
+			{
+				throw new NotImplementedException("Нет тут такого!");
+			}
 			Block.AddObject(m_inBlockCoords, item);
 			return item;
 		}
