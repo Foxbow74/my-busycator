@@ -63,14 +63,14 @@ namespace GameCore.Acts.Movement
 					var furniture = mapCell.Furniture;
 					if (furniture != null)
 					{
-						mess += ", " + furniture.GetName(_creature);
+						mess += ", " + furniture.GetName(_creature, pnt);
 					}
 					var items = mapCell.Items.ToArray();
 					if (items.Length > 0)
 					{
 						if (items.Length == 1)
 						{
-							mess += ", " + items[0].GetName(_creature);
+							mess += ", " + items[0].GetName(_creature, pnt);
 						}
 						else
 						{
