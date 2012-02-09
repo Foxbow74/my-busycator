@@ -1,12 +1,24 @@
 ﻿using System.Collections.Generic;
 using GameCore.Creatures;
 
-namespace GameCore.Objects
+namespace GameCore.Objects.Furniture
 {
-	public abstract class Container : Thing
+	public interface IContainer
+	{
+		ItemsCollection GetItems(Creature _creature);
+	}
+
+	internal abstract class Container : Furniture, IContainer
 	{
 		private ItemsCollection m_items;
 
+		#region IContainer Members
+
+		/// <summary>
+		/// 	Если контейнер не инициализирован, то на основании характеристик открывшего существа генерируется наполнение
+		/// </summary>
+		/// <param name = "_creature"></param>
+		/// <returns></returns>
 		public ItemsCollection GetItems(Creature _creature)
 		{
 			if (m_items == null)
@@ -27,6 +39,7 @@ namespace GameCore.Objects
 			return m_items;
 		}
 
+		#endregion
 
 		protected virtual IEnumerable<Item> GenerateItems(Creature _creature)
 		{
@@ -34,7 +47,7 @@ namespace GameCore.Objects
 		}
 	}
 
-	public enum LockType
+	public enum ELockType
 	{
 		OPEN,
 		SIMPLE,

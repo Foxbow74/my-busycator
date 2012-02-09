@@ -5,11 +5,21 @@ using System.Linq;
 using GameCore;
 using GameCore.Messages;
 
-
 namespace GameUi.UIBlocks
 {
-	internal class UIBlock 
+	internal class UIBlock
 	{
+		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color, EFonts _font = EFonts.COMMON)
+		{
+			Font = _font;
+			BlockFrame = _frame;
+			Color = _color;
+			Rectangle = _rectangle;
+			BackgroundColor = Color.Black;
+			UpdateContentRectangle();
+			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
+		}
+
 		protected float LineHeight { get; private set; }
 
 		public Color BackgroundColor { get; set; }
@@ -23,6 +33,13 @@ namespace GameUi.UIBlocks
 		protected Frame BlockFrame { get; private set; }
 
 		public EFonts Font { get; private set; }
+
+		public int TextLinesMax
+		{
+			get { return (int) Math.Round((double) ContentRectangle.Height*ATile.Size/LineHeight); }
+		}
+
+		public static IDrawHelper DrawHelper { get; private set; }
 
 		public static void Init(IDrawHelper _drawHelper)
 		{
@@ -57,17 +74,6 @@ namespace GameUi.UIBlocks
 		{
 			return string.Join("   -   ", _s);
 		}
-		
-		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color, EFonts _font = EFonts.COMMON)
-		{
-			Font = _font;
-			BlockFrame = _frame;
-			Color = _color;
-			Rectangle = _rectangle;
-			BackgroundColor = Color.Black;
-			UpdateContentRectangle();
-			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
-		}
 
 		protected void CloseTopBlock(ConsoleKey _consoleKey = ConsoleKey.Escape)
 		{
@@ -77,20 +83,15 @@ namespace GameUi.UIBlocks
 
 		public virtual void DrawBackground()
 		{
-			TileHelper.DrawHelper.Clear(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
+			TileHelper.DrawHelper.Clear(
+				new Rectangle(Rectangle.Left*ATile.Size, Rectangle.Top*ATile.Size, Rectangle.Width*ATile.Size,
+				              Rectangle.Height*ATile.Size), BackgroundColor);
 		}
 
 		public void Dispose()
 		{
 			//throw new NotImplementedException();
 		}
-
-		public int TextLinesMax
-		{
-			get { return (int)Math.Round((double)ContentRectangle.Height * ATile.Size / LineHeight); }
-		}
-
-		public static IDrawHelper DrawHelper { get; private set; }
 
 		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -106,7 +107,7 @@ namespace GameUi.UIBlocks
 			return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _lineNumber, _indent, _alignment);
 		}
 
-		protected  void DrawLine(TextPortion.TextLine _textLine, Color _color, float _x, float _y)
+		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, float _x, float _y)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
@@ -130,12 +131,13 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, int _lineNumber, float _indent, EAlignment _alignment)
+		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, int _lineNumber, float _indent,
+		                         EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
 			var processedChars = 0;
-			var x = (float)ContentRectangle.Left * ATile.Size;
+			var x = (float) ContentRectangle.Left*ATile.Size;
 
 			var lineSize = DrawHelper.MeasureString(Font, line);
 			switch (_alignment)
@@ -147,14 +149,14 @@ namespace GameUi.UIBlocks
 					x += _indent;
 					break;
 				case EAlignment.RIGHT:
-					x += ContentRectangle.Width * ATile.Size - lineSize.Width - _indent;
+					x += ContentRectangle.Width*ATile.Size - lineSize.Width - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRectangle.Width * ATile.Size / 2f - lineSize.Width / 2f;
+					x += ContentRectangle.Width*ATile.Size/2f - lineSize.Width/2f;
 					break;
 			}
 
-			var y = ContentRectangle.Top * ATile.Size + _lineNumber * LineHeight;
+			var y = ContentRectangle.Top*ATile.Size + _lineNumber*LineHeight;
 
 			for (var partIndex = 0; partIndex < part.Length; partIndex++)
 			{
@@ -176,7 +178,7 @@ namespace GameUi.UIBlocks
 				DrawHelper.DrawString(Font, addStr, x, y, color);
 				x += size.Width + 2;
 			}
-		    return x;
+			return x;
 		}
 	}
 

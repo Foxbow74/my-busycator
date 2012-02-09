@@ -8,16 +8,11 @@ using GameCore.Messages;
 
 namespace GameCore.Objects.Furniture
 {
-	public class Chest : Container, ICanbeOpened
+	internal class Chest : Container, ICanbeOpened
 	{
 		public Chest()
 		{
-			LockType = LockType.SIMPLE;
-		}
-
-		public override float Opaque
-		{
-			get { return 0.5f; }
+			ELockType = ELockType.SIMPLE;
 		}
 
 		public override ETiles Tile
@@ -30,21 +25,16 @@ namespace GameCore.Objects.Furniture
 			get { return "сундук"; }
 		}
 
-		public override EThingCategory Category
-		{
-			get { return EThingCategory.FURNITURE; }
-		}
-
 		#region ICanbeOpened Members
 
-		public LockType LockType { get; private set; }
+		public ELockType ELockType { get; private set; }
 
 		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
 		{
-			if (LockType != LockType.OPEN)
+			if (ELockType != ELockType.OPEN)
 			{
-				if (!_silence) MessageManager.SendMessage(this, Name + " открыт.");
-				LockType = LockType.OPEN;
+				if (!_silence) MessageManager.SendMessage(this, this.GetName(_creature) + " открыт.");
+				ELockType = ELockType.OPEN;
 
 				var collection = GetItems(_creature);
 				if (collection.Any)

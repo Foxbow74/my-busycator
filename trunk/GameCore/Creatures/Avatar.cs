@@ -1,5 +1,4 @@
 ﻿using System;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;

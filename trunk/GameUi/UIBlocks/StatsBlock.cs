@@ -4,8 +4,6 @@ using System;
 using System.Drawing;
 using GameCore;
 
-
-
 #endregion
 
 namespace GameUi.UIBlocks

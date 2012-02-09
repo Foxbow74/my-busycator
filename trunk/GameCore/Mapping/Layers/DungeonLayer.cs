@@ -1,34 +1,31 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
 
 namespace GameCore.Mapping.Layers
 {
-	class DungeonLayer:WorldLayer
+	internal class DungeonLayer : WorldLayer
 	{
-		private readonly WorldLayer m_enterFromLayer;
-		private readonly Point m_enterCoords;
-		private readonly Stair m_stair;
-
 		public DungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair)
 		{
-			m_enterFromLayer = _enterFromLayer;
-			m_enterCoords = _enterCoords;
-			m_stair = _stair;
-
 			var blockId = MapBlock.GetBlockCoords(_enterCoords);
 			var inBlockCoords = MapBlock.GetInBlockCoords(_enterCoords);
 			var block = this[blockId];
-			//block.Map[inBlockCoords.X, inBlockCoords.Y].
-			block.AddObject(inBlockCoords, new StairUp(this));
+
+			if (_stair is StairUp)
+			{
+				block.AddObject(inBlockCoords, new StairDown(_enterFromLayer));
+			}
+			else
+			{
+				block.AddObject(inBlockCoords, new StairUp(_enterFromLayer));
+			}
 		}
 
-		internal override System.Collections.Generic.IEnumerable<ETerrains> DefaultEmptyTerrains
+		internal override IEnumerable<ETerrains> DefaultEmptyTerrains
 		{
-			get
-			{
-				yield return ETerrains.STONE_FLOOR;
-			}
+			get { yield return ETerrains.STONE_FLOOR; }
 		}
 
 		protected override MapBlock GenerateBlock(Point _blockId)
@@ -36,6 +33,16 @@ namespace GameCore.Mapping.Layers
 			var block = new MapBlock(_blockId);
 			var rnd = new Random(block.RandomSeed);
 			MapBlockGenerator.Clear(block, rnd, this);
+
+			const int v = MapBlock.SIZE / 2 - 1;
+
+			for (var i = 0; i < v;++i )
+			{
+				block.Map[i, 0] = ETerrains.BRICK_WALL;
+				block.Map[0, i] = ETerrains.BRICK_WALL;
+				block.Map[MapBlock.SIZE - 1 - i, 0] = ETerrains.BRICK_WALL;
+				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.BRICK_WALL;
+			}
 			return block;
 		}
 	}

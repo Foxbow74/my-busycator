@@ -8,7 +8,7 @@ using GameCore.Objects.Potions;
 
 namespace GameCore.Acts.Items
 {
-	class DrinkAct:Act
+	internal class DrinkAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -37,11 +37,13 @@ namespace GameCore.Acts.Items
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			var intelligent = (Intelligent)_creature;
+			var intelligent = (Intelligent) _creature;
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this, new AskSelectThingsFromBackPackMessage(this, ESelectItemDialogBehavior.SELECT_ONE, new []{EThingCategory.POTION}));
+				MessageManager.SendMessage(this,
+				                           new AskSelectThingsFromBackPackMessage(this, ESelectItemDialogBehavior.SELECT_ONE,
+				                                                                  new[] {EThingCategory.POTION}));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 			var descriptor = descriptors[0];
@@ -49,12 +51,13 @@ namespace GameCore.Acts.Items
 			{
 				return EActResults.NOTHING_HAPPENS;
 			}
-			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
+			var total =
+				intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
 			if (total.Length == 0)
 			{
 				throw new ApplicationException("в рюкзаке нет такого предмета");
 			}
-			var item = (Potion)descriptor.Thing;
+			var item = (Potion) descriptor.Thing;
 			var thingString = item.ToString();
 
 			if (!item.IsAllowToDrink(_creature))
@@ -65,7 +68,7 @@ namespace GameCore.Acts.Items
 			intelligent.RemoveFromBackpack(item);
 			item.Drinked(_creature, _silence);
 
-			if (intelligent == World.TheWorld.Avatar)
+			if (intelligent.IsAvatar)
 			{
 				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " выпит"));
 			}

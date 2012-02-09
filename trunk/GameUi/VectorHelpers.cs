@@ -19,7 +19,7 @@ namespace GameUi
 
 		public static Color Multiply(this Color _color, float _f)
 		{
-			Func<int, int> mult = _i => (int)Math.Min(_i * _f, 255);
+			Func<int, int> mult = _i => (int) Math.Min(_i*_f, 255);
 			return Color.FromArgb(mult(_color.A), mult(_color.R), mult(_color.G), mult(_color.B));
 		}
 
@@ -28,6 +28,4 @@ namespace GameUi
 			return new Point(15, 15);
 		}
 	}
-
-
 }

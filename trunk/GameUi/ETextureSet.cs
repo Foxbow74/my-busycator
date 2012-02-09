@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace GameUi
+﻿namespace GameUi
 {
 	public enum ETextureSet
 	{

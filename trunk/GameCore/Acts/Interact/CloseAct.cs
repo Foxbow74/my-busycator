@@ -45,11 +45,11 @@ namespace GameCore.Acts.Interact
 				foreach (var cell in _creature.Coords.NearestPoints.Select(_creature.Layer.GetMapCell))
 				{
 					var cc = cell;
-					if (cc.Thing.CanBeClosed(cc, _creature))
+					if (cc.Furniture.CanBeClosed(cc, _creature))
 					{
 						list.Add(cc.WorldCoords);
 					}
-					else if (cc.GetAllAvailableItems(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cc, _creature)))
+					else if (cc.GetAllAvailableItemDescriptors(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cc, _creature)))
 					{
 						list.Add(cc.WorldCoords);
 					}
@@ -83,13 +83,14 @@ namespace GameCore.Acts.Interact
 			//выясняем, что нужно закрыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((mapCell.Thing.IsDoor(mapCell, _creature) || mapCell.Thing.IsChest(mapCell, _creature)) &&
-				    mapCell.Thing.CanBeClosed(mapCell, _creature))
+				if ((mapCell.Furniture.IsDoor(mapCell, _creature) || mapCell.Furniture.IsChest(mapCell, _creature)) &&
+				    mapCell.Furniture.CanBeClosed(mapCell, _creature))
 				{
-					list.Add(new ThingDescriptor(mapCell.Thing, mapCell.WorldCoords, null));
+					list.Add(new ThingDescriptor(mapCell.Furniture, mapCell.WorldCoords, null));
 				}
 				list.AddRange(
-					mapCell.GetAllAvailableItems(_creature).Where(_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
+					mapCell.GetAllAvailableItemDescriptors(_creature).Where(
+						_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
 				if (mapCell.WorldCoords == _creature.Coords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
@@ -101,7 +102,10 @@ namespace GameCore.Acts.Interact
 				}
 				if (descriptors.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskSelectThingsMessage(descriptors, this, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+					MessageManager.SendMessage(this,
+					                           new AskSelectThingsMessage(descriptors, this,
+					                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
+					                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
 				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, mapCell, _silence);
 			}

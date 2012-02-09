@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Creatures;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
-using GameCore.Misc;
 using GameCore.Objects.Furniture;
 
 namespace GameCore
 {
 	public class World
 	{
-		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
-
 		private const int WORLD_SEED = 1;
 
 		/// <summary>
 		/// 	содержит список активных в данный момент существ
 		/// </summary>
 		private readonly List<Creature> m_activeCreatures = new List<Creature>();
+
+		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
 		static World()
 		{
@@ -31,12 +29,8 @@ namespace GameCore
 		{
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
 			m_layers.Add(Surface = new Surface());
-			
-			WorldTick = 0;
 
-			Avatar = new Avatar(Surface);
-			m_activeCreatures.Add(Avatar);
-			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+			WorldTick = 0;
 		}
 
 		public static World TheWorld { get; private set; }
@@ -54,6 +48,13 @@ namespace GameCore
 
 		public Surface Surface { get; private set; }
 
+		private void BornAvatar()
+		{
+			Avatar = new Avatar(Surface);
+			m_activeCreatures.Add(Avatar);
+			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+		}
+
 		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
 		{
 			switch (_message.Type)
@@ -68,12 +69,12 @@ namespace GameCore
 		{
 			m_activeCreatures.Clear();
 			m_activeCreatures.AddRange(
-				Avatar.Layer.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).Union(new[] {Avatar}).Distinct().
+				Avatar.Layer.GetBlocksNear(Avatar.Coords).SelectMany(_tuple => _tuple.Item2.Creatures).Union(new[] {Avatar}).
+					Distinct().
 					OrderBy(_creature => _creature.BusyTill));
 		}
 
 		/// <summary>
-		/// 
 		/// </summary>
 		/// <returns>true, if something changed</returns>
 		public bool GameUpdated()
@@ -96,7 +97,7 @@ namespace GameCore
 					throw new ApplicationException();
 				}
 
-				if (creature != Avatar && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS && creature.NextAct==null)
+				if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS && creature.NextAct == null)
 				{
 					var thinkingResult = creature.Thinking();
 					switch (thinkingResult)
@@ -172,6 +173,7 @@ namespace GameCore
 		public static void LetItBeeee()
 		{
 			TheWorld = new World();
+			TheWorld.BornAvatar();
 		}
 
 		public void KeyPressed(ConsoleKey _key, EKeyModifiers _modifiers)

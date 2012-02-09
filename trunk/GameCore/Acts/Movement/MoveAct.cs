@@ -52,57 +52,66 @@ namespace GameCore.Acts.Movement
 			}
 
 			var pnt = _creature.Coords + delta;
-
-			var isAvatar = _creature == World.TheWorld.Avatar;
-
 			var mapCell = _creature.Layer.GetMapCell(pnt);
 
-			var mess = mapCell.TerrainAttribute.DisplayName;
-
-			if (mapCell.GetIsPassable(_creature) > 0)
+			if (mapCell.GetIsPassableBy(_creature) > 0)
 			{
-				_creature.Coords = pnt;
+				var mess = mapCell.TerrainAttribute.DisplayName;
 
 				if (!_silence)
 				{
-					var o = mapCell.Thing;
-					if (o == null)
+					var furniture = mapCell.Furniture;
+					if (furniture != null)
 					{
-						MessageManager.SendMessage(this, mess);
+						mess += ", " + furniture.GetName(_creature);
 					}
-					else
+					var items = mapCell.Items.ToArray();
+					if (items.Length > 0)
 					{
-						if (o is IFaked)
+						if (items.Length == 1)
 						{
-							o = mapCell.ResolveFakeItem(World.TheWorld.Avatar);
+							mess += ", " + items[0].GetName(_creature);
 						}
-						MessageManager.SendMessage(this, mess + ", " + o.Name);
+						else
+						{
+							mess += ", вещи";
+						}
 					}
+					MessageManager.SendMessage(this, mess);
 				}
-
-				if (isAvatar)
-				{
-					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
-				}
+				_creature.Coords = pnt;
 				return EActResults.DONE;
 			}
 			else
 			{
+				var mess = String.Empty;
 				if (!_silence)
 				{
-					var o = mapCell.Thing;
-
-					if (o.IsDoor(mapCell, _creature) && o.CanBeOpened(mapCell, _creature))
+					var creature = mapCell.Creature;
+					if (creature != null)
 					{
-						_creature.AddActToPool(new OpenAct(), pnt);
-						return EActResults.DONE;
+						mess = creature.GetName(_creature);
 					}
-
-					if (o != null)
+					else
 					{
-						mess = o.Name;
+						var furniture = mapCell.Furniture;
+						if (furniture != null)
+						{
+							if (furniture.IsDoor(mapCell, _creature) && furniture.IsClosed(mapCell, _creature))
+							{
+								_creature.AddActToPool(new OpenAct(), pnt);
+								return EActResults.DONE;
+							}
+							else
+							{
+								mess = furniture.GetName(_creature);
+							}
+						}
+						else
+						{
+							mess = mapCell.TerrainAttribute.DisplayName;
+						}
 					}
-
 					MessageManager.SendMessage(this, "неа, " + mess);
 				}
 				return EActResults.NOTHING_HAPPENS;

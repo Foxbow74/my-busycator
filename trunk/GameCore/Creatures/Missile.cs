@@ -3,7 +3,6 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -11,7 +10,7 @@ using GameCore.Objects;
 
 namespace GameCore.Creatures
 {
-	class Missile : Creature, ISpecial
+	internal class Missile : Creature, ISpecial
 	{
 		private readonly List<Point> m_path;
 		private int m_step = 1;
@@ -45,19 +44,19 @@ namespace GameCore.Creatures
 			m_step++;
 
 			var nextCell = Layer.GetMapCell(nextPoint);
-			if(nextCell.Creature!=null)
+			if (nextCell.Creature != null)
 			{
 				AddActToPool(new AtackAct(), nextPoint);
 				return EThinkingResult.NORMAL;
 			}
-			var passable = nextCell.GetIsPassable(this);
+			var passable = nextCell.GetIsPassableBy(this);
 			var canMove = m_step < m_path.Count;
 			if (passable < 1)
 			{
 				nextCell = MapCell;
 				canMove = false;
 			}
-			if(!canMove)
+			if (!canMove)
 			{
 				nextCell.AddObjectToBlock(Ammo);
 				World.TheWorld.RemoveCreature(this);

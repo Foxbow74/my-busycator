@@ -5,8 +5,6 @@ using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 
-
-
 #endregion
 
 namespace GameUi.UIBlocks
@@ -21,9 +19,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			
-			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), Color.White,1, 0, EAlignment.CENTER);
-			
+			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), Color.White, 1, 0, EAlignment.CENTER);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

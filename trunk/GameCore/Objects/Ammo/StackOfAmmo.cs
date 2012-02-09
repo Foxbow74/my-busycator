@@ -2,7 +2,7 @@
 
 namespace GameCore.Objects.Ammo
 {
-	abstract class StackOfAmmo : StackOfItems
+	internal abstract class StackOfAmmo : StackOfItems
 	{
 		public override EThingCategory Category
 		{
@@ -11,7 +11,7 @@ namespace GameCore.Objects.Ammo
 
 		protected override int GetStartCount(Creature _creature)
 		{
-			return (int)(_creature.GetLuckRandom * 25) + 1;
+			return (int) (_creature.GetLuckRandom*25) + 1;
 		}
 	}
 }

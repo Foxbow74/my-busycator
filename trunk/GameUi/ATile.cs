@@ -18,10 +18,9 @@ namespace GameUi
 		{
 		}
 
-		public abstract void Draw(int _x, int _y, Color _color);
-
 		public Color Color { get; private set; }
 
 		public Rectangle Rectangle { get; private set; }
+		public abstract void Draw(int _x, int _y, Color _color);
 	}
 }

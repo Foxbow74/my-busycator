@@ -9,7 +9,7 @@ namespace GameCore.Mapping.Layers
 	public abstract class WorldLayer
 	{
 		/// <summary>
-		/// Сколько блоков вокруг игрока считаются активными и отображаются на карте
+		/// 	Сколько блоков вокруг игрока считаются активными и отображаются на карте
 		/// </summary>
 		public const int ACTIVE_SIZE_HALF = 3;
 
@@ -41,8 +41,21 @@ namespace GameCore.Mapping.Layers
 
 		public void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
 		{
-			this[_fromBlock].Creatures.Remove(_creature);
-			this[_toBlock].Creatures.Add(_creature);
+			if (!_creature.IsAvatar)
+			{
+				this[_fromBlock].Creatures.Remove(_creature);
+				this[_toBlock].Creatures.Add(_creature);
+			}
+		}
+
+		public void RemoveCreature(Creature _creature)
+		{
+			if (!_creature.IsAvatar) _creature.MapBlock.Creatures.Remove(_creature);
+		}
+
+		public void AddCreature(Creature _creature)
+		{
+			if (!_creature.IsAvatar) _creature.MapBlock.Creatures.Add(_creature);
 		}
 
 		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _point)
@@ -77,11 +90,11 @@ namespace GameCore.Mapping.Layers
 				{
 					for (var j = 0; j < MapBlock.SIZE; j++)
 					{
-						var worldX = blockId.X * MapBlock.SIZE + i;
-						var worldY = blockId.Y * MapBlock.SIZE + j;
+						var worldX = blockId.X*MapBlock.SIZE + i;
+						var worldY = blockId.Y*MapBlock.SIZE + j;
 
-						var x = worldX - _avatarPoint.X + w / 2;
-						var y = worldY - _avatarPoint.Y + h / 2;
+						var x = worldX - _avatarPoint.X + w/2;
+						var y = worldY - _avatarPoint.Y + h/2;
 
 						if (x < 0 || y < 0 || x >= w || y >= h)
 						{

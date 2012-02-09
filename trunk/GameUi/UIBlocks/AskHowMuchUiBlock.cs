@@ -3,8 +3,6 @@ using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 
-
-
 namespace GameUi.UIBlocks
 {
 	internal class AskHowMuchUiBlock : UIBlock
@@ -68,9 +66,8 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			
-			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), Color, 0, 0, EAlignment.LEFT);
-			
+			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), Color,
+			         0, 0, EAlignment.LEFT);
 		}
 	}
 }

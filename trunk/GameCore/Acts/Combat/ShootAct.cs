@@ -8,7 +8,7 @@ using GameCore.Objects;
 
 namespace GameCore.Acts.Combat
 {
-	class ShootAct:Act
+	internal class ShootAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -37,9 +37,9 @@ namespace GameCore.Acts.Combat
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			var intelligent = (Intelligent)_creature;
+			var intelligent = (Intelligent) _creature;
 			var item = intelligent[EEquipmentPlaces.MISSILES];
-			if(item==null)
+			if (item == null)
 			{
 				if (!_silence)
 				{
@@ -51,7 +51,7 @@ namespace GameCore.Acts.Combat
 					throw new ApplicationException("Нечем стрелять");
 				}
 			}
-			
+
 			var dPoint = GetParameter<Point>().FirstOrDefault();
 			if (dPoint == null)
 			{
@@ -59,9 +59,9 @@ namespace GameCore.Acts.Combat
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 
-			if(item is StackOfItems)
+			if (item is StackOfItems)
 			{
-				var stack = (StackOfItems)item;
+				var stack = (StackOfItems) item;
 				item = stack.GetOne();
 				if (stack.Count == 0)
 				{
@@ -74,7 +74,8 @@ namespace GameCore.Acts.Combat
 				intelligent.TakeOff(EEquipmentPlaces.MISSILES);
 				intelligent.RemoveFromBackpack(item);
 			}
-			World.TheWorld.AddToBlockAndActiveCreatures(new Missile(_creature.Layer, _creature.Coords, 2, item, _creature.Coords + dPoint));
+			World.TheWorld.AddToBlockAndActiveCreatures(new Missile(_creature.Layer, _creature.Coords, 2, item,
+			                                                        _creature.Coords + dPoint));
 			return EActResults.DONE;
 		}
 	}

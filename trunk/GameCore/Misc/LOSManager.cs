@@ -57,8 +57,8 @@ namespace GameCore.Misc
 		/// </summary>
 		private readonly Dictionary<Tuple<Point, double>, LosCell> m_cells = new Dictionary<Tuple<Point, double>, LosCell>();
 
-		public void GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy,
-		                            Dictionary<Point, double> _alreadyDone, double _visibilityCoeff)
+		public void GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy, Dictionary<Point, double> _alreadyDone,
+		                            double _visibilityCoeff)
 		{
 			var maxX = _mapCells.GetLength(0) - 1;
 			var maxY = _mapCells.GetLength(1) - 1;
@@ -72,10 +72,10 @@ namespace GameCore.Misc
 
 				var mapCell = _mapCells[pnt.X, pnt.Y];
 
-				var opaque = mapCell.Opaque;
+				var opacity = mapCell.Opacity;
 
 				var visible = 1.0*_visibilityCoeff;
-				var nextVisible = (1.0 - opaque*pair.Key.Item2)*_visibilityCoeff;
+				var nextVisible = (1.0 - opacity*pair.Key.Item2)*_visibilityCoeff;
 
 				double tuple;
 				if (_alreadyDone.TryGetValue(pnt, out tuple))
@@ -84,7 +84,7 @@ namespace GameCore.Misc
 					if (visibility >= visible) continue;
 				}
 
-				if (opaque < 0.999f)
+				if (opacity < 1f)
 				{
 					_alreadyDone[pnt] = visible;
 				}

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -50,6 +50,8 @@ namespace GameCore.Mapping
 			get { return m_objects ?? (m_objects = new List<Tuple<Thing, Point>>()); }
 		}
 
+		public UInt32[] SeenCells { get; private set; }
+
 		public void AddObject(Point _inBlockCoords, Thing _thing)
 		{
 			if (_thing is StackOfItems)
@@ -66,8 +68,6 @@ namespace GameCore.Mapping
 
 			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
 		}
-
-		public UInt32[] SeenCells { get; private set; }
 
 		public static Point GetBlockCoords(Point _point)
 		{

@@ -20,7 +20,7 @@ namespace OpenTKUi
 		private OpenTKResourceProvider m_resourceProvider;
 
 		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
-			: base(_tileSizeX * (int)(_screenWidth / _tileSizeX), _tileSizeX * (int)(_screenHeight / _tileSizeX), GraphicsMode.Default, "Open TK")
+			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX), GraphicsMode.Default, "Open TK")
 		{
 			m_tileSizeX = _tileSizeX;
 			m_tileSizeY = _tileSizeY;
@@ -67,12 +67,12 @@ namespace OpenTKUi
 			get { return Focused; }
 		}
 
-		#endregion
-
 		public void DrawTextLayer()
 		{
 			m_drawHelper.DrawTextBitmap();
 		}
+
+		#endregion
 
 		protected override void OnLoad(EventArgs _e)
 		{
@@ -143,17 +143,17 @@ namespace OpenTKUi
 		{
 			if (_key >= Key.A && _key <= Key.Z)
 			{
-				_consoleKey = (ConsoleKey) (_key - (Key.A - (int)ConsoleKey.A));
+				_consoleKey = (ConsoleKey) (_key - (Key.A - (int) ConsoleKey.A));
 				return true;
 			}
 			if (_key >= Key.Number0 && _key <= Key.Number9)
 			{
-				_consoleKey = (ConsoleKey)(_key - (Key.Number0 - (int)ConsoleKey.D0));
+				_consoleKey = (ConsoleKey) (_key - (Key.Number0 - (int) ConsoleKey.D0));
 				return true;
 			}
 			if (_key >= Key.Keypad0 && _key <= Key.Keypad9)
 			{
-				_consoleKey = (ConsoleKey)(_key - (Key.Keypad0 - (int)ConsoleKey.NumPad0));
+				_consoleKey = (ConsoleKey) (_key - (Key.Keypad0 - (int) ConsoleKey.NumPad0));
 				return true;
 			}
 			switch (_key)

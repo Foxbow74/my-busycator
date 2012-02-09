@@ -16,7 +16,7 @@ namespace GameUi
 
 		public ATile this[int _index]
 		{
-			get { return m_tiles[_index % m_tiles.Count()]; }
+			get { return m_tiles[_index%m_tiles.Count()]; }
 		}
 
 		public override void Draw(int _x, int _y, Color _color)

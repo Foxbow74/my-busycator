@@ -4,17 +4,23 @@ using System.Drawing;
 using GameCore;
 using Point = GameCore.Misc.Point;
 
-
 namespace GameUi
 {
 	public static class TileHelper
 	{
-		public static ATile FogTile{ get { return m_tiles[ETiles.FOG]; } }
-		public static ATile SolidTile { get { return m_frameTiles[EFrameTiles.SOLID]; } }
-
 		private static readonly Dictionary<ETiles, ATile> m_tiles = new Dictionary<ETiles, ATile>();
 
 		private static readonly Dictionary<EFrameTiles, ATile> m_frameTiles = new Dictionary<EFrameTiles, ATile>();
+
+		public static ATile FogTile
+		{
+			get { return m_tiles[ETiles.FOG]; }
+		}
+
+		public static ATile SolidTile
+		{
+			get { return m_frameTiles[EFrameTiles.SOLID]; }
+		}
 
 		public static IResourceProvider Rp { get; private set; }
 		public static IDrawHelper DrawHelper { get; private set; }
@@ -27,7 +33,7 @@ namespace GameUi
 			Rp.RegisterFont(EFonts.COMMON, "Resources\\cour.ttf", 10);
 			Rp.RegisterFont(EFonts.SMALL, "Resources\\cour.ttf", 5);
 
-			foreach (ETextureSet set in Enum.GetValues(typeof(ETextureSet)))
+			foreach (ETextureSet set in Enum.GetValues(typeof (ETextureSet)))
 			{
 				switch (set)
 				{
@@ -57,7 +63,7 @@ namespace GameUi
 				}
 			}
 
-			foreach (ETiles tile in Enum.GetValues(typeof(ETiles)))
+			foreach (ETiles tile in Enum.GetValues(typeof (ETiles)))
 			{
 				ATile tl;
 				switch (tile)
@@ -160,7 +166,7 @@ namespace GameUi
 				m_tiles.Add(tile, tl);
 			}
 
-			foreach (EFrameTiles tile in Enum.GetValues(typeof(EFrameTiles)))
+			foreach (EFrameTiles tile in Enum.GetValues(typeof (EFrameTiles)))
 			{
 				ATile tl;
 				switch (tile)
@@ -214,11 +220,11 @@ namespace GameUi
 
 		public static ATile GetTile(this ETiles _tile, int _index)
 		{
-			var ts = (TileSet)m_tiles[_tile];
+			var ts = (TileSet) m_tiles[_tile];
 			return ts[_index];
 		}
 
-		private static void DrawAtPoint(this ATile _tile,int _x, int _y, Color _color)
+		private static void DrawAtPoint(this ATile _tile, int _x, int _y, Color _color)
 		{
 			if (_tile == null) return;
 			_tile.Draw(_x, _y, _color);
@@ -227,13 +233,13 @@ namespace GameUi
 		public static void DrawAtCell(this ATile _tile, int _col, int _row)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_col * ATile.Size, _row * ATile.Size, _tile.Color);
+			_tile.DrawAtPoint(_col*ATile.Size, _row*ATile.Size, _tile.Color);
 		}
 
 		public static void DrawAtCell(this ATile _tile, int _col, int _row, Color _color)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_col * ATile.Size, _row * ATile.Size, _color);
+			_tile.DrawAtPoint(_col*ATile.Size, _row*ATile.Size, _color);
 		}
 
 		public static void DrawAtPoint(this ETiles _tile, int _x, int _y, Color _color)
@@ -241,42 +247,42 @@ namespace GameUi
 			DrawAtPoint(m_tiles[_tile], _x, _y, _color);
 		}
 
-		public static void DrawAtCell(this ETiles _tile,int _col, int _row)
+		public static void DrawAtCell(this ETiles _tile, int _col, int _row)
 		{
 			DrawAtCell(m_tiles[_tile], _col, _row);
 		}
 
-		public static void DrawAtCell(this ETiles _tile,Point _point)
+		public static void DrawAtCell(this ETiles _tile, Point _point)
 		{
 			DrawAtCell(m_tiles[_tile], _point.X, _point.Y);
 		}
 
-		public static void DrawAtCell(this ETiles _tile,int _col, int _row, Color _color)
+		public static void DrawAtCell(this ETiles _tile, int _col, int _row, Color _color)
 		{
 			DrawAtCell(m_tiles[_tile], _col, _row, _color);
 		}
 
-		public static void DrawAtCell(this ETiles _tile,Point _point, Color _color)
+		public static void DrawAtCell(this ETiles _tile, Point _point, Color _color)
 		{
 			DrawAtCell(m_tiles[_tile], _point.X, _point.Y, _color);
 		}
 
-		public static void DrawAtPoint(this EFrameTiles _tile,int _x, int _y, Color _color)
+		public static void DrawAtPoint(this EFrameTiles _tile, int _x, int _y, Color _color)
 		{
 			DrawAtPoint(m_frameTiles[_tile], _x, _y, _color);
 		}
 
-		public static void DrawAtCell(this EFrameTiles _tile,int _col, int _row)
+		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row)
 		{
 			DrawAtCell(m_frameTiles[_tile], _col, _row);
 		}
 
-		public static void DrawAtCell(this EFrameTiles _tile,Point _point)
+		public static void DrawAtCell(this EFrameTiles _tile, Point _point)
 		{
 			DrawAtCell(m_frameTiles[_tile], _point.X, _point.Y);
 		}
 
-		public static void DrawAtCell(this EFrameTiles _tile,int _col, int _row, Color _color)
+		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row, Color _color)
 		{
 			DrawAtCell(m_frameTiles[_tile], _col, _row, _color);
 		}

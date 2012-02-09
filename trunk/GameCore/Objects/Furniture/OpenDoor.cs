@@ -5,19 +5,9 @@ using GameCore.Messages;
 
 namespace GameCore.Objects.Furniture
 {
-	public class OpenDoor : Thing, ICanbeClosed
+	internal class OpenDoor : Furniture, ICanbeClosed
 	{
-		private LockType m_lockType = LockType.SIMPLE;
-
-		public override EThingCategory Category
-		{
-			get { return EThingCategory.FURNITURE; }
-		}
-
-		public override float Opaque
-		{
-			get { return 0f; }
-		}
+		private ELockType m_eLockType = ELockType.SIMPLE;
 
 		public override ETiles Tile
 		{
@@ -33,17 +23,17 @@ namespace GameCore.Objects.Furniture
 
 		public EActResults Close(Creature _creature, MapCell _mapCell, bool _silence)
 		{
-			_mapCell.RemoveObjectFromBlock();
+			_mapCell.RemoveFurnitureFromBlock();
 			var door = new Door();
-			door.SetLockType(m_lockType);
+			door.SetLockType(m_eLockType);
 			_mapCell.AddObjectToBlock(door);
-			if (!_silence) MessageManager.SendMessage(this, Name + " закрыта.");
+			if (!_silence) MessageManager.SendMessage(this, this.GetName(_creature) + " закрыта.");
 			return EActResults.DONE;
 		}
 
-		public LockType LockType
+		public ELockType ELockType
 		{
-			get { return LockType.OPEN; }
+			get { return ELockType.OPEN; }
 		}
 
 		#endregion
@@ -52,9 +42,9 @@ namespace GameCore.Objects.Furniture
 		{
 		}
 
-		internal void SetLockType(LockType _lockType)
+		internal void SetLockType(ELockType _eLockType)
 		{
-			m_lockType = _lockType;
+			m_eLockType = _eLockType;
 		}
 	}
 }

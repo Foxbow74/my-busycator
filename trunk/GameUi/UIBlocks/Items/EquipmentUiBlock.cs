@@ -7,8 +7,6 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Objects;
 
-
-
 namespace GameUi.UIBlocks.Items
 {
 	internal class EquipmentUiBlock : UIBlock
@@ -41,24 +39,20 @@ namespace GameUi.UIBlocks.Items
 
 		public override void DrawContent()
 		{
-			
-
-			DrawLine("СНАРЯЖЕНИЕ", Color,0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color,2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color,2, 0, EAlignment.RIGHT);
+			DrawLine("СНАРЯЖЕНИЕ", Color, 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
 
 			var line = 4;
 			foreach (var linePresenter in m_presenters)
 			{
-				linePresenter.DrawLine(line++,this);
+				linePresenter.DrawLine(line++, this);
 			}
 
 			DrawLine(
 				"[A-" + m_presenters.Max(_presenter => _presenter.C) +
-				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", Color,TextLinesMax - 2, 20,
+				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", Color, TextLinesMax - 2, 20,
 				EAlignment.CENTER);
-
-			
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -113,21 +107,21 @@ namespace GameUi.UIBlocks.Items
 
 		#region ILinePresenter Members
 
-		public void DrawLine(int _line,UIBlock _uiBlock)
+		public void DrawLine(int _line, UIBlock _uiBlock)
 		{
-			_uiBlock.DrawLine(C.ToString(), Color.White,_line, 20, EAlignment.LEFT);
+			_uiBlock.DrawLine(C.ToString(), Color.White, _line, 20, EAlignment.LEFT);
 			var indent =
-				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray,_line, 40,
+				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray, _line, 40,
 				                  EAlignment.LEFT) + 2;
 			m_maxIndent = Math.Max(m_maxIndent, indent);
-			indent = _uiBlock.DrawLine(":", Color.DarkGray,_line, m_maxIndent, EAlignment.LEFT) + 5;
+			indent = _uiBlock.DrawLine(":", Color.DarkGray, _line, m_maxIndent, EAlignment.LEFT) + 5;
 			if (Item == null)
 			{
-				_uiBlock.DrawLine("-", Color.DarkGray,_line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine("-", Color.DarkGray, _line, indent, EAlignment.LEFT);
 			}
 			else
 			{
-				_uiBlock.DrawLine(Item.Name, Color.DarkGray,_line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine(Item.Name, Color.DarkGray, _line, indent, EAlignment.LEFT);
 			}
 		}
 

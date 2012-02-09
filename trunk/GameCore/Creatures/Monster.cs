@@ -1,5 +1,4 @@
 ﻿using GameCore.Acts.Movement;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 
@@ -7,7 +6,6 @@ namespace GameCore.Creatures
 {
 	public class Monster : Creature
 	{
-
 		public Monster(WorldLayer _layer, Point _coords)
 			: base(_layer, _coords, 100)
 		{

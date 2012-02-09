@@ -13,13 +13,18 @@ namespace GameUi.UIBlocks.Items
 		private readonly IEnumerable<EThingCategory> m_allowedCategories;
 
 		public BackpackUiBlock(Rectangle _rectangle)
-			: base(_rectangle, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
+			: base(
+				_rectangle, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null,
+				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
 		{
 			m_allowedCategories = new EThingCategory[0];
 		}
 
-		public BackpackUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior, IEnumerable<EThingCategory> _allowedCategory, Act _act)
-			: base(_rectangle, _behavior, _act, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.Thing.Name))
+		public BackpackUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior,
+		                       IEnumerable<EThingCategory> _allowedCategory, Act _act)
+			: base(
+				_rectangle, _behavior, _act,
+				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
 		{
 			m_allowedCategories = _allowedCategory ?? new EThingCategory[0];
 		}
@@ -36,9 +41,9 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", Color.White,0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color,2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color,2, 0, EAlignment.RIGHT);
+			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", Color.White, 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
 		}
 	}
 }

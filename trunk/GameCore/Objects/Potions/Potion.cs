@@ -1,5 +1,4 @@
-﻿using System;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
 
 namespace GameCore.Objects.Potions
 {

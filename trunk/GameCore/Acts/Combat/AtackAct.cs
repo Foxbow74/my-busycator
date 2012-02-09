@@ -7,7 +7,7 @@ using GameCore.Misc;
 
 namespace GameCore.Acts.Combat
 {
-	class AtackAct:Act
+	internal class AtackAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -37,14 +37,14 @@ namespace GameCore.Acts.Combat
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
 			var coords = GetParameter<Point>().FirstOrDefault();
-			if(coords==null)
+			if (coords == null)
 			{
 				throw new NotImplementedException();
 			}
 			var victim = _creature.MapBlock.Creatures.FirstOrDefault(_cr => _cr.Coords == coords);
-			if(victim==null)
+			if (victim == null)
 			{
-				_creature.AddActToPool(new MoveAct(), coords-_creature.Coords);
+				_creature.AddActToPool(new MoveAct(), coords - _creature.Coords);
 				return EActResults.NOTHING_HAPPENS;
 			}
 			return _creature.Atack(victim);

@@ -3,7 +3,7 @@ using GameCore.Mapping.Layers;
 
 namespace GameCore.Objects.Furniture
 {
-	class StairUp : Stair
+	internal class StairUp : Stair
 	{
 		public StairUp(WorldLayer _leadToLayer)
 		{
@@ -16,17 +16,12 @@ namespace GameCore.Objects.Furniture
 
 		public override ETiles Tile
 		{
-			get { return ETiles.STAIR_UP;}
+			get { return ETiles.STAIR_UP; }
 		}
 
 		public override string Name
 		{
 			get { return "лестница вверх"; }
-		}
-
-		public override EThingCategory Category
-		{
-			get { return EThingCategory.FURNITURE; }
 		}
 
 		public override void Resolve(Creature _creature)

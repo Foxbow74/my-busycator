@@ -1,28 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Collections.Generic;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Mapping;
-
-
 using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks
 {
-	class SelectTargetUiBlock:UIBlock
+	internal class SelectTargetUiBlock : UIBlock
 	{
-		private readonly Point m_center;
-		private int m_currentTarget;
-		private readonly int m_maxDistance;
 		private readonly Act m_act;
-		private readonly MapCell[,] m_mapCells;
-		private Point m_targetPoint;
 		private readonly Point m_addPoint;
-		readonly List<Point> m_targets =new List<Point>();
+		private readonly Point m_center;
+		private readonly MapCell[,] m_mapCells;
+		private readonly int m_maxDistance;
 		private readonly TurnMessageUiBlock m_messages;
+		private readonly List<Point> m_targets = new List<Point>();
+		private int m_currentTarget;
 		private Point m_realTarget;
+		private Point m_targetPoint;
 
 		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rectangle _mapRectangle, int _maxDistance, Act _act)
 			: base(_mapRectangle, null, Color.Gray)
@@ -31,10 +29,11 @@ namespace GameUi.UIBlocks
 			m_maxDistance = _maxDistance;
 			m_act = _act;
 			m_targetPoint = Point.Zero;
-			m_addPoint = new Point(ContentRectangle.Left + ContentRectangle.Width/2, ContentRectangle.Top + ContentRectangle.Height/2);
+			m_addPoint = new Point(ContentRectangle.Left + ContentRectangle.Width/2,
+			                       ContentRectangle.Top + ContentRectangle.Height/2);
 			m_center = new Point(m_maxDistance, m_maxDistance);
 
-			m_mapCells = new MapCell[m_maxDistance * 2 + 1, m_maxDistance * 2 + 1];
+			m_mapCells = new MapCell[m_maxDistance*2 + 1,m_maxDistance*2 + 1];
 			World.TheWorld.Avatar.Layer.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
 
 			var points = new List<Point>();
@@ -42,7 +41,7 @@ namespace GameUi.UIBlocks
 			{
 				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
 				{
-					if(m_mapCells[x, y].Creature!=null)
+					if (m_mapCells[x, y].Creature != null)
 					{
 						points.Add(new Point(x - m_center.X, y - m_center.Y));
 					}
@@ -61,7 +60,7 @@ namespace GameUi.UIBlocks
 				if (ContentRectangle.Contains(newPoint.X, newPoint.Y))
 				{
 					m_targetPoint += dPoint;
-					if(m_targetPoint.Lenght>m_maxDistance)
+					if (m_targetPoint.Lenght > m_maxDistance)
 					{
 						m_targetPoint *= m_maxDistance/m_targetPoint.Lenght;
 					}
@@ -75,7 +74,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					break;
 				case ConsoleKey.OemPlus:
-					if(_modifiers!=EKeyModifiers.SHIFT) return;
+					if (_modifiers != EKeyModifiers.SHIFT) return;
 					m_currentTarget++;
 					SelectTargetFromList();
 					break;
@@ -102,8 +101,8 @@ namespace GameUi.UIBlocks
 
 		private void SelectTargetFromList()
 		{
-			if (m_targets.Count==0) return;
-			m_currentTarget = (m_currentTarget + m_targets.Count) % m_targets.Count;
+			if (m_targets.Count == 0) return;
+			m_currentTarget = (m_currentTarget + m_targets.Count)%m_targets.Count;
 			m_targetPoint = m_targets[m_currentTarget];
 		}
 
@@ -113,14 +112,14 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> { "[Enter|T] цель", "[z|Esc] - выход" };
+			var strings = new List<string> {"[Enter|T] цель", "[z|Esc] - выход"};
 			if (m_targets.Count > 0)
 			{
 				strings.Insert(1, "[-] - предыдущая цель");
 				strings.Insert(1, "[+] - следующая цель");
 			}
 
-			m_messages.DrawLine(JoinCommandCaptions(strings), Color.White,0, 0, EAlignment.LEFT);
+			m_messages.DrawLine(JoinCommandCaptions(strings), Color.White, 0, 0, EAlignment.LEFT);
 
 			var pnt = Point.Zero;
 			var done = false;
@@ -146,7 +145,6 @@ namespace GameUi.UIBlocks
 			}
 			ETiles.TARGET_CROSS.DrawAtCell(pnt + m_addPoint, Color.Gold);
 			m_realTarget = pnt;
-			
 		}
 	}
 }

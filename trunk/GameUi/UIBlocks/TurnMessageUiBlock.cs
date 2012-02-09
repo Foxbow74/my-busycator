@@ -55,7 +55,7 @@ namespace GameUi.UIBlocks
 		public override void DrawContent()
 		{
 			if (m_lines.Count == 0) return;
-			
+
 			var lineNumber = 0;
 			var max = Math.Min(TextLinesMax, m_lines.Count);
 			var fromLine = m_linesShown;
@@ -66,7 +66,6 @@ namespace GameUi.UIBlocks
 				DrawLine(textLine, Color, lineNumber++, 0, EAlignment.JUSTIFY);
 			}
 			m_visibleTill = max;
-			
 		}
 	}
 }

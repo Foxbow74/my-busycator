@@ -6,12 +6,9 @@ namespace GameCore
 {
 	public enum EMapBlockTypes
 	{
-		[MapBlockType("ничто")]
-		NONE,
-		[MapBlockType("суша")]
-		GROUND,
-		[MapBlockType("море")]
-		SEA,
+		[MapBlockType("ничто")] NONE,
+		[MapBlockType("суша")] GROUND,
+		[MapBlockType("море")] SEA,
 	}
 
 	public class MapBlockTypeAttribute : Attribute
