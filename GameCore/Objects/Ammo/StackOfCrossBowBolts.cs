@@ -1,13 +1,10 @@
 namespace GameCore.Objects.Ammo
 {
-	class StackOfCrossBowBolts:StackOfAmmo
+	internal class StackOfCrossBowBolts : StackOfAmmo
 	{
 		public override ETiles Tile
 		{
-			get
-			{
-				return ETiles.CROSSBOW_BOLT;
-			}
+			get { return ETiles.CROSSBOW_BOLT; }
 		}
 
 		protected override string NameOfSingle

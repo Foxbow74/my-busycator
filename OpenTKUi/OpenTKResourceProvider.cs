@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using GameUi;
-using Image = OpenTKUi.Image;
 
 namespace OpenTKUi
 {
@@ -28,6 +27,18 @@ namespace OpenTKUi
 			get { return m_fonts[_font]; }
 		}
 
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			foreach (var image in m_surfaces.Values)
+			{
+				image.Dispose();
+			}
+		}
+
+		#endregion
+
 		#region IResourceProvider Members
 
 		public void RegisterTexture(ETextureSet _eTextureSet, string _fileName)
@@ -52,13 +63,5 @@ namespace OpenTKUi
 		}
 
 		#endregion
-
-		public void Dispose()
-		{
-			foreach (var image in m_surfaces.Values)
-			{
-				image.Dispose();
-			}
-		}
 	}
 }

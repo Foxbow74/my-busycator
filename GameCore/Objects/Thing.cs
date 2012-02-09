@@ -7,9 +7,9 @@ namespace GameCore.Objects
 		public abstract ETiles Tile { get; }
 		public abstract string Name { get; }
 
-		public virtual float Opaque
+		public virtual float Opacity
 		{
-			get { return 1; }
+			get { return TilesAttribute.GetAttribute(Tile).Opacity; }
 		}
 
 		public abstract EThingCategory Category { get; }
@@ -20,7 +20,7 @@ namespace GameCore.Objects
 		}
 
 		/// <summary>
-		/// Заполнить параметры вещи, происходит один раз
+		/// 	Заполнить параметры вещи, происходит один раз
 		/// </summary>
 		/// <param name = "_creature"></param>
 		public abstract void Resolve(Creature _creature);

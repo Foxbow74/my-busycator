@@ -50,7 +50,7 @@ namespace GameCore.Objects
 			}
 			else if (have is StackOfItems)
 			{
-				((StackOfItems)have).Add((StackOfItems)_item);
+				((StackOfItems) have).Add((StackOfItems) _item);
 			}
 			else if (have is Stacked)
 			{
@@ -72,8 +72,8 @@ namespace GameCore.Objects
 			}
 			if (have is Stacked)
 			{
-				((Stacked)have).Count--;
-				if (((Stacked)have).Count == 0)
+				((Stacked) have).Count--;
+				if (((Stacked) have).Count == 0)
 				{
 					m_items.Remove(have);
 				}
@@ -84,7 +84,7 @@ namespace GameCore.Objects
 			}
 		}
 
-		#region Nested type: StackOfItems
+		#region Nested type: Stacked
 
 		private class Stacked : Item, ISpecial
 		{

@@ -42,7 +42,7 @@ namespace GameUi.UIBlocks
 		public override void DrawContent()
 		{
 			if (m_lines.Count == 0) return;
-			
+
 			var lineNumber = 0;
 			var max = TextLinesMax;
 			//var fromLine = Math.Max(m_lines.Count - max,0);
@@ -51,9 +51,8 @@ namespace GameUi.UIBlocks
 			{
 				var textLine = m_lines[index];
 				if (lineNumber > TextLinesMax) break;
-				DrawLine(textLine, Color,lineNumber++, 0, EAlignment.JUSTIFY);
+				DrawLine(textLine, Color, lineNumber++, 0, EAlignment.JUSTIFY);
 			}
-			
 		}
 	}
 }

@@ -2,8 +2,8 @@ using GameCore.Mapping.Layers;
 
 namespace GameCore.Objects.Furniture
 {
-	abstract class Stair : Thing
+	internal abstract class Stair : Furniture
 	{
-		public WorldLayer LeadToLayer { get; protected  set; }
+		public WorldLayer LeadToLayer { get; protected set; }
 	}
 }

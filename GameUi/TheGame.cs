@@ -10,10 +10,10 @@ namespace GameUi
 {
 	public class TheGame
 	{
-		private readonly IGameProvider m_gameProvider;
 		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
 		private const int AUTO_MOVE_REPEAT_AFTER = 200;
 		private readonly List<ConsoleKey> m_downKeys = new List<ConsoleKey>();
+		private readonly IGameProvider m_gameProvider;
 
 		private readonly Queue<Tuple<ConsoleKey, EKeyModifiers>> m_pressed = new Queue<Tuple<ConsoleKey, EKeyModifiers>>();
 		private readonly Stack<UIBlock> m_uiBlocks = new Stack<UIBlock>();
@@ -23,6 +23,7 @@ namespace GameUi
 
 		private MainBlock m_mainBlock;
 		private DateTime m_moveKeyHoldedSince;
+		private int m_needRedraws = 2;
 
 		public TheGame(IGameProvider _gameProvider)
 		{
@@ -81,26 +82,38 @@ namespace GameUi
 			}
 			else if (_message is AskSelectThingsMessage)
 			{
-				var mess = (AskSelectThingsMessage)_message;
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors, mess.Act, mess.Behavior)));
+				var mess = (AskSelectThingsMessage) _message;
+				MessageManager.SendMessage(this,
+				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors,
+				                                                                         mess.Act, mess.Behavior)));
 			}
 			else if (_message is AskSelectThingsFromBackPackMessage)
 			{
-				var mess = (AskSelectThingsFromBackPackMessage)_message;
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior, mess.AllowedCategory, mess.Act)));
+				var mess = (AskSelectThingsFromBackPackMessage) _message;
+				MessageManager.SendMessage(this,
+				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior,
+				                                                                      mess.AllowedCategory, mess.Act)));
 			}
 			else if (_message is AskDirectionMessage)
 			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainBlock.Rectangle, (AskDirectionMessage) _message)));
+				MessageManager.SendMessage(this,
+				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainBlock.Rectangle,
+				                                                                          (AskDirectionMessage) _message)));
 			}
 			else if (_message is AskHowMuchMessage)
 			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle, (AskHowMuchMessage) _message)));
+				MessageManager.SendMessage(this,
+				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle,
+				                                                                        (AskHowMuchMessage) _message)));
 			}
 			else if (_message is AskShootTargerMessage)
 			{
-				var askShootTargerMessage = (AskShootTargerMessage)_message;
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainBlock.Messages, m_mainBlock.Map.Rectangle, askShootTargerMessage.MaxDistance, askShootTargerMessage.Act)));
+				var askShootTargerMessage = (AskShootTargerMessage) _message;
+				MessageManager.SendMessage(this,
+				                           new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainBlock.Messages,
+				                                                                          m_mainBlock.Map.Rectangle,
+				                                                                          askShootTargerMessage.MaxDistance,
+				                                                                          askShootTargerMessage.Act)));
 			}
 		}
 
@@ -120,7 +133,6 @@ namespace GameUi
 		{
 		}
 
-		private int m_needRedraws = 2;
 		public void Update(KeyState _keyState)
 		{
 			var keyModifiers = _keyState.KeyModifiers;
@@ -203,7 +215,6 @@ namespace GameUi
 		{
 			if (m_needRedraws < 1) return;
 			m_needRedraws--;
-			if (!m_gameProvider.IsActive) return;
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{

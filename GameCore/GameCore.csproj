@@ -78,12 +78,14 @@
     <Compile Include="Objects\Ammo\StackOfCrossBowBolts.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\EThingCategory.cs" />
-    <Compile Include="Objects\Furniture\Heap.cs" />
+    <Compile Include="Objects\FakedItem.cs" />
+    <Compile Include="Objects\Furniture\Furniture.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\Furniture\Stair.cs" />
     <Compile Include="Objects\Furniture\StairDown.cs" />
     <Compile Include="Objects\Furniture\StairUp.cs" />
     <Compile Include="Objects\ICanbeOpened.cs" />
+    <Compile Include="Objects\IFaked.cs" />
     <Compile Include="Objects\ISpecial.cs" />
     <Compile Include="Objects\Rings\Ring.cs" />
     <Compile Include="Objects\Potions\Potion.cs" />
@@ -101,7 +103,7 @@
     <Compile Include="Messages\SimpleTextMessage.cs" />
     <Compile Include="Messages\WorldMessage.cs" />
     <Compile Include="Objects\Furniture\Chest.cs" />
-    <Compile Include="Objects\Container.cs" />
+    <Compile Include="Objects\Furniture\Container.cs" />
     <Compile Include="Objects\Furniture\Door.cs" />
     <Compile Include="Objects\FakeThing.cs" />
     <Compile Include="Objects\Item.cs" />
@@ -113,7 +115,7 @@
     <Compile Include="Objects\Weapons\Weapon.cs" />
     <Compile Include="Misc\Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Objects\Objects.cs" />
+    <Compile Include="Objects\Thing.cs" />
     <Compile Include="ETerrains.cs" />
     <Compile Include="ETiles.cs" />
     <Compile Include="Misc\Util.cs" />

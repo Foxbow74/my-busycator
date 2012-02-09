@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
+using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -11,20 +12,18 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Thing
 	{
-		public WorldLayer Layer { get; private set; }
-
 		private static int m_n;
-		public int Nn { get; private set; }
 
 		protected static Random Rnd = new Random(1);
-
-		private Point m_coords;
-		private Point m_inBlock;
 
 		/// <summary>
 		/// 	Кидает ли существо сообщения в лог (true для аватара)
 		/// </summary>
 		protected bool Silence = true;
+
+		private Point m_blockId;
+		private Point m_coords;
+		private WorldLayer m_layer;
 
 		protected Creature(WorldLayer _layer, Point _coords, int _speed)
 		{
@@ -32,13 +31,10 @@ namespace GameCore.Creatures
 			Luck = 25;
 			Coords = _coords;
 			Nn = m_n++;
-			Layer = _layer;
+			m_layer = _layer;
 		}
 
-		public override float Opaque
-		{
-			get { return 0.3f; }
-		}
+		public int Nn { get; private set; }
 
 		/// <summary>
 		/// 	Ход в игре с точки зрения существа
@@ -59,19 +55,45 @@ namespace GameCore.Creatures
 			get { return m_coords; }
 			set
 			{
-				var newCoords = MapBlock.GetBlockCoords(value);
-				if (newCoords != m_inBlock)
+				var newBlockId = MapBlock.GetBlockCoords(value);
+				if (newBlockId != m_blockId && m_blockId != null)
 				{
-					if (!(this is Avatar) && m_inBlock != null)
-					{
-						Layer.MoveCreature(this, m_inBlock, newCoords);
-					}
-					m_inBlock = newCoords;
+					Layer.MoveCreature(this, m_blockId, newBlockId);
 				}
-
+				m_blockId = newBlockId;
 				m_coords = value;
+
+				if (IsAvatar)
+				{
+					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+				}
 			}
 		}
+
+		public WorldLayer Layer
+		{
+			get { return m_layer; }
+			set
+			{
+				if (m_layer == value)
+				{
+					throw new ApplicationException("Лишнее действие");
+				}
+				if (m_layer != null)
+				{
+					m_layer.RemoveCreature(this);
+					value.AddCreature(this);
+				}
+
+				m_layer = value;
+
+				if (IsAvatar)
+				{
+					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+				}
+			}
+		}
+
 
 		/// <summary>
 		/// 	Время до которого существо будет выполнять текущее действие
@@ -80,14 +102,14 @@ namespace GameCore.Creatures
 
 		public double GetLuckRandom
 		{
-			get { return Luck * World.Rnd.NextDouble() /100.0; }
+			get { return Luck*World.Rnd.NextDouble()/100.0; }
 		}
 
 		public int Luck { get; protected set; }
 
 		public MapBlock MapBlock
 		{
-			get { return Layer[m_inBlock]; }
+			get { return Layer[m_blockId]; }
 		}
 
 		public MapCell MapCell
@@ -117,6 +139,11 @@ namespace GameCore.Creatures
 		}
 
 		public EActResults ActResult { get; protected set; }
+
+		public bool IsAvatar
+		{
+			get { return World.TheWorld.Avatar == this; }
+		}
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{
@@ -179,7 +206,7 @@ namespace GameCore.Creatures
 			{
 				points = points.Intersect(_intersect);
 			}
-			return points.Select(Layer.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItems(this));
+			return points.Select(Layer.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors(this));
 		}
 
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
@@ -189,7 +216,7 @@ namespace GameCore.Creatures
 
 		protected override int CalcHashCode()
 		{
-			return base.CalcHashCode()^Nn;
+			return base.CalcHashCode() ^ Nn;
 		}
 
 		public virtual EActResults Atack(Creature _victim)
@@ -203,7 +230,7 @@ namespace GameCore.Creatures
 	{
 		NORMAL,
 		/// <summary>
-		/// Существо самоуничтожилось
+		/// 	Существо самоуничтожилось
 		/// </summary>
 		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}

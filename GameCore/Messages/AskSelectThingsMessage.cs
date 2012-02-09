@@ -20,7 +20,8 @@ namespace GameCore.Messages
 
 	public class AskSelectThingsFromBackPackMessage : AskMessage
 	{
-		public AskSelectThingsFromBackPackMessage(Act _act, ESelectItemDialogBehavior _behavior, IEnumerable<EThingCategory> _allowedCategory)
+		public AskSelectThingsFromBackPackMessage(Act _act, ESelectItemDialogBehavior _behavior,
+		                                          IEnumerable<EThingCategory> _allowedCategory)
 			: base(_act)
 		{
 			Behavior = _behavior;

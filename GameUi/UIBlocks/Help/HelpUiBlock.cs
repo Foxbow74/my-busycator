@@ -3,8 +3,6 @@ using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 
-
-
 namespace GameUi.UIBlocks.Help
 {
 	internal class HelpUiBlock : UIBlock
@@ -30,15 +28,13 @@ namespace GameUi.UIBlocks.Help
 
 		public override void DrawContent()
 		{
-			
 			const int indent = 20;
 			var line = 1;
-			DrawLine("a. Привязка клавишь", Color,line++, indent, EAlignment.LEFT);
-			DrawLine("b. Предметы", Color,line++, indent, EAlignment.LEFT);
-			DrawLine("с. Классы", Color,line++, indent, EAlignment.LEFT);
-			DrawLine("d. Рассы", Color,line++, indent, EAlignment.LEFT);
-			DrawLine("[z|Esc] - выход", Color,TextLinesMax - 2, indent, EAlignment.RIGHT);
-			
+			DrawLine("a. Привязка клавишь", Color, line++, indent, EAlignment.LEFT);
+			DrawLine("b. Предметы", Color, line++, indent, EAlignment.LEFT);
+			DrawLine("с. Классы", Color, line++, indent, EAlignment.LEFT);
+			DrawLine("d. Рассы", Color, line++, indent, EAlignment.LEFT);
+			DrawLine("[z|Esc] - выход", Color, TextLinesMax - 2, indent, EAlignment.RIGHT);
 		}
 	}
 }

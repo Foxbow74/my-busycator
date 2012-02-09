@@ -3,8 +3,6 @@ using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 
-
-
 namespace GameUi.UIBlocks
 {
 	internal class AskDirectionUiBlock : UIBlock
@@ -36,9 +34,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			
-			DrawLine("Выбери направление:", Color,0, 0, EAlignment.LEFT);
-			
+			DrawLine("Выбери направление:", Color, 0, 0, EAlignment.LEFT);
 		}
 	}
 }

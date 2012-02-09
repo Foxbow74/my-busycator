@@ -38,12 +38,13 @@
   <ItemGroup>
     <Compile Include="EAlignment.cs" />
     <Compile Include="EFonts.cs" />
+    <Compile Include="EFrameTiles.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="AGame.cs" />
     <Compile Include="IDrawHelper.cs" />
     <Compile Include="IResourceProvider.cs" />
+    <Compile Include="KeyState.cs" />
     <Compile Include="Messages\TextMessage.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextPortion.cs" />
     <Compile Include="TheGame.cs" />
@@ -57,7 +58,6 @@
     <Compile Include="UIBlocks\Help\HelpKeyBindingUiBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpUiBlock.cs" />
     <Compile Include="UIBlocks\Items\BackpackUiBlock.cs" />
-    <Compile Include="UIBlocks\Items\ContainerPresenter.cs" />
     <Compile Include="UIBlocks\Items\EquipmentUiBlock.cs" />
     <Compile Include="UIBlocks\Items\ILinePresenter.cs" />
     <Compile Include="UIBlocks\Items\ItemsSelectorUiBlock.cs" />

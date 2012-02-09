@@ -7,16 +7,10 @@ using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Objects;
 
-
-
 namespace GameUi.UIBlocks.Items
 {
 	internal abstract class ItemsSelectorUiBlock : UIBlock
 	{
-		#region EBehavior enum
-
-		#endregion
-
 		private readonly Act m_act;
 		private readonly ESelectItemDialogBehavior m_behavior;
 		private readonly IEnumerable<ThingDescriptor> m_descriptors;
@@ -101,8 +95,6 @@ namespace GameUi.UIBlocks.Items
 
 		public override void DrawContent()
 		{
-			
-
 			if (m_pages == null)
 			{
 				m_pages = new Dictionary<int, List<ILinePresenter>>();
@@ -131,7 +123,7 @@ namespace GameUi.UIBlocks.Items
 						var attribute = ThingCategoryAttribute.GetAttribute(category);
 						m_filters[new Tuple<ConsoleKey, EKeyModifiers>(attribute.Key, attribute.Modifiers)] = category;
 					}
-					presenter.DrawLine(line++,this);
+					presenter.DrawLine(line++, this);
 				}
 				if ((m_behavior & ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER) == ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER)
 				{
@@ -144,11 +136,9 @@ namespace GameUi.UIBlocks.Items
 			}
 			else
 			{
-				DrawLine("(ничего нет)", Color.White,line, 0, EAlignment.CENTER);
+				DrawLine("(ничего нет)", Color.White, line, 0, EAlignment.CENTER);
 			}
-			DrawLine(JoinCommandCaptions(bottomString), Color,TextLinesMax - 2, 0, EAlignment.CENTER);
-
-			
+			DrawLine(JoinCommandCaptions(bottomString), Color, TextLinesMax - 2, 0, EAlignment.CENTER);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

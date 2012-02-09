@@ -3,10 +3,9 @@ using System.Drawing;
 using GameCore;
 using GameCore.Misc;
 
-
 namespace GameUi.UIBlocks
 {
-	class MiniMapUiBlock:UIBlock
+	internal class MiniMapUiBlock : UIBlock
 	{
 		public MiniMapUiBlock(Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.White, EFonts.COMMON)
 		{
@@ -28,11 +27,12 @@ namespace GameUi.UIBlocks
 			var map = World.TheWorld.Surface.WorldMap;
 			var size = new Vector2(map.GetLength(0), map.GetLength(1));
 
-			var halfSize = new Vector2(size.X / 2, size.Y / 2);
+			var halfSize = new Vector2(size.X/2, size.Y/2);
 
-			var rsz = Math.Min(ContentRectangle.Width * ATile.Size / size.X, ContentRectangle.Height * ATile.Size / size.Y);
+			var rsz = Math.Min(ContentRectangle.Width*ATile.Size/size.X, ContentRectangle.Height*ATile.Size/size.Y);
 			var rectSize = new Vector2(rsz, rsz);
-			var halfContentRect = new Vector2(ContentRectangle.Left * ATile.Size + ContentRectangle.Width * ATile.Size / 2, ContentRectangle.Top * ATile.Size + ContentRectangle.Height * ATile.Size / 2);
+			var halfContentRect = new Vector2(ContentRectangle.Left*ATile.Size + ContentRectangle.Width*ATile.Size/2,
+			                                  ContentRectangle.Top*ATile.Size + ContentRectangle.Height*ATile.Size/2);
 
 			for (var i = 0; i < size.X; ++i)
 			{
@@ -56,16 +56,15 @@ namespace GameUi.UIBlocks
 							throw new ArgumentOutOfRangeException();
 					}
 					var rect = new Rectangle(
-						(int)Math.Round(halfContentRect.X + pnt.X * rectSize.X),
-						(int)Math.Round(halfContentRect.Y + pnt.Y * rectSize.Y),
-						(int)Math.Round(rectSize.X),
-						(int)Math.Round(rectSize.Y));
+						(int) Math.Round(halfContentRect.X + pnt.X*rectSize.X),
+						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
+						(int) Math.Round(rectSize.X),
+						(int) Math.Round(rectSize.Y));
 					DrawHelper.Clear(rect, color);
 				}
 
 				DrawLine("[z|Esc] - выход", Color, TextLinesMax - 1, 21, EAlignment.RIGHT);
 			}
-			
 		}
 	}
 }

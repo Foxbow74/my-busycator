@@ -91,14 +91,22 @@ namespace OpenTKUi
 			GL.End();
 		}
 
-		public struct Vertex
-		{
-			public float X, Y;
-		}
+		#region Nested type: TexCoord
 
 		public struct TexCoord
 		{
 			public float U, V;
 		}
+
+		#endregion
+
+		#region Nested type: Vertex
+
+		public struct Vertex
+		{
+			public float X, Y;
+		}
+
+		#endregion
 	}
 }

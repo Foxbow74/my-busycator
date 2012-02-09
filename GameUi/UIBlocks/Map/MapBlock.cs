@@ -5,8 +5,6 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 
-
-
 namespace GameUi.UIBlocks.Map
 {
 	internal partial class MapBlock : UIBlock
@@ -49,7 +47,6 @@ namespace GameUi.UIBlocks.Map
 			DrawFoggedCells();
 
 			World.TheWorld.Avatar.Tile.DrawAtCell(centerX + ContentRectangle.Left, centerY + ContentRectangle.Top);
-			
 		}
 
 		private void DrawVisibleCells(int _centerX, int _centerY)
@@ -60,30 +57,30 @@ namespace GameUi.UIBlocks.Map
 			{
 				var pnt = tuple.Key;
 				var mapCell = m_mapCells[pnt.X, pnt.Y];
-				var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 				var visibility = (float) tuple.Value;
-				var color = tile.Color.Multiply(visibility * 1.1f);
-				//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
-				if (mapCell.Thing != null)
+				ATile tile;
+				var creature = mapCell.Creature;
+				if (creature != null)
 				{
-					tile = mapCell.Thing.Tile.GetTile();
-					color = tile.Color.Multiply(visibility * 1.1f);
-					//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+					tile = creature.Tile.GetTile();
 				}
+				else
+				{
+					var items = mapCell.Items.ToArray();
+					if (items.Length > 0)
+					{
+						tile = items.Length == 1 ? items[0].Tile.GetTile() : ETiles.HEAP_OF_ITEMS.GetTile();
+					}
+					else
+					{
+						var furniture = mapCell.Furniture;
 
-				if (mapCell.Creature != null)
-				{
-					tile = mapCell.Creature.Tile.GetTile();
-					color = tile.Color.Multiply(visibility * 1.1f);
-					//tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
-					//if (mapCell.Creature is Monster)
-					//{
-					//    _spriteBatch.DrawString(Fonts.SmallFont, ((Monster) mapCell.Creature).NN,
-					//                            new Vector2(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top)*ATile.Size,
-					//                            Color.White);
-					//}
+						if (furniture != null) tile = furniture.Tile.GetTile();
+						else tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+					}
 				}
+				var color = tile.Color.Multiply(visibility*1.1f);
 				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
 				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();

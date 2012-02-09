@@ -76,6 +76,7 @@ namespace GameCore.Misc
 		{
 			return X ^ (Y << 16);
 		}
+
 		public IEnumerable<Point> GetLineToPoints(Point _point)
 		{
 			double lx = Math.Abs(_point.X - X);
@@ -84,26 +85,27 @@ namespace GameCore.Misc
 			var max = Math.Max(lx, ly);
 
 			double dx = Math.Sign(_point.X - X);
-			double dy = Math.Sign(_point.Y - Y); ;
+			double dy = Math.Sign(_point.Y - Y);
+			;
 
 			double x = X;
 			double y = Y;
 
 			if (lx > ly)
 			{
-				dy *= ly / lx;
+				dy *= ly/lx;
 			}
 			else if ((lx < ly))
 			{
-				dx *= lx / ly;
+				dx *= lx/ly;
 			}
 
 			yield return this;
-			for(var i = 0;i<max;++i)
+			for (var i = 0; i < max; ++i)
 			{
 				x += dx;
 				y += dy;
-				yield return new Point((int)Math.Round(x), (int)Math.Round(y));
+				yield return new Point((int) Math.Round(x), (int) Math.Round(y));
 			}
 		}
 
@@ -122,7 +124,7 @@ namespace GameCore.Misc
 			}
 			else
 			{
-				nearestPoint = distanceAlongLine * lineVector;
+				nearestPoint = distanceAlongLine*lineVector;
 			}
 
 			return Vector2.Distance(nearestPoint, myVector);
@@ -142,12 +144,12 @@ namespace GameCore.Misc
 
 		public static Point operator *(Point _a, double _c)
 		{
-			return new Point((int)Math.Round(_a.X * _c), (int)Math.Round(_a.Y * _c));
+			return new Point((int) Math.Round(_a.X*_c), (int) Math.Round(_a.Y*_c));
 		}
 
 		public static Point operator /(Point _a, double _c)
 		{
-			return new Point((int)Math.Round(_a.X / _c + 0.5), (int)Math.Round(_a.Y / _c + 0.5));
+			return new Point((int) Math.Round(_a.X/_c + 0.5), (int) Math.Round(_a.Y/_c + 0.5));
 		}
 
 		public static bool operator ==(Point _a, Point _b)

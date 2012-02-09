@@ -29,15 +29,6 @@ namespace GameCore.Mapping
 			Block = _block;
 			WorldCoords = _worldCoords;
 			Terrain = _block.Map[_inBlockCoords.X, _inBlockCoords.Y];
-
-			if (_block.CreaturesExists)
-			{
-				var creature = _block.Creatures.FirstOrDefault(_creature => _creature.Coords == _worldCoords);
-				if (creature != null)
-				{
-					Creature = creature;
-				}
-			}
 		}
 
 		public Point WorldCoords { get; private set; }
@@ -49,49 +40,47 @@ namespace GameCore.Mapping
 
 		public ETerrains Terrain { get; private set; }
 
-		public Thing Thing
+		public Thing Furniture
 		{
 			get
 			{
 				if (!Block.IsObjectsExists) return null;
-				var tuples = Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).ToArray();
-				if (!tuples.Any())
+				var tuple = Block.Objects.FirstOrDefault(_tuple => _tuple.Item2 == m_inBlockCoords && _tuple.Item1.IsFurniture());
+				if (tuple == null)
 				{
 					return null;
 				}
-				if (tuples.Length == 1)
+				return tuple.Item1;
+			}
+		}
+
+		public IEnumerable<Item> Items
+		{
+			get
+			{
+				if (!Block.IsObjectsExists) yield break;
+				var items =
+					Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).Select(_tuple => _tuple.Item1).OfType<Item>().
+						ToArray();
+				foreach (var item in items)
 				{
-					return tuples[0].Item1;
-				}
-				else
-				{
-					return new Heap(Block, m_inBlockCoords);
+					yield return item;
 				}
 			}
 		}
 
-		public Creature Creature { get; private set; }
+		public Creature Creature
+		{
+			get
+			{
+				if (!Block.CreaturesExists) return null;
+				return Block.Creatures.FirstOrDefault(_creature => _creature.Coords.Equals(WorldCoords));
+			}
+		}
 
 		public int BlockRandomSeed
 		{
 			get { return Block.RandomSeed; }
-		}
-
-		public float GetIsPassable(Creature _creature)
-		{
-			if (Creature != null) return 0f;
-			if (Thing != null)
-			{
-				if (Thing.IsDoor(this, _creature) && Thing.CanBeOpened(this, _creature))
-				{
-					return 0f;
-				}
-			}
-			if(_creature is Missile)
-			{
-				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
-			}
-			return TerrainAttribute.IsPassable;
 		}
 
 		public TerrainAttribute TerrainAttribute
@@ -104,25 +93,25 @@ namespace GameCore.Mapping
 
 		public bool IsVisibleNow { get; set; }
 
-		public float Opaque
+		public float Opacity
 		{
 			get
 			{
 				var attr = TerrainAttribute;
-				if(attr.Opaque>0)
+				var opacity = attr.Opacity;
+				if (opacity < 1 && Furniture != null)
 				{
-					
+					opacity += Furniture.Opacity;
 				}
-				var opaque = attr.Opaque;
-				if (opaque < 1 && Thing != null)
+				if (opacity < 1 && Creature != null)
 				{
-					opaque = Math.Max(opaque, Thing.Opaque);
+					opacity += Creature.Opacity;
 				}
-				if (opaque < 1 && Creature != null)
+				if (opacity < 1)
 				{
-					opaque = Math.Max(opaque, Creature.Opaque);
+					opacity += Items.Sum(_item => _item.Opacity);
 				}
-				return opaque;
+				return opacity;
 			}
 		}
 
@@ -131,18 +120,48 @@ namespace GameCore.Mapping
 			get { return TerrainAttribute.IsCanShootThrough; }
 		}
 
-		public Thing ResolveFakeItem(Creature _creature)
+		public float GetIsPassableBy(Creature _creature)
 		{
-			var o = ((IFaked) Thing).ResolveFake(_creature);
-			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
-			Block.AddObject(m_inBlockCoords, o);
-			return o;
+			if (Creature != null) return 0f;
+			if (Furniture != null)
+			{
+				if (Furniture.IsDoor(this, _creature) && Furniture.IsClosed(this, _creature))
+				{
+					return 0f;
+				}
+			}
+			if (_creature is Missile)
+			{
+				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
+			}
+			return TerrainAttribute.IsPassable;
 		}
 
-		public void RemoveObjectFromBlock()
+		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
-			if (Thing == null) throw new ArgumentNullException();
-			Block.Objects.Remove(new Tuple<Thing, Point>(Thing, m_inBlockCoords));
+			var item = (Item) _fakeItem.ResolveFake(_creature);
+			Block.Objects.Remove(new Tuple<Thing, Point>(_fakeItem, m_inBlockCoords));
+			Block.AddObject(m_inBlockCoords, item);
+			return item;
+		}
+
+		public Furniture ResolveFakeFurniture(Creature _creature, FakedThing _fakeFurniture)
+		{
+			var furniture = (Furniture) _fakeFurniture.ResolveFake(_creature);
+			Block.Objects.Remove(new Tuple<Thing, Point>(_fakeFurniture, m_inBlockCoords));
+			Block.AddObject(m_inBlockCoords, furniture);
+			return furniture;
+		}
+
+		public void RemoveFurnitureFromBlock()
+		{
+			if (Furniture == null) throw new ArgumentNullException();
+			Block.Objects.Remove(new Tuple<Thing, Point>(Furniture, m_inBlockCoords));
+		}
+
+		public void RemoveItemFromBlock(Item _item)
+		{
+			Block.Objects.Remove(new Tuple<Thing, Point>(_item, m_inBlockCoords));
 		}
 
 		public void AddObjectToBlock(Thing _thing)
@@ -150,23 +169,19 @@ namespace GameCore.Mapping
 			Block.AddObject(m_inBlockCoords, _thing);
 		}
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItems(Creature _creature)
+		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors(Creature _creature)
 		{
-			if (Thing == null) yield break;
-			if (Thing.IsItem(this, _creature))
+			foreach (var item in Items)
 			{
-				if (Thing is IFaked)
-				{
-					ResolveFakeItem(_creature);
-				}
-				yield return new ThingDescriptor(Thing, WorldCoords, null);
+				yield return new ThingDescriptor(item, WorldCoords, null);
 			}
-			if (Thing is Container && !Thing.CanBeOpened(this, _creature))
+			var furniture = Furniture as Container;
+			if (furniture != null && !furniture.IsClosed(this, _creature))
 			{
-				var container = (Container) Thing;
-				foreach (var item in container.GetItems(_creature).Items)
+				var inside = furniture.GetItems(_creature).Items.Select(_item => new ThingDescriptor(_item, WorldCoords, furniture));
+				foreach (var thingDescriptor in inside)
 				{
-					yield return new ThingDescriptor(item, WorldCoords, container);
+					yield return thingDescriptor;
 				}
 			}
 		}

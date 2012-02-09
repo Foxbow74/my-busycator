@@ -4,8 +4,6 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Objects;
 
-
-
 namespace GameUi.UIBlocks.Items
 {
 	internal class SelectToTakeOnUiBlock : ItemsSelectorUiBlock
@@ -15,7 +13,9 @@ namespace GameUi.UIBlocks.Items
 
 		public SelectToTakeOnUiBlock(Rectangle _rectangle, EquipmentUiBlock _equipmentUiBlock,
 		                             EquipmentPresenter _equipmentPresenter) :
-		                             	base(_rectangle, ESelectItemDialogBehavior.SELECT_ONE, null, _equipmentUiBlock.Intelligent.GetBackPackItems())
+		                             	base(
+		                             	_rectangle, ESelectItemDialogBehavior.SELECT_ONE, null,
+		                             	_equipmentUiBlock.Intelligent.GetBackPackItems())
 		{
 			m_equipmentPresenter = _equipmentPresenter;
 			m_equipmentUiBlock = _equipmentUiBlock;
@@ -33,9 +33,9 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White,0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color,2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color,2, 0, EAlignment.RIGHT);
+			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White, 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
 		}
 
 		protected override void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)

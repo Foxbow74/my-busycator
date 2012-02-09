@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -50,11 +49,16 @@ namespace GameCore.Creatures
 			}
 		}
 
+		public Item this[EEquipmentPlaces _places]
+		{
+			get { return m_equipment[_places]; }
+		}
+
 		/// <summary>
-		/// Добавить в рюкзак и затем экипироваться
+		/// 	Добавить в рюкзак и затем экипироваться
 		/// </summary>
-		/// <param name="_place"></param>
-		/// <param name="_item"></param>
+		/// <param name = "_place"></param>
+		/// <param name = "_item"></param>
 		protected void Equip(EEquipmentPlaces _place, Item _item)
 		{
 			_item.Resolve(this);
@@ -84,14 +88,6 @@ namespace GameCore.Creatures
 			return m_equipment.Select(_item => new Tuple<EEquipmentPlaces, Item>(_item.Key, _item.Value));
 		}
 
-		public Item this[EEquipmentPlaces _places]
-		{
-			get
-			{
-				return m_equipment[_places];
-			}
-		}
-
 		public void TakeOff(EEquipmentPlaces _place)
 		{
 			var item = m_equipment[_place];
@@ -106,9 +102,10 @@ namespace GameCore.Creatures
 		public void TakeOn(EEquipmentPlaces _place, Item _item)
 		{
 			var equipmentPlacesAttribute = EquipmentPlacesAttribute.GetAttribute(_place);
-			if(!equipmentPlacesAttribute.IsAbleToEquip(_item.Category))
+			if (!equipmentPlacesAttribute.IsAbleToEquip(_item.Category))
 			{
-				throw new ApplicationException("Нельзя экипировать '" + _item.Name + "' как '" + equipmentPlacesAttribute.DisplayName + "'");
+				throw new ApplicationException("Нельзя экипировать '" + _item.GetName(this) + "' как '" +
+				                               equipmentPlacesAttribute.DisplayName + "'");
 			}
 
 			var item = m_equipment[_place];

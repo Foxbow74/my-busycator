@@ -1,12 +1,13 @@
 ﻿using System;
 using GameCore.Creatures;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Objects
 {
 	/// <summary>
 	/// 	Символизирует инвентарь существа.
 	/// </summary>
-	public class BackPack : Container, ISpecial
+	internal class BackPack : Container, ISpecial
 	{
 		public override ETiles Tile
 		{

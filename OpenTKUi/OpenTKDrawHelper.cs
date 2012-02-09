@@ -10,9 +10,9 @@ namespace OpenTKUi
 	internal class OpenTKDrawHelper : IDrawHelper, IDisposable
 	{
 		private readonly OpenTKResourceProvider m_resourceProvider;
-		private Image m_textImage;
 
 		private bool m_isTextBitmapChanged;
+		private Image m_textImage;
 
 		public OpenTKDrawHelper(OpenTKResourceProvider _resourceProvider, OpenTKGameProvider _gameProvider)
 		{
@@ -20,6 +20,15 @@ namespace OpenTKUi
 			var bitmap = new Bitmap(_gameProvider.Width, _gameProvider.Height, PixelFormat.Format32bppArgb);
 			m_textImage = new Image(bitmap, false);
 		}
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			m_textImage.Dispose();
+		}
+
+		#endregion
 
 		#region IDrawHelper Members
 
@@ -29,14 +38,14 @@ namespace OpenTKUi
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
-			GL.Vertex2(_rectangle.Left , _rectangle.Top );
-			GL.Vertex2(_rectangle.Right , _rectangle.Top );
-			GL.Vertex2(_rectangle.Right , _rectangle.Bottom );
-			GL.Vertex2(_rectangle.Left , _rectangle.Bottom );
+			GL.Vertex2(_rectangle.Left, _rectangle.Top);
+			GL.Vertex2(_rectangle.Right, _rectangle.Top);
+			GL.Vertex2(_rectangle.Right, _rectangle.Bottom);
+			GL.Vertex2(_rectangle.Left, _rectangle.Bottom);
 			GL.End();
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
-				gr.Clip = new Region(new Rectangle(_rectangle.Left , _rectangle.Top , _rectangle.Width , _rectangle.Height ));
+				gr.Clip = new Region(new Rectangle(_rectangle.Left, _rectangle.Top, _rectangle.Width, _rectangle.Height));
 				gr.Clear(Color.Empty);
 			}
 			m_isTextBitmapChanged = true;
@@ -87,7 +96,7 @@ namespace OpenTKUi
 			}
 			GL.BindTexture(TextureTarget.Texture2D, m_textImage.Texture);
 
-			GL.Color4(1f,1f, 1f, 1f);
+			GL.Color4(1f, 1f, 1f, 1f);
 
 			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
@@ -102,14 +111,9 @@ namespace OpenTKUi
 			GL.End();
 		}
 
-		public void Dispose()
-		{
-			m_textImage.Dispose();
-		}
-
 		public void Resize(int _width, int _height)
 		{
-			if(m_textImage!=null) m_textImage.Dispose();
+			if (m_textImage != null) m_textImage.Dispose();
 			var bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppArgb);
 			m_textImage = new Image(bitmap, false);
 		}

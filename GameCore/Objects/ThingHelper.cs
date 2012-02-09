@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Misc;
@@ -36,20 +37,59 @@ namespace GameCore.Objects
 			}
 		}
 
-		public static bool IsItem(this Thing _thing, MapCell _cell, Creature _creature)
+		/// <summary>
+		/// 	Возвращает имя объекта
+		/// 	Если надо - резолвит
+		/// </summary>
+		/// <param name = "_thing"></param>
+		/// <param name = "_creature"></param>
+		/// <param name = "_coords">Координаты не всегда совпадают с координатами существа</param>
+		/// <returns></returns>
+		public static string GetName(this Thing _thing, Creature _creature, Point _coords = null)
 		{
-			if (_thing == null) return false;
-			return _thing is Item;
+			if (_coords == null)
+			{
+				_coords = _creature.Coords;
+			}
+			if (_thing is IFaked)
+			{
+				var mapCell = _creature.Layer.GetMapCell(_coords);
+				if (_thing is Item)
+				{
+					_thing = mapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _thing);
+				}
+				else if (_thing is Furniture.Furniture)
+				{
+					_thing = mapCell.ResolveFakeFurniture(World.TheWorld.Avatar, (FakedThing) _thing);
+				}
+			}
+			return _thing.Name;
 		}
 
-		public static bool CanBeOpened(this Thing _thing, MapCell _cell, Creature _creature)
+		public static string GetName(this ThingDescriptor _thingDescriptor, Creature _creature)
+		{
+			var thing = _thingDescriptor.Thing;
+			if (thing is IFaked)
+			{
+				thing = _thingDescriptor.ResolveThing(_creature);
+			}
+			return thing.Name;
+		}
+
+		public static bool IsClosed(this Thing _thing, MapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeItem(_creature);
+				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
 			}
-			return _thing is ICanbeOpened && ((ICanbeOpened) _thing).LockType != LockType.OPEN;
+			return _thing is ICanbeOpened && ((ICanbeOpened) _thing).ELockType != ELockType.OPEN;
+		}
+
+		public static bool IsFurniture(this Thing _thing)
+		{
+			return _thing is FakedThing || _thing is Furniture.Furniture;
+			;
 		}
 
 		public static bool CanBeClosed(this Thing _thing, MapCell _cell, Creature _creature)
@@ -57,9 +97,9 @@ namespace GameCore.Objects
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeItem(_creature);
+				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
 			}
-			return _thing is ICanbeClosed && ((ICanbeClosed) _thing).LockType == LockType.OPEN;
+			return _thing is ICanbeClosed && ((ICanbeClosed) _thing).ELockType == ELockType.OPEN;
 		}
 
 		public static bool IsDoor(this Thing _thing, MapCell _cell, Creature _creature)
@@ -67,7 +107,7 @@ namespace GameCore.Objects
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeItem(_creature);
+				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
 			}
 			return _thing is Door || _thing is OpenDoor;
 		}
@@ -77,7 +117,7 @@ namespace GameCore.Objects
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeItem(_creature);
+				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
 			}
 			return _thing is Chest;
 		}
@@ -143,16 +183,10 @@ namespace GameCore.Objects
 
 		private static IEnumerable<Type> GetThingTypes()
 		{
-			foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-			{
-				foreach (var type in assembly.GetTypes())
-				{
-					if (typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract)
-					{
-						yield return type;
-					}
-				}
-			}
+			return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+			       from type in assembly.GetTypes()
+			       where typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract
+			       select type;
 		}
 
 		public static Thing ResolveThing(Type _type, Creature _creature)

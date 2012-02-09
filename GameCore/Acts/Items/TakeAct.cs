@@ -65,7 +65,10 @@ namespace GameCore.Acts.Items
 					var needToShow = GetParameter<bool>();
 					if (needToShow.Any() && needToShow.Single())
 					{
-						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this, ESelectItemDialogBehavior.SELECT_MULTIPLE|ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this,
+						                           new AskSelectThingsMessage(notTaken, this,
+						                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
+						                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
 
@@ -81,7 +84,10 @@ namespace GameCore.Acts.Items
 					}
 					else
 					{
-						MessageManager.SendMessage(this, new AskSelectThingsMessage(notTaken, this, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this,
+						                           new AskSelectThingsMessage(notTaken, this,
+						                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
+						                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 					}
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
@@ -98,12 +104,12 @@ namespace GameCore.Acts.Items
 				return EActResults.NOTHING_HAPPENS;
 			}
 
-			var descriptor = toTake.First();
-			var thing = descriptor.Thing;
-			var thingString = thing.ToString();
+			var descriptor = toTake[0];
+			var thing = descriptor.ResolveThing(_creature);
+			var thingString = thing.Name;
 			if (descriptor.Container == null)
 			{
-				_creature.Layer.GetMapCell(descriptor.WorldCoords).RemoveObjectFromBlock();
+				_creature.Layer.GetMapCell(descriptor.WorldCoords).RemoveItemFromBlock((Item) thing);
 			}
 			else
 			{
@@ -133,13 +139,14 @@ namespace GameCore.Acts.Items
 			if (!_silence && Count > 0)
 			{
 				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
-				if (intelligent == World.TheWorld.Avatar)
+				if (intelligent.IsAvatar)
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " взят" + suffix));
 				}
 				else
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thingString + suffix));
+					MessageManager.SendMessage(this,
+					                           new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thingString + suffix));
 				}
 			}
 			return EActResults.DONE;

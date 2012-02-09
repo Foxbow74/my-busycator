@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Messages;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Movement
 {
-	class Ascend : Act
+	internal class Ascend : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -33,7 +35,17 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			throw new NotImplementedException();
+			var furniture = _creature.MapCell.Furniture;
+			if (!(furniture is StairUp))
+			{
+				if (!_silence)
+				{
+					MessageManager.SendMessage(this, "куда? Тут нет лестницы");
+				}
+				return EActResults.FAIL;
+			}
+			_creature.Layer = ((StairUp) furniture).LeadToLayer;
+			return EActResults.DONE;
 		}
 	}
 }

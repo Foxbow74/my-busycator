@@ -1,15 +1,16 @@
 ﻿using System;
 using System.IO;
 using GameUi;
+using OpenTK;
 using OpenTKUi;
 
 namespace Busycator
 {
-	class GameProvider:OpenTKGameProvider
+	internal class GameProvider : OpenTKGameProvider
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider(): base(16, 16, 1024, 768)
+		public GameProvider() : base(16, 16, 800, 600)
 		{
 			m_game = new TheGame(this);
 		}
@@ -32,21 +33,21 @@ namespace Busycator
 			base.OnUnload(_e);
 		}
 
-		protected override void OnUpdateFrame(OpenTK.FrameEventArgs _e)
+		protected override void OnUpdateFrame(FrameEventArgs _e)
 		{
 			base.OnUpdateFrame(_e);
 			m_game.Update(KeyState);
 		}
 
-		protected override void OnRenderFrame(OpenTK.FrameEventArgs _e)
+		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			Title = "Busycator FPS: " + (1 / _e.Time).ToString("0.");
+			Title = "Busycator FPS: " + (1/_e.Time).ToString("0.");
 			m_game.Draw();
 			SwapBuffers();
 		}
 
 		[STAThread]
-		static void Main()
+		private static void Main()
 		{
 			{
 				try

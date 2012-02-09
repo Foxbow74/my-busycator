@@ -4,7 +4,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.Info
 {
-	class LookAtWorldMapAct : Act
+	internal class LookAtWorldMapAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{

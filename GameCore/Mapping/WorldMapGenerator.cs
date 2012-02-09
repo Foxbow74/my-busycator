@@ -3,10 +3,10 @@ using GameCore.Misc;
 
 namespace GameCore.Mapping
 {
-	class WorldMapGenerator
+	internal class WorldMapGenerator
 	{
+		private readonly Random m_rnd = new Random(World.WorldSeed);
 		private readonly int m_size;
-		readonly Random m_rnd = new Random(World.WorldSeed);
 
 		public WorldMapGenerator(int _size)
 		{
@@ -15,7 +15,7 @@ namespace GameCore.Mapping
 
 		public EMapBlockTypes[,] Generate()
 		{
-			var map = new EMapBlockTypes[m_size, m_size];
+			var map = new EMapBlockTypes[m_size,m_size];
 
 			var radius = m_size/2 - 2;
 
@@ -28,10 +28,10 @@ namespace GameCore.Mapping
 					var pnt = new Point(i, j) - center;
 					var ro = Math.Atan2(pnt.X, pnt.Y);
 					var r = pnt.Lenght;
-					var d = r / radius - 0.5;
+					var d = r/radius - 0.5;
 					if (d > 0)
 					{
-						if (m_rnd.NextDouble() < d * 2)
+						if (m_rnd.NextDouble() < d*2)
 						{
 							map[i, j] = EMapBlockTypes.NONE;
 							continue;
