@@ -1,3 +1,4 @@
+using System.Drawing;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenTKUi
@@ -34,7 +35,7 @@ namespace OpenTKUi
 		/// <param name = "_windowH">New height of window.</param>
 		public void Resize(int _windowW, int _windowH)
 		{
-			GL.Viewport(0, 0, _windowW, _windowH);
+			GL.Viewport(new Size(_windowW, _windowH));
 		}
 
 
