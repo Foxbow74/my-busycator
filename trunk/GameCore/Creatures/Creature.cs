@@ -161,12 +161,15 @@ namespace GameCore.Creatures
 			switch (ActResult)
 			{
 				case EActResults.NOTHING_HAPPENS:
-					price /= 2;
+					price = Speed;
 					break;
 				case EActResults.DONE:
 					break;
 				case EActResults.FAIL:
 					price *= 2;
+					break;
+				case EActResults.QUICK_FAIL:
+					price /= 2;
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
 					return ActResult;

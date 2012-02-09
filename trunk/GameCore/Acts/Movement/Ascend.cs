@@ -42,10 +42,9 @@ namespace GameCore.Acts.Movement
 				{
 					MessageManager.SendMessage(this, "куда? Тут нет лестницы");
 				}
-				return EActResults.FAIL;
+				return EActResults.QUICK_FAIL;
 			}
-			_creature.Layer = ((StairUp) furniture).LeadToLayer;
-			return EActResults.DONE;
+			return ((Stair) furniture).MoveToLayer(_creature);
 		}
 	}
 }
