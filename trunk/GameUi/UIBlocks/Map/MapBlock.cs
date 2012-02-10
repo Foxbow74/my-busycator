@@ -9,14 +9,14 @@ namespace GameUi.UIBlocks.Map
 {
 	internal partial class MapBlock : UIBlock
 	{
-		private readonly LosManager m_losManager;
+		private readonly LosManager1 m_losManager;
 		private readonly MapCell[,] m_mapCells;
 		private long m_lastFogUpdateWorldTick;
 
 		public MapBlock(Rectangle _rectangle) : base(_rectangle, null, Color.Black)
 		{
 			m_mapCells = new MapCell[ContentRectangle.Width,ContentRectangle.Height];
-			m_losManager = new LosManager();
+			m_losManager = new LosManager1();
 
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
