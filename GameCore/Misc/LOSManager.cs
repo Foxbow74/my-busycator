@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Mapping;
 
@@ -7,114 +8,165 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private readonly LosCell m_root;
+		internal const int RADIUS = 20;
+		const float DIVIDER = 4f;
+		const float MIN_VISIBILITY = 0.001f;
+
+		private readonly List<LosCell2> m_inOrder;
+		private readonly Dictionary<LosCell2, float> m_visibles;
+
+		private readonly LosCell2 m_root;
 
 		public LosManager()
 		{
-			m_root = new LosCell();
-			var alreadyDone = new Dictionary<Point, LosCell> {{Point.Zero, m_root}};
-			const int radius = 20;
+			m_root = new LosCell2(Point.Zero);
+			var alreadyDone= new Dictionary<Point, LosCell2> { { Point.Zero, m_root } };
 
-			const double dRo = Math.PI/2048;
 
-			for (var ro = 0.0; ro < Math.PI*2; ro += dRo)
+			var dVectors = new List<Vector2>();
+			for (var di = -DIVIDER / 2 + 1; di < DIVIDER / 2; di++)
 			{
-				var x = Math.Sin(ro)*radius;
-				var y = Math.Cos(ro)*radius;
-				var end = new Point((int) x, (int) y);
-
-				var parent = m_root;
-				var closedByParent = 1.0;
-				foreach (var pnt in Point.Zero.GetLineToPoints(end).Where(_pnt => _pnt != Point.Zero))
+				for (var dj = -DIVIDER / 2 + 1; dj < DIVIDER / 2; dj++)
 				{
-					LosCell cell;
+					Debug.WriteLine(di + ", " + dj);
+					var dv = new Vector2(di, dj) / DIVIDER;
+					if (dv.Length() > Math.Sqrt(2)) continue;
+					dVectors.Add(dv);
+				}
+			}
+
+			var dividedPart = 1f / dVectors.Count;
+
+			for (var i = -RADIUS; i <= RADIUS; ++i)
+			{
+				for (var j = -RADIUS; j <= RADIUS; ++j)
+				{
+					var pnt = new Point(i, j);
+
+					if (pnt.Equals(Point.Zero)) continue;
+
+					LosCell2 cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
 					{
-						cell = new LosCell();
+						cell = new LosCell2(pnt);
+						if (cell.Point.Lenght > RADIUS)
+						{
+							continue;
+						}
 						alreadyDone.Add(pnt, cell);
 					}
 
-					parent.Add(pnt, closedByParent, cell);
+					foreach (var dv in dVectors)
+					{
+						var v = new Vector2(pnt.X, pnt.Y) + dv;
+						v -= new Vector2(Math.Sign(v.X) / 2f, Math.Sign(v.Y) / 2f);
 
-					parent = cell;
-					closedByParent = 1.0 - pnt.GetDistanceToVector(end);
+						var parentPoint = Point.Zero;
+						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.02f))
+						{
+							var point = new Point((int)Math.Round(lineV.X), (int)Math.Round(lineV.Y));
+							if (point.Equals(pnt) || point.Lenght > RADIUS) continue;
+							parentPoint = point;
+							break;
+						}
+						LosCell2 parent;
+						if (!alreadyDone.TryGetValue(parentPoint, out parent))
+						{
+							parent = new LosCell2(parentPoint);
+							alreadyDone.Add(parentPoint, parent);
+						}
+						parent.Add(pnt, dividedPart, cell);
+					}
 				}
+
 			}
+
+			foreach (var cell in alreadyDone.Values)
+			{
+				cell.UpdateByDistance();
+			}
+			m_inOrder = alreadyDone.Values.OrderByDescending(_cell2 => _cell2.DistanceCoefficient).ToList();
+			m_visibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => 0f);
 		}
 
-		public Dictionary<Point, double> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
+		public Dictionary<Point, float> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
 		{
-			var alreadyDone = new Dictionary<Point, double>();
-			m_root.GetVisibleCelss(_mapCells, _dx, _dy, alreadyDone, 1.0);
-			return alreadyDone;
+			var dPoint = new Point(_dx, _dy);
+			
+			var maxX = _mapCells.GetLength(0) - 1;
+			var maxY = _mapCells.GetLength(1) - 1;
+			
+			m_visibles[m_root] = 1;
+			for (var index = 1; index < m_inOrder.Count; index++)
+			{
+				m_visibles[m_inOrder[index]] = 0;
+			}
+
+			foreach (var cell in m_inOrder)
+			{
+				var visibilityCoeff = m_visibles[cell];
+
+				if(visibilityCoeff<MIN_VISIBILITY) continue;
+
+				var myPnt = cell.Point + dPoint;
+				
+				var mapCell = _mapCells[myPnt.X, myPnt.Y];
+				 var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
+
+				foreach (var pair in cell.Cells)
+				{
+					var pnt = pair.Key.Point + dPoint;
+					if (pnt.X < 0 || pnt.X >= maxX || pnt.Y < 0 || pnt.Y >= maxY) continue;
+
+					m_visibles[pair.Key] += pair.Value*childsVisible;
+				}
+			}
+
+			return m_visibles.Where(_pair => _pair.Value>MIN_VISIBILITY).ToDictionary(_pair => _pair.Key.Point + dPoint, _pair => _pair.Value);
 		}
 	}
 
-	internal class LosCell
+	internal class LosCell2
 	{
-		/// <summary>
-		/// 	double хранит величину - насколько та или иная ячейка видна через текущую
-		/// </summary>
-		private readonly Dictionary<Tuple<Point, double>, LosCell> m_cells = new Dictionary<Tuple<Point, double>, LosCell>();
-
-		public void GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy, Dictionary<Point, double> _alreadyDone,
-		                            double _visibilityCoeff)
+		public LosCell2(Point _point)
 		{
-			var maxX = _mapCells.GetLength(0) - 1;
-			var maxY = _mapCells.GetLength(1) - 1;
-
-			foreach (var pair in m_cells)
-			{
-				var pnt = new Point(pair.Key.Item1.X + _dx, pair.Key.Item1.Y + _dy);
-
-				if (pnt.X < 0 || pnt.X >= maxX) continue;
-				if (pnt.Y < 0 || pnt.Y >= maxY) continue;
-
-				var mapCell = _mapCells[pnt.X, pnt.Y];
-
-				var opacity = mapCell.Opacity;
-
-				var visible = 1.0*_visibilityCoeff;
-				var nextVisible = (1.0 - opacity*pair.Key.Item2)*_visibilityCoeff;
-
-				double tuple;
-				if (_alreadyDone.TryGetValue(pnt, out tuple))
-				{
-					var visibility = tuple;
-					if (visibility >= visible) continue;
-				}
-
-				if (opacity < 1f)
-				{
-					_alreadyDone[pnt] = visible;
-				}
-				else
-				{
-					_alreadyDone[pnt] = _visibilityCoeff;
-					continue;
-				}
-
-				if (visible < 0.1) continue;
-
-				pair.Value.GetVisibleCelss(_mapCells, _dx, _dy, _alreadyDone, nextVisible*0.99);
-			}
+			Point = _point;
+			var r = 1f - _point.Lenght / ((float)(LosManager.RADIUS * Math.Sqrt(2)));
+			DistanceCoefficient = Math.Min(r, 1f);
 		}
 
-		public void Add(Point _pnt, double _closedByParent, LosCell _cell)
+		public float DistanceCoefficient { get; private set; }
+
+		public Point Point { get; private set; }
+		public Dictionary<LosCell2, float> Cells
 		{
-			var have = m_cells.Keys.FirstOrDefault(_tuple => _tuple.Item1 == _pnt);
-			if (have != null)
+			get { return m_cells; }
+		}
+
+		public override string ToString()
+		{
+			return string.Format("{0}*{2} cells:{1}", Point, Cells.Count, DistanceCoefficient);
+		}
+
+		private readonly Dictionary<LosCell2, float> m_cells = new Dictionary<LosCell2, float>();
+
+		public void Add(Point _pnt, float _closedByParent, LosCell2 _cell)
+		{
+			float value;
+			if(m_cells.TryGetValue(_cell, out value))
 			{
-				if (have.Item2 < _closedByParent)
-				{
-					m_cells.Remove(have);
-				}
-				else
-				{
-					return;
-				}
+				_closedByParent += value;
 			}
-			m_cells.Add(new Tuple<Point, double>(_pnt, _closedByParent), _cell);
+			m_cells[_cell] = _closedByParent;
+		}
+
+		public void UpdateByDistance()
+		{
+			var cells = m_cells.Keys.ToArray();
+			foreach (var cell in cells)
+			{
+				m_cells[cell] *= cell.DistanceCoefficient;
+			}
 		}
 	}
 }

@@ -71,8 +71,7 @@
     <Compile Include="Messages\AskShootTargerMessage.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
-    <Compile Include="Misc\LOSManager.cs" />
-    <Compile Include="Misc\LOSManager1.cs" />
+    <Compile Include="Misc\LosManager.cs" />
     <Compile Include="Misc\MathHelper.cs" />
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Objects\Ammo\StackOfAmmo.cs" />
