@@ -43,10 +43,10 @@ namespace GameUi.UIBlocks.Map
 			}
 		}
 
+		private Color m_foggedBackColor = Color.FromArgb(255, 40, 40, 40);
+
 		private void DrawFoggedCells()
 		{
-			var foggedBackColor = Color.FromArgb(255, 40, 40, 40); //BackgroundColor
-
 			for (var x = 0; x < m_mapCells.GetLength(0); ++x)
 			{
 				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
@@ -55,7 +55,7 @@ namespace GameUi.UIBlocks.Map
 					if (mapCell.IsSeenBefore && !mapCell.IsVisibleNow)
 					{
 						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-						var color = foggedBackColor.Lerp(tile.Color, FOG_VISIBILITY_LOWEST);
+						var color = m_foggedBackColor.Lerp(tile.Color, FOG_VISIBILITY_LOWEST);
 						tile.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, color);
 
 						FoggedCell foggedCell;
@@ -63,7 +63,7 @@ namespace GameUi.UIBlocks.Map
 
 						if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh && foggedCell.Tile != tile)
 						{
-							foggedCell.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, foggedBackColor);
+							foggedCell.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, m_foggedBackColor);
 						}
 
 						ETiles.FOG.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, Color.Black);

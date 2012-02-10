@@ -9,14 +9,14 @@ namespace GameUi.UIBlocks.Map
 {
 	internal partial class MapBlock : UIBlock
 	{
-		private readonly LosManager1 m_losManager;
+		private readonly LosManager m_losManager;
 		private readonly MapCell[,] m_mapCells;
 		private long m_lastFogUpdateWorldTick;
 
 		public MapBlock(Rectangle _rectangle) : base(_rectangle, null, Color.Black)
 		{
 			m_mapCells = new MapCell[ContentRectangle.Width,ContentRectangle.Height];
-			m_losManager = new LosManager1();
+			m_losManager = new LosManager();
 
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
@@ -57,7 +57,7 @@ namespace GameUi.UIBlocks.Map
 			{
 				var pnt = tuple.Key;
 				var mapCell = m_mapCells[pnt.X, pnt.Y];
-				var visibility = (float) tuple.Value;
+				var visibility = tuple.Value;
 
 				ATile tile;
 				var creature = mapCell.Creature;
@@ -80,7 +80,7 @@ namespace GameUi.UIBlocks.Map
 						else tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 					}
 				}
-				var color = tile.Color.Multiply(visibility*1.1f);
+				var color = m_foggedBackColor.Lerp(tile.Color, visibility);
 				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
 				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
