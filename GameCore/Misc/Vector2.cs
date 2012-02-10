@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GameCore.Misc
 {
@@ -61,6 +62,37 @@ namespace GameCore.Misc
 		#endregion Constructors
 
 		#region Public Methods
+
+		public IEnumerable<Vector2> GetLineToPoints(Vector2 _point, float _d)
+		{
+			var lx = Math.Abs(_point.X - X);
+			var ly = Math.Abs(_point.Y - Y);
+
+			var max = Math.Max(lx, ly) / _d;
+
+			float dx = Math.Sign(_point.X - X) * _d;
+			float dy = Math.Sign(_point.Y - Y) * _d;
+
+			var x = X;
+			var y = Y;
+
+			if (lx > ly)
+			{
+				dy *= ly / lx;
+			}
+			else if ((lx < ly))
+			{
+				dx *= lx / ly;
+			}
+
+			yield return this;
+			for (var i = 0; i <= max; ++i)
+			{
+				x += dx;
+				y += dy;
+				yield return new Vector2(x, y);
+			}
+		}
 
 		public bool Equals(Vector2 _other)
 		{

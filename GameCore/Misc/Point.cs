@@ -28,9 +28,9 @@ namespace GameCore.Misc
 		public int X { get; set; }
 		public int Y { get; set; }
 
-		public double Lenght
+		public float Lenght
 		{
-			get { return Math.Sqrt(X*X + Y*Y); }
+			get { return (float)Math.Sqrt((float)X * X + (float)Y * Y); }
 		}
 
 		public double QLenght
