@@ -47,26 +47,29 @@ namespace GameUi.UIBlocks.Map
 
 		private void DrawFoggedCells()
 		{
-			for (var x = 0; x < m_mapCells.GetLength(0); ++x)
+			var width = m_mapCells.GetLength(0);
+			var height = m_mapCells.GetLength(1);
+			for (var x = 0; x < width; ++x)
 			{
-				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
+				for (var y = 0; y < height; ++y)
 				{
 					var mapCell = m_mapCells[x, y];
-					if (mapCell.IsSeenBefore && !mapCell.IsVisibleNow)
+					if (!mapCell.IsVisibleNow )//&& mapCell.IsSeenBefore)
 					{
-						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-						var color = m_foggedBackColor.Lerp(tile.Color, FOG_VISIBILITY_LOWEST);
-						tile.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, color);
-
 						FoggedCell foggedCell;
 						var key = mapCell.WorldCoords.GetHashCode();
-
-						if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh && foggedCell.Tile != tile)
+						if (m_foggedCells.TryGetValue(key, out foggedCell) && !foggedCell.IsFresh)
 						{
 							foggedCell.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, m_foggedBackColor);
 						}
+						else
+						{
+							var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+							var color = m_foggedBackColor.Lerp(tile.Color, FOG_VISIBILITY_LOWEST);
+							tile.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, color);
+						}
 
-						ETiles.FOG.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, Color.Black);
+						ETiles.FOG.DrawAtCell(x + ContentRectangle.Left, y + ContentRectangle.Top, BackgroundColor);
 					}
 				}
 			}
@@ -93,7 +96,7 @@ namespace GameUi.UIBlocks.Map
 
 			public bool IsFresh
 			{
-				get { return m_fog == 1; }
+				get { return m_fog == 1f; }
 			}
 
 			public ATile Tile { get; private set; }
@@ -102,7 +105,6 @@ namespace GameUi.UIBlocks.Map
 			{
 				var color = _backgroundColor.Lerp(m_color, m_fog);
 				Tile.DrawAtCell(_x, _y, color);
-				//GraphicsResourceHelper.FogTile.DrawAtCell(_x, _y, Color.Black);
 			}
 
 			public bool UpdateFog(float _d)

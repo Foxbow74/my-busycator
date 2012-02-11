@@ -5,7 +5,7 @@ using GameCore.Messages;
 
 namespace GameUi.UIBlocks
 {
-	internal class AskDirectionUiBlock : UIBlock
+	internal class AskDirectionUiBlock : UiBlockWithText
 	{
 		private readonly AskDirectionMessage m_message;
 

@@ -17,7 +17,7 @@ namespace GameUi.UIBlocks.Items
 
 		#region ILinePresenter Members
 
-		public virtual void DrawLine(int _line, UIBlock _uiBlock)
+		public virtual void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')", Color.Yellow, _line, 0,
 			                  EAlignment.LEFT);

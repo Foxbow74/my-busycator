@@ -6,7 +6,7 @@ using GameCore.Acts;
 
 namespace GameUi.UIBlocks.Help
 {
-	internal class HelpKeyBindingUiBlock : UIBlock
+	internal class HelpKeyBindingUiBlock : UiBlockWithText
 	{
 		public HelpKeyBindingUiBlock(Rectangle _rectangle)
 			: base(_rectangle, Frame.SimpleFrame, Color.DarkGray, EFonts.COMMON)

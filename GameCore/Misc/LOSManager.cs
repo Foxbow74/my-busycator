@@ -8,9 +8,9 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 20;
-		const float DIVIDER = 4f;
-		const float MIN_VISIBILITY = 0.001f;
+		internal const int RADIUS = 15;
+		const float DIVIDER = 6f;
+		const float MIN_VISIBILITY = 0.05f;
 
 		private readonly List<LosCell2> m_inOrder;
 		private readonly Dictionary<LosCell2, float> m_visibles;
@@ -89,7 +89,7 @@ namespace GameCore.Misc
 			m_visibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => 0f);
 		}
 
-		public Dictionary<Point, float> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
+		public IEnumerable<Tuple<Point, float>> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
 		{
 			var dPoint = new Point(_dx, _dy);
 			
@@ -121,8 +121,7 @@ namespace GameCore.Misc
 					m_visibles[pair.Key] += pair.Value*childsVisible;
 				}
 			}
-
-			return m_visibles.Where(_pair => _pair.Value>MIN_VISIBILITY).ToDictionary(_pair => _pair.Key.Point + dPoint, _pair => _pair.Value);
+			return from pair in m_visibles where pair.Value > MIN_VISIBILITY select new Tuple<Point, float>(pair.Key.Point + dPoint, pair.Value);
 		}
 	}
 

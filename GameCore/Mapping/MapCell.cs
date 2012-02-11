@@ -59,13 +59,37 @@ namespace GameCore.Mapping
 			get
 			{
 				if (!Block.IsObjectsExists) yield break;
-				var items =
-					Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).Select(_tuple => _tuple.Item1).OfType<Item>().
-						ToArray();
+				var items = Block.Objects.Where(_tuple => _tuple.Item2 == m_inBlockCoords).Select(_tuple => _tuple.Item1).OfType<Item>().ToArray();
 				foreach (var item in items)
 				{
 					yield return item;
 				}
+			}
+		}
+
+		public ETiles Tile
+		{
+			get
+			{
+				var cr = Creature;
+				if(cr!=null) return cr.Tile;
+				var cnt = 0;
+				if (Block.IsObjectsExists)
+				{
+					foreach (var tuple in Block.Objects)
+					{
+						if (tuple.Item2 != m_inBlockCoords) continue;
+						cnt++;
+						if (cnt > 1)
+						{
+							return ETiles.HEAP_OF_ITEMS;
+						}
+						return tuple.Item1.Tile;
+					}
+				}
+				var fr = Furniture;
+				if(fr!=null) return fr.Tile;
+				return ETiles.NONE;
 			}
 		}
 

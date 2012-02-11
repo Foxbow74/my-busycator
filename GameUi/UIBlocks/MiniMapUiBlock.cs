@@ -5,7 +5,7 @@ using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	internal class MiniMapUiBlock : UIBlock
+	internal class MiniMapUiBlock : UiBlockWithText
 	{
 		public MiniMapUiBlock(Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.White, EFonts.COMMON)
 		{
@@ -60,7 +60,7 @@ namespace GameUi.UIBlocks
 						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
 						(int) Math.Round(rectSize.X),
 						(int) Math.Round(rectSize.Y));
-					DrawHelper.Clear(rect, color);
+					DrawHelper.Clear(rect, color, false);
 				}
 
 				DrawLine("[z|Esc] - выход", Color, TextLinesMax - 1, 21, EAlignment.RIGHT);

@@ -5,7 +5,7 @@ using GameCore.Messages;
 
 namespace GameUi.UIBlocks
 {
-	internal class AskHowMuchUiBlock : UIBlock
+	internal class AskHowMuchUiBlock : UiBlockWithText
 	{
 		private readonly AskHowMuchMessage m_message;
 

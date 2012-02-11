@@ -43,7 +43,7 @@ namespace GameUi.UIBlocks.Items
 
 		#region ILinePresenter Members
 
-		public void DrawLine(int _line, UIBlock _uiBlock)
+		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _line, 10, EAlignment.LEFT);
 			_uiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key), Color.White, _line, 20,

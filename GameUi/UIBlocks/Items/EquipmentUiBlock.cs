@@ -9,7 +9,7 @@ using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
 {
-	internal class EquipmentUiBlock : UIBlock
+	internal class EquipmentUiBlock : UiBlockWithText
 	{
 		private readonly Intelligent m_intelligent;
 		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
@@ -87,7 +87,7 @@ namespace GameUi.UIBlocks.Items
 
 	internal class EquipmentPresenter : ILinePresenter
 	{
-		public static float m_maxIndent;
+		public static float MaxIndent;
 
 		public EquipmentPresenter(EEquipmentPlaces _place, Item _item, ConsoleKey _key, char _c)
 		{
@@ -107,14 +107,14 @@ namespace GameUi.UIBlocks.Items
 
 		#region ILinePresenter Members
 
-		public void DrawLine(int _line, UIBlock _uiBlock)
+		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine(C.ToString(), Color.White, _line, 20, EAlignment.LEFT);
 			var indent =
 				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray, _line, 40,
 				                  EAlignment.LEFT) + 2;
-			m_maxIndent = Math.Max(m_maxIndent, indent);
-			indent = _uiBlock.DrawLine(":", Color.DarkGray, _line, m_maxIndent, EAlignment.LEFT) + 5;
+			MaxIndent = Math.Max(MaxIndent, indent);
+			indent = _uiBlock.DrawLine(":", Color.DarkGray, _line, MaxIndent, EAlignment.LEFT) + 5;
 			if (Item == null)
 			{
 				_uiBlock.DrawLine("-", Color.DarkGray, _line, indent, EAlignment.LEFT);

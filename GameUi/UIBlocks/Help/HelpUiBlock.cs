@@ -5,7 +5,7 @@ using GameCore.Messages;
 
 namespace GameUi.UIBlocks.Help
 {
-	internal class HelpUiBlock : UIBlock
+	internal class HelpUiBlock : UiBlockWithText
 	{
 		public HelpUiBlock(Rectangle _rectangle)
 			: base(_rectangle, Frame.SimpleFrame, Color.White, EFonts.COMMON)

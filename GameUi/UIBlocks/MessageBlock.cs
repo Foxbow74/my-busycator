@@ -7,7 +7,7 @@ using GameUi.Messages;
 
 namespace GameUi.UIBlocks
 {
-	internal class MessageBlock : UIBlock
+	internal class MessageBlock : UiBlockWithText
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 

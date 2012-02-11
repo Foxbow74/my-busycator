@@ -160,6 +160,9 @@ namespace GameUi
 					case ETiles.STONE_FLOOR:
 						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 100, 100, 200));
 						break;
+					case ETiles.NONE:
+						tl = null;
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
