@@ -1,9 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
+using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks.Map
 {
@@ -42,51 +45,48 @@ namespace GameUi.UIBlocks.Map
 			var centerX = m_mapCells.GetLength(0)/2;
 			var centerY = m_mapCells.GetLength(1)/2;
 
+			
 			DrawVisibleCells(centerX, centerY);
+			
 
-			DrawFoggedCells();
+			using (new Profiler("DrawFoggedCells"))
+			{
+				DrawFoggedCells();
+			}
 
 			World.TheWorld.Avatar.Tile.DrawAtCell(centerX + ContentRectangle.Left, centerY + ContentRectangle.Top);
 		}
 
 		private void DrawVisibleCells(int _centerX, int _centerY)
 		{
-			var visibleCelss = m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY).ToArray();
+			IEnumerable<Tuple<Point, float>> visibleCelss;
 
-			foreach (var tuple in visibleCelss)
+			using (new Profiler("GetVisibleCelss"))
 			{
-				var pnt = tuple.Key;
-				var mapCell = m_mapCells[pnt.X, pnt.Y];
-				var visibility = tuple.Value;
+				visibleCelss = m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY);
+			}
 
-				ATile tile;
-				var creature = mapCell.Creature;
-				if (creature != null)
+			using (new Profiler("DrawVisibleCells"))
+			{
+				foreach (var tuple in visibleCelss)
 				{
-					tile = creature.Tile.GetTile();
-				}
-				else
-				{
-					var items = mapCell.Items.ToArray();
-					if (items.Length > 0)
+					var pnt = tuple.Item1;
+					var mapCell = m_mapCells[pnt.X, pnt.Y];
+					var visibility = tuple.Item2;
+
+					var tile = mapCell.Tile.GetTile();
+					if(tile==null)
 					{
-						tile = items.Length == 1 ? items[0].Tile.GetTile() : ETiles.HEAP_OF_ITEMS.GetTile();
+						tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 					}
-					else
-					{
-						var furniture = mapCell.Furniture;
+					var color = m_foggedBackColor.Lerp(tile.Color, visibility);
+					tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
 
-						if (furniture != null) tile = furniture.Tile.GetTile();
-						else tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-					}
+					if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
+					mapCell.IsVisibleNow = true;
+
+					UpdateFogCell(mapCell, tile, color);
 				}
-				var color = m_foggedBackColor.Lerp(tile.Color, visibility);
-				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
-
-				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
-				mapCell.IsVisibleNow = true;
-
-				UpdateFogCell(mapCell, tile, color);
 			}
 		}
 	}

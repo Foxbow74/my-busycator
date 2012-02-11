@@ -12,6 +12,7 @@ namespace OpenTKUi
 		private readonly OpenTKResourceProvider m_resourceProvider;
 
 		private bool m_isTextBitmapChanged;
+
 		private Image m_textImage;
 
 		public OpenTKDrawHelper(OpenTKResourceProvider _resourceProvider, OpenTKGameProvider _gameProvider)
@@ -32,23 +33,26 @@ namespace OpenTKUi
 
 		#region IDrawHelper Members
 
-		public void Clear(Rectangle _rectangle, Color _backgroundColor)
+		public void Clear(Rectangle _rectangle, Color _backgroundColor, bool _clearText)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
 			GL.Vertex2(_rectangle.Left, _rectangle.Top);
 			GL.Vertex2(_rectangle.Right, _rectangle.Top);
 			GL.Vertex2(_rectangle.Right, _rectangle.Bottom);
 			GL.Vertex2(_rectangle.Left, _rectangle.Bottom);
 			GL.End();
-			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
+			if (_clearText)
 			{
-				gr.Clip = new Region(new Rectangle(_rectangle.Left, _rectangle.Top, _rectangle.Width, _rectangle.Height));
-				gr.Clear(Color.Empty);
+				using (var gr = Graphics.FromImage(m_textImage.Bitmap))
+				{
+					gr.Clip = new Region(new Rectangle(_rectangle.Left, _rectangle.Top, _rectangle.Width, _rectangle.Height));
+					gr.Clear(Color.Empty);
+				}
+				m_isTextBitmapChanged = true;
 			}
-			m_isTextBitmapChanged = true;
 		}
 
 		public SizeF MeasureString(EFonts _font, string _string)
@@ -98,12 +102,13 @@ namespace OpenTKUi
 
 			GL.Color4(1f, 1f, 1f, 1f);
 
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0);
 			GL.Vertex2(0, 0);
 			GL.TexCoord2(1f, 0);
 			GL.Vertex2(m_textImage.Width, 0);
+			GL.Color4(1f, 1f, 0f, 0f);
 			GL.TexCoord2(1f, 1f);
 			GL.Vertex2(m_textImage.Width, m_textImage.Height);
 			GL.TexCoord2(0, 1f);

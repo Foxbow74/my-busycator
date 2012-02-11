@@ -69,13 +69,15 @@ namespace OpenTKUi
 			GL.Color4(1f, 1f, 1f, opacity);
 
 			GL.BindTexture(TextureTarget.Texture2D, m_image.Texture);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
 			DrawQuad();
-
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
-			GL.Color4(_color.R/255f, _color.G/255f, _color.B/255f, opacity);
-			DrawQuad();
+			if (_color != Color.Black)
+			{
+				GL.Color4(_color.R / 255f, _color.G / 255f, _color.B / 255f, opacity);
+				DrawQuad();
+			}
 		}
 
 		public void DrawQuad()

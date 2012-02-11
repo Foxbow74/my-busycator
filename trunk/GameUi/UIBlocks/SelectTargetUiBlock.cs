@@ -9,7 +9,7 @@ using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks
 {
-	internal class SelectTargetUiBlock : UIBlock
+	internal class SelectTargetUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
 		private readonly Point m_addPoint;

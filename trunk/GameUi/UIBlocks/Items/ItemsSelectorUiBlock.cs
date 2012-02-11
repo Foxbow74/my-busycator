@@ -9,7 +9,7 @@ using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
 {
-	internal abstract class ItemsSelectorUiBlock : UIBlock
+	internal abstract class ItemsSelectorUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
 		private readonly ESelectItemDialogBehavior m_behavior;

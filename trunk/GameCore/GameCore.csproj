@@ -73,6 +73,7 @@
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
     <Compile Include="Misc\LosManager.cs" />
     <Compile Include="Misc\MathHelper.cs" />
+    <Compile Include="Misc\Profiler.cs" />
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Objects\Ammo\StackOfAmmo.cs" />
     <Compile Include="Objects\Ammo\StackOfCrossBowBolts.cs" />

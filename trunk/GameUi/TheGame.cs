@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameUi.UIBlocks;
 using GameUi.UIBlocks.Items;
 
@@ -216,13 +217,29 @@ namespace GameUi
 			if (m_needRedraws < 1) return;
 			m_needRedraws--;
 
+
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{
-				uiBlock.DrawBackground();
+				using (new Profiler("DrawBackground"))
+				{
+					uiBlock.DrawBackground();
+				}
 				uiBlock.DrawContent();
-				uiBlock.DrawFrame();
+				using (new Profiler("DrawFrame"))
+				{
+					uiBlock.DrawFrame();
+				}
 			}
-			m_gameProvider.DrawTextLayer();
+			DrawText();
+		}
+
+
+		private void DrawText()
+		{
+			using (new Profiler())
+			{
+				m_gameProvider.DrawTextLayer();
+			}
 		}
 	}
 }

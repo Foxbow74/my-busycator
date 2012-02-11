@@ -9,7 +9,7 @@ using GameCore.Messages;
 
 namespace GameUi.UIBlocks
 {
-	internal class ConfirmQuitBlock : UIBlock
+	internal class ConfirmQuitBlock : UiBlockWithText
 	{
 		public ConfirmQuitBlock() : base(new Rectangle(2, 2, 15, 5), Frame.SimpleFrame, Color.Black)
 		{

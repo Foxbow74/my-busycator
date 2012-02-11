@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using GameCore;
+using GameCore.Misc;
 using GameUi;
 using OpenTK;
 using OpenTKUi;
@@ -11,7 +12,7 @@ namespace Busycator
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider() : base(16, 16, 800, 600)
+		public GameProvider() : base(16, 16, 700, 500)
 		{
 			m_game = new TheGame(this);
 		}
@@ -32,6 +33,7 @@ namespace Busycator
 		{
 			m_game.UnloadContent();
 			base.OnUnload(_e);
+			Profiler.Report();
 		}
 
 		protected override void OnUpdateFrame(FrameEventArgs _e)
