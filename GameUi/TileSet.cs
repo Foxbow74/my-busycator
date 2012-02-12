@@ -23,5 +23,10 @@ namespace GameUi
 		{
 			throw new NotImplementedException();
 		}
+
+		public override void DrawFog(int _col, int _row, Color _color)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

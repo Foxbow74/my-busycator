@@ -98,21 +98,28 @@ namespace OpenTKUi
 				m_textImage.Update();
 				m_isTextBitmapChanged = false;
 			}
-			GL.BindTexture(TextureTarget.Texture2D, m_textImage.Texture);
+
+			DrawTexture(m_textImage);
+		}
+
+		public static void DrawTexture(Image _image)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, _image.Texture);
 
 			GL.Color4(1f, 1f, 1f, 1f);
+			GL.BlendEquation(BlendEquationMode.FuncAdd);
 
 			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0);
 			GL.Vertex2(0, 0);
 			GL.TexCoord2(1f, 0);
-			GL.Vertex2(m_textImage.Width, 0);
-			GL.Color4(1f, 1f, 0f, 0f);
+			GL.Vertex2(_image.Width, 0);
+			//GL.Color4(1f, 1f, 0f, 0f);
 			GL.TexCoord2(1f, 1f);
-			GL.Vertex2(m_textImage.Width, m_textImage.Height);
+			GL.Vertex2(_image.Width, _image.Height);
 			GL.TexCoord2(0, 1f);
-			GL.Vertex2(0, m_textImage.Height);
+			GL.Vertex2(0, _image.Height);
 			GL.End();
 		}
 

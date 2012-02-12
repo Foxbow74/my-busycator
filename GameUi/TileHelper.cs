@@ -150,6 +150,7 @@ namespace GameUi
 						break;
 					case ETiles.FOG:
 						tl = Rp.CreateTile(1, 11, Color.FromArgb(255, 5, 5, 10));
+						tl.IsFogTile = true;
 						break;
 					case ETiles.STAIR_DOWN:
 						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 3, Color.FromArgb(255, 100, 100, 50));
@@ -243,6 +244,13 @@ namespace GameUi
 		{
 			if (_tile == null) return;
 			_tile.DrawAtPoint(_col*ATile.Size, _row*ATile.Size, _color);
+		}
+
+
+		public static void FogIt(this ATile _tile, int _col, int _row, Color _color)
+		{
+			if (_tile == null) return;
+			_tile.DrawFog(_col, _row, _color);
 		}
 
 		public static void DrawAtPoint(this ETiles _tile, int _x, int _y, Color _color)

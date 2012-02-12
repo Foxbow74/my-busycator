@@ -33,7 +33,7 @@ namespace GameCore.Misc
 			get { return (float)Math.Sqrt((float)X * X + (float)Y * Y); }
 		}
 
-		public double QLenght
+		public float QLenght
 		{
 			get { return Math.Max(Math.Abs(X), Math.Abs(Y)); }
 		}

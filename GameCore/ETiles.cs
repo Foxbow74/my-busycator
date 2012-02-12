@@ -7,9 +7,10 @@ namespace GameCore
 	public enum ETiles
 	{
 		[Tiles(0f)] NONE,
-		[Tiles(0.2f)]FOG,
 		[Tiles(0.5f)] HEAP_OF_ITEMS,
-		[Tiles(0f)] TARGET_DOT,
+		[Tiles(0.2f)]FOG,
+		[Tiles(0f)]
+		TARGET_DOT,
 		[Tiles(0f)] TARGET_CROSS,
 
 		[Tiles(0f)] GRASS,

@@ -42,7 +42,6 @@ namespace GameCore.Misc
 		{
 			var ordered = m_infos.OrderByDescending(_pair => _pair.Value.Span);
 			var spanSum = m_infos.Values.Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Span).Ticks;
-			Debug.WriteLine(spanSum);
 			foreach (var pair in ordered)
 			{
 				Debug.WriteLine(string.Format("***\t{0}\ttakes\t{1:N2}% ({2})\tcalled\t{3}", pair.Key, 100 * pair.Value.Span.Ticks/spanSum, pair.Value.Span, pair.Value.Count));

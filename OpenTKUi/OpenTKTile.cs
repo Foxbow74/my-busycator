@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using GameCore;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 
@@ -6,55 +7,52 @@ namespace OpenTKUi
 {
 	internal class OpenTKTile : ATile
 	{
-		private readonly Image m_image;
-		private readonly TexCoord[] m_texcoords = new TexCoord[4]; // Image texture coordinates
+		public int X { get; private set; }
+		public int Y { get; private set; }
 
+		private readonly Image m_image;
 		private readonly Vertex[] m_vertices = new Vertex[4]; // Image vertices
 
 		public OpenTKTile(ETextureSet _set, int _x, int _y, Color _color) : base(_set, _x, _y, _color)
 		{
+			Texcoords = new TexCoord[4];
+			X = _x;
+			Y = _y;
 			m_image = ResourceProvider[_set];
 
+			UpdateTexCoords(_x, _y, m_image.Width, m_image.Height);
+		}
+
+		public void UpdateTexCoords(int _x, int _y, float _imgWidth, float _imgHeight)
+		{
 			float u1 = 0.0f, u2 = 0.0f, v1 = 0.0f, v2 = 0.0f;
 
 			// Calculate coordinates, prevent dividing by zero
-			if (_x != 0) u1 = 1.0f/(m_image.Width/_x/Size);
-			if (Size != 0) u2 = 1.0f/(m_image.Width/Size);
-			if (_y != 0) v1 = 1.0f/(m_image.Height/_y/Size);
-			if (Size != 0) v2 = 1.0f/(m_image.Height/Size);
+			if (_x != 0) u1 = 1.0f/(_imgWidth/_x/Size);
+			if (Size != 0) u2 = 1.0f/(_imgWidth/Size);
+			if (_y != 0) v1 = 1.0f/(_imgHeight/_y/Size);
+			if (Size != 0) v2 = 1.0f/(_imgHeight/Size);
 
-			m_texcoords[0].U = u1;
-			m_texcoords[0].V = v1 + v2;
-			m_texcoords[1].U = u1 + u2;
-			m_texcoords[1].V = v1 + v2;
-			m_texcoords[2].U = u1 + u2;
-			m_texcoords[2].V = v1;
-			m_texcoords[3].U = u1;
-			m_texcoords[3].V = v1;
+			Texcoords[0].U = u1;
+			Texcoords[0].V = v1;
+			Texcoords[1].U = u1 + u2;
+			Texcoords[1].V = v1;
+			Texcoords[2].U = u1 + u2;
+			Texcoords[2].V = v1 + v2;
+			Texcoords[3].U = u1;
+			Texcoords[3].V = v1 + v2;
 		}
 
 		internal static OpenTKResourceProvider ResourceProvider { get; set; }
 
-		/// <summary>
-		/// 	Draws VBO.
-		/// </summary>
-		/// <param name = "_lenght">Number of vertices to be drawn from array.</param>
-		/// <param name = "_mode">Mode used for drawing.</param>
-		public void Draw(int _lenght, BeginMode _mode)
-		{
-			GL.Begin(_mode);
+		public static TileMapRenderer TileMapRenderer { get; set; }
 
-			for (var i = 0; i < _lenght; i++)
-			{
-				GL.TexCoord2(m_texcoords[i].U, m_texcoords[i].V);
-				GL.Vertex2(m_vertices[i].X, m_vertices[i].Y);
-			}
-
-			GL.End();
-		}
+		public TexCoord[] Texcoords { get; private set; }
 
 		public override void Draw(int _x, int _y, Color _color)
 		{
+			TileMapRenderer.DrawTile(this, _x/16, _y/16, _color);
+			return;
 			m_vertices[0].X = _x;
 			m_vertices[0].Y = _y + Size;
 			m_vertices[1].X = _x + Size;
@@ -80,13 +78,18 @@ namespace OpenTKUi
 			}
 		}
 
+		public override void DrawFog(int _col, int _row, Color _color)
+		{
+			TileMapRenderer.FogTile(this, _col, _row, _color);
+		}
+
 		public void DrawQuad()
 		{
 			GL.Begin(BeginMode.Quads);
 
 			for (var i = 0; i < 4; i++)
 			{
-				GL.TexCoord2(m_texcoords[i].U, m_texcoords[i].V);
+				GL.TexCoord2(Texcoords[i].U, Texcoords[i].V);
 				GL.Vertex2(m_vertices[i].X, m_vertices[i].Y);
 			}
 

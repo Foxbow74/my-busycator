@@ -46,7 +46,7 @@ namespace Busycator
 		{
 			Title = "Busycator FPS:" + (1/_e.Time).ToString("0.") + " Avatar:" + World.TheWorld.Avatar.Coords;
 			m_game.Draw();
-			SwapBuffers();
+			OnRenderFinished();
 		}
 
 		[STAThread]

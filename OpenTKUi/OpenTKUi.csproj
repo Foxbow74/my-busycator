@@ -53,6 +53,7 @@
     <Compile Include="OpenTKResourceProvider.cs" />
     <Compile Include="OpenTKTile.cs" />
     <Compile Include="OpenTKDrawHelper.cs" />
+    <Compile Include="TileMapRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameCore\GameCore.csproj">
