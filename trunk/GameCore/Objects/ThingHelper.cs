@@ -152,7 +152,6 @@ namespace GameCore.Objects
 				m_fakedMonsters.Add(thing.Tile, value);
 			}
 			value.Add(_type);
-			Debug.WriteLine(thing.Name);
 		}
 
 		private static void RegisterItemType(Type _type)
@@ -178,7 +177,6 @@ namespace GameCore.Objects
 				m_fakedThings.Add(thing.Tile, value);
 			}
 			value.Add(_type);
-			Debug.WriteLine(thing.Name);
 		}
 
 		private static IEnumerable<Type> GetThingTypes()
@@ -193,7 +191,6 @@ namespace GameCore.Objects
 		{
 			var thing = (Thing) Activator.CreateInstance(_type);
 			thing.Resolve(_creature);
-			Debug.WriteLine(thing.Name);
 			return thing;
 		}
 

@@ -24,7 +24,7 @@ namespace GameCore.Mapping.Layers
 				{
 					block = GenerateBlock(_blockId);
 					m_blocks.Add(_blockId, block);
-					Debug.WriteLine("Generated new in " + _blockId);
+					//Debug.WriteLine("Generated new in " + _blockId);
 				}
 				return block;
 			}

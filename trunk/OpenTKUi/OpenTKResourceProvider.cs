@@ -8,18 +8,17 @@ namespace OpenTKUi
 	internal class OpenTKResourceProvider : IResourceProvider, IDisposable
 	{
 		private readonly Dictionary<EFonts, Font> m_fonts = new Dictionary<EFonts, Font>();
-		private readonly OpenTKGameProvider m_gameProvider;
-		private readonly Dictionary<ETextureSet, Image> m_surfaces = new Dictionary<ETextureSet, Image>();
 
-		public OpenTKResourceProvider(OpenTKGameProvider _gameProvider)
+		public OpenTKResourceProvider()
 		{
-			m_gameProvider = _gameProvider;
+			Images = new Dictionary<ETextureSet, Image>();
+			Tiles = new List<OpenTKTile>();
 			OpenTKTile.ResourceProvider = this;
 		}
 
 		public Image this[ETextureSet _set]
 		{
-			get { return m_surfaces[_set]; }
+			get { return Images[_set]; }
 		}
 
 		public Font this[EFonts _font]
@@ -27,11 +26,15 @@ namespace OpenTKUi
 			get { return m_fonts[_font]; }
 		}
 
+		public List<OpenTKTile> Tiles { get; private set; }
+
+		public Dictionary<ETextureSet, Image> Images { get; private set; }
+
 		#region IDisposable Members
 
 		public void Dispose()
 		{
-			foreach (var image in m_surfaces.Values)
+			foreach (var image in Images.Values)
 			{
 				image.Dispose();
 			}
@@ -44,7 +47,7 @@ namespace OpenTKUi
 		public void RegisterTexture(ETextureSet _eTextureSet, string _fileName)
 		{
 			var image = new Image(_fileName);
-			m_surfaces.Add(_eTextureSet, image);
+			Images.Add(_eTextureSet, image);
 		}
 
 		public void RegisterFont(EFonts _font, string _fileName, int _pointSize)
@@ -54,7 +57,9 @@ namespace OpenTKUi
 
 		public ATile CreateTile(ETextureSet _eTextureSet, int _col, int _row, Color _color)
 		{
-			return new OpenTKTile(_eTextureSet, _col, _row, _color);
+			var openTKTile = new OpenTKTile(_eTextureSet, _col, _row, _color);
+			Tiles.Add(openTKTile);
+			return openTKTile;
 		}
 
 		public ATile CreateTile(int _col, int _row, Color _color)

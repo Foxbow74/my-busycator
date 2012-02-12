@@ -64,7 +64,7 @@ namespace OpenTKUi
 			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite,
 			                           PixelFormat.Format32bppArgb);
 
-			FillBackgroundByTransparentColor(data);
+			FillBackgroundByTransparentColor(data, Color.Empty);
 
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
 			              OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
@@ -77,22 +77,44 @@ namespace OpenTKUi
 			                           PixelFormat.Format32bppArgb);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
 			              OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-			Bitmap.UnlockBits(data);
 			GL.Finish();
+			Bitmap.UnlockBits(data);
 		}
 
-		private unsafe void FillBackgroundByTransparentColor(BitmapData _data)
+		public unsafe void ReplaceColor(Color _color, Color _byColor)
 		{
-			var length = _data.Stride*Height/4;
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int)Width, (int)Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
-			var ptr1 = (int*) _data.Scan0.ToPointer();
+			var length = data.Stride * Height / 4;
+			var ptr1 = (int*)data.Scan0.ToPointer();
+	
+			var argb = _byColor.ToArgb();
+			var tr = _color.ToArgb();
+
+			while ((length--) > 0)
+			{
+				if (*ptr1 == tr)
+				{
+					*ptr1 = argb;
+				}
+				ptr1++;
+			}
+
+			Bitmap.UnlockBits(data);
+		}
+
+		private unsafe void FillBackgroundByTransparentColor(BitmapData _data, Color _color)
+		{
+			var length = _data.Stride * Height / 4;
+			var ptr1 = (int*)_data.Scan0.ToPointer();
+			var argb = _color.ToArgb();
 
 			var tr = *ptr1;
 			while ((length--) > 0)
 			{
 				if (*ptr1 == tr)
 				{
-					*ptr1 = 255;
+					*ptr1 = argb;
 				}
 				ptr1++;
 			}

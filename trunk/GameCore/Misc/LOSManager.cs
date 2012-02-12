@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Mapping;
 
@@ -8,7 +7,7 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 15;
+		internal const int RADIUS = 30;
 		const float DIVIDER = 6f;
 		const float MIN_VISIBILITY = 0.05f;
 
@@ -28,7 +27,6 @@ namespace GameCore.Misc
 			{
 				for (var dj = -DIVIDER / 2 + 1; dj < DIVIDER / 2; dj++)
 				{
-					Debug.WriteLine(di + ", " + dj);
 					var dv = new Vector2(di, dj) / DIVIDER;
 					if (dv.Length() > Math.Sqrt(2)) continue;
 					dVectors.Add(dv);
@@ -37,7 +35,7 @@ namespace GameCore.Misc
 
 			var dividedPart = 1f / dVectors.Count;
 
-			for (var i = -RADIUS; i <= RADIUS; ++i)
+			for (var i = RADIUS; i >= -RADIUS; --i)
 			{
 				for (var j = -RADIUS; j <= RADIUS; ++j)
 				{

@@ -18,6 +18,7 @@ namespace OpenTKUi
 		private readonly int m_tileSizeY;
 		private OpenTKDrawHelper m_drawHelper;
 		private OpenTKResourceProvider m_resourceProvider;
+		private TileMapRenderer m_tileMapRenderer;
 
 		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
 			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX), GraphicsMode.Default, "Open TK")
@@ -67,6 +68,19 @@ namespace OpenTKUi
 			get { return Focused; }
 		}
 
+		TileMapRenderer TileMapRenderer
+		{
+			get
+			{
+				if (m_tileMapRenderer == null)
+				{
+					m_tileMapRenderer = new TileMapRenderer(Width, Height);
+					OpenTKTile.TileMapRenderer = m_tileMapRenderer;
+				}
+				return m_tileMapRenderer;
+			}
+		}
+
 		public void DrawTextLayer()
 		{
 			m_drawHelper.DrawTextBitmap();
@@ -77,10 +91,9 @@ namespace OpenTKUi
 		protected override void OnLoad(EventArgs _e)
 		{
 			m_core.Init();
-			m_resourceProvider = new OpenTKResourceProvider(this);
+			m_resourceProvider = new OpenTKResourceProvider();
 			m_drawHelper = new OpenTKDrawHelper(m_resourceProvider, this);
 		}
-
 
 		protected override void OnUnload(EventArgs _e)
 		{
@@ -88,13 +101,34 @@ namespace OpenTKUi
 			m_drawHelper.Dispose();
 		}
 
-
 		protected override void OnResize(EventArgs _e)
 		{
 			m_core.Reset();
 			m_core.Resize(Width, Height);
 			m_drawHelper.Resize(Width, Height);
+			if(m_tileMapRenderer!=null)
+			{
+				m_tileMapRenderer.Dispose();
+				m_tileMapRenderer = null;
+			}
 			base.OnResize(_e);
+		}
+
+		protected override void OnUpdateFrame(FrameEventArgs e)
+		{
+			base.OnUpdateFrame(e);
+			if (TileMapRenderer.ResourceProvider == null)
+			{
+				TileMapRenderer.Init(m_tileSizeX, m_tileSizeY, m_resourceProvider);
+			}
+			TileMapRenderer.Iteration++;
+		}
+
+		protected virtual void OnRenderFinished()
+		{
+			//Clear(Color.Red);
+			TileMapRenderer.Draw();
+			SwapBuffers();
 		}
 
 		private void KeyboardKeyUp(object _sender, KeyboardKeyEventArgs _e)

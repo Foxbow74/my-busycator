@@ -214,7 +214,7 @@ namespace GameUi
 
 		public void Draw()
 		{
-			if (m_needRedraws < 1) return;
+			//if (m_needRedraws < 1) return;
 			m_needRedraws--;
 
 

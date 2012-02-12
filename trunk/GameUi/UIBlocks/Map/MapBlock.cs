@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
+﻿using System.Drawing;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks.Map
 {
@@ -59,34 +55,26 @@ namespace GameUi.UIBlocks.Map
 
 		private void DrawVisibleCells(int _centerX, int _centerY)
 		{
-			IEnumerable<Tuple<Point, float>> visibleCelss;
-
-			using (new Profiler("GetVisibleCelss"))
+			var visibleCelss = m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY);
+			foreach (var tuple in visibleCelss)
 			{
-				visibleCelss = m_losManager.GetVisibleCelss(m_mapCells, _centerX, _centerY);
-			}
-
-			using (new Profiler("DrawVisibleCells"))
-			{
-				foreach (var tuple in visibleCelss)
+				var pnt = tuple.Item1;
+				var mapCell = m_mapCells[pnt.X, pnt.Y];
+				var visibility = tuple.Item2;
+				
+				//if(visibility<FOG_VISIBILITY_LOWEST) continue;
+				
+				var tile = mapCell.Tile.GetTile();
+				if (tile == null)
 				{
-					var pnt = tuple.Item1;
-					var mapCell = m_mapCells[pnt.X, pnt.Y];
-					var visibility = tuple.Item2;
-
-					var tile = mapCell.Tile.GetTile();
-					if(tile==null)
-					{
-						tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
-					}
-					var color = m_foggedBackColor.Lerp(tile.Color, visibility);
-					tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
-
-					if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
-					mapCell.IsVisibleNow = true;
-
-					UpdateFogCell(mapCell, tile, color);
+					tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 				}
+
+				var color = m_foggedBackColor.Lerp(tile.Color, visibility);
+				tile.DrawAtCell(pnt.X + ContentRectangle.Left, pnt.Y + ContentRectangle.Top, color);
+
+				if (!mapCell.IsSeenBefore) mapCell.SetIsSeenBefore();
+				mapCell.IsVisibleNow = true;
 			}
 		}
 	}
