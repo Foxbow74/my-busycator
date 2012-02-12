@@ -7,7 +7,7 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 30;
+		internal const int RADIUS = 20;
 		const float DIVIDER = 6f;
 		const float MIN_VISIBILITY = 0.05f;
 

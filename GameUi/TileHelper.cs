@@ -228,24 +228,23 @@ namespace GameUi
 			return ts[_index];
 		}
 
-		private static void DrawAtPoint(this ATile _tile, int _x, int _y, Color _color)
-		{
-			if (_tile == null) return;
-			_tile.Draw(_x, _y, _color);
-		}
+		//private static void DrawAtPoint(this ATile _tile, int _x, int _y, Color _color)
+		//{
+		//    if (_tile == null) return;
+		//    _tile.Draw(_x, _y, _color);
+		//}
 
 		public static void DrawAtCell(this ATile _tile, int _col, int _row)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_col*ATile.Size, _row*ATile.Size, _tile.Color);
+			_tile.Draw(_col, _row, _tile.Color);
 		}
 
 		public static void DrawAtCell(this ATile _tile, int _col, int _row, Color _color)
 		{
 			if (_tile == null) return;
-			_tile.DrawAtPoint(_col*ATile.Size, _row*ATile.Size, _color);
+			_tile.Draw(_col, _row, _color);
 		}
-
 
 		public static void FogIt(this ATile _tile, int _col, int _row, Color _color)
 		{
@@ -253,24 +252,9 @@ namespace GameUi
 			_tile.DrawFog(_col, _row, _color);
 		}
 
-		public static void DrawAtPoint(this ETiles _tile, int _x, int _y, Color _color)
-		{
-			DrawAtPoint(m_tiles[_tile], _x, _y, _color);
-		}
-
 		public static void DrawAtCell(this ETiles _tile, int _col, int _row)
 		{
 			DrawAtCell(m_tiles[_tile], _col, _row);
-		}
-
-		public static void DrawAtCell(this ETiles _tile, Point _point)
-		{
-			DrawAtCell(m_tiles[_tile], _point.X, _point.Y);
-		}
-
-		public static void DrawAtCell(this ETiles _tile, int _col, int _row, Color _color)
-		{
-			DrawAtCell(m_tiles[_tile], _col, _row, _color);
 		}
 
 		public static void DrawAtCell(this ETiles _tile, Point _point, Color _color)
@@ -278,24 +262,9 @@ namespace GameUi
 			DrawAtCell(m_tiles[_tile], _point.X, _point.Y, _color);
 		}
 
-		public static void DrawAtPoint(this EFrameTiles _tile, int _x, int _y, Color _color)
-		{
-			DrawAtPoint(m_frameTiles[_tile], _x, _y, _color);
-		}
-
 		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row)
 		{
 			DrawAtCell(m_frameTiles[_tile], _col, _row);
-		}
-
-		public static void DrawAtCell(this EFrameTiles _tile, Point _point)
-		{
-			DrawAtCell(m_frameTiles[_tile], _point.X, _point.Y);
-		}
-
-		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row, Color _color)
-		{
-			DrawAtCell(m_frameTiles[_tile], _col, _row, _color);
 		}
 
 		public static void Draw(Frame _frame, int _col, int _row, int _width, int _height)

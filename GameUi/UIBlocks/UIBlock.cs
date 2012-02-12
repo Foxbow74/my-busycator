@@ -65,11 +65,9 @@ namespace GameUi.UIBlocks
 			MessageManager.SendMessage(this, new SystemMessage(SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK));
 		}
 
-		protected virtual bool ClearTextWhenClear{get { return false; }}
-
 		public virtual void DrawBackground()
 		{
-			TileHelper.DrawHelper.Clear(new Rectangle(Rectangle.Left*ATile.Size, Rectangle.Top*ATile.Size, Rectangle.Width*ATile.Size,Rectangle.Height*ATile.Size), BackgroundColor, ClearTextWhenClear);
+			TileHelper.DrawHelper.ClearTiles(new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width,Rectangle.Height), BackgroundColor);
 		}
 
 		public void Dispose()
