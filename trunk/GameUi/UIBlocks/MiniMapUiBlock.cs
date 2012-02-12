@@ -60,7 +60,7 @@ namespace GameUi.UIBlocks
 						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
 						(int) Math.Round(rectSize.X),
 						(int) Math.Round(rectSize.Y));
-					DrawHelper.Clear(rect, color, false);
+					DrawHelper.ClearText(rect, color);
 				}
 
 				DrawLine("[z|Esc] - выход", Color, TextLinesMax - 1, 21, EAlignment.RIGHT);

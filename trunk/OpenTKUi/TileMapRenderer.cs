@@ -10,7 +10,7 @@ namespace OpenTKUi
 		private static int m_tileSizeY;
 		private readonly int m_screenWidth;
 		private readonly int m_screenHeight;
-		private TileInfo[,] m_tiles;
+		private readonly TileInfo[,] m_tiles;
 		static private int m_tilesInRow;
 		static private int m_tilesInColumn;
 		private static Image m_img;
@@ -128,6 +128,17 @@ namespace OpenTKUi
 			info.IsFogged = true;
 			info.FogColor = _color;
 		}
+
+		public void Clear(Rectangle _rectangle)
+		{
+			for (var i = 0; i < m_tilesInRow; i++)
+			{
+				for (var j = 0; j < m_tilesInColumn; j++)
+				{
+					m_tiles[i, j].Clear();
+				}
+			}
+		}
 	}
 
 	class TileInfo
@@ -158,7 +169,7 @@ namespace OpenTKUi
 
 		public void SendData(int _iteration, bool _colored,bool _fogOnly)
 		{
-			if (Iteration != _iteration) return;
+			if (Iteration != _iteration || Tile==null) return;
 			if (_fogOnly && !IsFogged) return;
 
 			var texcoords = Tile.Texcoords;
@@ -188,6 +199,12 @@ namespace OpenTKUi
 			GL.Vertex2(m_x + m_width, m_y + m_height);
 			GL.TexCoord2(texcoords[3].U, texcoords[3].V);
 			GL.Vertex2(m_x, m_y + m_height);
+		}
+
+		public void Clear()
+		{
+			Tile = null;
+			IsFogged = false;
 		}
 	}
 }

@@ -14,8 +14,6 @@ namespace OpenTKUi
 		private readonly Core m_core = new Core();
 		private readonly KeyState m_keyState = new KeyState();
 
-		private readonly int m_tileSizeX;
-		private readonly int m_tileSizeY;
 		private OpenTKDrawHelper m_drawHelper;
 		private OpenTKResourceProvider m_resourceProvider;
 		private TileMapRenderer m_tileMapRenderer;
@@ -23,8 +21,8 @@ namespace OpenTKUi
 		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
 			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX), GraphicsMode.Default, "Open TK")
 		{
-			m_tileSizeX = _tileSizeX;
-			m_tileSizeY = _tileSizeY;
+			TileSizeX = _tileSizeX;
+			TileSizeY = _tileSizeY;
 			m_core.Reset();
 			Keyboard.KeyDown += KeyboardKeyDown;
 			Keyboard.KeyUp += KeyboardKeyUp;
@@ -55,12 +53,12 @@ namespace OpenTKUi
 
 		public int WidthInCells
 		{
-			get { return (int) Math.Round((double) Width/m_tileSizeX); }
+			get { return (int) Math.Round((double) Width/TileSizeX); }
 		}
 
 		public int HeightInCells
 		{
-			get { return (int) Math.Round((double) Height/m_tileSizeY); }
+			get { return (int) Math.Round((double) Height/TileSizeY); }
 		}
 
 		public bool IsActive
@@ -68,7 +66,7 @@ namespace OpenTKUi
 			get { return Focused; }
 		}
 
-		TileMapRenderer TileMapRenderer
+		internal TileMapRenderer TileMapRenderer
 		{
 			get
 			{
@@ -80,6 +78,10 @@ namespace OpenTKUi
 				return m_tileMapRenderer;
 			}
 		}
+
+		public int TileSizeX { get; private set; }
+
+		public int TileSizeY { get; private set; }
 
 		public void DrawTextLayer()
 		{
@@ -93,12 +95,14 @@ namespace OpenTKUi
 			m_core.Init();
 			m_resourceProvider = new OpenTKResourceProvider();
 			m_drawHelper = new OpenTKDrawHelper(m_resourceProvider, this);
+			//TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
 		}
 
 		protected override void OnUnload(EventArgs _e)
 		{
 			m_resourceProvider.Dispose();
 			m_drawHelper.Dispose();
+			m_tileMapRenderer.Dispose();
 		}
 
 		protected override void OnResize(EventArgs _e)
@@ -108,7 +112,7 @@ namespace OpenTKUi
 			m_drawHelper.Resize(Width, Height);
 			if(m_tileMapRenderer!=null)
 			{
-				m_tileMapRenderer.Dispose();
+				TileMapRenderer.Dispose();
 				m_tileMapRenderer = null;
 			}
 			base.OnResize(_e);
@@ -119,7 +123,7 @@ namespace OpenTKUi
 			base.OnUpdateFrame(e);
 			if (TileMapRenderer.ResourceProvider == null)
 			{
-				TileMapRenderer.Init(m_tileSizeX, m_tileSizeY, m_resourceProvider);
+				TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
 			}
 			TileMapRenderer.Iteration++;
 		}

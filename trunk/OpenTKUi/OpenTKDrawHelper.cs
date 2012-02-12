@@ -10,13 +10,14 @@ namespace OpenTKUi
 	internal class OpenTKDrawHelper : IDrawHelper, IDisposable
 	{
 		private readonly OpenTKResourceProvider m_resourceProvider;
-
+		private OpenTKGameProvider m_gameProvider;
 		private bool m_isTextBitmapChanged;
 
 		private Image m_textImage;
 
 		public OpenTKDrawHelper(OpenTKResourceProvider _resourceProvider, OpenTKGameProvider _gameProvider)
 		{
+			m_gameProvider = _gameProvider;
 			m_resourceProvider = _resourceProvider;
 			var bitmap = new Bitmap(_gameProvider.Width, _gameProvider.Height, PixelFormat.Format32bppArgb);
 			m_textImage = new Image(bitmap, false);
@@ -33,26 +34,17 @@ namespace OpenTKUi
 
 		#region IDrawHelper Members
 
-		public void Clear(Rectangle _rectangle, Color _backgroundColor, bool _clearText)
+		public void ClearTiles(Rectangle _rectangle, Color _backgroundColor)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
-			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
-			GL.Vertex2(_rectangle.Left, _rectangle.Top);
-			GL.Vertex2(_rectangle.Right, _rectangle.Top);
-			GL.Vertex2(_rectangle.Right, _rectangle.Bottom);
-			GL.Vertex2(_rectangle.Left, _rectangle.Bottom);
+			GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
+			GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
+			GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
+			GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
 			GL.End();
-			if (_clearText)
-			{
-				using (var gr = Graphics.FromImage(m_textImage.Bitmap))
-				{
-					gr.Clip = new Region(new Rectangle(_rectangle.Left, _rectangle.Top, _rectangle.Width, _rectangle.Height));
-					gr.Clear(Color.Empty);
-				}
-				m_isTextBitmapChanged = true;
-			}
+			m_gameProvider.TileMapRenderer.Clear(_rectangle);
 		}
 
 		public SizeF MeasureString(EFonts _font, string _string)
@@ -80,14 +72,25 @@ namespace OpenTKUi
 			m_isTextBitmapChanged = true;
 		}
 
+		public void ClearText(Rectangle _rectangle, Color _backgroundColor)
+		{
+			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
+			{
+				gr.Clip = new Region(_rectangle);
+				gr.Clear(Color.Empty);
+			}
+			m_isTextBitmapChanged = true;
+		}
+
 		#endregion
 
-		public void ClearText(Rectangle _rectangle, Color _backgroundColor)
+		public void ClearText()
 		{
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
 				gr.Clear(Color.Empty);
 			}
+			m_isTextBitmapChanged = true;
 		}
 
 		public void DrawTextBitmap()

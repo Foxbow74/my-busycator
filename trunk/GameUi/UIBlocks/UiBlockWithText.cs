@@ -22,17 +22,15 @@ namespace GameUi.UIBlocks
 			get { return (int)Math.Round((double)ContentRectangle.Height * ATile.Size / LineHeight); }
 		}
 
-		protected override bool ClearTextWhenClear
+		public override void DrawBackground()
 		{
-			get
-			{
-				return true;
-			}
+			base.DrawBackground();
+			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
 		}
 
 		protected override void OnClosing(ConsoleKey _consoleKey)
 		{
-			TileHelper.DrawHelper.Clear(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor, true);
+			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
 			base.OnClosing(_consoleKey);
 		}
 
