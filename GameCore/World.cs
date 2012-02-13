@@ -205,7 +205,16 @@ namespace GameCore
 
 		internal WorldLayer GenerateNewLayer(Creature _creature, Stair _stair)
 		{
-			return new DungeonLayer(_creature.Layer, _creature.Coords, _stair);
+			var rnd = new Random(_creature.MapBlock.RandomSeed);
+			switch (rnd.Next(2))
+			{
+				case 0:
+					return new DungeonLayer(_creature.Layer, _creature.Coords, _stair);
+				case 1:
+					return new TreeMazeDungeonLayer(_creature.Layer, _creature.Coords, _stair);
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 	}
 }
