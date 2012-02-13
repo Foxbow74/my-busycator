@@ -7,19 +7,19 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 20;
+		internal const int RADIUS = 10;
 		const float DIVIDER = 6f;
 		const float MIN_VISIBILITY = 0.05f;
 
-		private readonly List<LosCell2> m_inOrder;
-		private readonly Dictionary<LosCell2, float> m_visibles;
+		private readonly List<LosCell> m_inOrder;
+		private readonly Dictionary<LosCell, float> m_visibles;
 
-		private readonly LosCell2 m_root;
+		private readonly LosCell m_root;
 
 		public LosManager()
 		{
-			m_root = new LosCell2(Point.Zero);
-			var alreadyDone= new Dictionary<Point, LosCell2> { { Point.Zero, m_root } };
+			m_root = new LosCell(Point.Zero);
+			var alreadyDone= new Dictionary<Point, LosCell> { { Point.Zero, m_root } };
 
 
 			var dVectors = new List<Vector2>();
@@ -43,10 +43,10 @@ namespace GameCore.Misc
 
 					if (pnt.Equals(Point.Zero)) continue;
 
-					LosCell2 cell;
+					LosCell cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
 					{
-						cell = new LosCell2(pnt);
+						cell = new LosCell(pnt);
 						if (cell.Point.Lenght > RADIUS)
 						{
 							continue;
@@ -67,22 +67,22 @@ namespace GameCore.Misc
 							parentPoint = point;
 							break;
 						}
-						LosCell2 parent;
+						LosCell parent;
 						if (!alreadyDone.TryGetValue(parentPoint, out parent))
 						{
-							parent = new LosCell2(parentPoint);
+							parent = new LosCell(parentPoint);
 							alreadyDone.Add(parentPoint, parent);
 						}
 						parent.Add(pnt, dividedPart, cell);
 					}
 				}
-
 			}
 
 			foreach (var cell in alreadyDone.Values)
 			{
 				cell.UpdateByDistance();
 			}
+
 			m_inOrder = alreadyDone.Values.OrderByDescending(_cell2 => _cell2.DistanceCoefficient).ToList();
 			m_visibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => 0f);
 		}
@@ -123,19 +123,21 @@ namespace GameCore.Misc
 		}
 	}
 
-	internal class LosCell2
+	internal class LosCell
 	{
-		public LosCell2(Point _point)
+		public LosCell(Point _point)
 		{
 			Point = _point;
-			var r = 1f - _point.Lenght / ((float)(LosManager.RADIUS * Math.Sqrt(2)));
-			DistanceCoefficient = Math.Min(r, 1f);
+			var r = _point.Lenght / LosManager.RADIUS;
+			var fi = Math.Asin(r);
+			var dc = (float)Math.Cos(fi);
+			DistanceCoefficient = Math.Min(dc, 1f);
 		}
 
 		public float DistanceCoefficient { get; private set; }
 
 		public Point Point { get; private set; }
-		public Dictionary<LosCell2, float> Cells
+		public Dictionary<LosCell, float> Cells
 		{
 			get { return m_cells; }
 		}
@@ -145,9 +147,9 @@ namespace GameCore.Misc
 			return string.Format("{0}*{2} cells:{1}", Point, Cells.Count, DistanceCoefficient);
 		}
 
-		private readonly Dictionary<LosCell2, float> m_cells = new Dictionary<LosCell2, float>();
+		private readonly Dictionary<LosCell, float> m_cells = new Dictionary<LosCell, float>();
 
-		public void Add(Point _pnt, float _closedByParent, LosCell2 _cell)
+		public void Add(Point _pnt, float _closedByParent, LosCell _cell)
 		{
 			float value;
 			if(m_cells.TryGetValue(_cell, out value))
