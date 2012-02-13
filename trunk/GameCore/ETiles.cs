@@ -18,7 +18,8 @@ namespace GameCore
 		[Tiles(0.2f)] BRICK_WINDOW,
 		[Tiles(0.6f)] MASHROOM,
 		[Tiles(0f)] GROUND,
-		[Tiles(0f)] STONE_FLOOR,
+		[Tiles(0f)]STONE_FLOOR,
+		[Tiles(0f)]STONE_WALL,
 
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,

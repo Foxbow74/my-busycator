@@ -12,6 +12,8 @@ namespace GameUi.UIBlocks.Map
 			{
 				case ETerrains.STONE_FLOOR:
 					return ETiles.STONE_FLOOR.GetTile();
+				case ETerrains.STONE_WALL:
+					return ETiles.STONE_WALL.GetTile();
 				case ETerrains.GROUND:
 					return ETiles.GROUND.GetTile();
 				case ETerrains.GRASS:

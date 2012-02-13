@@ -38,10 +38,10 @@ namespace GameCore.Mapping.Layers
 
 			for (var i = 0; i < v;++i )
 			{
-				block.Map[i, 0] = ETerrains.BRICK_WALL;
-				block.Map[0, i] = ETerrains.BRICK_WALL;
-				block.Map[MapBlock.SIZE - 1 - i, 0] = ETerrains.BRICK_WALL;
-				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.BRICK_WALL;
+				block.Map[i, 0] = ETerrains.STONE_WALL;
+				block.Map[0, i] = ETerrains.STONE_WALL;
+				block.Map[MapBlock.SIZE - 1 - i, 0] = ETerrains.STONE_WALL;
+				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 			return block;
 		}

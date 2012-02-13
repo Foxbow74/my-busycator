@@ -62,6 +62,7 @@
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
+    <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\WorldMapGenerator.cs" />
     <Compile Include="Messages\AskDirectionMessage.cs" />
