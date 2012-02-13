@@ -4,6 +4,7 @@ using System;
 using System.Drawing;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 
 #endregion
 
@@ -11,7 +12,8 @@ namespace GameUi.UIBlocks
 {
 	internal class ConfirmQuitBlock : UiBlockWithText
 	{
-		public ConfirmQuitBlock() : base(new Rectangle(2, 2, 15, 5), Frame.SimpleFrame, Color.Black)
+		public ConfirmQuitBlock()
+			: base(new Rectangle(2, 2, 15, 5), Frame.SimpleFrame, Color.Black.ToFColor())
 		{
 			ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top, ContentRectangle.Width - 1*2,
 			                                 ContentRectangle.Height);
@@ -19,7 +21,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), Color.White, 1, 0, EAlignment.CENTER);
+			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), Color.White.ToFColor(), 1, 0, EAlignment.CENTER);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

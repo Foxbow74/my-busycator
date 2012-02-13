@@ -2,6 +2,7 @@
 using System.Drawing;
 using GameCore.Creatures;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -33,9 +34,9 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White, 0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
+			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White.ToFColor(), 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", ForeColor, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 		}
 
 		protected override void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)

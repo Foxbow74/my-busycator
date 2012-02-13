@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using GameCore;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenTKUi
@@ -83,6 +84,9 @@ namespace OpenTKUi
 
 		public void Draw()
 		{
+			GL.BlendEquation(BlendEquationMode.FuncAdd);
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+			DrawBackgrounds();
 			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
 			GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
 			DrawQuads(false, false);
@@ -92,7 +96,19 @@ namespace OpenTKUi
 			DrawQuads(false, true);
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			DrawQuads(true, true);
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
+		}
+
+		private void DrawBackgrounds()
+		{
+			GL.Begin(BeginMode.Quads);
+			for (var i = 0; i < m_tilesInRow; i++)
+			{
+				for (var j = 0; j < m_tilesInColumn; j++)
+				{
+					m_tiles[i, j].DrawBackground();
+				}
+			}
+			GL.End();
 		}
 
 		private void DrawQuads(bool _colored, bool _drawFog)
@@ -102,7 +118,7 @@ namespace OpenTKUi
 			{
 				for (var j = 0; j < m_tilesInColumn; j++)
 				{
-					m_tiles[i, j].SendData(Iteration, _colored, _drawFog);
+					m_tiles[i, j].Draw(Iteration, _colored, _drawFog);
 				}
 			}
 			GL.End();
@@ -113,29 +129,27 @@ namespace OpenTKUi
 			m_img.Dispose();
 		}
 
-		public void DrawTile(OpenTKTile _tile, int _x, int _y, Color _color)
+		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, FColor _background)
 		{
 			var info = m_tiles[_x, _y];
 			info.IsFogged = false;
-			info.Iteration = Iteration;
 			info.Tile = _tile;
-			info.Color = _color;
+			info.Forecolor = _color;
+			info.Background = _background;
 		}
 
-		public void  FogTile(OpenTKTile _openTKTile, int _col, int _row, Color _color)
+		public void  FogTile(int _col, int _row)
 		{
-			var info = m_tiles[_col, _row];
-			info.IsFogged = true;
-			info.FogColor = _color;
+			m_tiles[_col, _row].IsFogged = true;
 		}
 
-		public void Clear(Rectangle _rectangle)
+		public void Clear(Rectangle _rectangle, FColor _backgroundColor)
 		{
-			for (var i = 0; i < m_tilesInRow; i++)
+			for (var i = _rectangle.Left; i < _rectangle.Right; i++)
 			{
-				for (var j = 0; j < m_tilesInColumn; j++)
+				for (var j = _rectangle.Top; j < _rectangle.Bottom; j++)
 				{
-					m_tiles[i, j].Clear();
+					m_tiles[i, j].Clear(_backgroundColor);
 				}
 			}
 		}
@@ -152,12 +166,11 @@ namespace OpenTKUi
 
 		public bool IsVisible { get; set; }
 		public OpenTKTile Tile { get; set; }
-		public int Iteration { get; set; }
-		public Color Color { get; set; }
+		public FColor Forecolor { get; set; }
 
 		public bool IsFogged { get; set; }
 
-		public Color FogColor { get; set; }
+		public FColor Background { get; set; }
 
 		public TileInfo(int _x, int _y, int _width, int _height)
 		{
@@ -167,28 +180,38 @@ namespace OpenTKUi
 			m_height = _height;
 		}
 
-		public void SendData(int _iteration, bool _colored,bool _fogOnly)
+		public void Draw(int _iteration, bool _colored, bool _fogOnly)
 		{
-			if (Iteration != _iteration || Tile==null) return;
+			if (Tile == null && !_fogOnly) return;
 			if (_fogOnly && !IsFogged) return;
 
-			var texcoords = Tile.Texcoords;
-			var color = Color;
+
+			OpenTKTile.TexCoord[] texcoords;
+			var color = Forecolor;
 			if (_fogOnly)
 			{
 				if (IsFogged)
 				{
 					texcoords = FogTexCoords;
-					color = FogColor;
+					color = FColor.Black;
+					//return;
 				}
-			}
-			if(_colored)
-			{
-				GL.Color4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f);
+				else
+				{
+					return;
+				}
 			}
 			else
 			{
-				GL.Color4(1f, 1f, 1f, color.A/255f);
+				texcoords = Tile.Texcoords;
+			}
+			if(_colored)
+			{
+				GL.Color4(color.R, color.G, color.B, color.A);
+			}
+			else
+			{
+				GL.Color4(1f, 1f, 1f, color.A);
 			}
 			
 			GL.TexCoord2(texcoords[0].U, texcoords[0].V);
@@ -201,10 +224,26 @@ namespace OpenTKUi
 			GL.Vertex2(m_x, m_y + m_height);
 		}
 
-		public void Clear()
+		public void DrawBackground()
+		{
+			GL.Color4(Background.R, Background.G, Background.B, Background.A);
+			GL.Vertex2(m_x, m_y);
+			GL.Vertex2(m_x + m_width, m_y);
+			GL.Vertex2(m_x + m_width, m_y + m_height);
+			GL.Vertex2(m_x, m_y + m_height);
+		}
+
+
+		public void SendVertices()
+		{
+			
+		}
+
+		public void Clear(FColor _backgroundColor)
 		{
 			Tile = null;
-			IsFogged = false;
+			IsFogged = true;
+			Background = _backgroundColor;
 		}
 	}
 }

@@ -35,6 +35,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Creatures\Inventory.cs" />
     <Compile Include="Creatures\Missile.cs" />
     <Compile Include="EMapBlockTypes.cs" />
+    <Compile Include="FColor.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />

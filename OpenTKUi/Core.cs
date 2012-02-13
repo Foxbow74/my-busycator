@@ -43,9 +43,9 @@ namespace OpenTKUi
 		/// <summary>
 		/// 	Sets color to be cleared on Clear() call.
 		/// </summary>
-		public void SetClearColor(byte _r, byte _g, byte _b)
+		public void SetClearColor(float _r, float _g, float _b)
 		{
-			GL.ClearColor(_r/255.0f, _g/255.0f, _b/255.0f, 0.0f);
+			GL.ClearColor(_r, _g, _b, 0.0f);
 		}
 
 

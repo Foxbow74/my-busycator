@@ -5,6 +5,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -15,7 +16,7 @@ namespace GameUi.UIBlocks.Items
 		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
 
 		public EquipmentUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.SimpleFrame, Color.White, EFonts.COMMON)
+			: base(_rectangle, Frame.SimpleFrame, System.Drawing.Color.White.ToFColor())
 		{
 			m_intelligent = World.TheWorld.Avatar;
 			Rebuild();
@@ -39,9 +40,9 @@ namespace GameUi.UIBlocks.Items
 
 		public override void DrawContent()
 		{
-			DrawLine("СНАРЯЖЕНИЕ", Color, 0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
+			DrawLine("СНАРЯЖЕНИЕ", ForeColor, 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", ForeColor, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 
 			var line = 4;
 			foreach (var linePresenter in m_presenters)
@@ -51,7 +52,7 @@ namespace GameUi.UIBlocks.Items
 
 			DrawLine(
 				"[A-" + m_presenters.Max(_presenter => _presenter.C) +
-				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", Color, TextLinesMax - 2, 20,
+				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", ForeColor, TextLinesMax - 2, 20,
 				EAlignment.CENTER);
 		}
 
@@ -109,19 +110,19 @@ namespace GameUi.UIBlocks.Items
 
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
-			_uiBlock.DrawLine(C.ToString(), Color.White, _line, 20, EAlignment.LEFT);
+			_uiBlock.DrawLine(C.ToString(), Color.White.ToFColor(), _line, 20, EAlignment.LEFT);
 			var indent =
-				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray, _line, 40,
+				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray.ToFColor(), _line, 40,
 				                  EAlignment.LEFT) + 2;
 			MaxIndent = Math.Max(MaxIndent, indent);
-			indent = _uiBlock.DrawLine(":", Color.DarkGray, _line, MaxIndent, EAlignment.LEFT) + 5;
+			indent = _uiBlock.DrawLine(":", Color.DarkGray.ToFColor(), _line, MaxIndent, EAlignment.LEFT) + 5;
 			if (Item == null)
 			{
-				_uiBlock.DrawLine("-", Color.DarkGray, _line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine("-", Color.DarkGray.ToFColor(), _line, indent, EAlignment.LEFT);
 			}
 			else
 			{
-				_uiBlock.DrawLine(Item.Name, Color.DarkGray, _line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine(Item.Name, Color.DarkGray.ToFColor(), _line, indent, EAlignment.LEFT);
 			}
 		}
 

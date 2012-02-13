@@ -22,7 +22,7 @@ namespace GameUi
 		private bool m_isAutoRepeateMode;
 		private EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
 
-		private MainBlock m_mainBlock;
+		private MainUiBlock m_mainUiBlock;
 		private DateTime m_moveKeyHoldedSince;
 		private int m_needRedraws = 2;
 
@@ -39,10 +39,10 @@ namespace GameUi
 			do
 			{
 				var pop = m_uiBlocks.Pop();
-				if (pop is MainBlock)
+				if (pop is MainUiBlock)
 				{
-					m_mainBlock = new MainBlock(_newWidthInCells, _newHeightInCells);
-					pop = m_mainBlock;
+					m_mainUiBlock = new MainUiBlock(_newWidthInCells, _newHeightInCells);
+					pop = m_mainUiBlock;
 				}
 				blocks.Push(pop);
 			} while (m_uiBlocks.Count > 0);
@@ -52,6 +52,8 @@ namespace GameUi
 				var pop = blocks.Pop();
 				m_uiBlocks.Push(pop);
 			} while (blocks.Count > 0);
+		
+			MessageManager.SendMessage(this, new WorldMessage(WorldMessage.EType.AVATAR_MOVE));
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
@@ -85,34 +87,34 @@ namespace GameUi
 			{
 				var mess = (AskSelectThingsMessage) _message;
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainBlock.Rectangle, mess.ItemDescriptors,
+				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainUiBlock.Rectangle, mess.ItemDescriptors,
 				                                                                         mess.Act, mess.Behavior)));
 			}
 			else if (_message is AskSelectThingsFromBackPackMessage)
 			{
 				var mess = (AskSelectThingsFromBackPackMessage) _message;
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainBlock.Rectangle, mess.Behavior,
+				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rectangle, mess.Behavior,
 				                                                                      mess.AllowedCategory, mess.Act)));
 			}
 			else if (_message is AskDirectionMessage)
 			{
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainBlock.Rectangle,
+				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rectangle,
 				                                                                          (AskDirectionMessage) _message)));
 			}
 			else if (_message is AskHowMuchMessage)
 			{
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainBlock.Messages.ContentRectangle,
+				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainUiBlock.Messages.ContentRectangle,
 				                                                                        (AskHowMuchMessage) _message)));
 			}
 			else if (_message is AskShootTargerMessage)
 			{
 				var askShootTargerMessage = (AskShootTargerMessage) _message;
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainBlock.Messages,
-				                                                                          m_mainBlock.Map.Rectangle,
+				                           new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainUiBlock.Messages,
+				                                                                          m_mainUiBlock.Map.Rectangle,
 				                                                                          askShootTargerMessage.MaxDistance,
 				                                                                          askShootTargerMessage.Act)));
 			}
@@ -124,9 +126,10 @@ namespace GameUi
 			UIBlock.Init(m_gameProvider.DrawHelper);
 			World.LetItBeeee();
 
-			m_mainBlock = new MainBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
-			m_uiBlocks.Push(m_mainBlock);
+			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
+			m_uiBlocks.Push(m_mainUiBlock);
 
+			MessageManager.SendMessage(this, new WorldMessage(WorldMessage.EType.AVATAR_MOVE));
 			MessageManager.SendMessage(this, " [?] - экран помощи");
 		}
 
@@ -197,7 +200,7 @@ namespace GameUi
 
 			if (m_pressed.Count > 0)
 			{
-				if (m_uiBlocks.Peek() != m_mainBlock || World.TheWorld.Avatar.NextAct == null)
+				if (m_uiBlocks.Peek() != m_mainUiBlock || World.TheWorld.Avatar.NextAct == null)
 				{
 					MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
 
@@ -206,7 +209,7 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainBlock)
+			if (m_uiBlocks.Peek() == m_mainUiBlock)
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}

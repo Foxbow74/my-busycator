@@ -7,7 +7,8 @@ namespace GameUi.UIBlocks
 {
 	internal class MiniMapUiBlock : UiBlockWithText
 	{
-		public MiniMapUiBlock(Rectangle _rectangle) : base(_rectangle, Frame.GoldFrame, Color.White, EFonts.COMMON)
+		public MiniMapUiBlock(Rectangle _rectangle)
+			: base(_rectangle, Frame.GoldFrame, Color.White.ToFColor())
 		{
 		}
 
@@ -44,13 +45,13 @@ namespace GameUi.UIBlocks
 					switch (type)
 					{
 						case EMapBlockTypes.NONE:
-							color = Color.Black;
+							color = System.Drawing.Color.Black;
 							break;
 						case EMapBlockTypes.GROUND:
-							color = Color.Brown;
+							color = System.Drawing.Color.Brown;
 							break;
 						case EMapBlockTypes.SEA:
-							color = Color.Blue;
+							color = System.Drawing.Color.Blue;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
@@ -60,10 +61,10 @@ namespace GameUi.UIBlocks
 						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
 						(int) Math.Round(rectSize.X),
 						(int) Math.Round(rectSize.Y));
-					DrawHelper.ClearText(rect, color);
+					DrawHelper.ClearText(rect, color.ToFColor());
 				}
 
-				DrawLine("[z|Esc] - выход", Color, TextLinesMax - 1, 21, EAlignment.RIGHT);
+				DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 1, 21, EAlignment.RIGHT);
 			}
 		}
 	}

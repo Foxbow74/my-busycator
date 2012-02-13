@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameCore.Misc;
+using System.Drawing;
 using GameCore.Objects.Furniture;
+using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
 {
@@ -44,6 +45,16 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 			return block;
+		}
+
+		public override FColor Ambient
+		{
+			get { return new FColor(Color.FromArgb(255, 0, 10, 0)); }
+		}
+
+		public override FColor Lighted
+		{
+			get { return new FColor(Color.FromArgb(255, 20, 250, 20)); }
 		}
 	}
 }

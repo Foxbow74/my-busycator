@@ -5,6 +5,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -25,7 +26,7 @@ namespace GameUi.UIBlocks.Items
 
 		protected ItemsSelectorUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior, Act _act,
 		                               IEnumerable<ThingDescriptor> _descriptors)
-			: base(_rectangle, Frame.GoldFrame, Color.Green)
+			: base(_rectangle, Frame.GoldFrame, Color.Green.ToFColor())
 		{
 			m_behavior = _behavior;
 			m_act = _act;
@@ -136,9 +137,9 @@ namespace GameUi.UIBlocks.Items
 			}
 			else
 			{
-				DrawLine("(ничего нет)", Color.White, line, 0, EAlignment.CENTER);
+				DrawLine("(ничего нет)", Color.White.ToFColor(), line, 0, EAlignment.CENTER);
 			}
-			DrawLine(JoinCommandCaptions(bottomString), Color, TextLinesMax - 2, 0, EAlignment.CENTER);
+			DrawLine(JoinCommandCaptions(bottomString), ForeColor, TextLinesMax - 2, 0, EAlignment.CENTER);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

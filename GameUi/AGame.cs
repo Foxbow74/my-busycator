@@ -1,4 +1,4 @@
-using System.Drawing;
+using GameCore;
 
 namespace GameUi
 {
@@ -12,7 +12,7 @@ namespace GameUi
 		bool IsActive { get; }
 		IResourceProvider ResourceProvider { get; }
 		KeyState KeyState { get; }
-		void Clear(Color _color);
+		void Clear(FColor _color);
 		void Exit();
 		void DrawTextLayer();
 	}

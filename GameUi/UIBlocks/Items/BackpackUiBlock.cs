@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -41,9 +42,9 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", Color.White, 0, 0, EAlignment.CENTER);
-			DrawLine("ВЕС:", Color, 2, 0, EAlignment.LEFT);
-			DrawLine("ДОСТУПНЫЙ ВЕС:", Color, 2, 0, EAlignment.RIGHT);
+			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", Color.White.ToFColor(), 0, 0, EAlignment.CENTER);
+			DrawLine("ВЕС:", ForeColor, 2, 0, EAlignment.LEFT);
+			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 		}
 	}
 }

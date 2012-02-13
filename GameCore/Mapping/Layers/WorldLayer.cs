@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using GameCore.Creatures;
-using GameCore.Misc;
+using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
 {
@@ -100,11 +101,15 @@ namespace GameCore.Mapping.Layers
 						{
 							continue;
 						}
-						_mapTiles[x, y] = new MapCell(block, new Point(i, j), new Point(worldX, worldY));
+						_mapTiles[x, y] = new MapCell(block, new Point(i, j), new Point(worldX, worldY));//{Lighted = Ambient};
 					}
 				}
 			}
 		}
+
+		public abstract FColor Ambient { get; }
+
+		public abstract FColor Lighted { get; }
 
 		public MapBlock GetMapBlock(Point _worldCoords)
 		{

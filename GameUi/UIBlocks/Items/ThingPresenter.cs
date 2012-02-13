@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -45,10 +46,10 @@ namespace GameUi.UIBlocks.Items
 
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
-			_uiBlock.DrawLine("+", IsChecked ? Color.Yellow : Color.Black, _line, 10, EAlignment.LEFT);
-			_uiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key), Color.White, _line, 20,
+			_uiBlock.DrawLine("+", IsChecked ? Color.Yellow.ToFColor() : Color.Black.ToFColor(), _line, 10, EAlignment.LEFT);
+			_uiBlock.DrawLine(Enum.GetName(typeof(ConsoleKey), Key), Color.White.ToFColor(), _line, 20,
 			                  EAlignment.LEFT);
-			_uiBlock.DrawLine(Text, Color.DarkGray, _line, 40, EAlignment.LEFT);
+			_uiBlock.DrawLine(Text, Color.DarkGray.ToFColor(), _line, 40, EAlignment.LEFT);
 		}
 
 		#endregion

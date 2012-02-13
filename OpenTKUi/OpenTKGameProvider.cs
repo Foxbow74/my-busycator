@@ -40,7 +40,7 @@ namespace OpenTKUi
 			get { return m_keyState; }
 		}
 
-		public void Clear(Color _color)
+		public void Clear(FColor _color)
 		{
 			m_core.SetClearColor(_color.R, _color.G, _color.B);
 			m_core.Clear();
@@ -53,12 +53,12 @@ namespace OpenTKUi
 
 		public int WidthInCells
 		{
-			get { return (int) Math.Round((double) Width/TileSizeX); }
+			get { return Width/TileSizeX; }
 		}
 
 		public int HeightInCells
 		{
-			get { return (int) Math.Round((double) Height/TileSizeY); }
+			get { return Height/TileSizeY; }
 		}
 
 		public bool IsActive

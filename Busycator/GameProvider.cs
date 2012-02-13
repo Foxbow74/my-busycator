@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using GameCore;
 using GameCore.Misc;
@@ -45,6 +46,7 @@ namespace Busycator
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
 			Title = "Busycator FPS:" + (1/_e.Time).ToString("0.") + " Avatar:" + World.TheWorld.Avatar.Coords;
+			Clear(FColor.Empty);
 			m_game.Draw();
 			OnRenderFinished();
 		}

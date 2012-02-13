@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameUi.Messages;
 
 namespace GameUi.UIBlocks
@@ -12,7 +13,7 @@ namespace GameUi.UIBlocks
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 
 		public MessageBlock(Rectangle _rectangle)
-			: base(_rectangle, null, Color.Yellow)
+			: base(_rectangle, null, Color.Yellow.ToFColor())
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}
@@ -51,7 +52,7 @@ namespace GameUi.UIBlocks
 			{
 				var textLine = m_lines[index];
 				if (lineNumber > TextLinesMax) break;
-				DrawLine(textLine, Color, lineNumber++, 0, EAlignment.JUSTIFY);
+				DrawLine(textLine, ForeColor, lineNumber++, 0, EAlignment.JUSTIFY);
 			}
 		}
 	}

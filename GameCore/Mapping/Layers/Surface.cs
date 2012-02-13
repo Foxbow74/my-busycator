@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 
 namespace GameCore.Mapping.Layers
 {
@@ -31,6 +33,16 @@ namespace GameCore.Mapping.Layers
 				yield return ETerrains.GRASS;
 				yield return ETerrains.GROUND;
 			}
+		}
+
+		public override FColor Ambient
+		{
+			get { return new FColor(Color.FromArgb(255, 10, 10, 0)); }
+		}
+
+		public override FColor Lighted
+		{
+			get { return new FColor(Color.FromArgb(255, 255, 255, 100)); }
 		}
 	}
 }

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using GameCore;
 using GameCore.Messages;
 
@@ -9,22 +7,22 @@ namespace GameUi.UIBlocks
 {
 	internal class UIBlock
 	{
-		protected UIBlock(Rectangle _rectangle, Frame _frame, Color _color)
+		protected UIBlock(Rectangle _rectangle, Frame _frame, FColor _color)
 		{
 			BlockFrame = _frame;
-			Color = _color;
+			ForeColor = _color;
 			Rectangle = _rectangle;
-			BackgroundColor = Color.Black;
+			BackgroundColor = new FColor(1,0,0,0);
 			UpdateContentRectangle();
 		}
 
-		public Color BackgroundColor { get; set; }
+		public FColor BackgroundColor { get; set; }
 
 		public Rectangle Rectangle { get; protected set; }
 
 		public Rectangle ContentRectangle { get; protected set; }
 
-		protected internal Color Color { get; private set; }
+		protected internal FColor ForeColor { get; private set; }
 
 		protected Frame BlockFrame { get; private set; }
 
@@ -55,7 +53,26 @@ namespace GameUi.UIBlocks
 		{
 			if (BlockFrame != null)
 			{
-				TileHelper.Draw(BlockFrame, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+				Draw(BlockFrame, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+			}
+		}
+
+		public void Draw(Frame _frame, int _col, int _row, int _width, int _height)
+		{
+			_frame.TopLeft.DrawAtCell(_col, _row, BackgroundColor);
+			_frame.TopRight.DrawAtCell(_col + _width - 1, _row, BackgroundColor);
+			_frame.BottomLeft.DrawAtCell(_col, _row + _height - 1, BackgroundColor);
+			_frame.BottmoRight.DrawAtCell(_col + _width - 1, _row + _height - 1, BackgroundColor);
+
+			for (var i = 1; i < _width - 1; i++)
+			{
+				_frame.Top.DrawAtCell(_col + i, _row, BackgroundColor);
+				_frame.Bottom.DrawAtCell(_col + i, _row + _height - 1, BackgroundColor);
+			}
+			for (var j = 1; j < _height - 1; j++)
+			{
+				_frame.Left.DrawAtCell(_col, _row + j, BackgroundColor);
+				_frame.Right.DrawAtCell(_col + _width - 1, _row + j, BackgroundColor);
 			}
 		}
 
@@ -67,7 +84,7 @@ namespace GameUi.UIBlocks
 
 		public virtual void DrawBackground()
 		{
-			TileHelper.DrawHelper.ClearTiles(new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width,Rectangle.Height), BackgroundColor);
+			TileHelper.DrawHelper.ClearTiles(Rectangle, BackgroundColor);
 		}
 
 		public void Dispose()

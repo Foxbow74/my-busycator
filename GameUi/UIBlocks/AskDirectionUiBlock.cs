@@ -2,6 +2,7 @@
 using System.Drawing;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
@@ -10,7 +11,7 @@ namespace GameUi.UIBlocks
 		private readonly AskDirectionMessage m_message;
 
 		public AskDirectionUiBlock(Rectangle _rectangle, AskDirectionMessage _message)
-			: base(new Rectangle(_rectangle.X, _rectangle.Y, _rectangle.Width, 1), null, Color.Gray, EFonts.COMMON)
+			: base(new Rectangle(_rectangle.X, _rectangle.Y, _rectangle.Width, 1), null, Color.Gray.ToFColor())
 		{
 			m_message = _message;
 		}
@@ -34,7 +35,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			DrawLine("Выбери направление:", Color, 0, 0, EAlignment.LEFT);
+			DrawLine("Выбери направление:", ForeColor, 0, 0, EAlignment.LEFT);
 		}
 	}
 }

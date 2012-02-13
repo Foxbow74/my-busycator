@@ -9,24 +9,21 @@ using GameUi.UIBlocks.Map;
 
 namespace GameUi.UIBlocks
 {
-	internal class MainBlock : UIBlock
+	internal class MainUiBlock : UIBlock
 	{
 		private readonly UIBlock m_map;
 		private readonly TurnMessageUiBlock m_messages;
 		private readonly UIBlock m_stats;
 
-		public MainBlock(int _width, int _height)
-			: base(new Rectangle(0, 0, _width, _height), null, Color.White)
+		public MainUiBlock(int _width, int _height)
+			: base(new Rectangle(0, 0, _width, _height), null, Color.White.ToFColor())
 		{
 			const int messagesHeight = 3;
 			const int statHeight = 2;
 
-			m_messages = new TurnMessageUiBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight))
-			             	{BackgroundColor = Color.FromArgb(255, 30, 30, 30)};
-			m_map = new MapBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width,
-											   Rectangle.Height - m_messages.Rectangle.Height - statHeight)) {BackgroundColor = Color.FromArgb(255, 0, 15, 0)};
-			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight + 2))
-			          	{BackgroundColor = Color.FromArgb(255, 0, 30, 30)};
+			m_messages = new TurnMessageUiBlock(new Rectangle(Rectangle.Left, 0, Rectangle.Width, messagesHeight)) { BackgroundColor = Color.FromArgb(255, 30, 30, 30).ToFColor() };
+			m_map = new MapUiBlock(new Rectangle(ContentRectangle.Left, m_messages.Rectangle.Height, Rectangle.Width, Rectangle.Height - m_messages.Rectangle.Height - statHeight));
+			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight)) { BackgroundColor = Color.FromArgb(255, 0, 30, 30).ToFColor() };
 		}
 
 		public UIBlock Map

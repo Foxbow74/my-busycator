@@ -2,6 +2,7 @@
 using System.Drawing;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
@@ -13,7 +14,7 @@ namespace GameUi.UIBlocks
 		private string m_count;
 
 		public AskHowMuchUiBlock(Rectangle _rectangle, AskHowMuchMessage _message)
-			: base(new Rectangle(_rectangle.X, _rectangle.Y, _rectangle.Width, 1), null, Color.Gray, EFonts.COMMON)
+			: base(new Rectangle(_rectangle.X, _rectangle.Y, _rectangle.Width, 1), null, Color.Gray.ToFColor())
 		{
 			m_message = _message;
 			m_count = _message.Total.ToString();
@@ -66,7 +67,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), Color,
+			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), ForeColor,
 			         0, 0, EAlignment.LEFT);
 		}
 	}

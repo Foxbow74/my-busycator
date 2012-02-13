@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using GameCore;
 
 namespace GameUi.UIBlocks
 {
 	abstract class UiBlockWithText:UIBlock
 	{
-		protected UiBlockWithText(Rectangle _rectangle, Frame _frame, Color _color, EFonts _font=EFonts.COMMON) : base(_rectangle, _frame, _color)
+		protected UiBlockWithText(Rectangle _rectangle, Frame _frame, FColor _color, EFonts _font=EFonts.COMMON) : base(_rectangle, _frame, _color)
 		{
 			Font = _font;
 			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
@@ -25,12 +26,12 @@ namespace GameUi.UIBlocks
 		public override void DrawBackground()
 		{
 			base.DrawBackground();
-			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
+			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), FColor.Empty);
 		}
 
 		protected override void OnClosing(ConsoleKey _consoleKey)
 		{
-			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), BackgroundColor);
+			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), FColor.Empty);
 			base.OnClosing(_consoleKey);
 		}
 
@@ -39,12 +40,12 @@ namespace GameUi.UIBlocks
 			return string.Join("   -   ", _s);
 		}
 
-		public float DrawLine(string _text, Color _color, int _lineNumber, float _indent, EAlignment _alignment)
+		public float DrawLine(string _text, FColor _color, int _lineNumber, float _indent, EAlignment _alignment)
 		{
 			return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _lineNumber, _indent, _alignment);
 		}
 
-		protected void DrawLine(TextPortion.TextLine _textLine, Color _color, float _x, float _y)
+		protected void DrawLine(TextPortion.TextLine _textLine, FColor _color, float _x, float _y)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
@@ -54,7 +55,7 @@ namespace GameUi.UIBlocks
 			{
 				var color = _color;
 				var addStr = part[partIndex];
-				Color highlight;
+				FColor highlight;
 				if (_textLine.Highlights != null && _textLine.Highlights.TryGetValue(addStr, out highlight))
 				{
 					color = highlight;
@@ -68,7 +69,7 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		protected float DrawLine(TextPortion.TextLine _textLine, Color _color, int _lineNumber, float _indent,
+		protected float DrawLine(TextPortion.TextLine _textLine, FColor _color, int _lineNumber, float _indent,
 								 EAlignment _alignment)
 		{
 			var line = _textLine.Text;
@@ -99,7 +100,7 @@ namespace GameUi.UIBlocks
 			{
 				var color = _color;
 				var addStr = part[partIndex];
-				Color highlight;
+				FColor highlight;
 				if (_textLine.Highlights != null && _textLine.Highlights.TryGetValue(addStr, out highlight))
 				{
 					color = highlight;

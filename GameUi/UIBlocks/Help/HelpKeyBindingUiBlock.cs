@@ -3,13 +3,14 @@ using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks.Help
 {
 	internal class HelpKeyBindingUiBlock : UiBlockWithText
 	{
 		public HelpKeyBindingUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.SimpleFrame, Color.DarkGray, EFonts.COMMON)
+			: base(_rectangle, Frame.SimpleFrame, Color.DarkGray.ToFColor())
 		{
 		}
 
@@ -36,14 +37,14 @@ namespace GameUi.UIBlocks.Help
 				{
 					currentCategory = category;
 					line++;
-					DrawLine(currentCategory, Color.Yellow, line++, 20, EAlignment.LEFT);
+					DrawLine(currentCategory, Color.Yellow.ToFColor(), line++, 20, EAlignment.LEFT);
 				}
-				var ind = DrawLine("[", Color, line, 30, EAlignment.LEFT) - ATile.Size;
-				ind = DrawLine(act.HelpKeys, Color.LightBlue, line, ind, EAlignment.LEFT) - ATile.Size + 2;
-				ind = DrawLine("]", Color, line, ind, EAlignment.LEFT) - ATile.Size;
-				DrawLine(act.Name, Color, line++, ind + 10, EAlignment.LEFT);
+				var ind = DrawLine("[", ForeColor, line, 30, EAlignment.LEFT) - ATile.Size;
+				ind = DrawLine(act.HelpKeys, Color.LightBlue.ToFColor(), line, ind, EAlignment.LEFT) - ATile.Size + 2;
+				ind = DrawLine("]", ForeColor, line, ind, EAlignment.LEFT) - ATile.Size;
+				DrawLine(act.Name, ForeColor, line++, ind + 10, EAlignment.LEFT);
 			}
-			DrawLine("[z|Esc] - выход", Color, TextLinesMax - 2, 20, EAlignment.RIGHT);
+			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, 20, EAlignment.RIGHT);
 		}
 	}
 }
