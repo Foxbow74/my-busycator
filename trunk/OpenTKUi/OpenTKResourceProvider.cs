@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using GameCore.Misc;
 using GameUi;
 
 namespace OpenTKUi
@@ -57,7 +58,7 @@ namespace OpenTKUi
 
 		public ATile CreateTile(ETextureSet _eTextureSet, int _col, int _row, Color _color)
 		{
-			var openTKTile = new OpenTKTile(_eTextureSet, _col, _row, _color);
+			var openTKTile = new OpenTKTile(_eTextureSet, _col, _row, _color.ToFColor());
 			Tiles.Add(openTKTile);
 			return openTKTile;
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using GameCore;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -10,7 +11,7 @@ namespace OpenTKUi
 	internal class OpenTKDrawHelper : IDrawHelper, IDisposable
 	{
 		private readonly OpenTKResourceProvider m_resourceProvider;
-		private OpenTKGameProvider m_gameProvider;
+		private readonly OpenTKGameProvider m_gameProvider;
 		private bool m_isTextBitmapChanged;
 
 		private Image m_textImage;
@@ -34,17 +35,17 @@ namespace OpenTKUi
 
 		#region IDrawHelper Members
 
-		public void ClearTiles(Rectangle _rectangle, Color _backgroundColor)
+		public void ClearTiles(Rectangle _rectangle, FColor _backgroundColor)
 		{
-			GL.BindTexture(TextureTarget.Texture2D, 0);
-			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
-			GL.Begin(BeginMode.Quads);
-			GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
-			GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
-			GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
-			GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
-			GL.End();
-			m_gameProvider.TileMapRenderer.Clear(_rectangle);
+			//GL.BindTexture(TextureTarget.Texture2D, 0);
+			//GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
+			//GL.Begin(BeginMode.Quads);
+			//GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
+			//GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
+			//GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
+			//GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
+			//GL.End();
+			m_gameProvider.TileMapRenderer.Clear(_rectangle, _backgroundColor);
 		}
 
 		public SizeF MeasureString(EFonts _font, string _string)
@@ -57,14 +58,14 @@ namespace OpenTKUi
 			}
 		}
 
-		public void DrawString(EFonts _font, string _string, float _x, float _y, Color _color)
+		public void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color)
 		{
 			var font = m_resourceProvider[_font];
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
 				gr.SmoothingMode = SmoothingMode.HighSpeed;
 				//gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-				using (var br = new SolidBrush(_color))
+				using (var br = new SolidBrush(_color.ToColor()))
 				{
 					gr.DrawString(_string, font, br, _x, _y);
 				}
@@ -72,12 +73,17 @@ namespace OpenTKUi
 			m_isTextBitmapChanged = true;
 		}
 
-		public void ClearText(Rectangle _rectangle, Color _backgroundColor)
+		public void FogTile(int _col, int _row)
+		{
+			m_gameProvider.TileMapRenderer.FogTile(_col, _row);
+		}
+
+		public void ClearText(Rectangle _rectangle, FColor _toFColor)
 		{
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
 				gr.Clip = new Region(_rectangle);
-				gr.Clear(Color.Empty);
+				gr.Clear(_toFColor.ToColor());
 			}
 			m_isTextBitmapChanged = true;
 		}

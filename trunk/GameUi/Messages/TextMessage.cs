@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using GameCore;
 using GameCore.Messages;
 
 namespace GameUi.Messages
@@ -11,7 +12,7 @@ namespace GameUi.Messages
 		{
 		}
 
-		protected TextMessage(EMessageType _type, string _text, Dictionary<string, Color> _highlights)
+		protected TextMessage(EMessageType _type, string _text, Dictionary<string, FColor> _highlights)
 		{
 			Type = _type;
 			Text = new TextPortion(_text, _highlights);

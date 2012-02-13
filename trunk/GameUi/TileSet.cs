@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
+using GameCore;
+using GameCore.Misc;
 
 namespace GameUi
 {
@@ -19,12 +20,17 @@ namespace GameUi
 			get { return m_tiles[_index%m_tiles.Count()]; }
 		}
 
-		public override void Draw(int _x, int _y, Color _color)
+		public override void Draw(int _x, int _y, FColor _color, FColor _background)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void DrawFog(int _col, int _row, Color _color)
+		public override void Draw(Point _point, FColor _color, FColor _background)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void FogIt(int _col, int _row)
 		{
 			throw new NotImplementedException();
 		}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Text;
+using GameCore;
 
 namespace GameUi
 {
@@ -18,7 +19,7 @@ namespace GameUi
 		{
 		}
 
-		public TextPortion(string _text, Dictionary<string, Color> _highlights)
+		public TextPortion(string _text, Dictionary<string, FColor> _highlights)
 		{
 			Text = _text;
 			Highlights = _highlights;
@@ -26,7 +27,7 @@ namespace GameUi
 		}
 
 		public string Text { get; private set; }
-		public Dictionary<string, Color> Highlights { get; private set; }
+		public Dictionary<string, FColor> Highlights { get; private set; }
 
 		/// <summary>
 		/// 	Указывает с какой строки продолжать вывод порции текста если весь текст не влез в окно
@@ -80,7 +81,7 @@ namespace GameUi
 					          	? ""
 					          	: paragraph[processedChars].ToString(CultureInfo.InvariantCulture);
 					processedChars++;
-					var size = _font.MeasureString(addStr);
+					var size = MeasureString(_font, addStr);
 
 					if (size.X > (_width - x))
 					{
@@ -102,24 +103,30 @@ namespace GameUi
 			m_textLines = textLines.ToArray();
 		}
 
+
+		public Point MeasureString(EFonts _font, string _s)
+		{
+			return new Point(15, 15);
+		}
+
 		#region Nested type: TextLine
 
 		public class TextLine
 		{
-			public TextLine(float _left, Dictionary<string, Color> _highlights)
+			public TextLine(float _left, Dictionary<string, FColor> _highlights)
 			{
 				Left = _left;
 				Highlights = _highlights;
 			}
 
-			public TextLine(string _text, float _left, Dictionary<string, Color> _highlights)
+			public TextLine(string _text, float _left, Dictionary<string, FColor> _highlights)
 			{
 				Text = _text;
 				Left = _left;
 				Highlights = _highlights;
 			}
 
-			public Dictionary<string, Color> Highlights { get; private set; }
+			public Dictionary<string, FColor> Highlights { get; private set; }
 
 			public float Left { get; private set; }
 

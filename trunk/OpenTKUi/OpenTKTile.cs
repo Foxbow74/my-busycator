@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using GameCore;
+using GameCore.Misc;
 using GameUi;
 
 namespace OpenTKUi
@@ -8,7 +9,7 @@ namespace OpenTKUi
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
-		public OpenTKTile(ETextureSet _set, int _x, int _y, Color _color) : base(_set, _x, _y, _color)
+		public OpenTKTile(ETextureSet _set, int _x, int _y, FColor _color) : base(_set, _x, _y, _color)
 		{
 			Texcoords = new TexCoord[4];
 			X = _x;
@@ -40,14 +41,19 @@ namespace OpenTKUi
 
 		public TexCoord[] Texcoords { get; private set; }
 
-		public override void Draw(int _x, int _y, Color _color)
+		public override void Draw(int _x, int _y, FColor _color, FColor _background)
 		{
-			TileMapRenderer.DrawTile(this, _x, _y, _color);
+			TileMapRenderer.DrawTile(this, _x, _y, _color, _background);
 		}
 
-		public override void DrawFog(int _col, int _row, Color _color)
+		public override void Draw(Point _point, FColor _color, FColor _background)
 		{
-			TileMapRenderer.FogTile(this, _col, _row, _color);
+			TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background);
+		}
+
+		public override void FogIt(int _col, int _row)
+		{
+			TileMapRenderer.FogTile(_col, _row);
 		}
 
 		#region Nested type: TexCoord

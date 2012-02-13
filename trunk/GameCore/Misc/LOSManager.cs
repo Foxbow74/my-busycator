@@ -7,12 +7,12 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 10;
+		internal const int RADIUS = 20;
 		const float DIVIDER = 6f;
-		const float MIN_VISIBILITY = 0.05f;
 
 		private readonly List<LosCell> m_inOrder;
 		private readonly Dictionary<LosCell, float> m_visibles;
+		private readonly Dictionary<LosCell, FColor> m_cvisibles;
 
 		private readonly LosCell m_root;
 
@@ -85,12 +85,63 @@ namespace GameCore.Misc
 
 			m_inOrder = alreadyDone.Values.OrderByDescending(_cell2 => _cell2.DistanceCoefficient).ToList();
 			m_visibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => 0f);
+			m_cvisibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => FColor.Empty);
 		}
 
-		public IEnumerable<Tuple<Point, float>> GetVisibleCelss(MapCell[,] _mapCells, int _dx, int _dy)
+		const int LIGHTNESS_MIN = 20;
+		const float TRANSPARENCE_MIN = 20f/255;
+
+		public IEnumerable<Tuple<Point, FColor>> GetVisibleCelss(MapCell[,] _mapCells, Point _dPoint, FColor _startFrom)
 		{
-			var dPoint = new Point(_dx, _dy);
-			
+			var maxX = _mapCells.GetLength(0) - 1;
+			var maxY = _mapCells.GetLength(1) - 1;
+
+			m_cvisibles[m_root] = _startFrom;
+			m_visibles[m_root] = 1;
+
+			for (var index = 1; index < m_inOrder.Count; index++)
+			{
+				m_cvisibles[m_inOrder[index]] = FColor.Empty;
+				m_visibles[m_inOrder[index]] = 0;
+			}
+
+			foreach (var cell in m_inOrder)
+			{
+				var visibilityCoeff = m_visibles[cell];
+				var color = m_cvisibles[cell];
+
+				if (visibilityCoeff <= 0) continue;
+
+				var myPnt = cell.Point + _dPoint;
+
+				if (myPnt.X < 0 || myPnt.X >= maxX || myPnt.Y < 0 || myPnt.Y >= maxY) continue;
+				
+				var mapCell = _mapCells[myPnt.X, myPnt.Y];
+
+				yield return new Tuple<Point, FColor>(myPnt, new FColor(visibilityCoeff, color));
+
+				var transColor = mapCell.TransparentColor;
+
+				//var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
+				var childsVisible = transColor.A * visibilityCoeff;
+				var childsColor = color.Multiply(transColor);
+
+				//if (childsColor.A <= TRANSPARENCE_MIN) continue;
+				if (childsVisible <= 0) continue;
+
+				foreach (var pair in cell.Cells)
+				{
+					var pnt = pair.Key.Point + _dPoint;
+					if (pnt.X < 0 || pnt.X >= maxX || pnt.Y < 0 || pnt.Y >= maxY) continue;
+
+					m_visibles[pair.Key] += pair.Value * childsVisible;
+					m_cvisibles[pair.Key] = m_cvisibles[pair.Key].ScreenColorsOnly(childsColor);
+				}
+			}
+		}
+
+		public IEnumerable<Tuple<Point, float>> GetVisibleCelss(MapCell[,] _mapCells, Point _dPoint)
+		{
 			var maxX = _mapCells.GetLength(0) - 1;
 			var maxY = _mapCells.GetLength(1) - 1;
 			
@@ -104,29 +155,31 @@ namespace GameCore.Misc
 			{
 				var visibilityCoeff = m_visibles[cell];
 
-				if(visibilityCoeff<MIN_VISIBILITY) continue;
+				if(visibilityCoeff<=0) continue;
 
-				var myPnt = cell.Point + dPoint;
+				var myPnt = cell.Point + _dPoint;
 				
 				var mapCell = _mapCells[myPnt.X, myPnt.Y];
-				 var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
+				var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
 
+				if (childsVisible <= 0) continue;
 				foreach (var pair in cell.Cells)
 				{
-					var pnt = pair.Key.Point + dPoint;
+					var pnt = pair.Key.Point + _dPoint;
 					if (pnt.X < 0 || pnt.X >= maxX || pnt.Y < 0 || pnt.Y >= maxY) continue;
 
 					m_visibles[pair.Key] += pair.Value*childsVisible;
 				}
 			}
-			return from pair in m_visibles where pair.Value > MIN_VISIBILITY select new Tuple<Point, float>(pair.Key.Point + dPoint, pair.Value);
+			return from pair in m_visibles select new Tuple<Point, float>(pair.Key.Point + _dPoint, pair.Value);
 		}
 	}
 
-	internal class LosCell
+	class LosCell
 	{
 		public LosCell(Point _point)
 		{
+			Cells = new Dictionary<LosCell, float>();
 			Point = _point;
 			var r = _point.Lenght / LosManager.RADIUS;
 			var fi = Math.Asin(r);
@@ -137,34 +190,30 @@ namespace GameCore.Misc
 		public float DistanceCoefficient { get; private set; }
 
 		public Point Point { get; private set; }
-		public Dictionary<LosCell, float> Cells
-		{
-			get { return m_cells; }
-		}
+
+		public Dictionary<LosCell, float> Cells { get; private set; }
 
 		public override string ToString()
 		{
 			return string.Format("{0}*{2} cells:{1}", Point, Cells.Count, DistanceCoefficient);
 		}
 
-		private readonly Dictionary<LosCell, float> m_cells = new Dictionary<LosCell, float>();
-
 		public void Add(Point _pnt, float _closedByParent, LosCell _cell)
 		{
 			float value;
-			if(m_cells.TryGetValue(_cell, out value))
+			if(Cells.TryGetValue(_cell, out value))
 			{
 				_closedByParent += value;
 			}
-			m_cells[_cell] = _closedByParent;
+			Cells[_cell] = _closedByParent;
 		}
 
 		public void UpdateByDistance()
 		{
-			var cells = m_cells.Keys.ToArray();
+			var cells = Cells.Keys.ToArray();
 			foreach (var cell in cells)
 			{
-				m_cells[cell] *= cell.DistanceCoefficient;
+				Cells[cell] *= cell.DistanceCoefficient;
 			}
 		}
 	}

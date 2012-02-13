@@ -1,16 +1,14 @@
-﻿#region
-
-using System;
+﻿using System;
 using System.Drawing;
 using GameCore;
-
-#endregion
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
 	internal class StatsBlock : UIBlock
 	{
-		public StatsBlock(Rectangle _rectangle) : base(_rectangle, null, Color.Gray)
+		public StatsBlock(Rectangle _rectangle)
+			: base(_rectangle, null, Color.Gray.ToFColor())
 		{
 		}
 

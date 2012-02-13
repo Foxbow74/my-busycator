@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
+using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping
 {
@@ -139,6 +140,34 @@ namespace GameCore.Mapping
 			}
 		}
 
+		public FColor TransparentColor
+		{
+			get
+			{
+				if(Terrain==ETerrains.WINDOW)
+				{
+					return new FColor(1f,1f,0,0);
+				}
+				var attr = TerrainAttribute;
+				var opacity = attr.Opacity;
+				if (opacity < 1 && Furniture != null)
+				{
+					opacity += Furniture.Opacity;
+				}
+				if (opacity < 1 && Creature != null)
+				{
+					opacity += Creature.Opacity;
+				}
+				if (opacity < 1)
+				{
+					opacity += Items.Sum(_item => _item.Opacity);
+				}
+				var trancparence = 1f - opacity;
+
+				return new FColor(trancparence, 1f,1f,1f);
+			}
+		}
+
 		public bool IsCanShootThrough
 		{
 			get { return TerrainAttribute.IsCanShootThrough; }
@@ -217,5 +246,8 @@ namespace GameCore.Mapping
 		{
 			Block.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
 		}
+
+		public FColor Lighted { get; set; }
+		//public float Visibility { get; set; }
 	}
 }

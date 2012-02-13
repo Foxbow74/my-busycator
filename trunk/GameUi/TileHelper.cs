@@ -231,61 +231,38 @@ namespace GameUi
 			return ts[_index];
 		}
 
-		//private static void DrawAtPoint(this ATile _tile, int _x, int _y, Color _color)
-		//{
-		//    if (_tile == null) return;
-		//    _tile.Draw(_x, _y, _color);
-		//}
-
-		public static void DrawAtCell(this ATile _tile, int _col, int _row)
-		{
-			if (_tile == null) return;
-			_tile.Draw(_col, _row, _tile.Color);
-		}
-
-		public static void DrawAtCell(this ATile _tile, int _col, int _row, Color _color)
-		{
-			if (_tile == null) return;
-			_tile.Draw(_col, _row, _color);
-		}
-
-		public static void FogIt(this ATile _tile, int _col, int _row, Color _color)
-		{
-			if (_tile == null) return;
-			_tile.DrawFog(_col, _row, _color);
-		}
-
 		public static void DrawAtCell(this ETiles _tile, int _col, int _row)
 		{
-			DrawAtCell(m_tiles[_tile], _col, _row);
+			var tile = m_tiles[_tile];
+			tile.Draw(_col, _row, tile.Color, FColor.Empty);
 		}
 
-		public static void DrawAtCell(this ETiles _tile, Point _point, Color _color)
+		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row, FColor _backgroundColor)
 		{
-			DrawAtCell(m_tiles[_tile], _point.X, _point.Y, _color);
+			var tile = m_frameTiles[_tile];
+			tile.Draw(_col, _row, tile.Color, _backgroundColor);
 		}
 
-		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row)
+		public static ATile Tile(this ETerrains _terrain, Point _worldCoords, int _blockRandomSeed)
 		{
-			DrawAtCell(m_frameTiles[_tile], _col, _row);
-		}
-
-		public static void Draw(Frame _frame, int _col, int _row, int _width, int _height)
-		{
-			_frame.TopLeft.DrawAtCell(_col, _row);
-			_frame.TopRight.DrawAtCell(_col + _width - 1, _row);
-			_frame.BottomLeft.DrawAtCell(_col, _row + _height - 1);
-			_frame.BottmoRight.DrawAtCell(_col + _width - 1, _row + _height - 1);
-
-			for (var i = 1; i < _width - 1; i++)
+			switch (_terrain)
 			{
-				_frame.Top.DrawAtCell(_col + i, _row);
-				_frame.Bottom.DrawAtCell(_col + i, _row + _height - 1);
-			}
-			for (var j = 1; j < _height - 1; j++)
-			{
-				_frame.Left.DrawAtCell(_col, _row + j);
-				_frame.Right.DrawAtCell(_col + _width - 1, _row + j);
+				case ETerrains.STONE_FLOOR:
+					return m_tiles[ETiles.STONE_FLOOR];
+				case ETerrains.STONE_WALL:
+					return m_tiles[ETiles.STONE_WALL];
+				case ETerrains.GROUND:
+					return m_tiles[ETiles.GROUND];
+				case ETerrains.GRASS:
+					return ((TileSet)m_tiles[ETiles.GRASS])[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed))];
+				case ETerrains.MUSHROOM:
+					return ((TileSet)m_tiles[ETiles.MASHROOM])[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed))];
+				case ETerrains.BRICK_WALL:
+					return m_tiles[ETiles.BRICK];
+				case ETerrains.WINDOW:
+					return m_tiles[ETiles.BRICK_WINDOW];
+				default:
+					throw new ArgumentOutOfRangeException("_terrain");
 			}
 		}
 	}
