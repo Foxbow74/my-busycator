@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using GameCore.Creatures;
 using Point = GameCore.Misc.Point;
 
@@ -25,7 +23,6 @@ namespace GameCore.Mapping.Layers
 				{
 					block = GenerateBlock(_blockId);
 					m_blocks.Add(_blockId, block);
-					//Debug.WriteLine("Generated new in " + _blockId);
 				}
 				return block;
 			}
@@ -33,12 +30,7 @@ namespace GameCore.Mapping.Layers
 
 		internal abstract IEnumerable<ETerrains> DefaultEmptyTerrains { get; }
 
-		protected virtual MapBlock GenerateBlock(Point _blockId)
-		{
-			var block = new MapBlock(_blockId);
-			MapBlockGenerator.Generate(this, block, _blockId, World.TheWorld);
-			return block;
-		}
+		protected abstract MapBlock GenerateBlock(Point _blockId);
 
 		public void MoveCreature(Creature _creature, Point _fromBlock, Point _toBlock)
 		{
@@ -59,9 +51,9 @@ namespace GameCore.Mapping.Layers
 			if (!_creature.IsAvatar) _creature.MapBlock.Creatures.Add(_creature);
 		}
 
-		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _point)
+		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _worldCoords)
 		{
-			var centralBlockCoord = MapBlock.GetBlockCoords(_point);
+			var centralBlockCoord = MapBlock.GetBlockCoords(_worldCoords);
 			for (var i = -ACTIVE_SIZE_HALF; i < ACTIVE_SIZE_HALF; ++i)
 			{
 				for (var j = -ACTIVE_SIZE_HALF; j < ACTIVE_SIZE_HALF; ++j)
@@ -75,33 +67,38 @@ namespace GameCore.Mapping.Layers
 		/// <summary>
 		/// 	Заполняет двумерный массив значениями из карты вокруг игрока
 		/// </summary>
-		/// <param name = "_mapTiles"></param>
+		/// <param name = "_mapCells"></param>
 		/// <param name = "_avatarPoint"></param>
-		public void SetData(MapCell[,] _mapTiles, Point _avatarPoint)
+		public void SetData(MapCell[,] _mapCells, Point _avatarPoint)
 		{
-			var w = _mapTiles.GetLength(0);
-			var h = _mapTiles.GetLength(1);
+			var w = _mapCells.GetLength(0);
+			var h = _mapCells.GetLength(1);
+
+			var avatar = new Point(_avatarPoint.X - w/2, _avatarPoint.Y - h/2);
 
 			foreach (var tuple in GetBlocksNear(_avatarPoint))
 			{
 				var block = tuple.Item2;
 				var blockId = tuple.Item1;
 
+				var blockPoint = new Point(blockId.X*MapBlock.SIZE, blockId.Y*MapBlock.SIZE);
+
 				for (var i = 0; i < MapBlock.SIZE; i++)
 				{
 					for (var j = 0; j < MapBlock.SIZE; j++)
 					{
-						var worldX = blockId.X*MapBlock.SIZE + i;
-						var worldY = blockId.Y*MapBlock.SIZE + j;
+						var ij = new Point(i, j);
 
-						var x = worldX - _avatarPoint.X + w/2;
-						var y = worldY - _avatarPoint.Y + h/2;
+						var world = blockPoint + ij;
 
-						if (x < 0 || y < 0 || x >= w || y >= h)
+						var map = world - avatar;
+
+						if (map.X < 0 || map.Y < 0 || map.X >= w || map.Y >= h)
 						{
 							continue;
 						}
-						_mapTiles[x, y] = new MapCell(block, new Point(i, j), new Point(worldX, worldY));//{Lighted = Ambient};
+						var mc = new MapCell(block, ij, world) {Lighted = Lighted};
+						_mapCells[map.X, map.Y] = mc;
 					}
 				}
 			}

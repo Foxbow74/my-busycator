@@ -159,7 +159,7 @@ namespace GameUi
 						tl = Rp.CreateTile(ETextureSet.REDJACK, 12, 3, Color.FromArgb(255, 100, 100, 50));
 						break;
 					case ETiles.STONE_FLOOR:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 60, 60, 100));
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 30, 30, 50));
 						break;
 					case ETiles.STONE_WALL:
 						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 10, Color.FromArgb(255, 100, 100, 200));

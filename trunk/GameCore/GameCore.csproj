@@ -74,6 +74,7 @@
     <Compile Include="Messages\AskShootTargerMessage.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
+    <Compile Include="Misc\LightSource.cs" />
     <Compile Include="Misc\LosManager.cs" />
     <Compile Include="Misc\MathHelper.cs" />
     <Compile Include="Misc\Profiler.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="KeyTranslator.cs" />
     <Compile Include="Mapping\MapBlock.cs" />
-    <Compile Include="Mapping\MapBlockGenerator.cs" />
+    <Compile Include="Mapping\MapBlockHelper.cs" />
     <Compile Include="Mapping\MapCell.cs" />
     <Compile Include="Messages\Message.cs" />
     <Compile Include="Messages\MessageManager.cs" />
