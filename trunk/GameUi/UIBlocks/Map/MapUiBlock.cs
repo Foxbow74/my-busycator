@@ -1,6 +1,6 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using GameCore;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
@@ -11,26 +11,10 @@ namespace GameUi.UIBlocks.Map
 	{
 		const float VISIBILITY_THRESHOLD = 33f/255;
 
-		private readonly LosManager m_losManager;
-
-		private readonly MapCell[,] m_mapCells;
-
-		private readonly int m_width;
-		private readonly int m_height;
-		private readonly Point m_center;
-
 		public MapUiBlock(Rectangle _rectangle)
 			: base(_rectangle, null, Color.Black.ToFColor())
 		{
-			m_mapCells = new MapCell[ContentRectangle.Width,ContentRectangle.Height];
-
-			m_width = m_mapCells.GetLength(0);
-			m_height = m_mapCells.GetLength(1);
-
-			m_center = new Point(m_width / 2,m_height / 2);
-			
-			m_losManager = new LosManager(40);
-
+			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRectangle.Width, ContentRectangle.Height));
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
@@ -41,48 +25,48 @@ namespace GameUi.UIBlocks.Map
 				case WorldMessage.EType.AVATAR_MOVE:
 					BackgroundColor = FColor.Black;// new FColor(1f, World.TheWorld.Avatar.Layer.Ambient.Lerp(FColor.Black, 0.2f));
 					break;
+				case WorldMessage.EType.TURN:
+					Redraw();
+					break;
 			}
 		}
 
-		public override void DrawFrame()
-		{
-		}
-
-		public override void DrawBackground()
+		private void Redraw()
 		{
 			TileHelper.DrawHelper.ClearTiles(new Rectangle(Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height), FColor.Empty);// BackgroundColor.ToGrayScale());
-		}
 
-		public override void DrawContent()
-		{
 			var fogColor = Color.FromArgb(255, 70, 70, 70).ToFColor();
 
 			var layer = World.TheWorld.Avatar.Layer;
 
-			layer.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
+			var dPoint = World.TheWorld.LiveMap.GetData();
 
-			m_losManager.GetVisibleCelss(m_mapCells, m_center, Color.White.ToFColor());
+			var width = ContentRectangle.Width;
+			var height = ContentRectangle.Height;
 
-			var blocks = layer.GetBlocksNear(World.TheWorld.Avatar.Coords);
-			foreach (var block in blocks)
-			{
-				foreach (var lightSource in block.Item2.LightSources)
-				{
-					lightSource.LightCells(m_mapCells, m_center);
-				}
-			}
-			World.TheWorld.Avatar.Light.LightCells(m_mapCells, m_center);
+
+			//var blocks = layer.GetBlocksNear(World.TheWorld.Avatar.Coords);
+			//foreach (var block in blocks)
+			//{
+			//    foreach (var lightSource in block.Item2.LightSources)
+			//    {
+			//        lightSource.LightCells(m_mapCells, m_center);
+			//    }
+			//}
+			//World.TheWorld.Avatar.Light.LightCells(m_mapCells, m_center);
 			//var block = World.TheWorld.Avatar.MapBlock;
 			//m_losManager.LightCells(m_mapCells, block.LightSources[0] + block.BlockId * MapBlock.SIZE - World.TheWorld.Avatar.Coords + m_center););
 
-			for (var x = 0; x < m_width; ++x)
+			for (var x = 0; x < width; ++x)
 			{
-				for (var y = 0; y < m_height; ++y)
+				for (var y = 0; y < height; ++y)
 				{
-					var mapCell = m_mapCells[x, y];
+					var pnt = new Point(x + dPoint.X, y + dPoint.Y).Wrap(World.TheWorld.LiveMap.SizeInCells, World.TheWorld.LiveMap.SizeInCells);
+					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
+					var mapCell = liveCell.MapCell;
 
 					var backgroundColor = BackgroundColor;
-					var lighted = mapCell.Visibility;//.Multiply(mapCell.Lighted);
+					var lighted = liveCell.Visibility;//.Multiply(mapCell.Lighted);
 
 					var lightness = lighted.Lightness();
 
@@ -97,15 +81,27 @@ namespace GameUi.UIBlocks.Map
 					}
 					else if (mapCell.IsSeenBefore)
 					{
-						if(mapCell.TerrainAttribute.IsPassable==1) continue;
+						if (mapCell.TerrainAttribute.IsPassable == 1) continue;
 						var tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, FColor.Black);
 						DrawHelper.FogTile(x + ContentRectangle.Left, y + ContentRectangle.Top);
 					}
 				}
 			}
+			World.TheWorld.Avatar.Tile.GetTile().Draw(width / 2 + ContentRectangle.Left, height / 2 + ContentRectangle.Top, Color.White.ToFColor(), BackgroundColor);
+		}
 
-			World.TheWorld.Avatar.Tile.GetTile().Draw(m_center.X + ContentRectangle.Left, m_center.Y + ContentRectangle.Top, Color.White.ToFColor(), BackgroundColor);
+		public override void DrawFrame()
+		{
+		}
+
+		public override void DrawBackground()
+		{
+		}
+
+		public override void DrawContent()
+		{
+			
 		}
 	}
 }

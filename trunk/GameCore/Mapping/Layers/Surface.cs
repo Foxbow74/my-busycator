@@ -117,7 +117,7 @@ namespace GameCore.Mapping.Layers
 
 		public override FColor Ambient
 		{
-			get { return new FColor(Color.FromArgb(255, 10, 10, 0)); }
+			get { return new FColor(Color.FromArgb(255, 210, 210, 210)); }
 		}
 
 		public override FColor Lighted

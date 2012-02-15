@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Objects.Furniture;
@@ -27,6 +28,7 @@ namespace GameCore
 
 		public World()
 		{
+			LiveMap = new LiveMap();
 			MessageManager.NewWorldMessage += MessageManagerOnNewMessage;
 			m_layers.Add(Surface = new Surface());
 
@@ -48,11 +50,14 @@ namespace GameCore
 
 		public Surface Surface { get; private set; }
 
+		public LiveMap LiveMap { get; private set; }
+
 		private void BornAvatar()
 		{
 			Avatar = new Avatar(Surface);
 			m_activeCreatures.Add(Avatar);
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+			LiveMap.Actualize(Avatar.BlockId);
 		}
 
 		private void MessageManagerOnNewMessage(object _sender, WorldMessage _message)
@@ -145,7 +150,10 @@ namespace GameCore
 				m_activeCreatures.Remove(creature);
 				AddToActiveCreatures(creature);
 			}
-			MessageManager.SendMessage(this, WorldMessage.Turn);
+			if(result)
+			{
+				MessageManager.SendMessage(this, WorldMessage.Turn);
+			}
 			return result;
 		}
 

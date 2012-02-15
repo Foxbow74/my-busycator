@@ -70,7 +70,7 @@ namespace OpenTKUi
 		{
 			get
 			{
-				if (m_tileMapRenderer == null)
+				if (m_tileMapRenderer == null && IsActive)
 				{
 					m_tileMapRenderer = new TileMapRenderer(Width, Height);
 					OpenTKTile.TileMapRenderer = m_tileMapRenderer;
@@ -107,6 +107,7 @@ namespace OpenTKUi
 
 		protected override void OnResize(EventArgs _e)
 		{
+			if (!IsActive) return;
 			m_core.Reset();
 			m_core.Resize(Width, Height);
 			m_drawHelper.Resize(Width, Height);
@@ -120,6 +121,7 @@ namespace OpenTKUi
 
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
+			if (!IsActive) return;
 			base.OnUpdateFrame(e);
 			if (TileMapRenderer.ResourceProvider == null)
 			{
@@ -130,6 +132,7 @@ namespace OpenTKUi
 
 		protected virtual void OnRenderFinished()
 		{
+			if (!IsActive) return;
 			TileMapRenderer.Draw();
 			DrawTextLayer();
 			SwapBuffers();
