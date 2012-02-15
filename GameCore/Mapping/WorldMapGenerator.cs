@@ -26,7 +26,6 @@ namespace GameCore.Mapping
 				for (var j = 0; j < m_size; ++j)
 				{
 					var pnt = new Point(i, j) - center;
-					var ro = Math.Atan2(pnt.X, pnt.Y);
 					var r = pnt.Lenght;
 					var d = r/radius - 0.5;
 					if (d > 0)

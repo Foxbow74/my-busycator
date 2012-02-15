@@ -18,13 +18,14 @@ namespace GameCore.Mapping
 
 		public MapBlock(Point _point)
 		{
-			Point = _point;
+			LightSources = new List<LightSource>();
+			BlockId = _point;
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
 			SeenCells = new uint[SIZE];
 		}
 
-		public Point Point { get; private set; }
+		public Point BlockId { get; private set; }
 		public int RandomSeed { get; private set; }
 
 		public ETerrains[,] Map { get; private set; }
@@ -88,5 +89,7 @@ namespace GameCore.Mapping
 		{
 			return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE);
 		}
+
+		public List<LightSource> LightSources { get; set; }
 	}
 }

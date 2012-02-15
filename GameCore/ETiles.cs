@@ -16,7 +16,7 @@ namespace GameCore
 		[Tiles(0f)] GRASS,
 		[Tiles(1f)] BRICK,
 		[Tiles(0.2f)] BRICK_WINDOW,
-		[Tiles(0.6f)] MASHROOM,
+		[Tiles(0.9f)] MASHROOM,
 		[Tiles(0f)] GROUND,
 		[Tiles(0f)]STONE_FLOOR,
 		[Tiles(0f)]STONE_WALL,

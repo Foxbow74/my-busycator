@@ -36,7 +36,7 @@ namespace GameCore.Mapping
 
 		public Point BlockCoords
 		{
-			get { return Block.Point; }
+			get { return Block.BlockId; }
 		}
 
 		public ETerrains Terrain { get; private set; }
@@ -248,6 +248,6 @@ namespace GameCore.Mapping
 		}
 
 		public FColor Lighted { get; set; }
-		//public float Visibility { get; set; }
+		public FColor Visibility { get; set; }
 	}
 }

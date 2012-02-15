@@ -226,13 +226,13 @@ namespace OpenTKUi
 
 		public void DrawBackground()
 		{
+			if(Background.A==0) return;
 			GL.Color4(Background.R, Background.G, Background.B, Background.A);
 			GL.Vertex2(m_x, m_y);
 			GL.Vertex2(m_x + m_width, m_y);
 			GL.Vertex2(m_x + m_width, m_y + m_height);
 			GL.Vertex2(m_x, m_y + m_height);
 		}
-
 
 		public void SendVertices()
 		{

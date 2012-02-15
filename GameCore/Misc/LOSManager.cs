@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using GameCore.Mapping;
 
@@ -7,18 +8,14 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		internal const int RADIUS = 20;
 		const float DIVIDER = 6f;
 
-		private readonly List<LosCell> m_inOrder;
-		private readonly Dictionary<LosCell, float> m_visibles;
-		private readonly Dictionary<LosCell, FColor> m_cvisibles;
-
+		private readonly LosCell[] m_inOrder;
 		private readonly LosCell m_root;
 
-		public LosManager()
+		public LosManager(int _radius)
 		{
-			m_root = new LosCell(Point.Zero);
+			m_root = new LosCell(Point.Zero, _radius);
 			var alreadyDone= new Dictionary<Point, LosCell> { { Point.Zero, m_root } };
 
 
@@ -35,9 +32,9 @@ namespace GameCore.Misc
 
 			var dividedPart = 1f / dVectors.Count;
 
-			for (var i = RADIUS; i >= -RADIUS; --i)
+			for (var i = _radius; i >= -_radius; --i)
 			{
-				for (var j = -RADIUS; j <= RADIUS; ++j)
+				for (var j = -_radius; j <= _radius; ++j)
 				{
 					var pnt = new Point(i, j);
 
@@ -46,8 +43,8 @@ namespace GameCore.Misc
 					LosCell cell;
 					if (!alreadyDone.TryGetValue(pnt, out cell))
 					{
-						cell = new LosCell(pnt);
-						if (cell.Point.Lenght > RADIUS)
+						cell = new LosCell(pnt, _radius);
+						if (cell.Point.Lenght > _radius)
 						{
 							continue;
 						}
@@ -63,14 +60,14 @@ namespace GameCore.Misc
 						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.02f))
 						{
 							var point = new Point((int)Math.Round(lineV.X), (int)Math.Round(lineV.Y));
-							if (point.Equals(pnt) || point.Lenght > RADIUS) continue;
+							if (point.Equals(pnt) || point.Lenght > _radius) continue;
 							parentPoint = point;
 							break;
 						}
 						LosCell parent;
 						if (!alreadyDone.TryGetValue(parentPoint, out parent))
 						{
-							parent = new LosCell(parentPoint);
+							parent = new LosCell(parentPoint, _radius);
 							alreadyDone.Add(parentPoint, parent);
 						}
 						parent.Add(pnt, dividedPart, cell);
@@ -83,107 +80,139 @@ namespace GameCore.Misc
 				cell.UpdateByDistance();
 			}
 
-			m_inOrder = alreadyDone.Values.OrderByDescending(_cell2 => _cell2.DistanceCoefficient).ToList();
-			m_visibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => 0f);
-			m_cvisibles = m_inOrder.ToDictionary(_cell2 => _cell2, _cell2 => FColor.Empty);
+			m_inOrder = alreadyDone.Values.OrderByDescending(_cell2 => _cell2.DistanceCoefficient).ToArray();
+			foreach (var losCell in m_inOrder)
+			{
+				losCell.BuildCellIndexes(m_inOrder);
+			}
 		}
 
-		const int LIGHTNESS_MIN = 20;
-		const float TRANSPARENCE_MIN = 20f/255;
-
-		public IEnumerable<Tuple<Point, FColor>> GetVisibleCelss(MapCell[,] _mapCells, Point _dPoint, FColor _startFrom)
+		public void GetVisibleCelss(MapCell[,] _mapCells, Point _dPoint, FColor _startFrom)
 		{
 			var maxX = _mapCells.GetLength(0) - 1;
 			var maxY = _mapCells.GetLength(1) - 1;
+			var cvisibles = new FColor[m_inOrder.Length];
+			var visibles = new float[m_inOrder.Length];
 
-			m_cvisibles[m_root] = _startFrom;
-			m_visibles[m_root] = 1;
+			cvisibles[0] = _startFrom;
+			visibles[0] = 1;
 
-			for (var index = 1; index < m_inOrder.Count; index++)
+			for (var index = 0; index < m_inOrder.Length; index++)
 			{
-				m_cvisibles[m_inOrder[index]] = FColor.Empty;
-				m_visibles[m_inOrder[index]] = 0;
-			}
+				var cell = m_inOrder[index];
+				var visibilityCoeff = visibles[index];
+				var color = cvisibles[index];
 
-			foreach (var cell in m_inOrder)
-			{
-				var visibilityCoeff = m_visibles[cell];
-				var color = m_cvisibles[cell];
-
-				if (visibilityCoeff <= 0) continue;
+				if (visibilityCoeff < 0.01) continue;
 
 				var myPnt = cell.Point + _dPoint;
 
 				if (myPnt.X < 0 || myPnt.X >= maxX || myPnt.Y < 0 || myPnt.Y >= maxY) continue;
-				
+
 				var mapCell = _mapCells[myPnt.X, myPnt.Y];
+				mapCell.Visibility = new FColor(visibilityCoeff, color);
 
-				yield return new Tuple<Point, FColor>(myPnt, new FColor(visibilityCoeff, color));
+				var transColor = index == 0 ? FColor.White : mapCell.TransparentColor;
 
-				var transColor = mapCell.TransparentColor;
-
-				//var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
-				var childsVisible = transColor.A * visibilityCoeff;
+				visibilityCoeff = transColor.A * visibilityCoeff;
 				var childsColor = color.Multiply(transColor);
 
-				//if (childsColor.A <= TRANSPARENCE_MIN) continue;
-				if (childsVisible <= 0) continue;
+				if (visibilityCoeff < 0.01) continue;
 
-				foreach (var pair in cell.Cells)
+				foreach (var pair in cell.CellIndexes)
 				{
-					var pnt = pair.Key.Point + _dPoint;
+					var pnt = m_inOrder[pair.Key].Point + _dPoint;
 					if (pnt.X < 0 || pnt.X >= maxX || pnt.Y < 0 || pnt.Y >= maxY) continue;
 
-					m_visibles[pair.Key] += pair.Value * childsVisible;
-					m_cvisibles[pair.Key] = m_cvisibles[pair.Key].ScreenColorsOnly(childsColor);
+					visibles[pair.Key] += pair.Value * visibilityCoeff;
+					cvisibles[pair.Key] = cvisibles[pair.Key].ScreenColorsOnly(childsColor);
 				}
 			}
 		}
 
-		public IEnumerable<Tuple<Point, float>> GetVisibleCelss(MapCell[,] _mapCells, Point _dPoint)
+		public void LightCells(MapCell[,] _mapCells, Point _dPoint, FColor _fColor)
 		{
+			var minX = 0;
+			var minY = 0;
+
+			if (_dPoint.X< 0) return;
+			if (_dPoint.Y< 0) return;
+
 			var maxX = _mapCells.GetLength(0) - 1;
 			var maxY = _mapCells.GetLength(1) - 1;
-			
-			m_visibles[m_root] = 1;
-			for (var index = 1; index < m_inOrder.Count; index++)
-			{
-				m_visibles[m_inOrder[index]] = 0;
-			}
 
-			foreach (var cell in m_inOrder)
-			{
-				var visibilityCoeff = m_visibles[cell];
+			if (_dPoint.X> maxX) return;
+			if (_dPoint.Y> maxY) return;
 
-				if(visibilityCoeff<=0) continue;
+			var cvisibles = new FColor[m_inOrder.Length];
+			var visibles = new float[m_inOrder.Length];
 
-				var myPnt = cell.Point + _dPoint;
+			cvisibles[0] = _fColor;
+			visibles[0] = 2f;
+
+			if(_mapCells[_dPoint.X,_dPoint.Y].Visibility.A==0) return;
+
+			//if (_mapCells[_dPoint.X - 1, _dPoint.Y].TransparentColor.A==0)
+			//{
 				
-				var mapCell = _mapCells[myPnt.X, myPnt.Y];
-				var childsVisible = (1f - mapCell.Opacity) * visibilityCoeff;
+			//}
 
-				if (childsVisible <= 0) continue;
-				foreach (var pair in cell.Cells)
+			for (var index = 0; index < m_inOrder.Length; index++)
+			{
+				var losCell = m_inOrder[index];
+				var visibilityCoeff = visibles[index];
+
+				if (visibilityCoeff < 0.01) continue;
+
+
+				var myPnt = losCell.Point + _dPoint;
+
+				if (myPnt.X < 0 || myPnt.X >= maxX || myPnt.Y < 0 || myPnt.Y >= maxY) continue;
+
+				var mapCell = _mapCells[myPnt.X, myPnt.Y];
+
+				var color = cvisibles[index];
+
+				var transColor = index == 0 ? FColor.White : mapCell.TransparentColor;
+				if (mapCell.Visibility.A > 0)
 				{
-					var pnt = pair.Key.Point + _dPoint;
+					mapCell.Lighted = mapCell.Lighted.Screen(color.Multiply(visibilityCoeff));
+					visibilityCoeff *= transColor.A;
+					if (visibilityCoeff < 0.01) continue;
+				}
+				else
+				{
+					visibilityCoeff *= transColor.A;
+					if (visibilityCoeff < 0.01) continue;
+					mapCell.Lighted = mapCell.Lighted.Screen(color.Multiply(visibilityCoeff));
+				}
+
+				var childsColor = color.Multiply(transColor);
+
+
+				foreach (var pair in losCell.CellIndexes)
+				{
+					var pnt = m_inOrder[pair.Key].Point + _dPoint;
 					if (pnt.X < 0 || pnt.X >= maxX || pnt.Y < 0 || pnt.Y >= maxY) continue;
 
-					m_visibles[pair.Key] += pair.Value*childsVisible;
+					visibles[pair.Key] += pair.Value * visibilityCoeff;
+					cvisibles[pair.Key] = childsColor.Screen(cvisibles[pair.Key]);
 				}
 			}
-			return from pair in m_visibles select new Tuple<Point, float>(pair.Key.Point + _dPoint, pair.Value);
 		}
 	}
 
 	class LosCell
 	{
-		public LosCell(Point _point)
+		public LosCell(Point _point, int _radius)
 		{
 			Cells = new Dictionary<LosCell, float>();
 			Point = _point;
-			var r = _point.Lenght / LosManager.RADIUS;
+			var r = _point.Lenght / _radius;
 			var fi = Math.Asin(r);
 			var dc = (float)Math.Cos(fi);
+			//dc += (1f - dc)*0.5f;
+
 			DistanceCoefficient = Math.Min(dc, 1f);
 		}
 
@@ -192,6 +221,16 @@ namespace GameCore.Misc
 		public Point Point { get; private set; }
 
 		public Dictionary<LosCell, float> Cells { get; private set; }
+		public Dictionary<int, float> CellIndexes { get; private set; }
+
+		public void BuildCellIndexes(LosCell[] _inOrder)
+		{
+			CellIndexes = new Dictionary<int, float>();
+			foreach (var cell in Cells)
+			{
+				CellIndexes.Add(Array.IndexOf(_inOrder, cell.Key), cell.Value);
+			}
+		}
 
 		public override string ToString()
 		{

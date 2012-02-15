@@ -37,14 +37,6 @@ namespace OpenTKUi
 
 		public void ClearTiles(Rectangle _rectangle, FColor _backgroundColor)
 		{
-			//GL.BindTexture(TextureTarget.Texture2D, 0);
-			//GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
-			//GL.Begin(BeginMode.Quads);
-			//GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
-			//GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Top * m_gameProvider.TileSizeY);
-			//GL.Vertex2(_rectangle.Right * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
-			//GL.Vertex2(_rectangle.Left * m_gameProvider.TileSizeX, _rectangle.Bottom * m_gameProvider.TileSizeY);
-			//GL.End();
 			m_gameProvider.TileMapRenderer.Clear(_rectangle, _backgroundColor);
 		}
 

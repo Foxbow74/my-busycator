@@ -36,7 +36,8 @@ namespace GameCore
 		}
 
 		public static readonly FColor Empty = new FColor(0, 0, 0, 0);
-		public static readonly FColor Black = new FColor(255, 0, 0, 0);
+		public static readonly FColor Black = new FColor(1f, 0, 0, 0);
+		public static readonly FColor White = new FColor(1f, 1f, 1f, 1f);
 
 		public FColor ScreenColorsOnly(FColor _color)
 		{
