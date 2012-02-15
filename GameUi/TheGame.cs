@@ -233,16 +233,16 @@ namespace GameUi
 					uiBlock.DrawFrame();
 				}
 			}
-			DrawText();
+			//DrawText();
 		}
 
 
-		private void DrawText()
-		{
-			using (new Profiler())
-			{
-				m_gameProvider.DrawTextLayer();
-			}
-		}
+		//private void DrawText()
+		//{
+		//    using (new Profiler())
+		//    {
+		//        m_gameProvider.DrawTextLayer();
+		//    }
+		//}
 	}
 }

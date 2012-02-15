@@ -130,8 +130,8 @@ namespace OpenTKUi
 
 		protected virtual void OnRenderFinished()
 		{
-			//Clear(Color.Red);
 			TileMapRenderer.Draw();
+			DrawTextLayer();
 			SwapBuffers();
 		}
 
