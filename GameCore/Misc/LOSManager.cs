@@ -200,6 +200,42 @@ namespace GameCore.Misc
 				}
 			}
 		}
+
+		public void GetVisibleCelss(LiveMap _liveMap, Point _dPoint, FColor _startFrom)
+		{
+			var cvisibles = new FColor[m_inOrder.Length];
+			var visibles = new float[m_inOrder.Length];
+
+			cvisibles[0] = _startFrom;
+			visibles[0] = 1;
+
+			for (var index = 0; index < m_inOrder.Length; index++)
+			{
+				var cell = m_inOrder[index];
+				var visibilityCoeff = visibles[index];
+				var color = cvisibles[index];
+
+				if (visibilityCoeff < 0.01) continue;
+
+				var myPnt = (cell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
+
+				var mapCell = _liveMap.Cells[myPnt.X, myPnt.Y];
+				mapCell.Visibility = new FColor(visibilityCoeff, color);
+
+				var transColor = index == 0 ? FColor.White : mapCell.MapCell.TransparentColor;
+
+				visibilityCoeff = transColor.A * visibilityCoeff;
+				var childsColor = color.Multiply(transColor);
+
+				if (visibilityCoeff < 0.01) continue;
+
+				foreach (var pair in cell.CellIndexes)
+				{
+					visibles[pair.Key] += pair.Value * visibilityCoeff;
+					cvisibles[pair.Key] = cvisibles[pair.Key].ScreenColorsOnly(childsColor);
+				}
+			}
+		}
 	}
 
 	class LosCell

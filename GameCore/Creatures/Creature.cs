@@ -21,7 +21,6 @@ namespace GameCore.Creatures
 		/// </summary>
 		protected bool Silence = true;
 
-		private Point m_blockId;
 		private Point m_coords;
 		private WorldLayer m_layer;
 
@@ -56,11 +55,15 @@ namespace GameCore.Creatures
 			set
 			{
 				var newBlockId = MapBlock.GetBlockCoords(value);
-				if (newBlockId != m_blockId && m_blockId != null)
+				if (newBlockId != BlockId && BlockId != null)
 				{
-					Layer.MoveCreature(this, m_blockId, newBlockId);
+					Layer.MoveCreature(this, BlockId, newBlockId);
+					if (IsAvatar)
+					{
+						World.TheWorld.LiveMap.AvatarMoved(BlockId, newBlockId);
+					}
 				}
-				m_blockId = newBlockId;
+				BlockId = newBlockId;
 				m_coords = value;
 
 				if (IsAvatar)
@@ -109,7 +112,7 @@ namespace GameCore.Creatures
 
 		public MapBlock MapBlock
 		{
-			get { return Layer[m_blockId]; }
+			get { return Layer[BlockId]; }
 		}
 
 		public MapCell MapCell
@@ -144,6 +147,8 @@ namespace GameCore.Creatures
 		{
 			get { return World.TheWorld.Avatar == this; }
 		}
+
+		public Point BlockId { get; private set; }
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{

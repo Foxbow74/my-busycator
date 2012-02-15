@@ -53,7 +53,7 @@ namespace GameUi
 				m_uiBlocks.Push(pop);
 			} while (blocks.Count > 0);
 		
-			MessageManager.SendMessage(this, new WorldMessage(WorldMessage.EType.AVATAR_MOVE));
+			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
@@ -78,6 +78,7 @@ namespace GameUi
 						m_uiBlocks.Pop().Dispose();
 						m_pressed.Clear();
 						m_downKeys.Clear();
+						MessageManager.SendMessage(this, WorldMessage.Turn);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -129,7 +130,7 @@ namespace GameUi
 			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
 			m_uiBlocks.Push(m_mainUiBlock);
 
-			MessageManager.SendMessage(this, new WorldMessage(WorldMessage.EType.AVATAR_MOVE));
+			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 			MessageManager.SendMessage(this, " [?] - экран помощи");
 		}
 

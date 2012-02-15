@@ -57,6 +57,21 @@ namespace GameCore.Misc
 			get { return NearestPoints.Where(_point => _point != Zero); }
 		}
 
+		public IEnumerable<Point> AllNeighbours
+		{
+			get
+			{
+				yield return new Point(X - 1, Y - 1);
+				yield return new Point(X, Y - 1);
+				yield return new Point(X + 1, Y - 1);
+				yield return new Point(X - 1, Y);
+				yield return new Point(X + 1, Y - 1);
+				yield return new Point(X - 1, Y + 1);
+				yield return new Point(X, Y + 1);
+				yield return new Point(X + 1, Y + 1);
+			}
+		}
+
 		public double GetDistTill(Point _point)
 		{
 			return Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
@@ -142,14 +157,14 @@ namespace GameCore.Misc
 			return new Point(_a.X - _b.X, _a.Y - _b.Y);
 		}
 
-		public static Point operator *(Point _a, double _c)
+		public static Point operator *(Point _a, float _c)
 		{
 			return new Point((int) Math.Round(_a.X*_c), (int) Math.Round(_a.Y*_c));
 		}
 
-		public static Point operator /(Point _a, double _c)
+		public static Point operator /(Point _a, int _c)
 		{
-			return new Point((int) Math.Round(_a.X/_c + 0.5), (int) Math.Round(_a.Y/_c + 0.5));
+			return new Point(_a.X/_c, _a.Y/_c);
 		}
 
 		public static bool operator ==(Point _a, Point _b)
@@ -193,5 +208,18 @@ namespace GameCore.Misc
 		}
 
 		#endregion
+
+		public Point Wrap(int _width, int _height)
+		{
+			return new Point((X + _width)%_width,(Y + _height)%_height);
+		}
+
+		public Point Sphere(int _radius)
+		{
+			var x = X > _radius ? -_radius : X < -_radius ? _radius : X;
+			var y = Y > _radius ? -_radius : Y < -_radius ? _radius : Y;
+			return new Point(x,y);
+
+		}
 	}
 }
