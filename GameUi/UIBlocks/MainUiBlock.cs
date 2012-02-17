@@ -26,6 +26,14 @@ namespace GameUi.UIBlocks
 			m_stats = new StatsBlock(new Rectangle(0, Rectangle.Bottom - statHeight, Rectangle.Width, statHeight)) { BackgroundColor = Color.FromArgb(255, 0, 30, 30).ToFColor() };
 		}
 
+		public override void Dispose()
+		{
+			m_messages.Dispose();
+			m_map.Dispose();
+			m_stats.Dispose();
+			base.Dispose();
+		}
+
 		public UIBlock Map
 		{
 			get { return m_map; }

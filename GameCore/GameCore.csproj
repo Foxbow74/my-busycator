@@ -60,6 +60,7 @@
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
     <Compile Include="Creatures\Missile.cs" />
+    <Compile Include="EDirections.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="FColor.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />

@@ -21,6 +21,7 @@ namespace Busycator
 		{
 			base.OnLoad(_e);
 			m_game.LoadContent(ResourceProvider);
+			OnLoadFinished();
 		}
 
 		protected override void OnResize(EventArgs _e)
@@ -39,6 +40,8 @@ namespace Busycator
 		protected override void OnUpdateFrame(FrameEventArgs _e)
 		{
 			base.OnUpdateFrame(_e);
+			if (!IsActive) return;
+
 			m_game.Update(KeyState);
 		}
 

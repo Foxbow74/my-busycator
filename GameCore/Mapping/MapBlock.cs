@@ -18,7 +18,7 @@ namespace GameCore.Mapping
 
 		public MapBlock(Point _point)
 		{
-			LightSources = new List<LightSource>();
+			LightSources = new List<Tuple<Point, LightSource>>();
 			BlockId = _point;
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
@@ -90,6 +90,11 @@ namespace GameCore.Mapping
 			return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE);
 		}
 
-		public List<LightSource> LightSources { get; set; }
+		public List<Tuple<Point, LightSource>> LightSources { get; set; }
+
+		public void AddLightSource(Point _point, LightSource _lightSource)
+		{
+			LightSources.Add(new Tuple<Point, LightSource>(_point, _lightSource));
+		}
 	}
 }

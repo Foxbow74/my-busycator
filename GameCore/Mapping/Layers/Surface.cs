@@ -62,7 +62,7 @@ namespace GameCore.Mapping.Layers
 			block.AddObject(new Point(6, 8), ETiles.DOOR.GetThing());
 
 			//block.Map[7, 9] = ETerrains.BRICK_WALL;
-			block.LightSources.Add(new LightSource(new Point(7, 9) + _blockId*MapBlock.SIZE, 3, new FColor(Color.Blue)));
+			block.AddLightSource(new Point(7, 9), new LightSource(3, new FColor(Color.Blue)));
 
 			{
 				var cnt = rnd.Next(rnd.Next(70));
@@ -117,14 +117,9 @@ namespace GameCore.Mapping.Layers
 
 		public override FColor Ambient
 		{
-			get { return new FColor(Color.FromArgb(255, 210, 210, 210)); }
-		}
-
-		public override FColor Lighted
-		{
-			get 
-			{ 
-				return new FColor(Color.FromArgb(255, 55, 55, 10)); 
+			get
+			{
+				return new FColor(Color.FromArgb(115, 255, 255, 40)); 
 			}
 		}
 	}

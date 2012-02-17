@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using GameCore;
+using GameCore.Misc;
 using GameUi;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Input;
 
 namespace OpenTKUi
@@ -19,13 +18,15 @@ namespace OpenTKUi
 		private TileMapRenderer m_tileMapRenderer;
 
 		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
-			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX), GraphicsMode.Default, "Open TK")
+			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX))
 		{
+			VSync = VSyncMode.Off;
 			TileSizeX = _tileSizeX;
 			TileSizeY = _tileSizeY;
 			m_core.Reset();
 			Keyboard.KeyDown += KeyboardKeyDown;
 			Keyboard.KeyUp += KeyboardKeyUp;
+			OpenTKTile.GameProvider = this;
 		}
 
 		#region IGameProvider Members
@@ -63,7 +64,7 @@ namespace OpenTKUi
 
 		public bool IsActive
 		{
-			get { return Focused; }
+			get { return Focused && WidthInCells > 0 && HeightInCells > 0; }
 		}
 
 		internal TileMapRenderer TileMapRenderer
@@ -73,7 +74,6 @@ namespace OpenTKUi
 				if (m_tileMapRenderer == null && IsActive)
 				{
 					m_tileMapRenderer = new TileMapRenderer(Width, Height);
-					OpenTKTile.TileMapRenderer = m_tileMapRenderer;
 				}
 				return m_tileMapRenderer;
 			}
@@ -95,7 +95,11 @@ namespace OpenTKUi
 			m_core.Init();
 			m_resourceProvider = new OpenTKResourceProvider();
 			m_drawHelper = new OpenTKDrawHelper(m_resourceProvider, this);
-			//TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
+		}
+
+		protected void OnLoadFinished()
+		{
+			TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
 		}
 
 		protected override void OnUnload(EventArgs _e)
@@ -108,34 +112,35 @@ namespace OpenTKUi
 		protected override void OnResize(EventArgs _e)
 		{
 			if (!IsActive) return;
-			m_core.Reset();
 			m_core.Resize(Width, Height);
 			m_drawHelper.Resize(Width, Height);
-			if(m_tileMapRenderer!=null)
+			if (m_tileMapRenderer != null)
 			{
-				TileMapRenderer.Dispose();
-				m_tileMapRenderer = null;
+				m_tileMapRenderer.Dispose();
+				m_tileMapRenderer = new TileMapRenderer(Width, Height);
 			}
 			base.OnResize(_e);
 		}
 
-		protected override void OnUpdateFrame(FrameEventArgs e)
+		protected override void OnUpdateFrame(FrameEventArgs _e)
 		{
 			if (!IsActive) return;
-			base.OnUpdateFrame(e);
-			if (TileMapRenderer.ResourceProvider == null)
-			{
-				TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
-			}
+			base.OnUpdateFrame(_e);
 			TileMapRenderer.Iteration++;
 		}
 
 		protected virtual void OnRenderFinished()
 		{
 			if (!IsActive) return;
-			TileMapRenderer.Draw();
+			using (new Profiler("TileMapRenderer.Draw"))
+			{
+				TileMapRenderer.Draw();
+			}
 			DrawTextLayer();
-			SwapBuffers();
+			using (new Profiler("SwapBuffers"))
+			{
+				SwapBuffers();
+			}
 		}
 
 		private void KeyboardKeyUp(object _sender, KeyboardKeyEventArgs _e)

@@ -126,7 +126,6 @@ namespace OpenTKUi
 
 		public void Dispose()
 		{
-			m_img.Dispose();
 		}
 
 		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, FColor _background)

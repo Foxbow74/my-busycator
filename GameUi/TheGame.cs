@@ -35,6 +35,7 @@ namespace GameUi
 
 		public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
 		{
+			m_mainUiBlock.Dispose();
 			var blocks = new Stack<UIBlock>();
 			do
 			{
@@ -52,8 +53,11 @@ namespace GameUi
 				var pop = blocks.Pop();
 				m_uiBlocks.Push(pop);
 			} while (blocks.Count > 0);
-		
-			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+
+			if (m_gameProvider.IsActive)
+			{
+				MessageManager.SendMessage(this, WorldMessage.Turn);
+			}
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)

@@ -1,4 +1,5 @@
 ﻿using GameCore.Creatures;
+using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -44,5 +45,7 @@ namespace GameCore.Objects
 		{
 			return GetType().GetHashCode();
 		}
+
+		public LightSource Light { get; protected set; }
 	}
 }

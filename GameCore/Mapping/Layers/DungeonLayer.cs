@@ -46,21 +46,20 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 			block.Map[1,1] = ETerrains.MUSHROOM;
-			block.LightSources.Add(new LightSource(new Point(1, 1) + _blockId * MapBlock.SIZE, 9, new FColor(Color.Red)));
-			block.LightSources.Add(new LightSource(new Point(MapBlock.SIZE - 1, MapBlock.SIZE - 1) + _blockId * MapBlock.SIZE, 9, new FColor(Color.Green)));
-			block.LightSources.Add(new LightSource(new Point(MapBlock.SIZE - 1, 1) + _blockId * MapBlock.SIZE, 9, new FColor(Color.Blue)));
-			block.LightSources.Add(new LightSource(new Point(1, MapBlock.SIZE - 1) + _blockId * MapBlock.SIZE, 9, new FColor(Color.Magenta)));
+			//block.AddLightSource(new Point(1, 1), new LightSource(10, new FColor(3f,1f,0f,0f)));
+			//block.AddLightSource(new Point(MapBlock.SIZE - 1, MapBlock.SIZE - 1), new LightSource(10, new FColor(3f, 0f, 1f, 0f)));
+			//block.AddLightSource(new Point(MapBlock.SIZE - 1, 1), new LightSource(10, new FColor(3f, 0f, 0f, 1f)));
+			//block.AddLightSource(new Point(1, MapBlock.SIZE - 1), new LightSource(10, new FColor(3f, 1f, 0f, 1f)));
 			return block;
 		}
 
 		public override FColor Ambient
 		{
-			get { return new FColor(1f, 0, 0.01f, 0.1f); }
-		}
-
-		public override FColor Lighted
-		{
-			get { return new FColor(Color.FromArgb(255, 0, 0, 0)); }
+			get
+			{
+				return new FColor(Color.FromArgb(115, 255, 255, 40)); 
+				//return new FColor(0, 0, 0.01f, 0.01f);
+			}
 		}
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -14,7 +13,7 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(_surface, Point.Zero, 100, EIntellectGrades.INT)
 		{
-			Light = new LightSource(this, 10, Color.Yellow.ToFColor());
+			Light = new LightSource(30, new FColor(2f,1f,1f,1f));
 			Silence = false;
 
 
@@ -36,7 +35,5 @@ namespace GameCore.Creatures
 		{
 			throw new NotImplementedException();
 		}
-
-		public LightSource Light { get; private set; }
 	}
 }

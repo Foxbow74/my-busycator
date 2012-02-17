@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Objects;
@@ -16,17 +15,11 @@ namespace GameCore.Mapping
 		/// </summary>
 		private readonly Point m_inBlockCoords;
 
-		private readonly UInt32 m_seenMask;
-
 		private TerrainAttribute m_terrainAttribute;
 
 		internal MapCell(MapBlock _block, Point _inBlockCoords, Point _worldCoords)
 		{
 			m_inBlockCoords = _inBlockCoords;
-
-			m_seenMask = ((UInt32) 1) << m_inBlockCoords.X;
-			IsSeenBefore = (_block.SeenCells[m_inBlockCoords.Y] & m_seenMask) != 0;
-
 			Block = _block;
 			WorldCoords = _worldCoords;
 			Terrain = _block.Map[_inBlockCoords.X, _inBlockCoords.Y];
@@ -114,7 +107,6 @@ namespace GameCore.Mapping
 		}
 
 		private MapBlock Block { get; set; }
-		public bool IsSeenBefore { get; private set; }
 
 		public bool IsVisibleNow { get; set; }
 
@@ -162,7 +154,7 @@ namespace GameCore.Mapping
 				{
 					opacity += Items.Sum(_item => _item.Opacity);
 				}
-				var trancparence = 1f - opacity;
+				var trancparence = 1f - Math.Min(1f,opacity);
 
 				return new FColor(trancparence, 1f,1f,1f);
 			}
@@ -241,13 +233,5 @@ namespace GameCore.Mapping
 				}
 			}
 		}
-
-		public void SetIsSeenBefore()
-		{
-			Block.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
-		}
-
-		public FColor Lighted { get; set; }
-		public FColor Visibility { get; set; }
 	}
 }
