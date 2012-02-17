@@ -21,6 +21,13 @@ namespace GameUi.UIBlocks
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
+		public override void Dispose()
+		{
+			MessageManager.NewMessage -= MessageManagerNewMessage;
+			MessageManager.NewWorldMessage -= MessageManagerNewWorldMessage;
+			base.Dispose();
+		} 
+
 		private void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
 			if (_message.Type == WorldMessage.EType.AVATAR_TURN)

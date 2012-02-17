@@ -18,6 +18,12 @@ namespace GameUi.UIBlocks
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}
 
+		public override void Dispose()
+		{
+			MessageManager.NewMessage -= MessageManagerNewMessage;
+			base.Dispose();
+		}
+
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
 			if (_message is SimpleTextMessage)

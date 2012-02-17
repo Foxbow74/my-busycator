@@ -35,13 +35,10 @@ namespace GameUi.UIBlocks
 
 		protected void UpdateContentRectangle()
 		{
+			ContentRectangle = Rectangle;
 			if (BlockFrame != null)
 			{
-				ContentRectangle = new Rectangle(Rectangle.Left + 1, Rectangle.Top + 1, Rectangle.Width - 2, Rectangle.Height - 2);
-			}
-			else
-			{
-				ContentRectangle = Rectangle;
+				ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top + 1, ContentRectangle.Width - 2, ContentRectangle.Height - 2);
 			}
 		}
 
@@ -87,9 +84,8 @@ namespace GameUi.UIBlocks
 			TileHelper.DrawHelper.ClearTiles(Rectangle, BackgroundColor);
 		}
 
-		public void Dispose()
+		public virtual void Dispose()
 		{
-			//throw new NotImplementedException();
 		}
 
 		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

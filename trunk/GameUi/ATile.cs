@@ -25,6 +25,8 @@ namespace GameUi
 
 		public bool IsFogTile { get; set; }
 
+		public object Tile { get; set; }
+
 		public abstract void Draw(int _x, int _y, FColor _color, FColor _background);
 		public abstract void Draw(Point _point, FColor _color, FColor _background);
 		public abstract void FogIt(int _col, int _row);

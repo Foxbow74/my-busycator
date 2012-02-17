@@ -97,7 +97,7 @@ namespace GameCore.Mapping.Layers
 						{
 							continue;
 						}
-						var mc = new MapCell(block, ij, world) {Lighted = Lighted};
+						var mc = new MapCell(block, ij, world);
 						_mapCells[map.X, map.Y] = mc;
 					}
 				}
@@ -105,8 +105,6 @@ namespace GameCore.Mapping.Layers
 		}
 
 		public abstract FColor Ambient { get; }
-
-		public abstract FColor Lighted { get; }
 
 		public MapBlock GetMapBlock(Point _worldCoords)
 		{

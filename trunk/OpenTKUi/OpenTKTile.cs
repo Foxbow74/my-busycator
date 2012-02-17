@@ -6,6 +6,8 @@ namespace OpenTKUi
 {
 	internal class OpenTKTile : ATile
 	{
+		public static OpenTKGameProvider GameProvider { get; set; }
+
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
@@ -37,23 +39,21 @@ namespace OpenTKUi
 
 		internal static OpenTKResourceProvider ResourceProvider { get; set; }
 
-		public static TileMapRenderer TileMapRenderer { get; set; }
-
 		public TexCoord[] Texcoords { get; private set; }
 
 		public override void Draw(int _x, int _y, FColor _color, FColor _background)
 		{
-			TileMapRenderer.DrawTile(this, _x, _y, _color, _background);
+			GameProvider.TileMapRenderer.DrawTile(this, _x, _y, _color, _background);
 		}
 
 		public override void Draw(Point _point, FColor _color, FColor _background)
 		{
-			TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background);
 		}
 
 		public override void FogIt(int _col, int _row)
 		{
-			TileMapRenderer.FogTile(_col, _row);
+			GameProvider.TileMapRenderer.FogTile(_col, _row);
 		}
 
 		#region Nested type: TexCoord

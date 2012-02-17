@@ -92,6 +92,7 @@ namespace GameCore.Creatures
 
 				if (IsAvatar)
 				{
+					MessageManager.SendMessage(this, WorldMessage.AvatarChangeLayer);
 					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 				}
 			}

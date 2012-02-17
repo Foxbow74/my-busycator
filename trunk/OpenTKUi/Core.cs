@@ -37,6 +37,12 @@ namespace OpenTKUi
 		public void Resize(int _windowW, int _windowH)
 		{
 			GL.Viewport(new Size(_windowW, _windowH));
+			GL.MatrixMode(MatrixMode.Projection);
+			GL.LoadIdentity();
+
+			var viewPort = new int[4];
+			GL.GetInteger(GetPName.Viewport, viewPort);
+			GL.Ortho(viewPort[0], viewPort[0] + viewPort[2], viewPort[1] + viewPort[3], viewPort[1], -1, 1);
 		}
 
 
@@ -76,7 +82,7 @@ namespace OpenTKUi
 		{
 			GL.Color4((byte) 255, (byte) 255, (byte) 255, (byte) 255);
 			GL.LoadIdentity();
-			//GL.Translate(0.375, 0.375, 0.0); // Move slightly for pixel precise drawing
+			GL.Translate(0.375, 0.375, 0.0); // Move slightly for pixel precise drawing
 		}
 	}
 }

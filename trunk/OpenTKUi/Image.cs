@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using GameCore.Misc;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
@@ -62,7 +63,7 @@ namespace OpenTKUi
 		private void FillBackgroundByTransparentColorAndCopyBits()
 		{
 			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite,
-			                           PixelFormat.Format32bppArgb);
+			                           PixelFormat.Format32bppPArgb);
 
 			FillBackgroundByTransparentColor(data, Color.Empty);
 
@@ -74,7 +75,7 @@ namespace OpenTKUi
 		private void CopyBits()
 		{
 			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly,
-			                           PixelFormat.Format32bppArgb);
+									   PixelFormat.Format32bppPArgb);
 			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
 			              OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
 			GL.Finish();
@@ -83,7 +84,7 @@ namespace OpenTKUi
 
 		public unsafe void ReplaceColor(Color _color, Color _byColor)
 		{
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int)Width, (int)Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int)Width, (int)Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppPArgb);
 
 			var length = data.Stride * Height / 4;
 			var ptr1 = (int*)data.Scan0.ToPointer();
@@ -123,10 +124,11 @@ namespace OpenTKUi
 		public void Update()
 		{
 			GL.BindTexture(TextureTarget.Texture2D, m_texture);
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly,
-			                           PixelFormat.Format32bppArgb);
-			GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int) Width, (int) Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra,
-			                 PixelType.UnsignedByte, data.Scan0);
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+			using (new Profiler("UpdateTextLayer"))
+			{
+				GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)Width, (int)Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			}
 			Bitmap.UnlockBits(data);
 		}
 	}

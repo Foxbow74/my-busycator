@@ -211,7 +211,7 @@ namespace GameCore.Misc
 
 		public Point Wrap(int _width, int _height)
 		{
-			return new Point((X + _width)%_width,(Y + _height)%_height);
+			return new Point((X + 100 * _width) % _width, (Y + 100 * _height) % _height);
 		}
 
 		public Point Sphere(int _radius)

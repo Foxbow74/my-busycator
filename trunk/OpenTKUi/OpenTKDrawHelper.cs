@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using GameCore;
+using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -20,7 +21,7 @@ namespace OpenTKUi
 		{
 			m_gameProvider = _gameProvider;
 			m_resourceProvider = _resourceProvider;
-			var bitmap = new Bitmap(_gameProvider.Width, _gameProvider.Height, PixelFormat.Format32bppArgb);
+			var bitmap = new Bitmap(_gameProvider.Width, _gameProvider.Height, PixelFormat.Format32bppPArgb);
 			m_textImage = new Image(bitmap, false);
 		}
 
@@ -37,6 +38,7 @@ namespace OpenTKUi
 
 		public void ClearTiles(Rectangle _rectangle, FColor _backgroundColor)
 		{
+			if(m_gameProvider.TileMapRenderer==null) return;
 			m_gameProvider.TileMapRenderer.Clear(_rectangle, _backgroundColor);
 		}
 
@@ -56,7 +58,6 @@ namespace OpenTKUi
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
 				gr.SmoothingMode = SmoothingMode.HighSpeed;
-				//gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 				using (var br = new SolidBrush(_color.ToColor()))
 				{
 					gr.DrawString(_string, font, br, _x, _y);
@@ -82,18 +83,8 @@ namespace OpenTKUi
 
 		#endregion
 
-		public void ClearText()
-		{
-			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
-			{
-				gr.Clear(Color.Empty);
-			}
-			m_isTextBitmapChanged = true;
-		}
-
 		public void DrawTextBitmap()
 		{
-			//return;
 			if (m_isTextBitmapChanged)
 			{
 				m_textImage.Update();
@@ -110,13 +101,11 @@ namespace OpenTKUi
 			GL.Color4(1f, 1f, 1f, 1f);
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 
-			//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0);
 			GL.Vertex2(0, 0);
 			GL.TexCoord2(1f, 0);
 			GL.Vertex2(_image.Width, 0);
-			//GL.Color4(1f, 1f, 0f, 0f);
 			GL.TexCoord2(1f, 1f);
 			GL.Vertex2(_image.Width, _image.Height);
 			GL.TexCoord2(0, 1f);
@@ -127,7 +116,7 @@ namespace OpenTKUi
 		public void Resize(int _width, int _height)
 		{
 			if (m_textImage != null) m_textImage.Dispose();
-			var bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppArgb);
+			var bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppPArgb);
 			m_textImage = new Image(bitmap, false);
 		}
 	}

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
@@ -10,7 +10,7 @@ namespace GameCore.Mapping
 	{
 		private readonly LosManager m_visibilityManager;
 
-		public const int ACTIVE_QRADIUS = 2;
+		public const int ACTIVE_QRADIUS =2 ;
 
 		private Point m_centerLiveBlock;
 
@@ -27,7 +27,7 @@ namespace GameCore.Mapping
 
 		public LiveMap()
 		{
-			m_visibilityManager = new LosManager(40);
+			m_visibilityManager = new LosManager(20);
 
 			m_sizeInBlocks = (2 * ACTIVE_QRADIUS + 1);
 			SizeInCells = m_sizeInBlocks * MapBlock.SIZE;
@@ -66,29 +66,52 @@ namespace GameCore.Mapping
 				case WorldMessage.EType.TURN:
 					OnTurn();
 					break;
+				case WorldMessage.EType.AVATAR_CHANGE_LAYER:
+					LayerChanged();
+					break;
 			}
+		}
+
+		private void LayerChanged()
+		{
+			foreach (var block in Blocks)
+			{
+				block.Clear();
+			}
+			Actualize(World.TheWorld.Avatar.BlockId);
 		}
 
 		private void OnTurn()
 		{
-			var w = m_vieportSize.X;
-			var h = m_vieportSize.Y;
-
-			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.Coords);
-			var centerLiveCell = m_centerLiveBlock * MapBlock.SIZE + inBlock;
-			var zeroLiveCell = centerLiveCell - new Point(w / 2, h / 2);
-			for (var i = 0; i < w; i++)
+			using (new Profiler())
 			{
-				for (var j = 0; j < h; j++)
+				var lighted = m_centerLiveBlock.NearestPoints.Select(Wrap).ToList();
+				lighted.Add(m_centerLiveBlock);
+
+				foreach (var blockId in lighted)
 				{
-					var ij = new Point(i, j);
-					var liveij = (ij + zeroLiveCell).Wrap(SizeInCells, SizeInCells);
-					var liveMapCell = Cells[liveij.X, liveij.Y];
-					liveMapCell.Visibility = FColor.Empty;
+					Blocks[blockId.X, blockId.Y].ClearTemp();
+				}
+
+				var centerLiveCell = GetCenterLiveCell();
+				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
+
+				foreach (var blockId in lighted)
+				{
+					Blocks[blockId.X, blockId.Y].LightCells(this);
+				}
+
+				if (World.TheWorld.Avatar.Light != null)
+				{
+					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
 				}
 			}
+		}
 
-			m_visibilityManager.GetVisibleCelss(this, centerLiveCell, FColor.White);
+		private Point GetCenterLiveCell()
+		{
+			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.Coords);
+			return m_centerLiveBlock * MapBlock.SIZE + inBlock;
 		}
 
 		public void SetViewPortSize(Point _size)
@@ -98,38 +121,21 @@ namespace GameCore.Mapping
 
 		public void Actualize(Point _avatarBlockId)
 		{
-			var needUpdate = false;
-			var layer = World.TheWorld.Avatar.Layer;
-			foreach (var blockId in m_blockIds)
+			using (new Profiler())
 			{
-				if (Blocks[blockId.X, blockId.Y].MapBlock == null)
-				{
-					needUpdate = true;
-					var offset = (blockId - m_centerLiveBlock).Sphere(ACTIVE_QRADIUS);
-					var mapBlockId = _avatarBlockId + offset;
-					Blocks[blockId.X, blockId.Y].SetMapBlock(layer[mapBlockId]);
-				}
-			}
-			if(needUpdate)
-			{
+				var layer = World.TheWorld.Avatar.Layer;
 				foreach (var blockId in m_blockIds)
 				{
-					var liveBlock = Blocks[blockId.X, blockId.Y];
-					if (liveBlock.Filled)
+					if (Blocks[blockId.X, blockId.Y].MapBlock == null)
 					{
-						liveBlock.ClearLight();
-					}
-					else
-					{
-						liveBlock.Fill();
+						var offset = (blockId - m_centerLiveBlock).Sphere(ACTIVE_QRADIUS);
+						var mapBlockId = _avatarBlockId + offset;
+						Blocks[blockId.X, blockId.Y].SetMapBlock(layer[mapBlockId]);
 					}
 				}
 			}
 		}
 		
-		/// <summary>
-		/// 	Заполняет двумерный массив значениями из карты вокруг игрока
-		/// </summary>
 		public Point GetData()
 		{
 			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.Coords);
@@ -160,31 +166,22 @@ namespace GameCore.Mapping
 
 			m_centerLiveBlock = Wrap(m_centerLiveBlock + delta);
 
-			Debug.WriteLine(" m_centerLiveBlock = " + m_centerLiveBlock);
 			Actualize(_newBlockId);
 		}
 
 		private void ClearColumn(int _columnIndex)
 		{
-			Debug.WriteLine("* clear column " + _columnIndex);
-			foreach (var blockId in m_blockIds)
+			foreach (var blockId in m_blockIds.Where(_blockId => _blockId.X == _columnIndex))
 			{
-				if(blockId.X==_columnIndex)
-				{
-					Blocks[blockId.X, blockId.Y].Clear();
-				}
+				Blocks[blockId.X, blockId.Y].Clear();
 			}
 		}
-		
+
 		private void ClearRow(int _rowIndex)
 		{
-			Debug.WriteLine("* clear row " + _rowIndex);
-			foreach (var blockId in m_blockIds)
+			foreach (var blockId in m_blockIds.Where(_blockId => _blockId.Y == _rowIndex))
 			{
-				if (blockId.Y == _rowIndex)
-				{
-					Blocks[blockId.X, blockId.Y].Clear();
-				}
+				Blocks[blockId.X, blockId.Y].Clear();
 			}
 		}
 	}

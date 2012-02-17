@@ -1,15 +1,14 @@
 ﻿using System;
+using GameCore.Misc;
 
 namespace GameCore.Mapping
 {
 	public class LiveMapCell
 	{
 		private MapCell m_mapCell;
-		private FColor m_light;
-
-		public LiveMapCell()
-		{
-		}
+		private uint m_seenMask;
+		private Point m_inBlockCoords;
+		private MapBlock m_mapBlock;
 
 		public MapCell MapCell
 		{
@@ -21,15 +20,33 @@ namespace GameCore.Mapping
 
 		public FColor Visibility { get; set; }
 
-		public void SetMapCell(MapCell _mc)
+		public FColor Lighted { get; set; }
+
+		public bool IsSeenBefore { get; private set; }
+
+		public void SetMapCell(MapCell _mc, MapBlock _mapBlock, Point _inBlockCoords)
 		{
 			m_mapCell = _mc;
-			ClearLight();
+			m_inBlockCoords = _inBlockCoords;
+			m_mapBlock = _mapBlock;
+			m_seenMask = ((UInt32)1) << m_inBlockCoords.X;
+
+			IsSeenBefore = (_mapBlock.SeenCells[_inBlockCoords.Y] & m_seenMask) != 0;
+			ClearTemp();
 		}
 
-		public void ClearLight()
+		public void SetIsSeenBefore()
 		{
-			m_light = FColor.Empty;
+			if (!IsSeenBefore)
+			{
+				IsSeenBefore = true;
+				m_mapBlock.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
+			}
+		}
+
+		public void ClearTemp()
+		{
+			Visibility = Lighted = FColor.Empty;
 		}
 
 		public override string ToString()
