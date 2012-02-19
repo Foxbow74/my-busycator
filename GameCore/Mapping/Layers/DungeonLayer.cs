@@ -46,10 +46,10 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 			block.Map[1,1] = ETerrains.MUSHROOM;
-			//block.AddLightSource(new Point(1, 1), new LightSource(10, new FColor(3f,1f,0f,0f)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 1, MapBlock.SIZE - 1), new LightSource(10, new FColor(3f, 0f, 1f, 0f)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 1, 1), new LightSource(10, new FColor(3f, 0f, 0f, 1f)));
-			//block.AddLightSource(new Point(1, MapBlock.SIZE - 1), new LightSource(10, new FColor(3f, 1f, 0f, 1f)));
+			//block.AddLightSource(new Point(2, 2), new LightSource(8, new FColor(5f, 1f, 1f, 1f)));
+			//block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 0f, 1f, 0f)));
+			//block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(3f, 0f, 0f, 1f)));
+			//block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 1f, 0f, 1f)));
 			return block;
 		}
 
@@ -57,7 +57,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(115, 255, 255, 40)); 
+				return new FColor(Color.FromArgb(255, 255, 255, 40)); 
 				//return new FColor(0, 0, 0.01f, 0.01f);
 			}
 		}

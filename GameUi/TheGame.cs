@@ -33,6 +33,16 @@ namespace GameUi
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
+		public bool IsNeedDraw
+		{
+			get
+			{
+				var result = m_needRedraws >0;
+				m_needRedraws--;
+				return result;
+			}
+		}
+
 		public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
 		{
 			m_mainUiBlock.Dispose();
@@ -222,8 +232,7 @@ namespace GameUi
 
 		public void Draw()
 		{
-			//if (m_needRedraws < 1) return;
-			m_needRedraws--;
+			
 
 
 			foreach (var uiBlock in m_uiBlocks.Reverse())

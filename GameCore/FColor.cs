@@ -45,20 +45,16 @@ namespace GameCore
 
 		public FColor ScreenColorsOnly(FColor _color)
 		{
-			//return new FColor(1, R + _color.R, G + _color.G, B + _color.B);
-
 			Func<float, float, float> func = (_i, _i1) => 1f - ((1f - _i) * (1f - _i1));
 			return new FColor(A, func(R, _color.R), func(G, _color.G), func(B, _color.B));
 		}
 
 		public FColor Screen(FColor _color)
 		{
-			//return new FColor(Math.Max(A + _color.A,1f), R + _color.R, G + _color.G, B + _color.B);
+			var f = Math.Max(A, Math.Max(R, Math.Max(G, B)));
+			f = Math.Max(f, Math.Max(_color.A, Math.Max(_color.R, Math.Max(_color.G, _color.B))));
 
-			var K = Math.Max(A, Math.Max(R, Math.Max(G, B)));
-			K = Math.Max(K, Math.Max(_color.A, Math.Max(_color.R, Math.Max(_color.G, _color.B))));
-
-			Func<float, float, float> func = (_i, _i1) => K - ((1f - _i / K) * (1f - _i1 / K)) * K;
+			Func<float, float, float> func = (_i, _i1) => f - ((1f - _i / f) * (1f - _i1 / f)) * f;
 
 
 			return new FColor(func(A, _color.A), func(R, _color.R), func(G, _color.G), func(B, _color.B));
@@ -117,12 +113,17 @@ namespace GameCore
 		{
 			var mid = (R + G + B)/4;
 			return new FColor(1f, mid, mid, mid);
-			//return new FColor(1f, (mid + R)/2, (mid+G)/2, (mid+B)/2);
 		}
 
 		public FColor Clamp()
 		{
-			return new FColor(Math.Min(1f, A),Math.Min(1f, R),Math.Min(1f, G),Math.Min(1f, B));
+			var k = Math.Max(R, Math.Max(G, B));
+			if(k>1)
+			{
+				return new FColor(1f, R/k, G/k, B/k);
+			}
+			return this;
+			//return new FColor(Math.Min(1f, A), Math.Min(1f, R), Math.Min(1f, G), Math.Min(1f, B));
 		}
 	}
 }

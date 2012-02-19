@@ -8,7 +8,7 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 1f / 255;
+		private const float VISIBILITY_THRESHOLD = 33f / 255;
 
 		const float DIVIDER = 10f;
 
@@ -56,7 +56,8 @@ namespace GameCore.Misc
 					foreach (var dv in dVectors)
 					{
 						var v = new Vector2(pnt.X, pnt.Y) + dv;
-						v -= new Vector2(Math.Sign(v.X) / 2f, Math.Sign(v.Y) / 2f);
+						//v -= new Vector2(Math.Sign(v.X) / 2f, Math.Sign(v.Y) / 2f);
+						//v+=new Vector2(0.5f, 0.5f);
 
 						var parentPoint = Point.Zero;
 						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.02f))
@@ -79,50 +80,22 @@ namespace GameCore.Misc
 
 			m_inOrder = alreadyDone.Values.OrderByDescending(_cell => _cell.DistanceCoefficient).ToArray();
 
-			Action<Point, Point, Point> act = (_p1, _p2, _p3) =>
-			{
-				alreadyDone[_p1].DistanceCoefficient = (alreadyDone[_p2].DistanceCoefficient +
-														alreadyDone[_p3].DistanceCoefficient) / 2;
-			};
-
-			for (var i = 1; i < _radius; i++)
-			{
-				act(new Point(0, i), new Point(-1, i), new Point(1, i));
-				act(new Point(0, -i), new Point(-1, -i), new Point(1, -i));
-				act(new Point(i, 0), new Point(i, -1), new Point(i, 1));
-				act(new Point(-i, 0), new Point(-i, -1), new Point(-i, 1));
-			}
-
 			foreach (var losCell in m_inOrder)
 			{
-				losCell.BuildCellIndexes(m_inOrder);
+				var dictionary = losCell.Cells.ToArray();
+				foreach (var pair in dictionary)
+				{
+					var cell = pair.Key;
+					var delta = cell.Point.Lenght - losCell.Point.Lenght;
+					if (delta>=0 && delta<0.1f)
+					{
+						var parent = m_inOrder.Where(_cell => _cell.Cells.Keys.Contains(cell) && _cell.DistanceCoefficient > losCell.DistanceCoefficient);
+
+						losCell.MoveToParent(cell, parent.OrderByDescending(_cell => _cell.DistanceCoefficient).First());
+						Debug.WriteLine(losCell);
+					}
+				}
 			}
-
-
-			//var min = 1f;
-			//var max = 0f;
-
-			//for (var index = 0; index < m_inOrder.Length; index++)
-			//{
-			//    var visibleBy = m_inOrder.Where(_cell => _cell.CellIndexes.ContainsKey(index)).Select(_cell => _cell.CellIndexes[index]).Sum();
-			//    max = Math.Max(visibleBy, max);
-			//    min = Math.Min(visibleBy, min);
-			//}
-
-			//foreach (var losCell in m_inOrder)
-			//{
-			//    losCell.Expand(min, max);
-			//}
-
-			////for (var index = 0; index < m_inOrder.Length; index++)
-			////{
-			////    var visibleBy = m_inOrder.Where(_cell => _cell.CellIndexes.ContainsKey(index)).Select(_cell => _cell.CellIndexes[index]).Sum();
-			////    Debug.WriteLine(visibleBy);
-			////}
-			////foreach (var i in distAndVisibility.Keys.OrderBy(_i => _i))
-			////{
-			//	System.Diagnostics.Debug.WriteLine(i + "\t" + distAndVisibility[i]);
-			//}
 
 			foreach (var losCell in m_inOrder)
 			{
@@ -141,22 +114,18 @@ namespace GameCore.Misc
 
 			for (var index = 0; index < m_inOrder.Length; index++)
 			{
-				var cap = float.MaxValue;
-
 				var visibilityCoeff = visibles[index];
-				var color = cvisibles[index];
 
 				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
 
-				var losCell = m_inOrder[index]; 
+				var losCell = m_inOrder[index];
 				var myPnt = (losCell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
-				liveCell.Visibility = new FColor(visibilityCoeff, color);
 				var transColor = index == 0 ? FColor.White : liveCell.MapCell.TransparentColor;
 
 				visibilityCoeff = transColor.A * visibilityCoeff;
-				var childsColor = color.Multiply(transColor);
+				var childsColor = cvisibles[index].Multiply(transColor);
 
 				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
 
@@ -165,6 +134,19 @@ namespace GameCore.Misc
 					visibles[pair.Key] += pair.Value * visibilityCoeff;
 					cvisibles[pair.Key] = cvisibles[pair.Key].ScreenColorsOnly(childsColor);
 				}
+			}
+			for (var index = 0; index < m_inOrder.Length; index++)
+			{
+				var visibilityCoeff = visibles[index];
+				var color = cvisibles[index];
+
+				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
+
+				var losCell = m_inOrder[index];
+				var myPnt = (losCell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
+
+				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
+				liveCell.Visibility = new FColor(visibilityCoeff, color);
 			}
 		}
 
@@ -195,10 +177,6 @@ namespace GameCore.Misc
 				var transColor = index == 0 ? FColor.White : liveCell.MapCell.TransparentColor;
 				if (childVisibility[index] > 0)
 				{
-					if (transColor.A==0)
-					{
-						
-					}
 					liveCell.Lighted = liveCell.Lighted.Screen(color.Multiply(powerCoeff));
 					powerCoeff *= transColor.A;
 					if (powerCoeff < 0.01) continue;
@@ -270,6 +248,13 @@ namespace GameCore.Misc
 		{
 			var v = 1f / (_max - _min);
 			DistanceCoefficient = (DistanceCoefficient - _min)*v;
+		}
+
+		public void MoveToParent(LosCell _cell, LosCell _parent)
+		{
+			var val = Cells[_cell];
+			_parent.Add(_cell.Point, val, _cell);
+			Cells.Remove(_cell);
 		}
 	}
 }

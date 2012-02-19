@@ -5,6 +5,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Mapping;
+using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
 
@@ -98,6 +99,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					return;
 			}
+			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 
 		private void SelectTargetFromList()

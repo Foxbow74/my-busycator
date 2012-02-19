@@ -124,6 +124,10 @@ namespace GameCore.Mapping
 				{
 					opacity += Creature.Opacity;
 				}
+				if (WorldCoords == World.TheWorld.Avatar.Coords)
+				{
+					opacity += World.TheWorld.Avatar.Opacity;
+				}
 				if (opacity < 1)
 				{
 					opacity += Items.Sum(_item => _item.Opacity);
@@ -149,6 +153,10 @@ namespace GameCore.Mapping
 				if (opacity < 1 && Creature != null)
 				{
 					opacity += Creature.Opacity;
+				}
+				if (opacity < 1 && WorldCoords == World.TheWorld.Avatar.Coords)
+				{
+					opacity += World.TheWorld.Avatar.Opacity;
 				}
 				if (opacity < 1)
 				{
