@@ -156,10 +156,14 @@ namespace GameCore.Misc
 			var power = new float[m_inOrder.Length];
 			var childVisibility = new float[m_inOrder.Length];
 
-			cvisibles[0] = new FColor(1f, _fColor);
 			power[0] = _fColor.A;
 			childVisibility[0] = 1;
 
+			for (var index = 0; index < m_inOrder.Length; index++)
+			{
+
+				cvisibles[index] = new FColor(1f, _fColor);
+			}
 			for (var index = 0; index < m_inOrder.Length; index++)
 			{
 				var losCell = m_inOrder[index];
@@ -194,7 +198,7 @@ namespace GameCore.Misc
 				foreach (var pair in losCell.CellIndexes)
 				{
 					power[pair.Key] += pair.Value * powerCoeff;
-					cvisibles[pair.Key] = childsColor.Screen(cvisibles[pair.Key]);
+					cvisibles[pair.Key] = childsColor.Multiply(cvisibles[pair.Key]);
 					childVisibility[pair.Key] = pair.Value * liveCell.Visibility.A;
 				}
 			}
