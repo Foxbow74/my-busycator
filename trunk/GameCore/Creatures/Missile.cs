@@ -18,6 +18,7 @@ namespace GameCore.Creatures
 		public Missile(WorldLayer _layer, Point _coords, int _speed, Item _ammo, Point _target)
 			: base(_layer, _coords, _speed)
 		{
+			Light = new LightSource(4, new FColor(2f, 1f, 0f, 0f));
 			Ammo = _ammo;
 			m_path = _coords.GetLineToPoints(_target).ToList();
 		}

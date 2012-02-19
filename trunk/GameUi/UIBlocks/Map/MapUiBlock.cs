@@ -58,16 +58,16 @@ namespace GameUi.UIBlocks.Map
 
 					var backgroundColor = BackgroundColor;
 					//var lighted = FColor.White.Multiply(liveCell.Visibility.A);// > 0 ? FColor.White : FColor.Black;// liveCell.Lighted.Screen(layer.Ambient).Multiply(liveCell.Visibility.A);
-					var lighted = liveCell.Lighted.Screen(layer.Ambient).Multiply(liveCell.Visibility.A);
+					var lighted = liveCell.Lighted.Screen(layer.Ambient).Multiply(liveCell.Visibility);
 
 
 					var tile = mapCell.Tile.GetTile() ?? mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
 					var color = tile.Color.Multiply(lighted).Clamp();
 					var lightness = lighted.Lightness();
 
-					if (lightness > 0.3)
+					if (lightness > 0.01)
 					{
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color.Clamp(), backgroundColor);
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, backgroundColor);
 						liveCell.SetIsSeenBefore();
 					}
 					else if (liveCell.IsSeenBefore)

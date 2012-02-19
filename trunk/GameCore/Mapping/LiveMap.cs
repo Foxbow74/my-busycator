@@ -10,7 +10,7 @@ namespace GameCore.Mapping
 	{
 		private readonly LosManager m_visibilityManager;
 
-		public const int ACTIVE_QRADIUS =2 ;
+		public const int ACTIVE_QRADIUS =1;
 
 		private Point m_centerLiveBlock;
 

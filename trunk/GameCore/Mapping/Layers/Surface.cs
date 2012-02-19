@@ -119,7 +119,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(115, 255, 255, 40)); 
+				return new FColor(Color.FromArgb(255, 255, 255, 40)); 
 			}
 		}
 	}

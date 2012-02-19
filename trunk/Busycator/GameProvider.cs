@@ -49,9 +49,13 @@ namespace Busycator
 		{
 			if (!IsActive) return;
 			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " Avatar:" + World.TheWorld.Avatar.Coords;
-			Clear(FColor.Empty);
-			m_game.Draw();
-			OnRenderFinished();
+
+			//if (m_game.IsNeedDraw)
+			{
+				Clear(FColor.Empty);
+				m_game.Draw();
+				OnRenderFinished();
+			}
 		}
 
 		[STAThread]
