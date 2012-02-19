@@ -27,8 +27,8 @@ namespace GameCore
 		[Tiles(0f)] STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
 
-		[Tiles(0.8f)] AVATAR,
-		[Tiles(0.9f)] MONSTER,
+		[Tiles(0.2f)] AVATAR,
+		[Tiles(0.3f)] MONSTER,
 
 		[Tiles(0.2f)] SWORD,
 		[Tiles(0.3f)] AXE,

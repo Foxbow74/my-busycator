@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
 using Point = GameCore.Misc.Point;
@@ -47,9 +48,16 @@ namespace GameCore.Mapping.Layers
 			}
 			block.Map[1,1] = ETerrains.MUSHROOM;
 			//block.AddLightSource(new Point(2, 2), new LightSource(8, new FColor(5f, 1f, 1f, 1f)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 0f, 1f, 0f)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(3f, 0f, 0f, 1f)));
-			//block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 1f, 0f, 1f)));
+			block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 0f, 1f, 0f)));
+			block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(3f, 0f, 0f, 1f)));
+			block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 1f, 0f, 1f)));
+
+			{
+				var x = rnd.Next(MapBlock.SIZE);
+				var y = rnd.Next(MapBlock.SIZE);
+				block.Creatures.Add(new Monster(this, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+			}
+
 			return block;
 		}
 
