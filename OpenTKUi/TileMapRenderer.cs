@@ -85,14 +85,13 @@ namespace OpenTKUi
 
 		public void Draw()
 		{
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
-			GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-			DrawQuads(false, false);
+			//GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+			//DrawQuads(false, false);
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			DrawQuads(true, false);
-			GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-			DrawQuads(false, true);
+			//GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+			//DrawQuads(false, true);
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			DrawQuads(true, true);
 		}
