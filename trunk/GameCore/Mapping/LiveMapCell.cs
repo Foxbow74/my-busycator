@@ -57,7 +57,8 @@ namespace GameCore.Mapping
 
 		public void ClearTemp()
 		{
-			Visibility = Lighted = FColor.Empty;
+			Visibility = FColor.Empty;
+			Lighted = FColor.Black;
 		}
 
 		public int BlockRandomSeed

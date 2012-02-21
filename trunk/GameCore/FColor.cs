@@ -6,10 +6,10 @@ namespace GameCore
 {
 	public struct FColor
 	{
-		public readonly float A;
-		public readonly float R;
-		public readonly float G;
-		public readonly float B;
+		public float A;
+		public float R;
+		public float G;
+		public float B;
 
 		public FColor(float _a, float _r, float _g, float _b)
 		{
@@ -42,6 +42,14 @@ namespace GameCore
 		public static readonly FColor Empty = new FColor(0, 0, 0, 0);
 		public static readonly FColor Black = new FColor(1f, 0, 0, 0);
 		public static readonly FColor White = new FColor(1f, 1f, 1f, 1f);
+
+		public FColor NormalColorOnly
+		{
+			get
+			{
+				return new FColor(1f, R / A, G / A, B / A);
+			}
+		}
 
 		public FColor ScreenColorsOnly(FColor _color)
 		{
@@ -124,6 +132,22 @@ namespace GameCore
 			}
 			return this;
 			//return new FColor(Math.Min(1f, A), Math.Min(1f, R), Math.Min(1f, G), Math.Min(1f, B));
+		}
+
+		public void AddColorOnly(FColor _fColor)
+		{
+			A += 1f;
+			R += _fColor.R;
+			G += _fColor.G;
+			B += _fColor.B;
+		}
+
+		public void Add(FColor _fColor)
+		{
+			A += _fColor.A;
+			R += _fColor.R;
+			G += _fColor.G;
+			B += _fColor.B;
 		}
 	}
 }
