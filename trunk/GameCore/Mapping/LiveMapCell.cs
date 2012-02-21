@@ -98,8 +98,6 @@ namespace GameCore.Mapping
 			get { return TerrainAttribute.IsCanShootThrough; }
 		}
 
-		//public Point WorldCoords { get; private set; }
-
 		public ETiles Tile
 		{
 			get
@@ -116,6 +114,26 @@ namespace GameCore.Mapping
 					return cnt > 1 ? ETiles.HEAP_OF_ITEMS : item.Tile;
 				}
 				return Furniture != null ? Furniture.Tile : ETiles.NONE;
+			}
+		}
+
+		public bool IsVisibleAsFog
+		{
+			get
+			{
+				return TerrainAttribute.IsPassable < 1 || FoggedTile != ETiles.NONE;
+			}
+		}
+
+		public ETiles FoggedTile
+		{
+			get
+			{
+				if (Furniture is Stair)
+				{
+					return Furniture.Tile;
+				}
+				return ETiles.NONE;
 			}
 		}
 
