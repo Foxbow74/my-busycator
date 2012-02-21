@@ -204,6 +204,7 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void OnClosing(ConsoleKey _consoleKey)
 		{
+			base.OnClosing(_consoleKey);
 			if (_consoleKey == ConsoleKey.Enter)
 			{
 				var presenters =
