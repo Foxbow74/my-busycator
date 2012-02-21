@@ -12,7 +12,7 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
-			Light = new LightSource(10, new FColor(4f,1f,0.5f,0.1f));
+			//Light = new LightSource(10, new FColor(4f,1f,0.5f,0.1f));
 			Silence = false;
 
 

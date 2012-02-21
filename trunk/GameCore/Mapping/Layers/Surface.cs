@@ -55,14 +55,12 @@ namespace GameCore.Mapping.Layers
 				block.Map[8, i] = ETerrains.BRICK_WALL;
 			}
 
-			//block.LightSources.Add(new Point(5, 2));
+			
 			block.Map[6, 3] = ETerrains.WINDOW;
 			block.Map[3, 6] = ETerrains.WINDOW;
 			block.Map[6, 8] = ETerrains.GROUND;
 			block.AddObject(ETiles.DOOR.GetThing(), new Point(6, 8));
-
-			//block.Map[7, 9] = ETerrains.BRICK_WALL;
-			block.AddLightSource(new Point(7, 9), new LightSource(3, new FColor(Color.Blue)));
+			block.AddLightSource(new Point(7, 9), new LightSource(5,new FColor(1f,1f,1f,0.5f)));
 
 			{
 				var cnt = rnd.Next(rnd.Next(70));
@@ -119,7 +117,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(255, 255, 255, 40)); 
+				return new FColor(Color.FromArgb(255, 255, 255, 40).Multiply(0.4f)); 
 			}
 		}
 	}

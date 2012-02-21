@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
@@ -30,26 +29,22 @@ namespace GameUi.UIBlocks
 			m_maxDistance = _maxDistance;
 			m_act = _act;
 			m_targetPoint = Point.Zero;
-			m_addPoint = new Point(ContentRectangle.Left + ContentRectangle.Width/2,
-			                       ContentRectangle.Top + ContentRectangle.Height/2);
-			m_center = new Point(m_maxDistance, m_maxDistance);
-
-			var dPoint = World.TheWorld.LiveMap.GetData();
+			m_center = new Point(ContentRectangle.Width / 2, ContentRectangle.Height / 2);
+			m_addPoint = new Point(ContentRectangle.Left, ContentRectangle.Top) + m_center;
+			
 			var points = new List<Point>();
 
-
-			var width = ContentRectangle.Width;
-			var height = ContentRectangle.Height;
-
-			for (var x = 0; x < width; ++x)
+			for (var x = -_maxDistance; x < _maxDistance; ++x)
 			{
-				for (var y = 0; y < height; ++y)
+				for (var y = -_maxDistance; y < _maxDistance; ++y)
 				{
-					var pnt = LiveMap.WrapCellCoords(new Point(x + dPoint.X, y + dPoint.Y));
-					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
-					if (liveCell.Creature != null)
+					var point = new Point(x, y);
+					if(point.Lenght>_maxDistance) continue;
+
+					var liveCell = World.TheWorld.Avatar[point];
+					if (liveCell.Creature != null && !liveCell.Creature.IsAvatar)
 					{
-						points.Add(new Point(x - m_center.X, y - m_center.Y));
+						points.Add(point);
 					}
 				}
 			}
@@ -134,13 +129,10 @@ namespace GameUi.UIBlocks
 			var color = new FColor(Color.Gold);
 			var lineToPoints = Point.Zero.GetLineToPoints(m_targetPoint).ToArray();
 
-			var dPoint = World.TheWorld.LiveMap.GetData();
-
 			for (var index = 1; index < lineToPoints.Length; index++)
 			{
 				var point = lineToPoints[index];
-
-				var liveCell = World.TheWorld.LiveMap.GetCell(point + dPoint);
+				var liveCell = World.TheWorld.Avatar[point];
 
 				if (point.Lenght >= m_maxDistance || (!liveCell.IsCanShootThrough && liveCell.Creature == null))
 				{

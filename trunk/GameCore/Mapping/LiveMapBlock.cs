@@ -143,6 +143,13 @@ namespace GameCore.Mapping
 			{
 				tuple.Item2.LightCells(m_liveMap, liveCellZero + tuple.Item1);
 			}
+			foreach (var creature in m_creatures)
+			{
+				if (creature.Light != null)
+				{
+					creature.Light.LightCells(m_liveMap, creature.LiveCoords);
+				}
+			}
 		}
 
 		public void RemoveCreature(Creature _creature)

@@ -27,7 +27,7 @@ namespace GameUi.UIBlocks.Map
 			switch (_message.Type)
 			{
 				case WorldMessage.EType.AVATAR_MOVE:
-					BackgroundColor = FColor.Black;// new FColor(1f, World.TheWorld.Avatar.Layer.Ambient.Lerp(FColor.Black, 0.2f));
+					//BackgroundColor = new FColor(1f,0.02f,0.02f,0f);
 					break;
 				case WorldMessage.EType.TURN:
 					Redraw();
@@ -37,6 +37,8 @@ namespace GameUi.UIBlocks.Map
 
 		private void Redraw()
 		{
+			//BackgroundColor = new FColor(1f, 0.2f, 0.015f, 0f);
+
 			TileHelper.DrawHelper.ClearTiles(Rectangle, FColor.Empty);
 
 			var fogColor = Color.FromArgb(255, 70, 70, 70).ToFColor();
@@ -67,14 +69,13 @@ namespace GameUi.UIBlocks.Map
 
 					if (lightness > fogColor.Lightness())
 					{
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, backgroundColor);
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, backgroundColor.Multiply(lighted).Clamp());
 						liveCell.SetIsSeenBefore();
 					}
-					else if (liveCell.IsSeenBefore)
+					else if (liveCell.IsSeenBefore && liveCell.TerrainAttribute.IsPassable == 1)
 					{
-						if (liveCell.TerrainAttribute.IsPassable == 1) continue;
 						tile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.BlockRandomSeed);
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, FColor.Black);
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, BackgroundColor);
 						DrawHelper.FogTile(x + ContentRectangle.Left, y + ContentRectangle.Top);
 					}
 				}
