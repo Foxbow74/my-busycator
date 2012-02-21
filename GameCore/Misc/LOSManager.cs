@@ -7,7 +7,8 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 1f / 5f;
+		private const float VISIBILITY_THRESHOLD = 0.15f;
+		const double LIGHT_THRESHOLD = 0.01;
 
 		const float DIVIDER = 10f;
 
@@ -157,10 +158,10 @@ namespace GameCore.Misc
 			power[0] = _fColor.A;
 			childVisibility[0] = 1;
 
-			for (var index = 0; index < m_inOrder.Length; index++)
+			cvisibles[0] = new FColor(1f, _fColor);
+			for (var index = 1; index < m_inOrder.Length; index++)
 			{
-
-				cvisibles[index] = new FColor(1f, _fColor);
+				cvisibles[index] = FColor.Empty;
 			}
 			for (var index = 0; index < m_inOrder.Length; index++)
 			{
@@ -168,25 +169,25 @@ namespace GameCore.Misc
 	
 				var powerCoeff = power[index];
 
-				if (powerCoeff < 0.01) continue;
+				if (powerCoeff < LIGHT_THRESHOLD) continue;
 
 				var myPnt = LiveMap.WrapCellCoords(losCell.Point + _dPoint);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
 
-				var color = cvisibles[index];
+				var color = cvisibles[index].NormalColorOnly;
 
 				var transColor = index == 0 ? FColor.White : liveCell.TransparentColor;
 				if (childVisibility[index] > 0)
 				{
 					liveCell.Lighted = liveCell.Lighted.Screen(color.Multiply(powerCoeff));
 					powerCoeff *= transColor.A;
-					if (powerCoeff < 0.01) continue;
+					if (powerCoeff < LIGHT_THRESHOLD) continue;
 				}
 				else
 				{
 					powerCoeff *= transColor.A;
-					if (powerCoeff < 0.01) continue;
+					if (powerCoeff < LIGHT_THRESHOLD) continue;
 					liveCell.Lighted = liveCell.Lighted.Screen(color.Multiply(powerCoeff));
 				}
 
@@ -195,9 +196,11 @@ namespace GameCore.Misc
 
 				foreach (var pair in losCell.CellIndexes)
 				{
-					power[pair.Key] += pair.Value * powerCoeff;
-					cvisibles[pair.Key] = childsColor.Multiply(cvisibles[pair.Key]);
-					childVisibility[pair.Key] = pair.Value * liveCell.Visibility.A;
+					var i = pair.Key;
+
+					power[i] += pair.Value * powerCoeff;
+					cvisibles[i].AddColorOnly(childsColor);
+					childVisibility[i] = pair.Value * liveCell.Visibility.A;
 				}
 			}
 		}
