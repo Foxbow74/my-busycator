@@ -27,7 +27,7 @@ namespace GameUi.UIBlocks.Map
 			switch (_message.Type)
 			{
 				case WorldMessage.EType.AVATAR_MOVE:
-					//BackgroundColor = new FColor(1f,0.02f,0.02f,0f);
+					BackgroundColor = new FColor(1f,0.6f,0.02f,0f);
 					break;
 				case WorldMessage.EType.TURN:
 					Redraw();
@@ -37,9 +37,11 @@ namespace GameUi.UIBlocks.Map
 
 		private void Redraw()
 		{
-			//BackgroundColor = new FColor(1f, 0.2f, 0.015f, 0f);
-
-			TileHelper.DrawHelper.ClearTiles(Rectangle, FColor.Empty);
+			BackgroundColor = new FColor(1f, 1f, 0.015f, 0f);
+			base.DrawBackground();
+			
+			
+			TileHelper.DrawHelper.ClearTiles(Rectangle, BackgroundColor);
 
 			var fogColor = Color.FromArgb(255, 70, 70, 70).ToFColor();
 
@@ -57,25 +59,25 @@ namespace GameUi.UIBlocks.Map
 					var pnt = LiveMap.WrapCellCoords(new Point(x + dPoint.X, y + dPoint.Y));
 					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
 
-					var backgroundColor = BackgroundColor;
 					var lighted = liveCell.Lighted;
-					lighted.AddColorOnly(layer.Ambient
-					.Screen(layer.Ambient));
+					lighted.AddColorOnly(layer.Ambient.Screen(layer.Ambient));
 					lighted = lighted.Multiply(liveCell.Visibility);
 					
 					var tile = liveCell.Tile.GetTile() ?? liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.BlockRandomSeed);
 					var color = tile.Color.Multiply(lighted).Clamp();
 					var lightness = lighted.Lightness();
-
-					if (lightness > fogColor.Lightness())
+					if(lightness>0)
 					{
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, backgroundColor.Multiply(lighted).Clamp());
 						liveCell.SetIsSeenBefore();
 					}
-					else if (liveCell.IsSeenBefore && liveCell.TerrainAttribute.IsPassable == 1)
+					if (lightness > fogColor.Lightness()*2)
+					{
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, BackgroundColor.Multiply(lighted));
+					}
+					else if (liveCell.IsSeenBefore && liveCell.TerrainAttribute.IsPassable < 1)
 					{
 						tile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.BlockRandomSeed);
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, BackgroundColor);
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, FColor.Empty);
 						DrawHelper.FogTile(x + ContentRectangle.Left, y + ContentRectangle.Top);
 					}
 				}

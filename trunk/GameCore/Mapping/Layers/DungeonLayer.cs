@@ -76,7 +76,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(255, 0, 255, 0)); 
+				return new FColor(Color.FromArgb(255, 50, 255, 50)); 
 				//return new FColor(0, 0, 0.01f, 0.01f);
 			}
 		}
