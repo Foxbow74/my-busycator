@@ -7,7 +7,7 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 0.15f;
+		private const float VISIBILITY_THRESHOLD = 0.35f;
 		const double LIGHT_THRESHOLD = 0.01;
 
 		const float DIVIDER = 10f;
@@ -22,6 +22,16 @@ namespace GameCore.Misc
 
 
 			var dVectors = new List<Vector2>();
+
+			//for (float ro = 0; ro < Math.PI * 2; ro += (float)Math.PI / DIVIDER)
+			//{
+			//    foreach (float r in new float[]{0f,0f,0f,0.1f})
+			//    {
+			//        var dv = new Vector2((float)Math.Sin(ro), (float)Math.Cos(ro)) * r;
+			//        dVectors.Add(dv);
+			//    }
+			//}
+
 			for (var di = -DIVIDER / 2 + 1; di < DIVIDER / 2; di++)
 			{
 				for (var dj = -DIVIDER / 2 + 1; dj < DIVIDER / 2; dj++)
@@ -31,6 +41,12 @@ namespace GameCore.Misc
 					dVectors.Add(dv);
 				}
 			}
+
+			//dVectors.Add(Vector2.Zero);
+			//dVectors.Add(Vector2.Zero);
+			//dVectors.Add(Vector2.Zero);
+			//dVectors.Add(Vector2.Zero);
+
 
 			var dividedPart = 1f / dVectors.Count;
 
