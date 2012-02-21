@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Misc;
 
 namespace GameCore.Objects
 {
@@ -56,7 +55,7 @@ namespace GameCore.Objects
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedMonster(ETiles _tile) : base(null, Point.Zero, int.MinValue)
+		public FakedMonster(ETiles _tile) : base(null, int.MinValue)
 		{
 			m_tile = _tile;
 		}

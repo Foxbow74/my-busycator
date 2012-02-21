@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using GameCore;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 
@@ -21,7 +22,7 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-				m_message.Act.AddParameter(m_message.Point + dPoint);
+				m_message.Act.AddParameter(LiveMap.WrapCellCoords(m_message.Point + dPoint));
 				CloseTopBlock();
 				return;
 			}

@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using GameCore;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
@@ -51,17 +52,13 @@ namespace GameUi.UIBlocks.Map
 			{
 				for (var y = 0; y < height; ++y)
 				{
-					var pnt = new Point(x + dPoint.X, y + dPoint.Y).Wrap(World.TheWorld.LiveMap.SizeInCells,
-					                                                     World.TheWorld.LiveMap.SizeInCells);
+					var pnt = LiveMap.WrapCellCoords(new Point(x + dPoint.X, y + dPoint.Y));
 					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
-					var mapCell = liveCell.MapCell;
 
 					var backgroundColor = BackgroundColor;
-					//var lighted = FColor.White.Multiply(liveCell.Visibility.A);// > 0 ? FColor.White : FColor.Black;// liveCell.Lighted.Screen(layer.Ambient).Multiply(liveCell.Visibility.A);
 					var lighted = liveCell.Lighted.Screen(layer.Ambient).Multiply(liveCell.Visibility);
 
-
-					var tile = mapCell.Tile.GetTile() ?? mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+					var tile = liveCell.Tile.GetTile() ?? liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.BlockRandomSeed);
 					var color = tile.Color.Multiply(lighted).Clamp();
 					var lightness = lighted.Lightness();
 
@@ -72,8 +69,8 @@ namespace GameUi.UIBlocks.Map
 					}
 					else if (liveCell.IsSeenBefore)
 					{
-						if (mapCell.TerrainAttribute.IsPassable == 1) continue;
-						tile = mapCell.Terrain.Tile(mapCell.WorldCoords, mapCell.BlockRandomSeed);
+						if (liveCell.TerrainAttribute.IsPassable == 1) continue;
+						tile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.BlockRandomSeed);
 						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, FColor.Black);
 						DrawHelper.FogTile(x + ContentRectangle.Left, y + ContentRectangle.Top);
 					}

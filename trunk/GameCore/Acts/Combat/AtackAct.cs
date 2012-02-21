@@ -41,10 +41,10 @@ namespace GameCore.Acts.Combat
 			{
 				throw new NotImplementedException();
 			}
-			var victim = _creature.MapBlock.Creatures.FirstOrDefault(_cr => _cr.Coords == coords);
+			var victim = World.TheWorld.LiveMap.GetCell(coords).Creature;
 			if (victim == null)
 			{
-				_creature.AddActToPool(new MoveAct(), coords - _creature.Coords);
+				_creature.AddActToPool(new MoveAct(), coords - _creature.LiveCoords);
 				return EActResults.NOTHING_HAPPENS;
 			}
 			return _creature.Atack(victim);

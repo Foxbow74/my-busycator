@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Mapping;
 
@@ -8,7 +7,7 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 33f / 255;
+		private const float VISIBILITY_THRESHOLD = 1f / 5f;
 
 		const float DIVIDER = 10f;
 
@@ -73,7 +72,7 @@ namespace GameCore.Misc
 							parent = new LosCell(parentPoint, _radius);
 							alreadyDone.Add(parentPoint, parent);
 						}
-						parent.Add(pnt, dividedPart, cell);
+						parent.Add(pnt, dividedPart*1f, cell);
 					}
 				}
 			}
@@ -92,7 +91,6 @@ namespace GameCore.Misc
 						var parent = m_inOrder.Where(_cell => _cell.Cells.Keys.Contains(cell) && _cell.DistanceCoefficient > losCell.DistanceCoefficient);
 
 						losCell.MoveToParent(cell, parent.OrderByDescending(_cell => _cell.DistanceCoefficient).First());
-						Debug.WriteLine(losCell);
 					}
 				}
 			}
@@ -119,10 +117,10 @@ namespace GameCore.Misc
 				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
 
 				var losCell = m_inOrder[index];
-				var myPnt = (losCell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
+				var myPnt = LiveMap.WrapCellCoords(losCell.Point + _dPoint);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
-				var transColor = index == 0 ? FColor.White : liveCell.MapCell.TransparentColor;
+				var transColor = index == 0 ? FColor.White : liveCell.TransparentColor;
 
 				visibilityCoeff = transColor.A * visibilityCoeff;
 				var childsColor = cvisibles[index].Multiply(transColor);
@@ -143,10 +141,10 @@ namespace GameCore.Misc
 				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
 
 				var losCell = m_inOrder[index];
-				var myPnt = (losCell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
+				var myPnt = LiveMap.WrapCellCoords(losCell.Point + _dPoint);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
-				liveCell.Visibility = new FColor(visibilityCoeff, color);
+				liveCell.Visibility = new FColor(Math.Min(1f, visibilityCoeff), color);
 			}
 		}
 
@@ -172,13 +170,13 @@ namespace GameCore.Misc
 
 				if (powerCoeff < 0.01) continue;
 
-				var myPnt = (losCell.Point + _dPoint).Wrap(_liveMap.SizeInCells, _liveMap.SizeInCells);
+				var myPnt = LiveMap.WrapCellCoords(losCell.Point + _dPoint);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
 
 				var color = cvisibles[index];
 
-				var transColor = index == 0 ? FColor.White : liveCell.MapCell.TransparentColor;
+				var transColor = index == 0 ? FColor.White : liveCell.TransparentColor;
 				if (childVisibility[index] > 0)
 				{
 					liveCell.Lighted = liveCell.Lighted.Screen(color.Multiply(powerCoeff));

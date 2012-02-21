@@ -6,8 +6,8 @@ namespace GameCore.Creatures
 {
 	public class Monster : Creature
 	{
-		public Monster(WorldLayer _layer, Point _coords)
-			: base(_layer, _coords, 100)
+		public Monster(WorldLayer _layer)
+			: base(_layer, 100)
 		{
 		}
 

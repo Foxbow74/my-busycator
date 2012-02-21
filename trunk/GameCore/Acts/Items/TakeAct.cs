@@ -77,10 +77,10 @@ namespace GameCore.Acts.Items
 				else
 				{
 					//получаем все возможные координаты ячеек, где лежат не взятые предметы, ограничив параметром направления, если таковой представлен
-					var coords = notTaken.Select(_descriptor => _descriptor.WorldCoords).Distinct();
+					var coords = notTaken.Select(_descriptor => _descriptor.LiveCoords).Distinct();
 					if (coords.Count() > 1)
 					{
-						MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
+						MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.LiveCoords));
 					}
 					else
 					{
@@ -109,7 +109,7 @@ namespace GameCore.Acts.Items
 			var thingString = thing.Name;
 			if (descriptor.Container == null)
 			{
-				_creature.Layer.GetMapCell(descriptor.WorldCoords).RemoveItemFromBlock((Item) thing);
+				World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).RemoveItem((Item) thing);
 			}
 			else
 			{

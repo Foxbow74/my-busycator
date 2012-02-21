@@ -4,7 +4,6 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
-using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -21,19 +20,23 @@ namespace GameCore.Creatures
 		/// </summary>
 		protected bool Silence = true;
 
-		private Point m_coords;
+		private Point m_liveCoords;
 		private WorldLayer m_layer;
 
-		protected Creature(WorldLayer _layer, Point _coords, int _speed)
+		protected Creature(WorldLayer _layer, int _speed)
 		{
 			Speed = _speed;
 			Luck = 25;
-			Coords = _coords;
 			Nn = m_n++;
 			m_layer = _layer;
 		}
 
 		public int Nn { get; private set; }
+
+		public void Born(Point _liveCoords)
+		{
+			m_liveCoords = _liveCoords;
+		}
 
 		/// <summary>
 		/// 	Ход в игре с точки зрения существа
@@ -47,29 +50,34 @@ namespace GameCore.Creatures
 		public int Speed { get; private set; }
 
 		/// <summary>
-		/// 	Мировые координаты
+		/// Live координаты
 		/// </summary>
-		public Point Coords
+		public Point LiveCoords
 		{
-			get { return m_coords; }
+			get { return m_liveCoords; }
 			set
 			{
-				var newBlockId = MapBlock.GetBlockCoords(value);
-				if (newBlockId != BlockId && BlockId != null)
-				{
-					Layer.MoveCreature(this, BlockId, newBlockId);
-					if (IsAvatar)
-					{
-						World.TheWorld.LiveMap.AvatarMoved(BlockId, newBlockId);
-					}
-				}
-				BlockId = newBlockId;
-				m_coords = value;
+				var oldValue = m_liveCoords;
+				m_liveCoords = value;
+				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
+			}
+		}
 
-				if (IsAvatar)
-				{
-					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
-				}
+		public LiveMapCell this[Point _point]
+		{
+			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + _point); }
+		}
+
+		public LiveMapCell this[int _x, int _y]
+		{
+			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + new Point(_x, _y)); }
+		}
+
+		public int BlockRandomSeed
+		{
+			get
+			{
+				return World.TheWorld.LiveMap.Cells[m_liveCoords.X, m_liveCoords.Y].BlockRandomSeed;
 			}
 		}
 
@@ -82,18 +90,11 @@ namespace GameCore.Creatures
 				{
 					throw new ApplicationException("Лишнее действие");
 				}
-				if (m_layer != null)
-				{
-					m_layer.RemoveCreature(this);
-					value.AddCreature(this);
-				}
-
+				var oldLayer = m_layer;
 				m_layer = value;
-
-				if (IsAvatar)
+				if (oldLayer != null)
 				{
-					MessageManager.SendMessage(this, WorldMessage.AvatarChangeLayer);
-					MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+					World.TheWorld.LiveMap.CreaturesLayerChanged(this, oldLayer, value);
 				}
 			}
 		}
@@ -110,16 +111,6 @@ namespace GameCore.Creatures
 		}
 
 		public int Luck { get; protected set; }
-
-		public MapBlock MapBlock
-		{
-			get { return Layer[BlockId]; }
-		}
-
-		public MapCell MapCell
-		{
-			get { return Layer.GetMapCell(Coords); }
-		}
 
 		public override EThingCategory Category
 		{
@@ -148,8 +139,6 @@ namespace GameCore.Creatures
 		{
 			get { return World.TheWorld.Avatar == this; }
 		}
-
-		public Point BlockId { get; private set; }
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{
@@ -210,12 +199,12 @@ namespace GameCore.Creatures
 
 		public IEnumerable<ThingDescriptor> GetNotTakenAvailableItems(IEnumerable<Point> _intersect = null)
 		{
-			var points = Coords.NearestPoints;
+			var points = LiveCoords.NearestPoints;
 			if (_intersect != null && _intersect.Any())
 			{
 				points = points.Intersect(_intersect);
 			}
-			return points.Select(Layer.GetMapCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors(this));
+			return points.Select(World.TheWorld.LiveMap.GetCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors(this));
 		}
 
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()

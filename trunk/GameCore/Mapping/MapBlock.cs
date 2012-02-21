@@ -13,8 +13,8 @@ namespace GameCore.Mapping
 
 		public const int SIZE = 20;
 
-		private List<Creature> m_creatures;
-		private List<Tuple<Thing, Point>> m_objects;
+		private readonly List<Tuple<Thing, Point>> m_objects = new List<Tuple<Thing, Point>>();
+		private readonly List<Tuple<Creature, Point>> m_creatures = new List<Tuple<Creature, Point>>();
 
 		public MapBlock(Point _point)
 		{
@@ -26,34 +26,24 @@ namespace GameCore.Mapping
 		}
 
 		public Point BlockId { get; private set; }
+
 		public int RandomSeed { get; private set; }
 
 		public ETerrains[,] Map { get; private set; }
 
-		public bool IsObjectsExists
+		public List<Tuple<Creature, Point>> Creatures
 		{
-			get { return m_objects != null && m_objects.Count > 0; }
-		}
-
-		internal bool CreaturesExists
-		{
-			get { return m_creatures != null && m_creatures.Count > 0; }
-		}
-
-
-		public List<Creature> Creatures
-		{
-			get { return m_creatures ?? (m_creatures = new List<Creature>()); }
+			get { return m_creatures; }
 		}
 
 		public List<Tuple<Thing, Point>> Objects
 		{
-			get { return m_objects ?? (m_objects = new List<Tuple<Thing, Point>>()); }
+			get { return m_objects; }
 		}
 
 		public UInt32[] SeenCells { get; private set; }
 
-		public void AddObject(Point _inBlockCoords, Thing _thing)
+		public void AddObject(Thing _thing, Point _inBlockCoords)
 		{
 			if (_thing is StackOfItems)
 			{
@@ -95,6 +85,19 @@ namespace GameCore.Mapping
 		public void AddLightSource(Point _point, LightSource _lightSource)
 		{
 			LightSources.Add(new Tuple<Point, LightSource>(_point, _lightSource));
+		}
+
+		public void AddCreature(Creature _creature, Point _inBlockCoords)
+		{
+			m_creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
+		}
+
+		public void RemoveCreature(Creature _creature)
+		{
+			if(m_creatures.RemoveAll(_tuple => _tuple.Item1 == _creature)==0)
+			{
+				throw new ApplicationException();
+			}
 		}
 	}
 }

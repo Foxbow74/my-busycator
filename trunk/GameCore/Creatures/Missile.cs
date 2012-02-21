@@ -15,12 +15,13 @@ namespace GameCore.Creatures
 		private readonly List<Point> m_path;
 		private int m_step = 1;
 
-		public Missile(WorldLayer _layer, Point _coords, int _speed, Item _ammo, Point _target)
-			: base(_layer, _coords, _speed)
+		public Missile(WorldLayer _layer, Point _liveCoords, int _speed, Item _ammo, Point _target)
+			: base(_layer, _speed)
 		{
 			Light = new LightSource(4, new FColor(2f, 1f, 0f, 0f));
 			Ammo = _ammo;
-			m_path = _coords.GetLineToPoints(_target).ToList();
+			m_path = _liveCoords.GetLineToPoints(_target).ToList();
+			LiveCoords = _liveCoords;
 		}
 
 		public Item Ammo { get; private set; }
@@ -44,7 +45,7 @@ namespace GameCore.Creatures
 			var nextPoint = m_path[m_step];
 			m_step++;
 
-			var nextCell = Layer.GetMapCell(nextPoint);
+			var nextCell = World.TheWorld.LiveMap.GetCell(nextPoint);
 			if (nextCell.Creature != null)
 			{
 				AddActToPool(new AtackAct(), nextPoint);
@@ -54,24 +55,24 @@ namespace GameCore.Creatures
 			var canMove = m_step < m_path.Count;
 			if (passable < 1)
 			{
-				nextCell = MapCell;
+				nextCell = World.TheWorld.LiveMap.GetCell(LiveCoords);
 				canMove = false;
 			}
 			if (!canMove)
 			{
-				nextCell.AddObjectToBlock(Ammo);
-				World.TheWorld.RemoveCreature(this);
+				nextCell.AddItem(Ammo);
+				nextCell.LiveMapBlock.RemoveCreature(this);
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
-			AddActToPool(new MoveAct(), nextPoint - Coords);
+			AddActToPool(new MoveAct(), nextPoint - LiveCoords);
 			return EThinkingResult.NORMAL;
 		}
 
 		public override EActResults Atack(Creature _victim)
 		{
 			MessageManager.SendMessage(this, "попал!");
-			World.TheWorld.RemoveCreature(this);
-			return EActResults.SHOULD_BE_REMOVED_FROM_QUEUE;
+			this[0,0].LiveMapBlock.RemoveCreature(this);
+			return EActResults.DONE;
 		}
 	}
 }

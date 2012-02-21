@@ -1,33 +1,59 @@
-﻿using GameCore.Misc;
+﻿using System;
+using System.Collections.Generic;
+using GameCore.Creatures;
+using GameCore.Misc;
+using GameCore.Objects;
 
 namespace GameCore.Mapping
 {
-	class LiveMapBlock
+	public class LiveMapBlock
 	{
 		private readonly LiveMap m_liveMap;
-		private readonly Point m_liveMapBlockId;
 		private readonly int m_liveMapBlockIndex;
 		private MapBlock m_mapBlock;
+		private readonly Point m_liveCellZero;
+		private readonly List<Creature> m_creatures = new List<Creature>();
 
 		public LiveMapBlock(LiveMap _liveMap, Point _liveMapBlockId, int _liveMapBlockIndex)
 		{
 			m_liveMap = _liveMap;
-			m_liveMapBlockId = _liveMapBlockId;
+			LiveMapBlockId = _liveMapBlockId;
 			m_liveMapBlockIndex = _liveMapBlockIndex;
+			m_liveCellZero = LiveMapBlockId * MapBlock.SIZE;
+
+			for (var i = 0; i < MapBlock.SIZE; i++)
+			{
+				for (var j = 0; j < MapBlock.SIZE; j++)
+				{
+					m_liveMap.Cells[i + m_liveCellZero.X, j + m_liveCellZero.Y] = new LiveMapCell(this, m_liveCellZero + new Point(i,j));
+				}
+			}
 		}
 
 		public MapBlock MapBlock
 		{
-			get { return m_mapBlock; }
+			get
+			{
+				return m_mapBlock;
+			}
 			private set
 			{
 				m_mapBlock = value;
 			}
 		}
 
+		public bool IsBorder { get; set; }
+
+		public IEnumerable<Creature> Creatures
+		{
+			get { return m_creatures; }
+		}
+
+		public Point LiveMapBlockId { get; private set; }
+
 		public void ClearTemp()
 		{
-			var liveCellZero = m_liveMapBlockId * MapBlock.SIZE;
+			var liveCellZero = LiveMapBlockId * MapBlock.SIZE;
 			for (var i = 0; i < MapBlock.SIZE; i++)
 			{
 				for (var j = 0; j < MapBlock.SIZE; j++)
@@ -39,16 +65,32 @@ namespace GameCore.Mapping
 
 		private void Fill()
 		{
-			var liveCellZero = m_liveMapBlockId*MapBlock.SIZE;
 			var mapCellZero = m_mapBlock.BlockId*MapBlock.SIZE;
 			for (var i = 0; i < MapBlock.SIZE; i++)
 			{
 				for (var j = 0; j < MapBlock.SIZE; j++)
 				{
 					var ij = new Point(i, j);
-					var mc = new MapCell(m_mapBlock, ij, mapCellZero + ij);
-					m_liveMap.Cells[liveCellZero.X + i, liveCellZero.Y + j].SetMapCell(mc, m_mapBlock, ij);
+					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij);
 				}
+			}
+			foreach (var tuple in m_mapBlock.Objects)
+			{
+				var cellId = tuple.Item2 + m_liveCellZero;
+				if (tuple.Item1 is Item)
+				{
+					m_liveMap.Cells[cellId.X, cellId.Y].AddItem((Item) tuple.Item1);
+				}
+				else if (tuple.Item1.IsFurniture())
+				{
+					m_liveMap.Cells[cellId.X, cellId.Y].Furniture = tuple.Item1;
+				}
+			}
+			foreach (var tuple in m_mapBlock.Creatures)
+			{
+				var creature = tuple.Item1;
+				var point = tuple.Item2;
+				creature.LiveCoords = m_liveCellZero + point;
 			}
 		}
 
@@ -60,21 +102,64 @@ namespace GameCore.Mapping
 
 		public override string ToString()
 		{
-			return "LB:" + (m_mapBlock==null?"<null>":m_mapBlock.BlockId.ToString());
+			return LiveMapBlockId + " MB:" + (m_mapBlock==null?"<null>":m_mapBlock.BlockId.ToString());
 		}
 
 		public void Clear()
 		{
+			if (MapBlock==null) return;
+
+			MapBlock.Creatures.Clear();
+			foreach (var creature in m_creatures)
+			{
+				MapBlock.AddCreature(creature, MapBlock.GetInBlockCoords(creature.LiveCoords));
+				creature.LiveCoords = null;
+			}
+			MapBlock.Objects.Clear();
+			for (var i = 0; i < MapBlock.SIZE; i++)
+			{
+				for (var j = 0; j < MapBlock.SIZE; j++)
+				{
+					var cell = m_liveMap.Cells[i + m_liveCellZero.X, j + m_liveCellZero.Y];
+					var ij = new Point(i, j);
+					foreach (var item in cell.Items)
+					{
+						MapBlock.AddObject(item, ij);
+					}
+					if (cell.Furniture != null)
+					{
+						MapBlock.AddObject(cell.Furniture, ij);
+					}
+				}
+			}
 			MapBlock = null;
+			m_creatures.Clear();
 		}
 
-		public void LightCells(LiveMap _liveMap)
+		public void LightCells()
 		{
-			var liveCellZero = m_liveMapBlockId * MapBlock.SIZE;
+			var liveCellZero = LiveMapBlockId * MapBlock.SIZE;
 			foreach (var tuple in MapBlock.LightSources)
 			{
-				tuple.Item2.LightCells(_liveMap, liveCellZero + tuple.Item1);
+				tuple.Item2.LightCells(m_liveMap, liveCellZero + tuple.Item1);
 			}
+		}
+
+		public void RemoveCreature(Creature _creature)
+		{
+			if (!m_creatures.Remove(_creature))
+			{
+				throw new ApplicationException();
+			}
+		}
+
+		public void AddCreature(Creature _creature)
+		{
+			if (m_creatures.Contains(_creature))
+			{
+				throw new ApplicationException();
+			}
+			m_creatures.Add(_creature);
 		}
 	}
 }

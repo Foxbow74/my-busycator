@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Mapping.Layers;
-using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameCore.Creatures
@@ -26,8 +25,8 @@ namespace GameCore.Creatures
 		private readonly Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
 		private readonly EIntellectGrades m_intellectGrades;
 
-		protected Intelligent(WorldLayer _layer, Point _coords, int _speed, EIntellectGrades _intellectGrades)
-			: base(_layer, _coords, _speed)
+		protected Intelligent(WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
+			: base(_layer, _speed)
 		{
 			m_intellectGrades = _intellectGrades;
 			switch (_intellectGrades)
@@ -80,7 +79,7 @@ namespace GameCore.Creatures
 
 		public override IEnumerable<ThingDescriptor> GetBackPackItems()
 		{
-			return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, Coords, m_backPack));
+			return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, LiveCoords, m_backPack));
 		}
 
 		public IEnumerable<Tuple<EEquipmentPlaces, Item>> GetEquipment()
