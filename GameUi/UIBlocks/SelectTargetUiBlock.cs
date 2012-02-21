@@ -16,7 +16,6 @@ namespace GameUi.UIBlocks
 		private readonly Act m_act;
 		private readonly Point m_addPoint;
 		private readonly Point m_center;
-		private readonly MapCell[,] m_mapCells;
 		private readonly int m_maxDistance;
 		private readonly TurnMessageUiBlock m_messages;
 		private readonly List<Point> m_targets = new List<Point>();
@@ -35,20 +34,26 @@ namespace GameUi.UIBlocks
 			                       ContentRectangle.Top + ContentRectangle.Height/2);
 			m_center = new Point(m_maxDistance, m_maxDistance);
 
-			m_mapCells = new MapCell[m_maxDistance*2 + 1,m_maxDistance*2 + 1];
-			World.TheWorld.Avatar.Layer.SetData(m_mapCells, World.TheWorld.Avatar.Coords);
-
+			var dPoint = World.TheWorld.LiveMap.GetData();
 			var points = new List<Point>();
-			for (var x = 0; x < m_mapCells.GetLength(0); ++x)
+
+
+			var width = ContentRectangle.Width;
+			var height = ContentRectangle.Height;
+
+			for (var x = 0; x < width; ++x)
 			{
-				for (var y = 0; y < m_mapCells.GetLength(1); ++y)
+				for (var y = 0; y < height; ++y)
 				{
-					if (m_mapCells[x, y].Creature != null)
+					var pnt = LiveMap.WrapCellCoords(new Point(x + dPoint.X, y + dPoint.Y));
+					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
+					if (liveCell.Creature != null)
 					{
 						points.Add(new Point(x - m_center.X, y - m_center.Y));
 					}
 				}
 			}
+
 			m_targets.AddRange(points.Where(_point => _point.Lenght < m_maxDistance).OrderBy(_point => _point.Lenght));
 			SelectTargetFromList();
 		}
@@ -128,17 +133,22 @@ namespace GameUi.UIBlocks
 			var done = false;
 			var color = new FColor(Color.Gold);
 			var lineToPoints = Point.Zero.GetLineToPoints(m_targetPoint).ToArray();
+
+			var dPoint = World.TheWorld.LiveMap.GetData();
+
 			for (var index = 1; index < lineToPoints.Length; index++)
 			{
 				var point = lineToPoints[index];
-				var mapCell = m_mapCells[m_center.X + point.X, m_center.Y + point.Y];
-				if (point.Lenght >= m_maxDistance || (!mapCell.IsCanShootThrough && mapCell.Creature == null))
+
+				var liveCell = World.TheWorld.LiveMap.GetCell(point + dPoint);
+
+				if (point.Lenght >= m_maxDistance || (!liveCell.IsCanShootThrough && liveCell.Creature == null))
 				{
 					color =new FColor(Color.Red);
 					done = true;
 				}
 				if (!done) pnt = point;
-				if (mapCell.Creature != null)
+				if (liveCell.Creature != null)
 				{
 					color = new FColor(Color.Red);
 					done = true;

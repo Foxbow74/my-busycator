@@ -38,25 +38,25 @@ namespace GameCore.Acts.Interact
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			MapCell mapCell; // = Map.GetMapCell(_creature.Coords);
+			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
 			{
 				//собираем координаты всех закрытых вещей
 				var list = new List<Point>();
-				foreach (var cell in _creature.Coords.NearestPoints.Select(_creature.Layer.GetMapCell))
+				foreach (var cell in _creature.LiveCoords.NearestDPoints.Select(_point => _creature[_point]))
 				{
 					var cc = cell;
 					if (cc.Furniture.CanBeClosed(cc, _creature))
 					{
-						list.Add(cc.WorldCoords);
+						list.Add(cc.LiveCoords);
 					}
 					else if (cc.GetAllAvailableItemDescriptors(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cc, _creature)))
 					{
-						list.Add(cc.WorldCoords);
+						list.Add(cc.LiveCoords);
 					}
 				}
 				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeClosed(null, _creature)))
 				{
-					list.Add(_creature.Coords);
+					list.Add(_creature.LiveCoords);
 				}
 
 				var coords = list.Distinct().ToList();
@@ -74,26 +74,26 @@ namespace GameCore.Acts.Interact
 				}
 				if (coords.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.Coords));
+					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.LiveCoords));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
-				mapCell = _creature.Layer.GetMapCell(coords.First());
+				liveMapCell = World.TheWorld.LiveMap.GetCell(coords.First());
 			}
 
 			//выясняем, что нужно закрыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((mapCell.Furniture.IsDoor(mapCell, _creature) || mapCell.Furniture.IsChest(mapCell, _creature)) &&
-				    mapCell.Furniture.CanBeClosed(mapCell, _creature))
+				if ((liveMapCell.Furniture.IsDoor(liveMapCell, _creature) || liveMapCell.Furniture.IsChest(liveMapCell, _creature)) &&
+				    liveMapCell.Furniture.CanBeClosed(liveMapCell, _creature))
 				{
-					list.Add(new ThingDescriptor(mapCell.Furniture, mapCell.WorldCoords, null));
+					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}
 				list.AddRange(
-					mapCell.GetAllAvailableItemDescriptors(_creature).Where(
-						_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
-				if (mapCell.WorldCoords == _creature.Coords)
+					liveMapCell.GetAllAvailableItemDescriptors(_creature).Where(
+						_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
+				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
-					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(mapCell, _creature)));
+					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
 				}
 				var descriptors = list.Distinct();
 				if (GetParameter<ThingDescriptor>().Any())
@@ -107,7 +107,7 @@ namespace GameCore.Acts.Interact
 					                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
 					                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
-				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, mapCell, _silence);
+				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, liveMapCell, _silence);
 			}
 		}
 	}

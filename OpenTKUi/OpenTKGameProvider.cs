@@ -136,7 +136,10 @@ namespace OpenTKUi
 			{
 				TileMapRenderer.Draw();
 			}
-			DrawTextLayer();
+			using (new Profiler("DrawTextLayer"))
+			{
+				DrawTextLayer();
+			}
 			using (new Profiler("SwapBuffers"))
 			{
 				SwapBuffers();
@@ -204,6 +207,9 @@ namespace OpenTKUi
 			}
 			switch (_key)
 			{
+				case Key.Clear:
+					_consoleKey = ConsoleKey.NumPad5;
+					break;
 				case Key.Slash:
 					_consoleKey = ConsoleKey.Oem2;
 					break;

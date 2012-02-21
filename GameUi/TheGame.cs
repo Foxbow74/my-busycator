@@ -232,9 +232,6 @@ namespace GameUi
 
 		public void Draw()
 		{
-			
-
-
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{
 				using (new Profiler("DrawBackground"))
@@ -247,16 +244,6 @@ namespace GameUi
 					uiBlock.DrawFrame();
 				}
 			}
-			//DrawText();
 		}
-
-
-		//private void DrawText()
-		//{
-		//    using (new Profiler())
-		//    {
-		//        m_gameProvider.DrawTextLayer();
-		//    }
-		//}
 	}
 }

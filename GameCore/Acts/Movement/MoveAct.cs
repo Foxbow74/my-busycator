@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -51,8 +52,8 @@ namespace GameCore.Acts.Movement
 				delta = KeyTranslator.GetDirection(key);
 			}
 
-			var pnt = _creature.Coords + delta;
-			var mapCell = _creature.Layer.GetMapCell(pnt);
+			var pnt = LiveMap.WrapCellCoords(_creature.LiveCoords + delta);
+			var mapCell = World.TheWorld.LiveMap.GetCell(pnt);
 
 			if (mapCell.GetIsPassableBy(_creature) > 0)
 			{
@@ -79,7 +80,7 @@ namespace GameCore.Acts.Movement
 					}
 					MessageManager.SendMessage(this, mess);
 				}
-				_creature.Coords = pnt;
+				_creature.LiveCoords = pnt;
 				return EActResults.DONE;
 			}
 			else
@@ -114,7 +115,7 @@ namespace GameCore.Acts.Movement
 					}
 					MessageManager.SendMessage(this, "неа, " + mess);
 				}
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 		}
 	}

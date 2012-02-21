@@ -35,7 +35,7 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			var furniture = _creature.MapCell.Furniture;
+			var furniture = _creature[0,0].Furniture;
 			if (!(furniture is StairDown))
 			{
 				if (!_silence)

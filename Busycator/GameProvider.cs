@@ -42,18 +42,28 @@ namespace Busycator
 			base.OnUpdateFrame(_e);
 			if (!IsActive) return;
 
-			m_game.Update(KeyState);
+			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " " + World.TheWorld.Avatar.LiveCoords;
+			using (new Profiler())
+			{
+				m_game.Update(KeyState);
+			}
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
 			if (!IsActive) return;
-			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " Avatar:" + World.TheWorld.Avatar.Coords;
 
 			//if (m_game.IsNeedDraw)
 			{
-				Clear(FColor.Empty);
-				m_game.Draw();
+				using (new Profiler("Clear(FColor.Empty)"))
+				{
+					Clear(FColor.Empty);
+				}
+				using (new Profiler("m_game.Draw()"))
+				{
+					m_game.Draw();
+				}
+
 				OnRenderFinished();
 			}
 		}
@@ -66,7 +76,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider())
 					{
-						game.Run(0.0, 0.0);
+						game.Run(0.0,0.0);
 					}
 				}
 				catch (Exception exception)

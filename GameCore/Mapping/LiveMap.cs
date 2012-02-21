@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using GameCore.Creatures;
+using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
@@ -10,9 +13,11 @@ namespace GameCore.Mapping
 	{
 		private readonly LosManager m_visibilityManager;
 
-		public const int ACTIVE_QRADIUS =1;
 
-		private Point m_centerLiveBlock;
+		//1 - active lights (visible for player)
+		//2 - active creatures
+		//3 - border
+		public const int ACTIVE_QRADIUS =3;
 
 		private readonly Point[] m_blockIds;
 
@@ -23,7 +28,29 @@ namespace GameCore.Mapping
 
 		public LiveMapCell[,] Cells { get; private set; }
 
-		public int SizeInCells { get; private set; }
+		public static int SizeInCells { get; private set; }
+
+		public Creature FirstActiveCreature
+		{
+			get
+			{
+				Creature first = World.TheWorld.Avatar;
+				foreach (var block in Blocks)
+				{
+					if (block.IsBorder) continue;
+					foreach (var creature in block.Creatures)
+					{
+						if (first.BusyTill > creature.BusyTill)
+						{
+							first = creature;
+						}
+					}
+				}
+				return first;
+			}
+		}
+
+		public Point CenterLiveBlock { get; private set; }
 
 		public LiveMap()
 		{
@@ -35,7 +62,7 @@ namespace GameCore.Mapping
 			Blocks = new LiveMapBlock[m_sizeInBlocks, m_sizeInBlocks];
 			Cells = new LiveMapCell[SizeInCells, SizeInCells];
 	
-			m_centerLiveBlock = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
+			CenterLiveBlock = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 			{
 				var blockIds = new List<Point>();
@@ -48,14 +75,6 @@ namespace GameCore.Mapping
 				var id = m_blockIds[index];
 				Blocks[id.X, id.Y] = new LiveMapBlock(this, id, index);
 			}
-			for (var i = 0; i < SizeInCells; i++)
-			{
-				for (var j = 0; j < SizeInCells; j++)
-				{
-					Cells[i,j] = new LiveMapCell();
-				}
-			}
-
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
@@ -66,27 +85,25 @@ namespace GameCore.Mapping
 				case WorldMessage.EType.TURN:
 					OnTurn();
 					break;
-				case WorldMessage.EType.AVATAR_CHANGE_LAYER:
-					LayerChanged();
-					break;
 			}
 		}
 
 		private void LayerChanged()
 		{
-			foreach (var block in Blocks)
+			foreach (var blockId in m_blockIds)
 			{
-				block.Clear();
+				ClearBlock(blockId);
 			}
-			Actualize(World.TheWorld.Avatar.BlockId);
+			Actualize();
 		}
 
 		private void OnTurn()
 		{
 			using (new Profiler())
 			{
-				var lighted = m_centerLiveBlock.NearestPoints.Select(Wrap).ToList();
-				lighted.Add(m_centerLiveBlock);
+				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
+
+				lighted.Add(CenterLiveBlock);
 
 				foreach (var blockId in lighted)
 				{
@@ -98,7 +115,7 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					Blocks[blockId.X, blockId.Y].LightCells(this);
+					Blocks[blockId.X, blockId.Y].LightCells();
 				}
 
 				if (World.TheWorld.Avatar.Light != null)
@@ -110,8 +127,8 @@ namespace GameCore.Mapping
 
 		private Point GetCenterLiveCell()
 		{
-			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.Coords);
-			return m_centerLiveBlock * MapBlock.SIZE + inBlock;
+			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.LiveCoords);
+			return CenterLiveBlock * MapBlock.SIZE + inBlock;
 		}
 
 		public void SetViewPortSize(Point _size)
@@ -119,27 +136,30 @@ namespace GameCore.Mapping
 			m_vieportSize = _size;
 		}
 
-		public void Actualize(Point _avatarBlockId)
+		public void Actualize()
 		{
 			using (new Profiler())
 			{
 				var layer = World.TheWorld.Avatar.Layer;
 				foreach (var blockId in m_blockIds)
 				{
-					if (Blocks[blockId.X, blockId.Y].MapBlock == null)
+					var delta = (blockId - CenterLiveBlock);
+					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+					if (liveMapBlock.MapBlock == null)
 					{
-						var offset = (blockId - m_centerLiveBlock).Sphere(ACTIVE_QRADIUS);
-						var mapBlockId = _avatarBlockId + offset;
-						Blocks[blockId.X, blockId.Y].SetMapBlock(layer[mapBlockId]);
+						var ndelta = delta.Sphere(ACTIVE_QRADIUS);
+						var mapBlockId = World.TheWorld.AvatarBlockId + ndelta;
+						liveMapBlock.SetMapBlock(layer[mapBlockId]);
 					}
+					liveMapBlock.IsBorder = delta.QLenght >= ACTIVE_QRADIUS;
 				}
 			}
 		}
 		
 		public Point GetData()
 		{
-			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.Coords);
-			var centerLiveCell = m_centerLiveBlock*MapBlock.SIZE + inBlock;
+			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.LiveCoords);
+			var centerLiveCell = CenterLiveBlock*MapBlock.SIZE + inBlock;
 			var zeroLiveCell = centerLiveCell - m_vieportSize/2;
 			return zeroLiveCell;
 		}
@@ -149,11 +169,59 @@ namespace GameCore.Mapping
 			return _liveBlockId.Wrap(m_sizeInBlocks, m_sizeInBlocks);
 		}
 
-		public void AvatarMoved(Point _blockId, Point _newBlockId)
+		public void CreaturesLayerChanged(Creature _creature, WorldLayer _oldLayer, WorldLayer _newLayer)
+		{
+			if(_creature.IsAvatar)
+			{
+				var coords = _creature.LiveCoords;
+				LayerChanged();
+				_creature.LiveCoords = coords;
+				MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		public void CreaturesCellChanged(Creature _creature, Point _oldLiveCoords, Point _newLiveCoords)
+		{
+			if(_newLiveCoords==null) return;
+			var oldBlock = _oldLiveCoords != null ? GetCell(_oldLiveCoords).LiveMapBlock : null;
+			var newBlock = GetCell(_newLiveCoords).LiveMapBlock;
+			if (newBlock != oldBlock)
+			{
+				newBlock.AddCreature(_creature);
+				if (oldBlock != null)
+				{
+					oldBlock.RemoveCreature(_creature);
+					if (_creature.IsAvatar)
+					{
+						AvatarChangesBlock(oldBlock.LiveMapBlockId, newBlock.LiveMapBlockId);
+						CenterLiveBlock = newBlock.LiveMapBlockId;
+						World.TheWorld.SetAvatarBlockId(newBlock.MapBlock.BlockId);
+						Actualize();
+					}
+				}
+			}
+			else
+			{
+				newBlock.RemoveCreature(_creature);
+				newBlock.AddCreature(_creature);
+			}
+			if(_creature.IsAvatar)
+			{
+				MessageManager.SendMessage(this, WorldMessage.AvatarMove);
+			}
+		}
+
+		#region avatar move
+
+		private void AvatarChangesBlock(Point _blockId, Point _newBlockId)
 		{
 			var delta = _newBlockId - _blockId;
 
-			var clear = Wrap(m_centerLiveBlock - delta*ACTIVE_QRADIUS);
+			var clear = Wrap(CenterLiveBlock - delta * ACTIVE_QRADIUS);
 
 			if (delta.X != 0)
 			{
@@ -163,17 +231,13 @@ namespace GameCore.Mapping
 			{
 				ClearRow(clear.Y);
 			}
-
-			m_centerLiveBlock = Wrap(m_centerLiveBlock + delta);
-
-			Actualize(_newBlockId);
 		}
 
 		private void ClearColumn(int _columnIndex)
 		{
 			foreach (var blockId in m_blockIds.Where(_blockId => _blockId.X == _columnIndex))
 			{
-				Blocks[blockId.X, blockId.Y].Clear();
+				ClearBlock(blockId);
 			}
 		}
 
@@ -181,8 +245,26 @@ namespace GameCore.Mapping
 		{
 			foreach (var blockId in m_blockIds.Where(_blockId => _blockId.Y == _rowIndex))
 			{
-				Blocks[blockId.X, blockId.Y].Clear();
+				ClearBlock(blockId);
 			}
+		}
+
+		private void ClearBlock(Point _blockId)
+		{
+			Blocks[_blockId.X, _blockId.Y].Clear();
+		}
+
+		#endregion
+
+		public LiveMapCell GetCell(Point _liveCoords)
+		{
+			var coords = WrapCellCoords(_liveCoords);
+			return Cells[coords.X, coords.Y];
+		}
+
+		public static Point WrapCellCoords(Point _point)
+		{
+			return _point.Wrap(SizeInCells, SizeInCells);
 		}
 	}
 }

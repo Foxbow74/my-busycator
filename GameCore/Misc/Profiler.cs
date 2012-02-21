@@ -50,8 +50,22 @@ namespace GameCore.Misc
 
 		public void Dispose()
 		{
+			float prev = 0;
+			if(m_info.Count>1000)
+			{
+				prev = (float)m_info.Span.Ticks / m_info.Count;
+			}
 			m_info.Span += DateTime.Now - m_time;
 			m_info.Count++;
+			
+			if (prev!=0)
+			{
+				var now = m_info.Span.Ticks / m_info.Count;
+				if(now/prev>1.1)
+				{
+					Debug.WriteLine(m_name + " >>> " + now / prev * 100 + "%");
+				}
+			}
 		}
 	}
 }

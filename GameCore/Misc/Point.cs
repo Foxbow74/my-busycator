@@ -52,6 +52,21 @@ namespace GameCore.Misc
 			}
 		}
 
+
+		public IEnumerable<Point> NearestDPoints
+		{
+			get
+			{
+				for (var i = -1; i <= 1; ++i)
+				{
+					for (var j = -1; j <= 1; ++j)
+					{
+						yield return new Point(i, j);
+					}
+				}
+			}
+		}
+
 		public IEnumerable<Point> AroundPoints
 		{
 			get { return NearestPoints.Where(_point => _point != Zero); }
@@ -216,10 +231,11 @@ namespace GameCore.Misc
 
 		public Point Sphere(int _radius)
 		{
-			var x = X > _radius ? -_radius : X < -_radius ? _radius : X;
-			var y = Y > _radius ? -_radius : Y < -_radius ? _radius : Y;
-			return new Point(x,y);
+			var wr = Wrap(_radius, _radius);
 
+			var x = X > _radius ? (-_radius + wr.X) : X < -_radius ? _radius - wr.X : X;
+			var y = Y > _radius ? (-_radius + wr.Y) : Y < -_radius ? _radius - wr.Y : Y;
+			return new Point(x,y);
 		}
 	}
 }

@@ -8,10 +8,10 @@ namespace GameCore.Objects
 	{
 		private static readonly ThingDescriptor m_empty = new ThingDescriptor(null, null, null);
 
-		public ThingDescriptor(Thing _thing, Point _worldCoords, IContainer _container)
+		public ThingDescriptor(Thing _thing, Point _liveCoords, IContainer _container)
 		{
 			Thing = _thing;
-			WorldCoords = _worldCoords;
+			LiveCoords = _liveCoords;
 			Container = _container;
 		}
 
@@ -20,7 +20,7 @@ namespace GameCore.Objects
 		/// </summary>
 		public IContainer Container { get; private set; }
 
-		public Point WorldCoords { get; private set; }
+		public Point LiveCoords { get; private set; }
 
 		public Thing Thing { get; private set; }
 
@@ -43,14 +43,14 @@ namespace GameCore.Objects
 		{
 			if (Thing is IFaked)
 			{
-				var mapCell = _creature.Layer.GetMapCell(WorldCoords);
+				var liveMapCell = World.TheWorld.LiveMap.GetCell(LiveCoords);
 				if (Thing is Item)
 				{
-					Thing = mapCell.ResolveFakeItem(_creature, (FakedItem) Thing);
+					Thing = liveMapCell.ResolveFakeItem(_creature, (FakedItem) Thing);
 				}
 				else if (Thing is Furniture.Furniture)
 				{
-					Thing = mapCell.ResolveFakeFurniture(_creature, (FakedThing) Thing);
+					Thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
 			}
 			return Thing;

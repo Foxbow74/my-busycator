@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -49,18 +48,18 @@ namespace GameCore.Objects
 		{
 			if (_coords == null)
 			{
-				_coords = _creature.Coords;
+				_coords = _creature.LiveCoords;
 			}
 			if (_thing is IFaked)
 			{
-				var mapCell = _creature.Layer.GetMapCell(_coords);
+				var mapCell = World.TheWorld.LiveMap.GetCell(_coords);
 				if (_thing is Item)
 				{
 					_thing = mapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _thing);
 				}
 				else if (_thing is Furniture.Furniture)
 				{
-					_thing = mapCell.ResolveFakeFurniture(World.TheWorld.Avatar, (FakedThing) _thing);
+					_thing = mapCell.ResolveFakeFurniture(_creature);
 				}
 			}
 			return _thing.Name;
@@ -76,12 +75,12 @@ namespace GameCore.Objects
 			return thing.Name;
 		}
 
-		public static bool IsClosed(this Thing _thing, MapCell _cell, Creature _creature)
+		public static bool IsClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
+				_thing = _cell.ResolveFakeFurniture(_creature);
 			}
 			return _thing is ICanbeOpened && ((ICanbeOpened) _thing).ELockType != ELockType.OPEN;
 		}
@@ -92,32 +91,32 @@ namespace GameCore.Objects
 			;
 		}
 
-		public static bool CanBeClosed(this Thing _thing, MapCell _cell, Creature _creature)
+		public static bool CanBeClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
+				_thing = _cell.ResolveFakeFurniture(_creature);
 			}
 			return _thing is ICanbeClosed && ((ICanbeClosed) _thing).ELockType == ELockType.OPEN;
 		}
 
-		public static bool IsDoor(this Thing _thing, MapCell _cell, Creature _creature)
+		public static bool IsDoor(this Thing _thing, LiveMapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
+				_thing = _cell.ResolveFakeFurniture(_creature);
 			}
 			return _thing is Door || _thing is OpenDoor;
 		}
 
-		public static bool IsChest(this Thing _thing, MapCell _cell, Creature _creature)
+		public static bool IsChest(this Thing _thing, LiveMapCell _cell, Creature _creature)
 		{
 			if (_thing == null) return false;
 			if (_thing.IsFake())
 			{
-				_thing = _cell.ResolveFakeFurniture(_creature, (FakedThing) _thing);
+				_thing = _cell.ResolveFakeFurniture(_creature);
 			}
 			return _thing is Chest;
 		}
@@ -144,7 +143,7 @@ namespace GameCore.Objects
 
 		private static void RegisterCreatureType(Type _type)
 		{
-			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null, Point.Zero});
+			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			FakedMonster value;
 			if (!m_fakedMonsters.TryGetValue(thing.Tile, out value))
 			{
@@ -201,7 +200,7 @@ namespace GameCore.Objects
 			return m_fakedThings[keys[index]];
 		}
 
-		public static Thing GetFaketItem(MapBlock _block)
+		public static Thing GetFaketItem(int _blockRandomSeed)
 		{
 			var keys = new List<ETiles>(m_fakedItems.Keys);
 			var index = World.Rnd.Next(keys.Count);

@@ -29,7 +29,7 @@ namespace GameCore.Objects.Furniture
 
 		public ELockType ELockType { get; private set; }
 
-		public EActResults Open(Creature _creature, MapCell _mapCell, bool _silence)
+		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell, bool _silence)
 		{
 			if (ELockType != ELockType.OPEN)
 			{
@@ -40,7 +40,7 @@ namespace GameCore.Objects.Furniture
 				if (collection.Any)
 				{
 					//обязать по любасу показать диалог выбора предметов
-					_creature.AddActToPool(new TakeAct(), true, collection.Items, _mapCell.WorldCoords);
+					_creature.AddActToPool(new TakeAct(), true, collection.Items, _liveMapCell.LiveCoords);
 				}
 				else
 				{
@@ -63,7 +63,7 @@ namespace GameCore.Objects.Furniture
 			var cnt = _creature.GetLuckRandom*5.0;
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (Item) ThingHelper.GetFaketItem(_creature.MapBlock);
+				yield return (Item)ThingHelper.GetFaketItem(_creature[0,0].BlockRandomSeed);
 			}
 		}
 	}

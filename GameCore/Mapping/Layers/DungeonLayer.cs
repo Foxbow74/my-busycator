@@ -18,11 +18,11 @@ namespace GameCore.Mapping.Layers
 
 			if (_stair is StairUp)
 			{
-				block.AddObject(inBlockCoords, new StairDown(_enterFromLayer));
+				block.AddObject(new StairDown(_enterFromLayer), inBlockCoords);
 			}
 			else
 			{
-				block.AddObject(inBlockCoords, new StairUp(_enterFromLayer));
+				block.AddObject(new StairUp(_enterFromLayer), inBlockCoords);
 			}
 		}
 
@@ -47,7 +47,7 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 			block.Map[1,1] = ETerrains.MUSHROOM;
-			//block.AddLightSource(new Point(2, 2), new LightSource(8, new FColor(5f, 1f, 1f, 1f)));
+			block.AddLightSource(new Point(2, 2), new LightSource(8, new FColor(5f, 1f, 1f, 1f)));
 			block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 0f, 1f, 0f)));
 			block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(3f, 0f, 0f, 1f)));
 			block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(3f, 1f, 0f, 1f)));
@@ -55,8 +55,18 @@ namespace GameCore.Mapping.Layers
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				block.Creatures.Add(new Monster(this, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+				block.AddCreature(new Monster(this), new Point(x, y));
 			}
+
+			block.Map[9, 9] = ETerrains.BRICK_WALL;
+			block.Map[10, 9] = ETerrains.WINDOW;
+			block.Map[11, 9] = ETerrains.BRICK_WALL;
+			block.Map[11, 10] = ETerrains.WINDOW;
+			block.Map[9, 10] = ETerrains.WINDOW;
+			block.Map[9, 11] = ETerrains.BRICK_WALL;
+			block.AddObject(new Door(), new Point(10, 11));
+			block.Map[11, 11] = ETerrains.BRICK_WALL;
+			//block.AddLightSource(new Point(10, 10), new LightSource(18, new FColor(53f, 0f, 1f, 1f)));
 
 			return block;
 		}

@@ -1,19 +1,17 @@
 ﻿using System;
 using GameCore.Mapping.Layers;
-using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Ammo;
 using GameCore.Objects.Weapons;
-using Point = GameCore.Misc.Point;
 
 namespace GameCore.Creatures
 {
 	public class Avatar : Intelligent, ISpecial
 	{
 		public Avatar(WorldLayer _surface)
-			: base(_surface, Point.Zero, 100, EIntellectGrades.INT)
+			: base(_surface, 100, EIntellectGrades.INT)
 		{
-			Light = new LightSource(10, new FColor(3f,1f,0.5f,0f));
+			//Light = new LightSource(10, new FColor(3f,1f,0.5f,1f));
 			Silence = false;
 
 

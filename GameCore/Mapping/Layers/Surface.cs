@@ -59,7 +59,7 @@ namespace GameCore.Mapping.Layers
 			block.Map[6, 3] = ETerrains.WINDOW;
 			block.Map[3, 6] = ETerrains.WINDOW;
 			block.Map[6, 8] = ETerrains.GROUND;
-			block.AddObject(new Point(6, 8), ETiles.DOOR.GetThing());
+			block.AddObject(ETiles.DOOR.GetThing(), new Point(6, 8));
 
 			//block.Map[7, 9] = ETerrains.BRICK_WALL;
 			block.AddLightSource(new Point(7, 9), new LightSource(3, new FColor(Color.Blue)));
@@ -90,7 +90,7 @@ namespace GameCore.Mapping.Layers
 					{
 						var point = new Point(x, y);
 						var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-						var thig = World.Rnd.Next(2) == 0 ? ThingHelper.GetFaketThing(block) : ThingHelper.GetFaketItem(block);
+						var thig = World.Rnd.Next(2) == 0 ? ThingHelper.GetFaketThing(block) : ThingHelper.GetFaketItem(block.RandomSeed);
 						if (thig is Item)
 						{
 							if (any.Any(_thing => !(thig is Item)))
@@ -102,7 +102,7 @@ namespace GameCore.Mapping.Layers
 						{
 							continue;
 						}
-						block.AddObject(point, thig);
+						block.AddObject(thig, point);
 					}
 				}
 			}
@@ -110,7 +110,7 @@ namespace GameCore.Mapping.Layers
 			{
 				var x = rnd.Next(MapBlock.SIZE);
 				var y = rnd.Next(MapBlock.SIZE);
-				block.Creatures.Add(new Monster(this, new Point(_blockId.X * MapBlock.SIZE + x, _blockId.Y * MapBlock.SIZE + y)));
+				block.AddCreature(new Monster(this), new Point(x, y));
 			}
 			return block;
 		}
