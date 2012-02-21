@@ -76,7 +76,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider())
 					{
-						game.Run(0.0,0.0);
+						game.Run(60.0,60.0);
 					}
 				}
 				catch (Exception exception)

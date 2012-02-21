@@ -115,7 +115,8 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					Blocks[blockId.X, blockId.Y].LightCells();
+					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+					liveMapBlock.LightCells();
 				}
 
 				if (World.TheWorld.Avatar.Light != null)

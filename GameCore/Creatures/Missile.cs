@@ -18,7 +18,7 @@ namespace GameCore.Creatures
 		public Missile(WorldLayer _layer, Point _liveCoords, int _speed, Item _ammo, Point _target)
 			: base(_layer, _speed)
 		{
-			Light = new LightSource(4, new FColor(2f, 1f, 0f, 0f));
+			Light = new LightSource(4, new FColor(4f, 1f, 0.8f, 0.4f));
 			Ammo = _ammo;
 			m_path = _liveCoords.GetLineToPoints(_target).ToList();
 			LiveCoords = _liveCoords;
@@ -62,6 +62,7 @@ namespace GameCore.Creatures
 			{
 				nextCell.AddItem(Ammo);
 				nextCell.LiveMapBlock.RemoveCreature(this);
+				MessageManager.SendMessage(this, WorldMessage.Turn);
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
 			AddActToPool(new MoveAct(), nextPoint - LiveCoords);
