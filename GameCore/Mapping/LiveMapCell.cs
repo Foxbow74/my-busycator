@@ -29,8 +29,11 @@ namespace GameCore.Mapping
 
 		public bool IsSeenBefore { get; private set; }
 
-		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords)
+		public float Rnd { get; private set; }
+
+		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd)
 		{
+			Rnd = _rnd;
 			m_items.Clear();
 			Furniture = null;
 
@@ -129,7 +132,7 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (Furniture is Stair)
+				if (ThingHelper.Is<Stair>(Furniture))
 				{
 					return Furniture.Tile;
 				}
@@ -243,7 +246,7 @@ namespace GameCore.Mapping
 			if (Creature != null) return 0f;
 			if (Furniture != null)
 			{
-				if (Furniture.IsDoor(this, _creature) && Furniture.IsClosed(this, _creature))
+				if (Furniture.Is<Door>() && Furniture.IsClosed(this, _creature))
 				{
 					return 0f;
 				}

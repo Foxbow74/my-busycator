@@ -5,6 +5,7 @@ namespace GameCore
 	[Flags]
 	public enum EDirections
 	{
+		NONE = 0x0,
 		UP = 0x1,
 		DOWN = 0x2,
 		LEFT = 0x4,

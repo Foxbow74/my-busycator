@@ -11,23 +11,27 @@ namespace GameCore.Mapping.Layers
 		/// </summary>
 		public const int ACTIVE_SIZE_HALF = 3;
 
-		private readonly Dictionary<Point, MapBlock> m_blocks = new Dictionary<Point, MapBlock>();
+		public WorldLayer()
+		{
+			Blocks = new Dictionary<Point, MapBlock>();
+		}
 
 		public MapBlock this[Point _blockId]
 		{
 			get
 			{
 				MapBlock block;
-				if (!m_blocks.TryGetValue(_blockId, out block))
+				if (!Blocks.TryGetValue(_blockId, out block))
 				{
 					block = GenerateBlock(_blockId);
-					m_blocks.Add(_blockId, block);
+					Blocks.Add(_blockId, block);
 				}
 				return block;
 			}
 		}
 
-		internal abstract IEnumerable<ETerrains> DefaultEmptyTerrains { get; }
+		internal abstract IEnumerable<ETerrains> DefaultEmptySpaces { get; }
+		internal abstract IEnumerable<ETerrains> DefaultWalls { get; }
 
 		protected abstract MapBlock GenerateBlock(Point _blockId);
 
@@ -45,6 +49,8 @@ namespace GameCore.Mapping.Layers
 		}
 
 		public abstract FColor Ambient { get; }
+
+		public Dictionary<Point, MapBlock> Blocks { get; private set; }
 
 		public MapBlock GetMapBlock(Point _worldCoords)
 		{

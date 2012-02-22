@@ -146,6 +146,8 @@ namespace GameCore
 
 		internal WorldLayer GenerateNewLayer(Creature _creature, Stair _stair)
 		{
+			return new TreeMazeDungeonLayer(_creature.Layer, _creature[0, 0].WorldCoords, _stair);
+			
 			var rnd = new Random(_creature.BlockRandomSeed);
 			switch (rnd.Next(2))
 			{

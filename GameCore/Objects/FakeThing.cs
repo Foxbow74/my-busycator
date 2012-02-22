@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 
 namespace GameCore.Objects
@@ -21,7 +22,17 @@ namespace GameCore.Objects
 
 		public override string Name
 		{
-			get { throw new NotImplementedException(); }
+			get
+			{
+				try
+				{
+					throw new NotImplementedException();
+				}
+				catch 
+				{
+				}
+				return "มห฿!";
+			}
 		}
 
 		public override EThingCategory Category
@@ -38,6 +49,11 @@ namespace GameCore.Objects
 		}
 
 		#endregion
+
+		public override bool Is<T>() 
+		{
+			return m_types.All(_type => typeof (T).IsAssignableFrom(_type));
+		}
 
 		public void Add(Type _type)
 		{

@@ -83,5 +83,11 @@ namespace GameCore.Misc
 		{
 			return new FColor(_color);
 		}
+
+		public static bool ContainsEx(this Rectangle _rectangle, Point _point)
+		{
+			var result = _rectangle.Left <= _point.X && _rectangle.Top <= _point.Y && _rectangle.Bottom > _point.Y && _rectangle.Right > _point.X;
+			return result;
+		}
 	}
 }

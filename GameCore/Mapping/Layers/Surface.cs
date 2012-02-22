@@ -5,6 +5,7 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
@@ -31,13 +32,17 @@ namespace GameCore.Mapping.Layers
 			get { return 150; }
 		}
 
-		internal override IEnumerable<ETerrains> DefaultEmptyTerrains
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces
 		{
 			get
 			{
 				yield return ETerrains.GRASS;
-				yield return ETerrains.GROUND;
 			}
+		}
+
+		internal override IEnumerable<ETerrains> DefaultWalls
+		{
+			get { yield return ETerrains.BRICK_WALL; }
 		}
 
 		protected override MapBlock GenerateBlock(Point _blockId)
@@ -45,7 +50,7 @@ namespace GameCore.Mapping.Layers
 			var block = new MapBlock(_blockId);
 			var rnd = new Random(block.RandomSeed);
 
-			MapBlockHelper.Clear(block, rnd, this);
+			MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
 
 			for (var i = 3; i <= 8; i++)
 			{
@@ -88,10 +93,16 @@ namespace GameCore.Mapping.Layers
 					{
 						var point = new Point(x, y);
 						var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-						var thig = World.Rnd.Next(2) == 0 ? ThingHelper.GetFaketThing(block) : ThingHelper.GetFaketItem(block.RandomSeed);
-						if (thig is Item)
+						var thing =  World.Rnd.Next(2) == 0 ? ThingHelper.GetFaketThing(block) : ThingHelper.GetFaketItem(block.RandomSeed);
+
+						if(thing.Is<Stair>() && (x==MapBlock.SIZE-1 || y==MapBlock.SIZE-1))
 						{
-							if (any.Any(_thing => !(thig is Item)))
+							continue;
+						}
+
+						if (thing is Item)
+						{
+							if (any.Any(_thing => !(_thing is Item)))
 							{
 								continue;
 							}
@@ -100,7 +111,7 @@ namespace GameCore.Mapping.Layers
 						{
 							continue;
 						}
-						block.AddObject(thig, point);
+						block.AddObject(thing, point);
 					}
 				}
 			}

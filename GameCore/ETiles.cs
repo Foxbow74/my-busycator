@@ -9,11 +9,12 @@ namespace GameCore
 		[Tiles(0f)] NONE,
 		[Tiles(0.5f)] HEAP_OF_ITEMS,
 		[Tiles(0.2f)]FOG,
-		[Tiles(0f)]
-		TARGET_DOT,
+		[Tiles(0f)]TARGET_DOT,
 		[Tiles(0f)] TARGET_CROSS,
 
 		[Tiles(0f)] GRASS,
+		[Tiles(0f)] WATER,
+		[Tiles(0f)] SWAMP,
 		[Tiles(1f)] BRICK,
 		[Tiles(0.2f)] BRICK_WINDOW,
 		[Tiles(0.9f)] MASHROOM,

@@ -76,7 +76,7 @@ namespace GameCore.Misc
 						//v+=new Vector2(0.5f, 0.5f);
 
 						var parentPoint = Point.Zero;
-						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.02f))
+						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.5f))
 						{
 							var point = new Point((int)Math.Round(lineV.X), (int)Math.Round(lineV.Y));
 							if (point.Equals(pnt) || point.Lenght > _radius) continue;

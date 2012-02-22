@@ -103,8 +103,7 @@ namespace GameCore.Creatures
 			var equipmentPlacesAttribute = EquipmentPlacesAttribute.GetAttribute(_place);
 			if (!equipmentPlacesAttribute.IsAbleToEquip(_item.Category))
 			{
-				throw new ApplicationException("Нельзя экипировать '" + _item.GetName(this) + "' как '" +
-				                               equipmentPlacesAttribute.DisplayName + "'");
+				throw new ApplicationException("Нельзя экипировать '" + _item.GetName(this) + "' как '" + equipmentPlacesAttribute.DisplayName + "'");
 			}
 
 			var item = m_equipment[_place];
