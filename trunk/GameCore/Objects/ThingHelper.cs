@@ -42,24 +42,24 @@ namespace GameCore.Objects
 		/// </summary>
 		/// <param name = "_thing"></param>
 		/// <param name = "_creature"></param>
-		/// <param name = "_coords">Координаты не всегда совпадают с координатами существа</param>
+		/// <param name = "_cell">Координаты не всегда совпадают с координатами существа</param>
 		/// <returns></returns>
-		public static string GetName(this Thing _thing, Creature _creature, Point _coords = null)
+		public static string GetName(this Thing _thing, Creature _creature, LiveMapCell _cell = null)
 		{
-			if (_coords == null)
+			if (_cell == null)
 			{
-				_coords = _creature.LiveCoords;
+				_cell = _creature[Point.Zero];
 			}
 			if (_thing is IFaked)
 			{
-				var mapCell = World.TheWorld.LiveMap.GetCell(_coords);
-				if (_thing is Item)
+				var liveMapCell = _cell;
+				if (_thing is FakedItem)
 				{
-					_thing = mapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _thing);
+					_thing = liveMapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _thing);
 				}
-				else if (_thing is Furniture.Furniture)
+				else if (_thing is FakedThing)
 				{
-					_thing = mapCell.ResolveFakeFurniture(_creature);
+					_thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
 			}
 			return _thing.Name;
@@ -88,7 +88,6 @@ namespace GameCore.Objects
 		public static bool IsFurniture(this Thing _thing)
 		{
 			return _thing is FakedThing || _thing is Furniture.Furniture;
-			;
 		}
 
 		public static bool CanBeClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)
@@ -101,24 +100,9 @@ namespace GameCore.Objects
 			return _thing is ICanbeClosed && ((ICanbeClosed) _thing).ELockType == ELockType.OPEN;
 		}
 
-		public static bool IsDoor(this Thing _thing, LiveMapCell _cell, Creature _creature)
+		public static bool Is<T>(this Thing _thing)
 		{
-			if (_thing == null) return false;
-			if (_thing.IsFake())
-			{
-				_thing = _cell.ResolveFakeFurniture(_creature);
-			}
-			return _thing is Door || _thing is OpenDoor;
-		}
-
-		public static bool IsChest(this Thing _thing, LiveMapCell _cell, Creature _creature)
-		{
-			if (_thing == null) return false;
-			if (_thing.IsFake())
-			{
-				_thing = _cell.ResolveFakeFurniture(_creature);
-			}
-			return _thing is Chest;
+			return _thing != null && _thing.Is<T>();
 		}
 
 		public static bool IsFake(this Thing _thing)

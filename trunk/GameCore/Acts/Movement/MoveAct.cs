@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
-using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Movement
 {
@@ -52,26 +52,25 @@ namespace GameCore.Acts.Movement
 				delta = KeyTranslator.GetDirection(key);
 			}
 
-			var pnt = LiveMap.WrapCellCoords(_creature.LiveCoords + delta);
-			var mapCell = World.TheWorld.LiveMap.GetCell(pnt);
+			var cell = _creature[delta];
 
-			if (mapCell.GetIsPassableBy(_creature) > 0)
+			if (cell.GetIsPassableBy(_creature) > 0)
 			{
-				var mess = mapCell.TerrainAttribute.DisplayName;
+				var mess = cell.TerrainAttribute.DisplayName;
 
 				if (!_silence)
 				{
-					var furniture = mapCell.Furniture;
+					var furniture = cell.Furniture;
 					if (furniture != null)
 					{
-						mess += ", " + furniture.GetName(_creature, pnt);
+						mess += ", " + furniture.GetName(_creature, cell);
 					}
-					var items = mapCell.Items.ToArray();
+					var items = cell.Items.ToArray();
 					if (items.Length > 0)
 					{
 						if (items.Length == 1)
 						{
-							mess += ", " + items[0].GetName(_creature, pnt);
+							mess += ", " + items[0].GetName(_creature, cell);
 						}
 						else
 						{
@@ -80,7 +79,7 @@ namespace GameCore.Acts.Movement
 					}
 					MessageManager.SendMessage(this, mess);
 				}
-				_creature.LiveCoords = pnt;
+				_creature.LiveCoords += delta;
 				return EActResults.DONE;
 			}
 			else
@@ -88,19 +87,19 @@ namespace GameCore.Acts.Movement
 				var mess = String.Empty;
 				if (!_silence)
 				{
-					var creature = mapCell.Creature;
+					var creature = cell.Creature;
 					if (creature != null)
 					{
 						mess = creature.GetName(_creature);
 					}
 					else
 					{
-						var furniture = mapCell.Furniture;
+						var furniture = cell.Furniture;
 						if (furniture != null)
 						{
-							if (furniture.IsDoor(mapCell, _creature) && furniture.IsClosed(mapCell, _creature))
+							if (furniture.Is<Door>() && furniture.IsClosed(cell, _creature))
 							{
-								_creature.AddActToPool(new OpenAct(), pnt);
+								_creature.AddActToPool(new OpenAct(), delta);
 								return EActResults.DONE;
 							}
 							else
@@ -110,7 +109,7 @@ namespace GameCore.Acts.Movement
 						}
 						else
 						{
-							mess = mapCell.TerrainAttribute.DisplayName;
+							mess = cell.TerrainAttribute.DisplayName;
 						}
 					}
 					MessageManager.SendMessage(this, "неа, " + mess);

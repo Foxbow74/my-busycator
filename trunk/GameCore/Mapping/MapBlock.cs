@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
+using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping
 {
@@ -12,13 +14,16 @@ namespace GameCore.Mapping
 		//Координаты блока в блочных координатах
 
 		public const int SIZE = 20;
-
-		private readonly List<Tuple<Thing, Point>> m_objects = new List<Tuple<Thing, Point>>();
-		private readonly List<Tuple<Creature, Point>> m_creatures = new List<Tuple<Creature, Point>>();
+		public readonly static Rectangle Rect = new Rectangle(0,0,SIZE,SIZE);
 
 		public MapBlock(Point _point)
 		{
+			ConnectionPoints = new Dictionary<Point, Room>();
+			Rooms = new List<Room>();
+			Creatures = new List<Tuple<Creature, Point>>();
+			Objects = new List<Tuple<Thing, Point>>();
 			LightSources = new List<Tuple<Point, LightSource>>();
+
 			BlockId = _point;
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
@@ -31,15 +36,13 @@ namespace GameCore.Mapping
 
 		public ETerrains[,] Map { get; private set; }
 
-		public List<Tuple<Creature, Point>> Creatures
-		{
-			get { return m_creatures; }
-		}
+		protected Dictionary<Point, Room> ConnectionPoints { get; private set; }
 
-		public List<Tuple<Thing, Point>> Objects
-		{
-			get { return m_objects; }
-		}
+		public List<Tuple<Creature, Point>> Creatures { get; private set; }
+
+		public List<Tuple<Thing, Point>> Objects { get; private set; }
+
+		public List<Room> Rooms { get; private set; }
 
 		public UInt32[] SeenCells { get; private set; }
 
@@ -89,12 +92,12 @@ namespace GameCore.Mapping
 
 		public void AddCreature(Creature _creature, Point _inBlockCoords)
 		{
-			m_creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
+			Creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
 		}
 
 		public void RemoveCreature(Creature _creature)
 		{
-			if(m_creatures.RemoveAll(_tuple => _tuple.Item1 == _creature)==0)
+			if(Creatures.RemoveAll(_tuple => _tuple.Item1 == _creature)==0)
 			{
 				throw new ApplicationException();
 			}

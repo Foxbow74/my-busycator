@@ -6,6 +6,7 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Interact
 {
@@ -38,25 +39,25 @@ namespace GameCore.Acts.Interact
 
 		public override EActResults Do(Creature _creature, bool _silence)
 		{
-			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
+			LiveMapCell liveMapCell; 
 			{
 				//собираем координаты всех закрытых вещей
 				var list = new List<Point>();
-				foreach (var cell in _creature.LiveCoords.NearestDPoints.Select(_point => _creature[_point]))
+				foreach (var point in _creature.LiveCoords.NearestDPoints)
 				{
-					var cc = cell;
+					var cc = _creature[point];
 					if (cc.Furniture.IsClosed(cc, _creature))
 					{
-						list.Add(cc.LiveCoords);
+						list.Add(point);
 					}
 					else if (cc.GetAllAvailableItemDescriptors(_creature).Any(_descriptor => _descriptor.Thing.IsClosed(cc, _creature)))
 					{
-						list.Add(cc.LiveCoords);
+						list.Add(point);
 					}
 				}
 				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.IsClosed(null, _creature)))
 				{
-					list.Add(_creature.LiveCoords);
+					list.Add(Point.Zero);
 				}
 
 				var coords = list.Distinct().ToList();
@@ -77,14 +78,13 @@ namespace GameCore.Acts.Interact
 					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.LiveCoords));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
-				liveMapCell = World.TheWorld.LiveMap.GetCell(coords.First());
+				liveMapCell = _creature[coords.First()];
 			}
 
 			//выясняем, что нужно открыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((liveMapCell.Furniture.IsDoor(liveMapCell, _creature) || liveMapCell.Furniture.IsChest(liveMapCell, _creature)) &&
-				    liveMapCell.Furniture.IsClosed(liveMapCell, _creature))
+				if ((liveMapCell.Furniture.Is<Door>() || liveMapCell.Furniture.Is<Chest>()) && liveMapCell.Furniture.IsClosed(liveMapCell, _creature))
 				{
 					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}

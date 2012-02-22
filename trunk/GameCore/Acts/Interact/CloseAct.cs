@@ -83,8 +83,7 @@ namespace GameCore.Acts.Interact
 			//выясняем, что нужно закрыть
 			{
 				var list = new List<ThingDescriptor>();
-				if ((liveMapCell.Furniture.IsDoor(liveMapCell, _creature) || liveMapCell.Furniture.IsChest(liveMapCell, _creature)) &&
-				    liveMapCell.Furniture.CanBeClosed(liveMapCell, _creature))
+				if (liveMapCell.Furniture.Is<ICanbeClosed>())
 				{
 					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}

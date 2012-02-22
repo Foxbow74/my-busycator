@@ -65,13 +65,15 @@ namespace GameCore.Mapping
 
 		private void Fill()
 		{
+			var rnd = new Random(MapBlock.RandomSeed);
+
 			var mapCellZero = m_mapBlock.BlockId*MapBlock.SIZE;
 			for (var i = 0; i < MapBlock.SIZE; i++)
 			{
 				for (var j = 0; j < MapBlock.SIZE; j++)
 				{
 					var ij = new Point(i, j);
-					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij);
+					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij, (float)rnd.NextDouble());
 				}
 			}
 			foreach (var tuple in m_mapBlock.Objects)

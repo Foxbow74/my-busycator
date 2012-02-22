@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
@@ -12,6 +11,7 @@ namespace GameCore.Mapping.Layers
 	{
 		public DungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair)
 		{
+			EnterCoords = _enterCoords;
 			var blockId = MapBlock.GetBlockCoords(_enterCoords);
 			var inBlockCoords = MapBlock.GetInBlockCoords(_enterCoords);
 			var block = this[blockId];
@@ -26,16 +26,22 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		internal override IEnumerable<ETerrains> DefaultEmptyTerrains
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces
 		{
 			get { yield return ETerrains.STONE_FLOOR; }
+		}
+
+
+		internal override IEnumerable<ETerrains> DefaultWalls
+		{
+			get { yield return ETerrains.STONE_WALL; }
 		}
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
 			var block = new MapBlock(_blockId);
 			var rnd = new Random(block.RandomSeed);
-			MapBlockHelper.Clear(block, rnd, this);
+			MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
 
 			const int v = MapBlock.SIZE / 2 - 2;
 
@@ -48,10 +54,10 @@ namespace GameCore.Mapping.Layers
 			}
 			//block.Map[1,1] = ETerrains.MUSHROOM;
 
-			//block.AddLightSource(new Point(2, 2), new LightSource(5, new FColor(5f, 1f, 0, 0)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(5, new FColor(5f, 0f, 1f, 0f)));
-			//block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(5, new FColor(5f, 0f, 0f, 1f)));
-			//block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(5, new FColor(5f, 1f, 0f, 1f)));
+			block.AddLightSource(new Point(2, 2), new LightSource(18, new FColor(5f, 1f, 0, 0)));
+			block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(1f, 0f, 1f, 0f)));
+			block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(1f, 0f, 0f, 1f)));
+			block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(1f, 1f, 0f, 1f)));
 
 			{
 				var x = rnd.Next(MapBlock.SIZE);
@@ -76,9 +82,11 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(255, 50, 255, 50)); 
-				//return new FColor(0, 0, 0.01f, 0.01f);
+				//return new FColor(Color.FromArgb(255, 50, 255, 50)); 
+				return new FColor(0, 0, 0.01f, 0.01f);
 			}
 		}
+
+		public Point EnterCoords { get; private set; }
 	}
 }

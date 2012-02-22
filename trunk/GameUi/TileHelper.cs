@@ -83,8 +83,23 @@ namespace GameUi
 						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, Color.FromArgb(20, 80, 20)),
 						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, Color.FromArgb(20, 100, 20)),
 						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, Color.FromArgb(20, 120, 20)),
-						                 		Rp.CreateTile(7, 0, Color.FromArgb(55, 58, 50)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 0, Color.FromArgb(65, 68, 60)),
+
+												Rp.CreateTile(3, 2, Color.FromArgb(30, 30, 50)),
+						                 		Rp.CreateTile(5, 2, Color.FromArgb(30, 30, 60)),
+						                 		Rp.CreateTile(7, 2, Color.FromArgb(20, 20, 80)),
+						                 		Rp.CreateTile(12, 2, Color.FromArgb(20, 20, 70)),
+						                 		Rp.CreateTile(14, 2, Color.FromArgb(20, 100, 120)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 5, 2, Color.FromArgb(30, 30, 60)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 7, 2, Color.FromArgb(20, 20, 80)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 12, 2, Color.FromArgb(20, 40, 80)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 2, Color.FromArgb(20, 90, 30)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, Color.FromArgb(20, 80,50)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, Color.FromArgb(20, 100, 60)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, Color.FromArgb(20, 120, 70)),
+
+												Rp.CreateTile(2, 2, Color.FromArgb(30, 50, 30)),
+												Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 2, Color.FromArgb(30, 60, 30)),
+												Rp.CreateTile(ETextureSet.GP_X16, 2, 2, Color.FromArgb(20, 80, 20)),
 						                 	});
 						break;
 					case ETiles.BRICK:
@@ -167,6 +182,12 @@ namespace GameUi
 						break;
 					case ETiles.NONE:
 						tl = null;
+						break;
+					case ETiles.WATER:
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.Blue);
+						break;
+					case ETiles.SWAMP:
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.DarkKhaki);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -252,7 +273,7 @@ namespace GameUi
 			tile.Draw(_col, _row, tile.Color, _backgroundColor);
 		}
 
-		public static ATile Tile(this ETerrains _terrain, Point _worldCoords, int _blockRandomSeed)
+		public static ATile Tile(this ETerrains _terrain, Point _worldCoords, float _rnd)
 		{
 			switch (_terrain)
 			{
@@ -263,13 +284,17 @@ namespace GameUi
 				case ETerrains.GROUND:
 					return m_tiles[ETiles.GROUND];
 				case ETerrains.GRASS:
-					return ((TileSet)m_tiles[ETiles.GRASS])[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed))];
+					return ((TileSet)m_tiles[ETiles.GRASS])[(int)Math.Abs((_worldCoords.GetHashCode() * _rnd))];
 				case ETerrains.MUSHROOM:
-					return ((TileSet)m_tiles[ETiles.MASHROOM])[Math.Abs((_worldCoords.GetHashCode() ^ _blockRandomSeed))];
+					return ((TileSet)m_tiles[ETiles.MASHROOM])[(int)Math.Abs((_worldCoords.GetHashCode() * _rnd))];
 				case ETerrains.BRICK_WALL:
 					return m_tiles[ETiles.BRICK];
 				case ETerrains.WINDOW:
 					return m_tiles[ETiles.BRICK_WINDOW];
+				case ETerrains.WATER:
+					return m_tiles[ETiles.WATER];
+				case ETerrains.SWAMP:
+					return m_tiles[ETiles.SWAMP];
 				default:
 					throw new ArgumentOutOfRangeException("_terrain");
 			}
