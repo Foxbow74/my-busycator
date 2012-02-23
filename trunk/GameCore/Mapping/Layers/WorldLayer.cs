@@ -24,7 +24,7 @@ namespace GameCore.Mapping.Layers
 				if (!Blocks.TryGetValue(_blockId, out block))
 				{
 					block = GenerateBlock(_blockId);
-					Blocks.Add(_blockId, block);
+					Blocks[_blockId] = block;
 				}
 				return block;
 			}
@@ -52,11 +52,16 @@ namespace GameCore.Mapping.Layers
 
 		public Dictionary<Point, MapBlock> Blocks { get; private set; }
 
-		public MapBlock GetMapBlock(Point _worldCoords)
+		//public MapBlock GetMapBlock(Point _worldCoords)
+		//{
+		//    var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
+		//    var block = this[blockCoords];
+		//    return block;
+		//}
+
+		internal virtual void CompleteBlock(MapBlock _mapBlock)
 		{
-			var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
-			var block = this[blockCoords];
-			return block;
+			_mapBlock.State = MapBlock.EMapBlockState.COMPLETE;
 		}
 	}
 }
