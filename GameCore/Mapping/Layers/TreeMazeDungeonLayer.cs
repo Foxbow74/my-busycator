@@ -10,7 +10,7 @@ namespace GameCore.Mapping.Layers
 {
 	class TreeMazeDungeonLayer:DungeonLayer
 	{
-		private readonly Dictionary<Room, MapBlock> m_notConnectedRooms = new Dictionary<Room, MapBlock>();
+		//private readonly Dictionary<Room, MapBlock> m_notConnectedRooms = new Dictionary<Room, MapBlock>();
 		private readonly Dictionary<Point, Room> m_connectionPoints = new Dictionary<Point, Room>();
 
 		private const int MIN_SIZE = 5;
@@ -53,22 +53,32 @@ namespace GameCore.Mapping.Layers
 				GenerateInternal(block, new[] { MapBlock.GetInBlockCoords(EnterCoords) });
 
 				//Первая комната всегда присоединена
-				block.Rooms.Add(m_notConnectedRooms.Keys.Single(_room => _room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords))));
+				//block.Rooms.Add(m_notConnectedRooms.Keys.Single(_room => _room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords))));
 			}
 			else
 			{
 				GenerateInternal(block);
 			}
 
-			ConnectRooms(block);
+			Blocks[block.BlockId] = block;
 
+			AddConnectionPoints(block);
+			foreach (var pnt in m_connectionPoints.Keys)
+			{
+				if (MapBlock.GetBlockCoords(pnt) == block.BlockId)
+				{
+					var p = MapBlock.GetInBlockCoords(pnt);
+					block.Map[p.X, p.Y] = ETerrains.SWAMP;
+				}
+				
+			}
 			return block;
 		}
 
 		private void GenerateInternal(MapBlock _block, params Point[] _objects)
 		{
 			var rnd = new Random(_block.RandomSeed);
-			MapBlockHelper.Clear(_block, rnd, this, new[] { ETerrains.SWAMP, });
+			MapBlockHelper.Clear(_block, rnd, this, new[] { ETerrains.GROUND, });
 			MapBlockHelper.Fill(_block, rnd, this, DefaultWalls, new Rectangle(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1));
 			var objects = new List<Point>(_objects);
 
@@ -150,7 +160,7 @@ namespace GameCore.Mapping.Layers
 				}
 			}
 			MapBlockHelper.Fill(_block, _random, this, DefaultEmptySpaces, rect);
-			m_notConnectedRooms.Add(new Room(rect, _rectangle), _block);
+			_block.Rooms.Add(new Room(rect, _rectangle));
 			foreach (var contain in contains)
 			{
 				_objects.Remove(contain);
@@ -160,14 +170,17 @@ namespace GameCore.Mapping.Layers
 		/// <summary>
 		/// каждая несоединенная комната должна быть либо присоединена к присоединенной комнате, либо иметь точку связи на границе блока
 		/// </summary>
-		private void ConnectRooms(MapBlock _block)
+		private void AddConnectionPoints(MapBlock _block)
 		{
 			var rnd = new Random(_block.RandomSeed);
-			foreach (var pair in m_notConnectedRooms)
+			foreach (var room in _block.Rooms)
 			{
-				var room = pair.Key;
-				var block = pair.Value;
+				if (_block.BlockId == MapBlock.GetBlockCoords(EnterCoords) && room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords)))
+				{
+					room.IsConnected = true;
+				}
 
+				
 				EDirections dirs;
 				do
 				{
@@ -207,33 +220,21 @@ namespace GameCore.Mapping.Layers
 							throw new ArgumentOutOfRangeException();
 					}
 
-					while (room.AreaRectangle.ContainsEx(begin + delta))
+					do 
 					{
-						if (!MapBlock.Rect.ContainsEx(begin + delta))
-						{
-							break;
-						}
 						begin += delta;
-						if(room.RoomRectangle.ContainsEx(begin))
-						{
-							continue;
-						}
-						block.Map[begin.X, begin.Y] = ETerrains.WATER;
-					}
-					if (!room.RoomRectangle.ContainsEx(begin))
-					{
-						block.Map[begin.X, begin.Y] = ETerrains.SWAMP;
-					}
-					else
-					{
-						
-					}
+						if(!room.AreaRectangle.ContainsEx(begin))break;
+						_block.Map[begin.X, begin.Y] = ETerrains.WATER;
+					} while (true);
 
-					var pnt = block.BlockId * MapBlock.SIZE + begin;
+					var pnt = begin + _block.BlockId * MapBlock.SIZE;
+					begin = MapBlock.GetInBlockCoords(pnt);
+					
 					if (m_connectionPoints.ContainsKey(pnt))
 					{
+						Blocks[MapBlock.GetBlockCoords(pnt)].Map[begin.X, begin.Y] = ETerrains.WATER;
+						room.Connect(m_connectionPoints[pnt], pnt);
 						m_connectionPoints.Remove(pnt);
-						block.Map[begin.X, begin.Y] = ETerrains.WATER;
 					}
 					else
 					{
@@ -241,7 +242,38 @@ namespace GameCore.Mapping.Layers
 					}
 				}
 			}
-			m_notConnectedRooms.Clear();
+			//m_notConnectedRooms.Clear();
+
+			//var points = m_connectionPoints.Keys.ToDictionary(_pnt => _pnt, _pnt => m_connectionPoints.Where(_pair => _pair.Key!=_pnt && (_pair.Key - _pnt).QLenght < 10).OrderBy(_pair => (_pair.Key - _pnt).QLenght).ToList());
+			//var keys = points.Keys.ToList();
+			//foreach (var pair in points)
+			//{
+			//    var pnt = pair.Key;
+			//    foreach (var npair in pair.Value)
+			//    {
+			//        if (m_connectionPoints[pnt].ConnectedTo.ContainsKey(npair.Value)) continue;
+		
+			//        var npnt = npair.Key;
+
+			//        if (!Blocks.ContainsKey(MapBlock.GetBlockCoords(npnt)) || !Blocks.ContainsKey(MapBlock.GetBlockCoords(pnt))) continue;
+					
+			//        var nblock = Blocks[MapBlock.GetBlockCoords(npnt)];
+			//        var block = Blocks[MapBlock.GetBlockCoords(pnt)];
+
+			//        var near = pnt.X == npnt.X && Math.Abs(pnt.Y - npnt.Y) == 1;
+			//        near = near || (pnt.Y == npnt.Y && Math.Abs(pnt.X - npnt.X) == 1);
+			//        if (near)
+			//        {
+			//            npair.Value.Connect(m_connectionPoints[pnt], pnt);
+			//            var innpnt = MapBlock.GetInBlockCoords(npnt);
+			//            var inpnt = MapBlock.GetInBlockCoords(pnt);
+
+			//            nblock.Map[innpnt.X, innpnt.Y] = ETerrains.WATER;
+			//            block.Map[inpnt.X, inpnt.Y] = ETerrains.WATER;
+			//        }
+			//    }
+
+			//}
 		}
 
 	}

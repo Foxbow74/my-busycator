@@ -107,6 +107,10 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
+					if (Blocks[blockId.X, blockId.Y].MapBlock.State != MapBlock.EMapBlockState.COMPLETE)
+					{
+						World.TheWorld.Avatar.Layer.CompleteBlock(Blocks[blockId.X, blockId.Y].MapBlock);
+					}
 					Blocks[blockId.X, blockId.Y].ClearTemp();
 				}
 
