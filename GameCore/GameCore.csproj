@@ -63,6 +63,7 @@
     <Compile Include="EDirections.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="FColor.cs" />
+    <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />

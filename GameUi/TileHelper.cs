@@ -186,6 +186,9 @@ namespace GameUi
 					case ETiles.WATER:
 						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.Blue);
 						break;
+					case ETiles.LAVA:
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.Red);
+						break;
 					case ETiles.SWAMP:
 						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.DarkKhaki);
 						break;
@@ -295,6 +298,8 @@ namespace GameUi
 					return m_tiles[ETiles.WATER];
 				case ETerrains.SWAMP:
 					return m_tiles[ETiles.SWAMP];
+				case ETerrains.LAVA:
+					return m_tiles[ETiles.LAVA];
 				default:
 					throw new ArgumentOutOfRangeException("_terrain");
 			}

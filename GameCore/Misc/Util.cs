@@ -89,5 +89,48 @@ namespace GameCore.Misc
 			var result = _rectangle.Left <= _point.X && _rectangle.Top <= _point.Y && _rectangle.Bottom > _point.Y && _rectangle.Right > _point.X;
 			return result;
 		}
+
+		public static IEnumerable<Point> AllPoints(this Rectangle _rectangle)
+		{
+			for (var i = _rectangle.Left; i < _rectangle.Right; ++i)
+			{
+				for (var j = _rectangle.Top; j < _rectangle.Bottom; ++j)
+				{
+					yield return new Point(i, j);
+				}
+			}
+		}
+
+		public static IEnumerable<Point> AllPointsExceptCorners(this Rectangle _rectangle)
+		{
+			var r = _rectangle;
+			r.Inflate(0,-1);
+			foreach (var point in r.AllPoints())
+			{
+				yield return point;
+			}
+			for (var i = _rectangle.Left + 1; i < _rectangle.Right - 1; ++i)
+			{
+				yield return new Point(i,_rectangle.Top);
+				yield return new Point(i,_rectangle.Bottom);
+			}
+		}
+
+		public static EDirections Opposite(this EDirections _direction)
+		{
+			switch (_direction)
+			{
+				case EDirections.UP:
+					return EDirections.DOWN;
+				case EDirections.DOWN:
+					return EDirections.UP;
+				case EDirections.LEFT:
+					return EDirections.RIGHT;
+				case EDirections.RIGHT:
+					return EDirections.LEFT;
+				default:
+					throw new ArgumentOutOfRangeException("_direction");
+			}
+		}
 	}
 }

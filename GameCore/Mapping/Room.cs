@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Drawing;
 using System.Collections.Generic;
+using GameCore.Misc;
+using Rectangle = System.Drawing.Rectangle;
 
 namespace GameCore.Mapping
 {
@@ -9,16 +10,16 @@ namespace GameCore.Mapping
 	{
 		public Room(Rectangle _roomRect, Rectangle _areaRect)
 		{
-			Debug.WriteLine("Room created " + _roomRect + " inside " + _areaRect);
+			//Debug.WriteLine("Room created " + _roomRect + " inside " + _areaRect);
 			RoomRectangle = _roomRect;
 			AreaRectangle = _areaRect;
-			ConnectedTo = new Dictionary<Room, Misc.Point>();
+			ConnectedTo = new Dictionary<Room, Point[]>();
 		}
 
 		public Rectangle RoomRectangle { get; private set; }
 		public Rectangle AreaRectangle { get; private set; }
 
-		private bool m_isConnected = false;
+		private bool m_isConnected;
 		public bool IsConnected 
 		{ 
 			get
@@ -35,7 +36,7 @@ namespace GameCore.Mapping
 				{
 					throw new NotImplementedException();
 				}
-				m_isConnected = value;
+				m_isConnected = true;
 				foreach (var room in ConnectedTo.Keys)
 				{
 					room.IsConnected = true;
@@ -43,7 +44,7 @@ namespace GameCore.Mapping
 			}
 		}
 
-		internal void Connect(Room _room, Misc.Point _pnt)
+		internal void Connect(Room _room, Point[] _pnt)
 		{
 			if (_room.IsConnected)
 			{
@@ -52,10 +53,9 @@ namespace GameCore.Mapping
 			if (ConnectedTo.ContainsKey(_room)) return;
 			ConnectedTo.Add(_room, _pnt);
 			_room.Connect(this, _pnt);
-
 		}
 
-		public Dictionary<Room, Misc.Point> ConnectedTo { get; private set; }
+		public Dictionary<Room, Point[]> ConnectedTo { get; private set; }
 
 	}
 

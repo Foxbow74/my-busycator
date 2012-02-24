@@ -42,7 +42,7 @@ namespace Busycator
 			base.OnUpdateFrame(_e);
 			if (!IsActive) return;
 
-			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " " + World.TheWorld.Avatar.LiveCoords;
+			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " lc:" + World.TheWorld.Avatar[0,0].LiveCoords + " wc:" + World.TheWorld.Avatar[0,0].WorldCoords;
 			using (new Profiler())
 			{
 				m_game.Update(KeyState);
