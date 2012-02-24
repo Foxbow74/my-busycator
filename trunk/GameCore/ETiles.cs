@@ -14,6 +14,7 @@ namespace GameCore
 
 		[Tiles(0f)] GRASS,
 		[Tiles(0f)] WATER,
+		[Tiles(0f)] LAVA,
 		[Tiles(0f)] SWAMP,
 		[Tiles(1f)] BRICK,
 		[Tiles(0.2f)] BRICK_WINDOW,

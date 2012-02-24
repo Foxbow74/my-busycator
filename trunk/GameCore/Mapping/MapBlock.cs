@@ -112,5 +112,10 @@ namespace GameCore.Mapping
 				throw new ApplicationException();
 			}
 		}
+
+		public Rectangle Rectangle()
+		{
+			return new Rectangle(new System.Drawing.Point(BlockId.X * SIZE, BlockId.Y * SIZE), new Size(SIZE, SIZE));
+		}
 	}
 }

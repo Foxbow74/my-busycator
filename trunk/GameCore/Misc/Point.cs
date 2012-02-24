@@ -229,13 +229,9 @@ namespace GameCore.Misc
 			return new Point((X + 100 * _width) % _width, (Y + 100 * _height) % _height);
 		}
 
-		public Point Sphere(int _radius)
+		public Point Clone()
 		{
-			var wr = Wrap(_radius, _radius);
-
-			var x = X > _radius ? (-_radius + wr.X) : X < -_radius ? _radius - wr.X : X;
-			var y = Y > _radius ? (-_radius + wr.Y) : Y < -_radius ? _radius - wr.Y : Y;
-			return new Point(x,y);
+			return new Point(X,Y);
 		}
 	}
 }

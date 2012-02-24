@@ -17,7 +17,8 @@ namespace GameCore.Mapping
 		//1 - active lights (visible for player)
 		//2 - active creatures
 		//3 - border
-		public const int ACTIVE_QRADIUS =3;
+		public const int ACTIVE_QRADIUS = 3;
+		public readonly Point ACTIVE_QPOINT = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
 
@@ -62,7 +63,7 @@ namespace GameCore.Mapping
 			Blocks = new LiveMapBlock[m_sizeInBlocks, m_sizeInBlocks];
 			Cells = new LiveMapCell[SizeInCells, SizeInCells];
 	
-			CenterLiveBlock = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
+			CenterLiveBlock = Point.Zero;
 
 			{
 				var blockIds = new List<Point>();
@@ -107,11 +108,15 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					if (Blocks[blockId.X, blockId.Y].MapBlock.State != MapBlock.EMapBlockState.COMPLETE)
+					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+					if (liveMapBlock.MapBlock.State != MapBlock.EMapBlockState.COMPLETE)
 					{
-						World.TheWorld.Avatar.Layer.CompleteBlock(Blocks[blockId.X, blockId.Y].MapBlock);
+						var mb = liveMapBlock.MapBlock;
+						World.TheWorld.Avatar.Layer.CompleteBlock(mb);
+						liveMapBlock.Clear();
+						liveMapBlock.SetMapBlock(mb);
 					}
-					Blocks[blockId.X, blockId.Y].ClearTemp();
+					liveMapBlock.ClearTemp();
 				}
 
 				var centerLiveCell = GetCenterLiveCell();
@@ -146,17 +151,17 @@ namespace GameCore.Mapping
 			using (new Profiler())
 			{
 				var layer = World.TheWorld.Avatar.Layer;
+				var d = (ACTIVE_QPOINT - CenterLiveBlock);
 				foreach (var blockId in m_blockIds)
 				{
-					var delta = (blockId - CenterLiveBlock);
+					var edelta = (blockId + d).Wrap(m_sizeInBlocks, m_sizeInBlocks) - ACTIVE_QPOINT;
 					var liveMapBlock = Blocks[blockId.X, blockId.Y];
 					if (liveMapBlock.MapBlock == null)
 					{
-						var ndelta = delta.Sphere(ACTIVE_QRADIUS);
-						var mapBlockId = World.TheWorld.AvatarBlockId + ndelta;
+						var mapBlockId = World.TheWorld.AvatarBlockId + edelta;
 						liveMapBlock.SetMapBlock(layer[mapBlockId]);
 					}
-					liveMapBlock.IsBorder = delta.QLenght >= ACTIVE_QRADIUS;
+					liveMapBlock.IsBorder = edelta.QLenght >= ACTIVE_QRADIUS;
 				}
 			}
 		}
