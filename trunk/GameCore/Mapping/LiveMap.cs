@@ -111,10 +111,7 @@ namespace GameCore.Mapping
 					var liveMapBlock = Blocks[blockId.X, blockId.Y];
 					if (liveMapBlock.MapBlock.State != MapBlock.EMapBlockState.COMPLETE)
 					{
-						var mb = liveMapBlock.MapBlock;
-						World.TheWorld.Avatar.Layer.CompleteBlock(mb);
-						liveMapBlock.Clear();
-						liveMapBlock.SetMapBlock(mb);
+						World.TheWorld.Avatar.Layer.CompleteBlock(liveMapBlock.MapBlock);
 					}
 					liveMapBlock.ClearTemp();
 				}

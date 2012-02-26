@@ -11,6 +11,18 @@ namespace GameCore.Mapping
 {
 	public class MapBlock
 	{
+		public delegate void UpdatedDelegate();
+
+		public event UpdatedDelegate Updated;
+
+		public void CastUpdated()
+		{
+			if(Updated!=null)
+			{
+				Updated();
+			}
+		}
+
 		public enum EMapBlockState
 		{
 			CREATED,

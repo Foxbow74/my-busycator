@@ -17,6 +17,11 @@ namespace GameCore
 		[Terrain("окно", 0, 0.2f, true)] WINDOW,
 		[Terrain("каменный пол")]STONE_FLOOR,
 		[Terrain("каменная стена",0,1,false)]STONE_WALL,
+
+		[Terrain("up")]UP,
+		[Terrain("down")]DOWN,
+		[Terrain("left")]LEFT,
+		[Terrain("right")]RIGHT,
 	}
 
 	public class TerrainAttribute : Attribute

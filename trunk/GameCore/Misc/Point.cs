@@ -67,11 +67,6 @@ namespace GameCore.Misc
 			}
 		}
 
-		public IEnumerable<Point> AroundPoints
-		{
-			get { return NearestPoints.Where(_point => _point != Zero); }
-		}
-
 		public IEnumerable<Point> AllNeighbours
 		{
 			get

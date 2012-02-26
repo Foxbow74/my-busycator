@@ -152,7 +152,7 @@ namespace GameCore.Mapping.Layers
 				}
 			}
 			MapBlockHelper.Fill(_block, _random, this, DefaultEmptySpaces, rect);
-			_block.Rooms.Add(new Room(rect, _rectangle));
+			_block.Rooms.Add(new Room(rect, _rectangle, _block.BlockId));
 			foreach (var contain in contains)
 			{
 				_objects.Remove(contain);
@@ -184,28 +184,23 @@ namespace GameCore.Mapping.Layers
 					if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
 
 					int val;
-					var delta = Point.Zero;
 					var begin = Point.Zero;
 					switch (dir)
 					{
 						case EDirections.UP:
 							val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
-							delta = new Point(0, -1);
 							begin = new Point(val, room.RoomRectangle.Top-1);
 							break;
 						case EDirections.DOWN:
 							val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
-							delta = new Point(0, 1);
 							begin = new Point(val, room.RoomRectangle.Bottom);
 							break;
 						case EDirections.LEFT:
 							val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
-							delta = new Point(-1, 0);
 							begin = new Point(room.RoomRectangle.Left-1, val);
 							break;
 						case EDirections.RIGHT:
 							val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
-							delta = new Point(1, 0);
 							begin = new Point(room.RoomRectangle.Right, val);
 							break;
 						default:
@@ -213,7 +208,7 @@ namespace GameCore.Mapping.Layers
 					}
 
 					var end = begin.Clone();
-
+					var delta = dir.GetDelta();
 					do
 					{
 						end += delta;
@@ -223,186 +218,251 @@ namespace GameCore.Mapping.Layers
 					m_connectionPoints.Add(new ConnectionPoint(begin + _block.BlockId * MapBlock.SIZE, end + _block.BlockId * MapBlock.SIZE, room, dir));
 				}
 			}
-			//m_notConnectedRooms.Clear();
-
-			//var points = m_connectionPoints.Keys.ToDictionary(_pnt => _pnt, _pnt => m_connectionPoints.Where(_pair => _pair.Key!=_pnt && (_pair.Key - _pnt).QLenght < 10).OrderBy(_pair => (_pair.Key - _pnt).QLenght).ToList());
-			//var keys = points.Keys.ToList();
-			//foreach (var pair in points)
-			//{
-			//    var pnt = pair.Key;
-			//    foreach (var npair in pair.Value)
-			//    {
-			//        if (m_connectionPoints[pnt].ConnectedTo.ContainsKey(npair.Value)) continue;
-
-			//        var npnt = npair.Key;
-
-			//        if (!Blocks.ContainsKey(MapBlock.GetBlockCoords(npnt)) || !Blocks.ContainsKey(MapBlock.GetBlockCoords(pnt))) continue;
-
-			//        var nblock = Blocks[MapBlock.GetBlockCoords(npnt)];
-			//        var block = Blocks[MapBlock.GetBlockCoords(pnt)];
-
-			//        var near = pnt.X == npnt.X && Math.Abs(pnt.Y - npnt.Y) == 1;
-			//        near = near || (pnt.Y == npnt.Y && Math.Abs(pnt.X - npnt.X) == 1);
-			//        if (near)
-			//        {
-			//            npair.Value.Connect(m_connectionPoints[pnt], pnt);
-			//            var innpnt = MapBlock.GetInBlockCoords(npnt);
-			//            var inpnt = MapBlock.GetInBlockCoords(pnt);
-
-			//            nblock.Map[innpnt.X, innpnt.Y] = ETerrains.WATER;
-			//            block.Map[inpnt.X, inpnt.Y] = ETerrains.WATER;
-			//        }
-			//    }
-
-			//}
 		}
 
 		internal override void CompleteBlock(MapBlock _mapBlock)
 		{
 			var rect = _mapBlock.Rectangle();
-			rect.Inflate(1, 1);
+			rect.Inflate(MapBlock.SIZE, MapBlock.SIZE);
 
-			var offset = _mapBlock.BlockId * MapBlock.SIZE;
+			var rooms = _mapBlock.BlockId.NearestPoints.Select(_point => Blocks[_point]).SelectMany(_block => _block.Rooms).ToArray();
 
 			var connectionPoints = m_connectionPoints.Where(_pair => rect.ContainsEx(_pair.End)).ToList();
+
+			Action<IEnumerable<ConnectionPoint>> actRemove = delegate(IEnumerable<ConnectionPoint> _points)
+			{
+				foreach (var connectionPoint in _points)
+				{
+					Debug.WriteLine(connectionPoint + " deleted");
+					connectionPoints.Remove(connectionPoint);
+					//m_connectionPoints.Remove(connectionPoint);
+				}
+			};
+
+			actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
 
 			var forbid = new List<Point>();
 
 			{
-				var toRemove = new List<ConnectionPoint>();
-
-				foreach (var room in _mapBlock.Rooms)
+				foreach (var room in rooms)
 				{
 					var rrect = room.RoomRectangle;
-					rrect.Offset(offset.X, offset.Y);
+
+					var blockId = room.BlockId;
+
+					rrect.Offset(blockId.X * MapBlock.SIZE, blockId.Y * MapBlock.SIZE);
 					rrect.Inflate(1, 1);
 					forbid.AddRange(rrect.AllPoints().Except(forbid));
 				}
-				foreach (var connectionPoint in connectionPoints)
-				{
-					//if (forbid.Contains(connectionPoint.End))
-					//{
-					//    toRemove.Add(connectionPoint);
-					//}
-					//else
-					{
-						foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
-						{
-							forbid.Remove(point);
-						}
-					}
-				}
-
-				foreach (var point in forbid)
-				{
-					var inBlock = MapBlock.GetInBlockCoords(point);
-					if (Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] != ETerrains.STONE_FLOOR)
-					{
-						Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = ETerrains.LAVA;
-					}
-				}
 			}
 
-			#region концевая точка касается другой комнаты
+			rect = _mapBlock.Rectangle();
+			rect.Inflate(MapBlock.SIZE / 2, MapBlock.SIZE / 2);
 
+			actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+
+			if (true)
 			{
-				var toRemove = new List<ConnectionPoint>();
+				#region конечные точки совпадают
 
-				foreach (var connectionPoint in connectionPoints)
+				var sameEndPoints = connectionPoints.GroupBy(_point => _point.End).Where(_points => _points.Count() > 1).ToArray();
+				foreach (var grouping in sameEndPoints)
 				{
-					if (toRemove.Contains(connectionPoint)) continue;
-					foreach (var room in _mapBlock.Rooms)
+					var points = grouping.ToArray();
+					if (points.Length > 2)
 					{
-						if (room == connectionPoint.Room) continue;
-						var rrect = room.RoomRectangle;
-						rrect.Offset(offset.X, offset.Y);
-						rrect.Inflate(1, 1);
-						if (rrect.ContainsEx(connectionPoint.End))
-						{
-							if (rrect.AllPointsExceptCorners().Contains(connectionPoint.End))
-							{
-								ConnectRooms(room, connectionPoint.Room, connectionPoint.End, connectionPoint.Begin);
-								toRemove.Add(connectionPoint);
-								var revert = connectionPoints.Where(_point => _point.Dir == connectionPoint.Dir.Opposite() && _point.Room == room);
-								toRemove.AddRange(revert);
-								foreach (var point in revert)
-								{
-									Debug.WriteLine("MUSHROOM: " + point);
-									var inBlock = MapBlock.GetInBlockCoords(point.End);
-									Blocks[MapBlock.GetBlockCoords(point.End)].Map[inBlock.X, inBlock.Y] = ETerrains.MUSHROOM;
+						throw new NotImplementedException("Как может сойтись в одной точке более двух комнат????");
+					}
+					ConnectRooms(points[0].Room, points[1].Room, points[0].Begin, points[0].End, points[1].Begin);
+					foreach (var point in grouping)
+					{
+						m_connectionPoints.Remove(point);
+						connectionPoints.Remove(point);
+						Debug.WriteLine(point + " deleted");
+					}
+				}
 
-									inBlock = MapBlock.GetInBlockCoords(point.Begin);
-									Blocks[MapBlock.GetBlockCoords(point.Begin)].Map[inBlock.X, inBlock.Y] = ETerrains.MUSHROOM;
+				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 1).ToArray());
+
+				#endregion
+			}
+
+			if (true)
+			{
+				#region концевая точка касается другой комнаты
+
+				{
+					var toRemove = new List<ConnectionPoint>();
+
+					foreach (var connectionPoint in connectionPoints)
+					{
+						if(connectionPoint.End==new Point(15,18))
+						{
+							
+						}
+
+						if (toRemove.Contains(connectionPoint)) continue;
+						foreach (var room in rooms)
+						{
+							if (room == connectionPoint.Room) continue;
+							var rrect = room.RoomRectangle;
+							rrect.Offset(room.BlockId.X * MapBlock.SIZE, room.BlockId.Y * MapBlock.SIZE);
+							var frect = rrect;
+							frect.Inflate(1, 1);
+							var end = connectionPoint.End;
+							if (frect.ContainsEx(end))
+							{
+								while (rrect.ContainsEx(end))
+								{
+									end += connectionPoint.Dir.Opposite().GetDelta();
+								}
+
+								if (frect.AllPointsExceptCorners().Contains(end))
+								{
+									ConnectRooms(room, connectionPoint.Room, end, connectionPoint.Begin);
+
+									toRemove.Add(connectionPoint);
+									var revert = m_connectionPoints.Where(_point => _point.Dir == connectionPoint.Dir.Opposite() && _point.Room == room).ToArray();
+									toRemove.AddRange(revert);
+									m_connectionPoints.Remove(connectionPoint);
+									foreach (var point in revert)
+									{
+										m_connectionPoints.Remove(point);
+									}
+								}
+								else
+								{
+									//концевая точка примыкает к углу комнаты
+									//toRemove.Add(connectionPoint);
 								}
 							}
-							else
+						}
+					}
+					actRemove(toRemove);
+				}
+
+				#endregion
+			}
+
+			if (true)
+			{
+				#region Конечные точки в одном столбце
+
+				{
+					var toRemove = new List<ConnectionPoint>();
+					var sameCol = connectionPoints.GroupBy(_point => _point.End.X).Where(_points => _points.Count() > 1).ToArray();
+					foreach (var grouping in sameCol)
+					{
+						var points = grouping.OrderBy(_point => _point.End.Y).ToArray();
+
+						for (var i = 0; i < points.Length - 1; ++i)
+						{
+							var flag = true;
+							foreach (var point in points[i].End.GetLineToPoints(points[i + 1].End))
 							{
-								//концевая точка примыкает к углу комнаты
-								//toRemove.Add(connectionPoint);
+								if (forbid.Contains(point))
+								{
+									flag = false;
+									break;
+								}
+							}
+							if (flag)
+							{
+								ConnectRooms(points[i].Room, points[i + 1].Room, points[i].Begin, points[i].End, points[i + 1].End,
+								             points[i + 1].Begin);
+								toRemove.Add(points[i]);
+								toRemove.Add(points[i + 1]);
+								m_connectionPoints.Remove(points[i]);
+								m_connectionPoints.Remove(points[i + 1]);
 							}
 						}
-						Debug.WriteLine("--------------");
 					}
+					actRemove(toRemove.Distinct());
 				}
+				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
 
-				foreach (var connectionPoint in toRemove)
-				{
-					connectionPoints.Remove(connectionPoint);
-					m_connectionPoints.Remove(connectionPoint);
-					Debug.WriteLine(connectionPoint + " deleted");
-				}
+				#endregion
 			}
-
-			#endregion
-
-			#region конечные точки совпадают
-
-			var sameEndPoints = connectionPoints.GroupBy(_point => _point.End).Where(_points => _points.Count() > 1).ToArray();
-			foreach (var grouping in sameEndPoints)
+			if (true)
 			{
-				var points = grouping.ToArray();
-				if (points.Length > 2)
+				#region Конечные точки на одной строке
+
 				{
-					throw new NotImplementedException("Как может сойтись в одной точке более двух комнат????");
+					var toRemove = new List<ConnectionPoint>();
+					var sameRow = connectionPoints.GroupBy(_point => _point.End.Y).Where(_points => _points.Count() > 1).ToArray();
+					foreach (var grouping in sameRow)
+					{
+						var points = grouping.OrderBy(_point => _point.End.X).ToArray();
+
+						for (var i = 0; i < points.Length - 1; ++i)
+						{
+							var flag = true;
+							foreach (var point in points[i].End.GetLineToPoints(points[i + 1].End))
+							{
+								if (forbid.Contains(point))
+								{
+									flag = false;
+									break;
+								}
+							}
+							if (flag)
+							{
+								ConnectRooms(points[i].Room, points[i + 1].Room, points[i].Begin, points[i].End, points[i + 1].End,
+								             points[i + 1].Begin);
+								toRemove.Add(points[i]);
+								toRemove.Add(points[i + 1]);
+
+								m_connectionPoints.Remove(points[i]);
+								m_connectionPoints.Remove(points[i + 1]);
+							}
+						}
+					}
+					actRemove(toRemove.Distinct());
 				}
-				ConnectRooms(points[0].Room, points[1].Room, points[0].Begin, points[0].End, points[1].Begin);
-				foreach (var point in grouping)
+				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+
+				#endregion
+			}
+
+			foreach (var point in forbid)
+			{
+				if (!_mapBlock.Rectangle().ContainsEx(point)) continue;
+				var inBlock = MapBlock.GetInBlockCoords(point);
+				var block = Blocks[MapBlock.GetBlockCoords(point)];
+
+				if (block.Map[inBlock.X, inBlock.Y] == ETerrains.GRASS || block.Map[inBlock.X, inBlock.Y] == ETerrains.GROUND)
 				{
-					m_connectionPoints.Remove(point);
-					connectionPoints.Remove(point);
-					Debug.WriteLine(point + " deleted");
+					block.Map[inBlock.X, inBlock.Y] = ETerrains.LAVA;
 				}
 			}
 
-			#endregion
+			foreach (var room in _mapBlock.Rooms)
+			{
+				if (room.ConnectedTo.Any())
+				{
+					MapBlockHelper.Fill(_mapBlock, new Random(_mapBlock.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
+				}
+				else
+				{
+					MapBlockHelper.Fill(_mapBlock, new Random(_mapBlock.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
+				}
+			}
 
-			#region Конечные точки на одной строке
-
-			//var sameRow = connectionPoints.GroupBy(_point => _point.End.Y).Where(_points => _points.Count() > 1).ToArray();
-			//foreach (var grouping in sameRow)
-			//{
-			//    var points = grouping.ToArray();
-			//    if (points.Length > 2)
-			//    {
-			//        //throw new NotImplementedException("Как может сойтись в одной точке более двух комнат????");
-			//    }
-			//    ConnectRooms(points[0].Room, points[1].Room, points[0].Begin, points[0].End, points[1].End, points[1].End);
-			//    foreach (var point in grouping)
-			//    {
-			//        m_connectionPoints.Remove(point);
-			//        connectionPoints.Remove(point);
-			//        Debug.WriteLine(point + " deleted");
-			//    }
-			//}
-
-			#endregion
-
+			actRemove(connectionPoints.Where(_point => _point.Room.IsConnected || _point.Room.ConnectedTo.Count > 2).ToArray()); 
 			foreach (var connectionPoint in connectionPoints)
 			{
 				foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
 				{
 					var inBlock = MapBlock.GetInBlockCoords(point);
-					Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = ETerrains.SWAMP;
+					Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = connectionPoint.Dir.GetTerrain();
+				}
+			}
+
+			{
+				var toRemove = m_connectionPoints.Where(_point => _point.Room.IsConnected || _point.Room.ConnectedTo.Count > 2).ToArray();
+				foreach (var connectionPoint in toRemove)
+				{
+					m_connectionPoints.Remove(connectionPoint);
 				}
 			}
 

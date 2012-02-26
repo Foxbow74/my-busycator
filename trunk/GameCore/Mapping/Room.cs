@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using GameCore.Misc;
 using Rectangle = System.Drawing.Rectangle;
@@ -8,12 +7,17 @@ namespace GameCore.Mapping
 {
 	public class Room
 	{
-		public Room(Rectangle _roomRect, Rectangle _areaRect)
+		public Room(Rectangle _roomRect, Rectangle _areaRect, Point _blockId)
 		{
-			//Debug.WriteLine("Room created " + _roomRect + " inside " + _areaRect);
+			BlockId = _blockId;
 			RoomRectangle = _roomRect;
 			AreaRectangle = _areaRect;
 			ConnectedTo = new Dictionary<Room, Point[]>();
+		}
+
+		public Point BlockId
+		{
+			get; private set; 
 		}
 
 		public Rectangle RoomRectangle { get; private set; }
