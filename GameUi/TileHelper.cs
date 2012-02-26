@@ -192,6 +192,18 @@ namespace GameUi
 					case ETiles.SWAMP:
 						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.DarkKhaki);
 						break;
+					case ETiles.UP:
+						tl = Rp.CreateTile(14, 1, Color.Gray);
+						break;
+					case ETiles.DOWN:
+						tl = Rp.CreateTile(15, 1, Color.Gray);
+						break;
+					case ETiles.LEFT:
+						tl = Rp.CreateTile(1, 1, Color.Gray);
+						break;
+					case ETiles.RIGHT:
+						tl = Rp.CreateTile(0, 1, Color.Gray);
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -300,6 +312,14 @@ namespace GameUi
 					return m_tiles[ETiles.SWAMP];
 				case ETerrains.LAVA:
 					return m_tiles[ETiles.LAVA];
+				case ETerrains.UP:
+					return m_tiles[ETiles.UP];
+				case ETerrains.DOWN:
+					return m_tiles[ETiles.DOWN];
+				case ETerrains.LEFT:
+					return m_tiles[ETiles.LEFT];
+				case ETerrains.RIGHT:
+					return m_tiles[ETiles.RIGHT];
 				default:
 					throw new ArgumentOutOfRangeException("_terrain");
 			}

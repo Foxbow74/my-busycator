@@ -38,6 +38,11 @@ namespace GameCore
 		[Tiles(0.01f)] RING,
 		[Tiles(0.01f)] POTION,
 		[Tiles(0.01f)] CROSSBOW_BOLT,
+
+		[Tiles(0f)]UP,
+		[Tiles(0f)]DOWN,
+		[Tiles(0f)]LEFT,
+		[Tiles(0f)]RIGHT,
 	}
 
 

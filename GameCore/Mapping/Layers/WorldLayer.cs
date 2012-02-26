@@ -62,6 +62,15 @@ namespace GameCore.Mapping.Layers
 		internal virtual void CompleteBlock(MapBlock _mapBlock)
 		{
 			_mapBlock.State = MapBlock.EMapBlockState.COMPLETE;
+			_mapBlock.CastUpdated();
+
+			foreach (var point in _mapBlock.BlockId.NearestPoints)
+			{
+				if(Blocks.ContainsKey(point))
+				{
+					Blocks[point].CastUpdated();
+				}
+			}
 		}
 	}
 }

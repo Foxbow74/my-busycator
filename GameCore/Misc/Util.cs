@@ -112,7 +112,7 @@ namespace GameCore.Misc
 			for (var i = _rectangle.Left + 1; i < _rectangle.Right - 1; ++i)
 			{
 				yield return new Point(i,_rectangle.Top);
-				yield return new Point(i,_rectangle.Bottom);
+				yield return new Point(i,_rectangle.Bottom - 1);
 			}
 		}
 
@@ -128,6 +128,41 @@ namespace GameCore.Misc
 					return EDirections.RIGHT;
 				case EDirections.RIGHT:
 					return EDirections.LEFT;
+				default:
+					throw new ArgumentOutOfRangeException("_direction");
+			}
+		}
+
+		public static ETerrains GetTerrain(this EDirections _direction)
+		{
+			switch (_direction)
+			{
+				case EDirections.UP:
+					return ETerrains.UP;
+				case EDirections.DOWN:
+					return ETerrains.DOWN;
+				case EDirections.LEFT:
+					return ETerrains.LEFT;
+				case EDirections.RIGHT:
+					return ETerrains.RIGHT;
+				default:
+					throw new ArgumentOutOfRangeException("_direction");
+			}
+		}
+
+
+		public static Point GetDelta(this EDirections _direction)
+		{
+			switch (_direction)
+			{
+				case EDirections.UP:
+					return new Point(0, -1);
+				case EDirections.DOWN:
+					return new Point(0, 1);
+				case EDirections.LEFT:
+					return new Point(-1, 0);
+				case EDirections.RIGHT:
+					return new Point(1, 0);
 				default:
 					throw new ArgumentOutOfRangeException("_direction");
 			}
