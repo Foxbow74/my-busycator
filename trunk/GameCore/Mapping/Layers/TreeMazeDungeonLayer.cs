@@ -16,10 +16,91 @@ namespace GameCore.Mapping.Layers
 
 		private const int MIN_SIZE = 5;
 		private const int MIN_ROOM_SIZE = 3;
+		const int MAX_PATH_LEN = 20;
 
-		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair)
+		private readonly Random m_rnd;
+
+		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair, int _rndSeed)
 			: base(_enterFromLayer, _enterCoords, _stair)
 		{
+			m_rnd = new Random(_rndSeed);
+			var size = m_rnd.Next(15) + m_rnd.Next(15) + 5;
+			var map = new EMapBlockTypes[size, size];
+			var center = new Point(size / 2, size / 2);
+			var list = new List<Point> { center };
+			do
+			{
+				var point = list[m_rnd.Next(list.Count)];
+				list.AddRange(AddBlocks(point, map, ref size));
+			} while (size > 0);
+
+			var blockIds = list.Select(_point => _point - center).Distinct().ToArray();
+
+			foreach (var blockId in blockIds)
+			{
+				MapBlock block;
+				if(!Blocks.TryGetValue(blockId, out block))
+				{
+					block = new MapBlock(blockId);	
+				}
+				
+				if (MapBlock.GetBlockCoords(EnterCoords) == blockId)
+				{
+					GenerateInternal(block, new[] { MapBlock.GetInBlockCoords(EnterCoords) });
+				}
+				else
+				{
+					GenerateInternal(block);
+				}
+				Blocks[block.BlockId] = block;
+			}
+			foreach (var block in blockIds.Select(_blockId => Blocks[_blockId]))
+			{
+				AddConnectionPoints(block);
+			}
+
+			LinkRooms();
+			//foreach (var block in blockIds.Select(_blockId => Blocks[_blockId]))
+			//{
+			//    LinkRooms(block);
+			//}
+		}
+
+		private IEnumerable<Point> AddBlocks(Point _from, EMapBlockTypes[,] _map, ref int _size)
+		{
+			var list = new List<Point>();
+			if (_size == 0 )
+			{
+				return list;
+			}
+			if (_map[_from.X, _from.Y] != EMapBlockTypes.GROUND)
+			{
+				list.Add(_from);
+				_map[_from.X, _from.Y] = EMapBlockTypes.GROUND;
+				_size--;
+				if(m_rnd.NextDouble() < 0.1)
+				{
+					return list;
+				}
+			}
+			EDirections dirs;
+			do
+			{
+				dirs = (EDirections)m_rnd.Next(16);
+			} while (dirs == EDirections.NONE);
+			foreach (EDirections dir in Enum.GetValues(typeof(EDirections)))
+			{
+				if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
+				var xy = _from + dir.GetDelta();
+				if (_map.GetLength(0) <= xy.X || xy.X < 0) continue;
+				if (_map.GetLength(1) <= xy.Y || xy.Y < 0) continue;
+
+				if (_map[xy.X, xy.Y] != EMapBlockTypes.GROUND)
+				{
+					list.AddRange(AddBlocks(xy, _map, ref _size));
+				}
+			}
+			return list;
 		}
 
 		internal override IEnumerable<ETerrains> DefaultWalls
@@ -49,21 +130,8 @@ namespace GameCore.Mapping.Layers
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
 			var block = new MapBlock(_blockId);
-
-			if (Blocks.Count == 0)
-			{
-				GenerateInternal(block, new[] { MapBlock.GetInBlockCoords(EnterCoords) });
-
-				//Первая комната всегда присоединена
-				//block.Rooms.Add(m_notConnectedRooms.Keys.Single(_room => _room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords))));
-			}
-			else
-			{
-				GenerateInternal(block);
-			}
-
-			Blocks[block.BlockId] = block;
-			AddConnectionPoints(block);
+			var rnd = new Random(block.RandomSeed);
+			MapBlockHelper.Clear(block, rnd, this, DefaultWalls);
 			return block;
 		}
 
@@ -75,11 +143,6 @@ namespace GameCore.Mapping.Layers
 			var objects = new List<Point>(_objects);
 
 			Generate(_block, rnd, new Rectangle(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), objects);
-
-			if (objects.Any())
-			{
-
-			}
 		}
 
 		private void Generate(MapBlock _block, Random _random, Rectangle _rectangle, List<Point> _objects)
@@ -160,86 +223,92 @@ namespace GameCore.Mapping.Layers
 		}
 
 		/// <summary>
-		/// каждая несоединенная комната должна быть либо присоединена к присоединенной комнате, либо иметь точку связи на границе блока
+		/// добавление коридоров, идущих из комнат
 		/// </summary>
 		private void AddConnectionPoints(MapBlock _block)
 		{
 			var rnd = new Random(_block.RandomSeed);
 			foreach (var room in _block.Rooms)
 			{
-				if (_block.BlockId == MapBlock.GetBlockCoords(EnterCoords) && room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords)))
+				if (_block.BlockId == MapBlock.GetBlockCoords(EnterCoords) &&
+				    room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords)))
 				{
 					room.IsConnected = true;
 				}
 
+				var trys = 0;
 
-				EDirections dirs;
 				do
 				{
-					dirs = (EDirections)rnd.Next(16);
-				} while (dirs == EDirections.NONE);
+					trys++;
+					var cps = new List<ConnectionPoint>();
 
-				foreach (EDirections dir in Enum.GetValues(typeof(EDirections)))
-				{
-					if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
-
-					int val;
-					var begin = Point.Zero;
-					switch (dir)
-					{
-						case EDirections.UP:
-							val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
-							begin = new Point(val, room.RoomRectangle.Top-1);
-							break;
-						case EDirections.DOWN:
-							val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
-							begin = new Point(val, room.RoomRectangle.Bottom);
-							break;
-						case EDirections.LEFT:
-							val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
-							begin = new Point(room.RoomRectangle.Left-1, val);
-							break;
-						case EDirections.RIGHT:
-							val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
-							begin = new Point(room.RoomRectangle.Right, val);
-							break;
-						default:
-							throw new ArgumentOutOfRangeException();
-					}
-
-					var end = begin.Clone();
-					var delta = dir.GetDelta();
+					EDirections dirs;
 					do
 					{
-						end += delta;
-						if (!room.AreaRectangle.ContainsEx(end)) break;
-					} while (true);
+						dirs = (EDirections) rnd.Next(16);
+					} while (dirs == EDirections.NONE);
 
-					m_connectionPoints.Add(new ConnectionPoint(begin + _block.BlockId * MapBlock.SIZE, end + _block.BlockId * MapBlock.SIZE, room, dir));
-				}
+					foreach (EDirections dir in Enum.GetValues(typeof (EDirections)))
+					{
+						if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
+
+						int val;
+						var begin = Point.Zero;
+						switch (dir)
+						{
+							case EDirections.UP:
+								val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
+								begin = new Point(val, room.RoomRectangle.Top - 1);
+								break;
+							case EDirections.DOWN:
+								val = room.RoomRectangle.Left + rnd.Next(room.RoomRectangle.Width);
+								begin = new Point(val, room.RoomRectangle.Bottom);
+								break;
+							case EDirections.LEFT:
+								val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
+								begin = new Point(room.RoomRectangle.Left - 1, val);
+								break;
+							case EDirections.RIGHT:
+								val = room.RoomRectangle.Top + rnd.Next(room.RoomRectangle.Height);
+								begin = new Point(room.RoomRectangle.Right, val);
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+
+						var end = begin.Clone();
+
+						var delta = dir.GetDelta();
+
+						if (!Blocks.ContainsKey(MapBlock.GetBlockCoords(begin + _block.BlockId * MapBlock.SIZE + delta * MapBlock.SIZE)))
+						{
+							continue;
+						}
+
+						do
+						{
+							end += delta;
+							if (!room.AreaRectangle.ContainsEx(end)) break;
+						} while (true);
+
+						cps.Add(new ConnectionPoint(begin + _block.BlockId * MapBlock.SIZE, end + _block.BlockId * MapBlock.SIZE, room, dir));
+					}
+
+					if (cps.Count > 1 || (trys>5 && cps.Count>0))
+					{
+						m_connectionPoints.AddRange(cps);
+						break;
+					}
+				} while (true);
 			}
 		}
 
-		internal override void CompleteBlock(MapBlock _mapBlock)
+		private void LinkRooms()
 		{
-			var rect = _mapBlock.Rectangle();
-			rect.Inflate(MapBlock.SIZE, MapBlock.SIZE);
+			var rooms = Blocks.Values.SelectMany(_mapBlock => _mapBlock.Rooms).ToArray();
 
-			var rooms = _mapBlock.BlockId.NearestPoints.Select(_point => Blocks[_point]).SelectMany(_block => _block.Rooms).ToArray();
-
-			var connectionPoints = m_connectionPoints.Where(_pair => rect.ContainsEx(_pair.End)).ToList();
-
-			Action<IEnumerable<ConnectionPoint>> actRemove = delegate(IEnumerable<ConnectionPoint> _points)
-			{
-				foreach (var connectionPoint in _points)
-				{
-					Debug.WriteLine(connectionPoint + " deleted");
-					connectionPoints.Remove(connectionPoint);
-					//m_connectionPoints.Remove(connectionPoint);
-				}
-			};
-
-			actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+			if (rooms.Length == 0) return;
 
 			var forbid = new List<Point>();
 
@@ -250,16 +319,29 @@ namespace GameCore.Mapping.Layers
 
 					var blockId = room.BlockId;
 
-					rrect.Offset(blockId.X * MapBlock.SIZE, blockId.Y * MapBlock.SIZE);
+					rrect.Offset(blockId.X*MapBlock.SIZE, blockId.Y*MapBlock.SIZE);
 					rrect.Inflate(1, 1);
 					forbid.AddRange(rrect.AllPoints().Except(forbid));
 				}
 			}
 
-			rect = _mapBlock.Rectangle();
-			rect.Inflate(MapBlock.SIZE / 2, MapBlock.SIZE / 2);
+			var forbidMin = new Point(forbid.Min(_point1 => _point1.X), forbid.Min(_point1 => _point1.Y));
+			var forbidMax = new Point(forbid.Max(_point1 => _point1.X), forbid.Max(_point1 => _point1.Y));
 
-			actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+			Debug.WriteLine("FORBID " + forbidMin + " - " + forbidMax);
+
+			var forbidRect = new Rectangle(forbidMin.X, forbidMin.Y, forbidMax.X - forbidMin.X, forbidMax.Y - forbidMin.Y);
+			forbidRect.Inflate(-1, -1);
+
+			var connectionPoints = m_connectionPoints.ToList();
+
+			Action<IEnumerable<ConnectionPoint>> actRemove = delegate(IEnumerable<ConnectionPoint> _points)
+			                                                 	{
+			                                                 		foreach (var connectionPoint in _points)
+			                                                 		{
+			                                                 			connectionPoints.Remove(connectionPoint);
+			                                                 		}
+			                                                 	};
 
 			if (true)
 			{
@@ -273,16 +355,14 @@ namespace GameCore.Mapping.Layers
 					{
 						throw new NotImplementedException("Как может сойтись в одной точке более двух комнат????");
 					}
-					ConnectRooms(points[0].Room, points[1].Room, points[0].Begin, points[0].End, points[1].Begin);
+					ConnectRooms(points[0].Room, points[1].Room, forbid,points[0].Begin, points[0].End, points[1].Begin);
 					foreach (var point in grouping)
 					{
-						m_connectionPoints.Remove(point);
 						connectionPoints.Remove(point);
-						Debug.WriteLine(point + " deleted");
 					}
 				}
 
-				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 1).ToArray());
+				//actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 1).ToArray());
 
 				#endregion
 			}
@@ -296,9 +376,9 @@ namespace GameCore.Mapping.Layers
 
 					foreach (var connectionPoint in connectionPoints)
 					{
-						if(connectionPoint.End==new Point(15,18))
+						if (connectionPoint.End == new Point(18, 64))
 						{
-							
+
 						}
 
 						if (toRemove.Contains(connectionPoint)) continue;
@@ -306,7 +386,7 @@ namespace GameCore.Mapping.Layers
 						{
 							if (room == connectionPoint.Room) continue;
 							var rrect = room.RoomRectangle;
-							rrect.Offset(room.BlockId.X * MapBlock.SIZE, room.BlockId.Y * MapBlock.SIZE);
+							rrect.Offset(room.BlockId.X*MapBlock.SIZE, room.BlockId.Y*MapBlock.SIZE);
 							var frect = rrect;
 							frect.Inflate(1, 1);
 							var end = connectionPoint.End;
@@ -317,20 +397,15 @@ namespace GameCore.Mapping.Layers
 									end += connectionPoint.Dir.Opposite().GetDelta();
 								}
 
-								if (frect.AllPointsExceptCorners().Contains(end))
+								//if (frect.AllPointsExceptCorners().Contains(end))
 								{
-									ConnectRooms(room, connectionPoint.Room, end, connectionPoint.Begin);
+									ConnectRooms(room, connectionPoint.Room, forbid, end, connectionPoint.Begin);
 
 									toRemove.Add(connectionPoint);
-									var revert = m_connectionPoints.Where(_point => _point.Dir == connectionPoint.Dir.Opposite() && _point.Room == room).ToArray();
+									var revert = connectionPoints.Where(_point => _point.Dir == connectionPoint.Dir.Opposite() && _point.Room == room).ToArray();
 									toRemove.AddRange(revert);
-									m_connectionPoints.Remove(connectionPoint);
-									foreach (var point in revert)
-									{
-										m_connectionPoints.Remove(point);
-									}
 								}
-								else
+								//else
 								{
 									//концевая точка примыкает к углу комнаты
 									//toRemove.Add(connectionPoint);
@@ -357,32 +432,24 @@ namespace GameCore.Mapping.Layers
 
 						for (var i = 0; i < points.Length - 1; ++i)
 						{
-							var flag = true;
-							foreach (var point in points[i].End.GetLineToPoints(points[i + 1].End))
-							{
-								if (forbid.Contains(point))
-								{
-									flag = false;
-									break;
-								}
-							}
+							if ((points[i].End - points[i + 1].End).QLenght > MAX_PATH_LEN) continue;
+							var flag = points[i].End.GetLineToPoints(points[i + 1].End).All(_point => !forbid.Contains(_point));
 							if (flag)
 							{
-								ConnectRooms(points[i].Room, points[i + 1].Room, points[i].Begin, points[i].End, points[i + 1].End,
+								ConnectRooms(points[i].Room, points[i + 1].Room, forbid, points[i].Begin, points[i].End, points[i + 1].End,
 								             points[i + 1].Begin);
 								toRemove.Add(points[i]);
 								toRemove.Add(points[i + 1]);
-								m_connectionPoints.Remove(points[i]);
-								m_connectionPoints.Remove(points[i + 1]);
 							}
 						}
 					}
 					actRemove(toRemove.Distinct());
 				}
-				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+				//actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
 
 				#endregion
 			}
+
 			if (true)
 			{
 				#region Конечные точки на одной строке
@@ -396,39 +463,351 @@ namespace GameCore.Mapping.Layers
 
 						for (var i = 0; i < points.Length - 1; ++i)
 						{
-							var flag = true;
-							foreach (var point in points[i].End.GetLineToPoints(points[i + 1].End))
-							{
-								if (forbid.Contains(point))
-								{
-									flag = false;
-									break;
-								}
-							}
+							if ((points[i].End - points[i + 1].End).QLenght > MAX_PATH_LEN) continue;
+							var flag = points[i].End.GetLineToPoints(points[i + 1].End).All(_point => !forbid.Contains(_point));
 							if (flag)
 							{
-								ConnectRooms(points[i].Room, points[i + 1].Room, points[i].Begin, points[i].End, points[i + 1].End,
-								             points[i + 1].Begin);
+								ConnectRooms(points[i].Room, points[i + 1].Room, forbid, points[i].Begin, points[i].End, points[i + 1].End, points[i + 1].Begin);
 								toRemove.Add(points[i]);
 								toRemove.Add(points[i + 1]);
-
-								m_connectionPoints.Remove(points[i]);
-								m_connectionPoints.Remove(points[i + 1]);
 							}
 						}
 					}
 					actRemove(toRemove.Distinct());
 				}
-				actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
+				//actRemove(connectionPoints.Where(_point => _point.Room.ConnectedTo.Count > 2).ToArray());
 
 				#endregion
 			}
 
+			if(true)
+			{
+				#region можно проложить путь между двумя концами не затрагивая forbid
+
+				var toRemove = new List<ConnectionPoint>();
+				
+				foreach (var cp in connectionPoints)
+				{
+					if (cp.End == new Point(21, -51))
+					{
+
+					}
+
+					if(toRemove.Contains(cp) || forbid.Contains(cp.End)) continue;
+
+					var candidates = connectionPoints.Where(_point => _point.Room != cp.Room  && cp.Dir<=_point.Dir  && !_point.Room.ConnectedTo.ContainsKey(cp.Room) && !forbid.Contains(_point.End) && (_point.End - cp.End).QLenght < MAX_PATH_LEN).ToArray();
+
+					foreach (var candidate in candidates)
+					{
+						if (toRemove.Contains(cp) || toRemove.Contains(candidate)) continue;
+
+						var points = new[] {cp, candidate};//.OrderBy(_point => _point.Dir).ToArray();
+
+						var minx = cp.End.X < candidate.End.X ? cp : candidate;
+						var miny = cp.End.Y < candidate.End.Y ? cp : candidate;
+						var maxx = cp.End.X > candidate.End.X ? cp : candidate;
+						var maxy = cp.End.Y > candidate.End.Y ? cp : candidate;
+
+						var dx = maxx.End.X - minx.End.X;
+						var dy = maxy.End.Y - miny.End.Y;
+
+						var way1 = new List<Point>();
+						var way2 = new List<Point>();
+
+						for (var i = 0; i < 20;++i )
+						{
+							way1.Clear();
+							way2.Clear();
+							switch (points[0].Dir)
+							{
+								case EDirections.UP:
+									switch (points[1].Dir)
+									{
+										case EDirections.UP:
+											if (dx >= dy)
+											{
+												way1.AddRange(new[]
+												              	{
+												              		minx.Begin, minx.End,
+
+												              		new Point(minx.End.X, miny.End.Y - i),
+												              		new Point(maxx.End.X, miny.End.Y - i),
+
+												              		maxx.End, maxx.Begin
+												              	});
+											}
+											else
+											{
+												way1.AddRange(new[]
+												              	{
+												              		miny.Begin, miny.End,
+
+												              		new Point(miny.End.X - i, miny.End.Y),
+												              		new Point(miny.End.X - i, maxy.End.Y),
+
+												              		maxx.End, maxx.Begin
+												              	});
+												way2.AddRange(new[]
+												              	{
+												              		minx.Begin, minx.End,
+
+												              		new Point(miny.End.X + i, miny.End.Y),
+												              		new Point(miny.End.X + i, maxy.End.Y),
+
+												              		maxx.End, maxx.Begin
+												              	});
+											}
+											break;
+										case EDirections.DOWN:
+											if (maxx.End.X - minx.End.X < 2) continue;
+											way1.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+
+												new Point(miny.End.X+i, miny.End.Y),
+												new Point(miny.End.X+i, maxy.End.Y),
+
+												maxy.End, maxy.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+
+												new Point(miny.End.X-i, miny.End.Y),
+												new Point(miny.End.X-i, maxy.End.Y),
+
+												maxy.End, maxy.Begin 
+											});
+											break;
+										case EDirections.LEFT:
+											way1.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X-i, minx.End.Y),
+												new Point(minx.End.X-i, maxx.End.Y),
+												maxx.End, maxx.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X, minx.End.Y-i),
+												new Point(minx.End.X, maxx.End.Y-i),
+												maxx.End, maxx.Begin 
+											});
+											break;
+										case EDirections.RIGHT:
+											way1.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X+i, minx.End.Y),
+												new Point(minx.End.X+i, maxx.End.Y),
+												maxx.End, maxx.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X, minx.End.Y+i),
+												new Point(minx.End.X, maxx.End.Y+i),
+												maxx.End, maxx.Begin 
+											});
+											break;
+										default:
+											throw new ArgumentOutOfRangeException();
+									}
+									break;
+								case EDirections.DOWN:
+									switch (points[1].Dir)
+									{
+										case EDirections.DOWN:
+											if (dx >= dy)
+											{
+												way1.AddRange(new[]
+												              	{
+												              		minx.Begin, minx.End,
+
+												              		new Point(minx.End.X, miny.End.Y + i),
+												              		new Point(maxx.End.X, miny.End.Y + i),
+
+												              		maxx.End, maxx.Begin
+												              	});
+											}
+											else
+											{
+												way1.AddRange(new[]
+												              	{
+												              		miny.Begin, miny.End,
+
+												              		new Point(miny.End.X - i, miny.End.Y),
+												              		new Point(miny.End.X - i, maxy.End.Y),
+
+												              		maxx.End, maxx.Begin
+												              	});
+												way2.AddRange(new[]
+												              	{
+												              		minx.Begin, minx.End,
+
+												              		new Point(miny.End.X + i, miny.End.Y),
+												              		new Point(miny.End.X + i, maxy.End.Y),
+
+												              		maxx.End, maxx.Begin
+												              	});
+											}
+											break;
+										case EDirections.LEFT:
+											way1.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X, minx.End.Y + i),
+												new Point(maxx.End.X, minx.End.Y + i),
+												maxx.End, maxx.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(maxx.End.X - i, minx.End.Y),
+												new Point(maxx.End.X - i, maxx.End.Y),
+												maxx.End, maxx.Begin 
+											});
+											break;
+										case EDirections.RIGHT:
+											way1.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X+i, minx.End.Y),
+												new Point(minx.End.X+i, maxx.End.Y),
+												maxx.End, maxx.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												minx.Begin, minx.End, 
+												new Point(minx.End.X, minx.End.Y+i),
+												new Point(minx.End.X, maxx.End.Y+i),
+												maxx.End, maxx.Begin 
+											});
+											break;
+										default:
+											throw new ArgumentOutOfRangeException();
+									}
+									break;
+								case EDirections.LEFT:
+									switch (points[1].Dir)
+									{
+										case EDirections.LEFT:
+											if (maxy.End.Y - miny.End.Y < 2) continue;
+											way1.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+
+												new Point(miny.End.X - i, miny.End.Y),
+												new Point(miny.End.X - i, maxy.End.Y),
+
+												maxy.End, maxy.Begin 
+											});
+											break;
+										case EDirections.RIGHT:
+											if (i>0) continue;
+											way1.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+												new Point(maxy.End.X, miny.End.Y), 
+												maxy.End, maxy.Begin 
+											});
+											way2.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+												new Point(miny.End.X, maxy.End.Y), 
+												maxy.End, maxy.Begin 
+											});
+											break;
+										default:
+											throw new ArgumentOutOfRangeException();
+									}
+									break;
+								case EDirections.RIGHT:
+									switch (points[1].Dir)
+									{
+										case EDirections.RIGHT:
+											if (maxy.End.Y - miny.End.Y < 2) continue;
+											way1.AddRange(new[] 
+											{ 
+												miny.Begin, miny.End, 
+
+												new Point(maxx.End.X + i, miny.End.Y),
+												new Point(maxx.End.X + i, maxy.End.Y),
+
+												maxy.End, maxy.Begin 
+											});
+											break;
+										default:
+											throw new ArgumentOutOfRangeException();
+									}
+									break;
+								default:
+									throw new ArgumentOutOfRangeException();
+							}
+							bool flag = false;
+							foreach (var way in new[] { way1, way2 })
+							{
+								flag = true;
+								if (way.Count == 0) continue;
+								var pnt = way[1];
+								
+								for (var index = 2; index < way.Count - 1 && flag; ++index)
+								{
+									flag = !pnt.GetLineToPoints(way[index]).Any(forbid.Contains);
+									pnt = way[index];
+								}
+								if (!flag) continue;
+								if (way[0] != cp.Begin) way.Reverse();
+
+								Debug.WriteLine(points[0].Dir + " => " + points[1].Dir);
+
+								ConnectRooms(cp.Room, candidate.Room, forbid, way1.ToArray());
+								toRemove.Add(candidate);
+								break;
+							}
+							if(flag)
+							{
+								break;
+							}
+						}
+					}
+					toRemove.Add(cp);
+				}
+
+				actRemove(toRemove.Distinct());
+
+				#endregion
+			}
+
+			if(true)
+			{
+				#region коннектим оставшиеся комнаты
+
+				//var toRemove = new List<ConnectionPoint>();
+
+				//while (connectionPoints.Count > 0)
+				//{
+				//    toRemove.Clear();
+				//    toRemove.AddRange(connectionPoints.Where(_point => _point.Room.IsConnected));
+				//    foreach (var connectionPoint in connectionPoints)
+				//    {
+				//        if(toRemove.Contains(connectionPoint)) continue;
+
+
+
+				//    }
+				//    actRemove(toRemove);
+				//} 
+
+				#endregion
+
+			}
+
 			foreach (var point in forbid)
 			{
-				if (!_mapBlock.Rectangle().ContainsEx(point)) continue;
 				var inBlock = MapBlock.GetInBlockCoords(point);
-				var block = Blocks[MapBlock.GetBlockCoords(point)];
+				var block = this[MapBlock.GetBlockCoords(point)];
 
 				if (block.Map[inBlock.X, inBlock.Y] == ETerrains.GRASS || block.Map[inBlock.X, inBlock.Y] == ETerrains.GROUND)
 				{
@@ -436,19 +815,27 @@ namespace GameCore.Mapping.Layers
 				}
 			}
 
-			foreach (var room in _mapBlock.Rooms)
+			foreach (var room in rooms)
 			{
-				if (room.ConnectedTo.Any())
+				var block = this[room.BlockId];
+				if (room.IsConnected)
 				{
-					MapBlockHelper.Fill(_mapBlock, new Random(_mapBlock.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
+					MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
 				}
 				else
 				{
-					MapBlockHelper.Fill(_mapBlock, new Random(_mapBlock.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
+					if (room.ConnectedTo.Any())
+					{
+						MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.WATER, }, room.RoomRectangle);
+					}
+					else
+					{
+						MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
+					}
 				}
 			}
 
-			actRemove(connectionPoints.Where(_point => _point.Room.IsConnected || _point.Room.ConnectedTo.Count > 2).ToArray()); 
+			//actRemove(connectionPoints.Where(_point => _point.Room.IsConnected || _point.Room.ConnectedTo.Count > 2).ToArray());
 			foreach (var connectionPoint in connectionPoints)
 			{
 				foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
@@ -457,33 +844,37 @@ namespace GameCore.Mapping.Layers
 					Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = connectionPoint.Dir.GetTerrain();
 				}
 			}
-
-			{
-				var toRemove = m_connectionPoints.Where(_point => _point.Room.IsConnected || _point.Room.ConnectedTo.Count > 2).ToArray();
-				foreach (var connectionPoint in toRemove)
-				{
-					m_connectionPoints.Remove(connectionPoint);
-				}
-			}
-
-			base.CompleteBlock(_mapBlock);
 		}
 
-		private void ConnectRooms(Room _room1, Room _room2, params Point[] _points)
+		private void ConnectRooms(Room _room1, Room _room2, ICollection<Point> _forbid, params Point[] _points)
 		{
 			var pnt = _points[0];
-			for(var i=1;i<_points.Length;++i)
+			for (var i = 1; i < _points.Length; ++i)
 			{
-				foreach (var point in pnt.GetLineToPoints(_points[i]))
+				//if (pnt == _points[i]) continue;
+
+				var line = pnt.GetLineToPoints(_points[i]).ToArray();
+				var border = Util.GetDirection(pnt, _points[i]).GetBorders().ToArray();
+				for (var index = 0; index < line.Length; index++)
 				{
+					var point = line[index];
 					var inBlock = MapBlock.GetInBlockCoords(point);
-					Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = ETerrains.WATER;
+					this[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = ETerrains.WATER;
+
+					if (index != 0 && index < line.Length - 1)
+					{
+						foreach (var delta in border)
+						{
+							var borderPnt = point + delta;
+							_forbid.Add(borderPnt);
+						}
+					}
 				}
 				pnt = _points[i];
 			}
 			_room1.Connect(_room2, _points);
 
-			Debug.WriteLine("CONNECTED:" + _room1.RoomRectangle + " to " + _room2.RoomRectangle + " by " + string.Join("|",  _points.Select(_point => _point.ToString())));
+			Debug.WriteLine("CONNECTED:" + _room1.RoomRectangle + " to " + _room2.RoomRectangle + " by " + string.Join("|", _points.Select(_point => _point.ToString())));
 		}
 	}
 }

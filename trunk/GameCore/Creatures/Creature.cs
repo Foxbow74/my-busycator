@@ -73,14 +73,6 @@ namespace GameCore.Creatures
 			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + new Point(_x, _y)); }
 		}
 
-		public int BlockRandomSeed
-		{
-			get
-			{
-				return World.TheWorld.LiveMap.Cells[m_liveCoords.X, m_liveCoords.Y].BlockRandomSeed;
-			}
-		}
-
 		public WorldLayer Layer
 		{
 			get { return m_layer; }

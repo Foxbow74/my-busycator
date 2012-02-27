@@ -99,7 +99,6 @@ namespace GameCore.Mapping
 		public void SetMapBlock(MapBlock _mapBlock)
 		{
 			MapBlock = _mapBlock;
-			MapBlock.Updated += MapBlockOnUpdated;
 			Fill();
 		}
 
@@ -118,8 +117,6 @@ namespace GameCore.Mapping
 		public void Clear()
 		{
 			if (MapBlock==null) return;
-
-			MapBlock.Updated -= MapBlockOnUpdated;
 
 			MapBlock.Creatures.Clear();
 			foreach (var creature in m_creatures)

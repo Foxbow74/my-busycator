@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameCore.Misc;
 
 namespace GameCore.Mapping
 {
 	internal class WorldMapGenerator
 	{
-		private readonly Random m_rnd = new Random(World.WorldSeed);
+		private readonly Random m_rnd = new Random();//World.WorldSeed);
 		private readonly int m_size;
 
 		public WorldMapGenerator(int _size)
@@ -14,6 +15,53 @@ namespace GameCore.Mapping
 		}
 
 		public EMapBlockTypes[,] Generate()
+		{
+			var map = new EMapBlockTypes[m_size, m_size];
+			var center = new Point(m_size / 2, m_size / 2);
+			var size = m_rnd.Next(30) + 30;
+			var list = new List<Point>(){center};
+			do
+			{
+				var point = list[m_rnd.Next(list.Count)];
+				list.AddRange(Add(point, map, ref size));
+			} while (size > 0);
+			return map;
+		}
+
+		private IEnumerable<Point> Add(Point _xy,  EMapBlockTypes[,] _map, ref int _size)
+		{
+			var list = new List<Point>();
+			if (_map[_xy.X, _xy.Y] != EMapBlockTypes.GROUND)
+			{
+				list.Add(_xy);
+				_map[_xy.X, _xy.Y] = EMapBlockTypes.GROUND;
+				if (_size == 0 || m_rnd.NextDouble() < 0.1)
+				{
+					return list;
+				}
+				_size--;
+			}
+			EDirections dirs;
+			do
+			{
+				dirs = (EDirections)m_rnd.Next(16);
+			} while (dirs == EDirections.NONE);
+			foreach (EDirections dir in Enum.GetValues(typeof(EDirections)))
+			{
+				if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
+				var xy = _xy + dir.GetDelta();
+				if (_map.GetLength(0) <= xy.X || xy.X<0) continue;
+				if (_map.GetLength(1) <= xy.Y || xy.Y<0) continue;
+
+				if (_map[xy.X, xy.Y] != EMapBlockTypes.GROUND)
+				{
+					list.AddRange(Add(xy, _map, ref _size));
+				}
+			}
+			return list;
+		}
+
+		public EMapBlockTypes[,] Generate1()
 		{
 			var map = new EMapBlockTypes[m_size,m_size];
 
