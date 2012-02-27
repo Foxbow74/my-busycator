@@ -11,25 +11,6 @@ namespace GameCore.Mapping
 {
 	public class MapBlock
 	{
-		public delegate void UpdatedDelegate();
-
-		public event UpdatedDelegate Updated;
-
-		public void CastUpdated()
-		{
-			if(Updated!=null)
-			{
-				Updated();
-			}
-		}
-
-		public enum EMapBlockState
-		{
-			CREATED,
-			PREREADY,
-			COMPLETE,
-		}
-
 		//Координаты блока в блочных координатах
 
 		public const int SIZE = 20;
@@ -47,10 +28,7 @@ namespace GameCore.Mapping
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
 			SeenCells = new uint[SIZE];
-			State = EMapBlockState.CREATED;
 		}
-
-		public EMapBlockState State { get; internal set; }
 
 		public Point BlockId { get; private set; }
 

@@ -167,5 +167,33 @@ namespace GameCore.Misc
 					throw new ArgumentOutOfRangeException("_direction");
 			}
 		}
+
+		public static EDirections GetDirection(Point _point1, Point _point2)
+		{
+			if (_point1.X < _point2.X) return EDirections.RIGHT;
+			if (_point1.X > _point2.X) return EDirections.LEFT;
+			if (_point1.Y < _point2.Y) return EDirections.DOWN;
+			if (_point1.Y> _point2.Y) return EDirections.UP;
+			return EDirections.NONE;
+		}
+
+		public static IEnumerable<Point> GetBorders(this EDirections _direction)
+		{
+			switch (_direction)
+			{
+				case EDirections.UP:
+				case EDirections.DOWN:
+					yield return EDirections.LEFT.GetDelta();
+					yield return EDirections.RIGHT.GetDelta();
+					break;
+				case EDirections.LEFT:
+				case EDirections.RIGHT:
+					yield return EDirections.UP.GetDelta();
+					yield return EDirections.DOWN.GetDelta();
+					break;
+				default:
+					yield break;
+			}
+		}
 	}
 }

@@ -51,26 +51,5 @@ namespace GameCore.Mapping.Layers
 		public abstract FColor Ambient { get; }
 
 		public Dictionary<Point, MapBlock> Blocks { get; private set; }
-
-		//public MapBlock GetMapBlock(Point _worldCoords)
-		//{
-		//    var blockCoords = MapBlock.GetBlockCoords(_worldCoords);
-		//    var block = this[blockCoords];
-		//    return block;
-		//}
-
-		internal virtual void CompleteBlock(MapBlock _mapBlock)
-		{
-			_mapBlock.State = MapBlock.EMapBlockState.COMPLETE;
-			_mapBlock.CastUpdated();
-
-			foreach (var point in _mapBlock.BlockId.NearestPoints)
-			{
-				if(Blocks.ContainsKey(point))
-				{
-					Blocks[point].CastUpdated();
-				}
-			}
-		}
 	}
 }

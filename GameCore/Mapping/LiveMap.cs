@@ -108,12 +108,7 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					var liveMapBlock = Blocks[blockId.X, blockId.Y];
-					if (liveMapBlock.MapBlock.State != MapBlock.EMapBlockState.COMPLETE)
-					{
-						World.TheWorld.Avatar.Layer.CompleteBlock(liveMapBlock.MapBlock);
-					}
-					liveMapBlock.ClearTemp();
+					Blocks[blockId.X, blockId.Y].ClearTemp();
 				}
 
 				var centerLiveCell = GetCenterLiveCell();
