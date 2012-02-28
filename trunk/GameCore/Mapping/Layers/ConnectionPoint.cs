@@ -1,4 +1,5 @@
-﻿using GameCore.Misc;
+﻿using System.Collections.Generic;
+using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers
 {
@@ -21,6 +22,16 @@ namespace GameCore.Mapping.Layers
 		public override string ToString()
 		{
 			return End + " from " + Begin + " rm:" + Room.RoomRectangle;
+		}
+	}
+
+	class Connector
+	{
+		public List<Room> Rooms { get; private set; }
+
+		public Connector(params Room[] _rooms)
+		{
+			Rooms = new List<Room>(_rooms);	
 		}
 	}
 }
