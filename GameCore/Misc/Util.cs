@@ -101,6 +101,22 @@ namespace GameCore.Misc
 			}
 		}
 
+		public static IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders(this Rectangle _rectangle)
+		{
+			var rect = new Rectangle(_rectangle.X - 1, _rectangle.Y - 1, _rectangle.Width + 2, _rectangle.Height + 2);
+			for (var i = rect.Left; i < rect.Right; ++i)
+			{
+				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
+				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
+			}
+
+			for (var j = _rectangle.Top; j < _rectangle.Bottom; ++j)
+			{
+				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
+				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
+			}
+		}
+
 		public static IEnumerable<Point> AllPointsExceptCorners(this Rectangle _rectangle)
 		{
 			var r = _rectangle;
@@ -177,19 +193,19 @@ namespace GameCore.Misc
 			return EDirections.NONE;
 		}
 
-		public static IEnumerable<Point> GetBorders(this EDirections _direction)
+		public static IEnumerable<KeyValuePair<Point, EDirections>> GetBorders(this EDirections _direction)
 		{
 			switch (_direction)
 			{
 				case EDirections.UP:
 				case EDirections.DOWN:
-					yield return EDirections.LEFT.GetDelta();
-					yield return EDirections.RIGHT.GetDelta();
+					yield return new KeyValuePair<Point, EDirections>(EDirections.LEFT.GetDelta(), EDirections.LEFT | EDirections.RIGHT);
+					yield return new KeyValuePair<Point, EDirections>(EDirections.RIGHT.GetDelta(), EDirections.LEFT | EDirections.RIGHT);
 					break;
 				case EDirections.LEFT:
 				case EDirections.RIGHT:
-					yield return EDirections.UP.GetDelta();
-					yield return EDirections.DOWN.GetDelta();
+					yield return new KeyValuePair<Point, EDirections>(EDirections.UP.GetDelta(), EDirections.UP | EDirections.DOWN);
+					yield return new KeyValuePair<Point, EDirections>(EDirections.DOWN.GetDelta(), EDirections.UP | EDirections.DOWN);
 					break;
 				default:
 					yield break;
