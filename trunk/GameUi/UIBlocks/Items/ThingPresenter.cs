@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using GameCore;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -30,15 +31,26 @@ namespace GameUi.UIBlocks.Items
 
 		public ThingDescriptor ThingDescriptor
 		{
-			get { return m_thingDescriptor; }
+			get
+			{
+				return m_thingDescriptor;
+			}
+		}
+
+		public int Count
+		{
+			get
+			{
+				return 	m_descriptors.Count(_descriptor => _descriptor.GetName(World.TheWorld.Avatar) == m_thingDescriptor.GetName(World.TheWorld.Avatar));
+			}
 		}
 
 		public string Text
 		{
 			get
 			{
-				var count = m_descriptors.Count(_descriptor => _descriptor.GetHashCode() == m_thingDescriptor.GetHashCode());
-				return (count > 1 ? count.ToString(CultureInfo.InvariantCulture) : "") + " " + m_thingDescriptor.Thing.Name;
+				var count = Count;
+				return (count > 1 ? count.ToString(CultureInfo.InvariantCulture) : "") + " " + m_thingDescriptor.GetName(World.TheWorld.Avatar);
 			}
 		}
 

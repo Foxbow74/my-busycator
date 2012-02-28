@@ -107,31 +107,42 @@ namespace GameCore.Acts.Items
 			var descriptor = toTake[0];
 			var thing = descriptor.ResolveThing(_creature);
 			var thingString = thing.Name;
+			IEnumerable<Item> get;
 			if (descriptor.Container == null)
 			{
-				World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).RemoveItem((Item) thing);
+				get = World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).Items.Where(_item => _item.Equals(thing));
 			}
 			else
 			{
-				var get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.GetHashCode() == thing.GetHashCode());
-				if (get.Count() > 1)
+				get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.Equals(thing));
+			}
+
+			if (get.Count() > 1)
+			{
+				var cnt = GetParameter<int>();
+				if (cnt.Any())
 				{
-					var cnt = GetParameter<int>();
-					if (cnt.Any())
-					{
-						Count = cnt.Single();
-					}
-					else
-					{
-						MessageManager.SendMessage(this, new AskHowMuchMessage(this, descriptor, get.Count()));
-						return EActResults.NEED_ADDITIONAL_PARAMETERS;
-					}
+					Count = cnt.Single();
 				}
-				for (var i = 0; i < Count; ++i)
+				else
+				{
+					MessageManager.SendMessage(this, new AskHowMuchMessage(this, descriptor, get.Count()));
+					return EActResults.NEED_ADDITIONAL_PARAMETERS;
+				}
+			}
+
+			for (var i = 0; i < Count; ++i)
+			{
+				if (descriptor.Container == null)
+				{
+					World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).RemoveItem((Item) thing);
+				}
+				else
 				{
 					descriptor.Container.GetItems(_creature).Remove((Item) thing);
 				}
 			}
+
 			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.ObjectTaken((Item) thing);

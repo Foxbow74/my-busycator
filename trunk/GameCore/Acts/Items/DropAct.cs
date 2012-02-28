@@ -41,10 +41,7 @@ namespace GameCore.Acts.Items
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this,
-				                           new AskSelectThingsFromBackPackMessage(this,
-				                                                                  ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER |
-				                                                                  ESelectItemDialogBehavior.SELECT_ONE, null));
+				MessageManager.SendMessage(this, new AskSelectThingsFromBackPackMessage(this, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER | ESelectItemDialogBehavior.SELECT_ONE, null));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 
@@ -64,8 +61,7 @@ namespace GameCore.Acts.Items
 				return EActResults.NOTHING_HAPPENS;
 			}
 
-			var total =
-				intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).Count();
+			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature)==descriptor.GetName(_creature)).Count();
 			Count = 1;
 			if (total == 0)
 			{
@@ -97,8 +93,7 @@ namespace GameCore.Acts.Items
 			}
 			else
 			{
-				MessageManager.SendMessage(this,
-				                           new SimpleTextMessage(EMessageType.INFO, _creature + " выбросил " + thingString + suffix));
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выбросил " + thingString + suffix));
 			}
 			return EActResults.DONE;
 		}

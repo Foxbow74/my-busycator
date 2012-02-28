@@ -43,7 +43,8 @@ namespace GameUi.UIBlocks.Map
 			var fogColor = Color.FromArgb(255, 70, 70, 70).ToFColor();
 			var fogLightness = fogColor.Lightness();// *2;
 
-			var ambient = World.TheWorld.Avatar.Layer.Ambient;
+			var worldLayer = World.TheWorld.Avatar.Layer;
+			var ambient = worldLayer.Ambient;
 
 			var dPoint = World.TheWorld.LiveMap.GetData();
 
@@ -69,10 +70,10 @@ namespace GameUi.UIBlocks.Map
 						var color = tile.Color.Multiply(lighted).Clamp();
 						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, color, BackgroundColor.Multiply(lighted));
 					}
-					else if (liveCell.IsSeenBefore && liveCell.IsVisibleAsFog )
+					else if (liveCell.IsSeenBefore)
 					{
 						var tile = liveCell.FoggedTile.GetTile()??liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor, FColor.Empty);
+						tile.Draw(x + ContentRectangle.Left, y + ContentRectangle.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
 						DrawHelper.FogTile(x + ContentRectangle.Left, y + ContentRectangle.Top);
 					}
 				}

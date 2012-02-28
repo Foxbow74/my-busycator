@@ -27,6 +27,11 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
+		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
+		{
+			return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
+		}
+
 		public int WorldMapSize
 		{
 			get { return 150; }
@@ -128,7 +133,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(255, 255, 255, 40).Multiply(0.4f)); 
+				return new FColor(Color.FromArgb(255, 255, 255, 40).Multiply(1.4f)); 
 			}
 		}
 	}

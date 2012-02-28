@@ -110,21 +110,12 @@ namespace GameCore.Mapping
 				{
 					return cr.Tile;
 				}
-				var cnt = 0;
+				if (Items.Count() > 1) return ETiles.HEAP_OF_ITEMS;
 				foreach (var item in Items)
 				{
-					cnt++;
-					return cnt > 1 ? ETiles.HEAP_OF_ITEMS : item.Tile;
+					return item.Tile;
 				}
 				return Furniture != null ? Furniture.Tile : ETiles.NONE;
-			}
-		}
-
-		public bool IsVisibleAsFog
-		{
-			get
-			{
-				return TerrainAttribute.IsPassable < 1 || FoggedTile != ETiles.NONE;
 			}
 		}
 

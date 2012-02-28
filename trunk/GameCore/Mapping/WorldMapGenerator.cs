@@ -14,11 +14,11 @@ namespace GameCore.Mapping
 			m_size = _size;
 		}
 
-		public EMapBlockTypes[,] Generate()
+		public EMapBlockTypes[,] Generate1()
 		{
 			var map = new EMapBlockTypes[m_size, m_size];
 			var center = new Point(m_size / 2, m_size / 2);
-			var size = m_rnd.Next(30) + 30;
+			var size = m_rnd.Next(830) + 80;
 			var list = new List<Point>(){center};
 			do
 			{
@@ -61,7 +61,7 @@ namespace GameCore.Mapping
 			return list;
 		}
 
-		public EMapBlockTypes[,] Generate1()
+		public EMapBlockTypes[,] Generate()
 		{
 			var map = new EMapBlockTypes[m_size,m_size];
 

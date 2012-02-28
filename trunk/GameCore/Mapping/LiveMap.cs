@@ -55,7 +55,7 @@ namespace GameCore.Mapping
 
 		public LiveMap()
 		{
-			m_visibilityManager = new LosManager(35);
+			m_visibilityManager = new LosManager(20);
 
 			m_sizeInBlocks = (2 * ACTIVE_QRADIUS + 1);
 			SizeInCells = m_sizeInBlocks * MapBlock.SIZE;
