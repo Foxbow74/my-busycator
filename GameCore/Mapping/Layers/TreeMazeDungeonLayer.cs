@@ -65,6 +65,17 @@ namespace GameCore.Mapping.Layers
 			}
 
 			LinkRooms(connectionPoints);
+
+			foreach (var mapBlock in Blocks.Values)
+			{
+				foreach (var room in mapBlock.Rooms.Where(_room => _room.IsConnected))
+				{
+					if (m_rnd.NextDouble() > 0.7)
+					{
+						mapBlock.AddLightSource(new Point(room.RoomRectangle.Left + m_rnd.Next(room.RoomRectangle.Width), room.RoomRectangle.Top + m_rnd.Next(room.RoomRectangle.Height)), new LightSource(m_rnd.Next(4) + 3, new FColor(3f, (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble()))); ;
+					}
+				}
+			}
 		}
 
 		private IEnumerable<Point> AddBlocks(Point _from, EMapBlockTypes[,] _map, ref int _size)
