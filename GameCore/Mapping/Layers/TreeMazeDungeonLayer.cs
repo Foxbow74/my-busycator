@@ -13,7 +13,7 @@ namespace GameCore.Mapping.Layers
 	{
 		private const int MIN_ROOM_SIZE = 4;
 		private const int MIN_ROOM_SQUARE = 42;
-		private const int MAX_DIV_SIZE = 10;
+		private const int MAX_DIV_SIZE = 15;
 		const int MAX_PATH_LEN = 20;
 
 		private readonly Random m_rnd;
@@ -24,7 +24,7 @@ namespace GameCore.Mapping.Layers
 			m_rnd = new Random(_rndSeed);
 			var size = m_rnd.Next(5) + m_rnd.Next(5) + 5;
 			var map = new EMapBlockTypes[size, size];
-			var center = new Point(size / 2, size / 2);
+			var center = MapBlock.GetBlockCoords(_enterCoords);
 			var list = new List<Point> { center };
 			do
 			{
@@ -32,7 +32,7 @@ namespace GameCore.Mapping.Layers
 				list.AddRange(AddBlocks(point, map, ref size));
 			} while (size > 0);
 
-			var blockIds = list.Select(_point => _point - center).Distinct().ToArray();
+			var blockIds = list.Distinct().ToArray();
 
 			foreach (var blockId in blockIds)
 			{
@@ -834,6 +834,8 @@ namespace GameCore.Mapping.Layers
 
 			if(true)
 			{
+				#region финальный этап
+
 				while (true)
 				{
 					var nConnectors = connectors.Where(_pair => _pair.Value.Rooms.Any(_room => !_room.IsConnected)).ToArray();
@@ -898,36 +900,39 @@ namespace GameCore.Mapping.Layers
 						break;
 					}
 				}
+
+				#endregion
+
 			}
 
-			foreach (var room in rooms)
-			{
-				var block = this[room.BlockId];
-				if (room.IsConnected)
-				{
-					MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
-				}
-				else
-				{
-					if (room.ConnectedTo.Any())
-					{
-						MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.WATER, }, room.RoomRectangle);
-					}
-					else
-					{
-						MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
-					}
-				}
-			}
+			//foreach (var room in rooms)
+			//{
+			//    var block = this[room.BlockId];
+			//    if (room.IsConnected)
+			//    {
+			//        MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
+			//    }
+			//    else
+			//    {
+			//        if (room.ConnectedTo.Any())
+			//        {
+			//            MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.WATER, }, room.RoomRectangle);
+			//        }
+			//        else
+			//        {
+			//            MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
+			//        }
+			//    }
+			//}
 
-			foreach (var connectionPoint in _connectionPoints)
-			{
-				foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
-				{
-					var inBlock = MapBlock.GetInBlockCoords(point);
-					Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = connectionPoint.Dir.GetTerrain();
-				}
-			}
+			//foreach (var connectionPoint in _connectionPoints)
+			//{
+			//    foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
+			//    {
+			//        var inBlock = MapBlock.GetInBlockCoords(point);
+			//        Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = connectionPoint.Dir.GetTerrain();
+			//    }
+			//}
 		}
 
 		private void ConnectTwoRooms(Room _room1, Room _room2, IDictionary<Point, EDirections> _forbid, IDictionary<Point, Connector> _connectors, params Point[] _points)

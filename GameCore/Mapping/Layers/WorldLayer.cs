@@ -11,9 +11,14 @@ namespace GameCore.Mapping.Layers
 		/// </summary>
 		public const int ACTIVE_SIZE_HALF = 3;
 
-		public WorldLayer()
+		protected WorldLayer()
 		{
 			Blocks = new Dictionary<Point, MapBlock>();
+		}
+
+		public virtual float GetFogColorMultiplier(LiveMapCell _liveCell)
+		{
+			return 0.5f;
 		}
 
 		public MapBlock this[Point _blockId]

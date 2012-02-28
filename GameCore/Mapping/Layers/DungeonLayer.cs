@@ -26,6 +26,11 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
+		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
+		{
+			return _liveCell.TerrainAttribute.IsPassable * 0.8f;
+		}
+
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces
 		{
 			get { yield return ETerrains.STONE_FLOOR; }
@@ -52,7 +57,6 @@ namespace GameCore.Mapping.Layers
 				block.Map[MapBlock.SIZE - 1 - i, 0] = ETerrains.STONE_WALL;
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
-			//block.Map[1,1] = ETerrains.MUSHROOM;
 
 			block.AddLightSource(new Point(2, 2), new LightSource(18, new FColor(5f, 1f, 0, 0)));
 			block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(1f, 0f, 1f, 0f)));
