@@ -69,7 +69,10 @@ namespace GameCore.Mapping.Layers
 			block.Map[6, 3] = ETerrains.WINDOW;
 			block.Map[3, 6] = ETerrains.WINDOW;
 			block.Map[6, 8] = ETerrains.GROUND;
+
 			block.AddObject(ETiles.DOOR.GetThing(), new Point(6, 8));
+			block.AddObject(new Sign(ETiles.SWORD, FColor.White, "'Оружейник'"), new Point(7, 8));
+
 			block.AddLightSource(new Point(7, 9), new LightSource(5,new FColor(1f,1f,1f,0.5f)));
 
 			{

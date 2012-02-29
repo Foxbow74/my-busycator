@@ -186,7 +186,7 @@ namespace GameCore.Creatures
 		/// <returns></returns>
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
 		{
-			return GetBackPackItems().Union(GetNotTakenAvailableItems(_intersect));
+			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect));
 		}
 
 		public IEnumerable<ThingDescriptor> GetNotTakenAvailableItems(IEnumerable<Point> _intersect = null)
