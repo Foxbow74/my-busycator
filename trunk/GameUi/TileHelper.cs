@@ -286,7 +286,7 @@ namespace GameUi
 		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row, FColor _backgroundColor)
 		{
 			var tile = m_frameTiles[_tile];
-			tile.Draw(new Point(_col, _row), tile.Color, _backgroundColor);
+			tile.Draw(new Point(_col, _row), tile.Color);
 		}
 
 		public static ATile Tile(this ETerrains _terrain, Point _worldCoords, float _rnd)

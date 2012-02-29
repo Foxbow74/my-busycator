@@ -41,14 +41,14 @@ namespace OpenTKUi
 
 		public TexCoord[] Texcoords { get; private set; }
 
-		public override void Draw(Point _point, FColor _color, FColor _background, EDirections _direction)
+		public override void Draw(Point _point, FColor _color, EDirections _direction)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background, _direction);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _direction);
 		}
 
-		public override void Draw(Point _point, FColor _color, FColor _background)
+		public override void Draw(Point _point, FColor _color)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background, EDirections.DOWN);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, EDirections.DOWN);
 		}
 
 		public override void FogIt(Point _point)

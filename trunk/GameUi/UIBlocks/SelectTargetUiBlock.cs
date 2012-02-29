@@ -146,9 +146,9 @@ namespace GameUi.UIBlocks
 					done = true;
 				}
 				if (point.Lenght < 1) continue;
-				ETiles.TARGET_DOT.GetTile().Draw(point + m_addPoint, color,BackgroundColor);
+				ETiles.TARGET_DOT.GetTile().Draw(point + m_addPoint, color);
 			}
-			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, new FColor(Color.Gold), BackgroundColor);
+			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, new FColor(Color.Gold));
 			m_realTarget = pnt;
 		}
 	}

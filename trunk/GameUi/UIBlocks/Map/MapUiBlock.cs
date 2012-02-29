@@ -68,30 +68,30 @@ namespace GameUi.UIBlocks.Map
 					if (lightness > fogLightness)
 					{
 						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp(), BackgroundColor.Multiply(lighted));
+						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp());
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp();
-							tile.Draw(screenPoint, color, BackgroundColor.Multiply(lighted));
+							tile.Draw(screenPoint, color);
 						}
 					}
 					else if (liveCell.IsSeenBefore)
 					{
 						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						terrainTile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+						terrainTile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
 
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
 						}
 						DrawHelper.FogTile(screenPoint);
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, Color.White.ToFColor(), BackgroundColor);
+			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, Color.White.ToFColor());
 		}
 
 		public override void DrawFrame()
