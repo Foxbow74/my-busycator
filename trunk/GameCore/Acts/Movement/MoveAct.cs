@@ -95,17 +95,10 @@ namespace GameCore.Acts.Movement
 					else
 					{
 						var furniture = cell.Furniture;
-						if (furniture != null)
+						if (furniture != null && furniture.Is<Door>() && furniture.IsClosed(cell, _creature))
 						{
-							if (furniture.Is<Door>() && furniture.IsClosed(cell, _creature))
-							{
-								_creature.AddActToPool(new OpenAct(), delta);
-								return EActResults.DONE;
-							}
-							else
-							{
-								mess = furniture.GetName(_creature);
-							}
+							_creature.AddActToPool(new OpenAct(), delta);
+							return EActResults.DONE;
 						}
 						else
 						{

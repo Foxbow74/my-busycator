@@ -198,16 +198,15 @@ namespace OpenTKUi
 
 		public bool IsVisible { get; set; }
 
-		public List<OpenTKTile> Tile { get; set; }
-		public List<FColor> Forecolor { get; set; }
-		public int Layers { get; set; }
+		private List<OpenTKTile> m_tiles = new List<OpenTKTile>();
+		private List<FColor> m_colors = new List<FColor>();
+
+		public int Layers { get; private set; }
 
 		public bool IsFogged { get; set; }
 
 		public TileInfo(int _x, int _y, int _width, int _height)
 		{
-			Tile = new List<OpenTKTile>();
-			Forecolor = new List<FColor>();
 			m_x = _x * _width;
 			m_y = _y * _height;
 			m_width = _width;
@@ -216,12 +215,12 @@ namespace OpenTKUi
 
 		public void Draw(int _iteration, bool _colored, bool _fogOnly, int _layer)
 		{
-			if (Tile == null && !_fogOnly) return;
+			if (m_tiles == null && !_fogOnly) return;
 			if (_fogOnly && !IsFogged) return;
 
 
 			TexCoord[] texcoords;
-			var color = Forecolor[_layer];
+			var color = m_colors[_layer];
 			if (_fogOnly)
 			{
 				if (IsFogged)
@@ -237,7 +236,7 @@ namespace OpenTKUi
 			}
 			else
 			{
-				texcoords = Tile[_layer].Texcoords;
+				texcoords = m_tiles[_layer].Texcoords;
 			}
 			if(_colored)
 			{
@@ -275,15 +274,15 @@ namespace OpenTKUi
 
 		public void Clear()
 		{
-			Tile.Clear();
-			Forecolor.Clear();
+			m_tiles.Clear();
+			m_colors.Clear();
 			Layers = 0;
 		}
 
 		public void AddLayer(OpenTKTile _tile, FColor _color)
 		{
-			Tile.Add(_tile);
-			Forecolor.Add(_color);
+			m_tiles.Add(_tile);
+			m_colors.Add(_color);
 			Layers++;
 		}
 	}
