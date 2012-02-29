@@ -143,7 +143,8 @@ namespace GameUi
 						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 9, Color.Gold);
 						break;
 					case ETiles.MONSTER:
-						tl = Rp.CreateTile(ETextureSet.NH, 0, 6, Color.White);
+						//tl = Rp.CreateTile(ETextureSet.NH, 0, 6, Color.White);
+						tl = Rp.CreateTile(ETextureSet.NH, 0, 8, Color.White);
 						break;
 					case ETiles.RING:
 						tl = Rp.CreateTile(ETextureSet.GP_X16, 8, 15, Color.Gold);
@@ -274,12 +275,6 @@ namespace GameUi
 		{
 			var ts = (TileSet) m_tiles[_tile];
 			return ts[_index];
-		}
-
-		public static void DrawAtCell(this ETiles _tile, int _col, int _row)
-		{
-			var tile = m_tiles[_tile];
-			tile.Draw(_col, _row, tile.Color, FColor.Empty);
 		}
 
 		public static void DrawAtCell(this EFrameTiles _tile, int _col, int _row, FColor _backgroundColor)

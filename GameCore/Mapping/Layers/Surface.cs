@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
-using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
 {
@@ -56,6 +54,8 @@ namespace GameCore.Mapping.Layers
 			var rnd = new Random(block.RandomSeed);
 
 			MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
+
+
 
 			for (var i = 3; i <= 8; i++)
 			{
@@ -133,7 +133,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(Color.FromArgb(255, 255, 255, 40).Multiply(1.4f)); 
+				return new FColor(1f,1f,1f,0.5f).Multiply(1.4f); 
 			}
 		}
 	}

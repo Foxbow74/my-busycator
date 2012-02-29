@@ -7,8 +7,8 @@ namespace GameUi.UIBlocks
 {
 	internal class MiniMapUiBlock : UiBlockWithText
 	{
-		public MiniMapUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.GoldFrame, Color.White.ToFColor())
+		public MiniMapUiBlock(Rct _rct)
+			: base(_rct, Frame.GoldFrame, Color.White.ToFColor())
 		{
 		}
 
@@ -30,10 +30,10 @@ namespace GameUi.UIBlocks
 
 			var halfSize = new Vector2(size.X/2, size.Y/2);
 
-			var rsz = Math.Min(ContentRectangle.Width*ATile.Size/size.X, ContentRectangle.Height*ATile.Size/size.Y);
+			var rsz = Math.Min(ContentRct.Width*ATile.Size/size.X, ContentRct.Height*ATile.Size/size.Y);
 			var rectSize = new Vector2(rsz, rsz);
-			var halfContentRect = new Vector2(ContentRectangle.Left*ATile.Size + ContentRectangle.Width*ATile.Size/2,
-			                                  ContentRectangle.Top*ATile.Size + ContentRectangle.Height*ATile.Size/2);
+			var halfContentRect = new Vector2(ContentRct.Left*ATile.Size + ContentRct.Width*ATile.Size/2,
+			                                  ContentRct.Top*ATile.Size + ContentRct.Height*ATile.Size/2);
 
 			for (var i = 0; i < size.X; ++i)
 			{
@@ -56,7 +56,7 @@ namespace GameUi.UIBlocks
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
-					var rect = new Rectangle(
+					var rect = new Rct(
 						(int) Math.Round(halfContentRect.X + pnt.X*rectSize.X),
 						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
 						(int) Math.Round(rectSize.X),

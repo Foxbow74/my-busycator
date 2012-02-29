@@ -11,8 +11,8 @@ namespace GameUi.UIBlocks
 	{
 		private readonly AskDirectionMessage m_message;
 
-		public AskDirectionUiBlock(Rectangle _rectangle, AskDirectionMessage _message)
-			: base(new Rectangle(_rectangle.X, _rectangle.Y, _rectangle.Width, 1), null, Color.Gray.ToFColor())
+		public AskDirectionUiBlock(Rct _rct, AskDirectionMessage _message)
+			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, Color.Gray.ToFColor())
 		{
 			m_message = _message;
 		}

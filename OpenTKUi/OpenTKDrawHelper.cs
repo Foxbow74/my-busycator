@@ -36,10 +36,10 @@ namespace OpenTKUi
 
 		#region IDrawHelper Members
 
-		public void ClearTiles(Rectangle _rectangle, FColor _backgroundColor)
+		public void ClearTiles(Rct _rct, FColor _backgroundColor)
 		{
 			if(m_gameProvider.TileMapRenderer==null) return;
-			m_gameProvider.TileMapRenderer.Clear(_rectangle, _backgroundColor);
+			m_gameProvider.TileMapRenderer.Clear(_rct, _backgroundColor);
 		}
 
 		public SizeF MeasureString(EFonts _font, string _string)
@@ -71,11 +71,11 @@ namespace OpenTKUi
 			m_gameProvider.TileMapRenderer.FogTile(_col, _row);
 		}
 
-		public void ClearText(Rectangle _rectangle, FColor _toFColor)
+		public void ClearText(Rct _rct, FColor _toFColor)
 		{
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
-				gr.Clip = new Region(_rectangle);
+				gr.Clip = new Region(new Rectangle(_rct.Left, _rct.Top, _rct.Width + 1, _rct.Height + 1));
 				gr.Clear(_toFColor.ToColor());
 			}
 			m_isTextBitmapChanged = true;

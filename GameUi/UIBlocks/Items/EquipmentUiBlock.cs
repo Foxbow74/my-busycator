@@ -15,8 +15,8 @@ namespace GameUi.UIBlocks.Items
 		private readonly Intelligent m_intelligent;
 		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
 
-		public EquipmentUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.SimpleFrame, System.Drawing.Color.White.ToFColor())
+		public EquipmentUiBlock(Rct _rct)
+			: base(_rct, Frame.SimpleFrame, System.Drawing.Color.White.ToFColor())
 		{
 			m_intelligent = World.TheWorld.Avatar;
 			Rebuild();
@@ -66,7 +66,7 @@ namespace GameUi.UIBlocks.Items
 					CloseTopBlock();
 					return;
 				case ConsoleKey.V:
-					MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(Rectangle)));
+					MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(Rct)));
 					return;
 			}
 			var presenter = m_presenters.SingleOrDefault(_presenter => _presenter.Key == _key);
@@ -75,7 +75,7 @@ namespace GameUi.UIBlocks.Items
 			{
 				if (presenter.Item == null)
 				{
-					MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectToTakeOnUiBlock(Rectangle, this, presenter)));
+					MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectToTakeOnUiBlock(Rct, this, presenter)));
 				}
 				else
 				{

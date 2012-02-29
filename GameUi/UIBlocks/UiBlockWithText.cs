@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using GameCore;
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
 	abstract class UiBlockWithText:UIBlock
 	{
-		protected UiBlockWithText(Rectangle _rectangle, Frame _frame, FColor _color, EFonts _font=EFonts.COMMON) : base(_rectangle, _frame, _color)
+		protected UiBlockWithText(Rct _rct, Frame _frame, FColor _color, EFonts _font=EFonts.COMMON) : base(_rct, _frame, _color)
 		{
 			Font = _font;
 			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
@@ -20,18 +21,18 @@ namespace GameUi.UIBlocks
 
 		public int TextLinesMax
 		{
-			get { return (int)Math.Round((double)ContentRectangle.Height * ATile.Size / LineHeight); }
+			get { return (int)Math.Round((double)ContentRct.Height * ATile.Size / LineHeight); }
 		}
 
 		public override void DrawBackground()
 		{
 			base.DrawBackground();
-			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), FColor.Empty);
+			TileHelper.DrawHelper.ClearText(new Rct(Rct.Left * ATile.Size, Rct.Top * ATile.Size, Rct.Width * ATile.Size, Rct.Height * ATile.Size), FColor.Empty);
 		}
 
 		protected override void OnClosing(ConsoleKey _consoleKey)
 		{
-			TileHelper.DrawHelper.ClearText(new Rectangle(Rectangle.Left * ATile.Size, Rectangle.Top * ATile.Size, Rectangle.Width * ATile.Size, Rectangle.Height * ATile.Size), FColor.Empty);
+			TileHelper.DrawHelper.ClearText(new Rct(Rct.Left * ATile.Size, Rct.Top * ATile.Size, Rct.Width * ATile.Size, Rct.Height * ATile.Size), FColor.Empty);
 			base.OnClosing(_consoleKey);
 		}
 
@@ -75,7 +76,7 @@ namespace GameUi.UIBlocks
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
 			var processedChars = 0;
-			var x = (float)ContentRectangle.Left * ATile.Size;
+			var x = (float)ContentRct.Left * ATile.Size;
 
 			var lineSize = DrawHelper.MeasureString(Font, line);
 			switch (_alignment)
@@ -87,14 +88,14 @@ namespace GameUi.UIBlocks
 					x += _indent;
 					break;
 				case EAlignment.RIGHT:
-					x += ContentRectangle.Width * ATile.Size - lineSize.Width - _indent;
+					x += ContentRct.Width * ATile.Size - lineSize.Width - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRectangle.Width * ATile.Size / 2f - lineSize.Width / 2f;
+					x += ContentRct.Width * ATile.Size / 2f - lineSize.Width / 2f;
 					break;
 			}
 
-			var y = ContentRectangle.Top * ATile.Size + _lineNumber * LineHeight;
+			var y = ContentRct.Top * ATile.Size + _lineNumber * LineHeight;
 
 			for (var partIndex = 0; partIndex < part.Length; partIndex++)
 			{

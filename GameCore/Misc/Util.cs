@@ -84,51 +84,51 @@ namespace GameCore.Misc
 			return new FColor(_color);
 		}
 
-		public static bool ContainsEx(this Rectangle _rectangle, Point _point)
+		public static bool ContainsEx(this Rct _rct, Point _point)
 		{
-			var result = _rectangle.Left <= _point.X && _rectangle.Top <= _point.Y && _rectangle.Bottom > _point.Y && _rectangle.Right > _point.X;
+			var result = _rct.Left <= _point.X && _rct.Top <= _point.Y && _rct.Bottom > _point.Y && _rct.Right > _point.X;
 			return result;
 		}
 
-		public static IEnumerable<Point> AllPoints(this Rectangle _rectangle)
+		public static IEnumerable<Point> AllPoints(this Rct _rct)
 		{
-			for (var i = _rectangle.Left; i < _rectangle.Right; ++i)
+			for (var i = _rct.Left; i < _rct.Right; ++i)
 			{
-				for (var j = _rectangle.Top; j < _rectangle.Bottom; ++j)
+				for (var j = _rct.Top; j < _rct.Bottom; ++j)
 				{
 					yield return new Point(i, j);
 				}
 			}
 		}
 
-		public static IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders(this Rectangle _rectangle)
+		public static IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders(this Rct _rct)
 		{
-			var rect = new Rectangle(_rectangle.X - 1, _rectangle.Y - 1, _rectangle.Width + 2, _rectangle.Height + 2);
+			var rect = new Rct(_rct.Left - 1, _rct.Top - 1, _rct.Width + 2, _rct.Height + 2);
 			for (var i = rect.Left; i < rect.Right; ++i)
 			{
 				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
 				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
 			}
 
-			for (var j = _rectangle.Top; j < _rectangle.Bottom; ++j)
+			for (var j = _rct.Top; j < _rct.Bottom; ++j)
 			{
 				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
 				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
 			}
 		}
 
-		public static IEnumerable<Point> AllPointsExceptCorners(this Rectangle _rectangle)
+		public static IEnumerable<Point> AllPointsExceptCorners(this Rct _rct)
 		{
-			var r = _rectangle;
+			var r = _rct;
 			r.Inflate(0,-1);
 			foreach (var point in r.AllPoints())
 			{
 				yield return point;
 			}
-			for (var i = _rectangle.Left + 1; i < _rectangle.Right - 1; ++i)
+			for (var i = _rct.Left + 1; i < _rct.Right - 1; ++i)
 			{
-				yield return new Point(i,_rectangle.Top);
-				yield return new Point(i,_rectangle.Bottom - 1);
+				yield return new Point(i,_rct.Top);
+				yield return new Point(i,_rct.Bottom - 1);
 			}
 		}
 

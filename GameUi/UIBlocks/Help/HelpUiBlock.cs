@@ -8,8 +8,8 @@ namespace GameUi.UIBlocks.Help
 {
 	internal class HelpUiBlock : UiBlockWithText
 	{
-		public HelpUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.SimpleFrame, Color.White.ToFColor())
+		public HelpUiBlock(Rct _rct)
+			: base(_rct, Frame.SimpleFrame, Color.White.ToFColor())
 		{
 		}
 
@@ -18,7 +18,7 @@ namespace GameUi.UIBlocks.Help
 			switch (_key)
 			{
 				case ConsoleKey.A:
-					MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpKeyBindingUiBlock(Rectangle)));
+					MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpKeyBindingUiBlock(Rct)));
 					break;
 				case ConsoleKey.Z:
 				case ConsoleKey.Escape:

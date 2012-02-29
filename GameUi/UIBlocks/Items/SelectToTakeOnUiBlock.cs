@@ -12,10 +12,10 @@ namespace GameUi.UIBlocks.Items
 		private readonly EquipmentPresenter m_equipmentPresenter;
 		private readonly EquipmentUiBlock m_equipmentUiBlock;
 
-		public SelectToTakeOnUiBlock(Rectangle _rectangle, EquipmentUiBlock _equipmentUiBlock,
+		public SelectToTakeOnUiBlock(Rct _rct, EquipmentUiBlock _equipmentUiBlock,
 		                             EquipmentPresenter _equipmentPresenter) :
 		                             	base(
-		                             	_rectangle, ESelectItemDialogBehavior.SELECT_ONE, null,
+		                             	_rct, ESelectItemDialogBehavior.SELECT_ONE, null,
 		                             	_equipmentUiBlock.Intelligent.GetBackPackItems())
 		{
 			m_equipmentPresenter = _equipmentPresenter;

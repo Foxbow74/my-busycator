@@ -13,18 +13,18 @@ namespace GameUi.UIBlocks.Items
 	{
 		private readonly IEnumerable<EThingCategory> m_allowedCategories;
 
-		public BackpackUiBlock(Rectangle _rectangle)
+		public BackpackUiBlock(Rct _rct)
 			: base(
-				_rectangle, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null,
+				_rct, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null,
 				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
 		{
 			m_allowedCategories = new EThingCategory[0];
 		}
 
-		public BackpackUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior,
+		public BackpackUiBlock(Rct _rct, ESelectItemDialogBehavior _behavior,
 		                       IEnumerable<EThingCategory> _allowedCategory, Act _act)
 			: base(
-				_rectangle, _behavior, _act,
+				_rct, _behavior, _act,
 				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
 		{
 			m_allowedCategories = _allowedCategory ?? new EThingCategory[0];

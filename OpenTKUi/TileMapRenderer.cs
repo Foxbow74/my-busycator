@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using GameCore;
+using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 
@@ -50,8 +51,8 @@ namespace OpenTKUi
 					var tile = _resourceProvider.Tiles[index];
 					var x = index % perRow;
 					var y = index / perRow;
-					var dstRect = new Rectangle(x * _tileSizeX, y * _tileSizeY, _tileSizeX, _tileSizeY);
-					var srcRect = new Rectangle(tile.X * _tileSizeX, tile.Y * _tileSizeY, _tileSizeX, _tileSizeY);
+					var dstRect = new Rct(x * _tileSizeX, y * _tileSizeY, _tileSizeX, _tileSizeY);
+					var srcRect = new Rct(tile.X * _tileSizeX, tile.Y * _tileSizeY, _tileSizeX, _tileSizeY);
 
 					tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
 
@@ -60,7 +61,7 @@ namespace OpenTKUi
 						TileInfo.FogTexCoords = tile.Texcoords;
 					}
 
-					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, dstRect, srcRect, GraphicsUnit.Pixel);
+					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width+1, dstRect.Height+1), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width+1, srcRect.Height+1), GraphicsUnit.Pixel);
 				}
 			}
 			m_img = new Image(bmp, true);
@@ -126,14 +127,14 @@ namespace OpenTKUi
 			m_tiles[_col, _row].IsFogged = true;
 		}
 
-		public void Clear(Rectangle _rectangle, FColor _backgroundColor)
+		public void Clear(Rct _rct, FColor _backgroundColor)
 		{
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
 			GL.Begin(BeginMode.Quads);
-			var xy = new GameCore.Misc.Point(_rectangle.Left, _rectangle.Top) * ATile.Size;
-			var xy1 = new GameCore.Misc.Point(_rectangle.Right, _rectangle.Bottom) * ATile.Size;
+			var xy = new GameCore.Misc.Point(_rct.Left, _rct.Top) * ATile.Size;
+			var xy1 = new GameCore.Misc.Point(_rct.Right, _rct.Bottom) * ATile.Size;
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.Vertex2(xy.X, xy.Y);
 			GL.Vertex2(xy1.X, xy.Y);
@@ -141,9 +142,9 @@ namespace OpenTKUi
 			GL.Vertex2(xy.X, xy1.Y);
 			GL.End();
 
-			for (var i = _rectangle.Left; i < _rectangle.Right; i++)
+			for (var i = _rct.Left; i < _rct.Right; i++)
 			{
-				for (var j = _rectangle.Top; j < _rectangle.Bottom; j++)
+				for (var j = _rct.Top; j < _rct.Bottom; j++)
 				{
 					m_tiles[i, j].Clear();
 				}
@@ -207,15 +208,25 @@ namespace OpenTKUi
 			{
 				GL.Color4(1f, 1f, 1f, color.A);
 			}
-			
+
 			GL.TexCoord2(texcoords[0].U, texcoords[0].V);
 			GL.Vertex2(m_x, m_y);
-			GL.TexCoord2(texcoords[1].U, texcoords[1].V); 
+			GL.TexCoord2(texcoords[1].U, texcoords[1].V);
 			GL.Vertex2(m_x + m_width, m_y);
 			GL.TexCoord2(texcoords[2].U, texcoords[2].V);
 			GL.Vertex2(m_x + m_width, m_y + m_height);
 			GL.TexCoord2(texcoords[3].U, texcoords[3].V);
 			GL.Vertex2(m_x, m_y + m_height);
+
+			//GL.TexCoord2(texcoords[3].U, texcoords[3].V);
+			//GL.Vertex2(m_x, m_y);
+			//GL.TexCoord2(texcoords[0].U, texcoords[0].V);
+			//GL.Vertex2(m_x + m_width, m_y);
+			//GL.TexCoord2(texcoords[1].U, texcoords[1].V);
+			//GL.Vertex2(m_x + m_width, m_y + m_height);
+			//GL.TexCoord2(texcoords[2].U, texcoords[2].V);
+			//GL.Vertex2(m_x, m_y + m_height);
+
 		}
 
 		public void SendVertices()

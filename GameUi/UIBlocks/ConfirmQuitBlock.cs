@@ -13,10 +13,10 @@ namespace GameUi.UIBlocks
 	internal class ConfirmQuitBlock : UiBlockWithText
 	{
 		public ConfirmQuitBlock()
-			: base(new Rectangle(2, 2, 15, 5), Frame.SimpleFrame, Color.Black.ToFColor())
+			: base(new Rct(2, 2, 15, 5), Frame.SimpleFrame, Color.Black.ToFColor())
 		{
-			ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top, ContentRectangle.Width - 1*2,
-			                                 ContentRectangle.Height);
+			ContentRct = new Rct(ContentRct.Left + 1, ContentRct.Top, ContentRct.Width - 1*2,
+			                                 ContentRct.Height);
 		}
 
 		public override void DrawContent()
