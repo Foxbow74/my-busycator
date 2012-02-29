@@ -73,7 +73,7 @@ namespace GameCore.Mapping.Layers
 			block.AddObject(ETiles.DOOR.GetThing(), new Point(6, 8));
 			block.AddObject(new Sign(ETiles.SWORD, FColor.White, "'Оружейник'"), new Point(7, 8));
 
-			block.AddLightSource(new Point(7, 9), new LightSource(5,new FColor(1f,1f,1f,0.5f)));
+			block.AddLightSource(new Point(7, 9), new LightSource(15,new FColor(4f,1f,1f,0.5f)));
 
 			{
 				var cnt = rnd.Next(rnd.Next(70));
@@ -136,7 +136,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(1f,1f,1f,0.5f).Multiply(1.4f); 
+				return new FColor(1f,1f,1f,0.5f).Multiply(0.1f); 
 			}
 		}
 	}

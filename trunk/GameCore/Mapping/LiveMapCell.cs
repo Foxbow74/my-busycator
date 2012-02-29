@@ -118,6 +118,11 @@ namespace GameCore.Mapping
 				{
 					yield return cr;
 				}
+				var source = LiveMapBlock.MapBlock.LightSources.FirstOrDefault(_tuple => _tuple.Item1 == m_inBlockCoords);
+				if(source!=null)
+				{
+					yield return source.Item2.OnWall;
+				}
 			}
 		}
 
@@ -133,41 +138,10 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public ETiles Tile
-		{
-			get
-			{
-				var cr = Creature;
-				if (cr != null)
-				{
-					return cr.Tile;
-				}
-				if (Items.Count() > 1) return ETiles.HEAP_OF_ITEMS;
-				foreach (var item in Items)
-				{
-					return item.Tile;
-				}
-				return Furniture != null ? Furniture.Tile : ETiles.NONE;
-			}
-		}
-
-		public ETiles FoggedTile
-		{
-			get
-			{
-				if (ThingHelper.Is<Stair>(Furniture))
-				{
-					return Furniture.Tile;
-				}
-				return ETiles.NONE;
-			}
-		}
-
 		public Point LiveCoords
 		{
 			get { return m_liveCoords; }
 		}
-
 
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Mapping;
+using GameCore.Objects;
 
 namespace GameCore.Misc
 {
@@ -14,7 +15,10 @@ namespace GameCore.Misc
 		{
 			m_radius = _radius;
 			m_fColor = _fColor;
+			OnWall = new TileInfoProvider(ETiles.ON_WALL_LIGHT_SOURCE, new FColor(1f, _fColor));
 		}
+
+		public TileInfoProvider OnWall { get; private set; }
 
 		public void LightCells(LiveMap _liveMap, Point _point)
 		{

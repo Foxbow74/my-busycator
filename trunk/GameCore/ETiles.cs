@@ -10,7 +10,8 @@ namespace GameCore
 		[Tiles(0.5f)] HEAP_OF_ITEMS,
 		[Tiles(0.2f)]FOG,
 		[Tiles(0f)]TARGET_DOT,
-		[Tiles(0f)] TARGET_CROSS,
+		[Tiles(0f)]TARGET_CROSS,
+		[Tiles(0f)]ON_WALL_LIGHT_SOURCE,
 
 		[Tiles(0f)] GRASS,
 		[Tiles(0f)] WATER,

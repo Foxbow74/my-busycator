@@ -58,6 +58,9 @@ namespace GameUi
 					case ETextureSet.NH:
 						Rp.RegisterTexture(set, "Resources\\nethack.bmp");
 						break;
+					case ETextureSet.SELF:
+						Rp.RegisterTexture(set, "Resources\\aq.png");
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -107,6 +110,9 @@ namespace GameUi
 						break;
 					case ETiles.BRICK_WINDOW:
 						tl = Rp.CreateTile(1, 12, Color.DarkRed);
+						break;
+					case ETiles.ON_WALL_LIGHT_SOURCE:
+						tl = Rp.CreateTile(ETextureSet.SELF, 0, 0, Color.White);
 						break;
 					case ETiles.DOOR:
 						tl = Rp.CreateTile(5, 12, Color.Brown);
