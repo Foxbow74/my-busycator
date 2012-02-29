@@ -20,12 +20,12 @@ namespace GameUi
 			get { return m_tiles[_index%m_tiles.Count()]; }
 		}
 
-		public override void Draw(Point _point, FColor _color, FColor _background, EDirections _direction)
+		public override void Draw(Point _point, FColor _color, EDirections _direction)
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Draw(Point _point, FColor _color, FColor _background)
+		public override void Draw(Point _point, FColor _color)
 		{
 			throw new NotImplementedException();
 		}

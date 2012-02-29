@@ -151,7 +151,7 @@ namespace OpenTKUi
 		{
 		}
 
-		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, FColor _background, EDirections _direction)
+		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, EDirections _direction)
 		{
 			var info = m_tiles[_x, _y];
 			info.IsFogged = false;
@@ -223,13 +223,13 @@ namespace OpenTKUi
 
 			TexCoord[] texcoords;
 			var color = m_colors[_layer];
+			var dir = EDirections.DOWN;
 			if (_fogOnly)
 			{
 				if (IsFogged)
 				{
 					texcoords = FogTexCoords;
 					color = FColor.Black;
-					//return;
 				}
 				else
 				{
@@ -239,6 +239,7 @@ namespace OpenTKUi
 			else
 			{
 				texcoords = m_tiles[_layer].Texcoords;
+				dir = m_directions[_layer];
 			}
 			if(_colored)
 			{
@@ -249,24 +250,51 @@ namespace OpenTKUi
 				GL.Color4(1f, 1f, 1f, color.A);
 			}
 
-			GL.TexCoord2(texcoords[0].U, texcoords[0].V);
-			GL.Vertex2(m_x, m_y);
-			GL.TexCoord2(texcoords[1].U, texcoords[1].V);
-			GL.Vertex2(m_x + m_width, m_y);
-			GL.TexCoord2(texcoords[2].U, texcoords[2].V);
-			GL.Vertex2(m_x + m_width, m_y + m_height);
-			GL.TexCoord2(texcoords[3].U, texcoords[3].V);
-			GL.Vertex2(m_x, m_y + m_height);
-
-			//GL.TexCoord2(texcoords[3].U, texcoords[3].V);
-			//GL.Vertex2(m_x, m_y);
-			//GL.TexCoord2(texcoords[0].U, texcoords[0].V);
-			//GL.Vertex2(m_x + m_width, m_y);
-			//GL.TexCoord2(texcoords[1].U, texcoords[1].V);
-			//GL.Vertex2(m_x + m_width, m_y + m_height);
-			//GL.TexCoord2(texcoords[2].U, texcoords[2].V);
-			//GL.Vertex2(m_x, m_y + m_height);
-
+			switch (dir)
+			{
+				case EDirections.UP:
+					GL.TexCoord2(texcoords[2].U, texcoords[2].V);
+					GL.Vertex2(m_x, m_y);
+					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
+					GL.Vertex2(m_x + m_width, m_y);
+					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
+					GL.Vertex2(m_x + m_width, m_y + m_height);
+					GL.TexCoord2(texcoords[1].U, texcoords[1].V);
+					GL.Vertex2(m_x, m_y + m_height);
+					break;
+				case EDirections.DOWN:
+					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
+					GL.Vertex2(m_x, m_y);
+					GL.TexCoord2(texcoords[1].U, texcoords[1].V);
+					GL.Vertex2(m_x + m_width, m_y);
+					GL.TexCoord2(texcoords[2].U, texcoords[2].V);
+					GL.Vertex2(m_x + m_width, m_y + m_height);
+					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
+					GL.Vertex2(m_x, m_y + m_height);
+					break;
+				case EDirections.LEFT:
+					GL.TexCoord2(texcoords[1].U, texcoords[1].V);
+					GL.Vertex2(m_x, m_y);
+					GL.TexCoord2(texcoords[2].U, texcoords[2].V);
+					GL.Vertex2(m_x + m_width, m_y);
+					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
+					GL.Vertex2(m_x + m_width, m_y + m_height);
+					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
+					GL.Vertex2(m_x, m_y + m_height);
+					break;
+				case EDirections.RIGHT:
+					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
+					GL.Vertex2(m_x, m_y);
+					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
+					GL.Vertex2(m_x + m_width, m_y);
+					GL.TexCoord2(texcoords[1].U, texcoords[1].V);
+					GL.Vertex2(m_x + m_width, m_y + m_height);
+					GL.TexCoord2(texcoords[2].U, texcoords[2].V);
+					GL.Vertex2(m_x, m_y + m_height);					
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
 		}
 
 		public void SendVertices()
