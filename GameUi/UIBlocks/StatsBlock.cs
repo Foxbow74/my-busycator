@@ -20,5 +20,10 @@ namespace GameUi.UIBlocks
 		public override void DrawContent()
 		{
 		}
+
+		public override void DrawBackground()
+		{
+			base.DrawBackground();
+		}
 	}
 }

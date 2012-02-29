@@ -14,6 +14,14 @@ namespace GameCore.Objects.Furniture
 			get { return ETiles.DOOR; }
 		}
 
+		public override FColor LerpColor
+		{
+			get
+			{
+				return new FColor(0.5f,0f,1f,0f);
+			}
+		}
+
 		public override string Name
 		{
 			get { return "дверь"; }

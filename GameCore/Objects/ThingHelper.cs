@@ -10,9 +10,9 @@ namespace GameCore.Objects
 {
 	public static class ThingHelper
 	{
-		private static readonly Dictionary<ETiles, FakedThing> m_fakedThings = new Dictionary<ETiles, FakedThing>();
-		private static readonly Dictionary<ETiles, FakedItem> m_fakedItems = new Dictionary<ETiles, FakedItem>();
-		private static readonly Dictionary<ETiles, FakedMonster> m_fakedMonsters = new Dictionary<ETiles, FakedMonster>();
+		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedThing> m_fakedThings = new Dictionary<Tuple<ETiles, FColor>, FakedThing>();
+		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETiles, FColor>, FakedItem>();
+		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedMonster> m_fakedMonsters = new Dictionary<Tuple<ETiles, FColor>, FakedMonster>();
 
 		//public static void RegisterThings()
 		static ThingHelper()
@@ -112,27 +112,30 @@ namespace GameCore.Objects
 
 		public static FakedThing GetThing(this ETiles _tile)
 		{
-			return m_fakedThings[_tile];
+			var key = new Tuple<ETiles, FColor>(_tile, FColor.Empty);
+			FakedThing thing;
+			return m_fakedThings.TryGetValue(key, out thing) ? thing : m_fakedThings.First(_pair => _pair.Key.Item1==_tile).Value;
 		}
 
 		public static FakedItem GetItem(this ETiles _tile)
 		{
-			return m_fakedItems[_tile];
+			return m_fakedItems[new Tuple<ETiles, FColor>(_tile, FColor.Empty)];
 		}
 
 		public static FakedMonster GetMonster(this ETiles _tile)
 		{
-			return m_fakedMonsters[_tile];
+			return m_fakedMonsters[new Tuple<ETiles, FColor>(_tile, FColor.Empty)];
 		}
 
 		private static void RegisterCreatureType(Type _type)
 		{
 			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			FakedMonster value;
-			if (!m_fakedMonsters.TryGetValue(thing.Tile, out value))
+			var key = new Tuple<ETiles, FColor>(thing.Tile, thing.LerpColor);
+			if (!m_fakedMonsters.TryGetValue(key, out value))
 			{
-				value = new FakedMonster(thing.Tile);
-				m_fakedMonsters.Add(thing.Tile, value);
+				value = new FakedMonster(thing.Tile, thing.LerpColor);
+				m_fakedMonsters.Add(key, value);
 			}
 			value.Add(_type);
 		}
@@ -141,23 +144,24 @@ namespace GameCore.Objects
 		{
 			var thing = (Thing) Activator.CreateInstance(_type);
 			FakedItem value;
-			if (!m_fakedItems.TryGetValue(thing.Tile, out value))
+			var key = new Tuple<ETiles, FColor>(thing.Tile, thing.LerpColor);
+			if (!m_fakedItems.TryGetValue(key, out value))
 			{
-				value = new FakedItem(thing.Tile);
-				m_fakedItems.Add(thing.Tile, value);
+				value = new FakedItem(thing.Tile, thing.LerpColor);
+				m_fakedItems.Add(key, value);
 			}
 			value.Add(_type);
-			//Debug.WriteLine(thing.Name);
 		}
 
 		private static void RegisterThingType(Type _type)
 		{
 			var thing = (Thing) Activator.CreateInstance(_type);
+			var key = new Tuple<ETiles, FColor>(thing.Tile, thing.LerpColor);
 			FakedThing value;
-			if (!m_fakedThings.TryGetValue(thing.Tile, out value))
+			if (!m_fakedThings.TryGetValue(key, out value))
 			{
-				value = new FakedThing(thing.Tile);
-				m_fakedThings.Add(thing.Tile, value);
+				value = new FakedThing(thing.Tile, thing.LerpColor);
+				m_fakedThings.Add(key, value);
 			}
 			value.Add(_type);
 		}
@@ -179,21 +183,21 @@ namespace GameCore.Objects
 
 		public static Thing GetFaketThing(MapBlock _block)
 		{
-			var keys = new List<ETiles>(m_fakedThings.Keys);
+			var keys = new List<Tuple<ETiles, FColor>>(m_fakedThings.Keys);
 			var index = World.Rnd.Next(keys.Count);
 			return m_fakedThings[keys[index]];
 		}
 
 		public static Thing GetFaketItem(int _blockRandomSeed)
 		{
-			var keys = new List<ETiles>(m_fakedItems.Keys);
+			var keys = new List<Tuple<ETiles, FColor>>(m_fakedItems.Keys);
 			var index = World.Rnd.Next(keys.Count);
 			return m_fakedItems[keys[index]];
 		}
 
 		public static Thing GetFaketCreature(MapBlock _block)
 		{
-			var keys = new List<ETiles>(m_fakedMonsters.Keys);
+			var keys = new List<Tuple<ETiles, FColor>>(m_fakedMonsters.Keys);
 			return m_fakedMonsters[keys[World.Rnd.Next(keys.Count)]];
 		}
 	}

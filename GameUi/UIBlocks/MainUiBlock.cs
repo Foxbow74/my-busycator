@@ -23,7 +23,7 @@ namespace GameUi.UIBlocks
 
 			m_messages = new TurnMessageUiBlock(new Rct(Rct.Left, 0, Rct.Width, messagesHeight)) { BackgroundColor = Color.FromArgb(255, 30, 30, 30).ToFColor() };
 			m_map = new MapUiBlock(new Rct(ContentRct.Left, m_messages.Rct.Height, Rct.Width, Rct.Height - m_messages.Rct.Height - statHeight));
-			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - statHeight, Rct.Width, statHeight)) { BackgroundColor = Color.FromArgb(255, 0, 30, 30).ToFColor() };
+			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - statHeight + 1, Rct.Width, statHeight)) { BackgroundColor = Color.FromArgb(255, 0, 30, 30).ToFColor() };
 		}
 
 		public override void Dispose()

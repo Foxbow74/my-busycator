@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Misc;
@@ -27,7 +26,7 @@ namespace GameUi.UIBlocks
 		public override void DrawBackground()
 		{
 			base.DrawBackground();
-			TileHelper.DrawHelper.ClearText(new Rct(Rct.Left * ATile.Size, Rct.Top * ATile.Size, Rct.Width * ATile.Size, Rct.Height * ATile.Size), FColor.Empty);
+			TileHelper.DrawHelper.ClearText(Rct * ATile.Size, FColor.Empty);
 		}
 
 		protected override void OnClosing(ConsoleKey _consoleKey)

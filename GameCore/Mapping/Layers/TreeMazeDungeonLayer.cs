@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Drawing;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
 using Point = GameCore.Misc.Point;
@@ -24,7 +23,7 @@ namespace GameCore.Mapping.Layers
 			m_rnd = new Random(_rndSeed);
 			var size = m_rnd.Next(5) + m_rnd.Next(5) + 5;
 			var map = new EMapBlockTypes[size, size];
-			var center = MapBlock.GetBlockCoords(_enterCoords);
+			var center = new Point(size, size)/2;
 			var list = new List<Point> { center };
 			do
 			{
@@ -32,7 +31,8 @@ namespace GameCore.Mapping.Layers
 				list.AddRange(AddBlocks(point, map, ref size));
 			} while (size > 0);
 
-			var blockIds = list.Distinct().ToArray();
+			var enterBlock = MapBlock.GetBlockId(_enterCoords);
+			var blockIds = list.Distinct().Select(_point => _point - center + enterBlock).ToArray();
 
 			foreach (var blockId in blockIds)
 			{
@@ -42,7 +42,7 @@ namespace GameCore.Mapping.Layers
 					block = new MapBlock(blockId);	
 				}
 				
-				if (MapBlock.GetBlockCoords(EnterCoords) == blockId)
+				if (MapBlock.GetBlockId(EnterCoords) == blockId)
 				{
 					GenerateInternal(block, new[] { MapBlock.GetInBlockCoords(EnterCoords) });
 				}
@@ -235,7 +235,7 @@ namespace GameCore.Mapping.Layers
 		/// </summary>
 		private IEnumerable<ConnectionPoint> AddConnectionPoints(MapBlock _block, Room _room, Random _rnd)
 		{
-			if (_block.BlockId == MapBlock.GetBlockCoords(EnterCoords) &&
+			if (_block.BlockId == MapBlock.GetBlockId(EnterCoords) &&
 			    _room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords)))
 			{
 				_room.IsConnected = true;
@@ -286,7 +286,7 @@ namespace GameCore.Mapping.Layers
 
 					var delta = dir.GetDelta();
 
-					if (!Blocks.ContainsKey(MapBlock.GetBlockCoords(begin + _block.BlockId*MapBlock.SIZE + delta*MapBlock.SIZE)))
+					if (!Blocks.ContainsKey(MapBlock.GetBlockId(begin + _block.BlockId*MapBlock.SIZE + delta*MapBlock.SIZE)))
 					{
 						continue;
 					}
@@ -971,7 +971,7 @@ namespace GameCore.Mapping.Layers
 						_connectors.Add(point, new Connector(_room1));
 					}
 					var inBlock = MapBlock.GetInBlockCoords(point);
-					this[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = defEmpty[rnd.Next(defEmpty.Length)];
+					this[MapBlock.GetBlockId(point)].Map[inBlock.X, inBlock.Y] = defEmpty[rnd.Next(defEmpty.Length)];
 
 					if (index != 0 && index < line.Length - 1)
 					{
@@ -991,8 +991,6 @@ namespace GameCore.Mapping.Layers
 				pnt = _points[i];
 			}
 			_room1.Connect(_room2);
-
-			Debug.WriteLine("CONNECTED:" + _room1.RoomRectangle + " to " + _room2.RoomRectangle + " by " + string.Join("|", _points.Select(_point => _point.ToString())));
 		}
 	}
 }

@@ -75,7 +75,7 @@ namespace OpenTKUi
 		{
 			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
 			{
-				gr.Clip = new Region(new Rectangle(_rct.Left, _rct.Top, _rct.Width + 1, _rct.Height + 1));
+				gr.Clip = new Region(new Rectangle(_rct.Left, _rct.Top, _rct.Width, _rct.Height));
 				gr.Clear(_toFColor.ToColor());
 			}
 			m_isTextBitmapChanged = true;

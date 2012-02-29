@@ -42,7 +42,7 @@ namespace GameCore.Mapping.Layers
 
 		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _worldCoords)
 		{
-			var centralBlockCoord = MapBlock.GetBlockCoords(_worldCoords);
+			var centralBlockCoord = MapBlock.GetBlockId(_worldCoords);
 			for (var i = -ACTIVE_SIZE_HALF; i < ACTIVE_SIZE_HALF; ++i)
 			{
 				for (var j = -ACTIVE_SIZE_HALF; j < ACTIVE_SIZE_HALF; ++j)

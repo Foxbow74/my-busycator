@@ -58,11 +58,11 @@ namespace OpenTKUi
 
 		#region Nested type: TexCoord
 
-		public struct TexCoord
-		{
-			public float U, V;
-		}
-
 		#endregion
+	}
+
+	internal struct TexCoord
+	{
+		public float U, V;
 	}
 }

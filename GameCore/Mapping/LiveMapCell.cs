@@ -101,6 +101,38 @@ namespace GameCore.Mapping
 			get { return TerrainAttribute.IsCanShootThrough; }
 		}
 
+		public IEnumerable<ITileInfoProvider> TileInfoProviders
+		{
+			get
+			{
+				if(Furniture!=null)
+				{
+					yield return Furniture;
+				}
+				if (Items.Any())
+				{
+					yield return Items.Count() > 1?TileInfoProvider.HeapOfItems:Items.FirstOrDefault();
+				}
+				var cr = Creature;
+				if (cr != null)
+				{
+					yield return cr;
+				}
+			}
+		}
+
+
+		public IEnumerable<ITileInfoProvider> FoggedTileInfoProviders
+		{
+			get
+			{
+				if (ThingHelper.Is<Stair>(Furniture))
+				{
+					yield return Furniture;
+				}
+			}
+		}
+
 		public ETiles Tile
 		{
 			get

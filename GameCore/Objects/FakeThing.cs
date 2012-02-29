@@ -8,11 +8,21 @@ namespace GameCore.Objects
 	public class FakedThing : Thing, IFaked
 	{
 		private readonly ETiles m_tile;
+		private readonly FColor m_lerpColor;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedThing(ETiles _tile)
+		public FakedThing(ETiles _tile, FColor _lerpColor)
 		{
 			m_tile = _tile;
+			m_lerpColor = _lerpColor;
+		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return m_lerpColor;
+			}
 		}
 
 		public override ETiles Tile
@@ -69,11 +79,22 @@ namespace GameCore.Objects
 	public class FakedMonster : Creature, IFaked
 	{
 		private readonly ETiles m_tile;
+		private readonly FColor m_lerpColor;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedMonster(ETiles _tile) : base(null, int.MinValue)
+		public FakedMonster(ETiles _tile, FColor _lerpColor)
+			: base(null, int.MinValue)
 		{
 			m_tile = _tile;
+			m_lerpColor = _lerpColor;
+		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return m_lerpColor;
+			}
 		}
 
 		public override ETiles Tile
