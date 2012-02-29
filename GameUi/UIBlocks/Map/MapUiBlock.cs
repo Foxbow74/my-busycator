@@ -56,7 +56,7 @@ namespace GameUi.UIBlocks.Map
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
 					var lightness = lighted.Lightness();
-					if(lightness>0)
+					if(lightness>0.1f)
 					{
 						liveCell.SetIsSeenBefore();
 					}

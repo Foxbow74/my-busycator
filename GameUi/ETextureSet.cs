@@ -9,5 +9,6 @@
 		RR_NATURAL_02,
 		GP_X16,
 		NH,
+		SELF,
 	}
 }
