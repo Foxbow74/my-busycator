@@ -136,7 +136,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(1f,1f,1f,0.5f).Multiply(0.1f); 
+				return new FColor(1f,1f,1f,0.5f).Multiply(0.5f); 
 			}
 		}
 	}

@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using Point = GameCore.Misc.Point;
 
 namespace OpenTKUi
 {
@@ -66,9 +67,9 @@ namespace OpenTKUi
 			m_isTextBitmapChanged = true;
 		}
 
-		public void FogTile(int _col, int _row)
+		public void FogTile(Point _point)
 		{
-			m_gameProvider.TileMapRenderer.FogTile(_col, _row);
+			m_gameProvider.TileMapRenderer.FogTile(_point);
 		}
 
 		public void ClearText(Rct _rct, FColor _toFColor)

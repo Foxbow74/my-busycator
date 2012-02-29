@@ -51,7 +51,8 @@ namespace GameUi.UIBlocks.Map
 			{
 				for (var y = 0; y < height; ++y)
 				{
-					var pnt = LiveMap.WrapCellCoords(new Point(x + dPoint.X, y + dPoint.Y));
+					var xy = new Point(x, y);
+					var pnt = LiveMap.WrapCellCoords(xy + dPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
@@ -62,34 +63,35 @@ namespace GameUi.UIBlocks.Map
 					}
 
 
-					
+					var screenPoint = xy + ContentRct.LeftTop;
+
 					if (lightness > fogLightness)
 					{
 						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						terrainTile.Draw(x + ContentRct.Left, y + ContentRct.Top, terrainTile.Color.Multiply(lighted).Clamp(), BackgroundColor.Multiply(lighted));
+						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp(), BackgroundColor.Multiply(lighted));
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp();
-							tile.Draw(x + ContentRct.Left, y + ContentRct.Top, color, BackgroundColor.Multiply(lighted));
+							tile.Draw(screenPoint, color, BackgroundColor.Multiply(lighted));
 						}
 					}
 					else if (liveCell.IsSeenBefore)
 					{
 						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						terrainTile.Draw(x + ContentRct.Left, y + ContentRct.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+						terrainTile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
 
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(x + ContentRct.Left, y + ContentRct.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
 						}
-						DrawHelper.FogTile(x + ContentRct.Left, y + ContentRct.Top);
+						DrawHelper.FogTile(screenPoint);
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(width / 2 + ContentRct.Left, height / 2 + ContentRct.Top, Color.White.ToFColor(), BackgroundColor);
+			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, Color.White.ToFColor(), BackgroundColor);
 		}
 
 		public override void DrawFrame()

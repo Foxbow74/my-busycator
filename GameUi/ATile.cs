@@ -27,8 +27,8 @@ namespace GameUi
 
 		public object Tile { get; set; }
 
-		public abstract void Draw(int _x, int _y, FColor _color, FColor _background);
+		public abstract void Draw(Point _point, FColor _color, FColor _background, EDirections _direction);
 		public abstract void Draw(Point _point, FColor _color, FColor _background);
-		public abstract void FogIt(int _col, int _row);
+		public abstract void FogIt(Point _point);
 	}
 }
