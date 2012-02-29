@@ -152,15 +152,15 @@ namespace GameCore.Mapping.Layers
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
 			var objects = new List<Point>(_objects);
-			Generate(_block, rnd, new Rectangle(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), objects);
+			Generate(_block, rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), objects);
 		}
 
-		private void Generate(MapBlock _block, Random _random, Rectangle _rectangle, ICollection<Point> _objects)
+		private void Generate(MapBlock _block, Random _random, Rct _rct, ICollection<Point> _objects)
 		{
-			var ableVert = _rectangle.Width - MIN_ROOM_SIZE * 2;
-			var ableHor = _rectangle.Height - MIN_ROOM_SIZE * 2;
+			var ableVert = _rct.Width - MIN_ROOM_SIZE * 2;
+			var ableHor = _rct.Height - MIN_ROOM_SIZE * 2;
 
-			if ((ableHor > 1 || ableVert > 1)  && (_rectangle.Width*_rectangle.Height<MIN_ROOM_SQUARE || _rectangle.Width>MAX_DIV_SIZE || _rectangle.Height>MAX_DIV_SIZE || _random.Next(_rectangle.Width + _rectangle.Height) > MIN_ROOM_SIZE))
+			if ((ableHor > 1 || ableVert > 1)  && (_rct.Width*_rct.Height<MIN_ROOM_SQUARE || _rct.Width>MAX_DIV_SIZE || _rct.Height>MAX_DIV_SIZE || _random.Next(_rct.Width + _rct.Height) > MIN_ROOM_SIZE))
 			{
 				var divVert = 0;
 				var divHor = 0;
@@ -169,7 +169,7 @@ namespace GameCore.Mapping.Layers
 					divVert = ableVert > 0 ? _random.Next(ableVert + 1) : 0;
 					divHor = ableHor > 0 ? _random.Next(ableHor + 1) : 0;
 				}
-				var rects = new List<Rectangle>();
+				var rects = new List<Rct>();
 				if (divVert > divHor)
 				{
 					int vert;
@@ -177,10 +177,10 @@ namespace GameCore.Mapping.Layers
 					{
 						vert = MIN_ROOM_SIZE + _random.Next(ableVert);
 						var val = vert;
-						if (_objects.All(_point => _point.X != (_rectangle.Left + val))) break;
+						if (_objects.All(_point => _point.X != (_rct.Left + val))) break;
 					} while (true);
-					rects.Add(new Rectangle(_rectangle.Left, _rectangle.Top, vert, _rectangle.Height));
-					rects.Add(new Rectangle(_rectangle.Left + vert + 1, _rectangle.Top, _rectangle.Width - (vert + 1), _rectangle.Height));
+					rects.Add(new Rct(_rct.Left, _rct.Top, vert, _rct.Height));
+					rects.Add(new Rct(_rct.Left + vert + 1, _rct.Top, _rct.Width - (vert + 1), _rct.Height));
 				}
 				else
 				{
@@ -189,14 +189,14 @@ namespace GameCore.Mapping.Layers
 					{
 						hor = MIN_ROOM_SIZE + _random.Next(ableHor);
 						var val = hor;
-						if (_objects.All(_point => _point.Y != (_rectangle.Top + val))) break;
+						if (_objects.All(_point => _point.Y != (_rct.Top + val))) break;
 					} while (true);
-					rects.Add(new Rectangle(_rectangle.Left, _rectangle.Top, _rectangle.Width, hor));
-					rects.Add(new Rectangle(_rectangle.Left, _rectangle.Top + hor + 1, _rectangle.Width, _rectangle.Height - (hor + 1)));
+					rects.Add(new Rct(_rct.Left, _rct.Top, _rct.Width, hor));
+					rects.Add(new Rct(_rct.Left, _rct.Top + hor + 1, _rct.Width, _rct.Height - (hor + 1)));
 				}
 				foreach (var rectangle in rects)
 				{
-					if (rectangle.Width > _rectangle.Width || rectangle.Height > _rectangle.Height)
+					if (rectangle.Width > _rct.Width || rectangle.Height > _rct.Height)
 					{
 						throw new ApplicationException("Доля больше чем место под нее");
 					}
@@ -204,23 +204,23 @@ namespace GameCore.Mapping.Layers
 				}
 				return;
 			}
-			MakeRoom(_block, _rectangle, _random, _objects);
+			MakeRoom(_block, _rct, _random, _objects);
 		}
 
-		private void MakeRoom(MapBlock _block, Rectangle _rectangle, Random _random, ICollection<Point> _objects)
+		private void MakeRoom(MapBlock _block, Rct _rct, Random _random, ICollection<Point> _objects)
 		{
-			var contains = _objects.Where(_point => _rectangle.ContainsEx(_point)).ToArray();
-			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rectangle.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rectangle.Height - MIN_ROOM_SIZE));
+			var contains = _objects.Where(_point => _rct.ContainsEx(_point)).ToArray();
+			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
 			//Point xy;
-			//Rectangle rect;
+			//Rct rect;
 			for (; ; )
 			{
-				var xy = new Point(_random.Next(_rectangle.Width - size.X + 1), _random.Next(_rectangle.Height - size.Y + 1));
-				var rect = new Rectangle(_rectangle.X + xy.X, _rectangle.Y + xy.Y, size.X, size.Y);
-				if (!contains.Any() || contains.All(_point => rect.ContainsEx(_point)))
+				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
+				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
+				if (!contains.Any() || contains.All(rect.ContainsEx))
 				{
 					MapBlockHelper.Fill(_block, _random, this, DefaultEmptySpaces, rect);
-					_block.Rooms.Add(new Room(rect, _rectangle, _block.BlockId));
+					_block.Rooms.Add(new Room(rect, _rct, _block.BlockId));
 					break;
 				}
 			}
@@ -300,7 +300,7 @@ namespace GameCore.Mapping.Layers
 					cps.Add(new ConnectionPoint(begin + _block.BlockId*MapBlock.SIZE, end + _block.BlockId*MapBlock.SIZE, _room, dir));
 				}
 
-				if (cps.Count > 1 || (trys > 5 && cps.Count > 0))
+				if (cps.Count > 1 || (trys > 5 && cps.Count > 0) || trys>20)
 				{
 					foreach (var connectionPoint in cps)
 					{

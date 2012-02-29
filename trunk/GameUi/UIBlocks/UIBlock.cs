@@ -1,26 +1,26 @@
 ﻿using System;
-using System.Drawing;
 using GameCore;
 using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
 	internal class UIBlock
 	{
-		protected UIBlock(Rectangle _rectangle, Frame _frame, FColor _color)
+		protected UIBlock(Rct _rct, Frame _frame, FColor _color)
 		{
 			BlockFrame = _frame;
 			ForeColor = _color;
-			Rectangle = _rectangle;
+			Rct = _rct;
 			BackgroundColor = new FColor(1,0,0,0);
-			UpdateContentRectangle();
+			UpdateContentRct();
 		}
 
 		public FColor BackgroundColor { get; set; }
 
-		public Rectangle Rectangle { get; protected set; }
+		public Rct Rct { get; protected set; }
 
-		public Rectangle ContentRectangle { get; protected set; }
+		public Rct ContentRct { get; protected set; }
 
 		protected internal FColor ForeColor { get; private set; }
 
@@ -33,12 +33,12 @@ namespace GameUi.UIBlocks
 			DrawHelper = _drawHelper;
 		}
 
-		protected void UpdateContentRectangle()
+		protected void UpdateContentRct()
 		{
-			ContentRectangle = Rectangle;
+			ContentRct = Rct;
 			if (BlockFrame != null)
 			{
-				ContentRectangle = new Rectangle(ContentRectangle.Left + 1, ContentRectangle.Top + 1, ContentRectangle.Width - 2, ContentRectangle.Height - 2);
+				ContentRct = new Rct(ContentRct.Left + 1, ContentRct.Top + 1, ContentRct.Width - 2, ContentRct.Height - 2);
 			}
 		}
 
@@ -50,7 +50,7 @@ namespace GameUi.UIBlocks
 		{
 			if (BlockFrame != null)
 			{
-				Draw(BlockFrame, Rectangle.Left, Rectangle.Top, Rectangle.Width, Rectangle.Height);
+				Draw(BlockFrame, Rct.Left, Rct.Top, Rct.Width, Rct.Height);
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace GameUi.UIBlocks
 
 		public virtual void DrawBackground()
 		{
-			TileHelper.DrawHelper.ClearTiles(Rectangle, BackgroundColor);
+			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 		}
 
 		public virtual void Dispose()

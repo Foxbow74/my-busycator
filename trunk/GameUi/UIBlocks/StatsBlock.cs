@@ -7,8 +7,8 @@ namespace GameUi.UIBlocks
 {
 	internal class StatsBlock : UIBlock
 	{
-		public StatsBlock(Rectangle _rectangle)
-			: base(_rectangle, null, Color.Gray.ToFColor())
+		public StatsBlock(Rct _rct)
+			: base(_rct, null, Color.Gray.ToFColor())
 		{
 		}
 

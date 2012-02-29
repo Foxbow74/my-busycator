@@ -12,8 +12,8 @@ namespace GameUi.UIBlocks
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 
-		public MessageBlock(Rectangle _rectangle)
-			: base(_rectangle, null, Color.Yellow.ToFColor())
+		public MessageBlock(Rct _rct)
+			: base(_rct, null, Color.Yellow.ToFColor())
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}
@@ -30,13 +30,13 @@ namespace GameUi.UIBlocks
 			{
 				var tm = (SimpleTextMessage) _message;
 				var tp = new TextPortion(tm.Text, null);
-				tp.SplitByLines((ContentRectangle.Width - 1)*ATile.Size, Font, 0);
+				tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
 				m_lines.AddRange(tp.TextLines);
 			}
 			else if (_message is TextMessage)
 			{
 				var tm = (TextMessage) _message;
-				tm.Text.SplitByLines((ContentRectangle.Width - 1)*ATile.Size, Font, 0);
+				tm.Text.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
 				m_lines.AddRange(tm.Text.TextLines);
 			}
 		}

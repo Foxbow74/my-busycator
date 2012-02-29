@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
-using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping
 {
@@ -13,8 +11,8 @@ namespace GameCore.Mapping
 	{
 		//Координаты блока в блочных координатах
 
-		public const int SIZE = 20;
-		public readonly static Rectangle Rect = new Rectangle(0,0,SIZE,SIZE);
+		public const int SIZE = 32;
+		public readonly static Rct Rect = new Rct(0,0,SIZE,SIZE);
 
 		public MapBlock(Point _point)
 		{
@@ -103,9 +101,9 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public Rectangle Rectangle()
+		public Rct Rct()
 		{
-			return new Rectangle(new System.Drawing.Point(BlockId.X * SIZE, BlockId.Y * SIZE), new Size(SIZE, SIZE));
+			return new Rct(BlockId*SIZE, SIZE, SIZE);
 		}
 	}
 }

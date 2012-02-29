@@ -22,15 +22,15 @@ namespace GameUi.UIBlocks
 		private Point m_realTarget;
 		private Point m_targetPoint;
 
-		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rectangle _mapRectangle, int _maxDistance, Act _act)
-			: base(_mapRectangle, null, Color.Gray.ToFColor())
+		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
+			: base(_mapRct, null, Color.Gray.ToFColor())
 		{
 			m_messages = _messages;
 			m_maxDistance = _maxDistance;
 			m_act = _act;
 			m_targetPoint = Point.Zero;
-			m_center = new Point(ContentRectangle.Width / 2, ContentRectangle.Height / 2);
-			m_addPoint = new Point(ContentRectangle.Left, ContentRectangle.Top) + m_center;
+			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
+			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
 			
 			var points = new List<Point>();
 
@@ -59,7 +59,7 @@ namespace GameUi.UIBlocks
 			if (dPoint != null)
 			{
 				var newPoint = m_targetPoint + dPoint + m_addPoint;
-				if (ContentRectangle.Contains(newPoint.X, newPoint.Y))
+				if (ContentRct.ContainsEx(newPoint))
 				{
 					m_targetPoint += dPoint;
 					if (m_targetPoint.Lenght > m_maxDistance)

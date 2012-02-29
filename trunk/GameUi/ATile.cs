@@ -12,7 +12,7 @@ namespace GameUi
 		{
 			Set = _set;
 			Color = _color;
-			Rectangle = new System.Drawing.Rectangle(_x*Size, _y*Size, Size, Size);
+			Rct = new Rct(_x*Size, _y*Size, Size, Size);
 		}
 
 		protected ATile()
@@ -21,7 +21,7 @@ namespace GameUi
 		
 		public FColor Color { get; private set; }
 
-		public System.Drawing.Rectangle Rectangle { get; private set; }
+		public Rct Rct { get; private set; }
 
 		public bool IsFogTile { get; set; }
 

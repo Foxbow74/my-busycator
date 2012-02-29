@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using GameCore.Acts;
 using GameCore.Messages;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
 {
 	internal class SelectItemsUiBlock : ItemsSelectorUiBlock
 	{
-		public SelectItemsUiBlock(Rectangle _rectangle, IEnumerable<ThingDescriptor> _items, Act _act,
+		public SelectItemsUiBlock(Rct _rct, IEnumerable<ThingDescriptor> _items, Act _act,
 		                          ESelectItemDialogBehavior _behavior)
-			: base(_rectangle, _behavior, _act, _items)
+			: base(_rct, _behavior, _act, _items)
 		{
 		}
 

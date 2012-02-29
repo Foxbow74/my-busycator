@@ -24,9 +24,9 @@ namespace GameUi.UIBlocks.Items
 		private int m_currentPage;
 		private Dictionary<int, List<ILinePresenter>> m_pages;
 
-		protected ItemsSelectorUiBlock(Rectangle _rectangle, ESelectItemDialogBehavior _behavior, Act _act,
+		protected ItemsSelectorUiBlock(Rct _rct, ESelectItemDialogBehavior _behavior, Act _act,
 		                               IEnumerable<ThingDescriptor> _descriptors)
-			: base(_rectangle, Frame.GoldFrame, Color.Green.ToFColor())
+			: base(_rct, Frame.GoldFrame, Color.Green.ToFColor())
 		{
 			m_behavior = _behavior;
 			m_act = _act;

@@ -102,26 +102,26 @@ namespace GameUi
 			{
 				var mess = (AskSelectThingsMessage) _message;
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainUiBlock.Rectangle, mess.ItemDescriptors,
+				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainUiBlock.Rct, mess.ItemDescriptors,
 				                                                                         mess.Act, mess.Behavior)));
 			}
 			else if (_message is AskSelectThingsFromBackPackMessage)
 			{
 				var mess = (AskSelectThingsFromBackPackMessage) _message;
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rectangle, mess.Behavior,
+				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rct, mess.Behavior,
 				                                                                      mess.AllowedCategory, mess.Act)));
 			}
 			else if (_message is AskDirectionMessage)
 			{
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rectangle,
+				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rct,
 				                                                                          (AskDirectionMessage) _message)));
 			}
 			else if (_message is AskHowMuchMessage)
 			{
 				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainUiBlock.Messages.ContentRectangle,
+				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainUiBlock.Messages.ContentRct,
 				                                                                        (AskHowMuchMessage) _message)));
 			}
 			else if (_message is AskShootTargerMessage)
@@ -129,7 +129,7 @@ namespace GameUi
 				var askShootTargerMessage = (AskShootTargerMessage) _message;
 				MessageManager.SendMessage(this,
 				                           new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainUiBlock.Messages,
-				                                                                          m_mainUiBlock.Map.Rectangle,
+				                                                                          m_mainUiBlock.Map.Rct,
 				                                                                          askShootTargerMessage.MaxDistance,
 				                                                                          askShootTargerMessage.Act)));
 			}

@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Misc;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace GameCore.Mapping
 {
 	public class Room
 	{
-		public Room(Rectangle _roomRect, Rectangle _areaRect, Point _blockId)
+		public Room(Rct _roomRect, Rct _areaRect, Point _blockId)
 		{
 			BlockId = _blockId;
 			RoomRectangle = _roomRect;
 			AreaRectangle = _areaRect;
-			WorldRoomRectangle = new Rectangle
+			WorldRoomRectangle = new Rct
 				(
 					_roomRect.Left + BlockId.X * MapBlock.SIZE, 
 					_roomRect.Top + BlockId.Y * MapBlock.SIZE, 
@@ -27,10 +26,10 @@ namespace GameCore.Mapping
 			get; private set; 
 		}
 
-		public Rectangle RoomRectangle { get; private set; }
-		public Rectangle AreaRectangle { get; private set; }
+		public Rct RoomRectangle { get; private set; }
+		public Rct AreaRectangle { get; private set; }
 
-		public Rectangle WorldRoomRectangle { get; private set; }
+		public Rct WorldRoomRectangle { get; private set; }
 
 		private bool m_isConnected;
 		public bool IsConnected 

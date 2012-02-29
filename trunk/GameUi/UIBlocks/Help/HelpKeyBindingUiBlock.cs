@@ -9,8 +9,8 @@ namespace GameUi.UIBlocks.Help
 {
 	internal class HelpKeyBindingUiBlock : UiBlockWithText
 	{
-		public HelpKeyBindingUiBlock(Rectangle _rectangle)
-			: base(_rectangle, Frame.SimpleFrame, Color.DarkGray.ToFColor())
+		public HelpKeyBindingUiBlock(Rct _rct)
+			: base(_rct, Frame.SimpleFrame, Color.DarkGray.ToFColor())
 		{
 		}
 
