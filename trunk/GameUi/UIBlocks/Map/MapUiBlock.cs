@@ -91,7 +91,7 @@ namespace GameUi.UIBlocks.Map
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, Color.White.ToFColor());
+			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, FColor.White);
 		}
 
 		public override void DrawFrame()
