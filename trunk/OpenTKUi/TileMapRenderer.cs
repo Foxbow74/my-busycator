@@ -5,6 +5,7 @@ using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
+using Point = GameCore.Misc.Point;
 
 namespace OpenTKUi
 {
@@ -150,16 +151,16 @@ namespace OpenTKUi
 		{
 		}
 
-		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, FColor _background)
+		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, FColor _background, EDirections _direction)
 		{
 			var info = m_tiles[_x, _y];
 			info.IsFogged = false;
-			info.AddLayer(_tile, _color);
+			info.AddLayer(_tile, _color, _direction);
 		}
 
-		public void  FogTile(int _col, int _row)
+		public void FogTile(Point _point)
 		{
-			m_tiles[_col, _row].IsFogged = true;
+			m_tiles[_point.X, _point.Y].IsFogged = true;
 		}
 
 		public void Clear(Rct _rct, FColor _backgroundColor)
@@ -198,8 +199,9 @@ namespace OpenTKUi
 
 		public bool IsVisible { get; set; }
 
-		private List<OpenTKTile> m_tiles = new List<OpenTKTile>();
-		private List<FColor> m_colors = new List<FColor>();
+		private readonly List<OpenTKTile> m_tiles = new List<OpenTKTile>();
+		private readonly List<FColor> m_colors = new List<FColor>();
+		private readonly List<EDirections> m_directions = new List<EDirections>();
 
 		public int Layers { get; private set; }
 
@@ -276,13 +278,15 @@ namespace OpenTKUi
 		{
 			m_tiles.Clear();
 			m_colors.Clear();
+			m_directions.Clear();
 			Layers = 0;
 		}
 
-		public void AddLayer(OpenTKTile _tile, FColor _color)
+		public void AddLayer(OpenTKTile _tile, FColor _color, EDirections _direction)
 		{
 			m_tiles.Add(_tile);
 			m_colors.Add(_color);
+			m_directions.Add(_direction);
 			Layers++;
 		}
 	}

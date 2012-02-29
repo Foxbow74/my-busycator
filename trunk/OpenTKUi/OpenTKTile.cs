@@ -41,19 +41,19 @@ namespace OpenTKUi
 
 		public TexCoord[] Texcoords { get; private set; }
 
-		public override void Draw(int _x, int _y, FColor _color, FColor _background)
+		public override void Draw(Point _point, FColor _color, FColor _background, EDirections _direction)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _x, _y, _color, _background);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background, _direction);
 		}
 
 		public override void Draw(Point _point, FColor _color, FColor _background)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _background, EDirections.DOWN);
 		}
 
-		public override void FogIt(int _col, int _row)
+		public override void FogIt(Point _point)
 		{
-			GameProvider.TileMapRenderer.FogTile(_col, _row);
+			GameProvider.TileMapRenderer.FogTile(_point);
 		}
 
 		#region Nested type: TexCoord
