@@ -38,7 +38,7 @@ namespace GameUi.UIBlocks
 			ContentRct = Rct;
 			if (BlockFrame != null)
 			{
-				ContentRct = new Rct(ContentRct.Left + 1, ContentRct.Top + 1, ContentRct.Width - 2, ContentRct.Height - 2);
+				ContentRct = ContentRct.Inflate(-1,-1);
 			}
 		}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
 using GameCore.Misc;
@@ -84,30 +85,65 @@ namespace OpenTKUi
 			}
 		}
 
+		public void Draw1()
+		{
+			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
+
+			var needDraw = true;
+			var layer = 0;
+			while (needDraw)
+			{
+				GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+				needDraw = DrawQuads(false, false, layer);
+				if (needDraw)
+				{
+					GL.BlendEquation(BlendEquationMode.FuncAdd);
+					DrawQuads(true, false, layer);
+					GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
+					DrawQuads(false, true, layer);
+					GL.BlendEquation(BlendEquationMode.FuncAdd);
+					DrawQuads(true, true, layer);
+				}
+				layer++;
+			}
+		}
+
 		public void Draw()
 		{
 			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
-			//GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-			//DrawQuads(false, false);
 			GL.BlendEquation(BlendEquationMode.FuncAdd);
-			DrawQuads(true, false);
-			//GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-			//DrawQuads(false, true);
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
-			DrawQuads(true, true);
+
+			var needDraw = true;
+			var layer = 0;
+			while (needDraw)
+			{
+				needDraw = DrawQuads(true, false, layer);
+				if (needDraw)
+				{
+					DrawQuads(true, true, layer);
+				}
+				layer++;
+			}
 		}
 
-		private void DrawQuads(bool _colored, bool _drawFog)
+		private bool DrawQuads(bool _colored, bool _drawFog, int _layer)
 		{
+			bool flag = false;
 			GL.Begin(BeginMode.Quads);
 			for (var i = 0; i < m_tilesInRow; i++)
 			{
 				for (var j = 0; j < m_tilesInColumn; j++)
 				{
-					m_tiles[i, j].Draw(Iteration, _colored, _drawFog);
+					var tileInfo = m_tiles[i, j];
+					if (tileInfo.Layers > _layer)
+					{
+						flag = true;
+						tileInfo.Draw(Iteration, _colored, _drawFog, _layer);
+					}
 				}
 			}
 			GL.End();
+			return flag;
 		}
 
 		public void Dispose()
@@ -118,8 +154,7 @@ namespace OpenTKUi
 		{
 			var info = m_tiles[_x, _y];
 			info.IsFogged = false;
-			info.Tile = _tile;
-			info.Forecolor = _color;
+			info.AddLayer(_tile, _color);
 		}
 
 		public void  FogTile(int _col, int _row)
@@ -134,7 +169,7 @@ namespace OpenTKUi
 
 			GL.Begin(BeginMode.Quads);
 			var xy = new GameCore.Misc.Point(_rct.Left, _rct.Top) * ATile.Size;
-			var xy1 = new GameCore.Misc.Point(_rct.Right, _rct.Bottom) * ATile.Size;
+			var xy1 = new GameCore.Misc.Point(_rct.Right + 1, _rct.Bottom + 1) * ATile.Size;
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.Vertex2(xy.X, xy.Y);
 			GL.Vertex2(xy1.X, xy.Y);
@@ -142,9 +177,9 @@ namespace OpenTKUi
 			GL.Vertex2(xy.X, xy1.Y);
 			GL.End();
 
-			for (var i = _rct.Left; i < _rct.Right; i++)
+			for (var i = _rct.Left; i <= _rct.Right; i++)
 			{
-				for (var j = _rct.Top; j < _rct.Bottom; j++)
+				for (var j = _rct.Top; j <= _rct.Bottom; j++)
 				{
 					m_tiles[i, j].Clear();
 				}
@@ -154,35 +189,39 @@ namespace OpenTKUi
 
 	class TileInfo
 	{
+		public static TexCoord[] FogTexCoords;
+
 		private readonly int m_x;
 		private readonly int m_y;
 		private readonly int m_width;
 		private readonly int m_height;
 
-		public static OpenTKTile.TexCoord[] FogTexCoords;
-
 		public bool IsVisible { get; set; }
-		public OpenTKTile Tile { get; set; }
-		public FColor Forecolor { get; set; }
+
+		public List<OpenTKTile> Tile { get; set; }
+		public List<FColor> Forecolor { get; set; }
+		public int Layers { get; set; }
 
 		public bool IsFogged { get; set; }
 
 		public TileInfo(int _x, int _y, int _width, int _height)
 		{
+			Tile = new List<OpenTKTile>();
+			Forecolor = new List<FColor>();
 			m_x = _x * _width;
 			m_y = _y * _height;
 			m_width = _width;
 			m_height = _height;
 		}
 
-		public void Draw(int _iteration, bool _colored, bool _fogOnly)
+		public void Draw(int _iteration, bool _colored, bool _fogOnly, int _layer)
 		{
 			if (Tile == null && !_fogOnly) return;
 			if (_fogOnly && !IsFogged) return;
 
 
-			OpenTKTile.TexCoord[] texcoords;
-			var color = Forecolor;
+			TexCoord[] texcoords;
+			var color = Forecolor[_layer];
 			if (_fogOnly)
 			{
 				if (IsFogged)
@@ -198,7 +237,7 @@ namespace OpenTKUi
 			}
 			else
 			{
-				texcoords = Tile.Texcoords;
+				texcoords = Tile[_layer].Texcoords;
 			}
 			if(_colored)
 			{
@@ -236,7 +275,16 @@ namespace OpenTKUi
 
 		public void Clear()
 		{
-			Tile = null;
+			Tile.Clear();
+			Forecolor.Clear();
+			Layers = 0;
+		}
+
+		public void AddLayer(OpenTKTile _tile, FColor _color)
+		{
+			Tile.Add(_tile);
+			Forecolor.Add(_color);
+			Layers++;
 		}
 	}
 }

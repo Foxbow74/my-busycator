@@ -17,7 +17,7 @@ namespace GameCore.Mapping.Layers
 		internal Point End { get; private set; }
 		internal Room Room { get; private set; }
 		internal EDirections Dir { get; private set; }
-		internal Point BlockId { get { return MapBlock.GetBlockCoords(End); } }
+		internal Point BlockId { get { return MapBlock.GetBlockId(End); } }
 
 		public override string ToString()
 		{

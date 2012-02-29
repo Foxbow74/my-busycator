@@ -61,7 +61,7 @@ namespace GameCore.Mapping
 			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
 		}
 
-		public static Point GetBlockCoords(Point _point)
+		public static Point GetBlockId(Point _point)
 		{
 			var blockCoords = new Point(GetBlockCoord(_point.X), GetBlockCoord(_point.Y));
 			return blockCoords;

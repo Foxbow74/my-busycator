@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -27,9 +26,6 @@ namespace GameUi.UIBlocks.Map
 		{
 			switch (_message.Type)
 			{
-				case WorldMessage.EType.AVATAR_MOVE:
-					BackgroundColor = new FColor(1f,0.6f,0.02f,0f);
-					break;
 				case WorldMessage.EType.TURN:
 					Redraw();
 					break;
@@ -64,17 +60,31 @@ namespace GameUi.UIBlocks.Map
 					{
 						liveCell.SetIsSeenBefore();
 					}
+
+
+					
 					if (lightness > fogLightness)
 					{
-						var tile = liveCell.Tile.GetTile() ?? liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						var color = tile.Color.LerpColorsOnly(new FColor(1f, 1f, 0, 0), 0.2f).Multiply(lighted).Clamp();
-						tile.Draw(x + ContentRct.Left, y + ContentRct.Top, color, BackgroundColor.Multiply(lighted));
-						//tile.Draw(x + ContentRct.Left, y + ContentRct.Top, , BackgroundColor.Multiply(lighted));
+						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
+						terrainTile.Draw(x + ContentRct.Left, y + ContentRct.Top, terrainTile.Color.Multiply(lighted).Clamp(), BackgroundColor.Multiply(lighted));
+
+						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
+						{
+							var tile = tileInfoProvider.Tile.GetTile();
+							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp();
+							tile.Draw(x + ContentRct.Left, y + ContentRct.Top, color, BackgroundColor.Multiply(lighted));
+						}
 					}
 					else if (liveCell.IsSeenBefore)
 					{
-						var tile = liveCell.FoggedTile.GetTile()??liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
-						tile.Draw(x + ContentRct.Left, y + ContentRct.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
+						terrainTile.Draw(x + ContentRct.Left, y + ContentRct.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+
+						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
+						{
+							var tile = tileInfoProvider.Tile.GetTile();
+							tile.Draw(x + ContentRct.Left, y + ContentRct.Top, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), FColor.Empty);
+						}
 						DrawHelper.FogTile(x + ContentRct.Left, y + ContentRct.Top);
 					}
 				}

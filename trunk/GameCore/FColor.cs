@@ -102,6 +102,10 @@ namespace GameCore
 
 		public FColor LerpColorsOnly(FColor _color2, float _f)
 		{
+			if(_f==0)
+			{
+				return this;
+			}
 			var color = new FColor(
 				A,
 				MathHelper.Lerp(R, _color2.R, _f),

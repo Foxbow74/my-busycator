@@ -12,7 +12,7 @@ namespace GameCore.Mapping.Layers
 		public DungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair)
 		{
 			EnterCoords = _enterCoords;
-			var blockId = MapBlock.GetBlockCoords(_enterCoords);
+			var blockId = MapBlock.GetBlockId(_enterCoords);
 			var inBlockCoords = MapBlock.GetInBlockCoords(_enterCoords);
 			var block = this[blockId];
 
