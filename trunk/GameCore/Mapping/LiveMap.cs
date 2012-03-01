@@ -76,17 +76,6 @@ namespace GameCore.Mapping
 				var id = m_blockIds[index];
 				Blocks[id.X, id.Y] = new LiveMapBlock(this, id, index);
 			}
-			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
-		}
-
-		void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
-		{
-			switch (_message.Type)
-			{
-				case WorldMessage.EType.TURN:
-					OnTurn();
-					break;
-			}
 		}
 
 		private void LayerChanged()
@@ -96,35 +85,6 @@ namespace GameCore.Mapping
 				ClearBlock(blockId);
 			}
 			Actualize();
-		}
-
-		private void OnTurn()
-		{
-			using (new Profiler())
-			{
-				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
-
-				lighted.Add(CenterLiveBlock);
-
-				foreach (var blockId in lighted)
-				{
-					Blocks[blockId.X, blockId.Y].ClearTemp();
-				}
-
-				var centerLiveCell = GetCenterLiveCell();
-				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
-
-				foreach (var blockId in lighted)
-				{
-					var liveMapBlock = Blocks[blockId.X, blockId.Y];
-					liveMapBlock.LightCells();
-				}
-
-				if (World.TheWorld.Avatar.Light != null)
-				{
-					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
-				}
-			}
 		}
 
 		private Point GetCenterLiveCell()
@@ -160,9 +120,38 @@ namespace GameCore.Mapping
 		
 		public Point GetData()
 		{
-			//fefwe
-			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.LiveCoords);
-			var centerLiveCell = CenterLiveBlock*MapBlock.SIZE + inBlock;
+			var centerLiveCell = GetCenterLiveCell();
+
+			using (new Profiler())
+			{
+				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
+
+				lighted.Add(CenterLiveBlock);
+
+				foreach (var blockId in lighted)
+				{
+					Blocks[blockId.X, blockId.Y].ClearTemp();
+				}
+
+				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
+
+				foreach (var blockId in lighted)
+				{
+					var liveCellZero = blockId * MapBlock.SIZE;
+					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+
+					foreach (var tuple in liveMapBlock.MapBlock.LightSources)
+					{
+						tuple.Item1.LightCells(this, liveCellZero + tuple.Item2);
+					}
+				}
+
+				if (World.TheWorld.Avatar.Light != null)
+				{
+					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+				}
+			}
+
 			var zeroLiveCell = centerLiveCell - m_vieportSize/2;
 			return zeroLiveCell;
 		}
