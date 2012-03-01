@@ -29,11 +29,11 @@ namespace GameCore.Objects.Furniture
 
 		public ELockType ELockType { get; private set; }
 
-		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell, bool _silence)
+		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell)
 		{
 			if (ELockType != ELockType.OPEN)
 			{
-				if (!_silence) MessageManager.SendMessage(this, this.GetName(_creature) + " открыт.");
+				if (_creature.IsAvatar) MessageManager.SendMessage(this, this.GetName(_creature) + " открыт.");
 				ELockType = ELockType.OPEN;
 
 				var collection = GetItems(_creature);
@@ -44,7 +44,7 @@ namespace GameCore.Objects.Furniture
 				}
 				else
 				{
-					if (!_silence) MessageManager.SendMessage(this, "Увы, пусто.");
+					if (_creature.IsAvatar) MessageManager.SendMessage(this, "Увы, пусто.");
 				}
 
 				return EActResults.DONE;

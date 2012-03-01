@@ -1,6 +1,5 @@
 ﻿using System;
 using GameCore.Mapping.Layers;
-using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Ammo;
 using GameCore.Objects.Weapons;
@@ -12,10 +11,6 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
-			Light = new LightSource(7, new FColor(2f,1f,1f,0.1f));
-			Silence = false;
-
-
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts());
 		}

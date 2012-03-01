@@ -127,7 +127,7 @@ namespace GameCore.Acts
 		}
 
 		public abstract EActionCategory Category { get; }
-		public abstract EActResults Do(Creature _creature, bool _silence);
+		public abstract EActResults Do(Creature _creature);
 
 		public void AddParameter<T>(T _param)
 		{

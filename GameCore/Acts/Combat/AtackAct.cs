@@ -34,7 +34,7 @@ namespace GameCore.Acts.Combat
 			get { return EActionCategory.COMBAT; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var coords = GetParameter<Point>().FirstOrDefault();
 			if (coords == null)

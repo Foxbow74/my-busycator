@@ -35,13 +35,13 @@ namespace GameCore.Acts.Combat
 			get { return EActionCategory.COMBAT; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
 			var item = intelligent[EEquipmentPlaces.MISSILES];
 			if (item == null)
 			{
-				if (!_silence)
+				if (_creature.IsAvatar)
 				{
 					MessageManager.SendMessage(this, "Экипируйте снаряд для метания");
 					return EActResults.FAIL;

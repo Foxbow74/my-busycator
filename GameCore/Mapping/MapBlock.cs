@@ -43,6 +43,12 @@ namespace GameCore.Mapping
 
 		public UInt32[] SeenCells { get; private set; }
 
+
+		public void RemoveObject(Thing _item, Point _inBlockCoords)
+		{
+			Objects.Remove(new Tuple<Thing, Point>(_item, _inBlockCoords));
+		}
+
 		public void AddObject(Thing _thing, Point _inBlockCoords)
 		{
 			if (_thing is StackOfItems)

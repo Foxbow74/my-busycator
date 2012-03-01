@@ -42,7 +42,7 @@ namespace GameCore.Acts.Movement
 			get { return EActionCategory.MOVEMENT; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var delta = GetParameter<Point>().FirstOrDefault();
 
@@ -58,7 +58,7 @@ namespace GameCore.Acts.Movement
 			{
 				var mess = cell.TerrainAttribute.DisplayName;
 
-				if (!_silence)
+				if (_creature.IsAvatar)
 				{
 					var furniture = cell.Furniture;
 					if (furniture != null)
@@ -85,7 +85,7 @@ namespace GameCore.Acts.Movement
 			else
 			{
 				var mess = String.Empty;
-				if (!_silence)
+				if (_creature.IsAvatar)
 				{
 					var creature = cell.Creature;
 					if (creature != null)

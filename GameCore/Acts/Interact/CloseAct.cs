@@ -36,7 +36,7 @@ namespace GameCore.Acts.Interact
 			get { return EActionCategory.WORLD_INTERACTIONS; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
 			{
@@ -69,7 +69,7 @@ namespace GameCore.Acts.Interact
 				if (!coords.Any())
 				{
 					//если нечего закрывать
-					if (!_silence) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
+					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
 					return EActResults.NOTHING_HAPPENS;
 				}
 				if (coords.Count() > 1)
@@ -106,7 +106,7 @@ namespace GameCore.Acts.Interact
 					                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
 					                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
-				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, liveMapCell, _silence);
+				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, liveMapCell);
 			}
 		}
 	}

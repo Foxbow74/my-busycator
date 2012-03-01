@@ -35,7 +35,7 @@ namespace GameCore.Acts.Items
 			get { return EActionCategory.ITEMS; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();

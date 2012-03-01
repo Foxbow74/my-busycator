@@ -5,10 +5,11 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Objects;
 using GameCore.Objects.Potions;
+using GameCore.Objects.Tools;
 
 namespace GameCore.Acts.Items
 {
-	internal class DrinkAct : Act
+	class DrinkAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -35,7 +36,7 @@ namespace GameCore.Acts.Items
 			get { return EActionCategory.ITEMS; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();
@@ -51,8 +52,8 @@ namespace GameCore.Acts.Items
 			{
 				return EActResults.NOTHING_HAPPENS;
 			}
-			var total =
-				intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
+			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
+
 			if (total.Length == 0)
 			{
 				throw new ApplicationException("в рюкзаке нет такого предмета");
@@ -66,7 +67,7 @@ namespace GameCore.Acts.Items
 			}
 
 			intelligent.RemoveFromBackpack(item);
-			item.Drinked(_creature, _silence);
+			item.Drinked(_creature);
 
 			if (intelligent.IsAvatar)
 			{
@@ -76,6 +77,53 @@ namespace GameCore.Acts.Items
 			{
 				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выпил " + thingString));
 			}
+			return EActResults.DONE;
+		}
+	}
+
+	class UseTool:Act
+	{
+		protected override int TakeTicksOnSingleAction
+		{
+			get { return 30; }
+		}
+
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
+		{
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.U, EKeyModifiers.NONE); }
+		}
+
+		public override string Name
+		{
+			get { return "задействовать инструмент"; }
+		}
+
+		public override string HelpText
+		{
+			get { throw new NotImplementedException(); }
+		}
+
+		public override EActionCategory Category
+		{
+			get { return EActionCategory.ITEMS; }
+		}
+
+		public override EActResults Do(Creature _creature)
+		{
+			var intelligent = (Intelligent) _creature;
+			var tool = intelligent[EEquipmentPlaces.TOOL];
+
+			if(tool==null)
+			{
+				if(_creature.IsAvatar)
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Ни один инструмент не экипирован!"));
+				}
+				return EActResults.QUICK_FAIL;
+			}
+
+			((ITool)tool).UseTool(intelligent);
+
 			return EActResults.DONE;
 		}
 	}

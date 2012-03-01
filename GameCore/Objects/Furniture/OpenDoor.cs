@@ -21,12 +21,12 @@ namespace GameCore.Objects.Furniture
 
 		#region ICanbeClosed Members
 
-		public EActResults Close(Creature _creature, LiveMapCell _liveMapCell, bool _silence)
+		public EActResults Close(Creature _creature, LiveMapCell _liveMapCell)
 		{
 			var door = new Door();
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Furniture = door;
-			if (!_silence) MessageManager.SendMessage(this, this.GetName(_creature) + " закрыта.");
+			if (_creature.IsAvatar) MessageManager.SendMessage(this, this.GetName(_creature) + " закрыта.");
 			return EActResults.DONE;
 		}
 

@@ -29,13 +29,13 @@ namespace GameCore.Objects.Furniture
 
 		#region ICanbeOpened Members
 
-		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell, bool _silence)
+		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell)
 		{
 			var door = new OpenDoor();
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Furniture = door;
 
-			if (!_silence) MessageManager.SendMessage(this, this.GetName(_creature) + " открыта.");
+			if (_creature.IsAvatar) MessageManager.SendMessage(this, this.GetName(_creature) + " открыта.");
 			return EActResults.DONE;
 		}
 

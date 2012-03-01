@@ -15,11 +15,6 @@ namespace GameCore.Creatures
 
 		protected static Random Rnd = new Random(1);
 
-		/// <summary>
-		/// 	Кидает ли существо сообщения в лог (true для аватара)
-		/// </summary>
-		protected bool Silence = true;
-
 		private Point m_liveCoords;
 		private WorldLayer m_layer;
 
@@ -143,7 +138,7 @@ namespace GameCore.Creatures
 
 		public EActResults DoAct(Act _act)
 		{
-			ActResult = _act.Do(this, Silence);
+			ActResult = _act.Do(this);
 			var price = _act.TakeTicks*Speed;
 			switch (ActResult)
 			{

@@ -14,14 +14,23 @@ namespace GameCore.Creatures
 	{
 		private readonly List<Point> m_path;
 		private int m_step = 1;
+		private readonly LightSource m_light;
 
 		public Missile(WorldLayer _layer, Point _liveCoords, int _speed, Item _ammo, Point _target)
 			: base(_layer, _speed)
 		{
-			Light = new LightSource(4, new FColor(4f, 1f, 0.8f, 0.4f));
+			m_light = new LightSource(4, new FColor(4f, 1f, 0.8f, 0.4f));
 			Ammo = _ammo;
 			m_path = _liveCoords.GetLineToPoints(_target).ToList();
 			LiveCoords = _liveCoords;
+		}
+
+		public override ILightSource Light
+		{
+			get
+			{
+				return m_light;
+			}
 		}
 
 		public Item Ammo { get; private set; }

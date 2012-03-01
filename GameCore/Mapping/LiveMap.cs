@@ -160,6 +160,7 @@ namespace GameCore.Mapping
 		
 		public Point GetData()
 		{
+			//fefwe
 			var inBlock = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.LiveCoords);
 			var centerLiveCell = CenterLiveBlock*MapBlock.SIZE + inBlock;
 			var zeroLiveCell = centerLiveCell - m_vieportSize/2;

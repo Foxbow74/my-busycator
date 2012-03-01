@@ -31,7 +31,7 @@ namespace GameCore.Acts.System
 			get { return EActionCategory.SYSTEM; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			throw new NotImplementedException();
 		}

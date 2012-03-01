@@ -81,7 +81,7 @@ namespace GameCore.Mapping
 				var cellId = tuple.Item2 + m_liveCellZero;
 				if (tuple.Item1 is Item)
 				{
-					m_liveMap.Cells[cellId.X, cellId.Y].AddItem((Item) tuple.Item1);
+					m_liveMap.Cells[cellId.X, cellId.Y].AddItemIntenal((Item) tuple.Item1);
 				}
 				else if (tuple.Item1.IsFurniture())
 				{
@@ -102,13 +102,6 @@ namespace GameCore.Mapping
 			Fill();
 		}
 
-		private void MapBlockOnUpdated()
-		{
-			var mb = MapBlock;
-			Clear();
-			SetMapBlock(mb);
-		}
-
 		public override string ToString()
 		{
 			return LiveMapBlockId + " MB:" + (m_mapBlock==null?"<null>":m_mapBlock.BlockId.ToString());
@@ -123,23 +116,6 @@ namespace GameCore.Mapping
 			{
 				MapBlock.AddCreature(creature, MapBlock.GetInBlockCoords(creature.LiveCoords));
 				creature.LiveCoords = null;
-			}
-			MapBlock.Objects.Clear();
-			for (var i = 0; i < MapBlock.SIZE; i++)
-			{
-				for (var j = 0; j < MapBlock.SIZE; j++)
-				{
-					var cell = m_liveMap.Cells[i + m_liveCellZero.X, j + m_liveCellZero.Y];
-					var ij = new Point(i, j);
-					foreach (var item in cell.Items)
-					{
-						MapBlock.AddObject(item, ij);
-					}
-					if (cell.Furniture != null)
-					{
-						MapBlock.AddObject(cell.Furniture, ij);
-					}
-				}
 			}
 			MapBlock = null;
 			m_creatures.Clear();

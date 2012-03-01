@@ -35,7 +35,7 @@ namespace GameCore.Acts.Items
 			get { return EActionCategory.ITEMS; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
 			var notTaken = _creature.GetNotTakenAvailableItems(GetParameter<Point>());
@@ -43,7 +43,7 @@ namespace GameCore.Acts.Items
 			if (!notTaken.Any())
 			{
 				// Если ничего не доступно
-				if (!_silence)
+				if (_creature.IsAvatar)
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "тут ничего нет."));
 				}
@@ -147,7 +147,7 @@ namespace GameCore.Acts.Items
 			{
 				intelligent.ObjectTaken((Item) thing);
 			}
-			if (!_silence && Count > 0)
+			if (_creature.IsAvatar && Count > 0)
 			{
 				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 				if (intelligent.IsAvatar)

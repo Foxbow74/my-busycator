@@ -59,6 +59,6 @@ namespace GameCore.Objects
 			return GetType().GetHashCode();
 		}
 
-		public LightSource Light { get; protected set; }
+		public virtual ILightSource Light { get { return null; } }
 	}
 }

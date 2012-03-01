@@ -23,7 +23,7 @@ namespace GameCore.Objects.Potions
 		{
 		}
 
-		public void Drinked(Creature _creature, bool _silence)
+		public void Drinked(Creature _creature)
 		{
 			//throw new NotImplementedException();
 		}
