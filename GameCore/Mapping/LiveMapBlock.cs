@@ -121,15 +121,6 @@ namespace GameCore.Mapping
 			m_creatures.Clear();
 		}
 
-		public void LightCells()
-		{
-			var liveCellZero = LiveMapBlockId * MapBlock.SIZE;
-			foreach (var tuple in MapBlock.LightSources)
-			{
-				tuple.Item1.LightCells(m_liveMap, liveCellZero + tuple.Item2);
-			}
-		}
-
 		public void RemoveCreature(Creature _creature)
 		{
 			if (!m_creatures.Remove(_creature))
