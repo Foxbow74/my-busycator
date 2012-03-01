@@ -12,6 +12,8 @@ namespace GameCore
 		[Tiles(0f)]TARGET_DOT,
 		[Tiles(0f)]TARGET_CROSS,
 		[Tiles(0f)]ON_WALL_LIGHT_SOURCE,
+		[Tiles(0f)]LIGHT_SOURCE,
+		[Tiles(0f)]TORCH,
 
 		[Tiles(0f)] GRASS,
 		[Tiles(0f)] WATER,

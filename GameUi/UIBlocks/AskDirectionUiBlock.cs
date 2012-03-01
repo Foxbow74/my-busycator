@@ -12,7 +12,7 @@ namespace GameUi.UIBlocks
 		private readonly AskDirectionMessage m_message;
 
 		public AskDirectionUiBlock(Rct _rct, AskDirectionMessage _message)
-			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, Color.Gray.ToFColor())
+			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, FColor.Gray)
 		{
 			m_message = _message;
 		}

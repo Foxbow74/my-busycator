@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
@@ -23,7 +22,7 @@ namespace GameUi.UIBlocks
 		private Point m_targetPoint;
 
 		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
-			: base(_mapRct, null, Color.Gray.ToFColor())
+			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
 			m_maxDistance = _maxDistance;
@@ -122,11 +121,11 @@ namespace GameUi.UIBlocks
 				strings.Insert(1, "[+] - следующая цель");
 			}
 
-			m_messages.DrawLine(JoinCommandCaptions(strings), Color.White.ToFColor(), 0, 0, EAlignment.LEFT);
+			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
 			var pnt = Point.Zero;
 			var done = false;
-			var color = new FColor(Color.Gold);
+			var color = FColor.Gold;
 			var lineToPoints = Point.Zero.GetLineToPoints(m_targetPoint).ToArray();
 
 			for (var index = 1; index < lineToPoints.Length; index++)
@@ -136,19 +135,19 @@ namespace GameUi.UIBlocks
 
 				if (point.Lenght >= m_maxDistance || (!liveCell.IsCanShootThrough && liveCell.Creature == null))
 				{
-					color =new FColor(Color.Red);
+					color =FColor.Red;
 					done = true;
 				}
 				if (!done) pnt = point;
 				if (liveCell.Creature != null)
 				{
-					color = new FColor(Color.Red);
+					color = FColor.Red;
 					done = true;
 				}
 				if (point.Lenght < 1) continue;
 				ETiles.TARGET_DOT.GetTile().Draw(point + m_addPoint, color);
 			}
-			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, new FColor(Color.Gold));
+			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, FColor.Gold);
 			m_realTarget = pnt;
 		}
 	}

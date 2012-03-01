@@ -9,7 +9,7 @@ namespace GameUi.UIBlocks.Help
 	internal class HelpUiBlock : UiBlockWithText
 	{
 		public HelpUiBlock(Rct _rct)
-			: base(_rct, Frame.SimpleFrame, Color.White.ToFColor())
+			: base(_rct, Frame.SimpleFrame, FColor.White)
 		{
 		}
 

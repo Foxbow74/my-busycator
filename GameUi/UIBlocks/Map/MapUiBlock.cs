@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using GameCore;
+﻿using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -10,7 +9,7 @@ namespace GameUi.UIBlocks.Map
 	internal class MapUiBlock : UIBlock
 	{
 		public MapUiBlock(Rct _rct)
-			: base(_rct, null, Color.Black.ToFColor())
+			: base(_rct, null, FColor.Black)
 		{
 			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRct.Width, ContentRct.Height));
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
@@ -36,7 +35,7 @@ namespace GameUi.UIBlocks.Map
 		{
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 
-			var fogColor = Color.FromArgb(255, 70, 70, 70).ToFColor();
+			var fogColor = FColor.FromArgb(255, 70, 70, 70);
 			var fogLightness = fogColor.Lightness();// *2;
 
 			var worldLayer = World.TheWorld.Avatar.Layer;

@@ -15,7 +15,7 @@ namespace GameUi.UIBlocks
 		private int m_visibleTill;
 
 		public TurnMessageUiBlock(Rct _rct)
-			: base(_rct, null, Color.Yellow.ToFColor())
+			: base(_rct, null, FColor.Yellow)
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;

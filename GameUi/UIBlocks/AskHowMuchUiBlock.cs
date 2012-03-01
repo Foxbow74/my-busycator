@@ -14,7 +14,7 @@ namespace GameUi.UIBlocks
 		private string m_count;
 
 		public AskHowMuchUiBlock(Rct _rct, AskHowMuchMessage _message)
-			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, Color.Gray.ToFColor())
+			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, FColor.Gray)
 		{
 			m_message = _message;
 			m_count = _message.Total.ToString();

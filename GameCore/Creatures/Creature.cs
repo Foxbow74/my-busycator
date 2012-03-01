@@ -179,11 +179,6 @@ namespace GameCore.Creatures
 			return EThinkingResult.NORMAL;
 		}
 
-
-		/// <summary>
-		/// 	Возвращает шмотк
-		/// </summary>
-		/// <returns></returns>
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
 		{
 			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect));
@@ -220,7 +215,7 @@ namespace GameCore.Creatures
 	{
 		NORMAL,
 		/// <summary>
-		/// 	Существо самоуничтожилось
+		/// Существо самоуничтожилось
 		/// </summary>
 		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
+using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -34,7 +34,7 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", Color.White.ToFColor(), 0, 0, EAlignment.CENTER);
+			DrawLine("ВЫБЕРИ СНАРЯЖЕНИЕ", FColor.White, 0, 0, EAlignment.CENTER);
 			DrawLine("ВЕС:", ForeColor, 2, 0, EAlignment.LEFT);
 			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 		}

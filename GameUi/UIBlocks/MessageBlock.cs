@@ -13,7 +13,7 @@ namespace GameUi.UIBlocks
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 
 		public MessageBlock(Rct _rct)
-			: base(_rct, null, Color.Yellow.ToFColor())
+			: base(_rct, null, FColor.Yellow)
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 		}

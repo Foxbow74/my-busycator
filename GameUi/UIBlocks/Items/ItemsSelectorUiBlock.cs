@@ -26,7 +26,7 @@ namespace GameUi.UIBlocks.Items
 
 		protected ItemsSelectorUiBlock(Rct _rct, ESelectItemDialogBehavior _behavior, Act _act,
 		                               IEnumerable<ThingDescriptor> _descriptors)
-			: base(_rct, Frame.GoldFrame, Color.Green.ToFColor())
+			: base(_rct, Frame.GoldFrame, FColor.Green)
 		{
 			m_behavior = _behavior;
 			m_act = _act;
@@ -137,7 +137,7 @@ namespace GameUi.UIBlocks.Items
 			}
 			else
 			{
-				DrawLine("(ничего нет)", Color.White.ToFColor(), line, 0, EAlignment.CENTER);
+				DrawLine("(ничего нет)", FColor.White, line, 0, EAlignment.CENTER);
 			}
 			DrawLine(JoinCommandCaptions(bottomString), ForeColor, TextLinesMax - 2, 0, EAlignment.CENTER);
 		}
