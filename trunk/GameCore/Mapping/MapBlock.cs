@@ -92,7 +92,14 @@ namespace GameCore.Mapping
 			{
 				foreach (var tuple in Objects)
 				{
-					if (tuple.Item1 is ILightSource) yield return new Tuple<ILightSource, Point>((ILightSource)tuple.Item1, tuple.Item2);
+					if (tuple.Item1 is ILightSource)
+					{
+						yield return new Tuple<ILightSource, Point>((ILightSource)tuple.Item1, tuple.Item2);
+					}
+					else if (tuple.Item1.Light!=null)
+					{
+						yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
+					}
 				}
 				foreach (var tuple in Creatures)
 				{

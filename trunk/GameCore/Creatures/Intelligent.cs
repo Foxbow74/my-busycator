@@ -126,7 +126,7 @@ namespace GameCore.Creatures
 			get
 			{
 				var tool = this[EEquipmentPlaces.TOOL];
-				if (tool != null && tool is ILightSource)
+				if (tool != null && tool.Light!=null)
 				{
 					return tool.Light;
 				}

@@ -11,7 +11,7 @@ namespace GameCore.Objects.Tools
 		EActResults UseTool(Intelligent _intelligent);
 	}
 
-	class Torch : Item, ILightSource, ITool
+	class Torch : Item, ITool //, ILightSource
 	{
 		private LightSource m_lightSource;
 
@@ -27,7 +27,7 @@ namespace GameCore.Objects.Tools
 
 		public override string Name
 		{
-			get { return "афакел"; }
+			get { return "факел"; }
 		}
 
 		public override EThingCategory Category
@@ -37,7 +37,15 @@ namespace GameCore.Objects.Tools
 
 		public override void Resolve(Creature _creature)
 		{
-			m_lightSource = new LightSource(4, new FColor(1f, 1f, 0.9f, 0.5f));
+			m_lightSource = new LightSource(4, new FColor(4f, 1f, 0.9f, 0.5f));
+		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return IsOn ? new FColor(1f, m_lightSource.Color) : base.LerpColor;
+			}
 		}
 
 		public bool IsOn { get; private set; }
@@ -56,22 +64,22 @@ namespace GameCore.Objects.Tools
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, "факел потушен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, Name + " потушен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " потушил факел"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " потушил " + Name));
 				}
 			}
 			else
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, "факел зажжен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, Name + " зажжен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " зажег факел"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " зажег " + Name));
 				}
 			}
 			IsOn = !IsOn;
