@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Creatures;
@@ -16,7 +15,7 @@ namespace GameUi.UIBlocks.Items
 		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
 
 		public EquipmentUiBlock(Rct _rct)
-			: base(_rct, Frame.SimpleFrame, System.Drawing.Color.White.ToFColor())
+			: base(_rct, Frame.SimpleFrame, FColor.White)
 		{
 			m_intelligent = World.TheWorld.Avatar;
 			Rebuild();
@@ -110,19 +109,19 @@ namespace GameUi.UIBlocks.Items
 
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
-			_uiBlock.DrawLine(C.ToString(), Color.White.ToFColor(), _line, 20, EAlignment.LEFT);
+			_uiBlock.DrawLine(C.ToString(), FColor.White, _line, 20, EAlignment.LEFT);
 			var indent =
-				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, Color.Gray.ToFColor(), _line, 40,
+				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, FColor.Gray, _line, 40,
 				                  EAlignment.LEFT) + 2;
 			MaxIndent = Math.Max(MaxIndent, indent);
-			indent = _uiBlock.DrawLine(":", Color.DarkGray.ToFColor(), _line, MaxIndent, EAlignment.LEFT) + 5;
+			indent = _uiBlock.DrawLine(":", FColor.DarkGray, _line, MaxIndent, EAlignment.LEFT) + 5;
 			if (Item == null)
 			{
-				_uiBlock.DrawLine("-", Color.DarkGray.ToFColor(), _line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine("-", FColor.DarkGray, _line, indent, EAlignment.LEFT);
 			}
 			else
 			{
-				_uiBlock.DrawLine(Item.Name, Color.DarkGray.ToFColor(), _line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine(Item.Name, FColor.DarkGray, _line, indent, EAlignment.LEFT);
 			}
 		}
 

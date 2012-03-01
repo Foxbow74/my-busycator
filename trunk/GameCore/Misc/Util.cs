@@ -79,11 +79,6 @@ namespace GameCore.Misc
 			return (max + min) / 2 * _color.A / 255f;
 		}
 
-		public static FColor ToFColor(this Color _color)
-		{
-			return new FColor(_color);
-		}
-
 		public static bool ContainsEx(this Rct _rct, Point _point)
 		{
 			var result = _rct.Left <= _point.X && _rct.Top <= _point.Y && _rct.Bottom > _point.Y && _rct.Right > _point.X;

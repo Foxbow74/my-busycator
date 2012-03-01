@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using GameCore.Misc;
+using GameCore;
 using GameUi;
 
 namespace OpenTKUi
@@ -56,14 +56,14 @@ namespace OpenTKUi
 			m_fonts[_font] = new Font(_fileName, _pointSize);
 		}
 
-		public ATile CreateTile(ETextureSet _eTextureSet, int _col, int _row, Color _color)
+		public ATile CreateTile(ETextureSet _eTextureSet, int _col, int _row, FColor _color)
 		{
-			var openTKTile = new OpenTKTile(_eTextureSet, _col, _row, _color.ToFColor());
+			var openTKTile = new OpenTKTile(_eTextureSet, _col, _row, _color);
 			Tiles.Add(openTKTile);
 			return openTKTile;
 		}
 
-		public ATile CreateTile(int _col, int _row, Color _color)
+		public ATile CreateTile(int _col, int _row, FColor _color)
 		{
 			return CreateTile(ETextureSet.REDJACK, _col, _row, _color);
 		}

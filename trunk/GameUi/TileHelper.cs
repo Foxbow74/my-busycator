@@ -74,142 +74,148 @@ namespace GameUi
 					case ETiles.GRASS:
 						tl = new TileSet(new[]
 						                 	{
-						                 		Rp.CreateTile(3, 2, Color.FromArgb(30, 50, 30)),
-						                 		Rp.CreateTile(5, 2, Color.FromArgb(30, 60, 30)),
-						                 		Rp.CreateTile(7, 2, Color.FromArgb(20, 80, 20)),
-						                 		Rp.CreateTile(12, 2, Color.FromArgb(20, 100, 20)),
-						                 		Rp.CreateTile(14, 2, Color.FromArgb(20, 120, 20)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 5, 2, Color.FromArgb(30, 60, 30)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 7, 2, Color.FromArgb(20, 80, 20)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 12, 2, Color.FromArgb(20, 100, 20)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 2, Color.FromArgb(20, 120, 20)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, Color.FromArgb(20, 80, 20)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, Color.FromArgb(20, 100, 20)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, Color.FromArgb(20, 120, 20)),
+						                 		Rp.CreateTile(3, 2, FColor.FromArgb(30, 50, 30)),
+						                 		Rp.CreateTile(5, 2, FColor.FromArgb(30, 60, 30)),
+						                 		Rp.CreateTile(7, 2, FColor.FromArgb(20, 80, 20)),
+						                 		Rp.CreateTile(12, 2, FColor.FromArgb(20, 100, 20)),
+						                 		Rp.CreateTile(14, 2, FColor.FromArgb(20, 120, 20)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 5, 2, FColor.FromArgb(30, 60, 30)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 7, 2, FColor.FromArgb(20, 80, 20)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 12, 2, FColor.FromArgb(20, 100, 20)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 2, FColor.FromArgb(20, 120, 20)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, FColor.FromArgb(20, 80, 20)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, FColor.FromArgb(20, 100, 20)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, FColor.FromArgb(20, 120, 20)),
 
-												Rp.CreateTile(3, 2, Color.FromArgb(30, 30, 50)),
-						                 		Rp.CreateTile(5, 2, Color.FromArgb(30, 30, 60)),
-						                 		Rp.CreateTile(7, 2, Color.FromArgb(20, 20, 80)),
-						                 		Rp.CreateTile(12, 2, Color.FromArgb(20, 20, 70)),
-						                 		Rp.CreateTile(14, 2, Color.FromArgb(20, 100, 120)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 5, 2, Color.FromArgb(30, 30, 60)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 7, 2, Color.FromArgb(20, 20, 80)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 12, 2, Color.FromArgb(20, 40, 80)),
-						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 2, Color.FromArgb(20, 90, 30)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, Color.FromArgb(20, 80,50)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, Color.FromArgb(20, 100, 60)),
-						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, Color.FromArgb(20, 120, 70)),
+												Rp.CreateTile(3, 2, FColor.FromArgb(30, 30, 50)),
+						                 		Rp.CreateTile(5, 2, FColor.FromArgb(30, 30, 60)),
+						                 		Rp.CreateTile(7, 2, FColor.FromArgb(20, 20, 80)),
+						                 		Rp.CreateTile(12, 2, FColor.FromArgb(20, 20, 70)),
+						                 		Rp.CreateTile(14, 2, FColor.FromArgb(20, 100, 120)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 5, 2, FColor.FromArgb(30, 30, 60)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 7, 2, FColor.FromArgb(20, 20, 80)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 12, 2, FColor.FromArgb(20, 40, 80)),
+						                 		Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 2, FColor.FromArgb(20, 90, 30)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 7, 2, FColor.FromArgb(20, 80,50)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 12, 2, FColor.FromArgb(20, 100, 60)),
+						                 		Rp.CreateTile(ETextureSet.GP_X16, 14, 2, FColor.FromArgb(20, 120, 70)),
 
-												Rp.CreateTile(2, 2, Color.FromArgb(30, 50, 30)),
-												Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 2, Color.FromArgb(30, 60, 30)),
-												Rp.CreateTile(ETextureSet.GP_X16, 2, 2, Color.FromArgb(20, 80, 20)),
+												Rp.CreateTile(2, 2, FColor.FromArgb(30, 50, 30)),
+												Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 2, FColor.FromArgb(30, 60, 30)),
+												Rp.CreateTile(ETextureSet.GP_X16, 2, 2, FColor.FromArgb(20, 80, 20)),
 						                 	});
 						break;
 					case ETiles.BRICK:
-						tl = Rp.CreateTile(0, 12, Color.DarkRed);
+						tl = Rp.CreateTile(0, 12, FColor.DarkRed);
 						break;
 					case ETiles.BRICK_WINDOW:
-						tl = Rp.CreateTile(1, 12, Color.DarkRed);
+						tl = Rp.CreateTile(1, 12, FColor.DarkRed);
 						break;
 					case ETiles.ON_WALL_LIGHT_SOURCE:
-						tl = Rp.CreateTile(ETextureSet.SELF, 0, 0, Color.White);
+						tl = Rp.CreateTile(ETextureSet.SELF, 0, 0, FColor.White);
+						break;
+					case ETiles.LIGHT_SOURCE:
+						tl = Rp.CreateTile(ETextureSet.SELF, 1, 0, FColor.White);
 						break;
 					case ETiles.DOOR:
-						tl = Rp.CreateTile(5, 12, Color.Brown);
+						tl = Rp.CreateTile(5, 12, FColor.Brown);
 						break;
 					case ETiles.OPEN_DOOR:
-						tl = Rp.CreateTile(4, 12, Color.Brown);
+						tl = Rp.CreateTile(4, 12, FColor.Brown);
 						break;
 					case ETiles.AVATAR:
-						tl = Rp.CreateTile(2, 0, Color.White);
+						tl = Rp.CreateTile(2, 0, FColor.White);
+						break;
+					case ETiles.TORCH:
+						tl = Rp.CreateTile(ETextureSet.NH, 16, 11, FColor.White);
 						break;
 					case ETiles.MASHROOM:
 						tl = new TileSet(new[]
 						                 	{
-						                 		Rp.CreateTile(5, 0, Color.FromArgb(20, 160, 20)),
-						                 		Rp.CreateTile(6, 0, Color.FromArgb(20, 80, 20)),
-						                 		Rp.CreateTile(7, 1, Color.FromArgb(20, 90, 20)),
-						                 		Rp.CreateTile(8, 1, Color.FromArgb(20, 120, 90)),
-						                 		Rp.CreateTile(12, 1, Color.Gray),
+						                 		Rp.CreateTile(5, 0, FColor.FromArgb(20, 160, 20)),
+						                 		Rp.CreateTile(6, 0, FColor.FromArgb(20, 80, 20)),
+						                 		Rp.CreateTile(7, 1, FColor.FromArgb(20, 90, 20)),
+						                 		Rp.CreateTile(8, 1, FColor.FromArgb(20, 120, 90)),
+						                 		Rp.CreateTile(12, 1, FColor.Gray),
 						                 	});
 						break;
 					case ETiles.GROUND:
-						tl = Rp.CreateTile(0, 0, Color.FromArgb(10, 20, 10));
+						tl = Rp.CreateTile(0, 0, FColor.FromArgb(10, 20, 10));
 						break;
 					case ETiles.SWORD:
-						tl = Rp.CreateTile(ETextureSet.NH, 20, 10, Color.White);
+						tl = Rp.CreateTile(ETextureSet.NH, 20, 10, FColor.White);
 						break;
 					case ETiles.AXE:
-						tl = Rp.CreateTile(15, 2, Color.LightSteelBlue);
+						tl = Rp.CreateTile(15, 2, FColor.LightSteelBlue);
 						break;
 					case ETiles.CROSSBOW:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 14, Color.SkyBlue);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 14, FColor.SkyBlue);
 						break;
 					case ETiles.CHEST:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 9, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 2, 9, FColor.Gold);
 						break;
 					case ETiles.MONSTER:
-						//tl = Rp.CreateTile(ETextureSet.NH, 0, 6, Color.White);
-						tl = Rp.CreateTile(ETextureSet.NH, 0, 8, Color.White);
+						//tl = Rp.CreateTile(ETextureSet.NH, 0, 6, FColor.White);
+						tl = Rp.CreateTile(ETextureSet.NH, 0, 8, FColor.White);
 						break;
 					case ETiles.RING:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 8, 15, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 8, 15, FColor.Gold);
 						break;
 					case ETiles.HEAP_OF_ITEMS:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 11, 0, Color.DarkOrchid);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 11, 0, FColor.DarkOrchid);
 						break;
 					case ETiles.POTION:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 13, 10, Color.Gray);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 13, 10, FColor.Gray);
 						break;
 					case ETiles.CROSSBOW_BOLT:
-						tl = Rp.CreateTile(ETextureSet.NH, 0, 10, Color.White);
+						tl = Rp.CreateTile(ETextureSet.NH, 0, 10, FColor.White);
 						break;
 					case ETiles.TARGET_DOT:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 10, 15, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 10, 15, FColor.Gold);
 						break;
 					case ETiles.TARGET_CROSS:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 8, 5, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 8, 5, FColor.Gold);
 						break;
 					case ETiles.FOG:
-						tl = Rp.CreateTile(1, 11, Color.FromArgb(255, 5, 5, 10));
+						tl = Rp.CreateTile(1, 11, FColor.FromArgb(255, 5, 5, 10));
 						tl.IsFogTile = true;
 						break;
 					case ETiles.STAIR_DOWN:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 3, Color.FromArgb(255, 100, 100, 50));
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 14, 3, FColor.FromArgb(255, 100, 100, 50));
 						break;
 					case ETiles.STAIR_UP:
-						tl = Rp.CreateTile(ETextureSet.REDJACK, 12, 3, Color.FromArgb(255, 100, 100, 50));
+						tl = Rp.CreateTile(ETextureSet.REDJACK, 12, 3, FColor.FromArgb(255, 100, 100, 50));
 						break;
 					case ETiles.STONE_FLOOR:
-						//tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 100, 100, 200));
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, Color.FromArgb(255, 30, 30, 50));
+						//tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, FColor.FromArgb(255, 100, 100, 200));
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 4, 8, FColor.FromArgb(255, 30, 30, 50));
 						break;
 					case ETiles.STONE_WALL:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 10, Color.FromArgb(255, 100, 100, 200));
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 10, FColor.FromArgb(255, 100, 100, 200));
 						break;
 					case ETiles.NONE:
 						tl = null;
 						break;
 					case ETiles.WATER:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.Blue);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, FColor.Blue);
 						break;
 					case ETiles.LAVA:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.Red);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, FColor.Red);
 						break;
 					case ETiles.SWAMP:
-						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, Color.DarkKhaki);
+						tl = Rp.CreateTile(ETextureSet.RR_BRICK_01, 14, 8, FColor.DarkKhaki);
 						break;
 					case ETiles.UP:
-						tl = Rp.CreateTile(14, 1, Color.Gray);
+						tl = Rp.CreateTile(14, 1, FColor.Gray);
 						break;
 					case ETiles.DOWN:
-						tl = Rp.CreateTile(15, 1, Color.Gray);
+						tl = Rp.CreateTile(15, 1, FColor.Gray);
 						break;
 					case ETiles.LEFT:
-						tl = Rp.CreateTile(1, 1, Color.Gray);
+						tl = Rp.CreateTile(1, 1, FColor.Gray);
 						break;
 					case ETiles.RIGHT:
-						tl = Rp.CreateTile(0, 1, Color.Gray);
+						tl = Rp.CreateTile(0, 1, FColor.Gray);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -227,34 +233,34 @@ namespace GameUi
 				switch (tile)
 				{
 					case EFrameTiles.SIMPLE:
-						tl = Rp.CreateTile(0, 12, Color.Green);
+						tl = Rp.CreateTile(0, 12, FColor.Green);
 						break;
 					case EFrameTiles.FRAME_L:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 11, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 11, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_R:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 11, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 3, 11, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_T:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 4, 12, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 4, 12, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_B:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 4, 12, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 4, 12, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_TL:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 10, 13, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 10, 13, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_TR:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 15, 11, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 15, 11, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_BL:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 0, 12, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 0, 12, FColor.Gold);
 						break;
 					case EFrameTiles.FRAME_BR:
-						tl = Rp.CreateTile(ETextureSet.GP_X16, 9, 13, Color.Gold);
+						tl = Rp.CreateTile(ETextureSet.GP_X16, 9, 13, FColor.Gold);
 						break;
 					case EFrameTiles.SOLID:
-						tl = Rp.CreateTile(11, 13, Color.White);
+						tl = Rp.CreateTile(11, 13, FColor.White);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

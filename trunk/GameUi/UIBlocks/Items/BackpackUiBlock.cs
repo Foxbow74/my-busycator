@@ -42,7 +42,7 @@ namespace GameUi.UIBlocks.Items
 
 		protected override void DrawHeader()
 		{
-			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", Color.White.ToFColor(), 0, 0, EAlignment.CENTER);
+			DrawLine("СОДЕРЖИМОЕ РЮКЗАКА", FColor.White, 0, 0, EAlignment.CENTER);
 			DrawLine("ВЕС:", ForeColor, 2, 0, EAlignment.LEFT);
 			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 		}

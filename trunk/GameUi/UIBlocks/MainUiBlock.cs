@@ -16,14 +16,14 @@ namespace GameUi.UIBlocks
 		private readonly UIBlock m_stats;
 
 		public MainUiBlock(int _width, int _height)
-			: base(new Rct(0, 0, _width, _height), null, Color.White.ToFColor())
+			: base(new Rct(0, 0, _width, _height), null, FColor.White)
 		{
 			const int messagesHeight = 3;
 			const int statHeight = 2;
 
-			m_messages = new TurnMessageUiBlock(new Rct(Rct.Left, 0, Rct.Width, messagesHeight)) { BackgroundColor = Color.FromArgb(255, 30, 30, 30).ToFColor() };
+			m_messages = new TurnMessageUiBlock(new Rct(Rct.Left, 0, Rct.Width, messagesHeight)) { BackgroundColor = FColor.FromArgb(255, 30, 30, 30) };
 			m_map = new MapUiBlock(new Rct(ContentRct.Left, m_messages.Rct.Height, Rct.Width, Rct.Height - m_messages.Rct.Height - statHeight));
-			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - statHeight + 1, Rct.Width, statHeight)) { BackgroundColor = Color.FromArgb(255, 0, 30, 30).ToFColor() };
+			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - statHeight + 1, Rct.Width, statHeight)) { BackgroundColor = FColor.FromArgb(255, 0, 30, 30) };
 		}
 
 		public override void Dispose()

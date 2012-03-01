@@ -10,7 +10,7 @@ namespace GameUi.UIBlocks.Help
 	internal class HelpKeyBindingUiBlock : UiBlockWithText
 	{
 		public HelpKeyBindingUiBlock(Rct _rct)
-			: base(_rct, Frame.SimpleFrame, Color.DarkGray.ToFColor())
+			: base(_rct, Frame.SimpleFrame, FColor.DarkGray)
 		{
 		}
 
@@ -37,12 +37,10 @@ namespace GameUi.UIBlocks.Help
 				{
 					currentCategory = category;
 					line++;
-					DrawLine(currentCategory, Color.Yellow.ToFColor(), line++, 20, EAlignment.LEFT);
+					DrawLine(currentCategory, FColor.Yellow, line++, 20, EAlignment.LEFT);
 				}
-				var ind = DrawLine("[", ForeColor, line, 30, EAlignment.LEFT) - ATile.Size;
-				ind = DrawLine(act.HelpKeys, Color.LightBlue.ToFColor(), line, ind, EAlignment.LEFT) - ATile.Size + 2;
-				ind = DrawLine("]", ForeColor, line, ind, EAlignment.LEFT) - ATile.Size;
-				DrawLine(act.Name, ForeColor, line++, ind + 10, EAlignment.LEFT);
+				DrawLine(act.HelpKeys, FColor.LightBlue, line, 30, EAlignment.LEFT);
+				DrawLine(act.Name, ForeColor, line++, 100, EAlignment.LEFT);
 			}
 			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, 20, EAlignment.RIGHT);
 		}

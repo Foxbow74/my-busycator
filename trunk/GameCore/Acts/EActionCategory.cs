@@ -8,8 +8,8 @@ namespace GameCore.Acts
 	{
 		[ActionCategory("Перемещения")] MOVEMENT,
 		[ActionCategory("Бой")] COMBAT,
-		[ActionCategory("Работа с предметами")] ITEMS,
-		[ActionCategory("Взаимодействие с миром")] WORLD_INTERACTIONS,
+		[ActionCategory("Взаимодействие с предметами")]ITEMS,
+		[ActionCategory("Взаимодействие с миром")]WORLD_INTERACTIONS,
 		[ActionCategory("Информация")] INFORMATION,
 		[ActionCategory("Система")] SYSTEM
 	}

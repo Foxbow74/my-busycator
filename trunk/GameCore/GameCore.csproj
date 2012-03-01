@@ -93,6 +93,7 @@
     <Compile Include="Objects\FakedItem.cs" />
     <Compile Include="Objects\Furniture\Furniture.cs" />
     <Compile Include="Objects\Furniture\LightSources\LightSourceThing.cs" />
+    <Compile Include="Objects\Furniture\LightSources\OnWallTorch.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\Furniture\Stair.cs" />
     <Compile Include="Objects\Furniture\StairDown.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\ThingHelper.cs" />
     <Compile Include="Objects\TileInfoProvider.cs" />
+    <Compile Include="Objects\Tools\Torch.cs" />
     <Compile Include="Objects\Weapons\Axe.cs" />
     <Compile Include="Objects\Weapons\CrossBow.cs" />
     <Compile Include="Objects\Weapons\RangedWeapon.cs" />
