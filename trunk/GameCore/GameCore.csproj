@@ -92,6 +92,7 @@
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\FakedItem.cs" />
     <Compile Include="Objects\Furniture\Furniture.cs" />
+    <Compile Include="Objects\Furniture\LightSources\LightSourceThing.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
     <Compile Include="Objects\Furniture\Stair.cs" />
     <Compile Include="Objects\Furniture\StairDown.cs" />
@@ -99,6 +100,7 @@
     <Compile Include="Objects\ICanbeOpened.cs" />
     <Compile Include="Objects\IFaked.cs" />
     <Compile Include="Objects\ISpecial.cs" />
+    <Compile Include="Objects\ITileInfoProvider.cs" />
     <Compile Include="Objects\Rings\Ring.cs" />
     <Compile Include="Objects\Potions\Potion.cs" />
     <Compile Include="Objects\StackOfItems.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="Objects\FakeThing.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\ThingHelper.cs" />
+    <Compile Include="Objects\TileInfoProvider.cs" />
     <Compile Include="Objects\Weapons\Axe.cs" />
     <Compile Include="Objects\Weapons\CrossBow.cs" />
     <Compile Include="Objects\Weapons\RangedWeapon.cs" />

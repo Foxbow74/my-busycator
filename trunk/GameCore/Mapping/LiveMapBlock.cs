@@ -73,7 +73,7 @@ namespace GameCore.Mapping
 				for (var j = 0; j < MapBlock.SIZE; j++)
 				{
 					var ij = new Point(i, j);
-					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij, (float)rnd.NextDouble());
+					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij, (float)rnd.NextDouble(), m_liveCellZero + ij, m_liveMap);
 				}
 			}
 			foreach (var tuple in m_mapBlock.Objects)
@@ -150,14 +150,7 @@ namespace GameCore.Mapping
 			var liveCellZero = LiveMapBlockId * MapBlock.SIZE;
 			foreach (var tuple in MapBlock.LightSources)
 			{
-				tuple.Item2.LightCells(m_liveMap, liveCellZero + tuple.Item1);
-			}
-			foreach (var creature in m_creatures)
-			{
-				if (creature.Light != null)
-				{
-					creature.Light.LightCells(m_liveMap, creature.LiveCoords);
-				}
+				tuple.Item1.LightCells(m_liveMap, liveCellZero + tuple.Item2);
 			}
 		}
 

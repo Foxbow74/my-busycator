@@ -72,7 +72,7 @@ namespace GameCore.Mapping.Layers
 				{
 					if (m_rnd.NextDouble() > 0.7)
 					{
-						mapBlock.AddLightSource(new Point(room.RoomRectangle.Left + m_rnd.Next(room.RoomRectangle.Width), room.RoomRectangle.Top + m_rnd.Next(room.RoomRectangle.Height)), new LightSource(m_rnd.Next(4) + 3, new FColor(3f, (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble()))); ;
+						//mapBlock.AddLightSource(new Point(room.RoomRectangle.Left + m_rnd.Next(room.RoomRectangle.Width), room.RoomRectangle.Top + m_rnd.Next(room.RoomRectangle.Height)), new LightSource(m_rnd.Next(4) + 3, new FColor(3f, (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble()))); ;
 					}
 				}
 			}
@@ -95,14 +95,11 @@ namespace GameCore.Mapping.Layers
 					return list;
 				}
 			}
-			EDirections dirs;
-			do
+
+			var dirs = m_rnd.GetRandomDirections();
+
+			foreach (var dir in dirs.AllDirectionsIn())
 			{
-				dirs = (EDirections)m_rnd.Next(16);
-			} while (dirs == EDirections.NONE);
-			foreach (EDirections dir in Enum.GetValues(typeof(EDirections)))
-			{
-				if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
 				var xy = _from + dir.GetDelta();
 				if (_map.GetLength(0) <= xy.X || xy.X < 0) continue;
 				if (_map.GetLength(1) <= xy.Y || xy.Y < 0) continue;
@@ -248,16 +245,10 @@ namespace GameCore.Mapping.Layers
 				trys++;
 				var cps = new List<ConnectionPoint>();
 
-				EDirections dirs;
-				do
-				{
-					dirs = (EDirections) _rnd.Next(16);
-				} while (dirs == EDirections.NONE);
+				var dirs = m_rnd.GetRandomDirections();
 
-				foreach (EDirections dir in Enum.GetValues(typeof (EDirections)))
+				foreach (var dir in dirs.AllDirectionsIn())
 				{
-					if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
-
 					int val;
 					Point begin;
 					switch (dir)

@@ -211,5 +211,36 @@ namespace GameCore.Misc
 					yield break;
 			}
 		}
+
+		private static EDirections[] m_allDirections;
+
+		public static EDirections[] AllDirections
+		{
+			get 
+			{
+				if (m_allDirections==null)
+				{
+					m_allDirections = Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL).ToArray();
+				}
+				return m_allDirections;
+			}
+		}
+
+		public static IEnumerable<EDirections> AllDirectionsIn(this EDirections _allowed)
+		{
+			return Enum.GetValues(typeof(EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL && _allowed.HasFlag(_dir));
+		}
+
+		public static EDirections GetRandomDirections(this Random _random)
+		{
+			var dirs = 1 + (EDirections)_random.Next((int)EDirections.ALL);
+			return dirs;
+		}
+
+		public static EDirections GetRandomDirection(this Random _random)
+		{
+			var dir = AllDirections[_random.Next(AllDirections.Length)];
+			return dir;
+		}
 	}
 }

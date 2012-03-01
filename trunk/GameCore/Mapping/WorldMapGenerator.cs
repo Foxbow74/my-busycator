@@ -41,14 +41,10 @@ namespace GameCore.Mapping
 				}
 				_size--;
 			}
-			EDirections dirs;
-			do
+			var dirs = m_rnd.GetRandomDirections();
+
+			foreach (var dir in dirs.AllDirectionsIn())
 			{
-				dirs = (EDirections)m_rnd.Next(16);
-			} while (dirs == EDirections.NONE);
-			foreach (EDirections dir in Enum.GetValues(typeof(EDirections)))
-			{
-				if (dir == EDirections.NONE || !dirs.HasFlag(dir)) continue;
 				var xy = _xy + dir.GetDelta();
 				if (_map.GetLength(0) <= xy.X || xy.X<0) continue;
 				if (_map.GetLength(1) <= xy.Y || xy.Y<0) continue;

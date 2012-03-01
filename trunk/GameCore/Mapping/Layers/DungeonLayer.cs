@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
-using Point = GameCore.Misc.Point;
+using GameCore.Objects.Furniture.LightSources;
 
 namespace GameCore.Mapping.Layers
 {
@@ -58,10 +58,10 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 
-			block.AddLightSource(new Point(2, 2), new LightSource(18, new FColor(5f, 1f, 0, 0)));
-			block.AddLightSource(new Point(MapBlock.SIZE - 2, MapBlock.SIZE - 2), new LightSource(8, new FColor(1f, 0f, 1f, 0f)));
-			block.AddLightSource(new Point(MapBlock.SIZE - 2, 2), new LightSource(8, new FColor(1f, 0f, 0f, 1f)));
-			block.AddLightSource(new Point(2, MapBlock.SIZE - 2), new LightSource(8, new FColor(1f, 1f, 0f, 1f)));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN), new Point(1, 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP), new Point(MapBlock.SIZE - 1, MapBlock.SIZE - 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT), new Point(MapBlock.SIZE - 1, 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT), new Point(1, MapBlock.SIZE - 1));
 
 			{
 				var x = rnd.Next(MapBlock.SIZE);

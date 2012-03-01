@@ -20,7 +20,6 @@ namespace GameCore.Mapping
 			Rooms = new List<Room>();
 			Creatures = new List<Tuple<Creature, Point>>();
 			Objects = new List<Tuple<Thing, Point>>();
-			LightSources = new List<Tuple<Point, LightSource>>();
 
 			BlockId = _point;
 			Map = new ETerrains[SIZE,SIZE];
@@ -81,11 +80,19 @@ namespace GameCore.Mapping
 			return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE);
 		}
 
-		public List<Tuple<Point, LightSource>> LightSources { get; set; }
-
-		public void AddLightSource(Point _point, LightSource _lightSource)
+		public IEnumerable<Tuple<ILightSource, Point>> LightSources
 		{
-			LightSources.Add(new Tuple<Point, LightSource>(_point, _lightSource));
+			get
+			{
+				foreach (var tuple in Objects)
+				{
+					if (tuple.Item1 is ILightSource) yield return new Tuple<ILightSource, Point>((ILightSource)tuple.Item1, tuple.Item2);
+				}
+				foreach (var tuple in Creatures)
+				{
+					if (tuple.Item1.Light != null) yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
+				}
+			}
 		}
 
 		public void AddCreature(Creature _creature, Point _inBlockCoords)
