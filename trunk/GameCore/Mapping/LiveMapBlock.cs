@@ -12,7 +12,6 @@ namespace GameCore.Mapping
 		private readonly int m_liveMapBlockIndex;
 		private MapBlock m_mapBlock;
 		private readonly Point m_liveCellZero;
-		private readonly List<Creature> m_creatures = new List<Creature>();
 
 		public LiveMapBlock(LiveMap _liveMap, Point _liveMapBlockId, int _liveMapBlockIndex)
 		{
@@ -46,7 +45,13 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Creature> Creatures
 		{
-			get { return m_creatures; }
+			get
+			{
+				foreach (var creature in MapBlock.Creatures)
+				{
+					yield return creature.Item1;
+				}
+			}
 		}
 
 		public Point LiveMapBlockId { get; private set; }
@@ -110,32 +115,21 @@ namespace GameCore.Mapping
 		public void Clear()
 		{
 			if (MapBlock==null) return;
-
-			MapBlock.Creatures.Clear();
-			foreach (var creature in m_creatures)
-			{
-				MapBlock.AddCreature(creature, MapBlock.GetInBlockCoords(creature.LiveCoords));
-				creature.LiveCoords = null;
-			}
 			MapBlock = null;
-			m_creatures.Clear();
 		}
 
-		public void RemoveCreature(Creature _creature)
+		public void RemoveCreature(Creature _creature, Point _oldLiveCoords)
 		{
-			if (!m_creatures.Remove(_creature))
-			{
-				throw new ApplicationException();
-			}
+			MapBlock.Creatures.Remove(new Tuple<Creature, Point>(_creature, MapBlock.GetInBlockCoords(_oldLiveCoords)));
 		}
 
-		public void AddCreature(Creature _creature)
+		public void AddCreature(Creature _creature, Point _newLiveCoords)
 		{
-			if (m_creatures.Contains(_creature))
+			var tuple = new Tuple<Creature, Point>(_creature, MapBlock.GetInBlockCoords(_newLiveCoords));
+			if (!MapBlock.Creatures.Contains(tuple))
 			{
-				throw new ApplicationException();
+				MapBlock.Creatures.Add(tuple);
 			}
-			m_creatures.Add(_creature);
 		}
 	}
 }

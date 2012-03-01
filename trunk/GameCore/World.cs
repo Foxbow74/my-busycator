@@ -55,8 +55,9 @@ namespace GameCore
 		private void BornAvatar()
 		{
 			AvatarBlockId = Point.Zero;
-			Avatar = new Avatar(Surface) { LiveCoords = LiveMap.CenterLiveBlock * MapBlock.SIZE };
+			Avatar = new Avatar(Surface);
 			LiveMap.Actualize();
+			Avatar.LiveCoords = LiveMap.CenterLiveBlock*MapBlock.SIZE;
 		}
 
 		/// <summary>

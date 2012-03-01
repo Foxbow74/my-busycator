@@ -3,6 +3,7 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
+using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -70,7 +71,7 @@ namespace GameCore.Creatures
 			if (!canMove)
 			{
 				nextCell.AddItem(Ammo);
-				nextCell.LiveMapBlock.RemoveCreature(this);
+				LiveCoords = null;
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
@@ -81,7 +82,7 @@ namespace GameCore.Creatures
 		public override EActResults Atack(Creature _victim)
 		{
 			MessageManager.SendMessage(this, "попал!");
-			this[0,0].LiveMapBlock.RemoveCreature(this);
+			LiveCoords = null;
 			return EActResults.DONE;
 		}
 	}

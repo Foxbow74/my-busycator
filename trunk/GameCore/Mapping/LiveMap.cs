@@ -178,15 +178,19 @@ namespace GameCore.Mapping
 
 		public void CreaturesCellChanged(Creature _creature, Point _oldLiveCoords, Point _newLiveCoords)
 		{
-			if(_newLiveCoords==null) return;
 			var oldBlock = _oldLiveCoords != null ? GetCell(_oldLiveCoords).LiveMapBlock : null;
+			if (_newLiveCoords == null)
+			{
+				oldBlock.RemoveCreature(_creature, _oldLiveCoords);
+				return;
+			}
 			var newBlock = GetCell(_newLiveCoords).LiveMapBlock;
 			if (newBlock != oldBlock)
 			{
-				newBlock.AddCreature(_creature);
+				newBlock.AddCreature(_creature, _newLiveCoords);
 				if (oldBlock != null)
 				{
-					oldBlock.RemoveCreature(_creature);
+					oldBlock.RemoveCreature(_creature, _oldLiveCoords);
 					if (_creature.IsAvatar)
 					{
 						AvatarChangesBlock(oldBlock.LiveMapBlockId, newBlock.LiveMapBlockId);
@@ -198,8 +202,8 @@ namespace GameCore.Mapping
 			}
 			else
 			{
-				newBlock.RemoveCreature(_creature);
-				newBlock.AddCreature(_creature);
+				newBlock.RemoveCreature(_creature, _oldLiveCoords);
+				newBlock.AddCreature(_creature, _newLiveCoords);
 			}
 			if(_creature.IsAvatar)
 			{
