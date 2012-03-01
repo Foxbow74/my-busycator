@@ -74,7 +74,7 @@ namespace GameUi.UIBlocks.Map
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp();
-							tile.Draw(screenPoint, color);
+							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
 						}
 					}
 					else if (liveCell.IsSeenBefore)
@@ -85,7 +85,7 @@ namespace GameUi.UIBlocks.Map
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
+							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), tileInfoProvider.Direction);
 						}
 						DrawHelper.FogTile(screenPoint);
 					}

@@ -31,7 +31,9 @@ namespace GameCore.Mapping
 
 		public float Rnd { get; private set; }
 
-		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd)
+		public Point OnLiveMapCoords { get; private set; }
+
+		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
 			Rnd = _rnd;
 			m_items.Clear();
@@ -46,6 +48,8 @@ namespace GameCore.Mapping
 			TerrainAttribute = TerrainAttribute.GetAttribute(Terrain);
 
 			IsSeenBefore = (_mapBlock.SeenCells[_inBlockCoords.Y] & m_seenMask) != 0;
+			OnLiveMapCoords = _onLiveMapCoords;
+
 			ClearTemp();
 		}
 
@@ -81,7 +85,7 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Item> Items{get { return m_items; }}
 
-		public Thing Furniture { get; set; }
+		public Objects.Thing Furniture { get; set; }
 		
 		public Creature Creature
 		{
@@ -118,11 +122,6 @@ namespace GameCore.Mapping
 				{
 					yield return cr;
 				}
-				var source = LiveMapBlock.MapBlock.LightSources.FirstOrDefault(_tuple => _tuple.Item1 == m_inBlockCoords);
-				if(source!=null)
-				{
-					yield return source.Item2.OnWall;
-				}
 			}
 		}
 
@@ -154,10 +153,10 @@ namespace GameCore.Mapping
 			return item;
 		}
 
-		public Furniture ResolveFakeFurniture(Creature _creature)
+		public Thing ResolveFakeFurniture(Creature _creature)
 		{
 			Furniture = ((FakedThing)Furniture).ResolveFake(_creature);
-			return (Furniture)Furniture;
+			return (Thing)Furniture;
 		}
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors(Creature _creature)

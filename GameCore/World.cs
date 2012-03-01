@@ -151,7 +151,8 @@ namespace GameCore
 			switch (n%1)
 			{
 				case 0:
-					return new TreeMazeDungeonLayer(_creature.Layer, _creature[0,0].WorldCoords, _stair, n);
+					return new DungeonLayer(_creature.Layer, _creature[0, 0].WorldCoords, _stair);
+					//return new TreeMazeDungeonLayer(_creature.Layer, _creature[0,0].WorldCoords, _stair, n);
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

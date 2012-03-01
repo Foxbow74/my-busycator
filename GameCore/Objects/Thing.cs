@@ -1,43 +1,18 @@
-﻿using System;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
 using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	public interface ITileInfoProvider
-	{
-		ETiles Tile { get; }
-		FColor LerpColor { get; }
-	}
-
-	public class TileInfoProvider:ITileInfoProvider
-	{
-		public static ITileInfoProvider HeapOfItems { get; private set; }
-
-		static TileInfoProvider()
-		{
-			HeapOfItems = new TileInfoProvider(ETiles.HEAP_OF_ITEMS);
-		}
-		
-		public TileInfoProvider(ETiles _tile):this(_tile, FColor.Empty)
-		{}
-
-		public TileInfoProvider(ETiles _tile, FColor _colorMultiplier)
-		{
-			Tile = _tile;
-			LerpColor = _colorMultiplier;
-		}
-
-		public ETiles Tile { get; private set; }
-
-		public FColor LerpColor { get; private set; }
-	}
-
 	public abstract class Thing : ITileInfoProvider
 	{
 		public abstract ETiles Tile { get; }
 
 		public virtual FColor LerpColor { get{ return FColor.Empty;}}
+
+		public virtual EDirections Direction
+		{
+			get { return EDirections.DOWN; }
+		}
 
 		public abstract string Name { get; }
 

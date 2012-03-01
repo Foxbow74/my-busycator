@@ -10,5 +10,6 @@ namespace GameCore
 		DOWN = 0x2,
 		LEFT = 0x4,
 		RIGHT = 0x8,
+		ALL = UP|DOWN|LEFT|RIGHT,
 	}
 }
