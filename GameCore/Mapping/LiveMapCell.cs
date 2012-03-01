@@ -119,9 +119,9 @@ namespace GameCore.Mapping
 				{
 					yield return Furniture;
 				}
-				if (Items.Any())
+				foreach (var item in Items)
 				{
-					yield return Items.Count() > 1?TileInfoProvider.HeapOfItems:Items.FirstOrDefault();
+					yield return item;
 				}
 				var cr = Creature;
 				if (cr != null)
@@ -150,19 +150,19 @@ namespace GameCore.Mapping
 
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
+			RemoveItem(_fakeItem);
 			var item = (Item)_fakeItem.ResolveFake(_creature);
-			if (!m_items.Remove(_fakeItem))
-			{
-				throw new NotImplementedException("Нет тут такого!");
-			}
-			m_items.Add(item);
+			AddItem(item);
 			return item;
 		}
 
 		public Thing ResolveFakeFurniture(Creature _creature)
 		{
-			Furniture = ((FakedThing)Furniture).ResolveFake(_creature);
-			return (Thing)Furniture;
+			var fakedThing = (FakedThing)Furniture;
+			m_mapBlock.RemoveObject(fakedThing, m_inBlockCoords);
+			Furniture = fakedThing.ResolveFake(_creature);
+			m_mapBlock.AddObject(Furniture, m_inBlockCoords);
+			return Furniture;
 		}
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors(Creature _creature)
