@@ -33,12 +33,12 @@ namespace GameCore.Acts.Movement
 			get { return EActionCategory.MOVEMENT; }
 		}
 
-		public override EActResults Do(Creature _creature, bool _silence)
+		public override EActResults Do(Creature _creature)
 		{
 			var furniture = _creature[0,0].Furniture;
 			if (!(furniture is StairDown))
 			{
-				if (!_silence)
+				if (_creature.IsAvatar)
 				{
 					MessageManager.SendMessage(this, "куда? Тут нет лестницы");
 				}

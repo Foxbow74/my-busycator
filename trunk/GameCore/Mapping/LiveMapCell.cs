@@ -78,14 +78,20 @@ namespace GameCore.Mapping
 			return m_liveCoords +  " WC:" + (WorldCoords == null ? "<null>" : WorldCoords.ToString()); ;
 		}
 
+		internal void AddItemIntenal(Item _item)
+		{
+			m_items.Add(_item);
+		}
+
 		public void AddItem(Item _item)
 		{
+			m_mapBlock.AddObject(_item, m_inBlockCoords);
 			m_items.Add(_item);
 		}
 
 		public IEnumerable<Item> Items{get { return m_items; }}
 
-		public Objects.Thing Furniture { get; set; }
+		public Thing Furniture { get; set; }
 		
 		public Creature Creature
 		{
@@ -260,6 +266,7 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
+			m_mapBlock.RemoveObject(_item, m_inBlockCoords);
 		}
 	}
 }

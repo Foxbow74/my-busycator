@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Mapping.Layers;
+using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameCore.Creatures
@@ -118,6 +119,19 @@ namespace GameCore.Creatures
 		public void RemoveFromBackpack(Item _item)
 		{
 			m_backPack.GetItems(this).Remove(_item);
+		}
+
+		public override ILightSource Light
+		{
+			get
+			{
+				var tool = this[EEquipmentPlaces.TOOL];
+				if (tool != null && tool is ILightSource)
+				{
+					return tool.Light;
+				}
+				return base.Light;
+			}
 		}
 	}
 }
