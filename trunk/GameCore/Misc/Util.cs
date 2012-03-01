@@ -121,7 +121,7 @@ namespace GameCore.Misc
 		{
 			var r = _rct;
 			r.Inflate(0,-1);
-			foreach (var point in r.AllPoints())
+			foreach (var point in r.AllPoints)
 			{
 				yield return point;
 			}

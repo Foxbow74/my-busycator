@@ -50,21 +50,40 @@ namespace GameCore.Misc
 
 		public bool ContainsEx(Point _point)
 		{
-			var result = Left <= _point.X && Top <= _point.Y && Bottom > _point.Y && Right > _point.X;
+			var result = Left <= _point.X && Top <= _point.Y && Bottom >= _point.Y && Right >= _point.X;
 			return result;
 		}
 
-		public IEnumerable<Point> AllPoints()
+		public IEnumerable<Point> AllPoints
 		{
-			for (var i = Left; i < Right; ++i)
+			get
 			{
-				for (var j = Top; j < Bottom; ++j)
+				for (var i = Left; i < Right; ++i)
 				{
-					yield return new Point(i, j);
+					for (var j = Top; j < Bottom; ++j)
+					{
+						yield return new Point(i, j);
+					}
 				}
 			}
 		}
 
+		public IEnumerable<Point> BorderPoints
+		{
+			get
+			{
+				for (var i = Left; i < Right; ++i)
+				{
+					yield return new Point(i, Top);
+					yield return new Point(i, Bottom);
+				}
+				for (var j = Top + 1; j < Bottom - 1; ++j)
+				{
+					yield return new Point(Left, j);
+					yield return new Point(Right, j);
+				}
+			}
+		}
 
 		#region overrides
 

@@ -272,7 +272,7 @@ namespace OpenTKUi
 					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
 					GL.Vertex2(m_x, m_y + m_height);
 					break;
-				case EDirections.LEFT:
+				case EDirections.RIGHT:
 					GL.TexCoord2(texcoords[1].U, texcoords[1].V);
 					GL.Vertex2(m_x, m_y);
 					GL.TexCoord2(texcoords[2].U, texcoords[2].V);
@@ -282,7 +282,7 @@ namespace OpenTKUi
 					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
 					GL.Vertex2(m_x, m_y + m_height);
 					break;
-				case EDirections.RIGHT:
+				case EDirections.LEFT:
 					GL.TexCoord2(texcoords[3].U, texcoords[3].V);
 					GL.Vertex2(m_x, m_y);
 					GL.TexCoord2(texcoords[0].U, texcoords[0].V);
@@ -295,11 +295,6 @@ namespace OpenTKUi
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-		}
-
-		public void SendVertices()
-		{
-			
 		}
 
 		public void Clear()
