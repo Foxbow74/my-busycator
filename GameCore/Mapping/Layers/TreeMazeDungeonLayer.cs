@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
+using GameCore.Objects.Furniture.LightSources;
 using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
@@ -17,10 +18,10 @@ namespace GameCore.Mapping.Layers
 
 		private readonly Random m_rnd;
 
-		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair, int _rndSeed)
+		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair, Random _rnd)
 			: base(_enterFromLayer, _enterCoords, _stair)
 		{
-			m_rnd = new Random(_rndSeed);
+			m_rnd = _rnd;
 			var size = m_rnd.Next(5) + m_rnd.Next(5) + 5;
 			var map = new EMapBlockTypes[size, size];
 			var center = new Point(size, size)/2;
@@ -70,9 +71,33 @@ namespace GameCore.Mapping.Layers
 			{
 				foreach (var room in mapBlock.Rooms.Where(_room => _room.IsConnected))
 				{
-					if (m_rnd.NextDouble() > 0.7)
+					var border = room.RoomRectangle.BorderPoints.ToArray();
+					foreach (var point in border)
 					{
-						//mapBlock.AddLightSource(new Point(room.RoomRectangle.Left + m_rnd.Next(room.RoomRectangle.Width), room.RoomRectangle.Top + m_rnd.Next(room.RoomRectangle.Height)), new LightSource(m_rnd.Next(4) + 3, new FColor(3f, (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble(), (float)m_rnd.NextDouble()))); ;
+						if (m_rnd.NextDouble() > 0.7)
+						{
+							var dir = EDirections.NONE;
+							if (point.X>0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsPassable == 0)
+							{
+								dir = EDirections.RIGHT;
+							}
+							else if (point.X<MapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
+							{
+								dir = EDirections.LEFT;
+							}
+							else if (point.Y>0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y - 1]).IsPassable == 0)
+							{
+								dir = EDirections.DOWN;
+							}
+							else if (point.Y < MapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
+							{
+								dir = EDirections.UP;
+							}
+							if (dir == EDirections.NONE) continue;
+							var fColor = new FColor(3f, (float) m_rnd.NextDouble(), (float) m_rnd.NextDouble(), (float) m_rnd.NextDouble());
+							mapBlock.AddObject(new OnWallTorch(new LightSource(m_rnd.Next(4) + 3,fColor), dir), point);
+							break;
+						}
 					}
 				}
 			}
@@ -206,10 +231,8 @@ namespace GameCore.Mapping.Layers
 
 		private void MakeRoom(MapBlock _block, Rct _rct, Random _random, ICollection<Point> _objects)
 		{
-			var contains = _objects.Where(_point => _rct.ContainsEx(_point)).ToArray();
+			var contains = _objects.Where(_rct.ContainsEx).ToArray();
 			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
-			//Point xy;
-			//Rct rect;
 			for (; ; )
 			{
 				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
@@ -895,35 +918,6 @@ namespace GameCore.Mapping.Layers
 				#endregion
 
 			}
-
-			//foreach (var room in rooms)
-			//{
-			//    var block = this[room.BlockId];
-			//    if (room.IsConnected)
-			//    {
-			//        MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.STONE_FLOOR, }, room.RoomRectangle);
-			//    }
-			//    else
-			//    {
-			//        if (room.ConnectedTo.Any())
-			//        {
-			//            MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.WATER, }, room.RoomRectangle);
-			//        }
-			//        else
-			//        {
-			//            MapBlockHelper.Fill(block, new Random(block.RandomSeed), this, new[] { ETerrains.SWAMP, }, room.RoomRectangle);
-			//        }
-			//    }
-			//}
-
-			//foreach (var connectionPoint in _connectionPoints)
-			//{
-			//    foreach (var point in connectionPoint.Begin.GetLineToPoints(connectionPoint.End))
-			//    {
-			//        var inBlock = MapBlock.GetInBlockCoords(point);
-			//        Blocks[MapBlock.GetBlockCoords(point)].Map[inBlock.X, inBlock.Y] = connectionPoint.Dir.GetTerrain();
-			//    }
-			//}
 		}
 
 		private void ConnectTwoRooms(Room _room1, Room _room2, IDictionary<Point, EDirections> _forbid, IDictionary<Point, Connector> _connectors, params Point[] _points)
