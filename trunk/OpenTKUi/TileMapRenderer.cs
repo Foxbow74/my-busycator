@@ -89,7 +89,6 @@ namespace OpenTKUi
 		public void Draw()
 		{
 			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
 
 			var needDraw = true;
 			var layer = 0;
@@ -142,12 +141,11 @@ namespace OpenTKUi
 
 		public void Clear(Rct _rct, FColor _backgroundColor)
 		{
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
 			GL.Begin(BeginMode.Quads);
 			var xy = new Point(_rct.Left, _rct.Top) * ATile.Size;
-			var xy1 = new GameCore.Misc.Point(_rct.Right + 1, _rct.Bottom + 1) * ATile.Size;
+			var xy1 = new Point(_rct.Right + 1, _rct.Bottom + 1) * ATile.Size;
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.Vertex2(xy.X, xy.Y);
 			GL.Vertex2(xy1.X, xy.Y);
