@@ -85,7 +85,7 @@ namespace OpenTKUi
 
 		public void DrawTextLayer()
 		{
-			m_drawHelper.DrawTextBitmap();
+			//m_drawHelper.DrawTextBitmap();
 		}
 
 		#endregion

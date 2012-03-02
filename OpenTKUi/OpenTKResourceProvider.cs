@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using GameCore;
 using GameUi;
+using QuickFont;
 
 namespace OpenTKUi
 {
 	internal class OpenTKResourceProvider : IResourceProvider, IDisposable
 	{
-		private readonly Dictionary<EFonts, Font> m_fonts = new Dictionary<EFonts, Font>();
+		private readonly Dictionary<EFonts, QFont> m_fonts = new Dictionary<EFonts, QFont>();
 
 		public OpenTKResourceProvider()
 		{
@@ -22,7 +24,7 @@ namespace OpenTKUi
 			get { return Images[_set]; }
 		}
 
-		public Font this[EFonts _font]
+		public QFont this[EFonts _font]
 		{
 			get { return m_fonts[_font]; }
 		}
@@ -53,7 +55,24 @@ namespace OpenTKUi
 
 		public void RegisterFont(EFonts _font, string _fileName, int _pointSize)
 		{
-			m_fonts[_font] = new Font(_fileName, _pointSize);
+			var charSet = new List<char>();
+			for (var c = ' '; c < '}'; ++c)
+			{
+
+				charSet.Add(c);
+
+			}
+			for (var c = 'А'; c <= 'я'; ++c)
+			{
+
+				charSet.Add(c);
+
+			}
+			var s = new string(charSet.ToArray());
+			var qfc = new QFontBuilderConfiguration() { charSet = s, TextGenerationRenderHint = TextGenerationRenderHint.ClearTypeGridFit };
+			var qFont = new QFont(_fileName, _pointSize, qfc);
+
+			m_fonts[_font] = qFont;
 		}
 
 		public ATile CreateTile(ETextureSet _eTextureSet, int _col, int _row, FColor _color)
