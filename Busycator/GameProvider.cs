@@ -55,14 +55,8 @@ namespace Busycator
 
 			//if (m_game.IsNeedDraw)
 			{
-				using (new Profiler("Clear(FColor.Empty)"))
-				{
-					Clear(FColor.Empty);
-				}
-				using (new Profiler("m_game.Draw()"))
-				{
-					m_game.Draw();
-				}
+				Clear(FColor.Empty);
+				m_game.Draw();
 
 				OnRenderFinished();
 			}
