@@ -52,6 +52,7 @@ namespace GameUi
 				var pop = m_uiBlocks.Pop();
 				if (pop is MainUiBlock)
 				{
+					pop.Dispose();
 					m_mainUiBlock = new MainUiBlock(_newWidthInCells, _newHeightInCells);
 					pop = m_mainUiBlock;
 				}

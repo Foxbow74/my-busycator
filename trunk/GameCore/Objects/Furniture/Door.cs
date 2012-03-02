@@ -5,7 +5,7 @@ using GameCore.Messages;
 
 namespace GameCore.Objects.Furniture
 {
-	internal class Door : Furniture, ICanbeOpened
+	internal class Door : FurnitureThing, ICanbeOpened
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 

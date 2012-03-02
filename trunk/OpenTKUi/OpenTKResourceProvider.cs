@@ -58,19 +58,20 @@ namespace OpenTKUi
 			var charSet = new List<char>();
 			for (var c = ' '; c < '}'; ++c)
 			{
-
 				charSet.Add(c);
-
 			}
 			for (var c = 'А'; c <= 'я'; ++c)
 			{
-
 				charSet.Add(c);
-
 			}
 			var s = new string(charSet.ToArray());
-			var qfc = new QFontBuilderConfiguration() { charSet = s, TextGenerationRenderHint = TextGenerationRenderHint.ClearTypeGridFit };
-			var qFont = new QFont(_fileName, _pointSize, qfc);
+			var qfc = new QFontBuilderConfiguration()
+			          	{
+			          		charSet = s, 
+							TextGenerationRenderHint = TextGenerationRenderHint.SizeDependent,
+							SuperSampleLevels = 1,
+			          	};
+			var qFont = new QFont(_fileName, _pointSize, FontStyle.Regular, qfc);
 
 			m_fonts[_font] = qFont;
 		}

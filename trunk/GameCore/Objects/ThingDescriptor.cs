@@ -48,7 +48,7 @@ namespace GameCore.Objects
 				{
 					Thing = liveMapCell.ResolveFakeItem(_creature, (FakedItem) Thing);
 				}
-				else if (Thing is Furniture.Furniture)
+				else if (Thing is FurnitureThing)
 				{
 					Thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}

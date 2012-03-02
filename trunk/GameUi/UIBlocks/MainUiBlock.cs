@@ -5,7 +5,6 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameUi.UIBlocks.Help;
 using GameUi.UIBlocks.Items;
-using GameUi.UIBlocks.Map;
 
 namespace GameUi.UIBlocks
 {

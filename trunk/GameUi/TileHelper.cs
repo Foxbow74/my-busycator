@@ -30,7 +30,7 @@ namespace GameUi
 			Rp = _resourceProvider;
 			DrawHelper = _drawHelper;
 
-			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 12);
+			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 10);
 			Rp.RegisterFont(EFonts.SMALL, "Resources\\monof55.ttf", 8);
 
 			foreach (ETextureSet set in Enum.GetValues(typeof (ETextureSet)))

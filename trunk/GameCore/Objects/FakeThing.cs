@@ -5,13 +5,13 @@ using GameCore.Creatures;
 
 namespace GameCore.Objects
 {
-	public class FakedThing : Thing, IFaked
+	public class FakedFurniture : FurnitureThing, IFaked
 	{
 		private readonly ETiles m_tile;
 		private readonly FColor m_lerpColor;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedThing(ETiles _tile, FColor _lerpColor)
+		public FakedFurniture(ETiles _tile, FColor _lerpColor)
 		{
 			m_tile = _tile;
 			m_lerpColor = _lerpColor;

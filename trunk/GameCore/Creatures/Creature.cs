@@ -186,7 +186,7 @@ namespace GameCore.Creatures
 			{
 				points = points.Intersect(_intersect);
 			}
-			return points.Select(World.TheWorld.LiveMap.GetCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors(this));
+			return points.Select(World.TheWorld.LiveMap.GetCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors<Item>(this));
 		}
 
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()

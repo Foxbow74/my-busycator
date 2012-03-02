@@ -88,9 +88,9 @@ namespace GameCore.Mapping
 				{
 					m_liveMap.Cells[cellId.X, cellId.Y].AddItemIntenal((Item) tuple.Item1);
 				}
-				else if (tuple.Item1.IsFurniture())
+				else if (tuple.Item1.Is<FurnitureThing>())
 				{
-					m_liveMap.Cells[cellId.X, cellId.Y].Furniture = tuple.Item1;
+					m_liveMap.Cells[cellId.X, cellId.Y].Furniture = (FurnitureThing)tuple.Item1;
 				}
 			}
 			foreach (var tuple in m_mapBlock.Creatures)

@@ -69,7 +69,7 @@ namespace QuickFont
                 var rect = glyphs[n].rect;
                 var page = bitmapPages[glyphs[n].page];
 
-                limits[n] = new XLimits[rect.Height];
+				limits[n] = new XLimits[rect.Height < 0 ? 0 : rect.Height];
 
                 maxHeight = Math.Max(rect.Height, maxHeight);
 

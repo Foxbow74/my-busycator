@@ -8,7 +8,7 @@ namespace GameCore.Objects.Furniture
 		ItemsCollection GetItems(Creature _creature);
 	}
 
-	internal abstract class Container : Furniture, IContainer
+	internal abstract class Container : FurnitureThing, IContainer
 	{
 		private ItemsCollection m_items;
 

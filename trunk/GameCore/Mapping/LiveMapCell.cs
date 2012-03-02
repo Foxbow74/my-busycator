@@ -91,7 +91,7 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Item> Items{get { return m_items; }}
 
-		public Thing Furniture { get; set; }
+		public FurnitureThing Furniture { get; set; }
 		
 		public Creature Creature
 		{
@@ -158,25 +158,28 @@ namespace GameCore.Mapping
 
 		public Thing ResolveFakeFurniture(Creature _creature)
 		{
-			var fakedThing = (FakedThing)Furniture;
+			var fakedThing = (FakedFurniture)Furniture;
 			m_mapBlock.RemoveObject(fakedThing, m_inBlockCoords);
-			Furniture = fakedThing.ResolveFake(_creature);
+			Furniture = (FurnitureThing)fakedThing.ResolveFake(_creature);
 			m_mapBlock.AddObject(Furniture, m_inBlockCoords);
 			return Furniture;
 		}
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors(Creature _creature)
+		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors<TThing>(Creature _creature) where TThing:Thing
 		{
-			foreach (var item in Items)
+			foreach (var item in Items.OfType<TThing>())
 			{
 				yield return new ThingDescriptor(item, LiveCoords, null);
 			}
-			var furniture = Furniture as Container;
-			if (furniture != null && !furniture.IsClosed(this, _creature))
+			if (typeof(TThing).IsAssignableFrom(typeof(Item)))
 			{
-				foreach (var item in furniture.GetItems(_creature).Items)
+				var furniture = Furniture as Container;
+				if (furniture != null && !furniture.IsClosed(this, _creature))
 				{
-					yield return new ThingDescriptor(item, LiveCoords, furniture);
+					foreach (var item in furniture.GetItems(_creature).Items.OfType<TThing>())
+					{
+						yield return new ThingDescriptor(item, LiveCoords, furniture);
+					}
 				}
 			}
 		}
