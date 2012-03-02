@@ -1,12 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
+using QuickFont;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = GameCore.Misc.Point;
+using Vector2 = OpenTK.Vector2;
 
 namespace OpenTKUi
 {
@@ -20,6 +25,7 @@ namespace OpenTKUi
 
 		public OpenTKDrawHelper(OpenTKResourceProvider _resourceProvider, OpenTKGameProvider _gameProvider)
 		{
+
 			m_gameProvider = _gameProvider;
 			m_resourceProvider = _resourceProvider;
 			var bitmap = new Bitmap(_gameProvider.Width, _gameProvider.Height, PixelFormat.Format32bppPArgb);
@@ -53,18 +59,35 @@ namespace OpenTKUi
 			}
 		}
 
+		private Dictionary<EFonts, QFont> m_qfonts = new Dictionary<EFonts, QFont>();
+
 		public void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color)
 		{
-			var font = m_resourceProvider[_font];
-			using (var gr = Graphics.FromImage(m_textImage.Bitmap))
+			QFont value;
+			if(!m_qfonts.TryGetValue(_font, out value))
 			{
-				gr.SmoothingMode = SmoothingMode.HighSpeed;
-				using (var br = new SolidBrush(_color.ToColor()))
+				var charSet = new List<char>();
+				for (var c = ' '; c < '}'; ++c)
 				{
-					gr.DrawString(_string, font, br, _x, _y);
+					
+						charSet.Add(c);
+					
 				}
+				for (var c = 'А'; c <= 'я'; ++c)
+				{
+					
+						charSet.Add(c);
+					
+				}
+				var s = new string(charSet.ToArray());
+				var qfc = new QFontBuilderConfiguration() { charSet = s, ShadowConfig = new QFontShadowConfiguration() { }, TextGenerationRenderHint = TextGenerationRenderHint.AntiAlias};
+				value = new QFont(m_resourceProvider[_font], qfc);
+				m_qfonts[_font] = value;
 			}
-			m_isTextBitmapChanged = true;
+			QFont.Begin();
+			value.Options.Colour = new Color4(_color.R, _color.G, _color.B, _color.A);
+			value.Print(_string, new Vector2(_x, _y));
+			QFont.End();
 		}
 
 		public void FogTile(Point _point)
@@ -86,13 +109,13 @@ namespace OpenTKUi
 
 		public void DrawTextBitmap()
 		{
-			if (m_isTextBitmapChanged)
-			{
-				m_textImage.Update();
-				m_isTextBitmapChanged = false;
-			}
+			//if (m_isTextBitmapChanged)
+			//{
+			//    m_textImage.Update();
+			//    m_isTextBitmapChanged = false;
+			//}
 
-			DrawTexture(m_textImage);
+			//DrawTexture(m_textImage);
 		}
 
 		public static void DrawTexture(Image _image)

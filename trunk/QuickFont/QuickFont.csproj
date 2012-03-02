@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BCAD98EB-0C52-4186-B8B0-92AB47947796}</ProjectGuid>
+    <ProjectGuid>{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>OpenTKUi</RootNamespace>
-    <AssemblyName>OpenTKUi</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>QuickFont</RootNamespace>
+    <AssemblyName>QuickFont</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,8 +34,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK">
-      <HintPath>..\..\OpenTKSample\OpenTK_engine\bin\Debug\OpenTK.dll</HintPath>
+    <Reference Include="OpenTK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -46,28 +48,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OpenTKGameProvider.cs" />
-    <Compile Include="Core.cs" />
-    <Compile Include="Image.cs" />
+    <Compile Include="Configuration\QFontConfiguration.cs" />
+    <Compile Include="Configuration\QFontKerningConfiguration.cs" />
+    <Compile Include="Configuration\QFontLoaderConfiguration.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="KerningCalculator.cs" />
+    <Compile Include="ProjectionStack.cs" />
+    <Compile Include="QBitmap.cs" />
+    <Compile Include="QFont.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="OpenTKResourceProvider.cs" />
-    <Compile Include="OpenTKTile.cs" />
-    <Compile Include="OpenTKDrawHelper.cs" />
-    <Compile Include="TileMapRenderer.cs" />
+    <Compile Include="Builder.cs" />
+    <Compile Include="Configuration\QFontBuilderConfiguration.cs" />
+    <Compile Include="QFontData.cs" />
+    <Compile Include="Configuration\QFontShadowConfiguration.cs" />
+    <Compile Include="QFontGlyph.cs" />
+    <Compile Include="QFontRenderOptions.cs" />
+    <Compile Include="TextNodeList.cs" />
+    <Compile Include="TexturePage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GameCore\GameCore.csproj">
-      <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
-      <Name>GameCore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GameUi\GameUi.csproj">
-      <Project>{1CC48A01-EBE0-4C46-890E-24465EEBBC7D}</Project>
-      <Name>GameUi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\QuickFont\QuickFont.csproj">
-      <Project>{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}</Project>
-      <Name>QuickFont</Name>
-    </ProjectReference>
+    <Content Include="ChangeLog.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
