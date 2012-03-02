@@ -92,10 +92,10 @@
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\FakedItem.cs" />
     <Compile Include="Objects\FurnitureThing.cs" />
-    <Compile Include="Objects\Furniture\Furniture.cs" />
     <Compile Include="Objects\Furniture\LightSources\LightSourceThing.cs" />
     <Compile Include="Objects\Furniture\LightSources\OnWallTorch.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
+    <Compile Include="Objects\Furniture\Sign.cs" />
     <Compile Include="Objects\Furniture\Stair.cs" />
     <Compile Include="Objects\Furniture\StairDown.cs" />
     <Compile Include="Objects\Furniture\StairUp.cs" />
