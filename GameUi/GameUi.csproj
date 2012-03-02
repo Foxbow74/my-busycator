@@ -66,7 +66,7 @@
     <Compile Include="UIBlocks\Items\ThingCategoryPresenter.cs" />
     <Compile Include="UIBlocks\Items\ThingPresenter.cs" />
     <Compile Include="UIBlocks\MainUiBlock.cs" />
-    <Compile Include="UIBlocks\Map\MapUiBlock.cs" />
+    <Compile Include="UIBlocks\MapUiBlock.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\MiniMapUiBlock.cs" />
     <Compile Include="UIBlocks\SelectTargetUiBlock.cs" />

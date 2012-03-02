@@ -91,6 +91,7 @@
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\FakedItem.cs" />
+    <Compile Include="Objects\FurnitureThing.cs" />
     <Compile Include="Objects\Furniture\Furniture.cs" />
     <Compile Include="Objects\Furniture\LightSources\LightSourceThing.cs" />
     <Compile Include="Objects\Furniture\LightSources\OnWallTorch.cs" />

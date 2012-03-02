@@ -63,14 +63,18 @@ namespace OpenTKUi
 			m_gameProvider.TileMapRenderer.FogTile(_point);
 		}
 
-		public void ClearText(Rct _rct, FColor _toFColor)
+		public void DrawRect(Rct _rct, FColor _toFColor)
 		{
-			//using (var gr = Graphics.FromImage(m_textImage.Bitmap))
-			//{
-			//    gr.Clip = new Region(new Rectangle(_rct.Left, _rct.Top, _rct.Width, _rct.Height));
-			//    gr.Clear(_toFColor.ToColor());
-			//}
-			//m_isTextBitmapChanged = true;
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+
+			GL.Color4(_toFColor.R, _toFColor.G, _toFColor.B, _toFColor.A);
+
+			GL.Begin(BeginMode.Quads);
+			GL.Vertex2(_rct.Left, _rct.Top);
+			GL.Vertex2(_rct.Right + 1, _rct.Top);
+			GL.Vertex2(_rct.Right + 1, _rct.Bottom + 1);
+			GL.Vertex2(_rct.Left, _rct.Bottom + 1);
+			GL.End();
 		}
 
 		#endregion

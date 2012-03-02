@@ -2,9 +2,8 @@
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using Point = GameCore.Misc.Point;
 
-namespace GameUi.UIBlocks.Map
+namespace GameUi.UIBlocks
 {
 	internal class MapUiBlock : UIBlock
 	{

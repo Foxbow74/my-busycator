@@ -50,7 +50,7 @@ namespace GameCore.Acts.Interact
 					{
 						list.Add(point);
 					}
-					else if (cc.GetAllAvailableItemDescriptors(_creature).Any(_descriptor => _descriptor.Thing.IsClosed(cc, _creature)))
+					else if (cc.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Any(_descriptor => _descriptor.Thing.IsClosed(cc, _creature)))
 					{
 						list.Add(point);
 					}
@@ -88,9 +88,7 @@ namespace GameCore.Acts.Interact
 				{
 					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}
-				list.AddRange(
-					liveMapCell.GetAllAvailableItemDescriptors(_creature).Where(
-						_descriptor => _descriptor.Thing.IsClosed(liveMapCell, _creature)));
+				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Where(_descriptor => _descriptor.Thing.IsClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.IsClosed(liveMapCell, _creature)));

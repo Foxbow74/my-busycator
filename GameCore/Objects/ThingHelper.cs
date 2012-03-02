@@ -10,7 +10,7 @@ namespace GameCore.Objects
 {
 	public static class ThingHelper
 	{
-		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedThing> m_fakedThings = new Dictionary<Tuple<ETiles, FColor>, FakedThing>();
+		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedFurniture> m_fakedThings = new Dictionary<Tuple<ETiles, FColor>, FakedFurniture>();
 		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETiles, FColor>, FakedItem>();
 		private static readonly Dictionary<Tuple<ETiles, FColor>, FakedMonster> m_fakedMonsters = new Dictionary<Tuple<ETiles, FColor>, FakedMonster>();
 
@@ -57,7 +57,7 @@ namespace GameCore.Objects
 				{
 					_thing = liveMapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _thing);
 				}
-				else if (_thing is FakedThing)
+				else if (_thing is FakedFurniture)
 				{
 					_thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
@@ -85,14 +85,9 @@ namespace GameCore.Objects
 			return _thing is ICanbeOpened && ((ICanbeOpened) _thing).ELockType != ELockType.OPEN;
 		}
 
-		public static bool IsFurniture(this Thing _thing)
-		{
-			return _thing is FakedThing || _thing is Furniture.Furniture;
-		}
-
 		public static bool CanBeClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)
 		{
-			if (_thing == null) return false;
+			if (!(_thing is FurnitureThing)) return false;
 			if (_thing.IsFake())
 			{
 				_thing = _cell.ResolveFakeFurniture(_creature);
@@ -110,11 +105,11 @@ namespace GameCore.Objects
 			return _thing is IFaked;
 		}
 
-		public static FakedThing GetThing(this ETiles _tile)
+		public static FakedFurniture GetThing(this ETiles _tile)
 		{
 			var key = new Tuple<ETiles, FColor>(_tile, FColor.Empty);
-			FakedThing thing;
-			return m_fakedThings.TryGetValue(key, out thing) ? thing : m_fakedThings.First(_pair => _pair.Key.Item1==_tile).Value;
+			FakedFurniture furniture;
+			return m_fakedThings.TryGetValue(key, out furniture) ? furniture : m_fakedThings.First(_pair => _pair.Key.Item1==_tile).Value;
 		}
 
 		public static FakedItem GetItem(this ETiles _tile)
@@ -157,10 +152,10 @@ namespace GameCore.Objects
 		{
 			var thing = (Thing) Activator.CreateInstance(_type);
 			var key = new Tuple<ETiles, FColor>(thing.Tile, thing.LerpColor);
-			FakedThing value;
+			FakedFurniture value;
 			if (!m_fakedThings.TryGetValue(key, out value))
 			{
-				value = new FakedThing(thing.Tile, thing.LerpColor);
+				value = new FakedFurniture(thing.Tile, thing.LerpColor);
 				m_fakedThings.Add(key, value);
 			}
 			value.Add(_type);

@@ -3,7 +3,7 @@ using GameCore.Misc;
 
 namespace GameCore.Objects.Furniture.LightSources
 {
-	abstract class LightSourceFurniture : Furniture, ILightSource
+	abstract class LightSourceFurniture : FurnitureThing, ILightSource
 	{
 		private readonly LightSource m_lightSource;
 

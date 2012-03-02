@@ -2,6 +2,7 @@
 using GameCore.Mapping.Layers;
 using GameCore.Objects;
 using GameCore.Objects.Ammo;
+using GameCore.Objects.Tools;
 using GameCore.Objects.Weapons;
 
 namespace GameCore.Creatures
@@ -13,6 +14,7 @@ namespace GameCore.Creatures
 		{
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts());
+			Equip(EEquipmentPlaces.TOOL, new Torch());
 		}
 
 		public override ETiles Tile
