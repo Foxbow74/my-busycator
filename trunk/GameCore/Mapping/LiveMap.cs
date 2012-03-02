@@ -178,6 +178,7 @@ namespace GameCore.Mapping
 
 		public void CreaturesCellChanged(Creature _creature, Point _oldLiveCoords, Point _newLiveCoords)
 		{
+			if (_oldLiveCoords!=null && _newLiveCoords!=null && MapBlock.GetInBlockCoords(_oldLiveCoords) == MapBlock.GetInBlockCoords(_newLiveCoords)) return;
 			var oldBlock = _oldLiveCoords != null ? GetCell(_oldLiveCoords).LiveMapBlock : null;
 			if (_newLiveCoords == null)
 			{
