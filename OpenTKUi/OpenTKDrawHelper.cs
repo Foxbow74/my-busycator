@@ -100,7 +100,6 @@ namespace OpenTKUi
 			GL.BindTexture(TextureTarget.Texture2D, _image.Texture);
 
 			GL.Color4(1f, 1f, 1f, 1f);
-			GL.BlendEquation(BlendEquationMode.FuncAdd);
 
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0);

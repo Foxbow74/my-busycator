@@ -86,29 +86,6 @@ namespace OpenTKUi
 			}
 		}
 
-		public void Draw1()
-		{
-			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
-
-			var needDraw = true;
-			var layer = 0;
-			while (needDraw)
-			{
-				GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-				needDraw = DrawQuads(false, false, layer);
-				if (needDraw)
-				{
-					GL.BlendEquation(BlendEquationMode.FuncAdd);
-					DrawQuads(true, false, layer);
-					GL.BlendEquation(BlendEquationMode.FuncReverseSubtract);
-					DrawQuads(false, true, layer);
-					GL.BlendEquation(BlendEquationMode.FuncAdd);
-					DrawQuads(true, true, layer);
-				}
-				layer++;
-			}
-		}
-
 		public void Draw()
 		{
 			GL.BindTexture(TextureTarget.Texture2D, m_img.Texture);
@@ -169,7 +146,7 @@ namespace OpenTKUi
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
 			GL.Begin(BeginMode.Quads);
-			var xy = new GameCore.Misc.Point(_rct.Left, _rct.Top) * ATile.Size;
+			var xy = new Point(_rct.Left, _rct.Top) * ATile.Size;
 			var xy1 = new GameCore.Misc.Point(_rct.Right + 1, _rct.Bottom + 1) * ATile.Size;
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.Vertex2(xy.X, xy.Y);
