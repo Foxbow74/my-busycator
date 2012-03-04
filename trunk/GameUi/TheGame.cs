@@ -225,9 +225,12 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock)
+			using (new Profiler("World.TheWorld.GameUpdated()"))
 			{
-				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
+				if (m_uiBlocks.Peek() == m_mainUiBlock)
+				{
+					m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
+				}
 			}
 		}
 
@@ -235,15 +238,9 @@ namespace GameUi
 		{
 			foreach (var uiBlock in m_uiBlocks.Reverse())
 			{
-				using (new Profiler("DrawBackground"))
-				{
-					uiBlock.DrawBackground();
-				}
+				uiBlock.DrawBackground();
 				uiBlock.DrawContent();
-				using (new Profiler("DrawFrame"))
-				{
-					uiBlock.DrawFrame();
-				}
+				uiBlock.DrawFrame();
 			}
 		}
 	}

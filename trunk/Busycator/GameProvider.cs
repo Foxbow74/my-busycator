@@ -43,10 +43,7 @@ namespace Busycator
 			if (!IsActive) return;
 
 			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " lc:" + World.TheWorld.Avatar[0,0].LiveCoords + " wc:" + World.TheWorld.Avatar[0,0].WorldCoords;
-			using (new Profiler())
-			{
-				m_game.Update(KeyState);
-			}
+			m_game.Update(KeyState);
 		}
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
@@ -56,9 +53,16 @@ namespace Busycator
 			//if (m_game.IsNeedDraw)
 			{
 				Clear(FColor.Empty);
-				m_game.Draw();
 
-				OnRenderFinished();
+				using (new Profiler("m_game.Draw();"))
+				{
+					m_game.Draw();
+				}
+
+				using (new Profiler("OnRenderFinished();"))
+				{
+					OnRenderFinished();
+				}
 			}
 		}
 

@@ -72,6 +72,7 @@
     <Compile Include="Mapping\LiveMapBlock.cs" />
     <Compile Include="Mapping\LiveMapCell.cs" />
     <Compile Include="Mapping\Room.cs" />
+    <Compile Include="Mapping\Rooms\Building.cs" />
     <Compile Include="Mapping\WorldMapGenerator.cs" />
     <Compile Include="Messages\AskDirectionMessage.cs" />
     <Compile Include="Messages\AskHowMuchMessage.cs" />
