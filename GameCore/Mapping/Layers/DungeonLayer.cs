@@ -69,14 +69,14 @@ namespace GameCore.Mapping.Layers
 				block.AddCreature(new Monster(this), new Point(x, y));
 			}
 
-			block.Map[9, 9] = ETerrains.BRICK_WALL;
+			block.Map[9, 9] = ETerrains.RED_BRICK_WALL;
 			block.Map[10, 9] = ETerrains.WINDOW;
-			block.Map[11, 9] = ETerrains.BRICK_WALL;
+			block.Map[11, 9] = ETerrains.RED_BRICK_WALL;
 			block.Map[11, 10] = ETerrains.WINDOW;
 			block.Map[9, 10] = ETerrains.WINDOW;
-			block.Map[9, 11] = ETerrains.BRICK_WALL;
+			block.Map[9, 11] = ETerrains.RED_BRICK_WALL;
 			block.AddObject(new Door(), new Point(10, 11));
-			block.Map[11, 11] = ETerrains.BRICK_WALL;
+			block.Map[11, 11] = ETerrains.RED_BRICK_WALL;
 			//block.AddLightSource(new Point(10, 10), new LightSource(18, new FColor(53f, 0f, 1f, 1f)));
 
 			return block;

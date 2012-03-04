@@ -120,16 +120,5 @@ namespace OpenTKUi
 				ptr1++;
 			}
 		}
-
-		public void Update()
-		{
-			GL.BindTexture(TextureTarget.Texture2D, m_texture);
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
-			using (new Profiler("UpdateTextLayer"))
-			{
-				GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)Width, (int)Height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-			}
-			Bitmap.UnlockBits(data);
-		}
 	}
 }

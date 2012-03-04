@@ -13,8 +13,10 @@ namespace GameCore
 		[Terrain("лава")]LAVA,
 		[Terrain("дорога")] ROAD,
 		[Terrain("гриб", 0.7f, 0.4f, false)] MUSHROOM,
-		[Terrain("кирпичная стена", 0, 1, false)] BRICK_WALL,
-		[Terrain("окно", 0, 0.2f, true)] WINDOW,
+		[Terrain("кирпичная стена", 0, 1, false)]RED_BRICK_WALL,
+		[Terrain("кирпичная стена", 0, 1, false)]YELLOW_BRICK_WALL,
+		[Terrain("кирпичная стена", 0, 1, false)]GRAY_BRICK_WALL,
+		[Terrain("окно", 0, 0.2f, true)]WINDOW,
 		[Terrain("каменный пол")]STONE_FLOOR,
 		[Terrain("каменная стена",0,1,false)]STONE_WALL,
 

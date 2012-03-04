@@ -46,7 +46,7 @@ namespace GameCore.Mapping.Layers
 
 		internal override IEnumerable<ETerrains> DefaultWalls
 		{
-			get { yield return ETerrains.BRICK_WALL; }
+			get { yield return ETerrains.RED_BRICK_WALL; }
 		}
 
 		protected override MapBlock GenerateBlock(Point _blockId)
@@ -60,10 +60,10 @@ namespace GameCore.Mapping.Layers
 
 			for (var i = 3; i <= 8; i++)
 			{
-				block.Map[i, 3] = ETerrains.BRICK_WALL;
-				block.Map[3, i] = ETerrains.BRICK_WALL;
-				block.Map[i, 8] = ETerrains.BRICK_WALL;
-				block.Map[8, i] = ETerrains.BRICK_WALL;
+				block.Map[i, 3] = ETerrains.RED_BRICK_WALL;
+				block.Map[3, i] = ETerrains.RED_BRICK_WALL;
+				block.Map[i, 8] = ETerrains.RED_BRICK_WALL;
+				block.Map[8, i] = ETerrains.RED_BRICK_WALL;
 			}
 
 			

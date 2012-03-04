@@ -240,7 +240,7 @@ namespace GameCore.Mapping.Layers
 				if (!contains.Any() || contains.All(rect.ContainsEx))
 				{
 					MapBlockHelper.Fill(_block, _random, this, DefaultEmptySpaces, rect);
-					_block.Rooms.Add(new Room(rect, _rct, _block.BlockId));
+					_block.Rooms.Add(new Room(rect, _rct, _block.BlockId, this));
 					break;
 				}
 			}

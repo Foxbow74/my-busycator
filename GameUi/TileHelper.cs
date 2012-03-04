@@ -105,8 +105,14 @@ namespace GameUi
 												Rp.CreateTile(ETextureSet.GP_X16, 2, 2, FColor.FromArgb(20, 80, 20)),
 						                 	});
 						break;
-					case ETiles.BRICK:
+					case ETiles.RED_BRICK:
 						tl = Rp.CreateTile(0, 12, FColor.DarkRed);
+						break;
+					case ETiles.YELLOW_BRICK:
+						tl = Rp.CreateTile(0, 12, FColor.DarkGoldenrod);
+						break;
+					case ETiles.GRAY_BRICK:
+						tl = Rp.CreateTile(0, 12, FColor.Gray);
 						break;
 					case ETiles.BRICK_WINDOW:
 						tl = Rp.CreateTile(1, 12, FColor.DarkRed);
@@ -309,8 +315,12 @@ namespace GameUi
 					return ((TileSet)m_tiles[ETiles.GRASS])[(int)Math.Abs((_worldCoords.GetHashCode() * _rnd))];
 				case ETerrains.MUSHROOM:
 					return ((TileSet)m_tiles[ETiles.MASHROOM])[(int)Math.Abs((_worldCoords.GetHashCode() * _rnd))];
-				case ETerrains.BRICK_WALL:
-					return m_tiles[ETiles.BRICK];
+				case ETerrains.RED_BRICK_WALL:
+					return m_tiles[ETiles.RED_BRICK];
+				case ETerrains.YELLOW_BRICK_WALL:
+					return m_tiles[ETiles.YELLOW_BRICK];
+				case ETerrains.GRAY_BRICK_WALL:
+					return m_tiles[ETiles.GRAY_BRICK];
 				case ETerrains.WINDOW:
 					return m_tiles[ETiles.BRICK_WINDOW];
 				case ETerrains.WATER:

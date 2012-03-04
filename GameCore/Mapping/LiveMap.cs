@@ -122,36 +122,34 @@ namespace GameCore.Mapping
 		{
 			var centerLiveCell = GetCenterLiveCell();
 
-			using (new Profiler())
+			
+			var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
+
+			lighted.Add(CenterLiveBlock);
+
+			foreach (var blockId in lighted)
 			{
-				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
+				Blocks[blockId.X, blockId.Y].ClearTemp();
+			}
 
-				lighted.Add(CenterLiveBlock);
+			m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
 
-				foreach (var blockId in lighted)
+			foreach (var blockId in lighted)
+			{
+				var liveCellZero = blockId * MapBlock.SIZE;
+				var liveMapBlock = Blocks[blockId.X, blockId.Y];
+
+				foreach (var tuple in liveMapBlock.MapBlock.LightSources)
 				{
-					Blocks[blockId.X, blockId.Y].ClearTemp();
-				}
-
-				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
-
-				foreach (var blockId in lighted)
-				{
-					var liveCellZero = blockId * MapBlock.SIZE;
-					var liveMapBlock = Blocks[blockId.X, blockId.Y];
-
-					foreach (var tuple in liveMapBlock.MapBlock.LightSources)
-					{
-						tuple.Item1.LightCells(this, liveCellZero + tuple.Item2);
-					}
-				}
-
-				if (World.TheWorld.Avatar.Light != null)
-				{
-					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+					tuple.Item1.LightCells(this, liveCellZero + tuple.Item2);
 				}
 			}
 
+			if (World.TheWorld.Avatar.Light != null)
+			{
+				World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+			}
+			
 			var zeroLiveCell = centerLiveCell - m_vieportSize/2;
 			return zeroLiveCell;
 		}

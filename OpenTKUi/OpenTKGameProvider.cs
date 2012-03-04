@@ -132,18 +132,9 @@ namespace OpenTKUi
 		protected virtual void OnRenderFinished()
 		{
 			if (!IsActive) return;
-			using (new Profiler("TileMapRenderer.Draw"))
-			{
-				TileMapRenderer.Draw();
-			}
-			using (new Profiler("DrawTextLayer"))
-			{
-				DrawTextLayer();
-			}
-			using (new Profiler("SwapBuffers"))
-			{
-				SwapBuffers();
-			}
+			TileMapRenderer.Draw();
+			DrawTextLayer();
+			SwapBuffers();
 		}
 
 		private void KeyboardKeyUp(object _sender, KeyboardKeyEventArgs _e)
