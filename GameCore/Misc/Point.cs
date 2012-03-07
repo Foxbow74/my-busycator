@@ -171,6 +171,11 @@ namespace GameCore.Misc
 			return new Point((int) Math.Round(_a.X*_c), (int) Math.Round(_a.Y*_c));
 		}
 
+		public static Point operator *(Point _a, Point _b)
+		{
+			return new Point(_a.X * _b.X, _a.Y * _b.Y);
+		}
+
 		public static Point operator /(Point _a, int _c)
 		{
 			return new Point(_a.X/_c, _a.Y/_c);

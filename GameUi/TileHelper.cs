@@ -114,8 +114,14 @@ namespace GameUi
 					case ETiles.GRAY_BRICK:
 						tl = Rp.CreateTile(0, 12, FColor.Gray);
 						break;
-					case ETiles.BRICK_WINDOW:
+					case ETiles.RED_BRICK_WINDOW:
 						tl = Rp.CreateTile(1, 12, FColor.DarkRed);
+						break;
+					case ETiles.GRAY_BRICK_WINDOW:
+						tl = Rp.CreateTile(1, 12, FColor.Gray);
+						break;
+					case ETiles.YELLOW_BRICK_WINDOW:
+						tl = Rp.CreateTile(1, 12, FColor.DarkGoldenrod);
 						break;
 					case ETiles.ON_WALL_LIGHT_SOURCE:
 						tl = Rp.CreateTile(ETextureSet.SELF, 0, 0, FColor.White);
@@ -124,10 +130,10 @@ namespace GameUi
 						tl = Rp.CreateTile(ETextureSet.SELF, 1, 0, FColor.White);
 						break;
 					case ETiles.DOOR:
-						tl = Rp.CreateTile(5, 12, FColor.Brown);
+						tl = Rp.CreateTile(5, 12, FColor.White);
 						break;
 					case ETiles.OPEN_DOOR:
-						tl = Rp.CreateTile(4, 12, FColor.Brown);
+						tl = Rp.CreateTile(4, 12, FColor.White);
 						break;
 					case ETiles.AVATAR:
 						tl = Rp.CreateTile(2, 0, FColor.White);
@@ -321,8 +327,12 @@ namespace GameUi
 					return m_tiles[ETiles.YELLOW_BRICK];
 				case ETerrains.GRAY_BRICK_WALL:
 					return m_tiles[ETiles.GRAY_BRICK];
-				case ETerrains.WINDOW:
-					return m_tiles[ETiles.BRICK_WINDOW];
+				case ETerrains.RED_BRICK_WINDOW:
+					return m_tiles[ETiles.RED_BRICK_WINDOW];
+				case ETerrains.GRAY_BRICK_WINDOW:
+					return m_tiles[ETiles.GRAY_BRICK_WINDOW];
+				case ETerrains.YELLOW_BRICK_WINDOW:
+					return m_tiles[ETiles.YELLOW_BRICK_WINDOW];
 				case ETerrains.WATER:
 					return m_tiles[ETiles.WATER];
 				case ETerrains.SWAMP:

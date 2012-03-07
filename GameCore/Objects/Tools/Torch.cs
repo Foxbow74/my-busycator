@@ -11,9 +11,13 @@ namespace GameCore.Objects.Tools
 		EActResults UseTool(Intelligent _intelligent);
 	}
 
-	class Torch : Item, ITool //, ILightSource
+	class Torch : Item, ITool
 	{
 		private LightSource m_lightSource;
+
+		public Torch(Material _material) : base(_material)
+		{
+		}
 
 		public void LightCells(LiveMap _liveMap, Point _point)
 		{
@@ -37,7 +41,7 @@ namespace GameCore.Objects.Tools
 
 		public override void Resolve(Creature _creature)
 		{
-			m_lightSource = new LightSource(4, new FColor(4f, 1f, 0.9f, 0.5f));
+			m_lightSource = new LightSource(10, new FColor(4f, 1f, 0.9f, 0.5f));
 		}
 
 		public override FColor LerpColor
@@ -60,26 +64,27 @@ namespace GameCore.Objects.Tools
 
 		public EActResults UseTool(Intelligent _intelligent)
 		{
+			var name = this.GetName(_intelligent);
 			if(IsOn)
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, Name + " потушен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, name + " потушен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " потушил " + Name));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.GetName(World.TheWorld.Avatar) + " потушил " + name));
 				}
 			}
 			else
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, Name + " зажжен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, name + " зажжен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.Name + " зажег " + Name));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.GetName(World.TheWorld.Avatar) + " зажег " + name));
 				}
 			}
 			IsOn = !IsOn;

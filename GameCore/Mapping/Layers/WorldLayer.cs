@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Point = GameCore.Misc.Point;
+using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers
 {

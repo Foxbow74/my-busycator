@@ -14,6 +14,13 @@ namespace GameUi.UIBlocks
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
+		public override void Resize(Rct _newRct)
+		{
+			base.Resize(_newRct);
+			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRct.Width, ContentRct.Height));
+			World.TheWorld.LiveMap.Reset();
+		}
+
 		public override void  Dispose()
 		{
 			MessageManager.NewWorldMessage -= MessageManagerNewWorldMessage;
@@ -34,7 +41,7 @@ namespace GameUi.UIBlocks
 		{
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 
-			var fogColor = FColor.FromArgb(255, 70, 70, 70);
+			var fogColor = FColor.FromArgb(255, 150, 150, 150);
 			var fogLightness = fogColor.Lightness();// *2;
 
 			var worldLayer = World.TheWorld.Avatar.Layer;

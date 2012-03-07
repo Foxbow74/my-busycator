@@ -16,6 +16,12 @@ namespace GameUi.UIBlocks
 			UpdateContentRct();
 		}
 
+		public virtual void Resize(Rct _newRct)
+		{
+			Rct = _newRct;
+			UpdateContentRct();
+		}
+
 		public FColor BackgroundColor { get; set; }
 
 		public Rct Rct { get; protected set; }
@@ -95,7 +101,6 @@ namespace GameUi.UIBlocks
 		public virtual void DrawContent()
 		{
 		}
-
 	}
 
 	internal class OpenUIBlockMessage : Message

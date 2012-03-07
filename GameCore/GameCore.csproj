@@ -35,7 +35,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
@@ -65,15 +64,22 @@
     <Compile Include="FColor.cs" />
     <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
+    <Compile Include="Mapping\Layers\LayerHelper.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\CityGenerator.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\LiveMap.cs" />
     <Compile Include="Mapping\LiveMapBlock.cs" />
     <Compile Include="Mapping\LiveMapCell.cs" />
     <Compile Include="Mapping\Room.cs" />
-    <Compile Include="Mapping\Rooms\Building.cs" />
-    <Compile Include="Mapping\WorldMapGenerator.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\Building.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\WorldMapGenerator.cs" />
+    <Compile Include="Material.cs" />
+    <Compile Include="Materials\FlashMaterial.cs" />
+    <Compile Include="Materials\MetalMaterial.cs" />
+    <Compile Include="Materials\MineralMaterial.cs" />
+    <Compile Include="Materials\WoodMaterial.cs" />
     <Compile Include="Messages\AskDirectionMessage.cs" />
     <Compile Include="Messages\AskHowMuchMessage.cs" />
     <Compile Include="Messages\AskMessage.cs" />

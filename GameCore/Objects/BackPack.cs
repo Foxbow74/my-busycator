@@ -9,6 +9,10 @@ namespace GameCore.Objects
 	/// </summary>
 	internal class BackPack : Container, ISpecial
 	{
+		public BackPack() : base(null)
+		{
+		}
+
 		public override ETiles Tile
 		{
 			get { throw new NotImplementedException(); }

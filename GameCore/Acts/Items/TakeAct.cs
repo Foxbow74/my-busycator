@@ -106,7 +106,7 @@ namespace GameCore.Acts.Items
 
 			var descriptor = toTake[0];
 			var thing = descriptor.ResolveThing(_creature);
-			var thingString = thing.Name;
+			var thingString = thing.GetName(_creature);
 			IEnumerable<Item> get;
 			if (descriptor.Container == null)
 			{

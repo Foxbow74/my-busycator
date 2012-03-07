@@ -9,6 +9,7 @@ namespace GameCore
 		[MapBlockType("ничто")] NONE,
 		[MapBlockType("суша")] GROUND,
 		[MapBlockType("море")] SEA,
+		[MapBlockType("суша")] CITY,
 	}
 
 	public class MapBlockTypeAttribute : Attribute

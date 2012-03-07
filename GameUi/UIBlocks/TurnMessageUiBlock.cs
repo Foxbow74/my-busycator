@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -13,6 +13,8 @@ namespace GameUi.UIBlocks
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 		private int m_linesShown;
 		private int m_visibleTill;
+
+		private readonly List<Message> m_turnMessages = new List<Message>();
 
 		public TurnMessageUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Yellow)
@@ -32,6 +34,7 @@ namespace GameUi.UIBlocks
 		{
 			if (_message.Type == WorldMessage.EType.AVATAR_TURN)
 			{
+				m_turnMessages.Clear();
 				m_lines.Clear();
 				m_linesShown = 0;
 				m_visibleTill = 0;
@@ -40,19 +43,7 @@ namespace GameUi.UIBlocks
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if (_message is SimpleTextMessage)
-			{
-				var tm = (SimpleTextMessage) _message;
-				var tp = new TextPortion(tm.Text, null);
-				tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
-				m_lines.AddRange(tp.TextLines);
-			}
-			else if (_message is TextMessage)
-			{
-				var tm = (TextMessage) _message;
-				tm.Text.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
-				m_lines.AddRange(tm.Text.TextLines);
-			}
+			m_turnMessages.Add(_message);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -62,14 +53,34 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			if (m_lines.Count == 0) return;
+			var strings = new List<string>();
+			foreach (var message in m_turnMessages)
+			{
+				if (message is SimpleTextMessage)
+				{
+					var tm = (SimpleTextMessage)message;
+					strings.Add(tm.Text);
+				}
+				else if (message is TextMessage)
+				{
+					var tm = (TextMessage)message;
+					strings.Add(tm.Text.Text);
+				}
+			}
+
+			var str = string.Join(", ", strings);
+			var tp = new TextPortion(str, null);
+			tp.SplitByLines((ContentRct.Width - 1) * ATile.Size, Font, 0);
+
+			var lines = tp.TextLines.ToArray();
+			if (lines.Length==0) return;
 
 			var lineNumber = 0;
-			var max = Math.Min(TextLinesMax, m_lines.Count);
+			var max = Math.Min(TextLinesMax, lines.Length);
 			var fromLine = m_linesShown;
 			for (var index = fromLine; index < max; index++)
 			{
-				var textLine = m_lines[index];
+				var textLine = lines[index];
 				if (lineNumber > TextLinesMax) break;
 				DrawLine(textLine, ForeColor, lineNumber++, 0, EAlignment.JUSTIFY);
 			}

@@ -27,7 +27,10 @@ namespace Busycator
 		protected override void OnResize(EventArgs _e)
 		{
 			base.OnResize(_e);
-			m_game.WindowClientSizeChanged(WidthInCells, HeightInCells);
+			if (IsActive)
+			{
+				m_game.WindowClientSizeChanged(WidthInCells, HeightInCells);
+			}
 		}
 
 		protected override void OnUnload(EventArgs _e)
@@ -70,12 +73,6 @@ namespace Busycator
 		private static void Main()
 		{
 			{
-				//Func<int, float> f = _i => (float)Math.Round(_i/255.0, 2);
-				//foreach (var variable in typeof(Color).GetProperties(BindingFlags.Static | BindingFlags.Public))
-				//{
-				//    var color = (Color)variable.GetValue(null, new object[0]);
-				//    Debug.WriteLine(string.Format("public static readonly FColor {0} = new FColor({1}f, {2}f, {3}f, {4}f);", variable.Name, f(color.A), f(color.R), f(color.G), f(color.B)));
-				//}
 				try
 				{
 					using (var game = new GameProvider())

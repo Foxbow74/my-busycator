@@ -88,7 +88,7 @@ namespace GameCore.Objects
 
 		private class Stacked : Item, ISpecial
 		{
-			public Stacked(Item _item, int _count)
+			public Stacked(Item _item, int _count):base(_item.Material)
 			{
 				Item = _item;
 				Count = _count;
@@ -125,7 +125,7 @@ namespace GameCore.Objects
 
 			public override string ToString()
 			{
-				return "stack of " + Item.Name + " (" + Count + ")";
+				return "stack of " + Item.GetName(World.TheWorld.Avatar) + " (" + Count + ")";
 			}
 		}
 

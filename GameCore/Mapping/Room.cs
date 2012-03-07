@@ -8,10 +8,10 @@ namespace GameCore.Mapping
 {
 	public class Room
 	{
-		public Room(Rct _roomRect, Rct _areaRect, Point _blockId, WorldLayer _layer)
+		public Room(Rct _roomRect, Rct _areaRect, MapBlock _mapBlock, WorldLayer _layer)
 		{
-			BlockId = _blockId;
 			Layer = _layer;
+			BlockId = _mapBlock.BlockId;
 			RoomRectangle = _roomRect;
 			AreaRectangle = _areaRect;
 			WorldRoomRectangle = new Rct
@@ -21,17 +21,20 @@ namespace GameCore.Mapping
 					_roomRect.Width,
 					_roomRect.Height);
 			ConnectedTo = new List<Room>();
-			RandomSeed = _layer[_blockId].RandomSeed + _roomRect.LeftTop.GetHashCode();
+			RandomSeed = _mapBlock.RandomSeed + RoomRectangle.LeftTop.GetHashCode();
 		}
 
-		protected int RandomSeed { get; private set; }
+		protected int RandomSeed
+		{
+			get; private set;
+		}
 
 		public Point BlockId
 		{
 			get; private set; 
 		}
 
-		public WorldLayer Layer { get; set; }
+		public WorldLayer Layer { get; private set; }
 
 		public Rct RoomRectangle { get; private set; }
 		public Rct AreaRectangle { get; private set; }

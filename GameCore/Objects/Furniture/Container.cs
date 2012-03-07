@@ -14,6 +14,10 @@ namespace GameCore.Objects.Furniture
 
 		#region IContainer Members
 
+		protected Container(Material _material) : base(_material)
+		{
+		}
+
 		/// <summary>
 		/// 	Если контейнер не инициализирован, то на основании характеристик открывшего существа генерируется наполнение
 		/// </summary>

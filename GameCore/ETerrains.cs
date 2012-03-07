@@ -16,7 +16,7 @@ namespace GameCore
 		[Terrain("кирпичная стена", 0, 1, false)]RED_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]YELLOW_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]GRAY_BRICK_WALL,
-		[Terrain("окно", 0, 0.2f, true)]WINDOW,
+		
 		[Terrain("каменный пол")]STONE_FLOOR,
 		[Terrain("каменная стена",0,1,false)]STONE_WALL,
 
@@ -24,6 +24,9 @@ namespace GameCore
 		[Terrain("down")]DOWN,
 		[Terrain("left")]LEFT,
 		[Terrain("right")]RIGHT,
+		[Terrain("окно", 0, 0.1f, true)]RED_BRICK_WINDOW,
+		[Terrain("окно", 0, 0.1f, true)]GRAY_BRICK_WINDOW,
+		[Terrain("окно", 0, 0.1f, true)]YELLOW_BRICK_WINDOW,
 	}
 
 	public class TerrainAttribute : Attribute

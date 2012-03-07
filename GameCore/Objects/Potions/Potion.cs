@@ -4,6 +4,10 @@ namespace GameCore.Objects.Potions
 {
 	public class Potion : Item
 	{
+		public Potion(Material _material) : base(_material)
+		{
+		}
+
 		public override ETiles Tile
 		{
 			get { return ETiles.POTION; }

@@ -3,6 +3,7 @@ using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.Objects;
 
 namespace GameUi.UIBlocks
 {
@@ -67,7 +68,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.Name, m_message.Total), ForeColor,
+			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.GetName(World.TheWorld.Avatar), m_message.Total), ForeColor,
 			         0, 0, EAlignment.LEFT);
 		}
 	}

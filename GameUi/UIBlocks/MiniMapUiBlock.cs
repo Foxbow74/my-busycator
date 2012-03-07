@@ -24,22 +24,25 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var map = World.TheWorld.Surface.WorldMap;
-			var size = new Vector2(map.GetLength(0), map.GetLength(1));
+			var ground = new FColor(1f, 0.3f, 0.2f, 0f);
+			var sea = new FColor(1f, 0.0f, 0.0f, 0.3f);
+			var city = new FColor(1f, 0.5f, 0.4f, 0.2f);
 
-			var halfSize = new Vector2(size.X/2, size.Y/2);
+			var size = new Point(World.TheWorld.Surface.WorldMapSize, World.TheWorld.Surface.WorldMapSize);
+
+			var halfSize = size/2;
 
 			var rsz = Math.Min(ContentRct.Width*ATile.Size/size.X, ContentRct.Height*ATile.Size/size.Y);
-			var rectSize = new Vector2(rsz, rsz);
-			var halfContentRect = new Vector2(ContentRct.Left*ATile.Size + ContentRct.Width*ATile.Size/2,
+			var rectSize = new Point(rsz, rsz);
+			var halfContentRect = new Point(ContentRct.Left*ATile.Size + ContentRct.Width*ATile.Size/2,
 			                                  ContentRct.Top*ATile.Size + ContentRct.Height*ATile.Size/2);
 
 			for (var i = 0; i < size.X; ++i)
 			{
 				for (var j = 0; j < size.Y; ++j)
 				{
-					var type = map[i, j];
-					var pnt = new Vector2(i - halfSize.X, j - halfSize.Y);
+					var pnt = new Point(i, j) - halfSize;
+					var type = World.TheWorld.Surface.GetBlockType(pnt);
 					FColor color;
 					switch (type)
 					{
@@ -47,24 +50,31 @@ namespace GameUi.UIBlocks
 							color = FColor.Black;
 							break;
 						case EMapBlockTypes.GROUND:
-							color = FColor.Brown;
+							color = ground;
 							break;
 						case EMapBlockTypes.SEA:
-							color = FColor.Blue;
+							color = sea;
+							break;
+						case EMapBlockTypes.CITY:
+							color = city;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
+
+					if (World.TheWorld.AvatarBlockId == pnt)
+					{
+						color = FColor.White;
+					}
+
 					var rect = new Rct(
-						(int) Math.Round(halfContentRect.X + pnt.X*rectSize.X),
-						(int) Math.Round(halfContentRect.Y + pnt.Y*rectSize.Y),
-						(int) Math.Round(rectSize.X),
-						(int) Math.Round(rectSize.Y));
+						halfContentRect +pnt*rectSize,
+						rectSize.X,
+						rectSize.Y);
 					DrawHelper.DrawRect(rect, color);
 				}
-
-				DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 1, 21, EAlignment.RIGHT);
 			}
+			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, 21, EAlignment.RIGHT);
 		}
 	}
 }
