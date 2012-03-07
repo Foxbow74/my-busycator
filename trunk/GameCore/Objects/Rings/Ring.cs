@@ -4,6 +4,10 @@ namespace GameCore.Objects.Rings
 {
 	internal class Ring : Item
 	{
+		public Ring(Material _material) : base(_material)
+		{
+		}
+
 		public override ETiles Tile
 		{
 			get { return ETiles.RING; }

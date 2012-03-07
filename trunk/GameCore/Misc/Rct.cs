@@ -58,9 +58,9 @@ namespace GameCore.Misc
 		{
 			get
 			{
-				for (var i = Left; i < Right; ++i)
+				for (var i = Left; i <= Right; ++i)
 				{
-					for (var j = Top; j < Bottom; ++j)
+					for (var j = Top; j <= Bottom; ++j)
 					{
 						yield return new Point(i, j);
 					}
@@ -72,17 +72,38 @@ namespace GameCore.Misc
 		{
 			get
 			{
-				for (var i = Left; i < Right; ++i)
+				for (var i = Left; i <= Right; ++i)
 				{
 					yield return new Point(i, Top);
 					yield return new Point(i, Bottom);
 				}
-				for (var j = Top + 1; j < Bottom - 1; ++j)
+				for (var j = Top + 1; j < Bottom; ++j)
 				{
 					yield return new Point(Left, j);
 					yield return new Point(Right, j);
 				}
 			}
+		}
+
+		public IEnumerable<Point> CornerPoints
+		{
+			get
+			{
+				yield return LeftTop;
+				yield return RightBottom;
+				yield return new Point(Left, Bottom);
+				yield return new Point(Right, Top);
+			}
+		}
+
+		public int Size
+		{
+			get { return Width*Height; }
+		}
+
+		public Point Center
+		{
+			get { return LeftTop + (RightBottom - LeftTop) / 2; }
 		}
 
 		#region overrides
@@ -93,5 +114,10 @@ namespace GameCore.Misc
 		}
 
 		#endregion
+
+		public override string ToString()
+		{
+			return "Rct{" + LeftTop + " - " + RightBottom + "}";
+		}
 	}
 }

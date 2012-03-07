@@ -4,11 +4,12 @@ namespace GameCore.Objects.Furniture
 {
 	internal class StairUp : Stair
 	{
-		public StairUp(WorldLayer _leadToLayer):base(_leadToLayer)
+		public StairUp(WorldLayer _leadToLayer, Material _material)
+			: base(_leadToLayer, _material)
 		{
 		}
 
-		public StairUp()
+		public StairUp(Material _material):base(_material)
 		{
 		}
 

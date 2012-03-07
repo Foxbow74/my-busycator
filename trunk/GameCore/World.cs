@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -63,7 +64,7 @@ namespace GameCore
 		/// <summary>
 		/// </summary>
 		/// <returns>true, if something changed</returns>
-		public bool GameUpdated()
+		public bool GameUpdated(bool _forceTurn = false)
 		{
 			var result = false;
 			var done = new List<Creature>();
@@ -124,7 +125,7 @@ namespace GameCore
 						throw new ArgumentOutOfRangeException();
 				}
 			}
-			if(result)
+			if (result || _forceTurn)
 			{
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 			}

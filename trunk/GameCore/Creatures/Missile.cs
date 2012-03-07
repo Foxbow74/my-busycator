@@ -3,7 +3,6 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -26,6 +25,14 @@ namespace GameCore.Creatures
 			LiveCoords = _liveCoords;
 		}
 
+		public override Material Material
+		{
+			get
+			{
+				return Ammo.Material;
+			}
+		}
+
 		public override ILightSource Light
 		{
 			get
@@ -43,7 +50,7 @@ namespace GameCore.Creatures
 
 		public override string Name
 		{
-			get { return Ammo.Name; }
+			get { return Ammo.GetName(World.TheWorld.Avatar); }
 		}
 
 		public override void Resolve(Creature _creature)

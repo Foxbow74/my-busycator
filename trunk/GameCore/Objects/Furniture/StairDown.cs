@@ -4,11 +4,12 @@ namespace GameCore.Objects.Furniture
 {
 	internal class StairDown : Stair
 	{
-		public StairDown(WorldLayer _leadToLayer):base(_leadToLayer)
+		public StairDown(WorldLayer _leadToLayer, Material _material)
+			: base(_leadToLayer, _material)
 		{
 		}
 
-		public StairDown()
+		public StairDown(Material _material):base(_material)
 		{
 		}
 

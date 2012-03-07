@@ -80,11 +80,7 @@ namespace GameCore.Mapping
 
 		private void LayerChanged()
 		{
-			foreach (var blockId in m_blockIds)
-			{
-				ClearBlock(blockId);
-			}
-			Actualize();
+			Reset();
 		}
 
 		private Point GetCenterLiveCell()
@@ -260,6 +256,15 @@ namespace GameCore.Mapping
 		public static Point WrapCellCoords(Point _point)
 		{
 			return _point.Wrap(SizeInCells, SizeInCells);
+		}
+
+		public void Reset()
+		{
+			foreach (var blockId in m_blockIds)
+			{
+				ClearBlock(blockId);
+			}
+			Actualize();
 		}
 	}
 }

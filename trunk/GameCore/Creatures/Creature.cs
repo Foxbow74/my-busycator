@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
+using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects;
 
@@ -19,6 +20,7 @@ namespace GameCore.Creatures
 		private WorldLayer m_layer;
 
 		protected Creature(WorldLayer _layer, int _speed)
+			: base(ThingHelper.GetMaterial<FlashMaterial>())
 		{
 			Speed = _speed;
 			Luck = 25;
@@ -202,6 +204,11 @@ namespace GameCore.Creatures
 		public virtual EActResults Atack(Creature _victim)
 		{
 			return EActResults.NOTHING_HAPPENS;
+		}
+
+		public override IEnumerable<EMaterial> AllowedMaterials
+		{
+			get { yield return EMaterial.FLASH; }
 		}
 	}
 

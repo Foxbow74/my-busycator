@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using GameCore.Materials;
 using GameCore.Misc;
+using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Objects.Furniture.LightSources;
 using Point = GameCore.Misc.Point;
@@ -11,28 +13,18 @@ namespace GameCore.Mapping.Layers
 {
 	class TreeMazeDungeonLayer : DungeonLayer
 	{
-		private const int MIN_ROOM_SIZE = 4;
-		private const int MIN_ROOM_SQUARE = 42;
-		private const int MAX_DIV_SIZE = 15;
 		const int MAX_PATH_LEN = 20;
-
-		private readonly Random m_rnd;
 
 		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair, Random _rnd)
 			: base(_enterFromLayer, _enterCoords, _stair)
 		{
-			m_rnd = _rnd;
-			var size = m_rnd.Next(5) + m_rnd.Next(5) + 5;
-			var map = new EMapBlockTypes[size, size];
-			var center = new Point(size, size)/2;
-			var list = new List<Point> { center };
-			do
-			{
-				var point = list[m_rnd.Next(list.Count)];
-				list.AddRange(AddBlocks(point, map, ref size));
-			} while (size > 0);
-
 			var enterBlock = MapBlock.GetBlockId(_enterCoords);
+
+			var size = _rnd.Next(5) + _rnd.Next(5) + 5;
+			var center = new Point(size, size) / 2;
+			var map = new EMapBlockTypes[size, size];
+
+			var list = LayerHelper.GetRandomPoints(center, _rnd, map, size, EMapBlockTypes.GROUND, EMapBlockTypes.NONE);
 			var blockIds = list.Distinct().Select(_point => _point - center + enterBlock).ToArray();
 
 			foreach (var blockId in blockIds)
@@ -74,7 +66,7 @@ namespace GameCore.Mapping.Layers
 					var border = room.RoomRectangle.BorderPoints.ToArray();
 					foreach (var point in border)
 					{
-						if (m_rnd.NextDouble() > 0.7)
+						if (_rnd.NextDouble() > 0.7)
 						{
 							var dir = EDirections.NONE;
 							if (point.X>0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsPassable == 0)
@@ -94,47 +86,13 @@ namespace GameCore.Mapping.Layers
 								dir = EDirections.UP;
 							}
 							if (dir == EDirections.NONE) continue;
-							var fColor = new FColor(3f, (float) m_rnd.NextDouble(), (float) m_rnd.NextDouble(), (float) m_rnd.NextDouble());
-							mapBlock.AddObject(new OnWallTorch(new LightSource(m_rnd.Next(4) + 3,fColor), dir), point);
+							var fColor = new FColor(3f, (float) _rnd.NextDouble(), (float) _rnd.NextDouble(), (float)_rnd.NextDouble());
+							mapBlock.AddObject(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, ThingHelper.GetMaterial<OakMaterial>()), point);
 							break;
 						}
 					}
 				}
 			}
-		}
-
-		private IEnumerable<Point> AddBlocks(Point _from, EMapBlockTypes[,] _map, ref int _size)
-		{
-			var list = new List<Point>();
-			if (_size == 0 )
-			{
-				return list;
-			}
-			if (_map[_from.X, _from.Y] != EMapBlockTypes.GROUND)
-			{
-				list.Add(_from);
-				_map[_from.X, _from.Y] = EMapBlockTypes.GROUND;
-				_size--;
-				if(m_rnd.NextDouble() < 0.1)
-				{
-					return list;
-				}
-			}
-
-			var dirs = m_rnd.GetRandomDirections();
-
-			foreach (var dir in dirs.AllDirectionsIn())
-			{
-				var xy = _from + dir.GetDelta();
-				if (_map.GetLength(0) <= xy.X || xy.X < 0) continue;
-				if (_map.GetLength(1) <= xy.Y || xy.Y < 0) continue;
-
-				if (_map[xy.X, xy.Y] != EMapBlockTypes.GROUND)
-				{
-					list.AddRange(AddBlocks(xy, _map, ref _size));
-				}
-			}
-			return list;
 		}
 
 		internal override IEnumerable<ETerrains> DefaultWalls
@@ -169,87 +127,19 @@ namespace GameCore.Mapping.Layers
 			return block;
 		}
 
+
 		private void GenerateInternal(MapBlock _block, params Point[] _objects)
 		{
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
-			var objects = new List<Point>(_objects);
-			Generate(_block, rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), objects);
-		}
-
-		private void Generate(MapBlock _block, Random _random, Rct _rct, ICollection<Point> _objects)
-		{
-			var ableVert = _rct.Width - MIN_ROOM_SIZE * 2;
-			var ableHor = _rct.Height - MIN_ROOM_SIZE * 2;
-
-			if ((ableHor > 1 || ableVert > 1)  && (_rct.Width*_rct.Height<MIN_ROOM_SQUARE || _rct.Width>MAX_DIV_SIZE || _rct.Height>MAX_DIV_SIZE || _random.Next(_rct.Width + _rct.Height) > MIN_ROOM_SIZE))
+			var rooms = LayerHelper.GenerateRooms(_block, rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects), this);
+			foreach (var room in rooms)
 			{
-				var divVert = 0;
-				var divHor = 0;
-				while (divVert == divHor)
-				{
-					divVert = ableVert > 0 ? _random.Next(ableVert + 1) : 0;
-					divHor = ableHor > 0 ? _random.Next(ableHor + 1) : 0;
-				}
-				var rects = new List<Rct>();
-				if (divVert > divHor)
-				{
-					int vert;
-					do
-					{
-						vert = MIN_ROOM_SIZE + _random.Next(ableVert);
-						var val = vert;
-						if (_objects.All(_point => _point.X != (_rct.Left + val))) break;
-					} while (true);
-					rects.Add(new Rct(_rct.Left, _rct.Top, vert, _rct.Height));
-					rects.Add(new Rct(_rct.Left + vert + 1, _rct.Top, _rct.Width - (vert + 1), _rct.Height));
-				}
-				else
-				{
-					int hor;
-					do
-					{
-						hor = MIN_ROOM_SIZE + _random.Next(ableHor);
-						var val = hor;
-						if (_objects.All(_point => _point.Y != (_rct.Top + val))) break;
-					} while (true);
-					rects.Add(new Rct(_rct.Left, _rct.Top, _rct.Width, hor));
-					rects.Add(new Rct(_rct.Left, _rct.Top + hor + 1, _rct.Width, _rct.Height - (hor + 1)));
-				}
-				foreach (var rectangle in rects)
-				{
-					if (rectangle.Width > _rct.Width || rectangle.Height > _rct.Height)
-					{
-						throw new ApplicationException("Доля больше чем место под нее");
-					}
-					Generate(_block, _random, rectangle, _objects);
-				}
-				return;
-			}
-			MakeRoom(_block, _rct, _random, _objects);
-		}
-
-		private void MakeRoom(MapBlock _block, Rct _rct, Random _random, ICollection<Point> _objects)
-		{
-			var contains = _objects.Where(_rct.ContainsEx).ToArray();
-			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
-			for (; ; )
-			{
-				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
-				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
-				if (!contains.Any() || contains.All(rect.ContainsEx))
-				{
-					MapBlockHelper.Fill(_block, _random, this, DefaultEmptySpaces, rect);
-					_block.Rooms.Add(new Room(rect, _rct, _block.BlockId, this));
-					break;
-				}
-			}
-			foreach (var contain in contains)
-			{
-				_objects.Remove(contain);
+				MapBlockHelper.Fill(_block, rnd, this, DefaultEmptySpaces, room.RoomRectangle);
+				_block.Rooms.Add(room);
 			}
 		}
-
+		
 		/// <summary>
 		/// добавление коридоров, идущих из комнат
 		/// </summary>
@@ -268,7 +158,7 @@ namespace GameCore.Mapping.Layers
 				trys++;
 				var cps = new List<ConnectionPoint>();
 
-				var dirs = m_rnd.GetRandomDirections();
+				var dirs = _rnd.GetRandomDirections();
 
 				foreach (var dir in dirs.AllDirectionsIn())
 				{
@@ -397,8 +287,7 @@ namespace GameCore.Mapping.Layers
 						{
 							if (room == cp.Room) continue;
 							var rrect = room.WorldRoomRectangle;
-							var frect = rrect;
-							frect.Inflate(1, 1);
+							var frect = rrect.Inflate(1, 1);
 							var end = cp.End;
 							if (frect.ContainsEx(end))
 							{

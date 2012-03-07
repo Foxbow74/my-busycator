@@ -6,6 +6,10 @@ namespace GameCore.Objects
 {
 	internal abstract class StackOfItems : Item
 	{
+		protected StackOfItems(Material _material) : base(_material)
+		{
+		}
+
 		public int Count { get; private set; }
 
 		public override string Name
@@ -35,7 +39,7 @@ namespace GameCore.Objects
 		public StackOfItems GetOne()
 		{
 			Count--;
-			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType());
+			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType(), new object[]{Material});
 			stackOfAmmo.Count = 1;
 			return stackOfAmmo;
 		}

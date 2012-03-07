@@ -214,10 +214,10 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (Terrain == ETerrains.WINDOW)
-				{
-					return new FColor(1f, 1f, 0, 0);
-				}
+				//if (Terrain == ETerrains.RED_BRICK_WINDOW)
+				//{
+				//    return new FColor(1f, 1f, 0, 0);
+				//}
 				var attr = TerrainAttribute;
 				var opacity = attr.Opacity;
 				if (opacity < 1 && Furniture != null)

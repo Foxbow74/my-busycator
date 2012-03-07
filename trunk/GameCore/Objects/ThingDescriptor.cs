@@ -26,7 +26,7 @@ namespace GameCore.Objects
 
 		public string UiOrderIndex
 		{
-			get { return Thing.Name; }
+			get { return Thing.GetName(World.TheWorld.Avatar); }
 		}
 
 		public static ThingDescriptor Empty

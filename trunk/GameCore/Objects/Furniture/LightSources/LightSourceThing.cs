@@ -7,7 +7,7 @@ namespace GameCore.Objects.Furniture.LightSources
 	{
 		private readonly LightSource m_lightSource;
 
-		protected LightSourceFurniture(LightSource _lightSource)
+		protected LightSourceFurniture(LightSource _lightSource, Material _material):base(_material)
 		{
 			m_lightSource = _lightSource;
 		}

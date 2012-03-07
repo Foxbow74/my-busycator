@@ -1,13 +1,19 @@
-﻿using GameCore.Creatures;
+﻿using System.Collections.Generic;
+using GameCore.Creatures;
 using GameCore.Misc;
 
 namespace GameCore.Objects
 {
 	public abstract class Thing : ITileInfoProvider
 	{
+		protected Thing(Material _material)
+		{
+			Material = _material;
+		}
+
 		public abstract ETiles Tile { get; }
 
-		public virtual FColor LerpColor { get{ return FColor.Empty;}}
+		public virtual FColor LerpColor { get{ return Material.LerpColor; }}
 
 		public virtual EDirections Direction
 		{
@@ -25,7 +31,7 @@ namespace GameCore.Objects
 
 		public override string ToString()
 		{
-			return Name;
+			return this.GetName(World.TheWorld.Avatar);
 		}
 
 		/// <summary>
@@ -56,9 +62,13 @@ namespace GameCore.Objects
 
 		protected virtual int CalcHashCode()
 		{
-			return GetType().GetHashCode();
+			return GetType().GetHashCode() ^ (Material==null?0:Material.GetHashCode());
 		}
 
 		public virtual ILightSource Light { get { return null; } }
+
+		public abstract IEnumerable<EMaterial> AllowedMaterials { get; }
+
+		public virtual Material Material { get; private set; }
 	}
 }

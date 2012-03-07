@@ -10,7 +10,7 @@ namespace GameCore.Objects.Furniture
 {
 	internal class Chest : Container, ICanbeOpened
 	{
-		public Chest()
+		public Chest(Material _material):base(_material)
 		{
 			ELockType = ELockType.SIMPLE;
 		}
@@ -63,7 +63,7 @@ namespace GameCore.Objects.Furniture
 			var cnt = _creature.GetLuckRandom*5.0;
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (Item)ThingHelper.GetFaketItem(_creature[0,0].BlockRandomSeed);
+				yield return (Item)ThingHelper.GetFakedItem(_creature[0,0].BlockRandomSeed);
 			}
 		}
 	}

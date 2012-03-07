@@ -7,8 +7,8 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 0.35f;
-		const double LIGHT_THRESHOLD = 0.01;
+		private const float VISIBILITY_THRESHOLD = 0.01f;//35f;
+		const double LIGHT_THRESHOLD = 0.0;
 
 		const float DIVIDER = 10f;
 

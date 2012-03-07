@@ -8,7 +8,8 @@ namespace GameCore.Objects.Furniture.LightSources
 	{
 		private readonly EDirections m_direction;
 
-		public OnWallTorch(LightSource _lightSource, EDirections _direction) : base(_lightSource)
+		public OnWallTorch(LightSource _lightSource, EDirections _direction, Material _material)
+			: base(_lightSource, _material)
 		{
 			m_direction = _direction;
 		}
@@ -29,6 +30,29 @@ namespace GameCore.Objects.Furniture.LightSources
 			{
 				return m_direction;
 			}
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	class IndoorLight : LightSourceFurniture, ISpecial
+	{
+		public IndoorLight(LightSource _lightSource, Material _material)
+			: base(_lightSource, _material)
+		{
+		}
+
+		public override ETiles Tile
+		{
+			get { return ETiles.LIGHT_SOURCE; }
+		}
+
+		public override string Name
+		{
+			get { return "светильник"; }
 		}
 
 		public override void Resolve(Creature _creature)

@@ -8,12 +8,12 @@ namespace GameCore.Objects.Furniture
 	{
 		private WorldLayer m_leadToLayer;
 
-		protected Stair(WorldLayer _leadToLayer)
+		protected Stair(WorldLayer _leadToLayer, Material _material):base(_material)
 		{
 			m_leadToLayer = _leadToLayer;
 		}
 
-		protected Stair()
+		protected Stair(Material _material):base(_material)
 		{
 		}
 

@@ -5,21 +5,17 @@ using GameCore.Messages;
 
 namespace GameCore.Objects.Furniture
 {
-	internal class Door : FurnitureThing, ICanbeOpened
+	class Door : FurnitureThing, ICanbeOpened
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
+
+		public Door(Material _material) : base(_material)
+		{
+		}
 
 		public override ETiles Tile
 		{
 			get { return ETiles.DOOR; }
-		}
-
-		public override FColor LerpColor
-		{
-			get
-			{
-				return new FColor(0.5f,0f,1f,0f);
-			}
 		}
 
 		public override string Name
@@ -31,7 +27,7 @@ namespace GameCore.Objects.Furniture
 
 		public EActResults Open(Creature _creature, LiveMapCell _liveMapCell)
 		{
-			var door = new OpenDoor();
+			var door = new OpenDoor(Material);
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Furniture = door;
 
