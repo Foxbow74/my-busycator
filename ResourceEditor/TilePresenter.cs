@@ -76,13 +76,11 @@ namespace ResourceEditor
 			m_pb.BackgroundImage = bmp;
 		}
 
-		public void Set(ETextureSet _selectedItem, int _x, int _y)
+		public void Set(ETextureSet _set, int _x, int _y)
 		{
-			Tile = new Tile(_selectedItem, _x, _y, Tile.Color);
-			if (Tile.Tile is ETiles)
-			{
-				TileHelper.AllTiles[(ETiles)Tile.Tile] = Tile;
-			}
+			var tl = Tile.Tile;
+			Tile = new Tile(_set, _x, _y, Tile.Color) {Tile = tl};
+			TileHelper.AllTiles[Tile.Tile] = Tile;
 			Rebuild();
 		}
 	}

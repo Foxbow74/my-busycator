@@ -135,7 +135,7 @@ namespace ResourceEditor
 			{
 				foreach (var tile in GetTiles(item))
 				{
-					sb.AppendLine(item + tile.ToText());
+					sb.AppendLine(item + tile.ToShortText());
 				}
 			}
 			File.WriteAllText(@"Resources\terrains.dat", sb.ToString());
