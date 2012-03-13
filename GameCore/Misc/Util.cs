@@ -18,6 +18,14 @@ namespace GameCore.Misc
 			return result;
 		}
 
+		public static IEnumerable<Type> GetAllTypesOf<T>()
+		{
+			return from assembly in AppDomain.CurrentDomain.GetAssemblies()
+				   from type in assembly.GetTypes()
+				   where typeof(T).IsAssignableFrom(type) && !type.IsAbstract
+				   select type;
+		}
+
 		public static T As<TSource, T>(this TSource _d) where T : TSource
 		{
 			return (T) _d;

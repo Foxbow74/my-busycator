@@ -67,7 +67,7 @@ namespace GameCore.Objects
 
 		public virtual ILightSource Light { get { return null; } }
 
-		public abstract IEnumerable<EMaterial> AllowedMaterials { get; }
+		public abstract EMaterial AllowedMaterials { get; }
 
 		public virtual Material Material { get; private set; }
 	}

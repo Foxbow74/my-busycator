@@ -132,11 +132,11 @@ namespace GameCore.Mapping.Layers
 		{
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
-			var rooms = LayerHelper.GenerateRooms(_block, rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects), this);
+			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects));
 			foreach (var room in rooms)
 			{
 				MapBlockHelper.Fill(_block, rnd, this, DefaultEmptySpaces, room.RoomRectangle);
-				_block.Rooms.Add(room);
+				_block.AddRoom(room);
 			}
 		}
 		

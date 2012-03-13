@@ -125,5 +125,11 @@ namespace GameCore.Mapping
 		{
 			return new Rct(BlockId*SIZE, SIZE, SIZE);
 		}
+
+		public void AddRoom(Room _room)
+		{
+			Rooms.Add(_room);
+			_room.AddedToBlock(this);
+		}
 	}
 }

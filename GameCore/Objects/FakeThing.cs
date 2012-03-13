@@ -55,7 +55,7 @@ namespace GameCore.Objects
 			return m_types.All(_type => typeof (T).IsAssignableFrom(_type));
 		}
 
-		public override IEnumerable<EMaterial> AllowedMaterials
+		public override EMaterial AllowedMaterials
 		{
 			get { throw new NotImplementedException(); }
 		}

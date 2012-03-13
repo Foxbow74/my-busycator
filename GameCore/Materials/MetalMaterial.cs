@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameCore.Materials
+﻿namespace GameCore.Materials
 {
 	abstract class MetalMaterial:Material
 	{

@@ -1,4 +1,5 @@
-﻿using GameCore;
+﻿using System;
+using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -72,7 +73,7 @@ namespace GameUi.UIBlocks
 
 					if (lightness > fogLightness)
 					{
-						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
+						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp());
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
@@ -84,7 +85,7 @@ namespace GameUi.UIBlocks
 					}
 					else if (liveCell.IsSeenBefore)
 					{
-						var terrainTile = liveCell.Terrain.Tile(liveCell.LiveCoords, liveCell.Rnd);
+						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 						terrainTile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
 
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)

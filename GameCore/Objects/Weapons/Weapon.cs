@@ -17,13 +17,11 @@ namespace GameCore.Objects.Weapons
 		{
 		}
 
-		public override System.Collections.Generic.IEnumerable<EMaterial> AllowedMaterials
+		public override EMaterial AllowedMaterials
 		{
 			get 
 			{
-				yield return EMaterial.METAL;
-				yield return EMaterial.WOOD;
-				yield return EMaterial.MINERAL;
+				return EMaterial.METAL|EMaterial.WOOD|EMaterial.MINERAL;
 			}
 		}
 	}

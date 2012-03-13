@@ -1618,7 +1618,7 @@ namespace GameCore
 
 		public override string ToString()
 		{
-			return string.Format("f ARGB=({0:N0},{1:N0},{2:N0},{3:N0})", A, R, G, B);
+			return string.Format("f ARGB=({0:N2},{1:N2},{2:N2},{3:N2})", A, R, G, B);
 		}
 
 		public FColor Lerp(FColor _color2, float _f)
@@ -1698,6 +1698,18 @@ namespace GameCore
 		public static FColor FromHex(int _hex)
 		{
 			return FromArgb(255, _hex / 256 / 256 & 0xff, _hex / 256 & 0xff, _hex & 0xff);
+		}
+
+		public static FColor Parse(string _hex)
+		{
+			var n = Int64.Parse(_hex, System.Globalization.NumberStyles.HexNumber);
+			var fColor = new FColor(1f, ((n >> 16) & 0xff) / 255f, ((n >> 8) & 0xff) / 255f, (n & 0xff) / 255f);
+			return fColor;
+		}
+
+		public string ToShortText()
+		{
+			return string.Format("{0:X2}{1:X2}{2:X2}", (int)(R * 255), (int)(G * 255), (int)(B * 255)).ToLower();
 		}
 	}
 }

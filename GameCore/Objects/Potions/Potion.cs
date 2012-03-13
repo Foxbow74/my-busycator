@@ -1,4 +1,5 @@
-﻿using GameCore.Creatures;
+﻿using System.Collections.Generic;
+using GameCore.Creatures;
 
 namespace GameCore.Objects.Potions
 {
@@ -15,12 +16,20 @@ namespace GameCore.Objects.Potions
 
 		public override string Name
 		{
-			get { return "булька"; }
+			get { return "пузырек"; }
 		}
 
 		public override EThingCategory Category
 		{
 			get { return EThingCategory.POTION; }
+		}
+
+		public override EMaterial AllowedMaterials
+		{
+			get
+			{
+				return EMaterial.MINERAL;
+			}
 		}
 
 		public override void Resolve(Creature _creature)

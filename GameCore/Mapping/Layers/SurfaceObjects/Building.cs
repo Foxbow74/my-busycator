@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Materials;
 using GameCore.Misc;
@@ -8,55 +9,74 @@ using GameCore.Objects.Furniture.LightSources;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
-	class Building:Room
+	abstract class Building
 	{
-		public Building(Rct _roomRect, Rct _areaRect, MapBlock _mapBlock, WorldLayer _layer, Random _rnd)
-			: base(_roomRect, _areaRect, _mapBlock, _layer)
-		{
-			var wall = Walls.ToArray().RandomItem(_rnd);
-			var floor = Floors.ToArray().RandomItem(_rnd);
+		private readonly City m_city;
 
-			foreach (var point in RoomRectangle.AllPoints)
+		protected Building(City _city)
+		{
+			m_city = _city;
+			Debug.WriteLine(BuildingType + " построен");
+		}
+		
+		public virtual void Fill(MapBlock _block)
+		{
+			var mapBlock = _block;
+			var rnd = new Random(mapBlock.RandomSeed);
+			var roomRectangle = Room.RoomRectangle;
+
+			var wall = Walls.ToArray().RandomItem(rnd);
+			var floor = Floors.ToArray().RandomItem(rnd);
+
+			foreach (var point in roomRectangle.AllPoints)
 			{
-				_mapBlock.Map[point.X, point.Y] = floor;
+				mapBlock.Map[point.X, point.Y] = floor;
 			}
 
-			var borderPoints = RoomRectangle.BorderPoints;
-			var cornerPoints = RoomRectangle.CornerPoints;
+			var borderPoints = roomRectangle.BorderPoints;
+			var cornerPoints = roomRectangle.CornerPoints;
 			var i = 0;
 			foreach (var point in borderPoints)
 			{
-				if(cornerPoints.Contains(point))
+				if (cornerPoints.Contains(point))
 				{
-					_mapBlock.Map[point.X, point.Y] = wall.Item1;
+					mapBlock.Map[point.X, point.Y] = wall.Item1;
 				}
 				else
 				{
-					if(i++%3==0)
+					if (i++ % 3 == 0)
 					{
-						_mapBlock.Map[point.X, point.Y] = wall.Item2;
+						mapBlock.Map[point.X, point.Y] = wall.Item2;
 					}
 					else
 					{
-						_mapBlock.Map[point.X, point.Y] = wall.Item1;
+						mapBlock.Map[point.X, point.Y] = wall.Item1;
 					}
 				}
 			}
 
-			var doorCoords = RoomRectangle.Center;
-			var delta = _rnd.GetRandomDirection().GetDelta();
+			var doorCoords = roomRectangle.Center;
+			var delta = rnd.GetRandomDirection().GetDelta();
 			while (!borderPoints.Contains(doorCoords))
 			{
 				doorCoords += delta;
 			}
 
-			_mapBlock.Map[doorCoords.X, doorCoords.Y] = floor;
+			mapBlock.Map[doorCoords.X, doorCoords.Y] = floor;
 			var fakedFurniture = ETiles.DOOR.GetThing(ThingHelper.GetMaterial<OakMaterial>());
 			var door = fakedFurniture.ResolveFake(World.TheWorld.Avatar);
-			_mapBlock.AddObject(door, doorCoords);
+			mapBlock.AddObject(door, doorCoords);
 
-			_mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), RoomRectangle.Center);
+			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Center);
 		}
+
+		public virtual bool IsFit(Room _room)
+		{
+			return true;
+		}
+
+		public virtual uint MinCountInCity { get { return 1; } }
+		public virtual uint MaxCountInCity { get { return uint.MaxValue; } }
 
 		private static IEnumerable<Tuple<ETerrains,ETerrains>> Walls
 		{
@@ -73,7 +93,18 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			get
 			{
 				yield return ETerrains.STONE_FLOOR;
+				yield return ETerrains.WOOD_FLOOR_MAPPLE;
+				yield return ETerrains.WOOD_FLOOR_OAK;
 			}
+		}
+
+		public abstract EBuilding BuildingType { get; }
+
+		public Room Room { get; private set; }
+
+		public void SetRoom(Room _room)
+		{
+			Room = _room;
 		}
 	}
 }

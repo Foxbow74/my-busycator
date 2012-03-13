@@ -2,37 +2,33 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
-using GameCore.Misc;
 
 namespace GameUi
 {
-	public class TileSet : ATile
+	public class TileSet
 	{
-		private readonly ATile[] m_tiles;
-
-		public TileSet(IEnumerable<ATile> _tiles)
+		public TileSet(params ATile[] _tiles)
 		{
-			m_tiles = _tiles.ToArray();
+			Tiles = _tiles.ToList();
+		}
+
+		public TileSet()
+		{
+			Tiles = new List<ATile>();
+		}
+
+		public void AddTile(ATile _tile)
+		{
+			Tiles.Add(_tile);
 		}
 
 		public ATile this[int _index]
 		{
-			get { return m_tiles[_index%m_tiles.Count()]; }
+			get { return Tiles[_index%Tiles.Count()]; }
 		}
 
-		public override void Draw(Point _point, FColor _color, EDirections _direction)
-		{
-			throw new NotImplementedException();
-		}
+		public List<ATile> Tiles { get; private set; }
 
-		public override void Draw(Point _point, FColor _color)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void FogIt(Point _point)
-		{
-			throw new NotImplementedException();
-		}
+		public ETerrains Terrain { get; set; }
 	}
 }

@@ -62,20 +62,20 @@ namespace GameUi.UIBlocks
 
 		public void Draw(Frame _frame, int _col, int _row, int _width, int _height)
 		{
-			_frame.TopLeft.DrawAtCell(_col, _row, BackgroundColor);
-			_frame.TopRight.DrawAtCell(_col + _width - 1, _row, BackgroundColor);
-			_frame.BottomLeft.DrawAtCell(_col, _row + _height - 1, BackgroundColor);
-			_frame.BottmoRight.DrawAtCell(_col + _width - 1, _row + _height - 1, BackgroundColor);
+			_frame.TopLeft.Draw(new Point(_col, _row));
+			_frame.TopRight.Draw(new Point(_col + _width - 1, _row));
+			_frame.BottomLeft.Draw(new Point(_col, _row + _height - 1));
+			_frame.BottmoRight.Draw(new Point(_col + _width - 1, _row + _height - 1));
 
 			for (var i = 1; i < _width - 1; i++)
 			{
-				_frame.Top.DrawAtCell(_col + i, _row, BackgroundColor);
-				_frame.Bottom.DrawAtCell(_col + i, _row + _height - 1, BackgroundColor);
+				_frame.Top.Draw(new Point(_col + i, _row));
+				_frame.Bottom.Draw(new Point(_col + i, _row + _height - 1));
 			}
 			for (var j = 1; j < _height - 1; j++)
 			{
-				_frame.Left.DrawAtCell(_col, _row + j, BackgroundColor);
-				_frame.Right.DrawAtCell(_col + _width - 1, _row + j, BackgroundColor);
+				_frame.Left.Draw(new Point(_col, _row + j));
+				_frame.Right.Draw(new Point(_col + _width - 1, _row + j));
 			}
 		}
 

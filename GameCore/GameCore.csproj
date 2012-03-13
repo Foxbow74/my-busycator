@@ -60,13 +60,20 @@
     <Compile Include="Creatures\Inventory.cs" />
     <Compile Include="Creatures\Missile.cs" />
     <Compile Include="EDirections.cs" />
+    <Compile Include="EEffect.cs" />
+    <Compile Include="Effect.cs" />
+    <Compile Include="Effects\HealEffect.cs" />
     <Compile Include="EMapBlockTypes.cs" />
+    <Compile Include="EMaterial.cs" />
     <Compile Include="FColor.cs" />
     <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
     <Compile Include="Mapping\Layers\LayerHelper.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\City.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\CityGenerator.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\EBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\Store.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\LiveMap.cs" />
@@ -99,6 +106,8 @@
     <Compile Include="Objects\EThingCategory.cs" />
     <Compile Include="Objects\FakedItem.cs" />
     <Compile Include="Objects\FurnitureThing.cs" />
+    <Compile Include="Objects\Furniture\Bed.cs" />
+    <Compile Include="Objects\Furniture\Chair.cs" />
     <Compile Include="Objects\Furniture\LightSources\LightSourceThing.cs" />
     <Compile Include="Objects\Furniture\LightSources\OnWallTorch.cs" />
     <Compile Include="Objects\Furniture\OpenDoor.cs" />
@@ -106,6 +115,7 @@
     <Compile Include="Objects\Furniture\Stair.cs" />
     <Compile Include="Objects\Furniture\StairDown.cs" />
     <Compile Include="Objects\Furniture\StairUp.cs" />
+    <Compile Include="Objects\Furniture\Table.cs" />
     <Compile Include="Objects\ICanbeOpened.cs" />
     <Compile Include="Objects\IFaked.cs" />
     <Compile Include="Objects\ISpecial.cs" />

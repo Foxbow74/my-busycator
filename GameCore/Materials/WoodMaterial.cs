@@ -16,7 +16,7 @@
 	class OakMaterial : WoodMaterial
 	{
 		public OakMaterial()
-			: base("клен")
+			: base("дуб")
 		{
 		}
 
