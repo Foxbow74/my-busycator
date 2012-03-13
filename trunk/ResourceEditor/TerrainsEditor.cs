@@ -139,6 +139,7 @@ namespace ResourceEditor
 				}
 			}
 			File.WriteAllText(@"Resources\terrains.dat", sb.ToString());
+			File.Copy(@"Resources\terrains.dat", @"..\ResourceEditor\Resources\terrains.dat", true);
 		}
 
 		public void AddTerrain(string _text)

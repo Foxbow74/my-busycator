@@ -138,6 +138,7 @@ namespace ResourceEditor
 				}
 			}
 			File.WriteAllText(@"Resources\tiles.dat", sb.ToString());
+			File.Copy(@"Resources\tiles.dat", @"..\ResourceEditor\Resources\tiles.dat", true);
 		}
 
 		public void AddTile(string _text)
