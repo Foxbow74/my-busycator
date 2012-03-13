@@ -85,7 +85,7 @@ namespace OpenTKUi
 
 		public ATile CreateTile(int _col, int _row, FColor _color)
 		{
-			return CreateTile(ETextureSet.REDJACK, _col, _row, _color);
+			return CreateTile(ETextureSet.RJ, _col, _row, _color);
 		}
 
 		#endregion

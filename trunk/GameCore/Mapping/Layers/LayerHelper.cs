@@ -11,7 +11,7 @@ namespace GameCore.Mapping.Layers
 		private const int MIN_ROOM_SQUARE = 42;
 		private const int MAX_DIV_SIZE = 15;
 
-		public static IEnumerable<Room> GenerateRooms(MapBlock _block, Random _random, Rct _rct, ICollection<Point> _objects, WorldLayer _layer)
+		public static IEnumerable<Room> GenerateRooms(Random _random, Rct _rct, ICollection<Point> _objects)
 		{
 			var ableVert = _rct.Width - MIN_ROOM_SIZE * 2;
 			var ableHor = _rct.Height - MIN_ROOM_SIZE * 2;
@@ -57,17 +57,17 @@ namespace GameCore.Mapping.Layers
 						throw new ApplicationException("Доля больше чем место под нее");
 					}
 					
-					foreach (var room in GenerateRooms(_block, _random, rct, _objects, _layer))
+					foreach (var room in GenerateRooms(_random, rct, _objects))
 					{
 						yield return room;
 					}
 				}
 				yield break;
 			}
-			yield return MakeRoom(_block, _rct, _random, _objects, _layer);
+			yield return MakeRoom(_rct, _random, _objects);
 		}
 
-		static Room MakeRoom(MapBlock _block, Rct _rct, Random _random, ICollection<Point> _objects, WorldLayer _layer)
+		static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects)
 		{
 			var contains = _objects.Where(_rct.ContainsEx).ToArray();
 			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
@@ -81,12 +81,12 @@ namespace GameCore.Mapping.Layers
 					{
 						_objects.Remove(contain);
 					}
-					return new Room(rect, _rct, _block, _layer);
+					return new Room(rect, _rct);
 				}
 			}
 		}
 
-		public static List<Point> GetRandomPoints(Point _center, Random _rnd, EMapBlockTypes[,] _map, int _size, EMapBlockTypes _set, EMapBlockTypes _empty)
+		public static IEnumerable<Point> GetRandomPoints(Point _center, Random _rnd, EMapBlockTypes[,] _map, int _size, EMapBlockTypes _set, EMapBlockTypes _empty)
 		{
 			var tries = 10;
 			var list = new List<Point> { _center };
@@ -104,7 +104,7 @@ namespace GameCore.Mapping.Layers
 				}
 				list.AddRange(add);
 			} while (_size > 0 && tries>0);
-			return list;
+			return list.Distinct();
 		}
 
 		private static IEnumerable<Point> Add(Point _xy, EMapBlockTypes[,] _map, ref int _size, EMapBlockTypes _set, Random _rnd, EMapBlockTypes _empty)

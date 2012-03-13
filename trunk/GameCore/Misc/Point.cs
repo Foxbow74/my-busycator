@@ -232,5 +232,11 @@ namespace GameCore.Misc
 		{
 			return new Point(X,Y);
 		}
+
+		public static Point Parse(string _s)
+		{
+			var ss = _s.Split(new char[] {','}, StringSplitOptions.None);
+			return new Point(int.Parse(ss[0]), int.Parse(ss[1]));
+		}
 	}
 }

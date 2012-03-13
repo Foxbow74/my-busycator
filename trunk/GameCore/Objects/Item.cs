@@ -9,14 +9,11 @@ namespace GameCore.Objects
 		{
 		}
 
-		public override System.Collections.Generic.IEnumerable<EMaterial> AllowedMaterials
+		public override EMaterial AllowedMaterials
 		{
 			get
 			{
-				yield return EMaterial.FLASH;
-				yield return EMaterial.METAL;
-				yield return EMaterial.MINERAL;
-				yield return EMaterial.WOOD;
+				return EMaterial.METAL|EMaterial.MINERAL|EMaterial.WOOD;
 			}
 		}
 	}

@@ -16,7 +16,10 @@ namespace GameCore
 		[Terrain("кирпичная стена", 0, 1, false)]RED_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]YELLOW_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]GRAY_BRICK_WALL,
-		
+
+		[Terrain("дубовый пол")]WOOD_FLOOR_OAK,
+		[Terrain("кленовый пол")]WOOD_FLOOR_MAPPLE,
+
 		[Terrain("каменный пол")]STONE_FLOOR,
 		[Terrain("каменная стена",0,1,false)]STONE_WALL,
 

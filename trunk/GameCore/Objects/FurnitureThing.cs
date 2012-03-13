@@ -23,13 +23,11 @@
 			get { return EThingCategory.FURNITURE; }
 		}
 
-		public override System.Collections.Generic.IEnumerable<EMaterial> AllowedMaterials
+		public override EMaterial AllowedMaterials
 		{
 			get
 			{
-				yield return EMaterial.WOOD;
-				yield return EMaterial.MINERAL;
-				yield return EMaterial.METAL;
+				return EMaterial.WOOD|EMaterial.MINERAL|EMaterial.METAL;
 			}
 		}
 	}

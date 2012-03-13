@@ -15,26 +15,15 @@ namespace GameCore
 		[Tiles(0f)]LIGHT_SOURCE,
 		[Tiles(0f)]TORCH,
 
-		[Tiles(0f)] GRASS,
-		[Tiles(0f)] WATER,
-		[Tiles(0f)] LAVA,
-		[Tiles(0f)] SWAMP,
-		[Tiles(1f)] RED_BRICK,
-		[Tiles(1f)] YELLOW_BRICK,
-		[Tiles(1f)] GRAY_BRICK,
-		[Tiles(0.2f)] RED_BRICK_WINDOW,
-		[Tiles(0.2f)] GRAY_BRICK_WINDOW,
-		[Tiles(0.2f)] YELLOW_BRICK_WINDOW,
-		[Tiles(0.9f)] MASHROOM,
-		[Tiles(0f)] GROUND,
-		[Tiles(0f)]STONE_FLOOR,
-		[Tiles(0f)]STONE_WALL,
-
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,
 		[Tiles(0f)] STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
+
+		[Tiles(0.2f)]TABLE,
+		[Tiles(0.1f)]CHAIR,
+		[Tiles(0.4f)]BED,
 
 		[Tiles(0.2f)] AVATAR,
 		[Tiles(0.3f)] MONSTER,
@@ -46,10 +35,16 @@ namespace GameCore
 		[Tiles(0.01f)] POTION,
 		[Tiles(0.01f)] CROSSBOW_BOLT,
 
-		[Tiles(0f)]UP,
-		[Tiles(0f)]DOWN,
-		[Tiles(0f)]LEFT,
-		[Tiles(0f)]RIGHT,
+		[Tiles(0f)]FRAME_L,
+		[Tiles(0f)]FRAME_R,
+		[Tiles(0f)]FRAME_T,
+		[Tiles(0f)]FRAME_B,
+		[Tiles(0f)]FRAME_TL,
+		[Tiles(0f)]FRAME_TR,
+		[Tiles(0f)]FRAME_BL,
+		[Tiles(0f)]FRAME_BR,
+		[Tiles(0f)]SOLID,
+		[Tiles(0f)]SIMPLE,
 	}
 
 

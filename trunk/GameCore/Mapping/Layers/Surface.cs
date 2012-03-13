@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Creatures;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
-using GameCore.Objects.Furniture.LightSources;
 
 namespace GameCore.Mapping.Layers
 {
@@ -14,7 +12,8 @@ namespace GameCore.Mapping.Layers
 	{
 		private EMapBlockTypes[,] m_worldMap;
 		private WorldMapGenerator m_worldMapGenerator;
-		private CityGenerator m_cityGenerator;
+
+		public City City { get; private set; }
 
 		public EMapBlockTypes[,] WorldMap
 		{
@@ -27,8 +26,7 @@ namespace GameCore.Mapping.Layers
 					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, rnd);
 					m_worldMap = m_worldMapGenerator.Generate();
 
-					m_cityGenerator = new CityGenerator(m_worldMap);
-					m_cityGenerator.GenerateCityArea(rnd);
+					City = new City(this, rnd);
 				}
 				return m_worldMap;
 			}
@@ -79,7 +77,7 @@ namespace GameCore.Mapping.Layers
 					break;
 				case EMapBlockTypes.CITY:
 					MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
-					m_cityGenerator.GenerateCityBlock(rnd, this, _blockId, block);
+					City.GenerateCityBlock(rnd, _blockId, block);
 					break;
 				case EMapBlockTypes.NONE:
 					break;
@@ -163,7 +161,7 @@ namespace GameCore.Mapping.Layers
 		{
 			get
 			{
-				return new FColor(1f,1f,1f,0.5f).Multiply(0f); 
+				return new FColor(1f,1f,1f,0.5f).Multiply(1f); 
 			}
 		}
 	}

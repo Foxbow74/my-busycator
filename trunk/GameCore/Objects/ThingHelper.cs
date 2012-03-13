@@ -19,7 +19,7 @@ namespace GameCore.Objects
 		//public static void RegisterThings()
 		static ThingHelper()
 		{
-			foreach (var type in GetMaterialTypes())
+			foreach (var type in Util.GetAllTypesOf<Material>())
 			{
 				if (typeof(ISpecial).IsAssignableFrom(type)) continue;
 
@@ -27,7 +27,7 @@ namespace GameCore.Objects
 				m_materials.Add(material);
 			}
 
-			foreach (var type in GetThingTypes())
+			foreach (var type in Util.GetAllTypesOf<Thing>())
 			{
 				if (typeof (ISpecial).IsAssignableFrom(type)) continue;
 
@@ -145,10 +145,16 @@ namespace GameCore.Objects
 			value.Add(_type);
 		}
 
+		public static IEnumerable<EMaterial> GetAllowedMaterials(EMaterial _materials)
+		{
+			var allowedMaterials = (from EMaterial value in Enum.GetValues(typeof(EMaterial)) where _materials.HasFlag(value) select value).ToArray();
+			return allowedMaterials;
+		}
+
 		private static void RegisterItemType(Type _type)
 		{
 			var athing = (Thing)Activator.CreateInstance(_type, new object[] { null });
-			foreach (var mtp in athing.AllowedMaterials)
+			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
 				foreach (var material in m_materials.Where(_material => _material.MaterialType==mtp))
 				{
@@ -169,7 +175,7 @@ namespace GameCore.Objects
 		private static void RegisterThingType(Type _type)
 		{
 			var athing = (Thing) Activator.CreateInstance(_type, new object[] {null});
-			foreach (var mtp in athing.AllowedMaterials)
+			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
 				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtp))
 				{
@@ -184,22 +190,6 @@ namespace GameCore.Objects
 					value.Add(_type);
 				}
 			}
-		}
-
-		private static IEnumerable<Type> GetThingTypes()
-		{
-			return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-			       from type in assembly.GetTypes()
-			       where typeof (Thing).IsAssignableFrom(type) && !type.IsAbstract
-			       select type;
-		}
-
-		private static IEnumerable<Type> GetMaterialTypes()
-		{
-			return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-				   from type in assembly.GetTypes()
-				   where typeof(Material).IsAssignableFrom(type) && !type.IsAbstract
-				   select type;
 		}
 
 		public static Thing ResolveThing(Type _type, Material _material, Creature _creature)

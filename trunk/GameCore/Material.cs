@@ -10,13 +10,11 @@
 		public abstract FColor LerpColor { get; }
 		public string Name { get; private set; }
 		public abstract EMaterial MaterialType{ get; }
-	}
 
-	public enum EMaterial
-	{
-		METAL,
-		WOOD,
-		MINERAL,
-		FLASH
+		/// <summary>
+		/// Насколько часто встречается, максимум - 100
+		/// чем дальше от стартовой точки, тем чаще встречаются редкие и реже частые
+		/// </summary>
+		public virtual float Frequency { get { return 100; } }
 	}
 }

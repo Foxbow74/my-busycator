@@ -51,6 +51,11 @@ namespace OpenTKUi
 			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, EDirections.DOWN);
 		}
 
+		public override void Draw(Point _point)
+		{
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, Color, EDirections.DOWN);
+		}
+
 		public override void FogIt(Point _point)
 		{
 			GameProvider.TileMapRenderer.FogTile(_point);

@@ -206,9 +206,9 @@ namespace GameCore.Creatures
 			return EActResults.NOTHING_HAPPENS;
 		}
 
-		public override IEnumerable<EMaterial> AllowedMaterials
+		public override EMaterial AllowedMaterials
 		{
-			get { yield return EMaterial.FLASH; }
+			get { return EMaterial.FLASH; }
 		}
 	}
 
