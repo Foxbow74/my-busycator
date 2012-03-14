@@ -72,7 +72,7 @@ namespace GameCore
 			{
 				var creature = LiveMap.FirstActiveCreature;
 
-				#region не давать ходить дважды до перерисовки
+				#region не давать ходить дважды до перерисовки);
 
 				if (done.Contains(creature)) break;
 				done.Add(creature);
@@ -105,6 +105,7 @@ namespace GameCore
 				{
 					break;
 				}
+				//Debug.WriteLine(creature);
 
 				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 

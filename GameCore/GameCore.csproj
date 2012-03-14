@@ -54,7 +54,9 @@
     <Compile Include="Acts\Interact\OpenAct.cs" />
     <Compile Include="Acts\System\QuitAct.cs" />
     <Compile Include="Acts\Items\TakeAct.cs" />
+    <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />
     <Compile Include="Creatures\Avatar.cs" />
+    <Compile Include="Creatures\Citizen.cs" />
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />

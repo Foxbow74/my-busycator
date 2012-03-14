@@ -12,5 +12,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		TAVERN = 0x1 << 2,
 		SHOP = 0x1 << 3,
 		GRAVEYARD = 0x1 << 4,
+		INN = 0x1 << 5,
 	}
 }

@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using GameCore.Creatures;
 using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	public class City
 	{
-		private readonly Surface m_surface;
 		private readonly Point[] m_points;
 		private readonly CityGenerator m_cityGenerator;
 		readonly Dictionary<Building, Point> m_buildings = new Dictionary<Building, Point>();
+		private readonly List<Citizen> m_citizens = new List<Citizen>();
 
 		public City(Surface _surface, Random _rnd)
 		{
@@ -19,8 +21,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			m_points = m_cityGenerator.GenerateCityArea(_rnd).ToArray();
 
 			AddBuildings(_rnd);
-
-
 		}
 
 		private void AddBuildings(Random _rnd)
@@ -32,6 +32,10 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				foreach (var room in rooms)
 				{
 					allRooms.Add(room, point);
+					if (allRooms.Count > CityGenerator.MAX_CITY_BUILDINGS_COUNT)
+					{
+						break;
+					}
 				} 
 			}
 
@@ -59,7 +63,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				}
 			}
 
-			buildings = buildings.OrderBy(_building1 => _rnd.Next()).ToList();
+			buildings = buildings.OrderBy(_building => _rnd.Next()).ToList();
 
 			foreach (var building in buildings)
 			{
@@ -68,16 +72,20 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				building.SetRoom(pair.Key);
 				m_buildings.Add(building, pair.Value);
 			}
+
+			Debug.WriteLine(m_buildings.Count);
 		}
 
 		public Surface Surface { get; private set; }
 
-		public void GenerateCityBlock(Random _rnd, Point _blockId, MapBlock _block)
+		public void GenerateCityBlock(MapBlock _block, Random _rnd)
 		{
-			foreach (var pair in m_buildings.Where(_pair => _pair.Value == _blockId))
+			foreach (var pair in m_buildings.Where(_pair => _pair.Value == _block.BlockId))
 			{
 				_block.AddRoom(pair.Key.Room);
 				pair.Key.Fill(_block);
+
+				_block.AddCreature(new Citizen(Surface, _rnd), pair.Key.Room.RoomRectangle.Center);
 			}
 		}
 	}

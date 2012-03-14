@@ -79,8 +79,14 @@
     <Content Include="Resources\aq.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\femalenicks.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\gold_plated_16x16.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\malenicks.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\nethack.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

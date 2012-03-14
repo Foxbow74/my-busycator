@@ -42,6 +42,28 @@
 		}
 	}
 
+
+	class InnBuilding : Building
+	{
+		public InnBuilding(City _city)
+			: base(_city)
+		{
+		}
+
+		public override EBuilding BuildingType
+		{
+			get { return EBuilding.INN; }
+		}
+
+		public override uint MaxCountInCity
+		{
+			get
+			{
+				return 2;
+			}
+		}
+	}
+
 	class GraveyardBuilding:Building
 	{
 		public GraveyardBuilding(City _city)

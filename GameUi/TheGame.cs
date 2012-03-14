@@ -54,30 +54,6 @@ namespace GameUi
 				}
 			}
 			World.TheWorld.GameUpdated(true);
-			//m_mainUiBlock.Dispose();
-			//var blocks = new Stack<UIBlock>();
-			//do
-			//{
-			//    var pop = m_uiBlocks.Pop();
-			//    if (pop is MainUiBlock)
-			//    {
-			//        pop.Dispose();
-			//        m_mainUiBlock = new MainUiBlock(_newWidthInCells, _newHeightInCells);
-			//        pop = m_mainUiBlock;
-			//    }
-			//    blocks.Push(pop);
-			//} while (m_uiBlocks.Count > 0);
-
-			//do
-			//{
-			//    var pop = blocks.Pop();
-			//    m_uiBlocks.Push(pop);
-			//} while (blocks.Count > 0);
-
-			//if (m_gameProvider.IsActive)
-			//{
-			//    MessageManager.SendMessage(this, WorldMessage.Turn);
-			//}
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
