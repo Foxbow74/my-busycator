@@ -18,7 +18,7 @@ namespace GameCore.Mapping
 		//2 - active creatures
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
-		public const int AVATAR_SIGHT = 20;
+		public const int AVATAR_SIGHT = 15;
 		public readonly Point ACTIVE_QPOINT = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
