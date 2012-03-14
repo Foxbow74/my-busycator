@@ -111,5 +111,10 @@ namespace GameCore.Objects
 		{
 			throw new NotImplementedException();
 		}
+
+		public override EThinkingResult Thinking()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

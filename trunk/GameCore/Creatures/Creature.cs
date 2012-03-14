@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
+using GameCore.CreatureRoles;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
@@ -12,6 +13,8 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Thing
 	{
+		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
+
 		private static int m_n;
 
 		protected static Random Rnd = new Random(1);
@@ -26,6 +29,13 @@ namespace GameCore.Creatures
 			Luck = 25;
 			Nn = m_n++;
 			m_layer = _layer;
+		}
+
+		public IEnumerable<AbstractCreatureRole> Roles { get { return m_roles; } }
+
+		public void AddRole(AbstractCreatureRole _role)
+		{
+			m_roles.Add(_role);
 		}
 
 		public int Nn { get; private set; }
@@ -171,10 +181,7 @@ namespace GameCore.Creatures
 
 		#endregion
 
-		public virtual EThinkingResult Thinking()
-		{
-			return EThinkingResult.NORMAL;
-		}
+		public abstract EThinkingResult Thinking();
 
 		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
 		{

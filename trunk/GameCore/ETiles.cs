@@ -15,17 +15,19 @@ namespace GameCore
 		LIGHT_SOURCE,
 		TORCH,
 
+		[Tiles(0.9f)]CABINET,
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,
-		 STAIR_DOWN,
+		STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
 
 		[Tiles(0.2f)]TABLE,
 		[Tiles(0.1f)]CHAIR,
 		[Tiles(0.4f)]BED,
 
-		[Tiles(0.2f)] AVATAR,
+		[Tiles(0.2f)]AVATAR,
+		[Tiles(0.2f)]CITIZEN,
 		[Tiles(0.3f)] MONSTER,
 
 		[Tiles(0.2f)] SWORD,

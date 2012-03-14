@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -12,6 +14,18 @@ namespace GameCore.Mapping.Layers
 	{
 		private EMapBlockTypes[,] m_worldMap;
 		private WorldMapGenerator m_worldMapGenerator;
+
+		private static string[] m_maleNames;
+		private static string[] m_femaleNames;
+
+		static Surface()
+		{
+			//PrepareNicks(@"Resources\malenicks.txt", rnd);
+			//PrepareNicks(@"Resources\femalenicks.txt", rnd);
+
+			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+		}
 
 		public City City { get; private set; }
 
@@ -30,6 +44,21 @@ namespace GameCore.Mapping.Layers
 				}
 				return m_worldMap;
 			}
+		}
+
+		private static void PrepareNicks(string _filename, Random _rnd)
+		{
+			var txt = File.ReadAllText(_filename);
+			while(txt.IndexOf('(')>0)
+			{
+				txt = txt.Replace(txt.Substring(txt.IndexOf('('), 3), "");
+			}
+
+			var names = txt.Split(new[] {",", " ", "\t", Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+			var randomized = names.Distinct().OrderBy(_s => _rnd.Next());
+			var result = String.Join(",", randomized);
+			File.WriteAllText(_filename, result);
+			var check = File.ReadAllText(_filename);
 		}
 
 		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
@@ -77,7 +106,7 @@ namespace GameCore.Mapping.Layers
 					break;
 				case EMapBlockTypes.CITY:
 					MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
-					City.GenerateCityBlock(rnd, _blockId, block);
+					City.GenerateCityBlock(block, rnd);
 					break;
 				case EMapBlockTypes.NONE:
 					break;
@@ -163,6 +192,11 @@ namespace GameCore.Mapping.Layers
 			{
 				return new FColor(1f,1f,1f,0.5f).Multiply(1f); 
 			}
+		}
+
+		public string GetNextCitizenName()
+		{
+			return null;
 		}
 	}
 }

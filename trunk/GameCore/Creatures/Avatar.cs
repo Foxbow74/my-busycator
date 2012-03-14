@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.CreatureRoles;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
 using GameCore.Objects;
@@ -13,6 +14,7 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
+			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow(ThingHelper.GetMaterial<MappleMaterial>()));
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()));
 			Equip(EEquipmentPlaces.TOOL, new Torch(ThingHelper.GetMaterial<OakMaterial>()));
@@ -23,12 +25,17 @@ namespace GameCore.Creatures
 			get { return ETiles.AVATAR; }
 		}
 
-		public override string Name
+		protected override string IntelligentName
 		{
-			get { return "аватар"; }
+			get { return "Дима"; }
 		}
 
 		public override void Resolve(Creature _creature)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override EThinkingResult Thinking()
 		{
 			throw new NotImplementedException();
 		}

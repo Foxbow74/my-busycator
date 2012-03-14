@@ -55,7 +55,7 @@ namespace GameCore.Creatures
 		}
 
 		/// <summary>
-		/// 	Добавить в рюкзак и затем экипироваться
+		/// Добавить в рюкзак и затем экипироваться
 		/// </summary>
 		/// <param name = "_place"></param>
 		/// <param name = "_item"></param>
@@ -133,5 +133,12 @@ namespace GameCore.Creatures
 				return base.Light;
 			}
 		}
+
+		public override string Name
+		{
+			get { return IntelligentName + ", " + Roles.First().Name; }
+		}
+
+		protected abstract string IntelligentName {get;}
 	}
 }
