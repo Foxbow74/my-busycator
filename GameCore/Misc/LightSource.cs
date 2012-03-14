@@ -8,6 +8,7 @@ namespace GameCore.Misc
 	public interface ILightSource
 	{
 		void LightCells(LiveMap _liveMap, Point _point);
+		int Radius { get; }
 	}
 
 	public class LightSource : ILightSource
@@ -28,13 +29,18 @@ namespace GameCore.Misc
 			get { return m_color; }
 		}
 
+		public int Radius
+		{
+			get { return m_radius; }
+		}
+
 		public void LightCells(LiveMap _liveMap, Point _point)
 		{
-			if (!m_lightManagers.ContainsKey(m_radius))
+			if (!m_lightManagers.ContainsKey(Radius))
 			{
-				m_lightManagers.Add(m_radius, new LosManager(m_radius));
+				m_lightManagers.Add(Radius, new LosManager(Radius));
 			}
-			m_lightManagers[m_radius].LightCells(_liveMap, _point, Color);
+			m_lightManagers[Radius].LightCells(_liveMap, _point, Color);
 		}
 	}
 }

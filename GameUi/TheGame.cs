@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -78,6 +79,7 @@ namespace GameUi
 						m_uiBlocks.Pop().Dispose();
 						m_pressed.Clear();
 						m_downKeys.Clear();
+						Debug.WriteLine("TURN");
 						MessageManager.SendMessage(this, WorldMessage.Turn);
 						break;
 					default:

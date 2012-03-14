@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
@@ -98,6 +99,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					return;
 			}
+			Debug.WriteLine("TURN");
 			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 
