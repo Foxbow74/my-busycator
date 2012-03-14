@@ -12,6 +12,7 @@ namespace ResourceEditor
 		public string String
 		{
 			get { return m_tb.Text; }
+			set { m_tb.Text = value; }
 		}
 	}
 }

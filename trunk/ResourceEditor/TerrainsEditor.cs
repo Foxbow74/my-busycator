@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -18,7 +19,7 @@ namespace ResourceEditor
 		private readonly FlowLayoutPanel m_pnl;
 		private readonly TileEditor m_te;
 
-		Dictionary<string, TileSet> m_customTileSets = new Dictionary<string, TileSet>();
+		readonly Dictionary<string, TileSet> m_customTileSets = new Dictionary<string, TileSet>();
 
 		public TerrainsEditor(ResourceProvider _rp)
 		{
@@ -27,7 +28,7 @@ namespace ResourceEditor
 			InitializeComponent();
 
 			SuspendLayout();
-
+			
 			m_te = new TileEditor(m_rp){Dock = DockStyle.Fill, Padding = new Padding(5), Visible = false};
 			Controls.Add(m_te);
 
@@ -43,19 +44,72 @@ namespace ResourceEditor
 			var splv = new Splitter { Dock = DockStyle.Left };
 			Controls.Add(splv);
 
-			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1) };
+			var cm = new ContextMenu();
+			cm.Popup += (_sender, _args) => SelectItemUnderMouse();
+			cm.MenuItems.Add(new MenuItem("Переименовать", RenameItem) { Shortcut = Shortcut.F2, ShowShortcut = true });
+			cm.MenuItems.Add(new MenuItem("Удалить", DeleteItem) { Shortcut = Shortcut.Del, ShowShortcut = true });
+
+			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1), Sorted = true, ContextMenu = cm };
 			Controls.Add(m_lb);
 
-			foreach (var tileSet in TileHelper.AllTerrainTilesets.OrderBy(_tiles => _tiles.Key.ToString()))
+			foreach (var tileSet in TileHelper.AllTerrainTilesets)
 			{
 				m_lb.Items.Add(tileSet.Key);
 			}
-			m_lb.SelectedIndexChanged += MLbSelectedIndexChanged;
 
+			m_lb.SelectedIndexChanged += MLbSelectedIndexChanged;
 			ResumeLayout(false);
 			m_lb.SelectedIndex = 0;
 		}
 
+		#region context menu
+
+		private void RenameItem(object _sender, EventArgs _eventArgs)
+		{
+			var selectedItem = m_lb.SelectedItem;
+			var selectedIndex = m_lb.SelectedIndex;
+			var ib = new InputBox(){String = selectedItem.ToString()};
+			if (ib.ShowDialog() != DialogResult.OK) return;
+			RemoveItem(selectedIndex);
+			m_customTileSets.Add(ib.String.ToUpper(), GetTileSet(selectedItem));
+			m_lb.Items.Add(ib.String);
+			m_lb.SelectedItem = ib.String;
+		}
+
+		private void DeleteItem(object _sender, EventArgs _eventArgs)
+		{
+			var selectedItem = m_lb.SelectedItem;
+			var selectedIndex = m_lb.SelectedIndex;
+			var ib = new InputBox() { String = "Удалить " + selectedItem + "?" };
+			if (ib.ShowDialog() == DialogResult.OK)
+			{
+				RemoveItem(selectedIndex);
+			}
+		}
+
+		private void RemoveItem(int _selectedIndex)
+		{
+			m_lb.SelectedIndex = _selectedIndex > 0 ? _selectedIndex - 1 : _selectedIndex + 1;
+			m_lb.Items.RemoveAt(_selectedIndex);
+		}
+
+
+		private void SelectItemUnderMouse()
+		{
+			var p = m_lb.PointToClient(MousePosition);
+
+			p = new Point(p.X, p.Y);
+
+
+			var index = m_lb.IndexFromPoint(p);
+			if (index>-1)
+			{
+				m_lb.SelectedIndex = index;
+			}
+		}
+
+		#endregion
+		
 		void MLbSelectedIndexChanged(object _sender, EventArgs _e)
 		{
 			SuspendLayout();
@@ -83,6 +137,11 @@ namespace ResourceEditor
 
 		private IEnumerable<Tile> GetTiles(object _item)
 		{
+			return GetTileSet(_item).Tiles.Cast<Tile>();
+		}
+
+		private TileSet GetTileSet(object _item)
+		{
 			TileSet ts;
 			if (_item is string)
 			{
@@ -92,12 +151,14 @@ namespace ResourceEditor
 			{
 				ts = TileHelper.AllTerrainTilesets[(ETerrains)_item];
 			}
-			return ts.Tiles.Cast<Tile>();
+			return ts;
 		}
 
 		public void AddTile(Tile _tile)
 		{
-			PresenterOnClick(AddTilePresenter(_tile), null);
+			GetTileSet(m_lb.SelectedItem).AddTile(_tile);
+			var presenter = AddTilePresenter(_tile);
+			PresenterOnClick(presenter, null);
 		}
 
 		public void SetTile(ETextureSet _selectedItem, int _x, int _y)

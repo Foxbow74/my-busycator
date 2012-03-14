@@ -32,8 +32,9 @@ namespace ResourceEditor
 			InitializeComponent();
 		}
 
-		private void m_miSave_Click(object sender, System.EventArgs e)
+		private void MMiSaveClick(object _sender, EventArgs _e)
 		{
+			m_ssl.Text = @"Сохраняю...";
 			foreach (TabPage tabPage in m_tc.TabPages)
 			{
 				foreach (var control in tabPage.Controls)
@@ -44,6 +45,7 @@ namespace ResourceEditor
 					}
 				}
 			}
+			m_ssl.Text = @"Выполнено.";
 		}
 
 		private void MTsmiAddTileClick(object _sender, EventArgs _e)
@@ -62,7 +64,7 @@ namespace ResourceEditor
 				var ib = new InputBox();
 				if (ib.ShowDialog(this) == DialogResult.OK && !string.IsNullOrEmpty(ib.String))
 				{
-					((TerrainsEditor)control).AddTerrain(ib.Text.ToUpper());
+					((TerrainsEditor)control).AddTerrain(ib.String.ToUpper());
 				}
 			}
 		}
