@@ -18,6 +18,7 @@ namespace GameCore.Mapping
 		//2 - active creatures
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
+		public const int AVATAR_SIGHT = 20;
 		public readonly Point ACTIVE_QPOINT = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
@@ -55,7 +56,7 @@ namespace GameCore.Mapping
 
 		public LiveMap()
 		{
-			m_visibilityManager = new LosManager(20);
+			m_visibilityManager = new LosManager(AVATAR_SIGHT);
 
 			m_sizeInBlocks = (2 * ACTIVE_QRADIUS + 1);
 			SizeInCells = m_sizeInBlocks * MapBlock.SIZE;
@@ -137,7 +138,16 @@ namespace GameCore.Mapping
 
 				foreach (var tuple in liveMapBlock.MapBlock.LightSources)
 				{
-					tuple.Item1.LightCells(this, liveCellZero + tuple.Item2);
+					var lightSource = tuple.Item1;
+					var point = liveCellZero + tuple.Item2;
+					if ((lightSource.Radius + AVATAR_SIGHT) >= point.GetDistTill(centerLiveCell))
+					{
+						lightSource.LightCells(this, point);
+					}
+					else
+					{
+						
+					}
 				}
 			}
 

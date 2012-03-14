@@ -136,7 +136,11 @@ namespace GameCore.Creatures
 
 		public override string Name
 		{
-			get { return IntelligentName + ", " + Roles.First().Name; }
+			get
+			{
+				return GetHashCode().ToString();
+				//return IntelligentName + ", " + Roles.First().Name;
+			}
 		}
 
 		protected abstract string IntelligentName {get;}

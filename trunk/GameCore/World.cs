@@ -128,6 +128,7 @@ namespace GameCore
 			}
 			if (result || _forceTurn)
 			{
+				Debug.WriteLine("TURN");
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 			}
 			return result;

@@ -1,4 +1,5 @@
-﻿using GameCore.Mapping;
+﻿using System;
+using GameCore.Mapping;
 using GameCore.Misc;
 
 namespace GameCore.Objects.Furniture.LightSources
@@ -15,6 +16,11 @@ namespace GameCore.Objects.Furniture.LightSources
 		public void LightCells(LiveMap _liveMap, Point _point)
 		{
 			m_lightSource.LightCells(_liveMap, _point);
+		}
+
+		public int Radius
+		{
+			get { return m_lightSource.Radius; }
 		}
 	}
 }
