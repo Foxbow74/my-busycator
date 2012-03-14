@@ -13,7 +13,12 @@ namespace GameCore.Misc
 			foreach (
 				var field in typeof (TEnum).GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
 			{
-				result[(TEnum) field.GetValue(null)] = field.GetCustomAttributes(true).OfType<TAttribute>().Single();
+				var attribute = field.GetCustomAttributes(true).OfType<TAttribute>().SingleOrDefault();
+				if(attribute==null)
+				{
+					attribute = (TAttribute)Activator.CreateInstance(typeof (TAttribute));
+				}
+				result[(TEnum) field.GetValue(null)] = attribute;
 			}
 			return result;
 		}

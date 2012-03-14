@@ -6,19 +6,19 @@ namespace GameCore
 {
 	public enum ETiles
 	{
-		[Tiles(0f)] NONE,
+		NONE,
 		[Tiles(0.5f)] HEAP_OF_ITEMS,
 		[Tiles(0.2f)]FOG,
-		[Tiles(0f)]TARGET_DOT,
-		[Tiles(0f)]TARGET_CROSS,
-		[Tiles(0f)]ON_WALL_LIGHT_SOURCE,
-		[Tiles(0f)]LIGHT_SOURCE,
-		[Tiles(0f)]TORCH,
+		TARGET_DOT,
+		TARGET_CROSS,
+		ON_WALL_LIGHT_SOURCE,
+		LIGHT_SOURCE,
+		TORCH,
 
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,
-		[Tiles(0f)] STAIR_DOWN,
+		 STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
 
 		[Tiles(0.2f)]TABLE,
@@ -29,28 +29,32 @@ namespace GameCore
 		[Tiles(0.3f)] MONSTER,
 
 		[Tiles(0.2f)] SWORD,
+		[Tiles(0.2f)] MAGIC_SWORD,
 		[Tiles(0.3f)] AXE,
 		[Tiles(0.2f)] CROSSBOW,
 		[Tiles(0.01f)] RING,
 		[Tiles(0.01f)] POTION,
 		[Tiles(0.01f)] CROSSBOW_BOLT,
 
-		[Tiles(0f)]FRAME_L,
-		[Tiles(0f)]FRAME_R,
-		[Tiles(0f)]FRAME_T,
-		[Tiles(0f)]FRAME_B,
-		[Tiles(0f)]FRAME_TL,
-		[Tiles(0f)]FRAME_TR,
-		[Tiles(0f)]FRAME_BL,
-		[Tiles(0f)]FRAME_BR,
-		[Tiles(0f)]SOLID,
-		[Tiles(0f)]SIMPLE,
+		FRAME_L,
+		FRAME_R,
+		FRAME_T,
+		FRAME_B,
+		FRAME_TL,
+		FRAME_TR,
+		FRAME_BL,
+		FRAME_BR,
+		SOLID,
+		SIMPLE,
 	}
 
 
 	public class TilesAttribute : Attribute
 	{
 		private static Dictionary<ETiles, TilesAttribute> m_attrs;
+		
+		public TilesAttribute():this(0f)
+		{}
 
 		public TilesAttribute(float _opacity)
 		{

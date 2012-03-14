@@ -42,10 +42,15 @@ namespace ResourceEditor
 			var splv = new Splitter { Dock = DockStyle.Left };
 			Controls.Add(splv);
 
-			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1) };
+			var cm = new ContextMenu();
+			cm.Popup += (_sender, _args) => SelectItemUnderMouse();
+			cm.MenuItems.Add(new MenuItem("Переименовать", RenameItem) { Shortcut = Shortcut.F2, ShowShortcut = true });
+			cm.MenuItems.Add(new MenuItem("Удалить", DeleteItem) { Shortcut = Shortcut.Del, ShowShortcut = true });
+
+			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1), Sorted = true, ContextMenu = cm};
 			Controls.Add(m_lb);
 
-			foreach (var tile in TileHelper.AllTiles.Keys.OrderBy(_tiles => _tiles.ToString()))
+			foreach (var tile in TileHelper.AllTiles.Keys)
 			{
 				m_lb.Items.Add(tile);
 			}
@@ -55,6 +60,55 @@ namespace ResourceEditor
 			m_lb.SelectedIndex = 0;
 		}
 
+		#region context menu
+
+		private void RenameItem(object _sender, EventArgs _eventArgs)
+		{
+			var selectedItem = m_lb.SelectedItem;
+			var selectedIndex = m_lb.SelectedIndex;
+			var ib = new InputBox() { String = selectedItem.ToString() };
+			if (ib.ShowDialog() != DialogResult.OK) return;
+			RemoveItem(selectedIndex);
+			m_customTiles.Add(ib.String.ToUpper(), GetTile(selectedItem));
+			m_lb.Items.Add(ib.String);
+			m_lb.SelectedItem = ib.String;
+		}
+
+		private void DeleteItem(object _sender, EventArgs _eventArgs)
+		{
+			var selectedItem = m_lb.SelectedItem;
+			var selectedIndex = m_lb.SelectedIndex;
+			var ib = new InputBox() { String = "Удалить " + selectedItem + "?" };
+			if (ib.ShowDialog() == DialogResult.OK)
+			{
+				RemoveItem(selectedIndex);
+			}
+		}
+
+		private void RemoveItem(int _selectedIndex)
+		{
+			m_lb.SelectedIndex = _selectedIndex > 0 ? _selectedIndex - 1 : _selectedIndex + 1;
+			m_lb.Items.RemoveAt(_selectedIndex);
+		}
+
+
+		private void SelectItemUnderMouse()
+		{
+			var p = m_lb.PointToClient(MousePosition);
+
+			p = new Point(p.X, p.Y);
+
+
+			var index = m_lb.IndexFromPoint(p);
+			if (index > -1)
+			{
+				m_lb.SelectedIndex = index;
+			}
+		}
+
+		#endregion
+
+
 		void MLbSelectedIndexChanged(object _sender, EventArgs _e)
 		{
 			SuspendLayout();
@@ -63,11 +117,8 @@ namespace ResourceEditor
 				presenter.Click -=PresenterOnClick;
 			}
 			m_pnl.Controls.Clear();
-			
-			foreach (var tile in GetTiles(m_lb.SelectedItem))
-			{
-				AddTilePresenter(tile);
-			}
+
+			AddTilePresenter(GetTile(m_lb.SelectedItem));
 
 			ResumeLayout(true);
 			if (m_pnl.Controls.Count > 0)
@@ -80,18 +131,14 @@ namespace ResourceEditor
 			}
 		}
 
-		private IEnumerable<Tile> GetTiles(object _item)
+		private Tile GetTile(object _item)
 		{
 			if(_item is string)
 			{
-				yield return m_customTiles[(string)_item];
-				yield break;
+				return m_customTiles[(string)_item];
 			}
-			var tile = TileHelper.AllTiles[(ETiles) _item];
-			if (tile is Tile)
-			{
-				yield return (Tile)tile;
-			}
+			var tile = (Tile)TileHelper.AllTiles[(ETiles) _item];
+			return tile;
 		}
 
 		public void AddTile(Tile _tile)
@@ -132,10 +179,7 @@ namespace ResourceEditor
 			var sb = new StringBuilder();
 			foreach (var item in m_lb.Items)
 			{
-				foreach (var tile in GetTiles(item))
-				{
-					sb.AppendLine(tile.ToText());
-				}
+				sb.AppendLine(item + GetTile(item).ToShortText());
 			}
 			File.WriteAllText(@"Resources\tiles.dat", sb.ToString());
 			File.Copy(@"Resources\tiles.dat", @"..\ResourceEditor\Resources\tiles.dat", true);

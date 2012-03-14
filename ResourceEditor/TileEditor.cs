@@ -61,7 +61,7 @@ namespace ResourceEditor
 		{
 			m_tile = _tile;
 			m_presenter = _presenter;
-			m_tb.Text = _tile.ToText();
+			m_tb.Text = _tile.ToShortText();
 			m_pnlSample.BackgroundImage = _presenter.CurrentImage;
 		}
 	}

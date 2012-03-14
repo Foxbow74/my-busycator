@@ -31,7 +31,10 @@
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.m_miSave = new System.Windows.Forms.ToolStripMenuItem();
 			this.m_tsmiAddTile = new System.Windows.Forms.ToolStripMenuItem();
+			this.m_ss = new System.Windows.Forms.StatusStrip();
+			this.m_ssl = new System.Windows.Forms.ToolStripStatusLabel();
 			this.menuStrip1.SuspendLayout();
+			this.m_ss.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// menuStrip1
@@ -51,7 +54,7 @@
 			this.m_miSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
 			this.m_miSave.Size = new System.Drawing.Size(77, 20);
 			this.m_miSave.Text = "Сохранить";
-			this.m_miSave.Click += new System.EventHandler(this.m_miSave_Click);
+			this.m_miSave.Click += new System.EventHandler(this.MMiSaveClick);
 			// 
 			// m_tsmiAddTile
 			// 
@@ -61,12 +64,29 @@
 			this.m_tsmiAddTile.Text = "Добавить";
 			this.m_tsmiAddTile.Click += new System.EventHandler(this.MTsmiAddTileClick);
 			// 
+			// m_ss
+			// 
+			this.m_ss.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.m_ssl});
+			this.m_ss.Location = new System.Drawing.Point(0, 692);
+			this.m_ss.Name = "m_ss";
+			this.m_ss.Size = new System.Drawing.Size(752, 22);
+			this.m_ss.TabIndex = 1;
+			this.m_ss.Text = "statusStrip1";
+			// 
+			// m_ssl
+			// 
+			this.m_ssl.Name = "m_ssl";
+			this.m_ssl.Size = new System.Drawing.Size(16, 17);
+			this.m_ssl.Text = "...";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoSize = true;
 			this.ClientSize = new System.Drawing.Size(752, 714);
+			this.Controls.Add(this.m_ss);
 			this.Controls.Add(this.menuStrip1);
 			this.DoubleBuffered = true;
 			this.Font = new System.Drawing.Font("Courier New", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -77,6 +97,8 @@
 			this.Text = "Редактор ресурсов";
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
+			this.m_ss.ResumeLayout(false);
+			this.m_ss.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -87,6 +109,8 @@
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem m_miSave;
 		private System.Windows.Forms.ToolStripMenuItem m_tsmiAddTile;
+		private System.Windows.Forms.StatusStrip m_ss;
+		private System.Windows.Forms.ToolStripStatusLabel m_ssl;
 
 	}
 }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using GameCore;
 using GameCore.Misc;
 
@@ -79,7 +81,10 @@ namespace GameUi
 				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
 				AllTerrainTilesets[terrain].AddTile(tile);
 			}
-
+			foreach (var key in Enum.GetValues(typeof (ETerrains)).Cast<ETerrains>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
+			{
+				Trace.WriteLine("Tile for " + key + " not defined.");
+			}
 			foreach (var line in File.ReadAllLines(@"Resources\tiles.dat"))
 			{
 				var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
@@ -89,6 +94,10 @@ namespace GameUi
 				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
 				tile.Tile = etile;
 				AllTiles.Add(etile, tile);
+			}
+			foreach (var key in Enum.GetValues(typeof(ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
+			{
+				Trace.WriteLine("Tile for " + key + " not defined.");
 			}
 			AllTiles[ETiles.FOG].IsFogTile = true;
 
