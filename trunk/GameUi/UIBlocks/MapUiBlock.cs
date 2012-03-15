@@ -40,10 +40,12 @@ namespace GameUi.UIBlocks
 
 		private void Redraw()
 		{
+			var avatarCreenPoint = new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop;
+
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 
 			var fogColor = FColor.FromArgb(255, 150, 150, 150);
-			var fogLightness = fogColor.Lightness();// *2;
+			var fogLightness = fogColor.Lightness();
 
 			var worldLayer = World.TheWorld.Avatar.Layer;
 			var ambient = worldLayer.Ambient;
@@ -63,16 +65,12 @@ namespace GameUi.UIBlocks
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
 					var lightness = lighted.Lightness();
-					if(lightness>0.1f)
-					{
-						liveCell.SetIsSeenBefore();
-					}
-
 
 					var screenPoint = xy + ContentRct.LeftTop;
 
-					if (lightness > fogLightness)
+					if (lightness > fogLightness || avatarCreenPoint==screenPoint)
 					{
+						liveCell.SetIsSeenBefore();
 						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp());
 
@@ -97,7 +95,7 @@ namespace GameUi.UIBlocks
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop, FColor.White);
+			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarCreenPoint, FColor.White);
 		}
 
 		public override void DrawFrame()

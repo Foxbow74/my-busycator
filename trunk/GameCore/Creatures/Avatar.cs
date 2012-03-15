@@ -25,7 +25,7 @@ namespace GameCore.Creatures
 			get { return ETiles.AVATAR; }
 		}
 
-		protected override string IntelligentName
+		public override string IntelligentName
 		{
 			get { return "Дима"; }
 		}

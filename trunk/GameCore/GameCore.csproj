@@ -58,6 +58,7 @@
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Citizen.cs" />
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
+    <Compile Include="Creatures\ESex.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Inventory.cs" />
     <Compile Include="Creatures\Missile.cs" />

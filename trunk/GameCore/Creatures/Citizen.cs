@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
@@ -13,7 +14,7 @@ namespace GameCore.Creatures
 		public Citizen(Surface _layer, Random _rnd)
 			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT)
 		{
-			m_name = "Шмат" + GetHashCode();
+			m_name = _layer.GetNextCitizenName(Sex);
 		}
 
 		public override ETiles Tile
@@ -21,7 +22,7 @@ namespace GameCore.Creatures
 			get { return ETiles.CITIZEN; }
 		}
 
-		protected override string IntelligentName
+		public override string IntelligentName
 		{
 			get { return m_name; }
 		}
@@ -34,6 +35,16 @@ namespace GameCore.Creatures
 		{
 			AddActToPool(new MoveAct(), new Point(Rnd.Next(3) - 1, Rnd.Next(3) - 1));
 			return EThinkingResult.NORMAL;
+		}
+
+		public override string ToString()
+		{
+			string result = Name;
+			foreach (var role in Roles)
+			{
+				result +=  "/" + role;
+			}
+			return result;
 		}
 	}
 }
