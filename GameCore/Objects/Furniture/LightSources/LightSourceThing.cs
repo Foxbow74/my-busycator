@@ -1,5 +1,4 @@
-﻿using System;
-using GameCore.Mapping;
+﻿using GameCore.Mapping;
 using GameCore.Misc;
 
 namespace GameCore.Objects.Furniture.LightSources
