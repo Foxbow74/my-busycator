@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Materials;
@@ -18,7 +17,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			m_city = _city;
 		}
-		
+
+		public Point BlockId { get{return Room.BlockId;} }
+
 		public virtual void Fill(MapBlock _block)
 		{
 			var mapBlock = _block;
@@ -81,7 +82,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			foreach (var point in OutDoorPoints)
 			{
-				if (MapBlock.Rect.ContainsEx(point))
+				if (MapBlock.Rect.Contains(point))
 				{
 					_mapBlock.Map[point.X, point.Y] = _floor;
 				}

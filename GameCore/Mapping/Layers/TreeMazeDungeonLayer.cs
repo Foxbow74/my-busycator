@@ -132,7 +132,7 @@ namespace GameCore.Mapping.Layers
 		{
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
-			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects));
+			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects), _block.BlockId);
 			foreach (var room in rooms)
 			{
 				MapBlockHelper.Fill(_block, rnd, this, DefaultEmptySpaces, room.RoomRectangle);
@@ -146,7 +146,7 @@ namespace GameCore.Mapping.Layers
 		private IEnumerable<ConnectionPoint> AddConnectionPoints(MapBlock _block, Room _room, Random _rnd)
 		{
 			if (_block.BlockId == MapBlock.GetBlockId(EnterCoords) &&
-			    _room.RoomRectangle.ContainsEx(MapBlock.GetInBlockCoords(EnterCoords)))
+			    _room.RoomRectangle.Contains(MapBlock.GetInBlockCoords(EnterCoords)))
 			{
 				_room.IsConnected = true;
 			}
@@ -198,7 +198,7 @@ namespace GameCore.Mapping.Layers
 					do
 					{
 						end += delta;
-						if (!_room.AreaRectangle.ContainsEx(end)) break;
+						if (!_room.AreaRectangle.Contains(end)) break;
 					} while (true);
 
 					cps.Add(new ConnectionPoint(begin + _block.BlockId*MapBlock.SIZE, end + _block.BlockId*MapBlock.SIZE, _room, dir));
@@ -289,9 +289,9 @@ namespace GameCore.Mapping.Layers
 							var rrect = room.WorldRoomRectangle;
 							var frect = rrect.Inflate(1, 1);
 							var end = cp.End;
-							if (frect.ContainsEx(end))
+							if (frect.Contains(end))
 							{
-								while (rrect.ContainsEx(end))
+								while (rrect.Contains(end))
 								{
 									end += oppositeDelta;
 								}
@@ -718,7 +718,7 @@ namespace GameCore.Mapping.Layers
 							}
 							else
 							{
-								rm = rooms.FirstOrDefault(_room => _room.WorldRoomRectangle.ContainsEx(point));
+								rm = rooms.FirstOrDefault(_room => _room.WorldRoomRectangle.Contains(point));
 								if (rm != null)
 								{
 									ConnectTwoRooms(room, rm, forbid, connectors, cp.Begin, cp.End, point - delta);

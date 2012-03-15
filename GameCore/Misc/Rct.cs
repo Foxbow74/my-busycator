@@ -48,7 +48,7 @@ namespace GameCore.Misc
 			return new Rct(LeftTop + new Point(_x, _y), RightBottom + new Point(_x, _y));
 		}
 
-		public bool ContainsEx(Point _point)
+		public bool Contains(Point _point)
 		{
 			var result = Left <= _point.X && Top <= _point.Y && Bottom >= _point.Y && Right >= _point.X;
 			return result;

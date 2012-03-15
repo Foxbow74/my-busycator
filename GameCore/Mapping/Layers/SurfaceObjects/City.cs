@@ -10,16 +10,17 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	public class City
 	{
-		private readonly Point[] m_points;
+		private readonly Point[] m_cityBlockIds;
 		private readonly CityGenerator m_cityGenerator;
-		readonly Dictionary<Building, Point> m_buildings = new Dictionary<Building, Point>();
+
+		readonly List<Building> m_buildings = new List<Building>();
 		private readonly List<Citizen> m_citizens = new List<Citizen>();
 
 		public City(Surface _surface, Random _rnd)
 		{
 			Surface = _surface;
 			m_cityGenerator = new CityGenerator(_surface.WorldMap);
-			m_points = m_cityGenerator.GenerateCityArea(_rnd).ToArray();
+			m_cityBlockIds = m_cityGenerator.GenerateCityArea(_rnd).ToArray();
 
 			AddBuildings(_rnd);
 		}
@@ -27,12 +28,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private void AddBuildings(Random _rnd)
 		{
 			var allRooms = new Dictionary<Room, Point>();
-			foreach (var point in m_points)
+			foreach (var blockId in m_cityBlockIds)
 			{
-				var rooms = LayerHelper.GenerateRooms(_rnd, MapBlock.Rect.Inflate(-2, -2).Offset(2,2), new Point[0]).OrderByDescending(_room => _room.RoomRectangle.Size);
+				var rooms = LayerHelper.GenerateRooms(_rnd, MapBlock.Rect.Inflate(-2, -2).Offset(2,2), new Point[0], blockId).OrderByDescending(_room => _room.RoomRectangle.Size);
 				foreach (var room in rooms)
 				{
-					allRooms.Add(room, point);
+					allRooms.Add(room, blockId);
 					if (allRooms.Count > CityGenerator.MAX_CITY_BUILDINGS_COUNT)
 					{
 						break;
@@ -101,21 +102,26 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				var pair = allRooms.First(_pair => building.IsFit(_pair.Key));
 				allRooms.Remove(pair.Key);
 				building.SetRoom(pair.Key);
-				m_buildings.Add(building, pair.Value);
+				m_buildings.Add(building);
 			}
 		}
 
 		public Surface Surface { get; private set; }
 
+		public IEnumerable<Building> Buildings
+		{
+			get { return m_buildings; }
+		}
+
 		readonly List<Citizen> m_already = new List<Citizen>();
 
 		public void GenerateCityBlock(MapBlock _block, Random _rnd)
 		{
-			foreach (var pair in m_buildings.Where(_pair => _pair.Value == _block.BlockId))
+			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
 			{
-				_block.AddRoom(pair.Key.Room);
-				pair.Key.Fill(_block);
-				var citizens = m_citizens.Where(_citizen => _citizen.Roles.OfType<AbstractCitizenRole>().First().Building == pair.Key).ToArray();
+				_block.AddRoom(building.Room);
+				building.Fill(_block);
+				var citizens = m_citizens.Where(_citizen => _citizen.Roles.OfType<AbstractCitizenRole>().First().Building == building).ToArray();
 				foreach (var citizen in citizens)
 				{
 					if (m_already.Contains(citizen))
@@ -124,7 +130,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					}
 					Debug.WriteLine(citizen);
 					m_already.Add(citizen);
-					_block.AddCreature(citizen, pair.Key.Room.RoomRectangle.Center);	
+					_block.AddCreature(citizen, building.Room.RoomRectangle.Center);	
 				}
 			}
 		}

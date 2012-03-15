@@ -8,10 +8,11 @@ namespace GameCore.Mapping
 {
 	public class Room
 	{
-		public Room(Rct _roomRect, Rct _areaRect)
+		public Room(Rct _roomRect, Rct _areaRect, Point _blockId)
 		{
 			RoomRectangle = _roomRect;
 			AreaRectangle = _areaRect;
+			BlockId = _blockId;
 			ConnectedTo = new List<Room>();
 		}
 

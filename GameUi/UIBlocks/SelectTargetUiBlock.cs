@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
@@ -59,7 +58,7 @@ namespace GameUi.UIBlocks
 			if (dPoint != null)
 			{
 				var newPoint = m_targetPoint + dPoint + m_addPoint;
-				if (ContentRct.ContainsEx(newPoint))
+				if (ContentRct.Contains(newPoint))
 				{
 					m_targetPoint += dPoint;
 					if (m_targetPoint.Lenght > m_maxDistance)

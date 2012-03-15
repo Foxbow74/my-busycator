@@ -46,7 +46,8 @@ namespace Busycator
 			base.OnUpdateFrame(_e);
 			if (!IsActive) return;
 
-			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " lc:" + World.TheWorld.Avatar[0,0].LiveCoords + " wc:" + World.TheWorld.Avatar[0,0].WorldCoords;
+			var avatar = World.TheWorld.Avatar;
+			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar.InBuilding;
 			m_game.Update(KeyState);
 		}
 
