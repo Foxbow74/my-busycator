@@ -67,63 +67,68 @@ namespace GameCore
 		public bool GameUpdated(bool _forceTurn = false)
 		{
 			var result = false;
-			var done = new List<Creature>();
-			while (true)
+			using (new Profiler("World.TheWorld.GameUpdated()"))
 			{
-				var creature = LiveMap.FirstActiveCreature;
 
-				#region не давать ходить дважды до перерисовки);
-
-				if (done.Contains(creature)) break;
-				done.Add(creature);
-
-				#endregion
-
-				if (creature == null)
+				var done = new List<Creature>();
+				while (true)
 				{
-					throw new ApplicationException();
-				}
+					var creature = LiveMap.FirstActiveCreature;
 
-				if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS && creature.NextAct == null)
-				{
-					var thinkingResult = creature.Thinking();
-					switch (thinkingResult)
+					#region не давать ходить дважды до перерисовки);
+
+					if (done.Contains(creature)) break;
+					done.Add(creature);
+
+					#endregion
+
+					if (creature == null)
 					{
-						case EThinkingResult.NORMAL:
+						throw new ApplicationException();
+					}
+
+					if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS &&
+					    creature.NextAct == null)
+					{
+						var thinkingResult = creature.Thinking();
+						switch (thinkingResult)
+						{
+							case EThinkingResult.NORMAL:
+								break;
+							case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
+								//m_activeCreatures.Remove(creature);
+								continue;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+					}
+
+					var act = creature.NextAct;
+
+					if (act == null)
+					{
+						break;
+					}
+					//Debug.WriteLine(creature);
+
+					WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
+
+					var actResult = creature.DoAct(act);
+
+					switch (actResult)
+					{
+						case EActResults.NEED_ADDITIONAL_PARAMETERS:
+							return true;
+						case EActResults.NOTHING_HAPPENS:
 							break;
-						case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
-							//m_activeCreatures.Remove(creature);
-							continue;
+						case EActResults.DONE:
+						case EActResults.FAIL:
+						case EActResults.QUICK_FAIL:
+							result = true;
+							break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
-				}
-
-				var act = creature.NextAct;
-
-				if (act == null)
-				{
-					break;
-				}
-				//Debug.WriteLine(creature);
-
-				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
-
-				var actResult = creature.DoAct(act);
-
-				switch (actResult)
-				{
-					case EActResults.NEED_ADDITIONAL_PARAMETERS:
-						return true;
-					case EActResults.NOTHING_HAPPENS:
-						break;
-					case EActResults.DONE:
-					case EActResults.FAIL:
-					case EActResults.QUICK_FAIL:
-						result = true;
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
 				}
 			}
 			if (result || _forceTurn)

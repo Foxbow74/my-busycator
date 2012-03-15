@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameCore.Mapping;
-using GameCore.Objects;
 
 namespace GameCore.Misc
 {

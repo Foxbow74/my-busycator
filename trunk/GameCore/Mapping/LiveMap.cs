@@ -117,47 +117,50 @@ namespace GameCore.Mapping
 		
 		public Point GetData()
 		{
-			var centerLiveCell = GetCenterLiveCell();
-
-			
-			var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
-
-			lighted.Add(CenterLiveBlock);
-
-			foreach (var blockId in lighted)
+			using (new Profiler())
 			{
-				Blocks[blockId.X, blockId.Y].ClearTemp();
-			}
+				var centerLiveCell = GetCenterLiveCell();
 
-			m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
 
-			foreach (var blockId in lighted)
-			{
-				var liveCellZero = blockId * MapBlock.SIZE;
-				var liveMapBlock = Blocks[blockId.X, blockId.Y];
+				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
 
-				foreach (var tuple in liveMapBlock.MapBlock.LightSources)
+				lighted.Add(CenterLiveBlock);
+
+				foreach (var blockId in lighted)
 				{
-					var lightSource = tuple.Item1;
-					var point = liveCellZero + tuple.Item2;
-					if ((lightSource.Radius + AVATAR_SIGHT) >= point.GetDistTill(centerLiveCell))
+					Blocks[blockId.X, blockId.Y].ClearTemp();
+				}
+
+				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
+
+				foreach (var blockId in lighted)
+				{
+					var liveCellZero = blockId*MapBlock.SIZE;
+					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+
+					foreach (var tuple in liveMapBlock.MapBlock.LightSources)
 					{
-						lightSource.LightCells(this, point);
-					}
-					else
-					{
-						
+						var lightSource = tuple.Item1;
+						var point = liveCellZero + tuple.Item2;
+						if ((lightSource.Radius + AVATAR_SIGHT) >= point.GetDistTill(centerLiveCell))
+						{
+							lightSource.LightCells(this, point);
+						}
+						else
+						{
+
+						}
 					}
 				}
-			}
 
-			if (World.TheWorld.Avatar.Light != null)
-			{
-				World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+				if (World.TheWorld.Avatar.Light != null)
+				{
+					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+				}
+
+				var zeroLiveCell = centerLiveCell - m_vieportSize/2;
+				return zeroLiveCell;
 			}
-			
-			var zeroLiveCell = centerLiveCell - m_vieportSize/2;
-			return zeroLiveCell;
 		}
 
 		private Point Wrap(Point _liveBlockId)

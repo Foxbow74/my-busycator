@@ -211,12 +211,9 @@ namespace GameUi
 				}
 			}
 
-			using (new Profiler("World.TheWorld.GameUpdated()"))
+			if (m_uiBlocks.Peek() == m_mainUiBlock)
 			{
-				if (m_uiBlocks.Peek() == m_mainUiBlock)
-				{
-					m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
-				}
+				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
 		}
 
