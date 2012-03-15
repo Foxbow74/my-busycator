@@ -12,7 +12,6 @@ namespace GameCore.Mapping
 	{
 		private readonly Point m_liveCoords;
 		private uint m_seenMask;
-		private Point m_inBlockCoords;
 		private MapBlock m_mapBlock;
 
 		private readonly List<Item> m_items = new List<Item>();
@@ -40,9 +39,9 @@ namespace GameCore.Mapping
 			Furniture = null;
 
 			WorldCoords = _worldCoords;
-			m_inBlockCoords = _inBlockCoords;
+			InBlockCoords = _inBlockCoords;
 			m_mapBlock = _mapBlock;
-			m_seenMask = ((UInt32)1) << m_inBlockCoords.X;
+			m_seenMask = ((UInt32)1) << InBlockCoords.X;
 
 			Terrain = _mapBlock.Map[_inBlockCoords.X, _inBlockCoords.Y];
 			TerrainAttribute = TerrainAttribute.GetAttribute(Terrain);
@@ -58,7 +57,7 @@ namespace GameCore.Mapping
 			if (!IsSeenBefore)
 			{
 				IsSeenBefore = true;
-				m_mapBlock.SeenCells[m_inBlockCoords.Y] |= m_seenMask;
+				m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
 			}
 		}
 
@@ -85,7 +84,7 @@ namespace GameCore.Mapping
 
 		public void AddItem(Item _item)
 		{
-			m_mapBlock.AddObject(_item, m_inBlockCoords);
+			m_mapBlock.AddObject(_item, InBlockCoords);
 			m_items.Add(_item);
 		}
 
@@ -159,9 +158,9 @@ namespace GameCore.Mapping
 		public Thing ResolveFakeFurniture(Creature _creature)
 		{
 			var fakedThing = (FakedFurniture)Furniture;
-			m_mapBlock.RemoveObject(fakedThing, m_inBlockCoords);
+			m_mapBlock.RemoveObject(fakedThing, InBlockCoords);
 			Furniture = (FurnitureThing)fakedThing.ResolveFake(_creature);
-			m_mapBlock.AddObject(Furniture, m_inBlockCoords);
+			m_mapBlock.AddObject(Furniture, InBlockCoords);
 			return Furniture;
 		}
 
@@ -246,6 +245,13 @@ namespace GameCore.Mapping
 
 		public Point WorldCoords { get; private set; }
 
+		public Point MapBlockId
+		{
+			get { return LiveMapBlock.MapBlock.BlockId; }
+		}
+
+		public Point InBlockCoords { get; private set; }
+
 		public float GetIsPassableBy(Creature _creature)
 		{
 			if (Creature != null) return 0f;
@@ -269,7 +275,7 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
-			m_mapBlock.RemoveObject(_item, m_inBlockCoords);
+			m_mapBlock.RemoveObject(_item, InBlockCoords);
 		}
 	}
 }

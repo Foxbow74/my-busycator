@@ -11,7 +11,7 @@ namespace GameCore.Mapping.Layers
 		private const int MIN_ROOM_SQUARE = 42;
 		private const int MAX_DIV_SIZE = 15;
 
-		public static IEnumerable<Room> GenerateRooms(Random _random, Rct _rct, ICollection<Point> _objects)
+		public static IEnumerable<Room> GenerateRooms(Random _random, Rct _rct, ICollection<Point> _objects, Point _blockId)
 		{
 			var ableVert = _rct.Width - MIN_ROOM_SIZE * 2;
 			var ableHor = _rct.Height - MIN_ROOM_SIZE * 2;
@@ -56,32 +56,32 @@ namespace GameCore.Mapping.Layers
 					{
 						throw new ApplicationException("Доля больше чем место под нее");
 					}
-					
-					foreach (var room in GenerateRooms(_random, rct, _objects))
+
+					foreach (var room in GenerateRooms(_random, rct, _objects, _blockId))
 					{
 						yield return room;
 					}
 				}
 				yield break;
 			}
-			yield return MakeRoom(_rct, _random, _objects);
+			yield return MakeRoom(_rct, _random, _objects, _blockId);
 		}
 
-		static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects)
+		static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects, Point _blockId)
 		{
-			var contains = _objects.Where(_rct.ContainsEx).ToArray();
+			var contains = _objects.Where(_rct.Contains).ToArray();
 			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
 			for (; ; )
 			{
 				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
 				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
-				if (!contains.Any() || contains.All(rect.ContainsEx))
+				if (!contains.Any() || contains.All(rect.Contains))
 				{
 					foreach (var contain in contains)
 					{
 						_objects.Remove(contain);
 					}
-					return new Room(rect, _rct);
+					return new Room(rect, _rct, _blockId);
 				}
 			}
 		}

@@ -36,12 +36,6 @@ namespace GameCore.Misc
 			return (T) _d;
 		}
 
-		public static bool ContainsEx(this Rct _rct, Point _point)
-		{
-			var result = _rct.Left <= _point.X && _rct.Top <= _point.Y && _rct.Bottom > _point.Y && _rct.Right > _point.X;
-			return result;
-		}
-
 		public static IEnumerable<Point> AllPoints(this Rct _rct)
 		{
 			for (var i = _rct.Left; i < _rct.Right; ++i)
