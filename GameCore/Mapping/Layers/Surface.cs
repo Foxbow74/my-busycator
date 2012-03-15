@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using GameCore.Creatures;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -15,16 +15,32 @@ namespace GameCore.Mapping.Layers
 		private EMapBlockTypes[,] m_worldMap;
 		private WorldMapGenerator m_worldMapGenerator;
 
-		private static string[] m_maleNames;
-		private static string[] m_femaleNames;
+		private static readonly List<string> m_maleNames;
+		private static readonly List<string> m_femaleNames;
 
 		static Surface()
 		{
-			//PrepareNicks(@"Resources\malenicks.txt", rnd);
-			//PrepareNicks(@"Resources\femalenicks.txt", rnd);
+			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+		}
 
-			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+		public string GetNextCitizenName(ESex _sex)
+		{
+			List<string> list;
+			switch (_sex)
+			{
+				case ESex.MALE:
+					list = m_maleNames;
+					break;
+				case ESex.FEMALE:
+					list = m_femaleNames;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("_sex");
+			}
+			var result = list[World.Rnd.Next(list.Count)];
+			list.Remove(result);
+			return result;
 		}
 
 		public City City { get; private set; }
@@ -192,11 +208,6 @@ namespace GameCore.Mapping.Layers
 			{
 				return new FColor(1f,1f,1f,0.5f).Multiply(1f); 
 			}
-		}
-
-		public string GetNextCitizenName()
-		{
-			return null;
 		}
 	}
 }

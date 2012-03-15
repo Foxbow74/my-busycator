@@ -99,7 +99,6 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					return;
 			}
-			Debug.WriteLine("TURN");
 			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 

@@ -105,7 +105,7 @@ namespace GameCore.Acts.Movement
 							mess = cell.TerrainAttribute.DisplayName;
 						}
 					}
-					MessageManager.SendMessage(this, "неа, " + mess);
+					MessageManager.SendMessage(this, "неа, тут " + mess);
 				}
 				return EActResults.QUICK_FAIL;
 			}

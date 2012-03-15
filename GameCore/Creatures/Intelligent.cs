@@ -29,6 +29,7 @@ namespace GameCore.Creatures
 		protected Intelligent(WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
 			: base(_layer, _speed)
 		{
+			Sex = World.Rnd.Next(2)==0?ESex.MALE : ESex.FEMALE;
 			m_intellectGrades = _intellectGrades;
 			switch (_intellectGrades)
 			{
@@ -48,6 +49,8 @@ namespace GameCore.Creatures
 					throw new ArgumentOutOfRangeException("_intellectGrades");
 			}
 		}
+
+		public ESex Sex { get; private set; }
 
 		public Item this[EEquipmentPlaces _places]
 		{
@@ -138,11 +141,10 @@ namespace GameCore.Creatures
 		{
 			get
 			{
-				return GetHashCode().ToString();
-				//return IntelligentName + ", " + Roles.First().Name;
+				return IntelligentName +", " + Roles.First().Name;
 			}
 		}
 
-		protected abstract string IntelligentName {get;}
+		public abstract string IntelligentName { get; }
 	}
 }
