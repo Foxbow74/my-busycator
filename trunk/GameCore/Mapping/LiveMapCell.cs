@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Mapping.Layers;
+using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
@@ -276,6 +278,27 @@ namespace GameCore.Mapping
 				throw new ApplicationException();
 			}
 			m_mapBlock.RemoveObject(_item, InBlockCoords);
+		}
+
+		public Room InRoom
+		{
+			get
+			{
+				var room = LiveMapBlock.MapBlock.Rooms.FirstOrDefault(_room => _room.RoomRectangle.Contains(InBlockCoords));
+				return room;
+			}
+		}
+
+		public Building InBuilding
+		{
+			get
+			{
+				var surface = World.TheWorld.Avatar.Layer  as Surface;
+				if (surface == null) return null;
+				var blockId = MapBlockId;
+				var building = surface.City.Buildings.FirstOrDefault(_building => _building.BlockId == blockId && _building.Room.RoomRectangle.Contains(InBlockCoords));
+				return building;
+			}
 		}
 	}
 }

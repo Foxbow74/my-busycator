@@ -218,29 +218,6 @@ namespace GameCore.Creatures
 		{
 			get { return EMaterial.FLASH; }
 		}
-
-		public Room InRoom
-		{
-			get
-			{
-				var liveMapCell = this[0,0];
-				var room = liveMapCell.LiveMapBlock.MapBlock.Rooms.FirstOrDefault(_room => _room.RoomRectangle.Contains(liveMapCell.InBlockCoords));
-				return room;
-			}
-		}
-
-		public Building InBuilding
-		{
-			get
-			{
-				var surface = Layer as Surface;
-				if(surface==null) return null;
-				var liveMapCell = this[0, 0];
-				var blockId = liveMapCell.MapBlockId;
-				var building = surface.City.Buildings.FirstOrDefault(_building => _building.BlockId == blockId && _building.Room.RoomRectangle.Contains(liveMapCell.InBlockCoords));
-				return building;
-			}
-		}
 	}
 
 
