@@ -103,9 +103,7 @@ namespace GameCore
 						}
 					}
 
-					var act = creature.NextAct;
-
-					if (act == null)
+					if (creature.NextAct==null)
 					{
 						break;
 					}
@@ -113,7 +111,7 @@ namespace GameCore
 
 					WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 
-					var actResult = creature.DoAct(act);
+					var actResult = creature.DoAct();
 
 					switch (actResult)
 					{

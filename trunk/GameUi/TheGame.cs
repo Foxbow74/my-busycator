@@ -207,6 +207,7 @@ namespace GameUi
 					MessageManager.SendMessage(this, WorldMessage.AvatarTurn);
 
 					var tuple = m_pressed.Dequeue();
+
 					m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
 				}
 			}

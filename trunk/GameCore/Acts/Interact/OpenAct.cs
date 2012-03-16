@@ -14,7 +14,7 @@ namespace GameCore.Acts.Interact
 	{
 		protected override int TakeTicksOnSingleAction
 		{
-			get { return 40; }
+			get { return 200; }
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys

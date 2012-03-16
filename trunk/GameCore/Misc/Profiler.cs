@@ -18,9 +18,11 @@ namespace GameCore.Misc
 		private readonly string m_name;
 		private readonly Info m_info;
 
+		public static readonly DateTime Start = DateTime.Now;
+
 		public Profiler()
 		{
-			var line = Environment.StackTrace.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)[3];
+			var line = Environment.StackTrace.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)[3];
 			m_name = line.Substring(0, line.IndexOf(')')+1);
 
 			if (!m_infos.TryGetValue(m_name, out m_info))
@@ -42,9 +44,10 @@ namespace GameCore.Misc
 		{
 			var ordered = m_infos.OrderByDescending(_pair => _pair.Value.Span);
 			var spanSum = m_infos.Values.Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Span).Ticks;
+			var total = (DateTime.Now - Start).Ticks;
 			foreach (var pair in ordered)
 			{
-				Debug.WriteLine(string.Format("***\t{0}\ttakes\t{1:N2}% ({2})\tcalled\t{3}", pair.Key, 100 * pair.Value.Span.Ticks/spanSum, pair.Value.Span, pair.Value.Count));
+				Debug.WriteLine(string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", pair.Key, 100 * pair.Value.Span.Ticks / spanSum, pair.Value.Span.TotalSeconds, pair.Value.Count, 100 * pair.Value.Span.Ticks / total));
 			}
 		}
 

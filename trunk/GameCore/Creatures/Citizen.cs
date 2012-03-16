@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts;
+using GameCore.Acts.Interact;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Objects;
@@ -36,12 +38,24 @@ namespace GameCore.Creatures
 			var building = this[0, 0].InBuilding;
 			if(building!=null)
 			{
-				if(!building.InDoorWorldCoords.Contains(this[0, 0].WorldCoords))
+				var coords = this[0, 0].WorldCoords;
+				var onDoor = building.DoorWorldCoords == coords; //позиция совпадает с дверью
+
+				if(!onDoor && !building.InDoorWorldCoords.Contains(coords))
 				{
+					//Debug.WriteLine(IntelligentName + " идет к порожку");
+					AddActToPool(new MoveToAct(), building.DoorWorldCoords);
+					return EThinkingResult.NORMAL;
+				}
+				else if(!onDoor)
+				{
+					//Debug.WriteLine(IntelligentName + " открывает дверь");
+					AddActToPool(new OpenAct(), building.DoorWorldCoords - coords);
 					AddActToPool(new MoveToAct(), building.DoorWorldCoords);
 					return EThinkingResult.NORMAL;
 				}
 			}
+			//Debug.WriteLine(IntelligentName + " ждет");
 			AddActToPool(new WaitAct());
 
 			return EThinkingResult.NORMAL;
