@@ -152,7 +152,7 @@ namespace GameCore.Creatures
 		public EActResults DoAct(Act _act)
 		{
 			ActResult = _act.Do(this);
-			var price = _act.TakeTicks*Speed;
+			var price = Speed; 
 			switch (ActResult)
 			{
 				case EActResults.NOTHING_HAPPENS:
@@ -161,10 +161,10 @@ namespace GameCore.Creatures
 				case EActResults.DONE:
 					break;
 				case EActResults.FAIL:
-					price *= 2;
+					price  = _act.TakeTicks* Speed * 2;
 					break;
 				case EActResults.QUICK_FAIL:
-					price /= 2;
+					price  = _act.TakeTicks* Speed / 2;
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
 					return ActResult;

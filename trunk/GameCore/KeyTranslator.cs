@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Misc;
+using GameCore.Objects;
 
 namespace GameCore
 {
@@ -21,7 +22,7 @@ namespace GameCore
 		                                                  	{
 		                                                  		ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow,
 		                                                  		ConsoleKey.RightArrow, ConsoleKey.NumPad1, ConsoleKey.NumPad2,
-		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5,
+		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, 
 		                                                  		ConsoleKey.NumPad6, ConsoleKey.NumPad7, ConsoleKey.NumPad8,
 		                                                  		ConsoleKey.NumPad9, ConsoleKey.Home
 		                                                  		, ConsoleKey.PageUp,
@@ -78,7 +79,7 @@ namespace GameCore
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (typeof (Act).IsAssignableFrom(type) && !type.IsAbstract)
+					if (typeof (Act).IsAssignableFrom(type) && !type.IsAbstract && !typeof(ISpecial).IsAssignableFrom(type))
 					{
 						yield return type;
 					}

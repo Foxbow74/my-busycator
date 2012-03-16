@@ -52,6 +52,7 @@
     <Compile Include="Acts\Movement\Descend.cs" />
     <Compile Include="Acts\Movement\MoveAct.cs" />
     <Compile Include="Acts\Interact\OpenAct.cs" />
+    <Compile Include="Acts\Movement\MoveToAct.cs" />
     <Compile Include="Acts\System\QuitAct.cs" />
     <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />

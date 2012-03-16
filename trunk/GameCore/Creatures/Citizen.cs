@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
+using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
-using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameCore.Creatures
@@ -33,7 +33,17 @@ namespace GameCore.Creatures
 
 		public override EThinkingResult Thinking()
 		{
-			AddActToPool(new MoveAct(), new Point(Rnd.Next(3) - 1, Rnd.Next(3) - 1));
+			var building = this[0, 0].InBuilding;
+			if(building!=null)
+			{
+				if(!building.InDoorWorldCoords.Contains(this[0, 0].WorldCoords))
+				{
+					AddActToPool(new MoveToAct(), building.DoorWorldCoords);
+					return EThinkingResult.NORMAL;
+				}
+			}
+			AddActToPool(new WaitAct());
+
 			return EThinkingResult.NORMAL;
 		}
 

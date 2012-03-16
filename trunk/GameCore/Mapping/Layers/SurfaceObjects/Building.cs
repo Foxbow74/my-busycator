@@ -76,16 +76,14 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			var borders = direction.GetBorders().ToArray();
 
-			DoorCoords = doorCoords;
-			OutDoorPoints = new[] { nextPoint + borders[0].Key, nextPoint, nextPoint + borders[1].Key };
-			InDoorPoints = new[] { prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key };
+			DoorWorldCoords = _mapBlock.ToWorldCoords(doorCoords);
 
-			foreach (var point in OutDoorPoints)
+			OutDoorWorldCoords = new[] { nextPoint + borders[0].Key, nextPoint, nextPoint + borders[1].Key }.Select(_mapBlock.ToWorldCoords).ToArray();
+			InDoorWorldCoords = new[] { prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key }.Select(_mapBlock.ToWorldCoords).ToArray();
+
+			foreach (var point in OutDoorWorldCoords.Where(_point => MapBlock.Rect.Contains(_point)))
 			{
-				if (MapBlock.Rect.Contains(point))
-				{
-					_mapBlock.Map[point.X, point.Y] = _floor;
-				}
+				_mapBlock.Map[point.X, point.Y] = _floor;
 			}
 
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
@@ -94,17 +92,17 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			_mapBlock.AddObject(door, doorCoords);
 		}
 
-		public Point DoorCoords { get; private set; }
+		public Point DoorWorldCoords { get; private set; }
 
 		/// <summary>
 		/// координаты внешних точек, откуда можно открыть дверь
 		/// </summary>
-		public Point[] OutDoorPoints { get; private set; }
+		public Point[] OutDoorWorldCoords { get; private set; }
 
 		/// <summary>
 		/// координаты внешних точек, откуда можно открыть дверь
 		/// </summary>
-		public Point[] InDoorPoints { get; private set; }
+		public Point[] InDoorWorldCoords { get; private set; }
 		
 		public virtual bool IsFit(Room _room)
 		{
