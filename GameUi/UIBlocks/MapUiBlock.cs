@@ -64,11 +64,12 @@ namespace GameUi.UIBlocks
 					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
-					var lightness = lighted.Lightness();
+					
+					lighted = FColor.White;
 
 					var screenPoint = xy + ContentRct.LeftTop;
 
-					if (lightness > fogLightness || avatarCreenPoint==screenPoint)
+					if (lighted.Lightness() > fogLightness || avatarCreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
 						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));

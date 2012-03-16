@@ -149,35 +149,37 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public EActResults DoAct(Act _act)
+		public EActResults DoAct()
 		{
-			ActResult = _act.Do(this);
-			var price = Speed; 
+			var act = m_actPool.Dequeue();
+
+			using (new Profiler(act.Name))
+			{
+				ActResult = act.Do(this);	
+			}
+			
+			var price = 1; 
 			switch (ActResult)
 			{
 				case EActResults.NOTHING_HAPPENS:
-					price = Speed;
 					break;
 				case EActResults.DONE:
+					price = act.TakeTicks;
 					break;
 				case EActResults.FAIL:
-					price  = _act.TakeTicks* Speed * 2;
+					price  = act.TakeTicks * 2;
 					break;
 				case EActResults.QUICK_FAIL:
-					price  = _act.TakeTicks* Speed / 2;
+					price  = act.TakeTicks / 2;
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
+					AddActToPool(act);
 					return ActResult;
 			}
-			BusyTill = World.TheWorld.WorldTick + price;
+			BusyTill = World.TheWorld.WorldTick + price * Speed;
 			Turn++;
-			ActDone();
+			
 			return ActResult;
-		}
-
-		protected virtual void ActDone()
-		{
-			m_actPool.Dequeue();
 		}
 
 		#endregion

@@ -37,7 +37,7 @@ namespace GameCore.Acts.Movement
 		public override EActResults Do(Creature _creature)
 		{
 			var target = GetParameter<Point>().First();
-			var current = _creature[0, 0].WorldCoords;
+			var current = _creature[0,0].WorldCoords;
 			if (target == current)
 			{
 				return EActResults.NOTHING_HAPPENS;
@@ -47,7 +47,7 @@ namespace GameCore.Acts.Movement
 			if(_creature[delta].GetIsPassableBy(_creature)>0)
 			{
 				_creature.AddActToPool(new MoveAct(), delta);
-				_creature.AddActToPool(this, target);
+				_creature.AddActToPool(this);
 			}
 			return EActResults.NOTHING_HAPPENS;
 		}
