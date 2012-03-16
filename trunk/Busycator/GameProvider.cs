@@ -15,6 +15,7 @@ namespace Busycator
 
 		public GameProvider() : base(16, 16, 700, 500)
 		{
+			Title = "Busycator";
 			m_game = new TheGame(this);
 		}
 
@@ -47,7 +48,7 @@ namespace Busycator
 			if (!IsActive) return;
 
 			var avatar = World.TheWorld.Avatar;
-			Title = "Busycator FPS:" + (1 / _e.Time).ToString("0.") + " lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar[0,0].InBuilding;
+			Title = "Busycator lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar[0,0].InBuilding;
 			m_game.Update(KeyState);
 		}
 
@@ -79,7 +80,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider())
 					{
-						game.Run(30.0,30.0);
+						game.Run(0,40);
 					}
 				}
 				catch (Exception exception)

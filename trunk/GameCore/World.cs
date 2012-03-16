@@ -107,7 +107,6 @@ namespace GameCore
 					{
 						break;
 					}
-					//Debug.WriteLine(creature);
 
 					WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 
