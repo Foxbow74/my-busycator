@@ -14,18 +14,21 @@ namespace GameCore.Mapping
 		public const int SIZE = 32;
 		public readonly static Rct Rect = new Rct(0,0,SIZE,SIZE);
 
-		public MapBlock(Point _point)
+		public MapBlock(Point _blockId)
 		{
 			ConnectionPoints = new Dictionary<Point, Room>();
 			Rooms = new List<Room>();
 			Creatures = new List<Tuple<Creature, Point>>();
 			Objects = new List<Tuple<Thing, Point>>();
 
-			BlockId = _point;
+			WorldCoords = _blockId*SIZE;
+			BlockId = _blockId;
 			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
 			SeenCells = new uint[SIZE];
 		}
+
+		public Point WorldCoords { get; private set; }
 
 		public Point BlockId { get; private set; }
 
@@ -64,6 +67,11 @@ namespace GameCore.Mapping
 			}
 
 			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
+		}
+
+		private static Point GetWorldCoord(Point _blockId)
+		{
+			return _blockId * SIZE;
 		}
 
 		public static Point GetBlockId(Point _point)
@@ -130,6 +138,11 @@ namespace GameCore.Mapping
 		{
 			Rooms.Add(_room);
 			_room.AddedToBlock(this);
+		}
+
+		public Point ToWorldCoords(Point _point)
+		{
+			return WorldCoords + _point;
 		}
 	}
 }
