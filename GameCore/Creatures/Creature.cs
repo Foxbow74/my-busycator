@@ -157,26 +157,27 @@ namespace GameCore.Creatures
 			{
 				ActResult = act.Do(this);	
 			}
-			
-			var price = 1; 
+
+			var price = Speed; 
 			switch (ActResult)
 			{
 				case EActResults.NOTHING_HAPPENS:
+					price = 1;
 					break;
 				case EActResults.DONE:
-					price = act.TakeTicks;
+					price = act.TakeTicks * Speed;
 					break;
 				case EActResults.FAIL:
-					price  = act.TakeTicks * 2;
+					price = act.TakeTicks * 2 * Speed;
 					break;
 				case EActResults.QUICK_FAIL:
-					price  = act.TakeTicks / 2;
+					price = act.TakeTicks / 2 * Speed;
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
 					AddActToPool(act);
 					return ActResult;
 			}
-			BusyTill = World.TheWorld.WorldTick + price * Speed;
+			BusyTill = World.TheWorld.WorldTick + price;
 			Turn++;
 			
 			return ActResult;

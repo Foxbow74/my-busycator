@@ -14,7 +14,7 @@ namespace GameCore.Creatures
 		private readonly string m_name;
 
 		public Citizen(Surface _layer, Random _rnd)
-			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT)
+			: base(_layer, _rnd.Next(10) + 105, EIntellectGrades.INT)
 		{
 			m_name = _layer.GetNextCitizenName(Sex);
 		}
