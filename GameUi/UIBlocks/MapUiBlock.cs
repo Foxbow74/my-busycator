@@ -65,7 +65,7 @@ namespace GameUi.UIBlocks
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
 					
-					lighted = FColor.White;
+					//lighted = FColor.White;
 
 					var screenPoint = xy + ContentRct.LeftTop;
 
