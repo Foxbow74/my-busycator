@@ -86,8 +86,10 @@ namespace GameCore.Mapping
 
 		public void AddItem(Item _item)
 		{
-			m_mapBlock.AddObject(_item, InBlockCoords);
-			m_items.Add(_item);
+			if(m_mapBlock.AddObject(_item, InBlockCoords))
+			{
+				m_items.Add(_item);
+			}
 		}
 
 		public IEnumerable<Item> Items{get { return m_items; }}
