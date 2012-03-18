@@ -50,7 +50,7 @@ namespace GameCore.Acts.Items
 			var descriptor = descriptors[0];
 			if (descriptor == ThingDescriptor.Empty)
 			{
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
 
@@ -63,7 +63,7 @@ namespace GameCore.Acts.Items
 
 			if (!item.IsAllowToDrink(_creature))
 			{
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 
 			intelligent.RemoveFromBackpack(item);

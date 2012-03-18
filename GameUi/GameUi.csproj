@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="EAlignment.cs" />
     <Compile Include="EFonts.cs" />
+    <Compile Include="EMouseButton.cs" />
     <Compile Include="Frame.cs" />
     <Compile Include="AGame.cs" />
     <Compile Include="IDrawHelper.cs" />

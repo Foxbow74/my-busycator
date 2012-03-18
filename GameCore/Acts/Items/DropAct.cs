@@ -51,14 +51,14 @@ namespace GameCore.Acts.Items
 				{
 					_creature.AddActToPool(new DropAct(), thingDescriptor);
 				}
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 
 			var descriptor = descriptors[0];
 
 			if (descriptor == ThingDescriptor.Empty)
 			{
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 
 			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature)==descriptor.GetName(_creature)).Count();

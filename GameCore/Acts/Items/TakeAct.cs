@@ -47,14 +47,14 @@ namespace GameCore.Acts.Items
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "тут ничего нет."));
 				}
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 
 			var toTake = GetParameter<ThingDescriptor>().ToList();
 
 			if (toTake.Any(_thingDescriptor => _thingDescriptor == ThingDescriptor.Empty))
 			{
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 
 			if (toTake.Count == 0)
@@ -97,11 +97,9 @@ namespace GameCore.Acts.Items
 			{
 				foreach (var descr in toTake)
 				{
-					var act = new TakeAct();
-					act.AddParameter(GetParameter<Point>());
-					_creature.AddActToPool(act, descr);
+					_creature.AddActToPool(new TakeAct(), GetParameter<Point>(), descr);
 				}
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.ACT_REPLACED;
 			}
 
 			var descriptor = toTake[0];

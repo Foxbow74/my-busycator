@@ -19,6 +19,21 @@ namespace Busycator
 			m_game = new TheGame(this);
 		}
 
+		protected override void MouseButtonDown(Point _pnt, EMouseButton _button)
+		{
+			m_game.MouseButtonDown(_pnt, _button);
+		}
+
+		protected override void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+			m_game.MouseButtonUp(_pnt, _button);
+		}
+
+		protected override void MouseMove(Point _pnt)
+		{
+			m_game.MouseMove(_pnt);
+		}
+
 		protected override void OnLoad(EventArgs _e)
 		{
 			base.OnLoad(_e);
@@ -80,7 +95,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider())
 					{
-						game.Run(0,40);
+						game.Run(0,60);
 					}
 				}
 				catch (Exception exception)

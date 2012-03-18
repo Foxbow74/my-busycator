@@ -70,7 +70,7 @@ namespace GameCore.Acts.Interact
 				{
 					//если нечего закрывать
 					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
-					return EActResults.NOTHING_HAPPENS;
+					return EActResults.QUICK_FAIL;
 				}
 				if (coords.Count() > 1)
 				{

@@ -71,7 +71,7 @@ namespace GameCore.Acts.Interact
 				{
 					//если нечего открывать
 					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "открыть что?"));
-					return EActResults.NOTHING_HAPPENS;
+					return EActResults.QUICK_FAIL;
 				}
 				if (coords.Count() > 1)
 				{

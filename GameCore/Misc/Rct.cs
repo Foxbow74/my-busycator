@@ -119,5 +119,35 @@ namespace GameCore.Misc
 		{
 			return "Rct{" + LeftTop + " - " + RightBottom + "}";
 		}
+
+		public IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders()
+		{
+			var rect = Inflate(1,1);
+			for (var i = rect.Left; i < rect.Right; ++i)
+			{
+				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
+				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
+			}
+
+			for (var j = Top; j < Bottom; ++j)
+			{
+				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
+				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
+			}
+		}
+
+		public IEnumerable<Point> AllPointsExceptCorners()
+		{
+			var r = Inflate(0, -1);
+			foreach (var point in r.AllPoints)
+			{
+				yield return point;
+			}
+			for (var i = Left + 1; i <= Right - 1; ++i)
+			{
+				yield return new Point(i, Top);
+				yield return new Point(i, Bottom);
+			}
+		}
 	}
 }

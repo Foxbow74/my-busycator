@@ -10,7 +10,7 @@ namespace GameCore.Objects
 		{
 		}
 
-		public int Count { get; private set; }
+		public int Count { get; set; }
 
 		public override string Name
 		{
@@ -33,7 +33,7 @@ namespace GameCore.Objects
 
 		public override void Resolve(Creature _creature)
 		{
-			Count = GetStartCount(_creature);
+			if(Count==0)Count = GetStartCount(_creature);
 		}
 
 		public StackOfItems GetOne()

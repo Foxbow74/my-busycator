@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Movement
 {
@@ -11,7 +14,7 @@ namespace GameCore.Acts.Movement
 	{
 		protected override int TakeTicksOnSingleAction
 		{
-			get { throw new NotImplementedException(); }
+			get { return 100; }
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
@@ -40,16 +43,22 @@ namespace GameCore.Acts.Movement
 			var current = _creature[0,0].WorldCoords;
 			if (target == current)
 			{
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.QUICK_FAIL;
 			}
 			var nextPoint = current.GetLineToPoints(target).ToArray()[1];
 			var delta = nextPoint - current;
-			if(_creature[delta].GetIsPassableBy(_creature)>0)
+			var nextCell = _creature[delta];
+			if(nextCell.GetIsPassableBy(_creature)>0)
 			{
 				_creature.AddActToPool(new MoveAct(), delta);
-				_creature.AddActToPool(this);
+				return EActResults.ACT_REPLACED;
 			}
-			return EActResults.NOTHING_HAPPENS;
+			else if(nextCell.Furniture!=null && nextCell.Furniture.Is<Door>())
+			{
+				_creature.AddActToPool(new OpenAct(), delta);
+				return EActResults.ACT_REPLACED;
+			}
+			return EActResults.FAIL;
 		}
 	}
 }

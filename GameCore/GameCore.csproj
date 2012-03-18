@@ -50,6 +50,7 @@
     <Compile Include="Acts\Items\DropAct.cs" />
     <Compile Include="Acts\Movement\Ascend.cs" />
     <Compile Include="Acts\Movement\Descend.cs" />
+    <Compile Include="Acts\Movement\LeaveBuildingAct.cs" />
     <Compile Include="Acts\Movement\MoveAct.cs" />
     <Compile Include="Acts\Interact\OpenAct.cs" />
     <Compile Include="Acts\Movement\MoveToAct.cs" />
@@ -153,6 +154,8 @@
     <Compile Include="Objects\Weapons\Sword.cs" />
     <Compile Include="Objects\Weapons\Weapon.cs" />
     <Compile Include="Misc\Point.cs" />
+    <Compile Include="PathFinding\PathFinderNode.cs" />
+    <Compile Include="PathFinding\PriorityQueueB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Thing.cs" />
     <Compile Include="ETerrains.cs" />

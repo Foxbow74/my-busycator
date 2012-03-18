@@ -117,6 +117,14 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public void GenerateCityBlock(MapBlock _block, Random _rnd)
 		{
+			for (int i = 0; i < MapBlock.SIZE;++i )
+			{
+				if (_rnd.Next(2) == 0) _block.Map[0, i] = ETerrains.ROAD;
+				if (_rnd.Next(2) == 0) _block.Map[1, i] = ETerrains.ROAD;
+				if (_rnd.Next(2) == 0) _block.Map[i, 0] = ETerrains.ROAD;
+				if (_rnd.Next(2) == 0) _block.Map[i, 1] = ETerrains.ROAD;
+			}
+
 			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
 			{
 				_block.AddRoom(building.Room);
@@ -126,11 +134,11 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				{
 					if (m_already.Contains(citizen))
 					{
-						
+
 					}
 					Debug.WriteLine(citizen);
 					m_already.Add(citizen);
-					_block.AddCreature(citizen, building.Room.RoomRectangle.Center);	
+					_block.AddCreature(citizen, building.Room.RoomRectangle.Center);
 				}
 			}
 		}
