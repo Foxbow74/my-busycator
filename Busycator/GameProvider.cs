@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK;
 using OpenTKUi;
+using Point = GameCore.Misc.Point;
 
 namespace Busycator
 {
@@ -93,7 +94,7 @@ namespace Busycator
 			{
 				try
 				{
-					using (var game = new GameProvider())
+					using (var game = new GameProvider() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location) })
 					{
 						game.Run(0,60);
 					}
