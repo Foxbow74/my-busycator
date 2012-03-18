@@ -110,7 +110,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					return;
 			}
-			MessageManager.SendMessage(this, WorldMessage.Turn);
+			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
 		private void SelectTargetFromList()
@@ -165,13 +165,25 @@ namespace GameUi.UIBlocks
 
 		public override void MouseMove(Point _pnt)
 		{
+			SetPoint(_pnt);
+		}
+
+		private void SetPoint(Point _pnt)
+		{
 			m_targetPoint = _pnt - m_addPoint + ContentRct.LeftTop;
 			if (m_targetPoint.Lenght > m_maxDistance)
 			{
 				m_targetPoint *= m_maxDistance / m_targetPoint.Lenght;
 			}
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
-			//base.MouseMove(_pnt);
+		}
+
+		public override void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+			if (_button != EMouseButton.LEFT) return;
+
+			SetPoint(_pnt);
+			KeysPressed(ConsoleKey.T, EKeyModifiers.NONE);
 		}
 	}
 }

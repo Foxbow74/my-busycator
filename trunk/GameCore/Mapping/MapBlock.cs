@@ -52,7 +52,7 @@ namespace GameCore.Mapping
 			Objects.Remove(new Tuple<Thing, Point>(_item, _inBlockCoords));
 		}
 
-		public void AddObject(Thing _thing, Point _inBlockCoords)
+		public bool AddObject(Thing _thing, Point _inBlockCoords)
 		{
 			if (_thing is StackOfItems)
 			{
@@ -62,11 +62,12 @@ namespace GameCore.Mapping
 				if (stack != null)
 				{
 					stack.Add((StackOfItems) _thing);
-					return;
+					return false;
 				}
 			}
 
 			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
+			return true;
 		}
 
 		private static Point GetWorldCoord(Point _blockId)

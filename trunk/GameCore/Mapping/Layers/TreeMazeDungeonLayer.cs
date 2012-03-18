@@ -654,8 +654,6 @@ namespace GameCore.Mapping.Layers
 								if (!flag) continue;
 								if (way[0] != cp.Begin) way.Reverse();
 
-								Debug.WriteLine(points[0].Dir + " => " + points[1].Dir);
-
 								ConnectTwoRooms(cp.Room, candidate.Room, forbid, connectors, way1.ToArray());
 								toRemove.Add(candidate);
 								break;
