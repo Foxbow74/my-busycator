@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Objects;
 
 namespace GameCore.Acts
 {
-	public class WaitAct:Act
+	public class WaitAct:Act, ISpecial
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -15,7 +16,8 @@ namespace GameCore.Acts
 		{
 			get
 			{
-				yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.NumPad5, EKeyModifiers.NONE);
+				yield break;
+				//yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.NumPad5, EKeyModifiers.NONE);
 			}
 		}
 

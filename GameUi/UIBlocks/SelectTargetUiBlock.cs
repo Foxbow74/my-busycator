@@ -12,8 +12,8 @@ namespace GameUi.UIBlocks
 	internal class SelectTargetUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
-		private readonly Point m_addPoint;
-		private readonly Point m_center;
+		private Point m_addPoint;
+		private Point m_center;
 		private readonly int m_maxDistance;
 		private readonly TurnMessageUiBlock m_messages;
 		private readonly List<Point> m_targets = new List<Point>();
@@ -21,16 +21,18 @@ namespace GameUi.UIBlocks
 		private Point m_realTarget;
 		private Point m_targetPoint;
 
+		public override void Resize(Rct _newRct)
+		{
+			base.Resize(_newRct);
+			Rebuild();
+		}
+
 		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
 			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
 			m_maxDistance = _maxDistance;
 			m_act = _act;
-			m_targetPoint = Point.Zero;
-			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
-			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
-			
 			var points = new List<Point>();
 
 			for (var x = -_maxDistance; x < _maxDistance; ++x)
@@ -38,7 +40,7 @@ namespace GameUi.UIBlocks
 				for (var y = -_maxDistance; y < _maxDistance; ++y)
 				{
 					var point = new Point(x, y);
-					if(point.Lenght>_maxDistance) continue;
+					if (point.Lenght > _maxDistance) continue;
 
 					var liveCell = World.TheWorld.Avatar[point];
 					if (liveCell.Creature != null && !liveCell.Creature.IsAvatar)
@@ -49,6 +51,16 @@ namespace GameUi.UIBlocks
 			}
 
 			m_targets.AddRange(points.Where(_point => _point.Lenght < m_maxDistance).OrderBy(_point => _point.Lenght));
+
+			Rebuild();
+		}
+
+		private void Rebuild()
+		{
+			m_targetPoint = Point.Zero;
+			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
+			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
+			
 			SelectTargetFromList();
 		}
 
