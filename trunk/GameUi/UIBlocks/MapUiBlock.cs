@@ -20,6 +20,7 @@ namespace GameUi.UIBlocks
 			base.Resize(_newRct);
 			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRct.Width, ContentRct.Height));
 			World.TheWorld.LiveMap.Reset();
+			m_dPoint = World.TheWorld.LiveMap.GetData();
 		}
 
 		public override void  Dispose()
@@ -33,24 +34,28 @@ namespace GameUi.UIBlocks
 			switch (_message.Type)
 			{
 				case WorldMessage.EType.TURN:
+					//m_dPoint = World.TheWorld.LiveMap.GetData();
+					Redraw();
+					break;
+				case WorldMessage.EType.JUST_REDRAW:
 					Redraw();
 					break;
 			}
 		}
+
+		private Point m_dPoint;
 
 		private void Redraw()
 		{
 			var avatarCreenPoint = new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop;
 
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
-
+			m_dPoint = World.TheWorld.LiveMap.GetData();
 			var fogColor = FColor.FromArgb(255, 150, 150, 150);
 			var fogLightness = fogColor.Lightness();
 
 			var worldLayer = World.TheWorld.Avatar.Layer;
 			var ambient = worldLayer.Ambient;
-
-			var dPoint = World.TheWorld.LiveMap.GetData();
 
 			var width = ContentRct.Width;
 			var height = ContentRct.Height;
@@ -60,12 +65,12 @@ namespace GameUi.UIBlocks
 				for (var y = 0; y < height; ++y)
 				{
 					var xy = new Point(x, y);
-					var pnt = LiveMap.WrapCellCoords(xy + dPoint);
+					var pnt = LiveMap.WrapCellCoords(xy + m_dPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
-					
-					//lighted = FColor.White;
+
+					//lighted.Add(FColor.Gray);// FColor.White;
 
 					var screenPoint = xy + ContentRct.LeftTop;
 

@@ -62,7 +62,7 @@ namespace OpenTKUi
 						TileInfo.FogTexCoords = tile.Texcoords;
 					}
 
-					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width+1, dstRect.Height+1), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width+1, srcRect.Height+1), GraphicsUnit.Pixel);
+					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 				}
 			}
 			m_img = new Image(bmp, true);

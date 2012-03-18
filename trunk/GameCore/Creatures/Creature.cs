@@ -161,8 +161,8 @@ namespace GameCore.Creatures
 			var price = Speed; 
 			switch (ActResult)
 			{
-				case EActResults.NOTHING_HAPPENS:
-					price = 1;
+				case EActResults.ACT_REPLACED:
+					price = 0;
 					break;
 				case EActResults.DONE:
 					price = act.TakeTicks * Speed;
@@ -174,11 +174,15 @@ namespace GameCore.Creatures
 					price = act.TakeTicks / 2 * Speed;
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
+					if(!IsAvatar)
+					{
+						throw new ApplicationException("Только действия аватара могут потребовать дополнительные параметры");
+					}
 					AddActToPool(act);
 					return ActResult;
 			}
 			BusyTill = World.TheWorld.WorldTick + price;
-			Turn++;
+			Turn += price>0?1:0;
 			
 			return ActResult;
 		}
@@ -214,7 +218,7 @@ namespace GameCore.Creatures
 
 		public virtual EActResults Atack(Creature _victim)
 		{
-			return EActResults.NOTHING_HAPPENS;
+			return EActResults.ACT_REPLACED;
 		}
 
 		public override EMaterial AllowedMaterials

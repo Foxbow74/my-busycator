@@ -16,6 +16,15 @@ namespace ResourceEditor
 			Y = _y;
 		}
 
+		public void Update(ETextureSet _set, int _x, int _y, FColor _color)
+		{
+			X = _x;
+			Y = _y;
+			Rct = new Rct(_x * Size, _y * Size, Size, Size);
+			Set = _set;
+			Color = _color;
+		}
+
 		public override void Draw(Point _point, FColor _color, EDirections _direction)
 		{
 			throw new NotImplementedException();

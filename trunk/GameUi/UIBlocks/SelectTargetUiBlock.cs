@@ -150,5 +150,16 @@ namespace GameUi.UIBlocks
 			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, FColor.Gold);
 			m_realTarget = pnt;
 		}
+
+		public override void MouseMove(Point _pnt)
+		{
+			m_targetPoint = _pnt - m_addPoint + ContentRct.LeftTop;
+			if (m_targetPoint.Lenght > m_maxDistance)
+			{
+				m_targetPoint *= m_maxDistance / m_targetPoint.Lenght;
+			}
+			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+			//base.MouseMove(_pnt);
+		}
 	}
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -212,10 +211,11 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock)
+			if (m_uiBlocks.Peek() == m_mainUiBlock && m_needRedraws==0)
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
+			m_pressed.Clear();
 		}
 
 		public void Draw()
@@ -225,6 +225,37 @@ namespace GameUi
 				uiBlock.DrawBackground();
 				uiBlock.DrawContent();
 				uiBlock.DrawFrame();
+			}
+			m_needRedraws = 0;
+		}
+
+		public void MouseMove(Point _pnt)
+		{
+			var uiBlock = m_uiBlocks.Peek();
+			var pnt = _pnt - uiBlock.Rct.LeftTop;
+			if (uiBlock.Rct.Contains(_pnt))
+			{
+				uiBlock.MouseMove(pnt);
+			}
+		}
+
+		public void MouseButtonDown(Point _pnt, EMouseButton _button)
+		{
+			var uiBlock = m_uiBlocks.Peek();
+			var pnt = _pnt - uiBlock.Rct.LeftTop;
+			if (uiBlock.Rct.Contains(pnt))
+			{
+				uiBlock.MouseButtonDown(pnt, _button);
+			}
+		}
+
+		public void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+			var uiBlock = m_uiBlocks.Peek();
+			var pnt = _pnt - uiBlock.Rct.LeftTop;
+			if (uiBlock.Rct.Contains(pnt))
+			{
+				uiBlock.MouseButtonUp(pnt, _button);
 			}
 		}
 	}

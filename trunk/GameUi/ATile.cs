@@ -6,7 +6,7 @@ namespace GameUi
 	public abstract class ATile
 	{
 		public static int Size = 16;
-		public readonly ETextureSet Set;
+		public ETextureSet Set;
 
 		protected ATile(ETextureSet _set, int _x, int _y, FColor _color)
 		{
@@ -21,7 +21,7 @@ namespace GameUi
 		
 		public FColor Color { get; set; }
 
-		public Rct Rct { get; private set; }
+		public Rct Rct { get; protected set; }
 
 		public bool IsFogTile { get; set; }
 

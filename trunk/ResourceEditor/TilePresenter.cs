@@ -78,9 +78,7 @@ namespace ResourceEditor
 
 		public void Set(ETextureSet _set, int _x, int _y)
 		{
-			var tl = Tile.Tile;
-			Tile = new Tile(_set, _x, _y, Tile.Color) {Tile = tl};
-			TileHelper.AllTiles[Tile.Tile] = Tile;
+			Tile.Update(_set, _x, _y, Tile.Color);
 			Rebuild();
 		}
 	}

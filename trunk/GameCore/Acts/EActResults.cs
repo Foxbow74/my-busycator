@@ -5,7 +5,7 @@ namespace GameCore.Acts
 		/// <summary>
 		/// 	происходит, если действие невозможно, например съесть еду которой нет
 		/// </summary>
-		NOTHING_HAPPENS,
+		ACT_REPLACED,
 		/// <summary>
 		/// 	выполнено успешно
 		/// </summary>

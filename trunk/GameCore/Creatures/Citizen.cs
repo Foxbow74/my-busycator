@@ -14,7 +14,7 @@ namespace GameCore.Creatures
 		private readonly string m_name;
 
 		public Citizen(Surface _layer, Random _rnd)
-			: base(_layer, _rnd.Next(10) + 105, EIntellectGrades.INT)
+			: base(_layer, 50, EIntellectGrades.INT)// _rnd.Next(10) + 95
 		{
 			m_name = _layer.GetNextCitizenName(Sex);
 		}
@@ -38,24 +38,9 @@ namespace GameCore.Creatures
 			var building = this[0, 0].InBuilding;
 			if(building!=null)
 			{
-				var coords = this[0, 0].WorldCoords;
-				var onDoor = building.DoorWorldCoords == coords; //позиция совпадает с дверью
-
-				if(!onDoor && !building.InDoorWorldCoords.Contains(coords))
-				{
-					//Debug.WriteLine(IntelligentName + " идет к порожку");
-					AddActToPool(new MoveToAct(), building.DoorWorldCoords);
-					return EThinkingResult.NORMAL;
-				}
-				else if(!onDoor)
-				{
-					//Debug.WriteLine(IntelligentName + " открывает дверь");
-					AddActToPool(new OpenAct(), building.DoorWorldCoords - coords);
-					AddActToPool(new MoveToAct(), building.DoorWorldCoords);
-					return EThinkingResult.NORMAL;
-				}
+				AddActToPool(new LeaveBuildingAct());
+				return EThinkingResult.NORMAL;
 			}
-			//Debug.WriteLine(IntelligentName + " ждет");
 			AddActToPool(new WaitAct());
 
 			return EThinkingResult.NORMAL;

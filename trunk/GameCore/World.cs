@@ -110,22 +110,29 @@ namespace GameCore
 
 					WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 
-					var actResult = creature.DoAct();
+					EActResults actResult;
 
-					switch (actResult)
+					do
 					{
-						case EActResults.NEED_ADDITIONAL_PARAMETERS:
-							return true;
-						case EActResults.NOTHING_HAPPENS:
-							break;
-						case EActResults.DONE:
-						case EActResults.FAIL:
-						case EActResults.QUICK_FAIL:
-							result = true;
-							break;
-						default:
-							throw new ArgumentOutOfRangeException();
-					}
+						//Debug.Write(((Intelligent)creature).IntelligentName + "\t" + creature.NextAct.Name + "\t");
+						actResult = creature.DoAct();
+						//Debug.WriteLine(actResult);
+
+						switch (actResult)
+						{
+							case EActResults.NEED_ADDITIONAL_PARAMETERS:
+								return true;
+							case EActResults.ACT_REPLACED:
+								break;
+							case EActResults.DONE:
+							case EActResults.FAIL:
+							case EActResults.QUICK_FAIL:
+								result = true;
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+					} while (actResult == EActResults.ACT_REPLACED);
 				}
 			}
 			if (result || _forceTurn)

@@ -36,47 +36,7 @@ namespace GameCore.Misc
 			return (T) _d;
 		}
 
-		public static IEnumerable<Point> AllPoints(this Rct _rct)
-		{
-			for (var i = _rct.Left; i < _rct.Right; ++i)
-			{
-				for (var j = _rct.Top; j < _rct.Bottom; ++j)
-				{
-					yield return new Point(i, j);
-				}
-			}
-		}
-
-		public static IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders(this Rct _rct)
-		{
-			var rect = new Rct(_rct.Left - 1, _rct.Top - 1, _rct.Width + 2, _rct.Height + 2);
-			for (var i = rect.Left; i < rect.Right; ++i)
-			{
-				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
-				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
-			}
-
-			for (var j = _rct.Top; j < _rct.Bottom; ++j)
-			{
-				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
-				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
-			}
-		}
-
-		public static IEnumerable<Point> AllPointsExceptCorners(this Rct _rct)
-		{
-			var r = _rct.Inflate(0, -1);
-			foreach (var point in r.AllPoints)
-			{
-				yield return point;
-			}
-			for (var i = _rct.Left + 1; i <= _rct.Right - 1; ++i)
-			{
-				yield return new Point(i,_rct.Top);
-				yield return new Point(i,_rct.Bottom);
-			}
-		}
-
+		
 		public static EDirections Opposite(this EDirections _direction)
 		{
 			switch (_direction)
@@ -110,7 +70,6 @@ namespace GameCore.Misc
 					throw new ArgumentOutOfRangeException("_direction");
 			}
 		}
-
 
 		public static Point GetDelta(this EDirections _direction)
 		{

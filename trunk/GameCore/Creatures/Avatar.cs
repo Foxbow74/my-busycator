@@ -16,7 +16,7 @@ namespace GameCore.Creatures
 		{
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow(ThingHelper.GetMaterial<MappleMaterial>()));
-			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()));
+			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()){Count = 100});
 			Equip(EEquipmentPlaces.TOOL, new Torch(ThingHelper.GetMaterial<OakMaterial>()));
 		}
 

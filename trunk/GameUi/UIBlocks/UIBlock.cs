@@ -101,6 +101,21 @@ namespace GameUi.UIBlocks
 		public virtual void DrawContent()
 		{
 		}
+
+		public virtual void MouseMove(Point _pnt)
+		{
+			
+		}
+
+		public virtual void MouseButtonDown(Point _pnt, EMouseButton _button)
+		{
+			
+		}
+
+		public virtual void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+			
+		}
 	}
 
 	internal class OpenUIBlockMessage : Message

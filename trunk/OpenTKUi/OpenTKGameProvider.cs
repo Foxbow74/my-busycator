@@ -27,7 +27,68 @@ namespace OpenTKUi
 			Keyboard.KeyDown += KeyboardKeyDown;
 			Keyboard.KeyUp += KeyboardKeyUp;
 			OpenTKTile.GameProvider = this;
+
+			Mouse.Move += MouseMoveInternal;
+			Mouse.ButtonUp += MouseButtonUpInternal;
+			Mouse.ButtonDown += MouseButtonDownInternal;
 		}
+
+		#region mouse handling
+
+		private void MouseButtonUpInternal(object _sender, MouseButtonEventArgs _e)
+		{
+			EMouseButton btn = EMouseButton.LEFT;
+			switch (_e.Button)
+			{
+				case MouseButton.Left:
+					btn = EMouseButton.LEFT;
+					break;
+				case MouseButton.Middle:
+					btn = EMouseButton.MIDDLE;
+					break;
+				case MouseButton.Right:
+					btn = EMouseButton.RIGHT;
+					break;
+			}
+			MouseButtonUp(new Point(_e.X / TileSizeX, _e.Y / TileSizeY), btn);
+		}
+
+		private void MouseButtonDownInternal(object _sender, MouseButtonEventArgs _e)
+		{
+			EMouseButton btn = EMouseButton.LEFT;
+			switch (_e.Button)
+			{
+				case MouseButton.Left:
+					btn = EMouseButton.LEFT;
+					break;
+				case MouseButton.Middle:
+					btn = EMouseButton.MIDDLE;
+					break;
+				case MouseButton.Right:
+					btn = EMouseButton.RIGHT;
+					break;
+			}
+			MouseButtonDown(new Point(_e.X / TileSizeX, _e.Y / TileSizeY), btn);
+		}
+
+		private void MouseMoveInternal(object _sender, MouseMoveEventArgs _e)
+		{
+			MouseMove(new Point(_e.X / TileSizeX, _e.Y / TileSizeY));
+		}
+
+		protected virtual void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+		}
+
+		protected virtual void MouseButtonDown(Point _pnt, EMouseButton _button)
+		{
+		}
+
+		protected virtual void MouseMove(Point _pnt)
+		{
+		}
+
+		#endregion
 
 		#region IGameProvider Members
 

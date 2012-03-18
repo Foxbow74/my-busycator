@@ -81,11 +81,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			OutDoorWorldCoords = new[] { nextPoint + borders[0].Key, nextPoint, nextPoint + borders[1].Key }.Select(_mapBlock.ToWorldCoords).ToArray();
 			InDoorWorldCoords = new[] { prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key }.Select(_mapBlock.ToWorldCoords).ToArray();
 
-			foreach (var point in OutDoorWorldCoords.Where(_point => MapBlock.Rect.Contains(_point)))
-			{
-				_mapBlock.Map[point.X, point.Y] = _floor;
-			}
-
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
 			var fakedFurniture = ETiles.DOOR.GetThing(ThingHelper.GetMaterial<OakMaterial>());
 			var door = fakedFurniture.ResolveFake(World.TheWorld.Avatar);

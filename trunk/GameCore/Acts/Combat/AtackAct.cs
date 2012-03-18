@@ -45,7 +45,7 @@ namespace GameCore.Acts.Combat
 			if (victim == null)
 			{
 				_creature.AddActToPool(new MoveAct(), coords - _creature.LiveCoords);
-				return EActResults.NOTHING_HAPPENS;
+				return EActResults.ACT_REPLACED;
 			}
 			return _creature.Atack(victim);
 		}
