@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Mapping.Layers;
@@ -142,7 +143,8 @@ namespace GameCore.Mapping
 					{
 						var lightSource = tuple.Item1;
 						var point = liveCellZero + tuple.Item2;
-						if ((lightSource.Radius + AVATAR_SIGHT) >= point.GetDistTill(centerLiveCell))
+
+						if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0,0].WorldCoords.GetDistTill(Cells[point.X, point.Y].WorldCoords))
 						{
 							lightSource.LightCells(this, point);
 						}

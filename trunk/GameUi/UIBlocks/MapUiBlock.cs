@@ -34,7 +34,7 @@ namespace GameUi.UIBlocks
 			switch (_message.Type)
 			{
 				case WorldMessage.EType.TURN:
-					//m_dPoint = World.TheWorld.LiveMap.GetData();
+					m_dPoint = World.TheWorld.LiveMap.GetData();
 					Redraw();
 					break;
 				case WorldMessage.EType.JUST_REDRAW:
@@ -50,7 +50,6 @@ namespace GameUi.UIBlocks
 			var avatarCreenPoint = new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop;
 
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
-			m_dPoint = World.TheWorld.LiveMap.GetData();
 			var fogColor = FColor.FromArgb(255, 150, 150, 150);
 			var fogLightness = fogColor.Lightness();
 

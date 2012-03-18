@@ -22,7 +22,7 @@ namespace GameCore
 		                                                  	{
 		                                                  		ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow,
 		                                                  		ConsoleKey.RightArrow, ConsoleKey.NumPad1, ConsoleKey.NumPad2,
-		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, 
+		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5, 
 		                                                  		ConsoleKey.NumPad6, ConsoleKey.NumPad7, ConsoleKey.NumPad8,
 		                                                  		ConsoleKey.NumPad9, ConsoleKey.Home
 		                                                  		, ConsoleKey.PageUp,
