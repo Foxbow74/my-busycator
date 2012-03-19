@@ -4,7 +4,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.System
 {
-	internal class QuitAct : Act
+	public class QuitAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{

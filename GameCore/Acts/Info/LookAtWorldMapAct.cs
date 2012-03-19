@@ -4,7 +4,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.Info
 {
-	internal class LookAtWorldMapAct : Act
+	public class LookAtWorldMapAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -13,7 +13,7 @@ namespace GameCore.Acts.Info
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
 		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.M, EKeyModifiers.NONE); }
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.M, EKeyModifiers.CTRL); }
 		}
 
 		public override string Name

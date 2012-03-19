@@ -13,6 +13,9 @@ namespace GameCore
 {
 	public class World
 	{
+		public static readonly FColor FogColor = FColor.FromArgb(255, 150, 150, 150);
+		public static readonly float FogLightness = FogColor.Lightness();
+
 		private const int WORLD_SEED = 1;
 
 		/// <summary>
@@ -112,6 +115,10 @@ namespace GameCore
 
 					EActResults actResult;
 
+					if(creature.IsAvatar)
+					{
+						MessageManager.SendMessage(this, WorldMessage.AvatarBeginsTurn);
+					}
 					do
 					{
 						//Debug.Write(((Intelligent)creature).IntelligentName + "\t" + creature.NextAct.Name + "\t");

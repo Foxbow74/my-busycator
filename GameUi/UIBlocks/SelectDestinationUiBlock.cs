@@ -5,18 +5,15 @@ using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
-using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks
 {
-	class SelectTargetUiBlock : UiBlockWithText
+	class SelectDestinationUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
 		private Point m_addPoint;
 		private Point m_center;
-		private readonly int m_maxDistance;
 		private readonly TurnMessageUiBlock m_messages;
-		private readonly List<Point> m_targets = new List<Point>();
 		private int m_currentTarget;
 		private Point m_realTarget;
 		private Point m_targetPoint;
@@ -27,11 +24,10 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
-		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
+		public SelectDestinationUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
 			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
-			m_maxDistance = _maxDistance;
 			m_act = _act;
 			var points = new List<Point>();
 
@@ -50,8 +46,6 @@ namespace GameUi.UIBlocks
 				}
 			}
 
-			m_targets.AddRange(points.Where(_point => _point.Lenght < m_maxDistance).OrderBy(_point => _point.Lenght));
-
 			Rebuild();
 		}
 
@@ -60,8 +54,6 @@ namespace GameUi.UIBlocks
 			m_targetPoint = Point.Zero;
 			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
 			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
-			
-			SelectTargetFromList();
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -73,10 +65,6 @@ namespace GameUi.UIBlocks
 				if (ContentRct.Contains(newPoint))
 				{
 					m_targetPoint += dPoint;
-					if (m_targetPoint.Lenght > m_maxDistance)
-					{
-						m_targetPoint *= m_maxDistance/m_targetPoint.Lenght;
-					}
 				}
 			}
 			switch (_key)
@@ -85,24 +73,6 @@ namespace GameUi.UIBlocks
 				case ConsoleKey.Z:
 					m_act.IsCancelled = true;
 					CloseTopBlock();
-					break;
-				case ConsoleKey.OemPlus:
-					if (_modifiers != EKeyModifiers.SHIFT) return;
-					m_currentTarget++;
-					SelectTargetFromList();
-					break;
-				case ConsoleKey.OemMinus:
-					if (_modifiers != EKeyModifiers.SHIFT) return;
-					m_currentTarget--;
-					SelectTargetFromList();
-					break;
-				case ConsoleKey.Add:
-					m_currentTarget++;
-					SelectTargetFromList();
-					break;
-				case ConsoleKey.Subtract:
-					m_currentTarget--;
-					SelectTargetFromList();
 					break;
 				case ConsoleKey.Enter:
 				case ConsoleKey.T:
@@ -113,13 +83,6 @@ namespace GameUi.UIBlocks
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
-		private void SelectTargetFromList()
-		{
-			if (m_targets.Count == 0) return;
-			m_currentTarget = (m_currentTarget + m_targets.Count)%m_targets.Count;
-			m_targetPoint = m_targets[m_currentTarget];
-		}
-
 		public override void DrawBackground()
 		{
 		}
@@ -127,11 +90,6 @@ namespace GameUi.UIBlocks
 		public override void DrawContent()
 		{
 			var strings = new List<string> {"[Enter|T] цель", "[z|Esc] - выход"};
-			if (m_targets.Count > 0)
-			{
-				strings.Insert(1, "[-] - предыдущая цель");
-				strings.Insert(1, "[+] - следующая цель");
-			}
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
@@ -145,11 +103,6 @@ namespace GameUi.UIBlocks
 				var point = lineToPoints[index];
 				var liveCell = World.TheWorld.Avatar[point];
 
-				if (point.Lenght >= m_maxDistance || (!liveCell.IsCanShootThrough && liveCell.Creature == null))
-				{
-					color =FColor.Red;
-					done = true;
-				}
 				if (!done) pnt = point;
 				if (liveCell.Creature != null)
 				{
@@ -171,10 +124,6 @@ namespace GameUi.UIBlocks
 		private void SetPoint(Point _pnt)
 		{
 			m_targetPoint = _pnt - m_addPoint + ContentRct.LeftTop;
-			if (m_targetPoint.Lenght > m_maxDistance)
-			{
-				m_targetPoint *= m_maxDistance / m_targetPoint.Lenght;
-			}
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 

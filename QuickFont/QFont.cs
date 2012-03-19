@@ -510,7 +510,6 @@ namespace QuickFont
 
         private SizeF PrintOrMeasure(string text, QFontAlignment alignment, bool measureOnly)
         {
-
             float maxXpos = float.MinValue;
             float minXPos = float.MaxValue;
 

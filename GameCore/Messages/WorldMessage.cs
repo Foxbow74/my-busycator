@@ -7,7 +7,7 @@
 		public enum EType
 		{
 			TURN,
-			AVATAR_TURN,
+			AVATAR_BEGINS_TURN,
 			AVATAR_MOVE,
 			AVATAR_CHANGE_LAYER,
 			JUST_REDRAW
@@ -19,7 +19,7 @@
 		{
 			Turn = new WorldMessage(EType.TURN);
 			JustRedraw = new WorldMessage(EType.JUST_REDRAW);
-			AvatarTurn = new WorldMessage(EType.AVATAR_TURN);
+			AvatarBeginsTurn = new WorldMessage(EType.AVATAR_BEGINS_TURN);
 			AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
 			AvatarChangeLayer = new WorldMessage(EType.AVATAR_CHANGE_LAYER);
 		}
@@ -31,7 +31,7 @@
 
 		public static WorldMessage Turn { get; private set; }
 		public static WorldMessage JustRedraw { get; private set; }
-		public static WorldMessage AvatarTurn { get; private set; }
+		public static WorldMessage AvatarBeginsTurn { get; private set; }
 		public static WorldMessage AvatarMove { get; private set; }
 		public static WorldMessage AvatarChangeLayer { get; private set; }
 

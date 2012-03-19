@@ -74,6 +74,10 @@ namespace GameCore.Acts.Combat
 				intelligent.TakeOff(EEquipmentPlaces.MISSILES);
 				intelligent.RemoveFromBackpack(item);
 			}
+			if(dPoint==Point.Zero)
+			{
+				return EActResults.QUICK_FAIL;
+			}
 			new Missile(_creature.Layer, _creature.LiveCoords, 2, item, _creature.LiveCoords + dPoint);
 			return EActResults.DONE;
 		}

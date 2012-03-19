@@ -4,7 +4,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Acts.Info
 {
-	internal class InventoryAct : Act
+	public class InventoryAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{

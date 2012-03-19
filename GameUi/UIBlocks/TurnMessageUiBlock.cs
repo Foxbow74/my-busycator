@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -32,7 +33,7 @@ namespace GameUi.UIBlocks
 
 		private void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
-			if (_message.Type == WorldMessage.EType.AVATAR_TURN)
+			if (_message.Type == WorldMessage.EType.AVATAR_BEGINS_TURN)
 			{
 				m_turnMessages.Clear();
 				m_lines.Clear();
