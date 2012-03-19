@@ -15,7 +15,7 @@ namespace GameCore
 		LIGHT_SOURCE,
 		TORCH,
 
-		[Tiles(0.9f)]CABINET,
+		[Tiles(0.9f)] CABINET,
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,

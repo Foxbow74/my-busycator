@@ -1,5 +1,4 @@
-﻿using System;
-using GameCore.Acts;
+﻿using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;

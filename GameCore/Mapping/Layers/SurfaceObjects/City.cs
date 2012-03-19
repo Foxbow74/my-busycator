@@ -134,7 +134,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				{
 					if (m_already.Contains(citizen))
 					{
-
+						throw new ApplicationException();
 					}
 					Debug.WriteLine(citizen);
 					m_already.Add(citizen);

@@ -97,8 +97,9 @@ namespace GameCore.Acts.Movement
 						var furniture = cell.Furniture;
 						if (furniture != null && furniture.Is<Door>() && furniture.IsClosed(cell, _creature))
 						{
-							_creature.AddActToPool(new OpenAct(), delta);
-							return EActResults.DONE;
+							_creature.InsertActToPool(this);
+							_creature.InsertActToPool(new OpenAct(), delta);
+							return EActResults.ACT_REPLACED;
 						}
 						else
 						{

@@ -40,6 +40,22 @@ namespace GameCore.Acts.Movement
 		public override EActResults Do(Creature _creature)
 		{
 			var target = GetParameter<Point>().FirstOrDefault();
+			var way = GetParameter<IEnumerable<Point>>().FirstOrDefault();
+
+			if(way!=null)
+			{
+				var pnt = way.First();
+				foreach (var point in way)
+				{
+					var dpoint = point - pnt;
+					if(dpoint!=Point.Zero)
+					{
+						_creature.AddActToPool(new MoveAct(), dpoint);
+					}
+					pnt = point;
+				}
+				return EActResults.ACT_REPLACED;
+			}
 
 			if(target==null)
 			{

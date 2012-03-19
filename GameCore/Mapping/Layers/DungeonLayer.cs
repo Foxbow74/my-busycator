@@ -30,7 +30,7 @@ namespace GameCore.Mapping.Layers
 
 		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
 		{
-			return _liveCell.TerrainAttribute.IsPassable * 0.8f;
+			return _liveCell.TerrainAttribute.IsPassable==0?0.5f:1f;
 		}
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces

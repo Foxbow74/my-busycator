@@ -5,7 +5,6 @@ using GameCore.Acts;
 using GameCore.CreatureRoles;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
-using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -119,17 +118,17 @@ namespace GameCore.Creatures
 
 		#region Act functionality
 
-		private readonly Queue<Act> m_actPool = new Queue<Act>();
+		private readonly List<Act> m_actPool = new List<Act>();
 
 		public Act NextAct
 		{
 			get
 			{
-				while (m_actPool.Count > 0 && m_actPool.Peek().IsCancelled)
+				while (m_actPool.Count > 0 && m_actPool[0].IsCancelled)
 				{
-					m_actPool.Dequeue();
+					m_actPool.RemoveAt(0);
 				}
-				return m_actPool.Count == 0 ? null : m_actPool.Peek();
+				return m_actPool.Count == 0 ? null : m_actPool[0];
 			}
 		}
 
@@ -142,7 +141,16 @@ namespace GameCore.Creatures
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{
-			m_actPool.Enqueue(_act);
+			m_actPool.Add(_act);
+			foreach (var o in _params)
+			{
+				_act.AddParameter(o.GetType(), o);
+			}
+		}
+
+		public void InsertActToPool(Act _act, params object[] _params)
+		{
+			m_actPool.Insert(0, _act);
 			foreach (var o in _params)
 			{
 				_act.AddParameter(o.GetType(), o);
@@ -151,7 +159,8 @@ namespace GameCore.Creatures
 
 		public EActResults DoAct()
 		{
-			var act = m_actPool.Dequeue();
+			var act = m_actPool[0];
+			m_actPool.RemoveAt(0);
 
 			using (new Profiler(act.Name))
 			{
@@ -169,9 +178,11 @@ namespace GameCore.Creatures
 					break;
 				case EActResults.FAIL:
 					price = act.TakeTicks * 2 * Speed;
+					m_actPool.Clear();
 					break;
 				case EActResults.QUICK_FAIL:
 					price = act.TakeTicks / 2 * Speed;
+					m_actPool.Clear();
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
 					if(!IsAvatar)

@@ -139,7 +139,7 @@ namespace GameCore.PathFinding
 						if (m_newLocationX >= m_gridX || m_newLocationY >= m_gridY)
 							continue;
 
-						var b = World.TheWorld.LiveMap.GetIsPassable(new Point(m_newLocationX, m_newLocationY), _creature);
+						var b = World.TheWorld.LiveMap.GetPfIsPassable(new Point(m_newLocationX, m_newLocationY), _creature);
 
 						// Unbreakeable?
 						if (b == 0)
@@ -247,7 +247,8 @@ namespace GameCore.PathFinding
 					}
 
 					result.Add(fNode.Point);
-
+					result.Reverse();
+					
 					return result;
 				}
 				return null;
