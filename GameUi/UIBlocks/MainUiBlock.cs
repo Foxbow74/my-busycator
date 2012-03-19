@@ -2,6 +2,7 @@
 using System.Linq;
 using GameCore;
 using GameCore.Acts.Info;
+using GameCore.Acts.Movement;
 using GameCore.Acts.System;
 using GameCore.Messages;
 using GameCore.Misc;

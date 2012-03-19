@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
+using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
@@ -38,7 +39,14 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature)
 		{
-			var target = GetParameter<Point>().First();
+			var target = GetParameter<Point>().FirstOrDefault();
+
+			if(target==null)
+			{
+				MessageManager.SendMessage(this, new AskDestinationMessage(this));
+				return EActResults.NEED_ADDITIONAL_PARAMETERS;
+			}
+
 			var current = _creature[0,0].WorldCoords;
 			if (target == current)
 			{

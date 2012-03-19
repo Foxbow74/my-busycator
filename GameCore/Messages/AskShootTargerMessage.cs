@@ -11,4 +11,12 @@ namespace GameCore.Messages
 
 		public int MaxDistance { get; private set; }
 	}
+
+	public class AskDestinationMessage : AskMessage
+	{
+		public AskDestinationMessage(Act _act)
+			: base(_act)
+		{
+		}
+	}
 }

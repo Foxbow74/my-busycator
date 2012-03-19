@@ -67,7 +67,7 @@ namespace GameUi
 			{
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
 
-				uiBlock.MouseMove(m_lastMousePoint);
+				uiBlock.MouseMove(uiBlock.ContentRct.Center);
 
 				m_uiBlocks.Push(uiBlock);
 				m_needRedraws = 4;
@@ -123,6 +123,14 @@ namespace GameUi
 				                                                                          m_mainUiBlock.Map.Rct,
 				                                                                          askShootTargerMessage.MaxDistance,
 				                                                                          askShootTargerMessage.Act)));
+			}
+			else if (_message is AskDestinationMessage)
+			{
+				var askDestinationMessage = (AskDestinationMessage)_message;
+				MessageManager.SendMessage(this,
+										   new OpenUIBlockMessage(new SelectDestinationUiBlock(m_mainUiBlock.Messages,
+																						  m_mainUiBlock.Map.Rct,
+																						  askDestinationMessage.Act)));
 			}
 		}
 
@@ -217,7 +225,7 @@ namespace GameUi
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
-			m_pressed.Clear();
+			//m_pressed.Clear();
 		}
 
 		public void Draw()
@@ -231,13 +239,10 @@ namespace GameUi
 			m_needRedraws = 0;
 		}
 
-		private Point m_lastMousePoint;
-
 		public void MouseMove(Point _pnt)
 		{
 			var uiBlock = m_uiBlocks.Peek();
 			var pnt = _pnt - uiBlock.Rct.LeftTop;
-			m_lastMousePoint = pnt;
 			if (uiBlock.Rct.Contains(_pnt))
 			{
 				uiBlock.MouseMove(pnt);

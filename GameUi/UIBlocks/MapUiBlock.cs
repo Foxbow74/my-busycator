@@ -57,8 +57,8 @@ namespace GameUi.UIBlocks
 
 		private void Redraw()
 		{
-			List<Point> path = null;
-			Point pathDelta = Point.Zero;
+			//List<Point> path = null;
+			//var pathDelta = Point.Zero;
 
 			var halfScreen = new Point(ContentRct.Width, ContentRct.Height) / 2;
 			var avatarScreenPoint = halfScreen + ContentRct.LeftTop;
@@ -111,30 +111,30 @@ namespace GameUi.UIBlocks
 						DrawHelper.FogTile(screenPoint);
 					}
 
-					if(xy==m_mouse)
-					{
-						var opc = liveCell.OnPathMapCoords;
-						path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, opc, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
-						pathDelta = screenPoint - opc;
-					}
+					//if (xy == m_mouse)
+					//{
+					//    var opc = liveCell.PathMapCoords;
+					//    path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, opc, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
+					//    pathDelta = screenPoint - opc;
+					//}
 				}
 			}
-			if(path!=null)
-			{
-				for (var index = 0; index < path.Count; index++)
-				{
-					var pathFinderNode = path[path.Count - index - 1];
-					var pnt = pathFinderNode + pathDelta;
-					if(index==path.Count-1)
-					{
-						ETiles.TARGET_CROSS.GetTile().Draw(pnt);
-					}
-					else
-					{
-						ETiles.TARGET_DOT.GetTile().Draw(pnt);
-					}
-				}
-			}
+			//if (path != null)
+			//{
+			//    for (var index = 0; index < path.Count; index++)
+			//    {
+			//        var pathFinderNode = path[path.Count - index - 1];
+			//        var pnt = pathFinderNode + pathDelta;
+			//        if (index == path.Count - 1)
+			//        {
+			//            ETiles.TARGET_CROSS.GetTile().Draw(pnt);
+			//        }
+			//        else
+			//        {
+			//            ETiles.TARGET_DOT.GetTile().Draw(pnt);
+			//        }
+			//    }
+			//}
 			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
 		}
 
