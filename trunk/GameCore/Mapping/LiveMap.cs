@@ -121,7 +121,7 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public byte GetIsPassable(Point _pathMapCoords, Creature _creature)
+		public byte GetPfIsPassable(Point _pathMapCoords, Creature _creature)
 		{
 			var mapBlockId = MapBlock.GetBlockId(_pathMapCoords) + World.TheWorld.AvatarBlockId - ActiveQpoint;
 			var liveCellCoords =  mapBlockId.Wrap(m_sizeInBlocks, m_sizeInBlocks)*MapBlock.SIZE + MapBlock.GetInBlockCoords(_pathMapCoords);
@@ -131,7 +131,7 @@ namespace GameCore.Mapping
 			{
 				if(liveMapCell.Visibility.Lightness()>World.FogLightness)
 				{
-					return (byte)(liveMapCell.GetIsPassableBy(_creature) == 0 ? 0 : 1);
+					return (byte)(liveMapCell.GetPfIsPassableBy(_creature) == 0 ? 0 : 1);
 				}
 				if(liveMapCell.IsSeenBefore)
 				{

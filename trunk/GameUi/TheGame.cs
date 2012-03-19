@@ -67,7 +67,7 @@ namespace GameUi
 			{
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
 
-				uiBlock.MouseMove(uiBlock.ContentRct.Center);
+				uiBlock.MouseMove(uiBlock.Rct.Center - uiBlock.Rct.LeftTop);
 
 				m_uiBlocks.Push(uiBlock);
 				m_needRedraws = 4;

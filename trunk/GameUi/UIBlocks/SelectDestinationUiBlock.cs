@@ -16,7 +16,7 @@ namespace GameUi.UIBlocks
 		private Point m_avatarScreenPoint;
 		private Point m_halfScreen;
 		private readonly TurnMessageUiBlock m_messages;
-		private Point m_realTarget;
+		private List<Point> m_path = new List<Point>();
 		private Point m_targetPoint;
 
 		public override void Resize(Rct _newRct)
@@ -60,8 +60,11 @@ namespace GameUi.UIBlocks
 					break;
 				case ConsoleKey.Enter:
 				case ConsoleKey.M:
-					m_act.AddParameter(m_realTarget);
-					CloseTopBlock();
+					if (m_path.Count > 0)
+					{
+						m_act.AddParameter(m_path);
+						CloseTopBlock();
+					}
 					return;
 			}
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
@@ -82,15 +85,16 @@ namespace GameUi.UIBlocks
 			var avatarPathMapCoords = World.TheWorld.Avatar[0, 0].PathMapCoords;
 			var targetPathMapCoords = avatarPathMapCoords + m_targetPoint;
 			var path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, targetPathMapCoords, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
+			m_path.Clear();
 			if (path != null)
 			{
 				foreach (var point in path)
 				{
 					pnt = point - avatarPathMapCoords;
+					m_path.Add(World.TheWorld.Avatar[pnt].WorldCoords);
 					if (pnt.Lenght < 1) continue;
 					ETiles.TARGET_DOT.GetTile().Draw(pnt + m_avatarScreenPoint, color);
 				}
-				m_realTarget = World.TheWorld.Avatar[m_targetPoint].WorldCoords;
 			}
 			ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
 		}
@@ -111,7 +115,7 @@ namespace GameUi.UIBlocks
 			if (_button != EMouseButton.LEFT) return;
 
 			SetPoint(_pnt);
-			KeysPressed(ConsoleKey.T, EKeyModifiers.NONE);
+			KeysPressed(ConsoleKey.M, EKeyModifiers.NONE);
 		}
 	}
 }

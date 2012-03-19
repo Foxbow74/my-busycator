@@ -273,6 +273,25 @@ namespace GameCore.Mapping
 			return TerrainAttribute.IsPassable;
 		}
 
+
+		public float GetPfIsPassableBy(Creature _creature)
+		{
+			if (Creature != null) return 0f;
+			if (Furniture != null)
+			{
+				if (Furniture.Is<Door>() && Furniture.IsClosed(this, _creature))
+				{
+					return 0.99f;
+				}
+			}
+			if (_creature is Missile)
+			{
+				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
+			}
+			return TerrainAttribute.IsPassable;
+		}
+
+
 		public void RemoveItem(Item _item)
 		{
 			if(!m_items.Remove(_item))
