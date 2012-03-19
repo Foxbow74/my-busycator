@@ -303,7 +303,7 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public Point OnPathMapCoords
+		public Point PathMapCoords
 		{
 			get
 			{

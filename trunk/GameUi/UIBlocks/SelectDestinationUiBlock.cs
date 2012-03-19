@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.PathFinding;
 
 namespace GameUi.UIBlocks
 {
 	class SelectDestinationUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
-		private Point m_addPoint;
-		private Point m_center;
+		private Point m_avatarScreenPoint;
+		private Point m_halfScreen;
 		private readonly TurnMessageUiBlock m_messages;
-		private int m_currentTarget;
 		private Point m_realTarget;
 		private Point m_targetPoint;
 
@@ -24,36 +25,19 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
-		public SelectDestinationUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
+		public SelectDestinationUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, Act _act)
 			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
 			m_act = _act;
-			var points = new List<Point>();
-
-			for (var x = -_maxDistance; x < _maxDistance; ++x)
-			{
-				for (var y = -_maxDistance; y < _maxDistance; ++y)
-				{
-					var point = new Point(x, y);
-					if (point.Lenght > _maxDistance) continue;
-
-					var liveCell = World.TheWorld.Avatar[point];
-					if (liveCell.Creature != null && !liveCell.Creature.IsAvatar)
-					{
-						points.Add(point);
-					}
-				}
-			}
-
 			Rebuild();
 		}
 
 		private void Rebuild()
 		{
 			m_targetPoint = Point.Zero;
-			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
-			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
+			m_halfScreen = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
+			m_avatarScreenPoint = m_halfScreen + ContentRct.LeftTop;
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -61,7 +45,7 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-				var newPoint = m_targetPoint + dPoint + m_addPoint;
+				var newPoint = m_targetPoint + dPoint + m_avatarScreenPoint;
 				if (ContentRct.Contains(newPoint))
 				{
 					m_targetPoint += dPoint;
@@ -75,7 +59,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					break;
 				case ConsoleKey.Enter:
-				case ConsoleKey.T:
+				case ConsoleKey.M:
 					m_act.AddParameter(m_realTarget);
 					CloseTopBlock();
 					return;
@@ -89,31 +73,26 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> {"[Enter|T] цель", "[z|Esc] - выход"};
+			var strings = new List<string> {"[Enter|M] идти", "[z|Esc] - выход"};
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
 			var pnt = Point.Zero;
-			var done = false;
 			var color = FColor.Gold;
-			var lineToPoints = Point.Zero.GetLineToPoints(m_targetPoint).ToArray();
-
-			for (var index = 1; index < lineToPoints.Length; index++)
+			var avatarPathMapCoords = World.TheWorld.Avatar[0, 0].PathMapCoords;
+			var targetPathMapCoords = avatarPathMapCoords + m_targetPoint;
+			var path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, targetPathMapCoords, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
+			if (path != null)
 			{
-				var point = lineToPoints[index];
-				var liveCell = World.TheWorld.Avatar[point];
-
-				if (!done) pnt = point;
-				if (liveCell.Creature != null)
+				foreach (var point in path)
 				{
-					color = FColor.Red;
-					done = true;
+					pnt = point - avatarPathMapCoords;
+					if (pnt.Lenght < 1) continue;
+					ETiles.TARGET_DOT.GetTile().Draw(pnt + m_avatarScreenPoint, color);
 				}
-				if (point.Lenght < 1) continue;
-				ETiles.TARGET_DOT.GetTile().Draw(point + m_addPoint, color);
+				m_realTarget = World.TheWorld.Avatar[m_targetPoint].WorldCoords;
 			}
-			ETiles.TARGET_CROSS.GetTile().Draw(pnt + m_addPoint, FColor.Gold);
-			m_realTarget = pnt;
+			ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
 		}
 
 		public override void MouseMove(Point _pnt)
@@ -123,7 +102,7 @@ namespace GameUi.UIBlocks
 
 		private void SetPoint(Point _pnt)
 		{
-			m_targetPoint = _pnt - m_addPoint + ContentRct.LeftTop;
+			m_targetPoint = _pnt - m_avatarScreenPoint + ContentRct.LeftTop;
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 

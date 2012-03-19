@@ -79,7 +79,7 @@ namespace GameCore.PathFinding
 		{
 			lock (this)
 			{
-				var start = World.TheWorld.Avatar[0, 0].OnPathMapCoords;
+				var start = World.TheWorld.Avatar[0, 0].PathMapCoords;
 
 				// Is faster if we don't clear the matrix, just assign different values for open and close and ignore the rest
 				// I could have user Array.Clear() but using unsafe code is faster, no much but it is.
