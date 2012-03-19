@@ -5,6 +5,7 @@ using GameCore.Creatures;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.PathFinding;
 using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping
@@ -13,13 +14,14 @@ namespace GameCore.Mapping
 	{
 		private readonly LosManager m_visibilityManager;
 
+		public PathFinder PathFinder { get; private set; }
 
 		//1 - active lights (visible for player)
 		//2 - active creatures
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
 		public const int AVATAR_SIGHT = 25;
-		public readonly Point ACTIVE_QPOINT = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
+		public static readonly Point ActiveQpoint = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
 
@@ -77,6 +79,8 @@ namespace GameCore.Mapping
 				var id = m_blockIds[index];
 				Blocks[id.X, id.Y] = new LiveMapBlock(this, id, index);
 			}
+
+			PathFinder = new PathFinder(SizeInCells);
 		}
 
 		private void LayerChanged()
@@ -100,19 +104,43 @@ namespace GameCore.Mapping
 			using (new Profiler())
 			{
 				var layer = World.TheWorld.Avatar.Layer;
-				var d = (ACTIVE_QPOINT - CenterLiveBlock);
+				var d = (ActiveQpoint - CenterLiveBlock);
 				foreach (var blockId in m_blockIds)
 				{
-					var edelta = (blockId + d).Wrap(m_sizeInBlocks, m_sizeInBlocks) - ACTIVE_QPOINT;
+					var edelta = (blockId + d).Wrap(m_sizeInBlocks, m_sizeInBlocks) - ActiveQpoint;
 					var liveMapBlock = Blocks[blockId.X, blockId.Y];
 					if (liveMapBlock.MapBlock == null)
 					{
 						var mapBlockId = World.TheWorld.AvatarBlockId + edelta;
-						liveMapBlock.SetMapBlock(layer[mapBlockId]);
+						var mapBlock = layer[mapBlockId];
+						liveMapBlock.SetMapBlock(mapBlock);
 					}
+
 					liveMapBlock.IsBorder = edelta.QLenght >= ACTIVE_QRADIUS;
 				}
 			}
+		}
+
+		public byte GetIsPassable(Point _pathMapCoords, Creature _creature)
+		{
+			var mapBlockId = MapBlock.GetBlockId(_pathMapCoords) + World.TheWorld.AvatarBlockId - ActiveQpoint;
+			var liveCellCoords =  mapBlockId.Wrap(m_sizeInBlocks, m_sizeInBlocks)*MapBlock.SIZE + MapBlock.GetInBlockCoords(_pathMapCoords);
+			var liveMapCell = Cells[liveCellCoords.X, liveCellCoords.Y];
+
+			if(_creature.IsAvatar)
+			{
+				if(liveMapCell.Visibility.Lightness()>World.FogLightness)
+				{
+					return (byte)(liveMapCell.GetIsPassableBy(_creature) == 0 ? 0 : 1);
+				}
+				if(liveMapCell.IsSeenBefore)
+				{
+					return (byte)(liveMapCell.TerrainAttribute.IsPassable == 0 ? 0 : 1);
+				}
+				return 0;
+			}
+			
+			return (byte)(liveMapCell.GetIsPassableBy(_creature)==0?0:1);
 		}
 		
 		public Point GetData()
@@ -146,10 +174,6 @@ namespace GameCore.Mapping
 						if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0,0].WorldCoords.GetDistTill(Cells[point.X, point.Y].WorldCoords))
 						{
 							lightSource.LightCells(this, point);
-						}
-						else
-						{
-
 						}
 					}
 				}

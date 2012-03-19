@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
@@ -10,7 +9,7 @@ using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Movement
 {
-	public class MoveToAct : Act, ISpecial
+	public class MoveToAct : Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -19,7 +18,7 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
 		{
-			get { throw new NotImplementedException(); }
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.M, EKeyModifiers.NONE); }
 		}
 
 		public override string Name

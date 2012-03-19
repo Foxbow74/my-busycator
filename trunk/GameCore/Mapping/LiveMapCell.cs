@@ -302,5 +302,16 @@ namespace GameCore.Mapping
 				return building;
 			}
 		}
+
+		public Point OnPathMapCoords
+		{
+			get
+			{
+				var blId = MapBlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint;
+				var pxy = blId * MapBlock.SIZE + InBlockCoords;
+				return pxy;
+
+			}
+		}
 	}
 }

@@ -68,6 +68,11 @@ namespace GameCore.Mapping
 			}
 		}
 
+		public LiveMapCell this[int _x, int _y]
+		{
+			get { return m_liveMap.Cells[m_liveCellZero.X + _x, m_liveCellZero.Y + _y]; }
+		}
+
 		private void Fill()
 		{
 			var rnd = new Random(MapBlock.RandomSeed);

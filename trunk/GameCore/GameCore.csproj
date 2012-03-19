@@ -154,6 +154,7 @@
     <Compile Include="Objects\Weapons\Sword.cs" />
     <Compile Include="Objects\Weapons\Weapon.cs" />
     <Compile Include="Misc\Point.cs" />
+    <Compile Include="PathFinding\PathFinder.cs" />
     <Compile Include="PathFinding\PathFinderNode.cs" />
     <Compile Include="PathFinding\PriorityQueueB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,18 +1,30 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.PathFinding;
 
 namespace GameUi.UIBlocks
 {
 	internal class MapUiBlock : UIBlock
 	{
+		private Point m_dPoint;
+		private Point m_mouse;
+
 		public MapUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Black)
 		{
 			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRct.Width, ContentRct.Height));
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
+		}
+
+		public override void MouseMove(Point _pnt)
+		{
+			base.MouseMove(_pnt);
+			m_mouse = _pnt;
+			Redraw();
 		}
 
 		public override void Resize(Rct _newRct)
@@ -43,15 +55,15 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		private Point m_dPoint;
-
 		private void Redraw()
 		{
-			var avatarCreenPoint = new Point(ContentRct.Width, ContentRct.Height) / 2 + ContentRct.LeftTop;
+			List<Point> path = null;
+			Point pathDelta = Point.Zero;
+
+			var halfScreen = new Point(ContentRct.Width, ContentRct.Height) / 2;
+			var avatarScreenPoint = halfScreen + ContentRct.LeftTop;
 
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
-			var fogColor = FColor.FromArgb(255, 150, 150, 150);
-			var fogLightness = fogColor.Lightness();
 
 			var worldLayer = World.TheWorld.Avatar.Layer;
 			var ambient = worldLayer.Ambient;
@@ -64,16 +76,15 @@ namespace GameUi.UIBlocks
 				for (var y = 0; y < height; ++y)
 				{
 					var xy = new Point(x, y);
-					var pnt = LiveMap.WrapCellCoords(xy + m_dPoint);
-					var liveCell = World.TheWorld.LiveMap.Cells[pnt.X, pnt.Y];
+
+					var liveCellCoords = LiveMap.WrapCellCoords(xy + m_dPoint);
+					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
 
 					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
-
-					//lighted = FColor.White;
-
 					var screenPoint = xy + ContentRct.LeftTop;
 
-					if (lighted.Lightness() > fogLightness || avatarCreenPoint == screenPoint)
+					var lightness = lighted.Lightness();
+					if (lightness > World.FogLightness || avatarScreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
 						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
@@ -88,19 +99,43 @@ namespace GameUi.UIBlocks
 					}
 					else if (liveCell.IsSeenBefore)
 					{
-						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
-						terrainTile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
+
+						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
+						terrainTile.Draw(screenPoint, World.FogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
 
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(screenPoint, fogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), tileInfoProvider.Direction);
+							tile.Draw(screenPoint, World.FogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), tileInfoProvider.Direction);
 						}
 						DrawHelper.FogTile(screenPoint);
 					}
+
+					if(xy==m_mouse)
+					{
+						var opc = liveCell.OnPathMapCoords;
+						path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, opc, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
+						pathDelta = screenPoint - opc;
+					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarCreenPoint, FColor.White);
+			if(path!=null)
+			{
+				for (var index = 0; index < path.Count; index++)
+				{
+					var pathFinderNode = path[path.Count - index - 1];
+					var pnt = pathFinderNode + pathDelta;
+					if(index==path.Count-1)
+					{
+						ETiles.TARGET_CROSS.GetTile().Draw(pnt);
+					}
+					else
+					{
+						ETiles.TARGET_DOT.GetTile().Draw(pnt);
+					}
+				}
+			}
+			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
 		}
 
 		public override void DrawFrame()

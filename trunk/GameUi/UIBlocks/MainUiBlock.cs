@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq;
 using GameCore;
+using GameCore.Acts.Info;
+using GameCore.Acts.System;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameUi.UIBlocks.Help;
@@ -51,25 +54,26 @@ namespace GameUi.UIBlocks
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
-			if (_key == ConsoleKey.Q && _modifiers == EKeyModifiers.CTRL)
+			var tuple = new Tuple<ConsoleKey, EKeyModifiers>(_key, _modifiers);
+			if (new QuitAct().ConsoleKeys.Contains(tuple))
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new ConfirmQuitBlock()));
 				return;
 			}
 
-			if (_key == ConsoleKey.I)
+			if (new InventoryAct().ConsoleKeys.Contains(tuple))
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new EquipmentUiBlock(Rct)));
 				return;
 			}
 
-			if (_key == ConsoleKey.M)
+			if (new LookAtWorldMapAct().ConsoleKeys.Contains(tuple))
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(Rct)));
 				return;
 			}
 
-			if (_key == ConsoleKey.Oem2 && _modifiers == EKeyModifiers.SHIFT)
+			if (new HelpAct().ConsoleKeys.Contains(tuple))
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rct)));
 				return;
@@ -96,6 +100,48 @@ namespace GameUi.UIBlocks
 			m_stats.DrawFrame();
 			m_messages.DrawFrame();
 			base.DrawFrame();
+		}
+
+		public override void MouseMove(Point _pnt)
+		{
+			base.MouseMove(_pnt);
+
+			foreach (var uiBlock in new[]{m_stats, m_messages, m_map})
+			{
+				if(uiBlock.ContentRct.Contains(_pnt))
+				{
+					uiBlock.MouseMove(_pnt - uiBlock.ContentRct.LeftTop);
+					break;
+				}
+			}
+		}
+
+		public override void MouseButtonDown(Point _pnt, EMouseButton _button)
+		{
+			base.MouseButtonDown(_pnt, _button);
+
+			foreach (var uiBlock in new[] { m_stats, m_messages, m_map })
+			{
+				if (uiBlock.ContentRct.Contains(_pnt))
+				{
+					uiBlock.MouseButtonDown(_pnt - uiBlock.ContentRct.LeftTop, _button);
+					break;
+				}
+			}
+		}
+
+		public override void MouseButtonUp(Point _pnt, EMouseButton _button)
+		{
+			base.MouseButtonUp(_pnt, _button);
+
+			foreach (var uiBlock in new[] { m_stats, m_messages, m_map })
+			{
+				if (uiBlock.ContentRct.Contains(_pnt))
+				{
+					uiBlock.MouseButtonUp(_pnt - uiBlock.ContentRct.LeftTop, _button);
+					break;
+				}
+			}
 		}
 	}
 }
