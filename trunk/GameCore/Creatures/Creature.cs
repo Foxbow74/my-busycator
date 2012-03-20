@@ -17,8 +17,6 @@ namespace GameCore.Creatures
 
 		private static int m_n;
 
-		protected static Random Rnd = new Random(1);
-
 		private Point m_liveCoords;
 		private WorldLayer m_layer;
 
@@ -235,6 +233,11 @@ namespace GameCore.Creatures
 		public override EMaterial AllowedMaterials
 		{
 			get { return EMaterial.FLASH; }
+		}
+
+		public void ClearActPool()
+		{
+			m_actPool.Clear();
 		}
 	}
 

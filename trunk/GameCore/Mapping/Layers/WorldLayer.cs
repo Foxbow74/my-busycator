@@ -14,12 +14,17 @@ namespace GameCore.Mapping.Layers
 		protected WorldLayer()
 		{
 			Blocks = new Dictionary<Point, MapBlock>();
+			FogColor =  FColor.FromArgb(255, 60, 60, 60);
+			FogLightness = FogColor.Lightness();
 		}
 
 		public virtual float GetFogColorMultiplier(LiveMapCell _liveCell)
 		{
-			return 0.5f;
+			return _liveCell.FogColorMultiplier;
 		}
+
+		public FColor FogColor { get; protected set; }
+		public float FogLightness { get; protected set; }
 
 		public MapBlock this[Point _blockId]
 		{

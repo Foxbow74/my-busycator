@@ -20,7 +20,7 @@ namespace GameCore.Mapping
 		//2 - active creatures
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
-		public const int AVATAR_SIGHT = 25;
+		public const int AVATAR_SIGHT = 15;
 		public static readonly Point ActiveQpoint = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
@@ -38,12 +38,14 @@ namespace GameCore.Mapping
 		{
 			get
 			{
+				var i = 1;
 				Creature first = World.TheWorld.Avatar;
 				foreach (var block in Blocks)
 				{
 					if (block.IsBorder) continue;
 					foreach (var creature in block.Creatures)
 					{
+						i++;
 						if (first.BusyTill > creature.BusyTill)
 						{
 							first = creature;
@@ -83,8 +85,12 @@ namespace GameCore.Mapping
 			PathFinder = new PathFinder(SizeInCells);
 		}
 
-		private void LayerChanged()
+		private void AvatarLayerChanged(WorldLayer _oldLayer)
 		{
+			foreach (var mapBlock in _oldLayer.Blocks.Values)
+			{
+				mapBlock.AvatarLeftLayer();
+			}
 			Reset();
 		}
 
@@ -118,29 +124,42 @@ namespace GameCore.Mapping
 
 					liveMapBlock.IsBorder = edelta.QLenght >= ACTIVE_QRADIUS;
 				}
+				PathFinder.Clear();
 			}
 		}
 
 		public byte GetPfIsPassable(Point _pathMapCoords, Creature _creature)
 		{
-			var mapBlockId = MapBlock.GetBlockId(_pathMapCoords) + World.TheWorld.AvatarBlockId - ActiveQpoint;
-			var liveCellCoords =  mapBlockId.Wrap(m_sizeInBlocks, m_sizeInBlocks)*MapBlock.SIZE + MapBlock.GetInBlockCoords(_pathMapCoords);
-			var liveMapCell = Cells[liveCellCoords.X, liveCellCoords.Y];
+			var delta = _pathMapCoords - _creature[0, 0].PathMapCoords;
+			var liveMapCell = _creature[delta];
+			
+			if(liveMapCell.PathMapCoords!=_pathMapCoords)
+			{
+				throw new ApplicationException();
+			}
 
+			var result = 0f;
 			if(_creature.IsAvatar)
 			{
-				if(liveMapCell.Visibility.Lightness()>World.FogLightness)
+				if(liveMapCell.Visibility.Lightness()>World.TheWorld.Avatar.Layer.FogLightness)
 				{
-					return (byte)(liveMapCell.GetPfIsPassableBy(_creature) == 0 ? 0 : 1);
+					result = liveMapCell.GetPfIsPassableBy(_creature);
 				}
-				if(liveMapCell.IsSeenBefore)
+				else if(liveMapCell.IsSeenBefore)
 				{
-					return (byte)(liveMapCell.TerrainAttribute.IsPassable == 0 ? 0 : 1);
+					result = liveMapCell.TerrainAttribute.IsPassable;
 				}
-				return 0;
+				else
+				{
+					result = 0;
+				}
 			}
-			
-			return (byte)(liveMapCell.GetIsPassableBy(_creature)==0?0:1);
+			else
+			{
+				result = liveMapCell.GetPfIsPassableBy(_creature);
+			}
+			if (result == 0) return 0;
+			return (byte)(255 - result * 254);
 		}
 		
 		public Point GetData()
@@ -198,7 +217,7 @@ namespace GameCore.Mapping
 			if(_creature.IsAvatar)
 			{
 				var coords = _creature.LiveCoords;
-				LayerChanged();
+				AvatarLayerChanged(_oldLayer);
 				_creature.LiveCoords = coords;
 				MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 			}

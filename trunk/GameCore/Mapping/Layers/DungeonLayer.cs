@@ -26,11 +26,14 @@ namespace GameCore.Mapping.Layers
 			{
 				block.AddObject(new StairUp(_enterFromLayer, ThingHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
 			}
+
+			FogColor = FColor.FromArgb(255, 100, 100, 100);
+			FogLightness = FogColor.Lightness();
 		}
 
 		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
 		{
-			return _liveCell.TerrainAttribute.IsPassable==0?0.5f:1f;
+			return _liveCell.DungeonFogColorMultiplier;
 		}
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;

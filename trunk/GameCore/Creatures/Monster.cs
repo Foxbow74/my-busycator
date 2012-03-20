@@ -27,7 +27,7 @@ namespace GameCore.Creatures
 
 		public override EThinkingResult Thinking()
 		{
-			AddActToPool(new MoveAct(), new Point(Rnd.Next(3) - 1, Rnd.Next(3) - 1));
+			AddActToPool(new MoveAct(), new Point(World.Rnd.Next(3) - 1, World.Rnd.Next(3) - 1));
 			return EThinkingResult.NORMAL;
 		}
 	}

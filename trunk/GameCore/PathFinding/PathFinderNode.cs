@@ -1,5 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using GameCore.Misc;
+﻿using GameCore.Misc;
 
 namespace GameCore.PathFinding
 {
@@ -30,22 +29,4 @@ namespace GameCore.PathFinding
 			return X + ";" + Y;
 		}
 	}
-
-	#region Structs
-
-	[StructLayout(LayoutKind.Sequential, Pack = 1)]
-	internal struct PathFinderNodeFast
-	{
-		#region Variables Declaration
-
-		public int F; // f = gone + heuristic
-		public int G;
-		public ushort PX; // Parent
-		public ushort PY;
-		public byte Status;
-
-		#endregion
-	}
-
-	#endregion
 }

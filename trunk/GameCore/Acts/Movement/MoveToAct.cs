@@ -5,13 +5,27 @@ using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
 using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Movement
 {
 	public class MoveToAct : Act
 	{
+		public MoveToAct(){}
+
+		public MoveToAct(Creature _creature, IEnumerable<Point> _pathFinderPath)
+		{
+
+			AddParameter(GetMoveToPath(_creature, _pathFinderPath));
+		}
+
+		public static IEnumerable<Point> GetMoveToPath(Creature _creature, IEnumerable<Point> _pathFinderPath)
+		{
+			var currPoint = _creature[0, 0].PathMapCoords;
+			return _pathFinderPath.Select(_point => _point - currPoint);
+		}
+
+
 		protected override int TakeTicksOnSingleAction
 		{
 			get { return 100; }
@@ -48,7 +62,7 @@ namespace GameCore.Acts.Movement
 				foreach (var point in way)
 				{
 					var dpoint = point - pnt;
-					if(dpoint!=Point.Zero)
+					if (dpoint != Point.Zero)
 					{
 						_creature.AddActToPool(new MoveAct(), dpoint);
 					}

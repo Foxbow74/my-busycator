@@ -10,7 +10,7 @@ namespace GameCore.Acts.Movement
 	{
 		protected override int TakeTicksOnSingleAction
 		{
-			get { return 0; }
+			get { return 100; }
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys

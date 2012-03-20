@@ -221,7 +221,7 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock && m_needRedraws==0)
+			if (m_uiBlocks.Peek() == m_mainUiBlock)// && m_needRedraws==0)
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}

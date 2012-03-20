@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.PathFinding;
 
 namespace GameUi.UIBlocks
 {
@@ -57,9 +55,6 @@ namespace GameUi.UIBlocks
 
 		private void Redraw()
 		{
-			//List<Point> path = null;
-			//var pathDelta = Point.Zero;
-
 			var halfScreen = new Point(ContentRct.Width, ContentRct.Height) / 2;
 			var avatarScreenPoint = halfScreen + ContentRct.LeftTop;
 
@@ -80,61 +75,49 @@ namespace GameUi.UIBlocks
 					var liveCellCoords = LiveMap.WrapCellCoords(xy + m_dPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
 
-					var lighted = liveCell.Lighted.Screen(ambient).Multiply(liveCell.Visibility);
-					var screenPoint = xy + ContentRct.LeftTop;
 
+					var visibility = liveCell.Visibility;
+
+					if(visibility.A>0)
+					{
+						visibility.UpdateAlfa(visibility.A + 0.2f);
+					}
+
+					var lighted = liveCell.Lighted.Screen(ambient).Multiply(visibility);
+					var screenPoint = xy + ContentRct.LeftTop;
 					var lightness = lighted.Lightness();
-					if (lightness > World.FogLightness || avatarScreenPoint == screenPoint)
+					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
 						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
-						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp());
+						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(lighted).Clamp().UpdateAlfa(visibility.A));
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp();
+							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
 							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
 						}
 					}
 					else if (liveCell.IsSeenBefore)
 					{
+						var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell); 
+						
+						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
+						var fColor = worldLayer.FogColor.Multiply(fogColorMultiplier);
+						//if(fColor.Lightness()<0.1f) continue;
 
-						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
-						terrainTile.Draw(screenPoint, World.FogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)));
+						terrainTile.Draw(screenPoint, fColor);
 
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(screenPoint, World.FogColor.Multiply(worldLayer.GetFogColorMultiplier(liveCell)), tileInfoProvider.Direction);
+							tile.Draw(screenPoint, fColor, tileInfoProvider.Direction);
 						}
 						DrawHelper.FogTile(screenPoint);
 					}
-
-					//if (xy == m_mouse)
-					//{
-					//    var opc = liveCell.PathMapCoords;
-					//    path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, opc, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
-					//    pathDelta = screenPoint - opc;
-					//}
 				}
 			}
-			//if (path != null)
-			//{
-			//    for (var index = 0; index < path.Count; index++)
-			//    {
-			//        var pathFinderNode = path[path.Count - index - 1];
-			//        var pnt = pathFinderNode + pathDelta;
-			//        if (index == path.Count - 1)
-			//        {
-			//            ETiles.TARGET_CROSS.GetTile().Draw(pnt);
-			//        }
-			//        else
-			//        {
-			//            ETiles.TARGET_DOT.GetTile().Draw(pnt);
-			//        }
-			//    }
-			//}
 			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
 		}
 

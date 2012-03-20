@@ -51,12 +51,10 @@ namespace GameCore.Mapping.Layers
 			{
 				if (m_worldMap == null)
 				{
-					var rnd = new Random(World.WorldSeed);
-
-					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, rnd);
+					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, World.Rnd);
 					m_worldMap = m_worldMapGenerator.Generate();
 
-					City = new City(this, rnd);
+					City = new City(this, World.Rnd);
 				}
 				return m_worldMap;
 			}
@@ -77,10 +75,10 @@ namespace GameCore.Mapping.Layers
 			var check = File.ReadAllText(_filename);
 		}
 
-		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
-		{
-			return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
-		}
+		//public override float GetFogColorMultiplier(LiveMapCell _liveCell)
+		//{
+		//    return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
+		//}
 
 		public int WorldMapSize
 		{

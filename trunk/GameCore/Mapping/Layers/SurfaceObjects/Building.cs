@@ -23,11 +23,10 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public virtual void Fill(MapBlock _block)
 		{
 			var mapBlock = _block;
-			var rnd = new Random(mapBlock.RandomSeed);
 			var roomRectangle = Room.RoomRectangle;
 
-			var wall = Walls.ToArray().RandomItem(rnd);
-			var floor = Floors.ToArray().RandomItem(rnd);
+			var wall = Walls.ToArray().RandomItem(World.Rnd);
+			var floor = Floors.ToArray().RandomItem(World.Rnd);
 
 			foreach (var point in roomRectangle.AllPoints)
 			{
@@ -56,16 +55,16 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				}
 			}
 
-			CreateDoor(mapBlock, rnd, floor, borderPoints);
+			CreateDoor(mapBlock, floor, borderPoints);
 
 			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Center);
 		}
 
-		private void CreateDoor(MapBlock _mapBlock, Random _rnd, ETerrains _floor, IEnumerable<Point> _borderPoints)
+		private void CreateDoor(MapBlock _mapBlock, ETerrains _floor, IEnumerable<Point> _borderPoints)
 		{
 			var doorCoords = Room.RoomRectangle.Center;
 			var prevPoint = doorCoords;
-			var direction = _rnd.GetRandomDirection();
+			var direction = World.Rnd.GetRandomDirection();
 			var delta = direction.GetDelta();
 			while (!_borderPoints.Contains(doorCoords))
 			{

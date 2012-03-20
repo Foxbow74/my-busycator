@@ -1711,5 +1711,11 @@ namespace GameCore
 		{
 			return string.Format("{0:X2}{1:X2}{2:X2}", (int)(R * 255), (int)(G * 255), (int)(B * 255)).ToLower();
 		}
+
+		public FColor UpdateAlfa(float _f)
+		{
+			A = _f;
+			return this;
+		}
 	}
 }
