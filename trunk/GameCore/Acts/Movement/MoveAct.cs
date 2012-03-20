@@ -54,7 +54,13 @@ namespace GameCore.Acts.Movement
 			
 			if(delta.QLenght>1)
 			{
-				throw new ApplicationException("Элементарное перемещение длинней чем на одну клетку");
+				throw new ApplicationException("Элементарное перемещение длиннее чем 1");
+			}
+
+			if (delta==Point.Zero)
+			{
+				_creature.AddActToPool(new WaitAct());
+				return EActResults.ACT_REPLACED;
 			}
 
 			var cell = _creature[delta];

@@ -176,6 +176,8 @@ namespace GameCore.PathFinding
 									m_newG += Math.Abs(m_newLocationX - _end.X) + Math.Abs(m_newLocationY - _end.Y);
 							}
 
+							if (m_newLocation >= m_calcGrid.Length) return null;
+
 							//Is it open or closed?
 							if (m_calcGrid[m_newLocation].Status == m_openNodeValue || m_calcGrid[m_newLocation].Status == m_closeNodeValue)
 							{
