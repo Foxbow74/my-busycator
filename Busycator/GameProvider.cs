@@ -81,10 +81,7 @@ namespace Busycator
 					m_game.Draw();
 				}
 
-				using (new Profiler("OnRenderFinished();"))
-				{
-					OnRenderFinished();
-				}
+				OnRenderFinished();
 			}
 		}
 
@@ -96,7 +93,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location) })
 					{
-						game.Run(0,60);
+						game.Run(0,0);
 					}
 				}
 				catch (Exception exception)

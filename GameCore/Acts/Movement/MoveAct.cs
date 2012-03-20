@@ -51,6 +51,11 @@ namespace GameCore.Acts.Movement
 				var key = GetParameter<ConsoleKey>().Single();
 				delta = KeyTranslator.GetDirection(key);
 			}
+			
+			if(delta.QLenght>1)
+			{
+				throw new ApplicationException("Элементарное перемещение длинней чем на одну клетку");
+			}
 
 			var cell = _creature[delta];
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GameCore.PathFinding
 {
@@ -9,54 +6,55 @@ namespace GameCore.PathFinding
 	{
 		#region Variables Declaration
 		protected List<T> InnerList = new List<T>();
-		protected IComparer<T> mComparer;
+		private readonly IComparer<T> m_comparer;
 		#endregion
 
 		#region Contructors
 		public PriorityQueueB()
 		{
-			mComparer = Comparer<T>.Default;
+			m_comparer = Comparer<T>.Default;
 		}
 
-		public PriorityQueueB(IComparer<T> comparer)
+		public PriorityQueueB(IComparer<T> _comparer)
 		{
-			mComparer = comparer;
+			m_comparer = _comparer;
 		}
 
-		public PriorityQueueB(IComparer<T> comparer, int capacity)
+		public PriorityQueueB(IComparer<T> _comparer, int _capacity)
 		{
-			mComparer = comparer;
-			InnerList.Capacity = capacity;
+			m_comparer = _comparer;
+			InnerList.Capacity = _capacity;
 		}
 		#endregion
 
 		#region Methods
-		protected void SwitchElements(int i, int j)
+		protected void SwitchElements(int _i, int _j)
 		{
-			T h = InnerList[i];
-			InnerList[i] = InnerList[j];
-			InnerList[j] = h;
+			T h = InnerList[_i];
+			InnerList[_i] = InnerList[_j];
+			InnerList[_j] = h;
 		}
 
-		protected virtual int OnCompare(int i, int j)
+		protected virtual int OnCompare(int _i, int _j)
 		{
-			return mComparer.Compare(InnerList[i], InnerList[j]);
+			return m_comparer.Compare(InnerList[_i], InnerList[_j]);
 		}
 
 		/// <summary>
 		/// Push an object onto the PQ
 		/// </summary>
 		/// <param name="O">The new object</param>
+		/// <param name="_item"></param>
 		/// <returns>The index in the list where the object is _now_. This will change when objects are taken from or put onto the PQ.</returns>
-		public int Push(T item)
+		public int Push(T _item)
 		{
-			int p = InnerList.Count, p2;
-			InnerList.Add(item); // E[p] = O
+			int p = InnerList.Count;
+			InnerList.Add(_item); // E[p] = O
 			do
 			{
 				if (p == 0)
 					break;
-				p2 = (p - 1) / 2;
+				int p2 = (p - 1) / 2;
 				if (OnCompare(p, p2) < 0)
 				{
 					SwitchElements(p, p2);
@@ -75,14 +73,14 @@ namespace GameCore.PathFinding
 		public T Pop()
 		{
 			T result = InnerList[0];
-			int p = 0, p1, p2, pn;
+			var p = 0;
 			InnerList[0] = InnerList[InnerList.Count - 1];
 			InnerList.RemoveAt(InnerList.Count - 1);
 			do
 			{
-				pn = p;
-				p1 = 2 * p + 1;
-				p2 = 2 * p + 2;
+				var pn = p;
+				var p1 = 2 * p + 1;
+				var p2 = 2 * p + 2;
 				if (InnerList.Count > p1 && OnCompare(p, p1) > 0) // links kleiner
 					p = p1;
 				if (InnerList.Count > p2 && OnCompare(p, p2) > 0) // rechts noch kleiner
@@ -103,11 +101,11 @@ namespace GameCore.PathFinding
 		/// explicit IList.this) you should not call this function without knowing exactly
 		/// what you do.
 		/// </summary>
-		/// <param name="i">The index of the changed object.</param>
-		public void Update(int i)
+		/// <param name="_i">The index of the changed object.</param>
+		public void Update(int _i)
 		{
-			int p = i, pn;
-			int p1, p2;
+			var p = _i;
+			int p2;
 			do	// aufsteigen
 			{
 				if (p == 0)
@@ -121,12 +119,12 @@ namespace GameCore.PathFinding
 				else
 					break;
 			} while (true);
-			if (p < i)
+			if (p < _i)
 				return;
 			do	   // absteigen
 			{
-				pn = p;
-				p1 = 2 * p + 1;
+				int pn = p;
+				int p1 = 2 * p + 1;
 				p2 = 2 * p + 2;
 				if (InnerList.Count > p1 && OnCompare(p, p1) > 0) // links kleiner
 					p = p1;
@@ -160,13 +158,13 @@ namespace GameCore.PathFinding
 			get { return InnerList.Count; }
 		}
 
-		public void RemoveLocation(T item)
+		public void RemoveLocation(T _item)
 		{
 			int index = -1;
 			for (int i = 0; i < InnerList.Count; i++)
 			{
 
-				if (mComparer.Compare(InnerList[i], item) == 0)
+				if (m_comparer.Compare(InnerList[i], _item) == 0)
 					index = i;
 			}
 
@@ -174,13 +172,13 @@ namespace GameCore.PathFinding
 				InnerList.RemoveAt(index);
 		}
 
-		public T this[int index]
+		public T this[int _index]
 		{
-			get { return InnerList[index]; }
+			get { return InnerList[_index]; }
 			set
 			{
-				InnerList[index] = value;
-				Update(index);
+				InnerList[_index] = value;
+				Update(_index);
 			}
 		}
 		#endregion

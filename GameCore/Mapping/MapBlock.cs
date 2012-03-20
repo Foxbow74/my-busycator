@@ -112,6 +112,10 @@ namespace GameCore.Mapping
 				}
 				foreach (var tuple in Creatures)
 				{
+					if (tuple.Item1.IsAvatar)
+					{
+						
+					}
 					if (tuple.Item1.Light != null) yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
 				}
 			}
@@ -144,6 +148,14 @@ namespace GameCore.Mapping
 		public Point ToWorldCoords(Point _point)
 		{
 			return WorldCoords + _point;
+		}
+
+		public void AvatarLeftLayer()
+		{
+			foreach (var creature in Creatures)
+			{
+				creature.Item1.ClearActPool();
+			}
 		}
 	}
 }

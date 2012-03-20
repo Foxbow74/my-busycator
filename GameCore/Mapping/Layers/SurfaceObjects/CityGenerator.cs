@@ -7,7 +7,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	class CityGenerator
 	{
-		public const int INITIAL_CITY_SIZE = 4;
+		public const int INITIAL_CITY_SIZE = 1;
 		public const int MAX_CITY_BUILDINGS_COUNT = 30;
 
 		private readonly EMapBlockTypes[,] m_worldMap;

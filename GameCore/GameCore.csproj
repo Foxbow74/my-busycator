@@ -164,7 +164,12 @@
     <Compile Include="Misc\Util.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
+      <Name>UnsafeUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Documentations\development.txt" />
     <Content Include="Documentations\Ideas.txt" />

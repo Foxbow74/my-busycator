@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using GameCore;
 using GameCore.Acts;
+using GameCore.Acts.Movement;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.PathFinding;
@@ -16,7 +15,7 @@ namespace GameUi.UIBlocks
 		private Point m_avatarScreenPoint;
 		private Point m_halfScreen;
 		private readonly TurnMessageUiBlock m_messages;
-		private List<Point> m_path = new List<Point>();
+		private IEnumerable<Point> m_path;
 		private Point m_targetPoint;
 
 		public override void Resize(Rct _newRct)
@@ -60,7 +59,7 @@ namespace GameUi.UIBlocks
 					break;
 				case ConsoleKey.Enter:
 				case ConsoleKey.M:
-					if (m_path.Count > 0)
+					if (m_path!=null)
 					{
 						m_act.AddParameter(m_path);
 						CloseTopBlock();
@@ -80,23 +79,26 @@ namespace GameUi.UIBlocks
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
-			var pnt = Point.Zero;
 			var color = FColor.Gold;
 			var avatarPathMapCoords = World.TheWorld.Avatar[0, 0].PathMapCoords;
 			var targetPathMapCoords = avatarPathMapCoords + m_targetPoint;
-			var path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, targetPathMapCoords, PathFinder.HeuristicFormula.EUCLIDEAN_NO_SQR);
-			m_path.Clear();
+			var path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, targetPathMapCoords);
 			if (path != null)
 			{
+				m_path = MoveToAct.GetMoveToPath(World.TheWorld.Avatar, path);
 				foreach (var point in path)
 				{
-					pnt = point - avatarPathMapCoords;
-					m_path.Add(World.TheWorld.Avatar[pnt].WorldCoords);
+					var pnt = point - avatarPathMapCoords;
 					if (pnt.Lenght < 1) continue;
 					ETiles.TARGET_DOT.GetTile().Draw(pnt + m_avatarScreenPoint, color);
 				}
+				ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
 			}
-			ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
+			else
+			{
+				m_path = null;
+				ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Red);
+			}
 		}
 
 		public override void MouseMove(Point _pnt)

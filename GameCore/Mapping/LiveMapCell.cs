@@ -51,6 +51,8 @@ namespace GameCore.Mapping
 			IsSeenBefore = (_mapBlock.SeenCells[_inBlockCoords.Y] & m_seenMask) != 0;
 			OnLiveMapCoords = _onLiveMapCoords;
 
+			PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint) * MapBlock.SIZE + _inBlockCoords;
+
 			ClearTemp();
 		}
 
@@ -251,7 +253,7 @@ namespace GameCore.Mapping
 
 		public Point MapBlockId
 		{
-			get { return LiveMapBlock.MapBlock.BlockId; }
+			get { return m_mapBlock.BlockId; }
 		}
 
 		public Point InBlockCoords { get; private set; }
@@ -322,14 +324,23 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public Point PathMapCoords
+		public Point PathMapCoords { get; private set; }
+
+		public float FogColorMultiplier
 		{
 			get
 			{
-				var blId = MapBlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint;
-				var pxy = blId * MapBlock.SIZE + InBlockCoords;
-				return pxy;
+				if (ThingHelper.Is<Stair>(Furniture)) return 1f;
+				return TerrainAttribute.IsPassable == 0 ? 1f : 0.8f;
+			}
+		}
 
+		public float DungeonFogColorMultiplier
+		{
+			get
+			{
+				if (ThingHelper.Is<Stair>(Furniture)) return 1f;
+				return TerrainAttribute.IsPassable == 0 ? 0.8f : 1f;
 			}
 		}
 	}
