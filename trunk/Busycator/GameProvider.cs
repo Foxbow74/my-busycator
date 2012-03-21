@@ -63,8 +63,6 @@ namespace Busycator
 			base.OnUpdateFrame(_e);
 			if (!IsActive) return;
 
-			var avatar = World.TheWorld.Avatar;
-			Title = "Busycator lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar[0,0].InBuilding + " pmc:" + avatar[0,0].PathMapCoords;
 			m_game.Update(KeyState);
 		}
 
@@ -72,6 +70,8 @@ namespace Busycator
 		{
 			if (!IsActive) return;
 
+			var avatar = World.TheWorld.Avatar;
+			Title = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1/_e.Time);
 			//if (m_game.IsNeedDraw)
 			{
 				Clear(FColor.Empty);
@@ -93,7 +93,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location) })
 					{
-						game.Run(0,0);
+						game.Run(0,60);
 					}
 				}
 				catch (Exception exception)
