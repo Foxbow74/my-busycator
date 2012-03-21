@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.Objects;
 
 namespace GameUi.UIBlocks
 {
@@ -22,7 +24,7 @@ namespace GameUi.UIBlocks
 				if (m_targetPoint != value)
 				{
 					m_targetPoint = value;
-					MessageManager.SendMessage(this, WorldMessage.Turn);
+					MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 				}
 			}
 		}
@@ -94,7 +96,19 @@ namespace GameUi.UIBlocks
 
 					if(liveCell.Creature!=null)
 					{
-						s.Append(liveCell.Creature.Name);
+						s.Append(", " + liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
+					}
+					if (liveCell.Furniture != null)
+					{
+						s.Append(", " + liveCell.Furniture.GetName(World.TheWorld.Avatar, liveCell));
+					}
+					if (liveCell.Items.Count() > 1)
+					{
+						s.Append(", вещи");
+					}
+					else if(liveCell.Items.Count()==1)
+					{
+						s.Append(", " + liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell));
 					}
 				}
 				else
