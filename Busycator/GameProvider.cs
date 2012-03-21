@@ -64,7 +64,7 @@ namespace Busycator
 			if (!IsActive) return;
 
 			var avatar = World.TheWorld.Avatar;
-			Title = "Busycator lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar[0,0].InBuilding;
+			Title = "Busycator lc:" + avatar[0,0].LiveCoords + " wc:" + avatar[0,0].WorldCoords + " bld:" + avatar[0,0].InBuilding + " pmc:" + avatar[0,0].PathMapCoords;
 			m_game.Update(KeyState);
 		}
 

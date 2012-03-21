@@ -51,9 +51,13 @@ namespace GameCore.Mapping
 			IsSeenBefore = (_mapBlock.SeenCells[_inBlockCoords.Y] & m_seenMask) != 0;
 			OnLiveMapCoords = _onLiveMapCoords;
 
-			PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint) * MapBlock.SIZE + _inBlockCoords;
-
 			ClearTemp();
+			UpdatePathFinderMapCoord();
+		}
+
+		public void UpdatePathFinderMapCoord()
+		{
+			PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint) * MapBlock.SIZE + InBlockCoords;
 		}
 
 		public void SetIsSeenBefore()

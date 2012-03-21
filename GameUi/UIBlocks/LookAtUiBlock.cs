@@ -1,21 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore;
-using GameCore.Acts;
-using GameCore.Acts.Movement;
 using GameCore.Messages;
 using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	class SelectDestinationUiBlock : UiBlockWithText
+	class LookAtUiBlock: UiBlockWithText
 	{
-		private readonly Act m_act;
 		private Point m_avatarScreenPoint;
 		private Point m_halfScreen;
 		private readonly TurnMessageUiBlock m_messages;
-		private IEnumerable<Point> m_path;
 		private Point m_targetPoint;
+
+		public Point TargetPoint
+		{
+			get { return m_targetPoint; }
+			set
+			{
+				if (m_targetPoint != value)
+				{
+					m_targetPoint = value;
+					MessageManager.SendMessage(this, WorldMessage.Turn);
+				}
+			}
+		}
 
 		public override void Resize(Rct _newRct)
 		{
@@ -23,17 +32,16 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
-		public SelectDestinationUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, Act _act)
+		public LookAtUiBlock(TurnMessageUiBlock _messages, Rct _mapRct)
 			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
-			m_act = _act;
 			Rebuild();
 		}
 
 		private void Rebuild()
 		{
-			m_targetPoint = Point.Zero;
+			TargetPoint = Point.Zero;
 			m_halfScreen = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
 			m_avatarScreenPoint = m_halfScreen + ContentRct.LeftTop;
 		}
@@ -43,27 +51,19 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-				var newPoint = m_targetPoint + dPoint + m_avatarScreenPoint;
+
+				var newPoint = TargetPoint + dPoint + m_avatarScreenPoint;
 				if (ContentRct.Contains(newPoint))
 				{
-					m_targetPoint += dPoint;
+					TargetPoint += dPoint;
 				}
 			}
 			switch (_key)
 			{
 				case ConsoleKey.Escape:
 				case ConsoleKey.Z:
-					m_act.IsCancelled = true;
 					CloseTopBlock();
 					break;
-				case ConsoleKey.Enter:
-				case ConsoleKey.M:
-					if (m_path!=null)
-					{
-						m_act.AddParameter(m_path);
-						CloseTopBlock();
-					}
-					return;
 			}
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
@@ -74,33 +74,18 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> {"[Enter|M] идти", "[z|Esc] - выход"};
+			var strings = new List<string> {"[z|Esc] - выход"};
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
-			var color = FColor.Gold;
-			var avatarPathMapCoords = World.TheWorld.Avatar[0, 0].PathMapCoords;
-			var targetPathMapCoords = avatarPathMapCoords + m_targetPoint;
-			var path = World.TheWorld.LiveMap.PathFinder.FindPath(World.TheWorld.Avatar, targetPathMapCoords);
-			if (path != null)
+			var targetLiveCell = World.TheWorld.Avatar[TargetPoint];
+			if (targetLiveCell.IsSeenBefore)
 			{
-				m_path = MoveToAct.GetMoveToPath(World.TheWorld.Avatar, path);
-				foreach (var point in path)
-				{
-					var pnt = point - avatarPathMapCoords;
-					if (pnt.Lenght < 1) continue;
-
-					if (ContentRct.Contains(pnt + m_avatarScreenPoint))
-					{
-						ETiles.TARGET_DOT.GetTile().Draw(pnt + m_avatarScreenPoint, color);
-					}
-				}
-				ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
+				ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
 			}
 			else
 			{
-				m_path = null;
-				ETiles.TARGET_CROSS.GetTile().Draw(m_targetPoint + m_avatarScreenPoint, FColor.Red);
+				ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Red);
 			}
 		}
 
@@ -111,7 +96,7 @@ namespace GameUi.UIBlocks
 
 		private void SetPoint(Point _pnt)
 		{
-			m_targetPoint = _pnt - m_avatarScreenPoint + ContentRct.LeftTop;
+			TargetPoint = _pnt - m_avatarScreenPoint + ContentRct.LeftTop;
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 

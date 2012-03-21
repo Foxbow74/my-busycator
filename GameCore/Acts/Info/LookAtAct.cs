@@ -1,11 +1,11 @@
-using System;
+п»їusing System;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Messages;
 
 namespace GameCore.Acts.Info
 {
-	public class HelpAct : Act
+	public class LookAtAct:Act
 	{
 		protected override int TakeTicksOnSingleAction
 		{
@@ -14,12 +14,12 @@ namespace GameCore.Acts.Info
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
 		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Oem2, EKeyModifiers.SHIFT); }
+			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.L, EKeyModifiers.NONE); }
 		}
 
 		public override string Name
 		{
-			get { return "показать экран помощи"; }
+			get { return "РѕСЃРјРѕС‚СЂРµС‚СЊСЃСЏ"; }
 		}
 
 		public override string HelpText
@@ -34,7 +34,7 @@ namespace GameCore.Acts.Info
 
 		public override EActResults Do(Creature _creature)
 		{
-			MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.HELP));
+			MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.LOOK_AT));
 			return EActResults.DONE;
 		}
 	}

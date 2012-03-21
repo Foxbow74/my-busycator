@@ -75,7 +75,7 @@ namespace GameCore.Acts.Interact
 				}
 				if (coords.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.LiveCoords));
+					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 				liveMapCell = _creature[coords.First()];
@@ -100,10 +100,7 @@ namespace GameCore.Acts.Interact
 				}
 				if (descriptors.Count() > 1)
 				{
-					MessageManager.SendMessage(this,
-					                           new AskSelectThingsMessage(descriptors, this,
-					                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
-					                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+					MessageManager.SendMessage(this, new AskMessageNg(this,EAskMessageType.SELECT_THINGS, descriptors, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
 				return ((ICanbeOpened) descriptors.First().Thing).Open(_creature, liveMapCell);
 			}

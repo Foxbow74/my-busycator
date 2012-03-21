@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -8,9 +7,8 @@ namespace GameUi.UIBlocks.Items
 {
 	internal class SelectItemsUiBlock : ItemsSelectorUiBlock
 	{
-		public SelectItemsUiBlock(Rct _rct, IEnumerable<ThingDescriptor> _items, Act _act,
-		                          ESelectItemDialogBehavior _behavior)
-			: base(_rct, _behavior, _act, _items)
+		public SelectItemsUiBlock(Rct _rct, AskMessage _message)
+			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, _message.GetParameters<ThingDescriptor>())
 		{
 		}
 

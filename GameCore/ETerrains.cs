@@ -12,10 +12,12 @@ namespace GameCore
 		[Terrain("болото")]SWAMP,
 		[Terrain("лава")]LAVA,
 		[Terrain("дорога")] ROAD,
-		[Terrain("гриб", 0.7f, 0.4f, false)] MUSHROOM,
+		[Terrain("гриб", 0.7f, 0.4f, true)] MUSHROOM,
 		[Terrain("кирпичная стена", 0, 1, false)]RED_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]YELLOW_BRICK_WALL,
 		[Terrain("кирпичная стена", 0, 1, false)]GRAY_BRICK_WALL,
+		[Terrain("могила", 0.7f, 0.4f, true)] GRAVE,
+		[Terrain("статуя", 0.7f, 0.8f, true)] STATUE,
 
 		[Terrain("дубовый пол")]WOOD_FLOOR_OAK,
 		[Terrain("кленовый пол")]WOOD_FLOOR_MAPPLE,

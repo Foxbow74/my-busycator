@@ -4,8 +4,6 @@ using GameCore.Mapping.Layers;
 using GameCore.Materials;
 using GameCore.Objects;
 using GameCore.Objects.Ammo;
-using GameCore.Objects.Tools;
-using GameCore.Objects.Weapons;
 
 namespace GameCore.Creatures
 {
@@ -15,9 +13,9 @@ namespace GameCore.Creatures
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
 			AddRole(new AvatarRole());
-			Equip(EEquipmentPlaces.MISSILE_WEAPON, new CrossBow(ThingHelper.GetMaterial<MappleMaterial>()));
+			Equip(EEquipmentPlaces.MISSILE_WEAPON, ETiles.CROSSBOW.GetItem());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()){Count = 100});
-			Equip(EEquipmentPlaces.TOOL, new Torch(ThingHelper.GetMaterial<OakMaterial>()));
+			Equip(EEquipmentPlaces.TOOL, ETiles.TORCH.GetItem());
 		}
 
 		public override ETiles Tile

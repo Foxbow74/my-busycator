@@ -2,10 +2,11 @@
 {
 	public abstract class FurnitureThing : Thing
 	{
-		private FColor m_lerpColor = FColor.Empty;
+		private FColor m_lerpColor;
 
 		protected FurnitureThing(Material _material) : base(_material)
 		{
+			m_lerpColor = _material==null?FColor.Empty:_material.LerpColor;
 		}
 
 		public override FColor LerpColor

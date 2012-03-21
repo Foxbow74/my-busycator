@@ -115,20 +115,35 @@ namespace GameCore.Objects
 			return _thing is IFaked;
 		}
 
-		public static FakedFurniture GetThing(this ETiles _tile, Material _material)
+		public static FakedFurniture GetThing(this ETiles _tile, Material _material = null)
 		{
+			if(_material==null)
+			{
+				var arr = m_fakedThings.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				return arr.RandomItem(World.Rnd).Value;
+			}
 			var key = new Tuple<ETiles, Material>(_tile, _material);
 			FakedFurniture furniture;
 			return m_fakedThings.TryGetValue(key, out furniture) ? furniture : m_fakedThings.First(_pair => _pair.Key.Item1==_tile).Value;
 		}
 
-		public static FakedItem GetItem(this ETiles _tile, Material _material)
+		public static FakedItem GetItem(this ETiles _tile, Material _material = null)
 		{
+			if (_material == null)
+			{
+				var arr = m_fakedItems.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				return arr.RandomItem(World.Rnd).Value;
+			}
 			return m_fakedItems[new Tuple<ETiles, Material>(_tile, _material)];
 		}
 
-		public static FakedMonster GetMonster(this ETiles _tile, Material _material)
+		public static FakedMonster GetMonster(this ETiles _tile, Material _material = null)
 		{
+			if (_material == null)
+			{
+				var arr = m_fakedMonsters.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				return arr.RandomItem(World.Rnd).Value;
+			}
 			return m_fakedMonsters[new Tuple<ETiles, Material>(_tile, _material)];
 		}
 

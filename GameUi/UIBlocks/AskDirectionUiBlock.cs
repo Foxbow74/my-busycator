@@ -8,9 +8,9 @@ namespace GameUi.UIBlocks
 {
 	internal class AskDirectionUiBlock : UiBlockWithText
 	{
-		private readonly AskDirectionMessage m_message;
+		private readonly AskMessage m_message;
 
-		public AskDirectionUiBlock(Rct _rct, AskDirectionMessage _message)
+		public AskDirectionUiBlock(Rct _rct, AskMessage _message)
 			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, FColor.Gray)
 		{
 			m_message = _message;
@@ -21,7 +21,7 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-				m_message.Act.AddParameter(LiveMap.WrapCellCoords(m_message.Point + dPoint));
+				m_message.Act.AddParameter(World.TheWorld.Avatar[dPoint].LiveCoords);
 				CloseTopBlock();
 				return;
 			}

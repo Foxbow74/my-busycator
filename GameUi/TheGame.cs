@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameUi.UIBlocks;
+using GameUi.UIBlocks.Help;
 using GameUi.UIBlocks.Items;
 
 namespace GameUi
@@ -63,7 +63,40 @@ namespace GameUi
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if (_message is OpenUIBlockMessage)
+			if(_message is AskMessageNg)
+			{
+				var amng = (AskMessageNg)_message;
+				switch (amng.AskMessageType)
+				{
+					case EAskMessageType.LOOK_AT:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new LookAtUiBlock(m_mainUiBlock.Messages, m_mainUiBlock.Rct)));
+						break;
+					case EAskMessageType.ASK_DIRECTION:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rct, amng)));
+						break;
+					case EAskMessageType.HELP:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(m_mainUiBlock.Rct)));
+						break;
+					case EAskMessageType.HOW_MUCH:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainUiBlock.Messages.ContentRct, amng)));
+						break;
+					case EAskMessageType.ASK_SHOOT_TARGET:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainUiBlock.Messages, m_mainUiBlock.Map.Rct, amng)));
+						break;
+					case EAskMessageType.ASK_DESTINATION:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectDestinationUiBlock(m_mainUiBlock.Messages, m_mainUiBlock.Map.Rct, amng.Act)));
+						break;
+					case EAskMessageType.SELECT_THINGS:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainUiBlock.Rct, amng)));
+						break;
+					case EAskMessageType.SELECT_THINGS_FROM_BACK_PACK:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rct, amng)));
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
+			else if (_message is OpenUIBlockMessage)
 			{
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
 
@@ -88,49 +121,6 @@ namespace GameUi
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
-			}
-			else if (_message is AskSelectThingsMessage)
-			{
-				var mess = (AskSelectThingsMessage) _message;
-				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new SelectItemsUiBlock(m_mainUiBlock.Rct, mess.ItemDescriptors,
-				                                                                         mess.Act, mess.Behavior)));
-			}
-			else if (_message is AskSelectThingsFromBackPackMessage)
-			{
-				var mess = (AskSelectThingsFromBackPackMessage) _message;
-				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rct, mess.Behavior,
-				                                                                      mess.AllowedCategory, mess.Act)));
-			}
-			else if (_message is AskDirectionMessage)
-			{
-				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rct,
-				                                                                          (AskDirectionMessage) _message)));
-			}
-			else if (_message is AskHowMuchMessage)
-			{
-				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new AskHowMuchUiBlock(m_mainUiBlock.Messages.ContentRct,
-				                                                                        (AskHowMuchMessage) _message)));
-			}
-			else if (_message is AskShootTargerMessage)
-			{
-				var askShootTargerMessage = (AskShootTargerMessage) _message;
-				MessageManager.SendMessage(this,
-				                           new OpenUIBlockMessage(new SelectTargetUiBlock(m_mainUiBlock.Messages,
-				                                                                          m_mainUiBlock.Map.Rct,
-				                                                                          askShootTargerMessage.MaxDistance,
-				                                                                          askShootTargerMessage.Act)));
-			}
-			else if (_message is AskDestinationMessage)
-			{
-				var askDestinationMessage = (AskDestinationMessage)_message;
-				MessageManager.SendMessage(this,
-										   new OpenUIBlockMessage(new SelectDestinationUiBlock(m_mainUiBlock.Messages,
-																						  m_mainUiBlock.Map.Rct,
-																						  askDestinationMessage.Act)));
 			}
 		}
 
@@ -242,9 +232,9 @@ namespace GameUi
 		public void MouseMove(Point _pnt)
 		{
 			var uiBlock = m_uiBlocks.Peek();
-			var pnt = _pnt - uiBlock.Rct.LeftTop;
 			if (uiBlock.Rct.Contains(_pnt))
 			{
+				var pnt = _pnt - uiBlock.Rct.LeftTop;
 				uiBlock.MouseMove(pnt);
 			}
 		}
@@ -252,9 +242,9 @@ namespace GameUi
 		public void MouseButtonDown(Point _pnt, EMouseButton _button)
 		{
 			var uiBlock = m_uiBlocks.Peek();
-			var pnt = _pnt - uiBlock.Rct.LeftTop;
-			if (uiBlock.Rct.Contains(pnt))
+			if (uiBlock.Rct.Contains(_pnt))
 			{
+				var pnt = _pnt - uiBlock.Rct.LeftTop;
 				uiBlock.MouseButtonDown(pnt, _button);
 			}
 		}
@@ -262,9 +252,9 @@ namespace GameUi
 		public void MouseButtonUp(Point _pnt, EMouseButton _button)
 		{
 			var uiBlock = m_uiBlocks.Peek();
-			var pnt = _pnt - uiBlock.Rct.LeftTop;
-			if (uiBlock.Rct.Contains(pnt))
+			if (uiBlock.Rct.Contains(_pnt))
 			{
+				var pnt = _pnt - uiBlock.Rct.LeftTop;
 				uiBlock.MouseButtonUp(pnt, _button);
 			}
 		}
