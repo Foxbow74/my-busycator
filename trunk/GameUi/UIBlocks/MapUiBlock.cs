@@ -74,17 +74,12 @@ namespace GameUi.UIBlocks
 
 					var liveCellCoords = LiveMap.WrapCellCoords(xy + m_dPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
+					var screenPoint = xy + ContentRct.LeftTop;
 
 
 					var visibility = liveCell.Visibility;
 
-					if(visibility.A>0)
-					{
-						visibility.UpdateAlfa(visibility.A + 0.2f);
-					}
-
-					var lighted = liveCell.Lighted.Screen(ambient).Multiply(visibility);
-					var screenPoint = xy + ContentRct.LeftTop;
+					var lighted = GetLighted(liveCell, visibility, ambient);
 					var lightness = lighted.Lightness();
 					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
 					{
@@ -119,6 +114,16 @@ namespace GameUi.UIBlocks
 				}
 			}
 			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
+		}
+
+		internal static FColor GetLighted(LiveMapCell liveCell, FColor visibility, FColor ambient)
+		{
+			if(visibility.A>0)
+			{
+				visibility.UpdateAlfa(visibility.A + 0.2f);
+			}
+
+			return liveCell.Lighted.Screen(ambient).Multiply(visibility);
 		}
 
 		public override void DrawFrame()

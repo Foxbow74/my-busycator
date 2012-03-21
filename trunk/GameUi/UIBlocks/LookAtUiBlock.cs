@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -78,10 +79,29 @@ namespace GameUi.UIBlocks
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
-			var targetLiveCell = World.TheWorld.Avatar[TargetPoint];
-			if (targetLiveCell.IsSeenBefore)
+			var liveCell = World.TheWorld.Avatar[TargetPoint];
+			if (liveCell.IsSeenBefore)
 			{
 				ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
+
+				var lighted = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
+
+				var s = new StringBuilder();
+				s.Append(liveCell.TerrainAttribute.DisplayName); 
+				if (lighted.Lightness() > 0)//World.TheWorld.Avatar.Layer.FogLightness)
+				{
+					ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
+
+					if(liveCell.Creature!=null)
+					{
+						s.Append(liveCell.Creature.Name);
+					}
+				}
+				else
+				{
+
+				}
+				m_messages.DrawLine(s.ToString(), FColor.Gray, 1, 0, EAlignment.LEFT);
 			}
 			else
 			{
