@@ -21,8 +21,8 @@ namespace GameUi.UIBlocks
 		public override void MouseMove(Point _pnt)
 		{
 			base.MouseMove(_pnt);
-			m_mouse = _pnt;
-			Redraw();
+			//m_mouse = _pnt;
+			//Redraw();
 		}
 
 		public override void Resize(Rct _newRct)
