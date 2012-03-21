@@ -61,7 +61,9 @@ namespace GameCore.Messages
 		ASK_SHOOT_TARGET,
 		ASK_DESTINATION,
 		SELECT_THINGS,
-		SELECT_THINGS_FROM_BACK_PACK
+		SELECT_THINGS_FROM_BACK_PACK,
+		INVENTORY,
+		WORLD_MAP,
 	}
 
 	public class AskMessageNg:AskMessage

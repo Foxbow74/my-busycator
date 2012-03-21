@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Messages;
 
 namespace GameCore.Acts.Info
 {
@@ -8,7 +9,7 @@ namespace GameCore.Acts.Info
 	{
 		protected override int TakeTicksOnSingleAction
 		{
-			get { throw new NotImplementedException(); }
+			get { return 0; }
 		}
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
@@ -33,7 +34,9 @@ namespace GameCore.Acts.Info
 
 		public override EActResults Do(Creature _creature)
 		{
-			throw new NotImplementedException();
+			MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.WORLD_MAP));
+			return EActResults.DONE;
+
 		}
 	}
 }
