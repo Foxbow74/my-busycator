@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -9,16 +9,16 @@ namespace GameUi.UIBlocks
 {
 	internal class AskHowMuchUiBlock : UiBlockWithText
 	{
-		private readonly AskHowMuchMessage m_message;
+		private readonly AskMessage m_message;
 
 
 		private string m_count;
 
-		public AskHowMuchUiBlock(Rct _rct, AskHowMuchMessage _message)
+		public AskHowMuchUiBlock(Rct _rct, AskMessage _message)
 			: base(new Rct(_rct.Left, _rct.Top, _rct.Width, 1), null, FColor.Gray)
 		{
 			m_message = _message;
-			m_count = _message.Total.ToString();
+			m_count = _message.GetFirstParameter<int>().ToString();
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -49,13 +49,13 @@ namespace GameUi.UIBlocks
 				case ConsoleKey.D8:
 				case ConsoleKey.D9:
 					var name = Enum.GetName(typeof (ConsoleKey), _key);
-					if (m_count.Length < m_message.Total.ToString().Length)
+					if (m_count.Length < m_message.GetFirstParameter<int>().ToString().Length)
 					{
 						m_count += name.Substring(name.Length - 1, 1);
 					}
 					break;
 				case ConsoleKey.Enter:
-					var cnt = Math.Min(int.Parse(m_count), m_message.Total);
+					var cnt = Math.Min(int.Parse(m_count), m_message.GetFirstParameter<int>());
 					m_message.Act.AddParameter(cnt);
 					CloseTopBlock();
 					break;
@@ -68,8 +68,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.Descriptor.Thing.GetName(World.TheWorld.Avatar), m_message.Total), ForeColor,
-			         0, 0, EAlignment.LEFT);
+			DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.GetFirstParameter<ThingDescriptor>().Thing.GetName(World.TheWorld.Avatar), m_message.GetFirstParameter<int>()), ForeColor, 0, 0, EAlignment.LEFT);
 		}
 	}
 }

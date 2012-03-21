@@ -65,10 +65,7 @@ namespace GameCore.Acts.Items
 					var needToShow = GetParameter<bool>();
 					if (needToShow.Any() && needToShow.Single())
 					{
-						MessageManager.SendMessage(this,
-						                           new AskSelectThingsMessage(notTaken, this,
-						                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
-						                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
 
@@ -80,14 +77,11 @@ namespace GameCore.Acts.Items
 					var coords = notTaken.Select(_descriptor => _descriptor.LiveCoords).Distinct();
 					if (coords.Count() > 1)
 					{
-						MessageManager.SendMessage(this, new AskDirectionMessage(this, _creature.LiveCoords));
+						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
 					}
 					else
 					{
-						MessageManager.SendMessage(this,
-						                           new AskSelectThingsMessage(notTaken, this,
-						                                                      ESelectItemDialogBehavior.SELECT_MULTIPLE |
-						                                                      ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS ,notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 					}
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
@@ -124,7 +118,7 @@ namespace GameCore.Acts.Items
 				}
 				else
 				{
-					MessageManager.SendMessage(this, new AskHowMuchMessage(this, descriptor, get.Count()));
+					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.HOW_MUCH, descriptor, get.Count()));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 			}

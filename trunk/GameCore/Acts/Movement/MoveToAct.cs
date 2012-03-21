@@ -73,7 +73,7 @@ namespace GameCore.Acts.Movement
 
 			if(target==null)
 			{
-				MessageManager.SendMessage(this, new AskDestinationMessage(this));
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DESTINATION));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 

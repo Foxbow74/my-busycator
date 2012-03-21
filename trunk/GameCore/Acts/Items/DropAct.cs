@@ -41,7 +41,7 @@ namespace GameCore.Acts.Items
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this, new AskSelectThingsFromBackPackMessage(this, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER | ESelectItemDialogBehavior.SELECT_ONE, null));
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER | ESelectItemDialogBehavior.SELECT_ONE));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 
@@ -75,7 +75,7 @@ namespace GameCore.Acts.Items
 				}
 				else
 				{
-					MessageManager.SendMessage(this, new AskHowMuchMessage(this, descriptor, total));
+					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.HOW_MUCH, descriptor, total));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 			}

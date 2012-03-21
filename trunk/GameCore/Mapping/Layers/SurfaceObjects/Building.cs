@@ -81,7 +81,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			InDoorWorldCoords = new[] { prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key }.Select(_mapBlock.ToWorldCoords).ToArray();
 
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
-			var fakedFurniture = ETiles.DOOR.GetThing(ThingHelper.GetMaterial<OakMaterial>());
+			var fakedFurniture = ETiles.DOOR.GetThing();
 			var door = fakedFurniture.ResolveFake(World.TheWorld.Avatar);
 			_mapBlock.AddObject(door, doorCoords);
 		}
@@ -89,12 +89,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public Point DoorWorldCoords { get; private set; }
 
 		/// <summary>
-		/// координаты внешних точек, откуда можно открыть дверь
+		/// координаты внешних точек, откуда можно открыть дверь, крыльцо
 		/// </summary>
 		public Point[] OutDoorWorldCoords { get; private set; }
 
 		/// <summary>
-		/// координаты внешних точек, откуда можно открыть дверь
+		/// координаты внутренних точек, откуда можно открыть дверь, прихожая
 		/// </summary>
 		public Point[] InDoorWorldCoords { get; private set; }
 		

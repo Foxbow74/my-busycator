@@ -40,6 +40,7 @@
     <Compile Include="Acts\Act.cs" />
     <Compile Include="Acts\Combat\AtackAct.cs" />
     <Compile Include="Acts\Combat\ShootAct.cs" />
+    <Compile Include="Acts\Info\LookAtAct.cs" />
     <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />
     <Compile Include="Acts\Interact\CloseAct.cs" />
     <Compile Include="Acts\EActionCategory.cs" />
@@ -93,11 +94,7 @@
     <Compile Include="Materials\MetalMaterial.cs" />
     <Compile Include="Materials\MineralMaterial.cs" />
     <Compile Include="Materials\WoodMaterial.cs" />
-    <Compile Include="Messages\AskDirectionMessage.cs" />
-    <Compile Include="Messages\AskHowMuchMessage.cs" />
     <Compile Include="Messages\AskMessage.cs" />
-    <Compile Include="Messages\AskSelectThingsMessage.cs" />
-    <Compile Include="Messages\AskShootTargerMessage.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
     <Compile Include="Misc\LightSource.cs" />

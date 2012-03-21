@@ -106,6 +106,17 @@ namespace GameCore.Mapping
 			}
 		}
 
+		public void UpdatePathFinderMapCoords()
+		{
+			for (var i = 0; i < MapBlock.SIZE; i++)
+			{
+				for (var j = 0; j < MapBlock.SIZE; j++)
+				{
+					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].UpdatePathFinderMapCoord();
+				}
+			}
+		}
+
 		public void SetMapBlock(MapBlock _mapBlock)
 		{
 			MapBlock = _mapBlock;

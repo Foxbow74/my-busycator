@@ -42,9 +42,7 @@ namespace GameCore.Acts.Items
 			var descriptors = GetParameter<ThingDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this,
-				                           new AskSelectThingsFromBackPackMessage(this, ESelectItemDialogBehavior.SELECT_ONE,
-				                                                                  new[] {EThingCategory.POTION}));
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EThingCategory.POTION}));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 			var descriptor = descriptors[0];

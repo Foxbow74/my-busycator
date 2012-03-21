@@ -65,6 +65,7 @@
     <Compile Include="UIBlocks\Items\SelectToTakeOnUiBlock.cs" />
     <Compile Include="UIBlocks\Items\ThingCategoryPresenter.cs" />
     <Compile Include="UIBlocks\Items\ThingPresenter.cs" />
+    <Compile Include="UIBlocks\LookAtUiBlock.cs" />
     <Compile Include="UIBlocks\MainUiBlock.cs" />
     <Compile Include="UIBlocks\MapUiBlock.cs" />
     <Compile Include="UIBlocks\MessageBlock.cs" />

@@ -27,20 +27,20 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
-		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, int _maxDistance, Act _act)
+		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, AskMessage _message)
 			: base(_mapRct, null, FColor.Gray)
 		{
 			m_messages = _messages;
-			m_maxDistance = _maxDistance;
-			m_act = _act;
+			m_act = _message.Act;
+			m_maxDistance = _message.GetFirstParameter<int>();
 			var points = new List<Point>();
 
-			for (var x = -_maxDistance; x < _maxDistance; ++x)
+			for (var x = -m_maxDistance; x < m_maxDistance; ++x)
 			{
-				for (var y = -_maxDistance; y < _maxDistance; ++y)
+				for (var y = -m_maxDistance; y < m_maxDistance; ++y)
 				{
 					var point = new Point(x, y);
-					if (point.Lenght > _maxDistance) continue;
+					if (point.Lenght > m_maxDistance) continue;
 
 					var liveCell = World.TheWorld.Avatar[point];
 					if (liveCell.Creature != null && !liveCell.Creature.IsAvatar)

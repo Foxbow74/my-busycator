@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
-using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
@@ -21,13 +19,12 @@ namespace GameUi.UIBlocks.Items
 			m_allowedCategories = new EThingCategory[0];
 		}
 
-		public BackpackUiBlock(Rct _rct, ESelectItemDialogBehavior _behavior,
-		                       IEnumerable<EThingCategory> _allowedCategory, Act _act)
-			: base(
-				_rct, _behavior, _act,
-				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
+		public BackpackUiBlock(Rct _rct, AskMessage _message)
+			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
+
 		{
-			m_allowedCategories = _allowedCategory ?? new EThingCategory[0];
+			var category = _message.GetParameters<EThingCategory>();
+			m_allowedCategories = category?? new EThingCategory[0];
 		}
 
 		protected override IEnumerable<EThingCategory> AllowedCategories

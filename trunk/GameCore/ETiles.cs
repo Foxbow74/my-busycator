@@ -16,6 +16,8 @@ namespace GameCore
 		TORCH,
 
 		[Tiles(0.9f)] CABINET,
+		[Tiles(0.5f)] ARMOR_RACK,
+		[Tiles(0.5f)] WEAPON_RACK,
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,
@@ -25,6 +27,7 @@ namespace GameCore
 		[Tiles(0.2f)]TABLE,
 		[Tiles(0.1f)]CHAIR,
 		[Tiles(0.4f)]BED,
+		[Tiles(0.4f)]BARREL,
 
 		[Tiles(0.2f)]AVATAR,
 		[Tiles(0.2f)]CITIZEN,

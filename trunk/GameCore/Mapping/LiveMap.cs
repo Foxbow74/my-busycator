@@ -121,7 +121,10 @@ namespace GameCore.Mapping
 						var mapBlock = layer[mapBlockId];
 						liveMapBlock.SetMapBlock(mapBlock);
 					}
-
+					else
+					{
+						liveMapBlock.UpdatePathFinderMapCoords();
+					}
 					liveMapBlock.IsBorder = edelta.QLenght >= ACTIVE_QRADIUS;
 				}
 				PathFinder.Clear();

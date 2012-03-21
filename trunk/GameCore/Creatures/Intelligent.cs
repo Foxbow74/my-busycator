@@ -64,7 +64,11 @@ namespace GameCore.Creatures
 		/// <param name = "_item"></param>
 		protected void Equip(EEquipmentPlaces _place, Item _item)
 		{
-			_item.Resolve(this);
+			if (_item is FakedItem)
+			{
+				_item = (Item)((FakedItem) _item).ResolveFake(this);
+			}
+			//_item.Resolve(this);
 			ObjectTaken(_item);
 			TakeOn(_place, _item);
 		}
