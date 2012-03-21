@@ -61,30 +61,6 @@ namespace GameUi.UIBlocks
 				return;
 			}
 
-			if (new InventoryAct().ConsoleKeys.Contains(tuple))
-			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new EquipmentUiBlock(Rct)));
-				return;
-			}
-
-			if (new LookAtWorldMapAct().ConsoleKeys.Contains(tuple))
-			{
-				MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(Rct)));
-				return;
-			}
-
-			//if (new HelpAct().ConsoleKeys.Contains(tuple))
-			//{
-			//    MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(Rct)));
-			//    return;
-			//}
-
-			//if (new LookAtAct().ConsoleKeys.Contains(tuple))
-			//{
-			//    MessageManager.SendMessage(this, new OpenUIBlockMessage(new LookAtUiBlock(Messages, Rct)));
-			//    return;
-			//}
-
 			World.TheWorld.KeyPressed(_key, _modifiers);
 		}
 

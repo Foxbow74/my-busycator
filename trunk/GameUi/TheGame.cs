@@ -92,6 +92,12 @@ namespace GameUi
 					case EAskMessageType.SELECT_THINGS_FROM_BACK_PACK:
 						MessageManager.SendMessage(this, new OpenUIBlockMessage(new BackpackUiBlock(m_mainUiBlock.Rct, amng)));
 						break;
+					case EAskMessageType.INVENTORY:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new EquipmentUiBlock(m_mainUiBlock.Rct)));
+						break;
+					case EAskMessageType.WORLD_MAP:
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(m_mainUiBlock.Rct)));
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
