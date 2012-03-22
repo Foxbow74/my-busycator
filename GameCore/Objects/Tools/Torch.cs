@@ -3,6 +3,7 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
+using RusLanguage;
 
 namespace GameCore.Objects.Tools
 {
@@ -64,27 +65,26 @@ namespace GameCore.Objects.Tools
 
 		public EActResults UseTool(Intelligent _intelligent)
 		{
-			var name = this.GetName(_intelligent);
 			if(IsOn)
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, name + " потушен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, this[EPadej.IMEN] + " потушен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.GetName(World.TheWorld.Avatar) + " потушил " + name));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent[EPadej.IMEN] + " потушил " + this[EPadej.VIN]));
 				}
 			}
 			else
 			{
 				if (_intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, name + " зажжен"));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, this[EPadej.IMEN] + " зажжен"));
 				}
 				else
 				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent.GetName(World.TheWorld.Avatar) + " зажег " + name));
+					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent[EPadej.IMEN] + " зажег " + this[EPadej.VIN]));
 				}
 			}
 			IsOn = !IsOn;

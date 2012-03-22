@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameCore.Creatures
 {
@@ -49,8 +50,6 @@ namespace GameCore.Creatures
 					throw new ArgumentOutOfRangeException("_intellectGrades");
 			}
 		}
-
-		public ESex Sex { get; private set; }
 
 		public Item this[EEquipmentPlaces _places]
 		{

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameUi.Messages;
 
 namespace GameUi.UIBlocks
 {
@@ -26,19 +24,14 @@ namespace GameUi.UIBlocks
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if (_message is SimpleTextMessage)
+			if (!(_message is SimpleTextMessage))
 			{
-				var tm = (SimpleTextMessage) _message;
-				var tp = new TextPortion(tm.Text, null);
-				tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
-				m_lines.AddRange(tp.TextLines);
+				throw new NotImplementedException();
 			}
-			else if (_message is TextMessage)
-			{
-				var tm = (TextMessage) _message;
-				tm.Text.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
-				m_lines.AddRange(tm.Text.TextLines);
-			}
+			var tm = (SimpleTextMessage) _message;
+			var tp = new TextPortion(tm.Text, null);
+			tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
+			m_lines.AddRange(tp.TextLines);
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)

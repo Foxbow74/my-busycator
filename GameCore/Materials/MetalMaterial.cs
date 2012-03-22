@@ -1,4 +1,6 @@
-﻿namespace GameCore.Materials
+﻿using RusLanguage;
+
+namespace GameCore.Materials
 {
 	abstract class MetalMaterial:Material
 	{
@@ -16,6 +18,7 @@
 	{
 		public CopperMaterial() : base("медь")
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override FColor LerpColor
@@ -29,6 +32,7 @@
 		public BrassMaterial()
 			: base("латунь")
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override FColor LerpColor
@@ -42,6 +46,7 @@
 		public BronzeMaterial()
 			: base("бронза")
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override FColor LerpColor

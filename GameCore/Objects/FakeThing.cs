@@ -24,14 +24,7 @@ namespace GameCore.Objects
 		{
 			get
 			{
-				try
-				{
-					throw new NotImplementedException();
-				}
-				catch 
-				{
-				}
-				return "มห฿!";
+				throw new NotImplementedException();
 			}
 		}
 
@@ -68,6 +61,11 @@ namespace GameCore.Objects
 		public override void Resolve(Creature _creature)
 		{
 			throw new NotImplementedException();
+		}
+
+		protected override int CalcHashCode()
+		{
+			return (int)m_tile;
 		}
 	}
 

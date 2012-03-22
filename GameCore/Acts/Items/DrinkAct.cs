@@ -6,6 +6,7 @@ using GameCore.Messages;
 using GameCore.Objects;
 using GameCore.Objects.Potions;
 using GameCore.Objects.Tools;
+using RusLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -57,7 +58,6 @@ namespace GameCore.Acts.Items
 				throw new ApplicationException("в рюкзаке нет такого предмета");
 			}
 			var item = (Potion) descriptor.Thing;
-			var thingString = item.ToString();
 
 			if (!item.IsAllowToDrink(_creature))
 			{
@@ -69,11 +69,11 @@ namespace GameCore.Acts.Items
 
 			if (intelligent.IsAvatar)
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " выпит"));
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, item.Name + " выпит"));
 			}
 			else
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выпил " + thingString));
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выпил " + item[EPadej.VIN]));
 			}
 			return EActResults.DONE;
 		}

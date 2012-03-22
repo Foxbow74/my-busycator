@@ -1,6 +1,7 @@
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping.Layers;
+using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
@@ -11,6 +12,7 @@ namespace GameCore.Objects.Furniture
 		protected Stair(WorldLayer _leadToLayer, Material _material):base(_material)
 		{
 			m_leadToLayer = _leadToLayer;
+			Sex = ESex.FEMALE;
 		}
 
 		protected Stair(Material _material):base(_material)

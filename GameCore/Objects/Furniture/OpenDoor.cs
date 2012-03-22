@@ -2,6 +2,7 @@
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
+using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
@@ -11,6 +12,7 @@ namespace GameCore.Objects.Furniture
 
 		public OpenDoor(Material _material) : base(_material)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override ETiles Tile
@@ -30,7 +32,7 @@ namespace GameCore.Objects.Furniture
 			var door = new Door(Material);
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Furniture = door;
-			if (_creature.IsAvatar) MessageManager.SendMessage(this, this.GetName(_creature) + " закрыта.");
+			if (_creature.IsAvatar) MessageManager.SendMessage(this, this[EPadej.IMEN] + " закрыта.");
 			return EActResults.DONE;
 		}
 

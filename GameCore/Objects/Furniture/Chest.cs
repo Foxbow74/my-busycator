@@ -5,6 +5,7 @@ using GameCore.Acts.Items;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
+using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
@@ -33,7 +34,7 @@ namespace GameCore.Objects.Furniture
 		{
 			if (ELockType != ELockType.OPEN)
 			{
-				if (_creature.IsAvatar) MessageManager.SendMessage(this, this.GetName(_creature) + " открыт.");
+				if (_creature.IsAvatar) MessageManager.SendMessage(this, this[EPadej.IMEN] + " открыт.");
 				ELockType = ELockType.OPEN;
 
 				var collection = GetItems(_creature);

@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.Objects;
 using GameUi.UIBlocks;
 using GameUi.UIBlocks.Help;
 using GameUi.UIBlocks.Items;
+using RusLanguage;
 
 namespace GameUi
 {
@@ -135,7 +138,7 @@ namespace GameUi
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
 			UIBlock.Init(m_gameProvider.DrawHelper);
 			World.LetItBeeee();
-
+			
 			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
 			m_uiBlocks.Push(m_mainUiBlock);
 

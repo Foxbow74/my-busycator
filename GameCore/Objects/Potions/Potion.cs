@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
+using RusLanguage;
 
 namespace GameCore.Objects.Potions
 {
@@ -7,6 +7,7 @@ namespace GameCore.Objects.Potions
 	{
 		public Potion(Material _material) : base(_material)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override ETiles Tile
@@ -16,7 +17,7 @@ namespace GameCore.Objects.Potions
 
 		public override string Name
 		{
-			get { return "пузырек"; }
+			get { return "булька"; }
 		}
 
 		public override EThingCategory Category

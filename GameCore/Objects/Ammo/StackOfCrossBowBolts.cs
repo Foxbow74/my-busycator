@@ -13,7 +13,7 @@ namespace GameCore.Objects.Ammo
 
 		protected override string NameOfSingle
 		{
-			get { return "арбалетный болт"; }
+			get { return "болт"; }
 		}
 	}
 }

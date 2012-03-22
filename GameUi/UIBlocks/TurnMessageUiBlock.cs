@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameUi.Messages;
 
 namespace GameUi.UIBlocks
 {
@@ -61,11 +59,6 @@ namespace GameUi.UIBlocks
 				{
 					var tm = (SimpleTextMessage)message;
 					strings.Add(tm.Text);
-				}
-				else if (message is TextMessage)
-				{
-					var tm = (TextMessage)message;
-					strings.Add(tm.Text.Text);
 				}
 			}
 

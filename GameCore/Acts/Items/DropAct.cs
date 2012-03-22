@@ -5,6 +5,7 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -80,7 +81,6 @@ namespace GameCore.Acts.Items
 				}
 			}
 			var item = (Item) descriptor.Thing;
-			var thingString = item.ToString();
 			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.RemoveFromBackpack(item);
@@ -89,11 +89,11 @@ namespace GameCore.Acts.Items
 			var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 			if (intelligent.IsAvatar)
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " выброшен" + suffix));
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, item[EPadej.IMEN] + " выброшен" + suffix));
 			}
 			else
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выбросил " + thingString + suffix));
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выбросил " + item[EPadej.VIN] + suffix));
 			}
 			return EActResults.DONE;
 		}

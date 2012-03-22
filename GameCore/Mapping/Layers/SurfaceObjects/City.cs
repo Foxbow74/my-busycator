@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -114,6 +115,14 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		}
 
 		readonly List<Citizen> m_already = new List<Citizen>();
+		
+		public IEnumerable<Citizen> AllCitizens
+		{
+			get
+			{
+				return m_citizens;
+			}
+		}
 
 		public void GenerateCityBlock(MapBlock _block, Random _rnd)
 		{
