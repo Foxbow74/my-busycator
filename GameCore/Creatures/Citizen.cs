@@ -77,9 +77,10 @@ namespace GameCore.Creatures
 		public override string ToString()
 		{
 			var result = Name;
-			foreach (var role in Roles)
+			for (int index = 1; index < Roles.ToArray().Length; index++)
 			{
-				result +=  "/" + role;
+				var role = Roles.ToArray()[index];
+				result += "/" + role[Sex];
 			}
 			return result;
 		}

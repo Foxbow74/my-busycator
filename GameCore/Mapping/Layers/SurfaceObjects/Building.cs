@@ -6,6 +6,7 @@ using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture.LightSources;
+using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
@@ -17,6 +18,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			m_city = _city;
 		}
+
+		public ESex Sex { get; protected set; }
 
 		public Point BlockId { get{return Room.BlockId;} }
 
@@ -91,12 +94,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		/// <summary>
 		/// координаты внешних точек, откуда можно открыть дверь, крыльцо
 		/// </summary>
-		public Point[] OutDoorWorldCoords { get; private set; }
+		public Point[] OutDoorWorldCoords { get; protected set; }
 
 		/// <summary>
 		/// координаты внутренних точек, откуда можно открыть дверь, прихожая
 		/// </summary>
-		public Point[] InDoorWorldCoords { get; private set; }
+		public Point[] InDoorWorldCoords { get; protected set; }
 		
 		public virtual bool IsFit(Room _room)
 		{
@@ -144,7 +147,15 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public override string ToString()
 		{
-			return BuildingName + "(" + Owner.IntelligentName + ")";
+			return this[EPadej.IMEN, true];
+		}
+
+		public string this[EPadej _padej, bool _withOwner]
+		{
+			get
+			{
+				return Sklonenia.ToPadej(_padej, BuildingName,false, Sex)  + (_withOwner?(" " + Sklonenia.ToPadej(EPadej.ROD, Owner.IntelligentName, true, Owner.Sex)):"");
+			}
 		}
 
 		protected abstract string BuildingName { get; }

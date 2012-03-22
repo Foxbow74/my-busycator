@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GameCore.Misc;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
@@ -35,6 +37,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public TavernBuilding(City _city)
 			: base(_city)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override EBuilding BuildingType
@@ -62,6 +65,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public InnBuilding(City _city)
 			: base(_city)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override EBuilding BuildingType
@@ -71,7 +75,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		protected override string BuildingName
 		{
-			get { return "постоялый двор"; }
+			get { return "гостиница"; }
 		}
 
 		public override uint MaxCountInCity
@@ -88,6 +92,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public GraveyardBuilding(City _city)
 			: base(_city)
 		{
+			Sex = ESex.IT;
 		}
 
 		public override EBuilding BuildingType
@@ -105,6 +110,26 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			get
 			{
 				return 1;
+			}
+		}
+
+		public override void Fill(MapBlock _block)
+		{
+			var rnd = new Random(_block.RandomSeed);
+
+			InDoorWorldCoords = Room.RoomRectangle.Inflate(-1, -1).BorderPoints.ToArray();
+			OutDoorWorldCoords = Room.RoomRectangle.BorderPoints.ToArray();
+
+			foreach (var point in Room.RoomRectangle.AllPoints)
+			{
+				if (rnd.Next(5) == 0 && !InDoorWorldCoords.Contains(point))
+				{
+					_block.Map[point.X, point.Y] = ETerrains.GRAVE;
+				}
+				else
+				{
+					_block.Map[point.X, point.Y] = ETerrains.GRASS;
+				}
 			}
 		}
 	}

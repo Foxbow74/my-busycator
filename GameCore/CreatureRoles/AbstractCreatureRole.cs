@@ -1,12 +1,20 @@
-﻿using System;
-using GameCore.Creatures;
+﻿using GameCore.Creatures;
 using GameCore.Mapping.Layers.SurfaceObjects;
+using RusLanguage;
 
 namespace GameCore.CreatureRoles
 {
 	public abstract class AbstractCreatureRole
 	{
 		public abstract string Name { get; }
+
+		public virtual string this[ESex _sex]
+		{
+			get
+			{
+				return Sklonenia.ToSex(Name, _sex);
+			}
+		}
 	}
 
 	public abstract class AbstractCitizenRole:AbstractCreatureRole
@@ -21,9 +29,13 @@ namespace GameCore.CreatureRoles
 
 		public abstract EBuilding BuildingType { get; }
 
-		public override string ToString()
+		public override string this[ESex _sex]
 		{
-			return Name + " " + Building;
+			get
+			{
+				var result = base[_sex] + " " + Building[EPadej.ROD, false];
+				return result;
+			}
 		}
 	}
 
@@ -39,7 +51,7 @@ namespace GameCore.CreatureRoles
 	{
 		public override string Name
 		{
-			get { return "горожанин"; }
+			get { return "владелец"; }
 		}
 
 		public override EBuilding BuildingType
@@ -65,7 +77,7 @@ namespace GameCore.CreatureRoles
 	{
 		public override string Name
 		{
-			get { return "хозяин постоялого двора"; }
+			get { return "хозяин"; }
 		}
 
 		public override EBuilding BuildingType

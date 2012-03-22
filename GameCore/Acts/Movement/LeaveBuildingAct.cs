@@ -39,16 +39,14 @@ namespace GameCore.Acts.Movement
 			if (building != null)
 			{
 				var coords = _creature[0, 0].WorldCoords;
-				var onDoor = building.DoorWorldCoords == coords; //позиция совпадает с дверью
+				//var onDoor = building.DoorWorldCoords == coords; //позиция совпадает с дверью
 
-				if (!onDoor && !building.InDoorWorldCoords.Contains(coords))
-				{
-					//Debug.WriteLine(IntelligentName + " идет к порожку");
-					_creature.AddActToPool(new MoveToAct(), building.DoorWorldCoords);
-					//_creature.AddActToPool(this);
-					return EActResults.ACT_REPLACED;
-				}
-				else if (!building.OutDoorWorldCoords.Contains(coords))
+				//if (!onDoor && !building.InDoorWorldCoords.Contains(coords))
+				//{
+				//    _creature.AddActToPool(new MoveToAct(), building.DoorWorldCoords);
+				//    return EActResults.ACT_REPLACED;
+				//}
+				//else if (!building.OutDoorWorldCoords.Contains(coords))
 				{
 					var p = building.OutDoorWorldCoords[World.Rnd.Next(building.OutDoorWorldCoords.Length)];
 					if (_creature[p-coords].GetIsPassableBy(_creature) > 0)
