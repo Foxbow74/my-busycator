@@ -45,8 +45,8 @@ namespace GameUi.UIBlocks
 		private void Rebuild()
 		{
 			TargetPoint = Point.Zero;
-			m_halfScreen = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
-			m_avatarScreenPoint = m_halfScreen + ContentRct.LeftTop;
+			m_halfScreen = new Point(ContentRct.Width, ContentRct.Height)/2;
+			m_avatarScreenPoint = ContentRct.Center;
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -90,7 +90,7 @@ namespace GameUi.UIBlocks
 
 				var s = new StringBuilder();
 				s.Append(liveCell.TerrainAttribute.DisplayName); 
-				if (lighted.Lightness() > 0)//World.TheWorld.Avatar.Layer.FogLightness)
+				if (lighted.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
 				{
 					ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 

@@ -1,5 +1,6 @@
 ﻿using GameCore.Creatures;
 using GameCore.Misc;
+using GameCore.PathFinding;
 
 namespace GameCore.Objects
 {

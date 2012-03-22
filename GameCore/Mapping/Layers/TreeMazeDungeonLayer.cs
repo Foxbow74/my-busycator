@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Objects.Furniture.LightSources;
+using GameCore.PathFinding;
 using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers

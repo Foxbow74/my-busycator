@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore;
+using GameCore.PathFinding;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenTKUi
