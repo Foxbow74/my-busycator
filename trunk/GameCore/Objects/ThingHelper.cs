@@ -72,7 +72,7 @@ namespace GameCore.Objects
 					_thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
 			}
-			return _thing.Name + "(" + _thing.Material.Name + ")";
+			return _thing.Name + ((_thing is Creature)?"":("(" + _thing.Material.Name + ")"));
 		}
 
 		public static string GetName(this ThingDescriptor _thingDescriptor, Creature _creature)

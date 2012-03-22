@@ -116,14 +116,14 @@ namespace GameUi.UIBlocks
 			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
 		}
 
-		internal static FColor GetLighted(LiveMapCell liveCell, FColor visibility, FColor ambient)
+		internal static FColor GetLighted(LiveMapCell _liveCell, FColor _visibility, FColor _ambient)
 		{
-			if(visibility.A>0)
+			if(_visibility.A>0)
 			{
-				visibility.UpdateAlfa(visibility.A + 0.2f);
+				_visibility.UpdateAlfa(_visibility.A + 0.2f);
 			}
 
-			return liveCell.Lighted.Screen(ambient).Multiply(visibility);
+			return _liveCell.Lighted.Screen(_ambient).Multiply(_visibility);
 		}
 
 		public override void DrawFrame()

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Misc;
+using GameCore.PathFinding;
 
 namespace GameCore.Mapping.Layers
 {

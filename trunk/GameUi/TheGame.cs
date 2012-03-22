@@ -27,6 +27,8 @@ namespace GameUi
 		private DateTime m_moveKeyHoldedSince;
 		private int m_needRedraws = 2;
 
+		private Point m_lastMousePos = Point.Zero;
+
 		public TheGame(IGameProvider _gameProvider)
 		{
 			m_gameProvider = _gameProvider;
@@ -69,10 +71,10 @@ namespace GameUi
 				switch (amng.AskMessageType)
 				{
 					case EAskMessageType.LOOK_AT:
-						MessageManager.SendMessage(this, new OpenUIBlockMessage(new LookAtUiBlock(m_mainUiBlock.Messages, m_mainUiBlock.Rct)));
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new LookAtUiBlock(m_mainUiBlock.Messages, m_mainUiBlock.Map.Rct)));
 						break;
 					case EAskMessageType.ASK_DIRECTION:
-						MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Rct, amng)));
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new AskDirectionUiBlock(m_mainUiBlock.Map.Rct, amng)));
 						break;
 					case EAskMessageType.HELP:
 						MessageManager.SendMessage(this, new OpenUIBlockMessage(new HelpUiBlock(m_mainUiBlock.Rct)));
@@ -96,7 +98,7 @@ namespace GameUi
 						MessageManager.SendMessage(this, new OpenUIBlockMessage(new EquipmentUiBlock(m_mainUiBlock.Rct)));
 						break;
 					case EAskMessageType.WORLD_MAP:
-						MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(m_mainUiBlock.Rct)));
+						MessageManager.SendMessage(this, new OpenUIBlockMessage(new MiniMapUiBlock(m_mainUiBlock.Map.Rct)));
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -105,10 +107,8 @@ namespace GameUi
 			else if (_message is OpenUIBlockMessage)
 			{
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
-
-				uiBlock.MouseMove(uiBlock.Rct.Center - uiBlock.Rct.LeftTop);
-
 				m_uiBlocks.Push(uiBlock);
+				MouseMove(m_lastMousePos);
 				m_needRedraws = 4;
 			}
 			else if (_message is SystemMessage)
@@ -237,12 +237,14 @@ namespace GameUi
 
 		public void MouseMove(Point _pnt)
 		{
+			if (m_lastMousePos == _pnt) return;
+			
+			m_lastMousePos = _pnt;
 			var uiBlock = m_uiBlocks.Peek();
-			if (uiBlock.Rct.Contains(_pnt))
-			{
-				var pnt = _pnt - uiBlock.Rct.LeftTop;
-				uiBlock.MouseMove(pnt);
-			}
+			
+			if (!uiBlock.Rct.Contains(_pnt)) return;
+			var pnt = _pnt - uiBlock.Rct.LeftTop;
+			uiBlock.MouseMove(pnt);
 		}
 
 		public void MouseButtonDown(Point _pnt, EMouseButton _button)

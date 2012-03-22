@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GameCore.Creatures;
 using GameCore.Misc;
 using UnsafeUtils;
@@ -35,7 +34,7 @@ namespace GameCore.PathFinding
 		private readonly ushort m_gridY;
 		private readonly ushort m_gridXMinus1;
 		private readonly ushort m_gridYLog2;
-		private PathFinderNodeFast[] m_calcGrid;
+		private readonly PathFinderNodeFast[] m_calcGrid;
 
 		private readonly sbyte[,] m_direction = new sbyte[8,2]
 		                                        	{{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}};

@@ -1,5 +1,6 @@
 ﻿using GameCore;
 using GameCore.Misc;
+using GameCore.PathFinding;
 using GameUi;
 
 namespace OpenTKUi

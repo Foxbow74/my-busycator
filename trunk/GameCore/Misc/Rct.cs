@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.PathFinding;
 
 namespace GameCore.Misc
 {
@@ -103,7 +104,7 @@ namespace GameCore.Misc
 
 		public Point Center
 		{
-			get { return LeftTop + (RightBottom - LeftTop) / 2; }
+			get { return LeftTop + new Point(Width, Height) / 2; }
 		}
 
 		#region overrides

@@ -2,6 +2,7 @@
 using System.Drawing;
 using GameCore;
 using GameCore.Misc;
+using GameCore.PathFinding;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using Point = GameCore.Misc.Point;
