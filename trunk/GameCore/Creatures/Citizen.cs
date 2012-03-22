@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Objects;
-using GameCore.PathFinding;
 
 namespace GameCore.Creatures
 {
-	class Citizen : Intelligent, ISpecial
+	public class Citizen : Intelligent, ISpecial
 	{
 		private readonly string m_name;
 
@@ -79,7 +76,7 @@ namespace GameCore.Creatures
 
 		public override string ToString()
 		{
-			string result = Name;
+			var result = Name;
 			foreach (var role in Roles)
 			{
 				result +=  "/" + role;

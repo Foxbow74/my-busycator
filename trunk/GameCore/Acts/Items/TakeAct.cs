@@ -5,6 +5,7 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -98,7 +99,6 @@ namespace GameCore.Acts.Items
 
 			var descriptor = toTake[0];
 			var thing = descriptor.ResolveThing(_creature);
-			var thingString = thing.GetName(_creature);
 			IEnumerable<Item> get;
 			if (descriptor.Container == null)
 			{
@@ -144,12 +144,11 @@ namespace GameCore.Acts.Items
 				var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 				if (intelligent.IsAvatar)
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thingString + " взят" + suffix));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, thing[EPadej.IMEN] + " взят" + suffix));
 				}
 				else
 				{
-					MessageManager.SendMessage(this,
-					                           new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thingString + suffix));
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " взял " + thing[EPadej.VIN] + suffix));
 				}
 			}
 			return EActResults.DONE;

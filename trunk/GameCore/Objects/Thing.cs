@@ -1,6 +1,6 @@
 ﻿using GameCore.Creatures;
 using GameCore.Misc;
-using GameCore.PathFinding;
+using RusLanguage;
 
 namespace GameCore.Objects
 {
@@ -19,6 +19,8 @@ namespace GameCore.Objects
 		{
 			get { return EDirections.DOWN; }
 		}
+
+		public ESex Sex { get; protected set; }
 
 		public abstract string Name { get; }
 
@@ -70,5 +72,21 @@ namespace GameCore.Objects
 		public abstract EMaterial AllowedMaterials { get; }
 
 		public virtual Material Material { get; private set; }
+
+		public string this[EPadej _padej]
+		{
+			get
+			{
+				return this[_padej,World.TheWorld.Avatar];
+			}
+		}
+
+		public string this[EPadej _padej, Creature _creature]
+		{
+			get
+			{
+				return Sklonenia.ToPadej(_padej, this.GetName(_creature), this is Creature, Sex);
+			}
+		}
 	}
 }

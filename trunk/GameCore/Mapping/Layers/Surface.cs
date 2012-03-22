@@ -7,6 +7,7 @@ using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
+using RusLanguage;
 
 namespace GameCore.Mapping.Layers
 {

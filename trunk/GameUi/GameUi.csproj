@@ -44,7 +44,6 @@
     <Compile Include="IDrawHelper.cs" />
     <Compile Include="IResourceProvider.cs" />
     <Compile Include="KeyState.cs" />
-    <Compile Include="Messages\TextMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextPortion.cs" />
     <Compile Include="TheGame.cs" />
@@ -114,6 +113,10 @@
     <ProjectReference Include="..\GameCore\GameCore.csproj">
       <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
       <Name>GameCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
+      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
+      <Name>RusLanguage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

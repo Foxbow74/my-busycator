@@ -1,10 +1,13 @@
-﻿namespace GameCore.Materials
+﻿using RusLanguage;
+
+namespace GameCore.Materials
 {
 	class FlashMaterial : Material
 	{
 		public FlashMaterial()
 			: base("плоть")
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override FColor LerpColor

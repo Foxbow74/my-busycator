@@ -1,4 +1,5 @@
 ﻿using GameCore.Creatures;
+using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
@@ -49,6 +50,7 @@ namespace GameCore.Objects.Furniture
 		public ArmorRack(Material _material)
 			: base(_material)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override ETiles Tile
@@ -70,6 +72,7 @@ namespace GameCore.Objects.Furniture
 		public WeaponRack(Material _material)
 			: base(_material)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override ETiles Tile
@@ -91,6 +94,7 @@ namespace GameCore.Objects.Furniture
 		public Barrel(Material _material)
 			: base(_material)
 		{
+			Sex = ESex.FEMALE;
 		}
 
 		public override ETiles Tile

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
@@ -6,6 +7,7 @@ using GameCore.Mapping;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
+using RusLanguage;
 
 namespace GameCore.Objects
 {
@@ -15,6 +17,18 @@ namespace GameCore.Objects
 		private static readonly Dictionary<Tuple<ETiles, Material>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETiles, Material>, FakedItem>();
 		private static readonly Dictionary<Tuple<ETiles, Material>, FakedMonster> m_fakedMonsters = new Dictionary<Tuple<ETiles, Material>, FakedMonster>();
 		private static readonly List<Material> m_materials = new List<Material>();
+		
+		public static IEnumerable<FakedFurniture> AllThings()
+		{
+			var result = m_fakedThings.Select(_pair => _pair.Value).Distinct().ToArray();
+			return result;
+		}
+
+		public static IEnumerable<FakedItem> AllItems()
+		{
+			var result = m_fakedItems.Select(_pair => _pair.Value).Distinct().ToArray();
+			return result;
+		}
 
 		//public static void RegisterThings()
 		static ThingHelper()
@@ -72,7 +86,7 @@ namespace GameCore.Objects
 					_thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
 			}
-			return _thing.Name + ((_thing is Creature)?"":("(" + _thing.Material.Name + ")"));
+			return _thing.Name + ((_thing is Creature)?"":(" из " + _thing.Material[EPadej.ROD]));
 		}
 
 		public static string GetName(this ThingDescriptor _thingDescriptor, Creature _creature)
@@ -82,7 +96,7 @@ namespace GameCore.Objects
 			{
 				thing = _thingDescriptor.ResolveThing(_creature);
 			}
-			return thing.Name + "(" + thing.Material.Name + ")";
+			return thing.Name + " из " + thing.Material[EPadej.ROD];
 		}
 
 		public static bool IsClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)

@@ -48,5 +48,10 @@ namespace GameCore.Objects
 		{
 			throw new NotImplementedException();
 		}
+
+		protected override int CalcHashCode()
+		{
+			return (int)m_tile;
+		}
 	}
 }

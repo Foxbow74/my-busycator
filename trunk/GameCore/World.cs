@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -23,7 +22,7 @@ namespace GameCore
 
 		static World()
 		{
-			Rnd = new Random(WorldSeed);
+			Rnd = new Random();//WorldSeed
 		}
 
 		public World()
