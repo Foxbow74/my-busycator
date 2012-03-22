@@ -144,7 +144,7 @@ namespace GameCore.Creatures
 		{
 			get
 			{
-				return IntelligentName +", " + Roles.First().Name;
+				return IntelligentName +", " + Roles.First()[Sex];
 			}
 		}
 
