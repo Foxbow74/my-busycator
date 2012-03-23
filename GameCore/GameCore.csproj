@@ -79,7 +79,11 @@
     <Compile Include="Mapping\Layers\SurfaceObjects\City.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\CityGenerator.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\EBuilding.cs" />
-    <Compile Include="Mapping\Layers\SurfaceObjects\Store.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\GraveyardBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\HouseBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\InnBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\ShopBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\TavernBuilding.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\LiveMap.cs" />

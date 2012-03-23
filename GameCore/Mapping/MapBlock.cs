@@ -7,45 +7,68 @@ using GameCore.Objects;
 
 namespace GameCore.Mapping
 {
-	public class MapBlock
+	public class BaseMapBlock
 	{
-		//Координаты блока в блочных координатах
-
 		public const int SIZE = 32;
-		public readonly static Rct Rect = new Rct(0,0,SIZE,SIZE);
+		public readonly static Rct Rect = new Rct(0, 0, SIZE, SIZE);
 
-		public MapBlock(Point _blockId)
+		public BaseMapBlock(Point _blockId)
 		{
-			ConnectionPoints = new Dictionary<Point, Room>();
 			Rooms = new List<Room>();
-			Creatures = new List<Tuple<Creature, Point>>();
-			Objects = new List<Tuple<Thing, Point>>();
-
-			WorldCoords = _blockId*SIZE;
+			WorldCoords = _blockId * SIZE;
 			BlockId = _blockId;
-			Map = new ETerrains[SIZE,SIZE];
+			Map = new ETerrains[SIZE, SIZE];
 			RandomSeed = World.Rnd.Next();
-			SeenCells = new uint[SIZE];
+			Objects = new List<Tuple<Thing, Point>>();
 		}
+
+		public List<Tuple<Thing, Point>> Objects { get; private set; }
 
 		public Point WorldCoords { get; private set; }
 
 		public Point BlockId { get; private set; }
 
-		public int RandomSeed { get; private set; }
+		public int RandomSeed { get; protected set; }
 
 		public ETerrains[,] Map { get; private set; }
 
-		protected Dictionary<Point, Room> ConnectionPoints { get; private set; }
-
-		public List<Tuple<Creature, Point>> Creatures { get; private set; }
-
-		public List<Tuple<Thing, Point>> Objects { get; private set; }
-
 		public List<Room> Rooms { get; private set; }
 
-		public UInt32[] SeenCells { get; private set; }
+		public static Point GetBlockId(Point _point)
+		{
+			var blockCoords = new Point(GetBlockCoord(_point.X), GetBlockCoord(_point.Y));
+			return blockCoords;
+		}
 
+		private static int GetBlockCoord(int _i)
+		{
+			if (_i < 0)
+			{
+				return -(Math.Abs(_i + 1) / SIZE + 1);
+			}
+			return _i / SIZE;
+		}
+
+		public static Point GetInBlockCoords(Point _point)
+		{
+			return new Point((SIZE + (_point.X % SIZE)) % SIZE, (SIZE + (_point.Y % SIZE)) % SIZE);
+		}
+
+		public Rct Rct()
+		{
+			return new Rct(BlockId * SIZE, SIZE, SIZE);
+		}
+
+		public void AddRoom(Room _room)
+		{
+			Rooms.Add(_room);
+			_room.AddedToBlock(this);
+		}
+
+		public Point ToWorldCoords(Point _point)
+		{
+			return WorldCoords + _point;
+		}
 
 		public void RemoveObject(Thing _item, Point _inBlockCoords)
 		{
@@ -61,7 +84,7 @@ namespace GameCore.Mapping
 					.FirstOrDefault();
 				if (stack != null)
 				{
-					stack.Add((StackOfItems) _thing);
+					stack.Add((StackOfItems)_thing);
 					return false;
 				}
 			}
@@ -69,31 +92,32 @@ namespace GameCore.Mapping
 			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
 			return true;
 		}
+	}
 
-		private static Point GetWorldCoord(Point _blockId)
+	public class MapBlock : BaseMapBlock
+	{
+		public MapBlock(Point _blockId):base(_blockId)
 		{
-			return _blockId * SIZE;
+			Creatures = new List<Tuple<Creature, Point>>();
+			SeenCells = new uint[SIZE];
 		}
 
-		public static Point GetBlockId(Point _point)
+		public MapBlock(Point _blockId, BaseMapBlock _baseMapBlock): this(_blockId)
 		{
-			var blockCoords = new Point(GetBlockCoord(_point.X), GetBlockCoord(_point.Y));
-			return blockCoords;
-		}
-
-		private static int GetBlockCoord(int _i)
-		{
-			if (_i < 0)
+			foreach (var point in Rect.AllPoints)
 			{
-				return -(Math.Abs(_i + 1)/SIZE + 1);
+				Map[point.X, point.Y] = _baseMapBlock.Map[point.X, point.Y];
 			}
-			return _i/SIZE;
+			foreach (var room in _baseMapBlock.Rooms)
+			{
+				Rooms.Add(room);
+			}
+			RandomSeed = _baseMapBlock.RandomSeed;
 		}
 
-		public static Point GetInBlockCoords(Point _point)
-		{
-			return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE);
-		}
+		public List<Tuple<Creature, Point>> Creatures { get; private set; }
+
+		public UInt32[] SeenCells { get; private set; }
 
 		public IEnumerable<Tuple<ILightSource, Point>> LightSources
 		{
@@ -123,6 +147,10 @@ namespace GameCore.Mapping
 
 		public void AddCreature(Creature _creature, Point _inBlockCoords)
 		{
+			if (_creature is FakedCreature)
+			{
+				_creature = (Creature)((FakedCreature) _creature).ResolveFake(World.TheWorld.Avatar);
+			}
 			Creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
 		}
 
@@ -132,22 +160,6 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
-		}
-
-		public Rct Rct()
-		{
-			return new Rct(BlockId*SIZE, SIZE, SIZE);
-		}
-
-		public void AddRoom(Room _room)
-		{
-			Rooms.Add(_room);
-			_room.AddedToBlock(this);
-		}
-
-		public Point ToWorldCoords(Point _point)
-		{
-			return WorldCoords + _point;
 		}
 
 		public void AvatarLeftLayer()

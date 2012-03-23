@@ -69,12 +69,12 @@ namespace GameCore.Objects
 		}
 	}
 
-	public class FakedMonster : Creature, IFaked
+	public class FakedCreature : Creature, IFaked
 	{
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedMonster(ETiles _tile)
+		public FakedCreature(ETiles _tile)
 			: base(null, int.MinValue)
 		{
 			m_tile = _tile;
@@ -95,7 +95,10 @@ namespace GameCore.Objects
 		public Thing ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
-			return ThingHelper.ResolveThing(type, Material, _creature);
+
+			var thing = (Thing)Activator.CreateInstance(type, new object[] { _creature.Layer, });
+			thing.Resolve(_creature);
+			return thing;
 		}
 
 		#endregion

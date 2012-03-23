@@ -1,4 +1,6 @@
-﻿using GameCore.Creatures;
+﻿using System;
+using System.Collections.Generic;
+using GameCore.Creatures;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using RusLanguage;
 
@@ -7,6 +9,7 @@ namespace GameCore.CreatureRoles
 	public abstract class AbstractCreatureRole
 	{
 		public abstract string Name { get; }
+		public abstract IEnumerable<FColor> Colors { get; }
 
 		public virtual string this[ESex _sex]
 		{
@@ -45,6 +48,8 @@ namespace GameCore.CreatureRoles
 		{
 			get { return "аватар"; }
 		}
+
+		public override IEnumerable<FColor> Colors { get { throw new NotImplementedException(); } }
 	}
 
 	class HouseKeeper : AbstractCitizenRole
@@ -52,6 +57,17 @@ namespace GameCore.CreatureRoles
 		public override string Name
 		{
 			get { return "владелец"; }
+		}
+
+		public override IEnumerable<FColor> Colors
+		{
+			get
+			{
+				yield return FColor.DarkGray;
+				yield return FColor.Gray;
+				yield return FColor.LightGray;
+				yield return FColor.LightSlateGray;
+			}
 		}
 
 		public override EBuilding BuildingType
@@ -65,6 +81,16 @@ namespace GameCore.CreatureRoles
 		public override string Name
 		{
 			get { return "трактирщик"; }
+		}
+
+		public override IEnumerable<FColor> Colors
+		{
+			get
+			{
+				yield return FColor.GreenCopper;
+				yield return FColor.GreenLeaf;
+				yield return FColor.GreenWaterloo;
+			}
 		}
 
 		public override EBuilding BuildingType
@@ -84,6 +110,16 @@ namespace GameCore.CreatureRoles
 		{
 			get { return EBuilding.INN; }
 		}
+
+		public override IEnumerable<FColor> Colors
+		{
+			get
+			{
+				yield return FColor.YellowMetal;
+				yield return FColor.YellowSea;
+				yield return FColor.YellowGreen;
+			}
+		}
 	}
 
 	class ShopKeeper : AbstractCitizenRole
@@ -97,6 +133,18 @@ namespace GameCore.CreatureRoles
 		{
 			get { return EBuilding.SHOP; }
 		}
+
+
+		public override IEnumerable<FColor> Colors
+		{
+			get
+			{
+				yield return FColor.BlueWhale;
+				yield return FColor.SkyBlue;
+				yield return FColor.BlueChalk;
+			}
+		}
+
 	}
 
 	class GraveyardKeeper : AbstractCitizenRole
@@ -110,6 +158,17 @@ namespace GameCore.CreatureRoles
 		public override EBuilding BuildingType
 		{
 			get { return EBuilding.GRAVEYARD; }
+		}
+
+
+		public override IEnumerable<FColor> Colors
+		{
+			get
+			{
+				yield return FColor.BlackMagic;
+				yield return FColor.BlackPearl;
+				yield return FColor.BlackHaze;
+			}
 		}
 	}
 

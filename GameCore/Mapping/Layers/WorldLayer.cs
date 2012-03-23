@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Misc;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Mapping.Layers
 {
@@ -61,5 +62,7 @@ namespace GameCore.Mapping.Layers
 		public abstract FColor Ambient { get; }
 
 		public Dictionary<Point, MapBlock> Blocks { get; private set; }
+
+		public virtual void AddStair(WorldLayer _enterFromLayer, Point _worldCoords, Stair _stair) { throw new NotImplementedException(); }
 	}
 }

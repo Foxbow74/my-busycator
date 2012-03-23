@@ -6,7 +6,6 @@ using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Objects.Furniture.LightSources;
-using GameCore.PathFinding;
 using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
@@ -15,10 +14,12 @@ namespace GameCore.Mapping.Layers
 	{
 		const int MAX_PATH_LEN = 20;
 
-		public TreeMazeDungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair, Random _rnd)
-			: base(_enterFromLayer, _enterCoords, _stair)
+		private readonly Dictionary<Point, BaseMapBlock> m_mazeBlocks = new Dictionary<Point, BaseMapBlock>();
+
+		public TreeMazeDungeonLayer(Point _enterCoords, Random _rnd)
+			: base(_enterCoords)
 		{
-			var enterBlock = MapBlock.GetBlockId(_enterCoords);
+			var enterBlock = BaseMapBlock.GetBlockId(_enterCoords);
 
 			var size = _rnd.Next(5) + _rnd.Next(5) + 5;
 			var center = new Point(size, size) / 2;
@@ -29,26 +30,26 @@ namespace GameCore.Mapping.Layers
 
 			foreach (var blockId in blockIds)
 			{
-				MapBlock block;
-				if(!Blocks.TryGetValue(blockId, out block))
+				BaseMapBlock block;
+				if (!m_mazeBlocks.TryGetValue(blockId, out block))
 				{
-					block = new MapBlock(blockId);	
+					block = new BaseMapBlock(blockId);	
 				}
-				
-				if (MapBlock.GetBlockId(EnterCoords) == blockId)
+
+				if (BaseMapBlock.GetBlockId(EnterCoords) == blockId)
 				{
-					GenerateInternal(block, new[] { MapBlock.GetInBlockCoords(EnterCoords) });
+					GenerateInternal(block, new[] { BaseMapBlock.GetInBlockCoords(EnterCoords) });
 				}
 				else
 				{
 					GenerateInternal(block);
 				}
-				Blocks[block.BlockId] = block;
+				m_mazeBlocks[block.BlockId] = block;
 			}
 
 			var connectionPoints = new List<ConnectionPoint>();
 
-			foreach (var block in blockIds.Select(_blockId => Blocks[_blockId]))
+			foreach (var block in blockIds.Select(_blockId => m_mazeBlocks[_blockId]))
 			{
 				var rnd = new Random(block.RandomSeed);
 				foreach (var room in block.Rooms)
@@ -59,7 +60,7 @@ namespace GameCore.Mapping.Layers
 
 			LinkRooms(connectionPoints);
 
-			foreach (var mapBlock in Blocks.Values)
+			foreach (var mapBlock in m_mazeBlocks.Values)
 			{
 				foreach (var room in mapBlock.Rooms.Where(_room => _room.IsConnected))
 				{
@@ -121,18 +122,91 @@ namespace GameCore.Mapping.Layers
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
-			var block = new MapBlock(_blockId);
+			BaseMapBlock baseMapBlock;
+			if(!m_mazeBlocks.TryGetValue(_blockId, out baseMapBlock))
+			{
+				var eblock = new MapBlock(_blockId);
+				var ernd = new Random(eblock.RandomSeed);
+				MapBlockHelper.Clear(eblock, ernd, this, DefaultWalls);
+				return eblock;
+			}
+			var block = new MapBlock(_blockId, baseMapBlock);
 			var rnd = new Random(block.RandomSeed);
-			MapBlockHelper.Clear(block, rnd, this, DefaultWalls);
+			AddItems(block, rnd);
+			AddCreatures(block, rnd);
+
 			return block;
 		}
 
+		private static void AddCreatures(MapBlock _block, Random _rnd)
+		{
+			var itmcnt = 20 + _rnd.Next(_rnd.Next(20));
+			for (var i = 0; i < itmcnt; ++i)
+			{
+				var x = _rnd.Next(BaseMapBlock.SIZE);
+				var y = _rnd.Next(BaseMapBlock.SIZE);
 
-		private void GenerateInternal(MapBlock _block, params Point[] _objects)
+				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+				if (attr.IsPassable > 0)
+				{
+					var point = new Point(x, y);
+					var any = _block.Creatures.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
+					var creature = ThingHelper.GetFakedCreature(_block);
+
+					if (creature.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
+					{
+						continue;
+					}
+					if (any.Any())
+					{
+						continue;
+					}
+					_block.AddCreature(creature, point);
+				}
+			}
+		}
+
+		private static void AddItems(MapBlock _block, Random _rnd)
+		{
+			var itmcnt = 20 + _rnd.Next(_rnd.Next(20));
+			for (var i = 0; i < itmcnt; ++i)
+			{
+				var x = _rnd.Next(BaseMapBlock.SIZE);
+				var y = _rnd.Next(BaseMapBlock.SIZE);
+
+				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+				if (attr.IsPassable > 0)
+				{
+					var point = new Point(x, y);
+					var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
+					var thing = ThingHelper.GetFakedItem(_block.RandomSeed);
+
+					if (thing.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
+					{
+						continue;
+					}
+
+					if (thing is Item)
+					{
+						if (any.Any(_thing => !(_thing is Item)))
+						{
+							continue;
+						}
+					}
+					else if (any.Any())
+					{
+						continue;
+					}
+					_block.AddObject(thing, point);
+				}
+			}
+		}
+
+		private void GenerateInternal(BaseMapBlock _block, params Point[] _objects)
 		{
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
-			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, MapBlock.SIZE - 1, MapBlock.SIZE - 1), new List<Point>(_objects), _block.BlockId);
+			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 1), new List<Point>(_objects), _block.BlockId);
 			foreach (var room in rooms)
 			{
 				MapBlockHelper.Fill(_block, rnd, this, DefaultEmptySpaces, room.RoomRectangle);
@@ -143,10 +217,10 @@ namespace GameCore.Mapping.Layers
 		/// <summary>
 		/// добавление коридоров, идущих из комнат
 		/// </summary>
-		private IEnumerable<ConnectionPoint> AddConnectionPoints(MapBlock _block, Room _room, Random _rnd)
+		private IEnumerable<ConnectionPoint> AddConnectionPoints(BaseMapBlock _block, Room _room, Random _rnd)
 		{
-			if (_block.BlockId == MapBlock.GetBlockId(EnterCoords) &&
-			    _room.RoomRectangle.Contains(MapBlock.GetInBlockCoords(EnterCoords)))
+			if (_block.BlockId == BaseMapBlock.GetBlockId(EnterCoords) &&
+				_room.RoomRectangle.Contains(BaseMapBlock.GetInBlockCoords(EnterCoords)))
 			{
 				_room.IsConnected = true;
 			}
@@ -190,7 +264,7 @@ namespace GameCore.Mapping.Layers
 
 					var delta = dir.GetDelta();
 
-					if (!Blocks.ContainsKey(MapBlock.GetBlockId(begin + _block.BlockId*MapBlock.SIZE + delta*MapBlock.SIZE)))
+					if (!m_mazeBlocks.ContainsKey(BaseMapBlock.GetBlockId(begin + _block.BlockId * BaseMapBlock.SIZE + delta * BaseMapBlock.SIZE)))
 					{
 						continue;
 					}
@@ -201,7 +275,7 @@ namespace GameCore.Mapping.Layers
 						if (!_room.AreaRectangle.Contains(end)) break;
 					} while (true);
 
-					cps.Add(new ConnectionPoint(begin + _block.BlockId*MapBlock.SIZE, end + _block.BlockId*MapBlock.SIZE, _room, dir));
+					cps.Add(new ConnectionPoint(begin + _block.BlockId * BaseMapBlock.SIZE, end + _block.BlockId * BaseMapBlock.SIZE, _room, dir));
 				}
 
 				if (cps.Count > 1 || (trys > 5 && cps.Count > 0) || trys>20)
@@ -219,7 +293,7 @@ namespace GameCore.Mapping.Layers
 		{
 			var connectors = new Dictionary<Point, Connector>();
 
-			var rooms = Blocks.Values.SelectMany(_mapBlock => _mapBlock.Rooms).ToArray();
+			var rooms = m_mazeBlocks.Values.SelectMany(_mapBlock => _mapBlock.Rooms).ToArray();
 
 			if (rooms.Length == 0) return;
 
@@ -809,7 +883,7 @@ namespace GameCore.Mapping.Layers
 
 		private void ConnectTwoRooms(Room _room1, Room _room2, IDictionary<Point, EDirections> _forbid, IDictionary<Point, Connector> _connectors, params Point[] _points)
 		{
-			var rnd = new Random(Blocks[_room1.BlockId].RandomSeed);
+			var rnd = new Random(m_mazeBlocks[_room1.BlockId].RandomSeed);
 			var pnt = _points[0];
 			var defEmpty = DefaultEmptySpaces.ToArray();
 			Point point = null;
@@ -842,8 +916,17 @@ namespace GameCore.Mapping.Layers
 					{
 						_connectors.Add(point, new Connector(_room1));
 					}
-					var inBlock = MapBlock.GetInBlockCoords(point);
-					this[MapBlock.GetBlockId(point)].Map[inBlock.X, inBlock.Y] = defEmpty[rnd.Next(defEmpty.Length)];
+					var inBlock = BaseMapBlock.GetInBlockCoords(point);
+					var blockId = BaseMapBlock.GetBlockId(point);
+
+					BaseMapBlock block;
+					if(!m_mazeBlocks.TryGetValue(blockId, out block))
+					{
+						block = new MapBlock(blockId);
+						MapBlockHelper.Clear(block, rnd, this, DefaultWalls);
+						m_mazeBlocks[blockId] = block;
+					}
+					block.Map[inBlock.X, inBlock.Y] = defEmpty[rnd.Next(defEmpty.Length)];
 
 					if (index != 0 && index < line.Length - 1)
 					{

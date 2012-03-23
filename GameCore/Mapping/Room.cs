@@ -74,13 +74,13 @@ namespace GameCore.Mapping
 
 		public List<Room> ConnectedTo { get; private set; }
 
-		public virtual void AddedToBlock(MapBlock _mapBlock)
+		public virtual void AddedToBlock(BaseMapBlock _mapBlock)
 		{
 			BlockId = _mapBlock.BlockId;
 			WorldRoomRectangle = new Rct
 				(
-					RoomRectangle.Left + BlockId.X * MapBlock.SIZE,
-					RoomRectangle.Top + BlockId.Y * MapBlock.SIZE,
+					RoomRectangle.Left + BlockId.X * BaseMapBlock.SIZE,
+					RoomRectangle.Top + BlockId.Y * BaseMapBlock.SIZE,
 					RoomRectangle.Width,
 					RoomRectangle.Height);
 			RandomSeed = _mapBlock.RandomSeed + RoomRectangle.LeftTop.GetHashCode();

@@ -15,7 +15,7 @@ namespace GameCore.Objects
 	{
 		private static readonly Dictionary<Tuple<ETiles, Material>, FakedFurniture> m_fakedThings = new Dictionary<Tuple<ETiles, Material>, FakedFurniture>();
 		private static readonly Dictionary<Tuple<ETiles, Material>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETiles, Material>, FakedItem>();
-		private static readonly Dictionary<Tuple<ETiles, Material>, FakedMonster> m_fakedMonsters = new Dictionary<Tuple<ETiles, Material>, FakedMonster>();
+		private static readonly Dictionary<Tuple<ETiles, Material>, FakedCreature> m_fakedMonsters = new Dictionary<Tuple<ETiles, Material>, FakedCreature>();
 		private static readonly List<Material> m_materials = new List<Material>();
 		
 		public static IEnumerable<FakedFurniture> AllThings()
@@ -151,7 +151,7 @@ namespace GameCore.Objects
 			return m_fakedItems[new Tuple<ETiles, Material>(_tile, _material)];
 		}
 
-		public static FakedMonster GetMonster(this ETiles _tile, Material _material = null)
+		public static FakedCreature GetMonster(this ETiles _tile, Material _material = null)
 		{
 			if (_material == null)
 			{
@@ -164,11 +164,11 @@ namespace GameCore.Objects
 		private static void RegisterCreatureType(Type _type)
 		{
 			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null});
-			FakedMonster value;
+			FakedCreature value;
 			var key = new Tuple<ETiles, Material>(thing.Tile, GetMaterial<FlashMaterial>());
 			if (!m_fakedMonsters.TryGetValue(key, out value))
 			{
-				value = new FakedMonster(thing.Tile);
+				value = new FakedCreature(thing.Tile);
 				m_fakedMonsters.Add(key, value);
 			}
 			value.Add(_type);
@@ -235,14 +235,14 @@ namespace GameCore.Objects
 			return m_fakedThings[keys[index]];
 		}
 
-		public static Thing GetFakedItem(int _blockRandomSeed)
+		public static FakedItem GetFakedItem(int _blockRandomSeed)
 		{
 			var keys = new List<Tuple<ETiles, Material>>(m_fakedItems.Keys);
 			var index = World.Rnd.Next(keys.Count);
 			return m_fakedItems[keys[index]];
 		}
 
-		public static Thing GetFakedCreature(MapBlock _block)
+		public static FakedCreature GetFakedCreature(MapBlock _block)
 		{
 			var keys = new List<Tuple<ETiles, Material>>(m_fakedMonsters.Keys);
 			return m_fakedMonsters[keys[World.Rnd.Next(keys.Count)]];
