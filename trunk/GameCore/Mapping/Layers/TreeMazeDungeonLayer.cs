@@ -140,7 +140,7 @@ namespace GameCore.Mapping.Layers
 
 		private static void AddCreatures(MapBlock _block, Random _rnd)
 		{
-			var itmcnt = 20 + _rnd.Next(_rnd.Next(20));
+			var itmcnt = 2 + _rnd.Next(_rnd.Next(2));
 			for (var i = 0; i < itmcnt; ++i)
 			{
 				var x = _rnd.Next(BaseMapBlock.SIZE);
@@ -161,6 +161,12 @@ namespace GameCore.Mapping.Layers
 					{
 						continue;
 					}
+
+					if(!_block.Rooms.Any(_room => _room.RoomRectangle.Contains(point)&& _room.IsConnected))
+					{
+						continue;
+					}
+
 					_block.AddCreature(creature, point);
 				}
 			}
