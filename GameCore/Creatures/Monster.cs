@@ -32,14 +32,14 @@ namespace GameCore.Creatures
 
 		public override EThinkingResult Thinking()
 		{
-			if(m_skip>0)
+			var myLiveCell = this[0, 0];
+			if (m_skip > 0 || !myLiveCell.IsSeenBefore)
 			{
 				m_skip--;
 				AddActToPool(new WaitAct());
 				return EThinkingResult.NORMAL;
 			}
 			var destLiveCell = World.TheWorld.Avatar[0, 0];
-			var myLiveCell = this[0, 0];
 			if (destLiveCell.InRoom == myLiveCell.InRoom)
 			{
 				AddActToPool(new WaitAct());
