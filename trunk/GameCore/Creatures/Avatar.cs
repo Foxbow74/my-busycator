@@ -20,7 +20,7 @@ namespace GameCore.Creatures
 
 		public override ETiles Tile
 		{
-			get { return ETiles.AVATAR; }
+			get { return ETiles.GUARD; }
 		}
 
 		public override string IntelligentName

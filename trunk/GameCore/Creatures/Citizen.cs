@@ -4,6 +4,7 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameCore.Creatures
 {
@@ -19,7 +20,20 @@ namespace GameCore.Creatures
 
 		public override ETiles Tile
 		{
-			get { return ETiles.CITIZEN; }
+			get
+			{
+				switch (Sex)
+				{
+					case ESex.MALE:
+						return Nn % 2 == 0 ? ETiles.CITIZEN_MALE : ETiles.CITIZEN_MALE2;
+						break;
+					case ESex.FEMALE:
+						return Nn % 2 == 0 ? ETiles.CITIZEN_FEMALE : ETiles.CITIZEN_FEMALE2;
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+			}
 		}
 
 		public override string IntelligentName
