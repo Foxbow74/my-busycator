@@ -163,14 +163,17 @@ namespace GameCore
 		{
 			var rnd = new Random(_creature[0,0].LiveMapBlock.MapBlock.RandomSeed);
 			var n = rnd.Next();
+			WorldLayer layer;
 			switch (n%1)
 			{
 				case 0:
-					//return new DungeonLayer(_creature.Layer, _creature[0, 0].WorldCoords, _stair);
-					return new TreeMazeDungeonLayer(_creature.Layer, _creature[0,0].WorldCoords, _stair, rnd);
+					layer = new TreeMazeDungeonLayer(_creature[0, 0].WorldCoords, rnd);
+					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+			layer.AddStair(_creature.Layer, _creature[0, 0].WorldCoords, _stair);
+			return layer;
 		}
 
 		public  void SetAvatarBlockId(Point _newBlockId)

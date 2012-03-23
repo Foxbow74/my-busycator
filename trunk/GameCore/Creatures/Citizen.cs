@@ -11,11 +11,20 @@ namespace GameCore.Creatures
 	public class Citizen : Intelligent, ISpecial
 	{
 		private readonly string m_name;
+		private FColor m_lerpColor;
 
 		public Citizen(Surface _layer, Random _rnd)
 			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT)
 		{
 			m_name = _layer.GetNextCitizenName(Sex);
+		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return m_lerpColor;
+			}
 		}
 
 		public override ETiles Tile
@@ -98,5 +107,7 @@ namespace GameCore.Creatures
 			}
 			return result;
 		}
+
+		public void SetLerpColor(FColor _fColor) { m_lerpColor = _fColor; }
 	}
 }

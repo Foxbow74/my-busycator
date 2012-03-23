@@ -5,7 +5,7 @@ using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
-	internal abstract class Stair : FurnitureThing
+	public abstract class Stair : FurnitureThing
 	{
 		private WorldLayer m_leadToLayer;
 

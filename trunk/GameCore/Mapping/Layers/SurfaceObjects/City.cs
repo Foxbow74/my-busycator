@@ -114,8 +114,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			get { return m_buildings; }
 		}
 
-		readonly List<Citizen> m_already = new List<Citizen>();
-		
 		public IEnumerable<Citizen> AllCitizens
 		{
 			get
@@ -123,6 +121,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				return m_citizens;
 			}
 		}
+
+		private readonly List<Citizen> m_already = new List<Citizen>();
+		private readonly List<Tuple<ETiles, FColor>> m_conf = new List<Tuple<ETiles, FColor>>();
 
 		public void GenerateCityBlock(MapBlock _block, Random _rnd)
 		{
@@ -147,6 +148,23 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					}
 					Debug.WriteLine(citizen);
 					m_already.Add(citizen);
+
+					Tuple<ETiles, FColor> tuple = null;
+					foreach(var color in citizen.Roles.First().Colors)
+					{
+						tuple = Tuple.Create(citizen.Tile, color);
+						if(!m_conf.Contains(tuple))
+						{
+							break;
+						}
+					}
+					if(tuple==null)
+					{
+						throw new ApplicationException();
+					}
+
+					m_conf.Add(tuple);
+					citizen.SetLerpColor(tuple.Item2);
 					_block.AddCreature(citizen, building.Room.RoomRectangle.Center);
 				}
 			}

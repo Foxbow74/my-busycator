@@ -6,17 +6,22 @@ using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Objects.Furniture.LightSources;
-using GameCore.PathFinding;
 
 namespace GameCore.Mapping.Layers
 {
 	internal class DungeonLayer : WorldLayer
 	{
-		public DungeonLayer(WorldLayer _enterFromLayer, Point _enterCoords, Stair _stair)
+		public DungeonLayer(Point _enterCoords)
 		{
 			EnterCoords = _enterCoords;
-			var blockId = MapBlock.GetBlockId(_enterCoords);
-			var inBlockCoords = MapBlock.GetInBlockCoords(_enterCoords);
+			FogColor = FColor.FromArgb(255, 100, 100, 100);
+			FogLightness = FogColor.Lightness();
+		}
+
+		public override void AddStair(WorldLayer _enterFromLayer, Point _worldCoords, Stair _stair)
+		{
+			var blockId = BaseMapBlock.GetBlockId(EnterCoords);
+			var inBlockCoords = BaseMapBlock.GetInBlockCoords(EnterCoords);
 			var block = this[blockId];
 
 			if (_stair is StairUp)
@@ -27,9 +32,6 @@ namespace GameCore.Mapping.Layers
 			{
 				block.AddObject(new StairUp(_enterFromLayer, ThingHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
 			}
-
-			FogColor = FColor.FromArgb(255, 100, 100, 100);
-			FogLightness = FogColor.Lightness();
 		}
 
 		public override float GetFogColorMultiplier(LiveMapCell _liveCell)

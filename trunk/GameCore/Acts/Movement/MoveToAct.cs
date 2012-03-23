@@ -58,6 +58,7 @@ namespace GameCore.Acts.Movement
 
 			if(way!=null)
 			{
+				var result = EActResults.DONE;
 				var pnt = way.First();
 				foreach (var point in way)
 				{
@@ -65,10 +66,11 @@ namespace GameCore.Acts.Movement
 					if (dpoint != Point.Zero)
 					{
 						_creature.AddActToPool(new MoveAct(), dpoint);
+						result = EActResults.ACT_REPLACED;
 					}
 					pnt = point;
 				}
-				return EActResults.ACT_REPLACED;
+				return result;
 			}
 
 			if(target==null)
