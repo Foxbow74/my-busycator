@@ -241,7 +241,7 @@ namespace GameUi
 					case ETiles.OPEN_DOOR:
 						tl = Rp.CreateTile(4, 12, FColor.White);
 						break;
-					case ETiles.AVATAR:
+					case ETiles.GUARD:
 						tl = Rp.CreateTile(2, 0, FColor.White);
 						break;
 					case ETiles.TORCH:

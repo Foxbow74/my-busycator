@@ -29,8 +29,11 @@ namespace GameCore
 		[Tiles(0.4f)]BED,
 		[Tiles(0.4f)]BARREL,
 
-		[Tiles(0.2f)]AVATAR,
-		[Tiles(0.2f)]CITIZEN,
+		[Tiles(0.2f)]GUARD,
+		[Tiles(0.2f)]CITIZEN_MALE,
+		[Tiles(0.2f)]CITIZEN_MALE2,
+		[Tiles(0.2f)]CITIZEN_FEMALE,
+		[Tiles(0.2f)]CITIZEN_FEMALE2,
 		[Tiles(0.3f)] MONSTER,
 
 		[Tiles(0.2f)] SWORD,

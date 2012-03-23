@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -12,7 +11,6 @@ namespace GameUi.UIBlocks
 	class LookAtUiBlock: UiBlockWithText
 	{
 		private Point m_avatarScreenPoint;
-		private Point m_halfScreen;
 		private readonly TurnMessageUiBlock m_messages;
 		private Point m_targetPoint;
 
@@ -45,7 +43,6 @@ namespace GameUi.UIBlocks
 		private void Rebuild()
 		{
 			TargetPoint = Point.Zero;
-			m_halfScreen = new Point(ContentRct.Width, ContentRct.Height)/2;
 			m_avatarScreenPoint = ContentRct.Center;
 		}
 
@@ -88,34 +85,36 @@ namespace GameUi.UIBlocks
 
 				var lighted = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
 
-				var s = new StringBuilder();
-				s.Append(liveCell.TerrainAttribute.DisplayName); 
+				var list = new List<string>();
+				var s = "";
 				if (lighted.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
 				{
+					s = "там ";
 					ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 
 					if(liveCell.Creature!=null)
 					{
-						s.Append(", " + liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
 					}
 					if (liveCell.Furniture != null)
 					{
-						s.Append(", " + liveCell.Furniture.GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Furniture.GetName(World.TheWorld.Avatar, liveCell));
 					}
 					if (liveCell.Items.Count() > 1)
 					{
-						s.Append(", вещи");
+						list.Add("вещи");
 					}
 					else if(liveCell.Items.Count()==1)
 					{
-						s.Append(", " + liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell));
 					}
 				}
 				else
 				{
-
+					s = RusLanguage.Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
 				}
-				m_messages.DrawLine(s.ToString(), FColor.Gray, 1, 0, EAlignment.LEFT);
+				list.Add(liveCell.TerrainAttribute.DisplayName);
+				m_messages.DrawLine(s + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);
 			}
 			else
 			{

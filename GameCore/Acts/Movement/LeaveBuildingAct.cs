@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Objects;
@@ -39,23 +38,13 @@ namespace GameCore.Acts.Movement
 			if (building != null)
 			{
 				var coords = _creature[0, 0].WorldCoords;
-				//var onDoor = building.DoorWorldCoords == coords; //позиция совпадает с дверью
-
-				//if (!onDoor && !building.InDoorWorldCoords.Contains(coords))
-				//{
-				//    _creature.AddActToPool(new MoveToAct(), building.DoorWorldCoords);
-				//    return EActResults.ACT_REPLACED;
-				//}
-				//else if (!building.OutDoorWorldCoords.Contains(coords))
+				var p = building.OutDoorWorldCoords[World.Rnd.Next(building.OutDoorWorldCoords.Length)];
+				if (_creature[p - coords].GetIsPassableBy(_creature) > 0)
 				{
-					var p = building.OutDoorWorldCoords[World.Rnd.Next(building.OutDoorWorldCoords.Length)];
-					if (_creature[p-coords].GetIsPassableBy(_creature) > 0)
-					{
-						_creature.AddActToPool(new MoveToAct(), p);
-						return EActResults.ACT_REPLACED;
-					}
-					return EActResults.QUICK_FAIL;
+					_creature.AddActToPool(new MoveToAct(), p);
+					return EActResults.ACT_REPLACED;
 				}
+				return EActResults.QUICK_FAIL;
 			}
 			return EActResults.DONE;
 		}
