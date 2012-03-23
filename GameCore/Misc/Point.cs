@@ -52,7 +52,7 @@ namespace GameCore.Misc
 		}
 
 
-		public IEnumerable<Point> NearestDPoints
+		public static IEnumerable<Point> NearestDPoints
 		{
 			get
 			{

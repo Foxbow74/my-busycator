@@ -43,7 +43,7 @@ namespace GameCore.Acts.Interact
 			{
 				//собираем координаты всех закрытых вещей
 				var list = new List<Point>();
-				foreach (var point in _creature.LiveCoords.NearestDPoints)
+				foreach (var point in Point.NearestDPoints)
 				{
 					var cc = _creature[point];
 					if (cc.Furniture.IsClosed(cc, _creature))
