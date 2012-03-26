@@ -16,10 +16,7 @@ namespace GameCore
 	{
 		private static Dictionary<EMapBlockTypes, MapBlockTypeAttribute> m_attrs;
 
-		public MapBlockTypeAttribute(string _displayName)
-		{
-			DisplayName = _displayName;
-		}
+		public MapBlockTypeAttribute(string _displayName) { DisplayName = _displayName; }
 
 		public string DisplayName { get; private set; }
 

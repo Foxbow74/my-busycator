@@ -9,25 +9,13 @@ namespace GameCore.Objects
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedItem(ETiles _tile, Material _material):base(_material)
-		{
-			m_tile = _tile;
-		}
+		public FakedItem(ETiles _tile, Material _material) : base(_material) { m_tile = _tile; }
 
-		public override ETiles Tile
-		{
-			get { return m_tile; }
-		}
+		public override ETiles Tile { get { return m_tile; } }
 
-		public override string Name
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string Name { get { throw new NotImplementedException(); } }
 
-		public override EThingCategory Category
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override EThingCategory Category { get { throw new NotImplementedException(); } }
 
 		#region IFaked Members
 
@@ -39,19 +27,10 @@ namespace GameCore.Objects
 
 		#endregion
 
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
+		public void Add(Type _type) { m_types.Add(_type); }
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
+		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
-		protected override int CalcHashCode()
-		{
-			return (int)m_tile;
-		}
+		protected override int CalcHashCode() { return (int) m_tile; }
 	}
 }

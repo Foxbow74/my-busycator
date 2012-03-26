@@ -9,30 +9,15 @@ namespace GameCore.Acts.Combat
 {
 	internal class AtackAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 20; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 20; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.A, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.A, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "атаковать"; }
-		}
+		public override string Name { get { return "атаковать"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.COMBAT; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.COMBAT; } }
 
 		public override EActResults Do(Creature _creature)
 		{

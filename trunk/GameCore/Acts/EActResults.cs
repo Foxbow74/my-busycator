@@ -19,7 +19,7 @@ namespace GameCore.Acts
 		/// </summary>
 		FAIL,
 		/// <summary>
-		/// ќпераци€ провалена, но врем€ почти не потрачено
+		/// 	ќпераци€ провалена, но врем€ почти не потрачено
 		/// </summary>
 		QUICK_FAIL,
 	}

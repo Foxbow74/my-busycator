@@ -24,10 +24,7 @@
 			AvatarChangeLayer = new WorldMessage(EType.AVATAR_CHANGE_LAYER);
 		}
 
-		public WorldMessage(EType _type)
-		{
-			Type = _type;
-		}
+		public WorldMessage(EType _type) { Type = _type; }
 
 		public static WorldMessage Turn { get; private set; }
 		public static WorldMessage JustRedraw { get; private set; }

@@ -1,28 +1,18 @@
 ﻿namespace GameCore.Materials
 {
-	abstract class MineralMaterial : Material
+	internal abstract class MineralMaterial : Material
 	{
 		protected MineralMaterial(string _name)
-			: base(_name)
-		{
-		}
+			: base(_name) { }
 
-		public override EMaterial MaterialType
-		{
-			get { return EMaterial.MINERAL; }
-		}
+		public override EMaterial MaterialType { get { return EMaterial.MINERAL; } }
 	}
 
-	class StoneMaterial : MineralMaterial
+	internal class StoneMaterial : MineralMaterial
 	{
 		public StoneMaterial()
-			: base("камень")
-		{
-		}
+			: base("камень") { }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.DarkGray; }
-		}
+		public override FColor LerpColor { get { return FColor.DarkGray; } }
 	}
 }

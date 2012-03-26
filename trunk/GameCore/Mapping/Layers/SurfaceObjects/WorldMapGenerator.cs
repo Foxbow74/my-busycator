@@ -18,7 +18,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			var map = new EMapBlockTypes[m_size,m_size];
 
-			int radius = m_size / 2 - 2;
+			var radius = m_size/2 - 2;
 
 			var center = new Point(m_size/2, m_size/2);
 

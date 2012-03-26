@@ -12,60 +12,29 @@ namespace GameCore.Objects.Tools
 		EActResults UseTool(Intelligent _intelligent);
 	}
 
-	class Torch : Item, ITool
+	internal class Torch : Item, ITool
 	{
 		private LightSource m_lightSource;
 
-		public Torch(Material _material) : base(_material)
-		{
-		}
+		public Torch(Material _material) : base(_material) { }
 
-		public void LightCells(LiveMap _liveMap, Point _point)
-		{
-			m_lightSource.LightCells(_liveMap, _point);
-		}
+		public override ETiles Tile { get { return ETiles.TORCH; } }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.TORCH; }
-		}
+		public override string Name { get { return "факел"; } }
 
-		public override string Name
-		{
-			get { return "факел"; }
-		}
+		public override EThingCategory Category { get { return EThingCategory.TOOLS; } }
 
-		public override EThingCategory Category
-		{
-			get { return EThingCategory.TOOLS; }
-		}
-
-		public override void Resolve(Creature _creature)
-		{
-			m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f));
-		}
-
-		public override FColor LerpColor
-		{
-			get
-			{
-				return IsOn ? new FColor(1f, m_lightSource.Color) : base.LerpColor;
-			}
-		}
+		public override FColor LerpColor { get { return IsOn ? new FColor(1f, m_lightSource.Color) : base.LerpColor; } }
 
 		public bool IsOn { get; private set; }
 
-		public override ILightSource Light
-		{
-			get
-			{
-				return IsOn?m_lightSource : null;
-			}
-		}
+		public override ILightSource Light { get { return IsOn ? m_lightSource : null; } }
+
+		#region ITool Members
 
 		public EActResults UseTool(Intelligent _intelligent)
 		{
-			if(IsOn)
+			if (IsOn)
 			{
 				if (_intelligent.IsAvatar)
 				{
@@ -90,5 +59,10 @@ namespace GameCore.Objects.Tools
 			IsOn = !IsOn;
 			return EActResults.DONE;
 		}
+
+		#endregion
+
+		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
+		public override void Resolve(Creature _creature) { m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f)); }
 	}
 }

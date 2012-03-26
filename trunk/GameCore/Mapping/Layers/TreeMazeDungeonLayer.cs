@@ -6,13 +6,12 @@ using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Objects.Furniture.LightSources;
-using Point = GameCore.Misc.Point;
 
 namespace GameCore.Mapping.Layers
 {
-	class TreeMazeDungeonLayer : DungeonLayer
+	internal class TreeMazeDungeonLayer : DungeonLayer
 	{
-		const int MAX_PATH_LEN = 20;
+		private const int MAX_PATH_LEN = 20;
 
 		private readonly Dictionary<Point, BaseMapBlock> m_mazeBlocks = new Dictionary<Point, BaseMapBlock>();
 
@@ -22,8 +21,8 @@ namespace GameCore.Mapping.Layers
 			var enterBlock = BaseMapBlock.GetBlockId(_enterCoords);
 
 			var size = _rnd.Next(5) + _rnd.Next(5) + 5;
-			var center = new Point(size, size) / 2;
-			var map = new EMapBlockTypes[size, size];
+			var center = new Point(size, size)/2;
+			var map = new EMapBlockTypes[size,size];
 
 			var list = LayerHelper.GetRandomPoints(center, _rnd, map, size, EMapBlockTypes.GROUND, EMapBlockTypes.NONE);
 			var blockIds = list.Distinct().Select(_point => _point - center + enterBlock).ToArray();
@@ -33,12 +32,12 @@ namespace GameCore.Mapping.Layers
 				BaseMapBlock block;
 				if (!m_mazeBlocks.TryGetValue(blockId, out block))
 				{
-					block = new BaseMapBlock(blockId);	
+					block = new BaseMapBlock(blockId);
 				}
 
 				if (BaseMapBlock.GetBlockId(EnterCoords) == blockId)
 				{
-					GenerateInternal(block, new[] { BaseMapBlock.GetInBlockCoords(EnterCoords) });
+					GenerateInternal(block, new[] {BaseMapBlock.GetInBlockCoords(EnterCoords)});
 				}
 				else
 				{
@@ -70,24 +69,24 @@ namespace GameCore.Mapping.Layers
 						if (_rnd.NextDouble() > 0.7)
 						{
 							var dir = EDirections.NONE;
-							if (point.X>0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsPassable == 0)
+							if (point.X > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsPassable == 0)
 							{
 								dir = EDirections.RIGHT;
 							}
-							else if (point.X<MapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
+							else if (point.X < BaseMapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
 							{
 								dir = EDirections.LEFT;
 							}
-							else if (point.Y>0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y - 1]).IsPassable == 0)
+							else if (point.Y > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y - 1]).IsPassable == 0)
 							{
 								dir = EDirections.DOWN;
 							}
-							else if (point.Y < MapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
+							else if (point.Y < BaseMapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
 							{
 								dir = EDirections.UP;
 							}
 							if (dir == EDirections.NONE) continue;
-							var fColor = new FColor(3f, (float) _rnd.NextDouble(), (float) _rnd.NextDouble(), (float)_rnd.NextDouble());
+							var fColor = new FColor(3f, (float) _rnd.NextDouble(), (float) _rnd.NextDouble(), (float) _rnd.NextDouble());
 							mapBlock.AddObject(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, ThingHelper.GetMaterial<OakMaterial>()), point);
 							break;
 						}
@@ -96,34 +95,16 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		internal override IEnumerable<ETerrains> DefaultWalls
-		{
-			get
-			{
-				yield return ETerrains.STONE_WALL;
-			}
-		}
+		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
 
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces
-		{
-			get
-			{
-				yield return ETerrains.STONE_FLOOR;
-			}
-		}
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
 
-		public override FColor Ambient
-		{
-			get
-			{
-				return new FColor(1f,0.1f,0f,0f);
-			}
-		}
+		public override FColor Ambient { get { return new FColor(1f, 0.1f, 0f, 0f); } }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
 			BaseMapBlock baseMapBlock;
-			if(!m_mazeBlocks.TryGetValue(_blockId, out baseMapBlock))
+			if (!m_mazeBlocks.TryGetValue(_blockId, out baseMapBlock))
 			{
 				var eblock = new MapBlock(_blockId);
 				var ernd = new Random(eblock.RandomSeed);
@@ -162,7 +143,7 @@ namespace GameCore.Mapping.Layers
 						continue;
 					}
 
-					if(!_block.Rooms.Any(_room => _room.RoomRectangle.Contains(point)&& _room.IsConnected))
+					if (!_block.Rooms.Any(_room => _room.RoomRectangle.Contains(point) && _room.IsConnected))
 					{
 						continue;
 					}
@@ -219,14 +200,14 @@ namespace GameCore.Mapping.Layers
 				_block.AddRoom(room);
 			}
 		}
-		
+
 		/// <summary>
-		/// добавление коридоров, идущих из комнат
+		/// 	добавление коридоров, идущих из комнат
 		/// </summary>
 		private IEnumerable<ConnectionPoint> AddConnectionPoints(BaseMapBlock _block, Room _room, Random _rnd)
 		{
 			if (_block.BlockId == BaseMapBlock.GetBlockId(EnterCoords) &&
-				_room.RoomRectangle.Contains(BaseMapBlock.GetInBlockCoords(EnterCoords)))
+			    _room.RoomRectangle.Contains(BaseMapBlock.GetInBlockCoords(EnterCoords)))
 			{
 				_room.IsConnected = true;
 			}
@@ -270,7 +251,7 @@ namespace GameCore.Mapping.Layers
 
 					var delta = dir.GetDelta();
 
-					if (!m_mazeBlocks.ContainsKey(BaseMapBlock.GetBlockId(begin + _block.BlockId * BaseMapBlock.SIZE + delta * BaseMapBlock.SIZE)))
+					if (!m_mazeBlocks.ContainsKey(BaseMapBlock.GetBlockId(begin + _block.BlockId*BaseMapBlock.SIZE + delta*BaseMapBlock.SIZE)))
 					{
 						continue;
 					}
@@ -281,10 +262,10 @@ namespace GameCore.Mapping.Layers
 						if (!_room.AreaRectangle.Contains(end)) break;
 					} while (true);
 
-					cps.Add(new ConnectionPoint(begin + _block.BlockId * BaseMapBlock.SIZE, end + _block.BlockId * BaseMapBlock.SIZE, _room, dir));
+					cps.Add(new ConnectionPoint(begin + _block.BlockId*BaseMapBlock.SIZE, end + _block.BlockId*BaseMapBlock.SIZE, _room, dir));
 				}
 
-				if (cps.Count > 1 || (trys > 5 && cps.Count > 0) || trys>20)
+				if (cps.Count > 1 || (trys > 5 && cps.Count > 0) || trys > 20)
 				{
 					foreach (var connectionPoint in cps)
 					{
@@ -303,7 +284,7 @@ namespace GameCore.Mapping.Layers
 
 			if (rooms.Length == 0) return;
 
-			var forbid = new Dictionary<Point,EDirections>();
+			var forbid = new Dictionary<Point, EDirections>();
 
 			{
 				foreach (var room in rooms)
@@ -361,7 +342,7 @@ namespace GameCore.Mapping.Layers
 					foreach (var cp in _connectionPoints)
 					{
 						if (toRemove.Contains(cp)) continue;
-						
+
 						var oppositeDelta = cp.Dir.Opposite().GetDelta();
 						foreach (var room in rooms)
 						{
@@ -417,8 +398,14 @@ namespace GameCore.Mapping.Layers
 							if ((points[i].End - points[i + 1].End).QLenght > MAX_PATH_LEN) continue;
 							if (!points[i].End.GetLineToPoints(points[i + 1].End).Any(forbid.ContainsKey))
 							{
-								ConnectTwoRooms(points[i].Room, points[i + 1].Room, forbid, connectors, points[i].Begin, points[i].End, points[i + 1].End,
-								             points[i + 1].Begin);
+								ConnectTwoRooms(points[i].Room,
+								                points[i + 1].Room,
+								                forbid,
+								                connectors,
+								                points[i].Begin,
+								                points[i].End,
+								                points[i + 1].End,
+								                points[i + 1].Begin);
 								toRemove.Add(points[i]);
 								toRemove.Add(points[i + 1]);
 							}
@@ -458,24 +445,23 @@ namespace GameCore.Mapping.Layers
 				#endregion
 			}
 
-			if(true)
+			if (true)
 			{
 				#region можно проложить путь между двумя концами не затрагивая forbid
 
 				var toRemove = new List<ConnectionPoint>();
-				
+
 				foreach (var cp in _connectionPoints)
 				{
-
 					if (toRemove.Contains(cp) || forbid.ContainsKey(cp.End)) continue;
 
-					var candidates = _connectionPoints.Where(_point => _point.Room != cp.Room  && cp.Dir<=_point.Dir  && !_point.Room.ConnectedTo.Contains(cp.Room) && !forbid.ContainsKey(_point.End) && (_point.End - cp.End).QLenght < MAX_PATH_LEN).ToArray();
+					var candidates = _connectionPoints.Where(_point => _point.Room != cp.Room && cp.Dir <= _point.Dir && !_point.Room.ConnectedTo.Contains(cp.Room) && !forbid.ContainsKey(_point.End) && (_point.End - cp.End).QLenght < MAX_PATH_LEN).ToArray();
 
 					foreach (var candidate in candidates)
 					{
 						if (toRemove.Contains(cp) || toRemove.Contains(candidate)) continue;
 
-						var points = new[] {cp, candidate};//.OrderBy(_point => _point.Dir).ToArray();
+						var points = new[] {cp, candidate}; //.OrderBy(_point => _point.Dir).ToArray();
 
 						var minx = cp.End.X < candidate.End.X ? cp : candidate;
 						var miny = cp.End.Y < candidate.End.Y ? cp : candidate;
@@ -488,7 +474,7 @@ namespace GameCore.Mapping.Layers
 						var way1 = new List<Point>();
 						var way2 = new List<Point>();
 
-						for (var i = 0; i < 20;++i )
+						for (var i = 0; i < 20; ++i)
 						{
 							way1.Clear();
 							way2.Clear();
@@ -503,10 +489,8 @@ namespace GameCore.Mapping.Layers
 												way1.AddRange(new[]
 												              	{
 												              		minx.Begin, minx.End,
-
 												              		new Point(minx.End.X, miny.End.Y - i),
 												              		new Point(maxx.End.X, miny.End.Y - i),
-
 												              		maxx.End, maxx.Begin
 												              	});
 											}
@@ -515,75 +499,67 @@ namespace GameCore.Mapping.Layers
 												way1.AddRange(new[]
 												              	{
 												              		miny.Begin, miny.End,
-
 												              		new Point(miny.End.X - i, miny.End.Y),
 												              		new Point(miny.End.X - i, maxy.End.Y),
-
 												              		maxx.End, maxx.Begin
 												              	});
 												way2.AddRange(new[]
 												              	{
 												              		minx.Begin, minx.End,
-
 												              		new Point(miny.End.X + i, miny.End.Y),
 												              		new Point(miny.End.X + i, maxy.End.Y),
-
 												              		maxx.End, maxx.Begin
 												              	});
 											}
 											break;
 										case EDirections.DOWN:
 											if (maxx.End.X - minx.End.X < 2) continue;
-											way1.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-
-												new Point(miny.End.X+i, miny.End.Y),
-												new Point(miny.End.X+i, maxy.End.Y),
-
-												maxy.End, maxy.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-
-												new Point(miny.End.X-i, miny.End.Y),
-												new Point(miny.End.X-i, maxy.End.Y),
-
-												maxy.End, maxy.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(miny.End.X + i, miny.End.Y),
+											              		new Point(miny.End.X + i, maxy.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(miny.End.X - i, miny.End.Y),
+											              		new Point(miny.End.X - i, maxy.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
 											break;
 										case EDirections.LEFT:
-											way1.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X-i, minx.End.Y),
-												new Point(minx.End.X-i, maxx.End.Y),
-												maxx.End, maxx.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X, minx.End.Y-i),
-												new Point(minx.End.X, maxx.End.Y-i),
-												maxx.End, maxx.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X - i, minx.End.Y),
+											              		new Point(minx.End.X - i, maxx.End.Y),
+											              		maxx.End, maxx.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X, minx.End.Y - i),
+											              		new Point(minx.End.X, maxx.End.Y - i),
+											              		maxx.End, maxx.Begin
+											              	});
 											break;
 										case EDirections.RIGHT:
-											way1.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X+i, minx.End.Y),
-												new Point(minx.End.X+i, maxx.End.Y),
-												maxx.End, maxx.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X, minx.End.Y+i),
-												new Point(minx.End.X, maxx.End.Y+i),
-												maxx.End, maxx.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X + i, minx.End.Y),
+											              		new Point(minx.End.X + i, maxx.End.Y),
+											              		maxx.End, maxx.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X, minx.End.Y + i),
+											              		new Point(minx.End.X, maxx.End.Y + i),
+											              		maxx.End, maxx.Begin
+											              	});
 											break;
 										default:
 											throw new ArgumentOutOfRangeException();
@@ -598,10 +574,8 @@ namespace GameCore.Mapping.Layers
 												way1.AddRange(new[]
 												              	{
 												              		minx.Begin, minx.End,
-
 												              		new Point(minx.End.X, miny.End.Y + i),
 												              		new Point(maxx.End.X, miny.End.Y + i),
-
 												              		maxx.End, maxx.Begin
 												              	});
 											}
@@ -610,54 +584,50 @@ namespace GameCore.Mapping.Layers
 												way1.AddRange(new[]
 												              	{
 												              		miny.Begin, miny.End,
-
 												              		new Point(miny.End.X - i, miny.End.Y),
 												              		new Point(miny.End.X - i, maxy.End.Y),
-
 												              		maxx.End, maxx.Begin
 												              	});
 												way2.AddRange(new[]
 												              	{
 												              		minx.Begin, minx.End,
-
 												              		new Point(miny.End.X + i, miny.End.Y),
 												              		new Point(miny.End.X + i, maxy.End.Y),
-
 												              		maxx.End, maxx.Begin
 												              	});
 											}
 											break;
 										case EDirections.LEFT:
-											way1.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X, minx.End.Y + i),
-												new Point(maxx.End.X, minx.End.Y + i),
-												maxx.End, maxx.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(maxx.End.X - i, minx.End.Y),
-												new Point(maxx.End.X - i, maxx.End.Y),
-												maxx.End, maxx.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X, minx.End.Y + i),
+											              		new Point(maxx.End.X, minx.End.Y + i),
+											              		maxx.End, maxx.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(maxx.End.X - i, minx.End.Y),
+											              		new Point(maxx.End.X - i, maxx.End.Y),
+											              		maxx.End, maxx.Begin
+											              	});
 											break;
 										case EDirections.RIGHT:
-											way1.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X+i, minx.End.Y),
-												new Point(minx.End.X+i, maxx.End.Y),
-												maxx.End, maxx.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												minx.Begin, minx.End, 
-												new Point(minx.End.X, minx.End.Y+i),
-												new Point(minx.End.X, maxx.End.Y+i),
-												maxx.End, maxx.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X + i, minx.End.Y),
+											              		new Point(minx.End.X + i, maxx.End.Y),
+											              		maxx.End, maxx.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		minx.Begin, minx.End,
+											              		new Point(minx.End.X, minx.End.Y + i),
+											              		new Point(minx.End.X, maxx.End.Y + i),
+											              		maxx.End, maxx.Begin
+											              	});
 											break;
 										default:
 											throw new ArgumentOutOfRangeException();
@@ -668,30 +638,28 @@ namespace GameCore.Mapping.Layers
 									{
 										case EDirections.LEFT:
 											if (maxy.End.Y - miny.End.Y < 2) continue;
-											way1.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-
-												new Point(miny.End.X - i, miny.End.Y),
-												new Point(miny.End.X - i, maxy.End.Y),
-
-												maxy.End, maxy.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(miny.End.X - i, miny.End.Y),
+											              		new Point(miny.End.X - i, maxy.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
 											break;
 										case EDirections.RIGHT:
-											if (i>0) continue;
-											way1.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-												new Point(maxy.End.X, miny.End.Y), 
-												maxy.End, maxy.Begin 
-											});
-											way2.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-												new Point(miny.End.X, maxy.End.Y), 
-												maxy.End, maxy.Begin 
-											});
+											if (i > 0) continue;
+											way1.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(maxy.End.X, miny.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
+											way2.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(miny.End.X, maxy.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
 											break;
 										default:
 											throw new ArgumentOutOfRangeException();
@@ -702,15 +670,13 @@ namespace GameCore.Mapping.Layers
 									{
 										case EDirections.RIGHT:
 											if (maxy.End.Y - miny.End.Y < 2) continue;
-											way1.AddRange(new[] 
-											{ 
-												miny.Begin, miny.End, 
-
-												new Point(maxx.End.X + i, miny.End.Y),
-												new Point(maxx.End.X + i, maxy.End.Y),
-
-												maxy.End, maxy.Begin 
-											});
+											way1.AddRange(new[]
+											              	{
+											              		miny.Begin, miny.End,
+											              		new Point(maxx.End.X + i, miny.End.Y),
+											              		new Point(maxx.End.X + i, maxy.End.Y),
+											              		maxy.End, maxy.Begin
+											              	});
 											break;
 										default:
 											throw new ArgumentOutOfRangeException();
@@ -720,12 +686,12 @@ namespace GameCore.Mapping.Layers
 									throw new ArgumentOutOfRangeException();
 							}
 							var flag = false;
-							foreach (var way in new[] { way1, way2 })
+							foreach (var way in new[] {way1, way2})
 							{
 								flag = true;
 								if (way.Count == 0) continue;
 								var pnt = way[1];
-								
+
 								for (var index = 2; index < way.Count - 1 && flag; ++index)
 								{
 									flag = !pnt.GetLineToPoints(way[index]).Any(forbid.ContainsKey);
@@ -738,7 +704,7 @@ namespace GameCore.Mapping.Layers
 								toRemove.Add(candidate);
 								break;
 							}
-							if(flag)
+							if (flag)
 							{
 								break;
 							}
@@ -755,7 +721,7 @@ namespace GameCore.Mapping.Layers
 				#endregion
 			}
 
-			if(true)
+			if (true)
 			{
 				#region остатки ConnectionPoints
 
@@ -763,32 +729,31 @@ namespace GameCore.Mapping.Layers
 				foreach (var room in notConnectedToAny)
 				{
 					var cps = _connectionPoints.Where(_point => _point.Room == room).ToList();
-					if(cps.Count==0)
+					if (cps.Count == 0)
 					{
 						continue;
 					}
 					foreach (var cp in cps)
 					{
-						if(cp.End==new Point(-2,73))
+						if (cp.End == new Point(-2, 73))
 						{
-							
 						}
 						var delta = cp.Dir.GetDelta();
 						var point = cp.End;
 						Room rm = null;
 						var i = 0;
-						bool flag = false;
-						for(;i<10;++i)
+						var flag = false;
+						for (; i < 10; ++i)
 						{
 							point += delta;
 							EDirections dir;
-							if(forbid.TryGetValue(point, out dir))
+							if (forbid.TryGetValue(point, out dir))
 							{
-								if(!dir.HasFlag(cp.Dir)) break;
+								if (!dir.HasFlag(cp.Dir)) break;
 							}
-							
+
 							Connector connector;
-							if(connectors.TryGetValue(point, out connector))
+							if (connectors.TryGetValue(point, out connector))
 							{
 								ConnectTwoRooms(room, null, forbid, connectors, cp.Begin, cp.End, point);
 								flag = true;
@@ -813,7 +778,7 @@ namespace GameCore.Mapping.Layers
 				#endregion
 			}
 
-			if(true)
+			if (true)
 			{
 				#region финальный этап
 
@@ -822,7 +787,7 @@ namespace GameCore.Mapping.Layers
 					var nConnectors = connectors.Where(_pair => _pair.Value.Rooms.Any(_room => !_room.IsConnected)).ToArray();
 					var nKeys = nConnectors.Select(_pair => _pair.Key).ToArray();
 					var pConnectors = connectors.Except(nConnectors).ToArray();
-					if(nConnectors.Length==0)
+					if (nConnectors.Length == 0)
 					{
 						break;
 					}
@@ -842,10 +807,10 @@ namespace GameCore.Mapping.Layers
 							var npDir = Util.GetDirection(nPnt, pPnt);
 
 							flag = true;
-							
+
 							foreach (var point in nPnt.GetLineToPoints(pPnt))
 							{
-								if (point!=nPnt && nKeys.Contains(point))
+								if (point != nPnt && nKeys.Contains(point))
 								{
 									flag = false;
 									break;
@@ -876,14 +841,13 @@ namespace GameCore.Mapping.Layers
 							break;
 						}
 					}
-					if(!flag)
+					if (!flag)
 					{
 						break;
 					}
 				}
 
 				#endregion
-
 			}
 		}
 
@@ -899,7 +863,7 @@ namespace GameCore.Mapping.Layers
 				var border = Util.GetDirection(pnt, _points[i]).GetBorders().ToArray();
 				for (var index = 0; index < line.Length; index++)
 				{
-					if(point==line[index]) continue;
+					if (point == line[index]) continue;
 					point = line[index];
 
 					Connector connector;
@@ -908,7 +872,7 @@ namespace GameCore.Mapping.Layers
 						_room1.Connect(connector.Rooms.ToArray());
 						connector.Rooms.Add(_room1);
 
-						if(_room2!=null)
+						if (_room2 != null)
 						{
 							ConnectTwoRooms(_room2, null, _forbid, _connectors, _points.Reverse().ToArray());
 						}
@@ -926,7 +890,7 @@ namespace GameCore.Mapping.Layers
 					var blockId = BaseMapBlock.GetBlockId(point);
 
 					BaseMapBlock block;
-					if(!m_mazeBlocks.TryGetValue(blockId, out block))
+					if (!m_mazeBlocks.TryGetValue(blockId, out block))
 					{
 						block = new MapBlock(blockId);
 						MapBlockHelper.Clear(block, rnd, this, DefaultWalls);

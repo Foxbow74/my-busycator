@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Messages;
-using GameCore.Misc;
 using GameCore.Objects;
 using RusLanguage;
 
@@ -11,30 +10,15 @@ namespace GameCore.Acts.Items
 {
 	internal class DropAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 10; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 10; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.D, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.D, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "выбросить предмет"; }
-		}
+		public override string Name { get { return "выбросить предмет"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.ITEMS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.ITEMS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
@@ -62,7 +46,7 @@ namespace GameCore.Acts.Items
 				return EActResults.QUICK_FAIL;
 			}
 
-			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature)==descriptor.GetName(_creature)).Count();
+			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature) == descriptor.GetName(_creature)).Count();
 			Count = 1;
 			if (total == 0)
 			{
@@ -84,7 +68,7 @@ namespace GameCore.Acts.Items
 			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.RemoveFromBackpack(item);
-				_creature[0,0].AddItem(item);
+				_creature[0, 0].AddItem(item);
 			}
 			var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
 			if (intelligent.IsAvatar)

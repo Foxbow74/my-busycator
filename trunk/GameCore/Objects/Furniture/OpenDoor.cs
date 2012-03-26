@@ -10,20 +10,11 @@ namespace GameCore.Objects.Furniture
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 
-		public OpenDoor(Material _material) : base(_material)
-		{
-			Sex = ESex.FEMALE;
-		}
+		public OpenDoor(Material _material) : base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.OPEN_DOOR; }
-		}
+		public override ETiles Tile { get { return ETiles.OPEN_DOOR; } }
 
-		public override string Name
-		{
-			get { return "дверь"; }
-		}
+		public override string Name { get { return "дверь"; } }
 
 		#region ICanbeClosed Members
 
@@ -36,20 +27,12 @@ namespace GameCore.Objects.Furniture
 			return EActResults.DONE;
 		}
 
-		public ELockType ELockType
-		{
-			get { return ELockType.OPEN; }
-		}
+		public ELockType ELockType { get { return ELockType.OPEN; } }
 
 		#endregion
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 
-		internal void SetLockType(ELockType _eLockType)
-		{
-			m_eLockType = _eLockType;
-		}
+		internal void SetLockType(ELockType _eLockType) { m_eLockType = _eLockType; }
 	}
 }

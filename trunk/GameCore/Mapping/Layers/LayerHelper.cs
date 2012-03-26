@@ -13,10 +13,10 @@ namespace GameCore.Mapping.Layers
 
 		public static IEnumerable<Room> GenerateRooms(Random _random, Rct _rct, ICollection<Point> _objects, Point _blockId)
 		{
-			var ableVert = _rct.Width - MIN_ROOM_SIZE * 2;
-			var ableHor = _rct.Height - MIN_ROOM_SIZE * 2;
+			var ableVert = _rct.Width - MIN_ROOM_SIZE*2;
+			var ableHor = _rct.Height - MIN_ROOM_SIZE*2;
 
-			if ((ableHor > 1 || ableVert > 1) && (_rct.Width * _rct.Height < MIN_ROOM_SQUARE || _rct.Width > MAX_DIV_SIZE || _rct.Height > MAX_DIV_SIZE || _random.Next(_rct.Width + _rct.Height) > MIN_ROOM_SIZE))
+			if ((ableHor > 1 || ableVert > 1) && (_rct.Width*_rct.Height < MIN_ROOM_SQUARE || _rct.Width > MAX_DIV_SIZE || _rct.Height > MAX_DIV_SIZE || _random.Next(_rct.Width + _rct.Height) > MIN_ROOM_SIZE))
 			{
 				var divVert = 0;
 				var divHor = 0;
@@ -67,11 +67,11 @@ namespace GameCore.Mapping.Layers
 			yield return MakeRoom(_rct, _random, _objects, _blockId);
 		}
 
-		static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects, Point _blockId)
+		private static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects, Point _blockId)
 		{
 			var contains = _objects.Where(_rct.Contains).ToArray();
 			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
-			for (; ; )
+			for (;;)
 			{
 				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
 				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
@@ -89,12 +89,12 @@ namespace GameCore.Mapping.Layers
 		public static IEnumerable<Point> GetRandomPoints(Point _center, Random _rnd, EMapBlockTypes[,] _map, int _size, EMapBlockTypes _set, EMapBlockTypes _empty)
 		{
 			var tries = 10;
-			var list = new List<Point> { _center };
+			var list = new List<Point> {_center};
 			do
 			{
 				var point = list[_rnd.Next(list.Count)];
 				var add = Add(point, _map, ref _size, _set, _rnd, _empty);
-				if(add.Any())
+				if (add.Any())
 				{
 					tries = 10;
 				}
@@ -103,7 +103,7 @@ namespace GameCore.Mapping.Layers
 					tries--;
 				}
 				list.AddRange(add);
-			} while (_size > 0 && tries>0);
+			} while (_size > 0 && tries > 0);
 			return list.Distinct();
 		}
 

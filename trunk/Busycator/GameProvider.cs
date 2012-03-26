@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using GameCore;
@@ -8,7 +6,6 @@ using GameCore.Misc;
 using GameUi;
 using OpenTK;
 using OpenTKUi;
-using Point = GameCore.Misc.Point;
 
 namespace Busycator
 {
@@ -22,20 +19,11 @@ namespace Busycator
 			m_game = new TheGame(this);
 		}
 
-		protected override void MouseButtonDown(Point _pnt, EMouseButton _button)
-		{
-			m_game.MouseButtonDown(_pnt, _button);
-		}
+		protected override void MouseButtonDown(Point _pnt, EMouseButton _button) { m_game.MouseButtonDown(_pnt, _button); }
 
-		protected override void MouseButtonUp(Point _pnt, EMouseButton _button)
-		{
-			m_game.MouseButtonUp(_pnt, _button);
-		}
+		protected override void MouseButtonUp(Point _pnt, EMouseButton _button) { m_game.MouseButtonUp(_pnt, _button); }
 
-		protected override void MouseMove(Point _pnt)
-		{
-			m_game.MouseMove(_pnt);
-		}
+		protected override void MouseMove(Point _pnt) { m_game.MouseMove(_pnt); }
 
 		protected override void OnLoad(EventArgs _e)
 		{
@@ -87,8 +75,7 @@ namespace Busycator
 			}
 		}
 
-		[STAThread]
-		private static void Main()
+		[STAThread] private static void Main()
 		{
 			{
 				//for (int i = 0; i < 10; ++i)
@@ -104,7 +91,7 @@ namespace Busycator
 
 				try
 				{
-					using (var game = new GameProvider() { Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location) })
+					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
 					{
 						game.Run(0, 60);
 					}

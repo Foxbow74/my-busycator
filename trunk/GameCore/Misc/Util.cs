@@ -2,12 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GameCore.PathFinding;
 
 namespace GameCore.Misc
 {
 	public static class Util
 	{
+		private static EDirections[] m_allDirections;
+
+		public static EDirections[] AllDirections
+		{
+			get
+			{
+				if (m_allDirections == null)
+				{
+					m_allDirections = Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL).ToArray();
+				}
+				return m_allDirections;
+			}
+		}
+
 		public static Dictionary<TEnum, TAttribute> Fill<TEnum, TAttribute>() where TAttribute : Attribute
 		{
 			var result = new Dictionary<TEnum, TAttribute>();
@@ -15,9 +28,9 @@ namespace GameCore.Misc
 				var field in typeof (TEnum).GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
 			{
 				var attribute = field.GetCustomAttributes(true).OfType<TAttribute>().SingleOrDefault();
-				if(attribute==null)
+				if (attribute == null)
 				{
-					attribute = (TAttribute)Activator.CreateInstance(typeof (TAttribute));
+					attribute = (TAttribute) Activator.CreateInstance(typeof (TAttribute));
 				}
 				result[(TEnum) field.GetValue(null)] = attribute;
 			}
@@ -27,17 +40,14 @@ namespace GameCore.Misc
 		public static IEnumerable<Type> GetAllTypesOf<T>()
 		{
 			return from assembly in AppDomain.CurrentDomain.GetAssemblies()
-				   from type in assembly.GetTypes()
-				   where typeof(T).IsAssignableFrom(type) && !type.IsAbstract
-				   select type;
+			       from type in assembly.GetTypes()
+			       where typeof (T).IsAssignableFrom(type) && !type.IsAbstract
+			       select type;
 		}
 
-		public static T As<TSource, T>(this TSource _d) where T : TSource
-		{
-			return (T) _d;
-		}
+		public static T As<TSource, T>(this TSource _d) where T : TSource { return (T) _d; }
 
-		
+
 		public static EDirections Opposite(this EDirections _direction)
 		{
 			switch (_direction)
@@ -94,7 +104,7 @@ namespace GameCore.Misc
 			if (_point1.X < _point2.X) return EDirections.RIGHT;
 			if (_point1.X > _point2.X) return EDirections.LEFT;
 			if (_point1.Y < _point2.Y) return EDirections.DOWN;
-			if (_point1.Y> _point2.Y) return EDirections.UP;
+			if (_point1.Y > _point2.Y) return EDirections.UP;
 			return EDirections.NONE;
 		}
 
@@ -117,28 +127,11 @@ namespace GameCore.Misc
 			}
 		}
 
-		private static EDirections[] m_allDirections;
-
-		public static EDirections[] AllDirections
-		{
-			get 
-			{
-				if (m_allDirections==null)
-				{
-					m_allDirections = Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL).ToArray();
-				}
-				return m_allDirections;
-			}
-		}
-
-		public static IEnumerable<EDirections> AllDirectionsIn(this EDirections _allowed)
-		{
-			return Enum.GetValues(typeof(EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL && _allowed.HasFlag(_dir));
-		}
+		public static IEnumerable<EDirections> AllDirectionsIn(this EDirections _allowed) { return Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL && _allowed.HasFlag(_dir)); }
 
 		public static EDirections GetRandomDirections(this Random _random)
 		{
-			var dirs = 1 + (EDirections)_random.Next((int)EDirections.ALL);
+			var dirs = 1 + (EDirections) _random.Next((int) EDirections.ALL);
 			return dirs;
 		}
 
@@ -148,9 +141,6 @@ namespace GameCore.Misc
 			return dir;
 		}
 
-		public static T RandomItem<T>(this T[] _array, Random _rnd)
-		{
-			return _array[_rnd.Next(_array.Length)];
-		}
+		public static T RandomItem<T>(this T[] _array, Random _rnd) { return _array[_rnd.Next(_array.Length)]; }
 	}
 }

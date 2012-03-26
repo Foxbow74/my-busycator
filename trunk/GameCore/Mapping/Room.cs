@@ -8,6 +8,8 @@ namespace GameCore.Mapping
 {
 	public class Room
 	{
+		private bool m_isConnected;
+
 		public Room(Rct _roomRect, Rct _areaRect, Point _blockId)
 		{
 			RoomRectangle = _roomRect;
@@ -16,15 +18,9 @@ namespace GameCore.Mapping
 			ConnectedTo = new List<Room>();
 		}
 
-		protected int RandomSeed
-		{
-			get; private set;
-		}
+		protected int RandomSeed { get; private set; }
 
-		public Point BlockId
-		{
-			get; private set; 
-		}
+		public Point BlockId { get; private set; }
 
 		public WorldLayer Layer { get; private set; }
 
@@ -33,13 +29,9 @@ namespace GameCore.Mapping
 
 		public Rct WorldRoomRectangle { get; private set; }
 
-		private bool m_isConnected;
-		public bool IsConnected 
-		{ 
-			get
-			{
-				return m_isConnected;
-			}
+		public bool IsConnected
+		{
+			get { return m_isConnected; }
 			set
 			{
 				if (m_isConnected == value)
@@ -58,9 +50,11 @@ namespace GameCore.Mapping
 			}
 		}
 
+		public List<Room> ConnectedTo { get; private set; }
+
 		internal void Connect(params Room[] _rooms)
 		{
-			if(!IsConnected)
+			if (!IsConnected)
 			{
 				IsConnected = _rooms.Any(_room => _room.IsConnected);
 			}
@@ -72,17 +66,15 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public List<Room> ConnectedTo { get; private set; }
-
 		public virtual void AddedToBlock(BaseMapBlock _mapBlock)
 		{
 			BlockId = _mapBlock.BlockId;
 			WorldRoomRectangle = new Rct
 				(
-					RoomRectangle.Left + BlockId.X * BaseMapBlock.SIZE,
-					RoomRectangle.Top + BlockId.Y * BaseMapBlock.SIZE,
-					RoomRectangle.Width,
-					RoomRectangle.Height);
+				RoomRectangle.Left + BlockId.X*BaseMapBlock.SIZE,
+				RoomRectangle.Top + BlockId.Y*BaseMapBlock.SIZE,
+				RoomRectangle.Width,
+				RoomRectangle.Height);
 			RandomSeed = _mapBlock.RandomSeed + RoomRectangle.LeftTop.GetHashCode();
 		}
 	}

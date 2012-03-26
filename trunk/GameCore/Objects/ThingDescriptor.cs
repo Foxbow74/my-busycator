@@ -24,20 +24,11 @@ namespace GameCore.Objects
 
 		public Thing Thing { get; private set; }
 
-		public string UiOrderIndex
-		{
-			get { return Thing.GetName(World.TheWorld.Avatar); }
-		}
+		public string UiOrderIndex { get { return Thing.GetName(World.TheWorld.Avatar); } }
 
-		public static ThingDescriptor Empty
-		{
-			get { return m_empty; }
-		}
+		public static ThingDescriptor Empty { get { return m_empty; } }
 
-		public override int GetHashCode()
-		{
-			return Thing.GetHashCode();
-		}
+		public override int GetHashCode() { return Thing.GetHashCode(); }
 
 		public Thing ResolveThing(Creature _creature)
 		{

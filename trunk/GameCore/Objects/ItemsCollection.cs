@@ -31,15 +31,9 @@ namespace GameCore.Objects
 			}
 		}
 
-		public int Count
-		{
-			get { return m_items.Count; }
-		}
+		public int Count { get { return m_items.Count; } }
 
-		public bool Any
-		{
-			get { return m_items.Count > 0; }
-		}
+		public bool Any { get { return m_items.Count > 0; } }
 
 		public void Add(Item _item)
 		{
@@ -88,7 +82,7 @@ namespace GameCore.Objects
 
 		private class Stacked : Item, ISpecial
 		{
-			public Stacked(Item _item, int _count):base(_item.Material)
+			public Stacked(Item _item, int _count) : base(_item.Material)
 			{
 				Item = _item;
 				Count = _count;
@@ -96,37 +90,19 @@ namespace GameCore.Objects
 
 			public int Count { get; set; }
 
-			public override EThingCategory Category
-			{
-				get { throw new NotImplementedException(); }
-			}
+			public override EThingCategory Category { get { throw new NotImplementedException(); } }
 
-			public override ETiles Tile
-			{
-				get { throw new NotImplementedException(); }
-			}
+			public override ETiles Tile { get { throw new NotImplementedException(); } }
 
-			public override string Name
-			{
-				get { throw new NotImplementedException(); }
-			}
+			public override string Name { get { throw new NotImplementedException(); } }
 
 			public Item Item { get; private set; }
 
-			public override int GetHashCode()
-			{
-				return Item.GetHashCode();
-			}
+			public override int GetHashCode() { return Item.GetHashCode(); }
 
-			public override void Resolve(Creature _creature)
-			{
-				throw new NotImplementedException();
-			}
+			public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
-			public override string ToString()
-			{
-				return "stack of " + Item.GetName(World.TheWorld.Avatar) + " (" + Count + ")";
-			}
+			public override string ToString() { return "stack of " + Item.GetName(World.TheWorld.Avatar) + " (" + Count + ")"; }
 		}
 
 		#endregion

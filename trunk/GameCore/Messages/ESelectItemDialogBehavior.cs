@@ -2,8 +2,7 @@
 
 namespace GameCore.Messages
 {
-	[Flags]
-	public enum ESelectItemDialogBehavior
+	[Flags] public enum ESelectItemDialogBehavior
 	{
 		SELECT_ONE = 1,
 		SELECT_MULTIPLE = 2,

@@ -2,8 +2,7 @@
 
 namespace GameCore
 {
-	[Flags]
-	public enum EEffect
+	[Flags] public enum EEffect
 	{
 		HEAL = 0x1 << 0,
 		ATTACK = 0x1 << 1,

@@ -12,11 +12,9 @@ namespace GameCore.Objects.Furniture
 	{
 		private ItemsCollection m_items;
 
-		#region IContainer Members
+		protected Container(Material _material) : base(_material) { }
 
-		protected Container(Material _material) : base(_material)
-		{
-		}
+		#region IContainer Members
 
 		/// <summary>
 		/// 	Если контейнер не инициализирован, то на основании характеристик открывшего существа генерируется наполнение
@@ -45,10 +43,7 @@ namespace GameCore.Objects.Furniture
 
 		#endregion
 
-		protected virtual IEnumerable<Item> GenerateItems(Creature _creature)
-		{
-			yield break;
-		}
+		protected virtual IEnumerable<Item> GenerateItems(Creature _creature) { yield break; }
 	}
 
 	public enum ELockType

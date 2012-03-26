@@ -2,10 +2,7 @@
 {
 	public static class MathHelper
 	{
-		public static float Lerp(float _value1, float _value2, float _amount)
-		{
-			return _value1 + (_value2 - _value1)*_amount;
-		}
+		public static float Lerp(float _value1, float _value2, float _amount) { return _value1 + (_value2 - _value1)*_amount; }
 
 		public static float SmoothStep(float _value1, float _value2, float _amount)
 		{
@@ -28,10 +25,7 @@
 			                     (3.0*value2 - value1 - 3.0*value3 + value4)*amountCubed));
 		}
 
-		public static float Barycentric(float value1, float value2, float value3, float amount1, float amount2)
-		{
-			return value1 + (value2 - value1)*amount1 + (value3 - value1)*amount2;
-		}
+		public static float Barycentric(float value1, float value2, float value3, float amount1, float amount2) { return value1 + (value2 - value1)*amount1 + (value3 - value1)*amount2; }
 
 		public static float Hermite(float _value1, float _tangent1, float _value2, float _tangent2, float _amount)
 		{

@@ -15,13 +15,8 @@ namespace GameCore.Mapping.Layers
 		protected WorldLayer()
 		{
 			Blocks = new Dictionary<Point, MapBlock>();
-			FogColor =  FColor.FromArgb(255, 60, 60, 60);
+			FogColor = FColor.FromArgb(255, 60, 60, 60);
 			FogLightness = FogColor.Lightness();
-		}
-
-		public virtual float GetFogColorMultiplier(LiveMapCell _liveCell)
-		{
-			return _liveCell.FogColorMultiplier;
 		}
 
 		public FColor FogColor { get; protected set; }
@@ -44,11 +39,15 @@ namespace GameCore.Mapping.Layers
 		internal abstract IEnumerable<ETerrains> DefaultEmptySpaces { get; }
 		internal abstract IEnumerable<ETerrains> DefaultWalls { get; }
 
+		public abstract FColor Ambient { get; }
+
+		public Dictionary<Point, MapBlock> Blocks { get; private set; }
+		public virtual float GetFogColorMultiplier(LiveMapCell _liveCell) { return _liveCell.FogColorMultiplier; }
 		protected abstract MapBlock GenerateBlock(Point _blockId);
 
 		public IEnumerable<Tuple<Point, MapBlock>> GetBlocksNear(Point _worldCoords)
 		{
-			var centralBlockCoord = MapBlock.GetBlockId(_worldCoords);
+			var centralBlockCoord = BaseMapBlock.GetBlockId(_worldCoords);
 			for (var i = -ACTIVE_SIZE_HALF; i < ACTIVE_SIZE_HALF; ++i)
 			{
 				for (var j = -ACTIVE_SIZE_HALF; j < ACTIVE_SIZE_HALF; ++j)
@@ -58,10 +57,6 @@ namespace GameCore.Mapping.Layers
 				}
 			}
 		}
-
-		public abstract FColor Ambient { get; }
-
-		public Dictionary<Point, MapBlock> Blocks { get; private set; }
 
 		public virtual void AddStair(WorldLayer _enterFromLayer, Point _worldCoords, Stair _stair) { throw new NotImplementedException(); }
 	}

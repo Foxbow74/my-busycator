@@ -3,32 +3,21 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using GameCore;
 
 namespace GameCore.Creatures
 {
 	public class Monster : Creature
 	{
+		private int m_skip;
+
 		public Monster(WorldLayer _layer)
-			: base(_layer, 100)
-		{
-		}
+			: base(_layer, 100) { }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.MONSTER; }
-		}
+		public override ETiles Tile { get { return ETiles.MONSTER; } }
 
-		public override string Name
-		{
-			get { return "существо" + Nn; }
-		}
+		public override string Name { get { return "существо" + Nn; } }
 
-		public override void Resolve(Creature _creature)
-		{
-		}
-
-		private int m_skip = 0;
+		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
 		{

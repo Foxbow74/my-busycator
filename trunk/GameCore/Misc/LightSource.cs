@@ -5,16 +5,16 @@ namespace GameCore.Misc
 {
 	public interface ILightSource
 	{
-		void LightCells(LiveMap _liveMap, Point _point);
 		int Radius { get; }
+		void LightCells(LiveMap _liveMap, Point _point);
 	}
 
 	public class LightSource : ILightSource
 	{
 		private static readonly Dictionary<int, LosManager> m_lightManagers = new Dictionary<int, LosManager>();
 
-		private readonly int m_radius;
 		private readonly FColor m_color;
+		private readonly int m_radius;
 
 		public LightSource(int _radius, FColor _color)
 		{
@@ -22,15 +22,11 @@ namespace GameCore.Misc
 			m_color = _color;
 		}
 
-		public FColor Color
-		{
-			get { return m_color; }
-		}
+		public FColor Color { get { return m_color; } }
 
-		public int Radius
-		{
-			get { return m_radius; }
-		}
+		#region ILightSource Members
+
+		public int Radius { get { return m_radius; } }
 
 		public void LightCells(LiveMap _liveMap, Point _point)
 		{
@@ -40,5 +36,7 @@ namespace GameCore.Misc
 			}
 			m_lightManagers[Radius].LightCells(_liveMap, _point, Color);
 		}
+
+		#endregion
 	}
 }

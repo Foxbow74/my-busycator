@@ -5,10 +5,7 @@ namespace GameCore.Misc
 {
 	public class Point
 	{
-		static Point()
-		{
-			Zero = new Point();
-		}
+		static Point() { Zero = new Point(); }
 
 		public Point(int _x, int _y)
 		{
@@ -27,15 +24,9 @@ namespace GameCore.Misc
 		public int X { get; set; }
 		public int Y { get; set; }
 
-		public float Lenght
-		{
-			get { return (float)Math.Sqrt((float)X * X + (float)Y * Y); }
-		}
+		public float Lenght { get { return (float) Math.Sqrt((float) X*X + (float) Y*Y); } }
 
-		public float QLenght
-		{
-			get { return Math.Max(Math.Abs(X), Math.Abs(Y)); }
-		}
+		public float QLenght { get { return Math.Max(Math.Abs(X), Math.Abs(Y)); } }
 
 		public IEnumerable<Point> NearestPoints
 		{
@@ -81,25 +72,13 @@ namespace GameCore.Misc
 			}
 		}
 
-		public float GetDistTill(Point _point)
-		{
-			return (float)Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
-		}
+		public float GetDistTill(Point _point) { return (float) Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y)); }
 
-		public override string ToString()
-		{
-			return string.Format("P({0};{1})", X, Y);
-		}
+		public override string ToString() { return string.Format("P({0};{1})", X, Y); }
 
-		public override bool Equals(object _obj)
-		{
-			return GetHashCode() == _obj.GetHashCode();
-		}
+		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
 
-		public override int GetHashCode()
-		{
-			return X ^ (Y << 16);
-		}
+		public override int GetHashCode() { return X ^ (Y << 16); }
 
 		public IEnumerable<Point> GetLineToPoints(Point _point)
 		{
@@ -154,32 +133,27 @@ namespace GameCore.Misc
 			return Vector2.Distance(nearestPoint, myVector);
 		}
 
+		public Point Wrap(int _width, int _height) { return new Point((X + 100*_width)%_width, (Y + 100*_height)%_height); }
+
+		public Point Clone() { return new Point(X, Y); }
+
+		public static Point Parse(string _s)
+		{
+			var ss = _s.Split(new[] {','}, StringSplitOptions.None);
+			return new Point(int.Parse(ss[0]), int.Parse(ss[1]));
+		}
+
 		#region overrides
 
-		public static Point operator +(Point _a, Point _b)
-		{
-			return new Point(_a.X + _b.X, _a.Y + _b.Y);
-		}
+		public static Point operator +(Point _a, Point _b) { return new Point(_a.X + _b.X, _a.Y + _b.Y); }
 
-		public static Point operator -(Point _a, Point _b)
-		{
-			return new Point(_a.X - _b.X, _a.Y - _b.Y);
-		}
+		public static Point operator -(Point _a, Point _b) { return new Point(_a.X - _b.X, _a.Y - _b.Y); }
 
-		public static Point operator *(Point _a, float _c)
-		{
-			return new Point((int) Math.Round(_a.X*_c), (int) Math.Round(_a.Y*_c));
-		}
+		public static Point operator *(Point _a, float _c) { return new Point((int) Math.Round(_a.X*_c), (int) Math.Round(_a.Y*_c)); }
 
-		public static Point operator *(Point _a, Point _b)
-		{
-			return new Point(_a.X * _b.X, _a.Y * _b.Y);
-		}
+		public static Point operator *(Point _a, Point _b) { return new Point(_a.X*_b.X, _a.Y*_b.Y); }
 
-		public static Point operator /(Point _a, int _c)
-		{
-			return new Point(_a.X/_c, _a.Y/_c);
-		}
+		public static Point operator /(Point _a, int _c) { return new Point(_a.X/_c, _a.Y/_c); }
 
 		public static bool operator ==(Point _a, Point _b)
 		{
@@ -222,21 +196,5 @@ namespace GameCore.Misc
 		}
 
 		#endregion
-
-		public Point Wrap(int _width, int _height)
-		{
-			return new Point((X + 100 * _width) % _width, (Y + 100 * _height) % _height);
-		}
-
-		public Point Clone()
-		{
-			return new Point(X,Y);
-		}
-
-		public static Point Parse(string _s)
-		{
-			var ss = _s.Split(new char[] {','}, StringSplitOptions.None);
-			return new Point(int.Parse(ss[0]), int.Parse(ss[1]));
-		}
 	}
 }

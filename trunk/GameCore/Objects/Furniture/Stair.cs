@@ -9,19 +9,17 @@ namespace GameCore.Objects.Furniture
 	{
 		private WorldLayer m_leadToLayer;
 
-		protected Stair(WorldLayer _leadToLayer, Material _material):base(_material)
+		protected Stair(WorldLayer _leadToLayer, Material _material) : base(_material)
 		{
 			m_leadToLayer = _leadToLayer;
 			Sex = ESex.FEMALE;
 		}
 
-		protected Stair(Material _material):base(_material)
-		{
-		}
+		protected Stair(Material _material) : base(_material) { }
 
 		public EActResults MoveToLayer(Creature _creature)
 		{
-			if(m_leadToLayer==null)
+			if (m_leadToLayer == null)
 			{
 				m_leadToLayer = World.TheWorld.GenerateNewLayer(_creature, this);
 			}
@@ -29,8 +27,6 @@ namespace GameCore.Objects.Furniture
 			return EActResults.DONE;
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 	}
 }

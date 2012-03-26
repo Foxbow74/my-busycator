@@ -13,12 +13,11 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Thing
 	{
+		private static int m_n;
 		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
 
-		private static int m_n;
-
-		private Point m_liveCoords;
 		private WorldLayer m_layer;
+		private Point m_liveCoords;
 
 		protected Creature(WorldLayer _layer, int _speed)
 			: base(ThingHelper.GetMaterial<FlashMaterial>())
@@ -31,17 +30,7 @@ namespace GameCore.Creatures
 
 		public IEnumerable<AbstractCreatureRole> Roles { get { return m_roles; } }
 
-		public void AddRole(AbstractCreatureRole _role)
-		{
-			m_roles.Add(_role);
-		}
-
 		public int Nn { get; private set; }
-
-		public void Born(Point _liveCoords)
-		{
-			m_liveCoords = _liveCoords;
-		}
 
 		/// <summary>
 		/// 	Ход в игре с точки зрения существа
@@ -55,7 +44,7 @@ namespace GameCore.Creatures
 		public int Speed { get; private set; }
 
 		/// <summary>
-		/// Live координаты
+		/// 	Live координаты
 		/// </summary>
 		public Point LiveCoords
 		{
@@ -63,20 +52,14 @@ namespace GameCore.Creatures
 			set
 			{
 				var oldValue = m_liveCoords;
-				m_liveCoords = value==null?null:World.TheWorld.LiveMap.GetCell(value).LiveCoords;
+				m_liveCoords = value == null ? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
 				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
 			}
 		}
 
-		public LiveMapCell this[Point _point]
-		{
-			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + _point); }
-		}
+		public LiveMapCell this[Point _point] { get { return World.TheWorld.LiveMap.GetCell(LiveCoords + _point); } }
 
-		public LiveMapCell this[int _x, int _y]
-		{
-			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + new Point(_x, _y)); }
-		}
+		public LiveMapCell this[int _x, int _y] { get { return World.TheWorld.LiveMap.GetCell(LiveCoords + new Point(_x, _y)); } }
 
 		public WorldLayer Layer
 		{
@@ -102,17 +85,12 @@ namespace GameCore.Creatures
 		/// </summary>
 		public long BusyTill { get; protected set; }
 
-		public double GetLuckRandom
-		{
-			get { return Luck*World.Rnd.NextDouble()/100.0; }
-		}
+		public double GetLuckRandom { get { return Luck*World.Rnd.NextDouble()/100.0; } }
 
 		public int Luck { get; protected set; }
 
-		public override EThingCategory Category
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override EThingCategory Category { get { throw new NotImplementedException(); } }
+		public override EMaterial AllowedMaterials { get { return EMaterial.FLASH; } }
 
 		#region Act functionality
 
@@ -132,10 +110,7 @@ namespace GameCore.Creatures
 
 		public EActResults ActResult { get; protected set; }
 
-		public bool IsAvatar
-		{
-			get { return World.TheWorld.Avatar == this; }
-		}
+		public bool IsAvatar { get { return World.TheWorld.Avatar == this; } }
 
 		public void AddActToPool(Act _act, params object[] _params)
 		{
@@ -162,28 +137,28 @@ namespace GameCore.Creatures
 
 			using (new Profiler(act.Name))
 			{
-				ActResult = act.Do(this);	
+				ActResult = act.Do(this);
 			}
 
-			var price = Speed; 
+			var price = Speed;
 			switch (ActResult)
 			{
 				case EActResults.ACT_REPLACED:
 					price = 0;
 					break;
 				case EActResults.DONE:
-					price = act.TakeTicks * Speed;
+					price = act.TakeTicks*Speed;
 					break;
 				case EActResults.FAIL:
-					price = act.TakeTicks * 2 * Speed;
+					price = act.TakeTicks*2*Speed;
 					m_actPool.Clear();
 					break;
 				case EActResults.QUICK_FAIL:
-					price = act.TakeTicks / 2 * Speed;
+					price = act.TakeTicks/2*Speed;
 					m_actPool.Clear();
 					break;
 				case EActResults.NEED_ADDITIONAL_PARAMETERS:
-					if(!IsAvatar)
+					if (!IsAvatar)
 					{
 						throw new ApplicationException("Только действия аватара могут потребовать дополнительные параметры");
 					}
@@ -191,19 +166,19 @@ namespace GameCore.Creatures
 					return ActResult;
 			}
 			BusyTill = World.TheWorld.WorldTick + price;
-			Turn += price>0?1:0;
-			
+			Turn += price > 0 ? 1 : 0;
+
 			return ActResult;
 		}
 
 		#endregion
 
+		public void AddRole(AbstractCreatureRole _role) { m_roles.Add(_role); }
+		public void Born(Point _liveCoords) { m_liveCoords = _liveCoords; }
+
 		public abstract EThinkingResult Thinking();
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
-		{
-			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect));
-		}
+		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null) { return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect)); }
 
 		public IEnumerable<ThingDescriptor> GetNotTakenAvailableItems(IEnumerable<Point> _intersect = null)
 		{
@@ -215,30 +190,13 @@ namespace GameCore.Creatures
 			return points.Select(World.TheWorld.LiveMap.GetCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors<Item>(this));
 		}
 
-		public virtual IEnumerable<ThingDescriptor> GetBackPackItems()
-		{
-			yield break;
-		}
+		public virtual IEnumerable<ThingDescriptor> GetBackPackItems() { yield break; }
 
-		protected override int CalcHashCode()
-		{
-			return base.CalcHashCode() ^ Nn;
-		}
+		protected override int CalcHashCode() { return base.CalcHashCode() ^ Nn; }
 
-		public virtual EActResults Atack(Creature _victim)
-		{
-			return EActResults.ACT_REPLACED;
-		}
+		public virtual EActResults Atack(Creature _victim) { return EActResults.ACT_REPLACED; }
 
-		public override EMaterial AllowedMaterials
-		{
-			get { return EMaterial.FLASH; }
-		}
-
-		public void ClearActPool()
-		{
-			m_actPool.Clear();
-		}
+		public void ClearActPool() { m_actPool.Clear(); }
 	}
 
 
@@ -246,7 +204,7 @@ namespace GameCore.Creatures
 	{
 		NORMAL,
 		/// <summary>
-		/// Существо самоуничтожилось
+		/// 	Существо самоуничтожилось
 		/// </summary>
 		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}

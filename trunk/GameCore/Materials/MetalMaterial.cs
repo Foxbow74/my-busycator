@@ -2,56 +2,33 @@
 
 namespace GameCore.Materials
 {
-	abstract class MetalMaterial:Material
+	internal abstract class MetalMaterial : Material
 	{
-		protected MetalMaterial(string _name) : base(_name)
-		{
-		}
+		protected MetalMaterial(string _name) : base(_name) { }
 
-		public override EMaterial MaterialType
-		{
-			get { return EMaterial.METAL; }
-		}
+		public override EMaterial MaterialType { get { return EMaterial.METAL; } }
 	}
 
-	class CopperMaterial:MetalMaterial
+	internal class CopperMaterial : MetalMaterial
 	{
-		public CopperMaterial() : base("медь")
-		{
-			Sex = ESex.FEMALE;
-		}
+		public CopperMaterial() : base("медь") { Sex = ESex.FEMALE; }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.CoolCopper; }
-		}
+		public override FColor LerpColor { get { return FColor.CoolCopper; } }
 	}
 
-	class BrassMaterial : MetalMaterial
+	internal class BrassMaterial : MetalMaterial
 	{
 		public BrassMaterial()
-			: base("латунь")
-		{
-			Sex = ESex.FEMALE;
-		}
+			: base("латунь") { Sex = ESex.FEMALE; }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.Brass; }
-		}
+		public override FColor LerpColor { get { return FColor.Brass; } }
 	}
 
-	class BronzeMaterial : MetalMaterial
+	internal class BronzeMaterial : MetalMaterial
 	{
 		public BronzeMaterial()
-			: base("бронза")
-		{
-			Sex = ESex.FEMALE;
-		}
+			: base("бронза") { Sex = ESex.FEMALE; }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.Bronze; }
-		}
+		public override FColor LerpColor { get { return FColor.Bronze; } }
 	}
 }

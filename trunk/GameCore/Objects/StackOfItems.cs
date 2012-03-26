@@ -6,9 +6,7 @@ namespace GameCore.Objects
 {
 	internal abstract class StackOfItems : Item
 	{
-		protected StackOfItems(Material _material) : base(_material)
-		{
-		}
+		protected StackOfItems(Material _material) : base(_material) { }
 
 		public int Count { get; set; }
 
@@ -31,15 +29,12 @@ namespace GameCore.Objects
 		protected abstract string NameOfSingle { get; }
 		protected abstract int GetStartCount(Creature _creature);
 
-		public override void Resolve(Creature _creature)
-		{
-			if(Count==0)Count = GetStartCount(_creature);
-		}
+		public override void Resolve(Creature _creature) { if (Count == 0) Count = GetStartCount(_creature); }
 
 		public StackOfItems GetOne()
 		{
 			Count--;
-			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType(), new object[]{Material});
+			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType(), new object[] {Material});
 			stackOfAmmo.Count = 1;
 			return stackOfAmmo;
 		}

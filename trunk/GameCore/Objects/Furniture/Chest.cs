@@ -11,20 +11,11 @@ namespace GameCore.Objects.Furniture
 {
 	internal class Chest : Container, ICanbeOpened
 	{
-		public Chest(Material _material):base(_material)
-		{
-			ELockType = ELockType.SIMPLE;
-		}
+		public Chest(Material _material) : base(_material) { ELockType = ELockType.SIMPLE; }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.CHEST; }
-		}
+		public override ETiles Tile { get { return ETiles.CHEST; } }
 
-		public override string Name
-		{
-			get { return "сундук"; }
-		}
+		public override string Name { get { return "сундук"; } }
 
 		#region ICanbeOpened Members
 
@@ -55,16 +46,14 @@ namespace GameCore.Objects.Furniture
 
 		#endregion
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			var cnt = _creature.GetLuckRandom*5.0;
 			for (var i = 0; i < cnt; i++)
 			{
-				yield return (Item)ThingHelper.GetFakedItem(_creature[0,0].BlockRandomSeed);
+				yield return ThingHelper.GetFakedItem(_creature[0, 0].BlockRandomSeed);
 			}
 		}
 	}

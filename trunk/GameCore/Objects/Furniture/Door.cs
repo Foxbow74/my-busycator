@@ -6,24 +6,15 @@ using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
-	class Door : FurnitureThing, ICanbeOpened
+	internal class Door : FurnitureThing, ICanbeOpened
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 
-		public Door(Material _material) : base(_material)
-		{
-			Sex = ESex.FEMALE;
-		}
+		public Door(Material _material) : base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.DOOR; }
-		}
+		public override ETiles Tile { get { return ETiles.DOOR; } }
 
-		public override string Name
-		{
-			get { return "дверь"; }
-		}
+		public override string Name { get { return "дверь"; } }
 
 		#region ICanbeOpened Members
 
@@ -37,20 +28,12 @@ namespace GameCore.Objects.Furniture
 			return EActResults.DONE;
 		}
 
-		public virtual ELockType ELockType
-		{
-			get { return m_eLockType; }
-		}
+		public virtual ELockType ELockType { get { return m_eLockType; } }
 
 		#endregion
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 
-		internal void SetLockType(ELockType _eLockType)
-		{
-			m_eLockType = _eLockType;
-		}
+		internal void SetLockType(ELockType _eLockType) { m_eLockType = _eLockType; }
 	}
 }

@@ -5,32 +5,17 @@ using GameCore.Objects;
 
 namespace GameCore.Acts.Movement
 {
-	class LeaveBuildingAct:Act, ISpecial
+	internal class LeaveBuildingAct : Act, ISpecial
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 100; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 100; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { throw new NotImplementedException(); } }
 
-		public override string Name
-		{
-			get { return "покинуть помещение"; }
-		}
+		public override string Name { get { return "покинуть помещение"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.MOVEMENT; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.MOVEMENT; } }
 
 		public override EActResults Do(Creature _creature)
 		{

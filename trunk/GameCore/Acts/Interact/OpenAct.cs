@@ -12,34 +12,19 @@ namespace GameCore.Acts.Interact
 {
 	public class OpenAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 200; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 200; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "Открыть сундук/дверь"; }
-		}
+		public override string Name { get { return "Открыть сундук/дверь"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.WORLD_INTERACTIONS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.WORLD_INTERACTIONS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
-			LiveMapCell liveMapCell; 
+			LiveMapCell liveMapCell;
 			{
 				//собираем координаты всех закрытых вещей
 				var list = new List<Point>();
@@ -100,7 +85,7 @@ namespace GameCore.Acts.Interact
 				}
 				if (descriptors.Count() > 1)
 				{
-					MessageManager.SendMessage(this, new AskMessageNg(this,EAskMessageType.SELECT_THINGS, descriptors, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, descriptors, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
 				return ((ICanbeOpened) descriptors.First().Thing).Open(_creature, liveMapCell);
 			}

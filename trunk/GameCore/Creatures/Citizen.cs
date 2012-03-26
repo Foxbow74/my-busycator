@@ -14,18 +14,9 @@ namespace GameCore.Creatures
 		private FColor m_lerpColor;
 
 		public Citizen(Surface _layer, Random _rnd)
-			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT)
-		{
-			m_name = _layer.GetNextCitizenName(Sex);
-		}
+			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT) { m_name = _layer.GetNextCitizenName(Sex); }
 
-		public override FColor LerpColor
-		{
-			get
-			{
-				return m_lerpColor;
-			}
-		}
+		public override FColor LerpColor { get { return m_lerpColor; } }
 
 		public override ETiles Tile
 		{
@@ -34,10 +25,10 @@ namespace GameCore.Creatures
 				switch (Sex)
 				{
 					case ESex.MALE:
-						return Nn % 2 == 0 ? ETiles.CITIZEN_MALE : ETiles.CITIZEN_MALE2;
+						return Nn%2 == 0 ? ETiles.CITIZEN_MALE : ETiles.CITIZEN_MALE2;
 						break;
 					case ESex.FEMALE:
-						return Nn % 2 == 0 ? ETiles.CITIZEN_FEMALE : ETiles.CITIZEN_FEMALE2;
+						return Nn%2 == 0 ? ETiles.CITIZEN_FEMALE : ETiles.CITIZEN_FEMALE2;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -45,14 +36,9 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public override string IntelligentName
-		{
-			get { return m_name; }
-		}
+		public override string IntelligentName { get { return m_name; } }
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
 		{
@@ -67,7 +53,7 @@ namespace GameCore.Creatures
 
 			#region выбираем случайное здание отличное от текущего
 
-			var arr = ((Surface)Layer).City.Buildings.ToArray();
+			var arr = ((Surface) Layer).City.Buildings.ToArray();
 			var build = arr[World.Rnd.Next(arr.Length)];
 
 			#endregion
@@ -91,7 +77,6 @@ namespace GameCore.Creatures
 
 			#endregion
 
-
 			AddActToPool(new WaitAct());
 
 			return EThinkingResult.NORMAL;
@@ -100,7 +85,7 @@ namespace GameCore.Creatures
 		public override string ToString()
 		{
 			var result = Name;
-			for (int index = 1; index < Roles.ToArray().Length; index++)
+			for (var index = 1; index < Roles.ToArray().Length; index++)
 			{
 				var role = Roles.ToArray()[index];
 				result += "/" + role[Sex];

@@ -11,30 +11,15 @@ namespace GameCore.Acts.Items
 {
 	public class TakeAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 20; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 20; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.OemComma, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.OemComma, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "подобрать предмет"; }
-		}
+		public override string Name { get { return "подобрать предмет"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.ITEMS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.ITEMS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
@@ -82,7 +67,7 @@ namespace GameCore.Acts.Items
 					}
 					else
 					{
-						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS ,notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 					}
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
