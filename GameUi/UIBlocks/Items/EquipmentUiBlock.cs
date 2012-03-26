@@ -21,10 +21,7 @@ namespace GameUi.UIBlocks.Items
 			Rebuild();
 		}
 
-		public Intelligent Intelligent
-		{
-			get { return m_intelligent; }
-		}
+		public Intelligent Intelligent { get { return m_intelligent; } }
 
 		public void Rebuild()
 		{
@@ -51,7 +48,10 @@ namespace GameUi.UIBlocks.Items
 
 			DrawLine(
 				"[A-" + m_presenters.Max(_presenter => _presenter.C) +
-				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход", ForeColor, TextLinesMax - 2, 20,
+				"] Надеть/снять предмет   -   [V] Рюкзак   -   [z|Esc] - выход",
+				ForeColor,
+				TextLinesMax - 2,
+				20,
 				EAlignment.CENTER);
 		}
 
@@ -111,7 +111,10 @@ namespace GameUi.UIBlocks.Items
 		{
 			_uiBlock.DrawLine(C.ToString(), FColor.White, _line, 20, EAlignment.LEFT);
 			var indent =
-				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, FColor.Gray, _line, 40,
+				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName,
+				                  FColor.Gray,
+				                  _line,
+				                  40,
 				                  EAlignment.LEFT) + 2;
 			MaxIndent = Math.Max(MaxIndent, indent);
 			indent = _uiBlock.DrawLine(":", FColor.DarkGray, _line, MaxIndent, EAlignment.LEFT) + 5;

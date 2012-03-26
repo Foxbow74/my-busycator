@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GameUi
+﻿namespace GameUi
 {
 	public enum EMouseButton
 	{

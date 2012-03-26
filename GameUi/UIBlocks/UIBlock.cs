@@ -12,13 +12,7 @@ namespace GameUi.UIBlocks
 			BlockFrame = _frame;
 			ForeColor = _color;
 			Rct = _rct;
-			BackgroundColor = new FColor(1,0,0,0);
-			UpdateContentRct();
-		}
-
-		public virtual void Resize(Rct _newRct)
-		{
-			Rct = _newRct;
+			BackgroundColor = new FColor(1, 0, 0, 0);
 			UpdateContentRct();
 		}
 
@@ -34,23 +28,24 @@ namespace GameUi.UIBlocks
 
 		public static IDrawHelper DrawHelper { get; private set; }
 
-		public static void Init(IDrawHelper _drawHelper)
+		public virtual void Resize(Rct _newRct)
 		{
-			DrawHelper = _drawHelper;
+			Rct = _newRct;
+			UpdateContentRct();
 		}
+
+		public static void Init(IDrawHelper _drawHelper) { DrawHelper = _drawHelper; }
 
 		protected void UpdateContentRct()
 		{
 			ContentRct = Rct;
 			if (BlockFrame != null)
 			{
-				ContentRct = ContentRct.Inflate(-1,-1);
+				ContentRct = ContentRct.Inflate(-1, -1);
 			}
 		}
 
-		protected virtual void OnClosing(ConsoleKey _consoleKey)
-		{
-		}
+		protected virtual void OnClosing(ConsoleKey _consoleKey) { }
 
 		public virtual void DrawFrame()
 		{
@@ -85,45 +80,24 @@ namespace GameUi.UIBlocks
 			MessageManager.SendMessage(this, new SystemMessage(SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK));
 		}
 
-		public virtual void DrawBackground()
-		{
-			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
-		}
+		public virtual void DrawBackground() { TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor); }
 
-		public virtual void Dispose()
-		{
-		}
+		public virtual void Dispose() { }
 
-		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
-		{
-		}
+		public virtual void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers) { }
 
-		public virtual void DrawContent()
-		{
-		}
+		public virtual void DrawContent() { }
 
-		public virtual void MouseMove(Point _pnt)
-		{
-			
-		}
+		public virtual void MouseMove(Point _pnt) { }
 
-		public virtual void MouseButtonDown(Point _pnt, EMouseButton _button)
-		{
-			
-		}
+		public virtual void MouseButtonDown(Point _pnt, EMouseButton _button) { }
 
-		public virtual void MouseButtonUp(Point _pnt, EMouseButton _button)
-		{
-			
-		}
+		public virtual void MouseButtonUp(Point _pnt, EMouseButton _button) { }
 	}
 
 	internal class OpenUIBlockMessage : Message
 	{
-		public OpenUIBlockMessage(UIBlock _block)
-		{
-			UIBlock = _block;
-		}
+		public OpenUIBlockMessage(UIBlock _block) { UIBlock = _block; }
 
 		public UIBlock UIBlock { get; private set; }
 	}
@@ -140,10 +114,7 @@ namespace GameUi.UIBlocks
 
 		#endregion
 
-		public SystemMessage(ESystemMessage _message)
-		{
-			Message = _message;
-		}
+		public SystemMessage(ESystemMessage _message) { Message = _message; }
 
 		public ESystemMessage Message { get; private set; }
 	}

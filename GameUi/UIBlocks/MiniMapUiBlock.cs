@@ -7,9 +7,7 @@ namespace GameUi.UIBlocks
 	internal class MiniMapUiBlock : UiBlockWithText
 	{
 		public MiniMapUiBlock(Rct _rct)
-			: base(_rct, Frame.GoldFrame, FColor.White)
-		{
-		}
+			: base(_rct, Frame.GoldFrame, FColor.White) { }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -35,7 +33,7 @@ namespace GameUi.UIBlocks
 			var rsz = Math.Min(ContentRct.Width*ATile.Size/size.X, ContentRct.Height*ATile.Size/size.Y);
 			var rectSize = new Point(rsz, rsz);
 			var halfContentRect = new Point(ContentRct.Left*ATile.Size + ContentRct.Width*ATile.Size/2,
-			                                  ContentRct.Top*ATile.Size + ContentRct.Height*ATile.Size/2);
+			                                ContentRct.Top*ATile.Size + ContentRct.Height*ATile.Size/2);
 
 			for (var i = 0; i < size.X; ++i)
 			{
@@ -62,13 +60,13 @@ namespace GameUi.UIBlocks
 							throw new ArgumentOutOfRangeException();
 					}
 
-					if (World.TheWorld.Avatar[0,0].MapBlockId == pnt)
+					if (World.TheWorld.Avatar[0, 0].MapBlockId == pnt)
 					{
 						color = FColor.White;
 					}
 
 					var rect = new Rct(
-						halfContentRect +pnt*rectSize,
+						halfContentRect + pnt*rectSize,
 						rectSize.X,
 						rectSize.Y);
 					DrawHelper.DrawRect(rect, color);

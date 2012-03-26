@@ -25,7 +25,7 @@ namespace GameUi.UIBlocks
 			m_dPoint = World.TheWorld.LiveMap.GetData();
 		}
 
-		public override void  Dispose()
+		public override void Dispose()
 		{
 			MessageManager.NewWorldMessage -= MessageManagerNewWorldMessage;
 			base.Dispose();
@@ -47,7 +47,7 @@ namespace GameUi.UIBlocks
 
 		private void Redraw()
 		{
-			var halfScreen = new Point(ContentRct.Width, ContentRct.Height) / 2;
+			var halfScreen = new Point(ContentRct.Width, ContentRct.Height)/2;
 			var avatarScreenPoint = halfScreen + ContentRct.LeftTop;
 
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
@@ -77,38 +77,36 @@ namespace GameUi.UIBlocks
 					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
-						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
+						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
 						var candidate = terrainTile.Color.Multiply(lighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
 						terrainTile.Draw(screenPoint, candidate);
 						//terrainTile.Draw(screenPoint, candidate);
 
-						 foreach (var tileInfoProvider in liveCell.TileInfoProviders)
-						 {
-							 var tile = tileInfoProvider.Tile.GetTile();
-							 var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
-							 if(World.TheWorld.Avatar[1,0].WorldCoords==liveCell.WorldCoords)
-							 {
-							 	
-							 }
-							 tile.Draw(screenPoint, color, tileInfoProvider.Direction);
-						 }
-						
+						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
+						{
+							var tile = tileInfoProvider.Tile.GetTile();
+							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
+							if (World.TheWorld.Avatar[1, 0].WorldCoords == liveCell.WorldCoords)
+							{
+							}
+							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
+						}
 					}
 					else if (liveCell.IsSeenBefore)
 					{
-						var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell); 
+						var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell);
 
-						var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
+						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
 						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(0.7f));
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
-					    {
+						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A), tileInfoProvider.Direction);
-					    }
-					    DrawHelper.FogTile(screenPoint);
+						}
+						DrawHelper.FogTile(screenPoint);
 					}
 
-					
+
 					//var terrainColor = terrainTile.Color;
 					//if (terrainColor.Lightness()> worldLayer.FogLightness)
 					//{
@@ -119,7 +117,7 @@ namespace GameUi.UIBlocks
 					//    }
 					//    //terrainColor = terrainColor.Multiply(lighted).Clamp();
 					//}
-					
+
 
 					//if (visibility.A>0 || avatarScreenPoint == screenPoint)
 					//{
@@ -139,7 +137,7 @@ namespace GameUi.UIBlocks
 					//    terrainTile.Draw(screenPoint, terrainColor);
 
 					//    var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell); 
-						
+
 					//    //var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 					//    var fColor = worldLayer.FogColor.Multiply(fogColorMultiplier);
 					//    //if(fColor.Lightness()<0.1f) continue;
@@ -168,16 +166,10 @@ namespace GameUi.UIBlocks
 			return _liveCell.Lighted.Screen(_ambient).Multiply(_visibility);
 		}
 
-		public override void DrawFrame()
-		{
-		}
+		public override void DrawFrame() { }
 
-		public override void DrawBackground()
-		{
-		}
+		public override void DrawBackground() { }
 
-		public override void DrawContent()
-		{
-		}
+		public override void DrawContent() { }
 	}
 }

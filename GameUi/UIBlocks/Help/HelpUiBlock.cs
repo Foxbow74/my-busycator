@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -9,9 +8,7 @@ namespace GameUi.UIBlocks.Help
 	internal class HelpUiBlock : UiBlockWithText
 	{
 		public HelpUiBlock(Rct _rct)
-			: base(_rct, Frame.SimpleFrame, FColor.White)
-		{
-		}
+			: base(_rct, Frame.SimpleFrame, FColor.White) { }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{

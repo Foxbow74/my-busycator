@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
 using GameUi.UIBlocks;
 using GameUi.UIBlocks.Help;
 using GameUi.UIBlocks.Items;
-using RusLanguage;
 
 namespace GameUi
 {
@@ -25,12 +22,11 @@ namespace GameUi
 
 		private bool m_isAutoRepeateMode;
 		private EKeyModifiers m_keyModifiers = EKeyModifiers.NONE;
+		private Point m_lastMousePos = Point.Zero;
 
 		private MainUiBlock m_mainUiBlock;
 		private DateTime m_moveKeyHoldedSince;
 		private int m_needRedraws = 2;
-
-		private Point m_lastMousePos = Point.Zero;
 
 		public TheGame(IGameProvider _gameProvider)
 		{
@@ -43,7 +39,7 @@ namespace GameUi
 		{
 			get
 			{
-				var result = m_needRedraws >0;
+				var result = m_needRedraws > 0;
 				m_needRedraws--;
 				return result;
 			}
@@ -51,8 +47,8 @@ namespace GameUi
 
 		public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
 		{
-			var newRct = new Rct(0,0,_newWidthInCells,_newHeightInCells);
-			if(m_uiBlocks.Any(_block => _block.Rct!=newRct))
+			var newRct = new Rct(0, 0, _newWidthInCells, _newHeightInCells);
+			if (m_uiBlocks.Any(_block => _block.Rct != newRct))
 			{
 				foreach (var uiBlock in m_uiBlocks)
 				{
@@ -62,15 +58,13 @@ namespace GameUi
 			World.TheWorld.GameUpdated(true);
 		}
 
-		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
-		{
-		}
+		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message) { }
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			if(_message is AskMessageNg)
+			if (_message is AskMessageNg)
 			{
-				var amng = (AskMessageNg)_message;
+				var amng = (AskMessageNg) _message;
 				switch (amng.AskMessageType)
 				{
 					case EAskMessageType.LOOK_AT:
@@ -138,7 +132,7 @@ namespace GameUi
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
 			UIBlock.Init(m_gameProvider.DrawHelper);
 			World.LetItBeeee();
-			
+
 			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
 			m_uiBlocks.Push(m_mainUiBlock);
 
@@ -146,9 +140,7 @@ namespace GameUi
 			MessageManager.SendMessage(this, " [?] - экран помощи");
 		}
 
-		public void UnloadContent()
-		{
-		}
+		public void UnloadContent() { }
 
 		public void Update(KeyState _keyState)
 		{
@@ -220,7 +212,7 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock)// && m_needRedraws==0)
+			if (m_uiBlocks.Peek() == m_mainUiBlock) // && m_needRedraws==0)
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
@@ -241,10 +233,10 @@ namespace GameUi
 		public void MouseMove(Point _pnt)
 		{
 			if (m_lastMousePos == _pnt) return;
-			
+
 			m_lastMousePos = _pnt;
 			var uiBlock = m_uiBlocks.Peek();
-			
+
 			if (!uiBlock.Rct.Contains(_pnt)) return;
 			var pnt = _pnt - uiBlock.Rct.LeftTop;
 			uiBlock.MouseMove(pnt);

@@ -1,5 +1,7 @@
+using System.Drawing;
 using GameCore;
 using GameCore.Misc;
+using Point = GameCore.Misc.Point;
 
 namespace GameUi
 {
@@ -7,7 +9,7 @@ namespace GameUi
 	{
 		void DrawRect(Rct _rct, FColor _toFColor);
 		void ClearTiles(Rct _rct, FColor _backgroundColor);
-		System.Drawing.SizeF MeasureString(EFonts _font, string _string);
+		SizeF MeasureString(EFonts _font, string _string);
 		void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color);
 		void FogTile(Point _point);
 	}

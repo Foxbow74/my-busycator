@@ -6,10 +6,7 @@ namespace GameUi
 {
 	public class KeyState
 	{
-		public KeyState()
-		{
-			PressedKeys = new List<ConsoleKey>();
-		}
+		public KeyState() { PressedKeys = new List<ConsoleKey>(); }
 
 		public List<ConsoleKey> PressedKeys { get; private set; }
 

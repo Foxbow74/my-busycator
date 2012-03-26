@@ -6,17 +6,25 @@ namespace GameUi
 	{
 		public static Frame SimpleFrame = new Frame(ETiles.SIMPLE);
 
-		public static Frame GoldFrame = new Frame(ETiles.FRAME_L, ETiles.FRAME_TL, ETiles.FRAME_T,
-		                                          ETiles.FRAME_TR, ETiles.FRAME_R, ETiles.FRAME_BR,
-		                                          ETiles.FRAME_B, ETiles.FRAME_BL);
+		public static Frame GoldFrame = new Frame(ETiles.FRAME_L,
+		                                          ETiles.FRAME_TL,
+		                                          ETiles.FRAME_T,
+		                                          ETiles.FRAME_TR,
+		                                          ETiles.FRAME_R,
+		                                          ETiles.FRAME_BR,
+		                                          ETiles.FRAME_B,
+		                                          ETiles.FRAME_BL);
 
-		public Frame(ETiles _tile)
-		{
-			Left = Top = Right = Bottom = TopLeft = TopRight = BottomLeft = BottmoRight = _tile.GetTile();
-		}
+		public Frame(ETiles _tile) { Left = Top = Right = Bottom = TopLeft = TopRight = BottomLeft = BottmoRight = _tile.GetTile(); }
 
-		public Frame(ETiles _left, ETiles _topLeft, ETiles _top, ETiles _topRight, ETiles _right,
-		             ETiles _bottomRight, ETiles _bottom, ETiles _bottomLeft)
+		public Frame(ETiles _left,
+		             ETiles _topLeft,
+		             ETiles _top,
+		             ETiles _topRight,
+		             ETiles _right,
+		             ETiles _bottomRight,
+		             ETiles _bottom,
+		             ETiles _bottomLeft)
 		{
 			Left = _left.GetTile();
 			Top = _top.GetTile();

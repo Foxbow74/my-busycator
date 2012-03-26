@@ -12,25 +12,22 @@ namespace GameUi.UIBlocks.Items
 		private readonly EquipmentPresenter m_equipmentPresenter;
 		private readonly EquipmentUiBlock m_equipmentUiBlock;
 
-		public SelectToTakeOnUiBlock(Rct _rct, EquipmentUiBlock _equipmentUiBlock,
+		public SelectToTakeOnUiBlock(Rct _rct,
+		                             EquipmentUiBlock _equipmentUiBlock,
 		                             EquipmentPresenter _equipmentPresenter) :
 		                             	base(
-		                             	_rct, ESelectItemDialogBehavior.SELECT_ONE, null,
+		                             	_rct,
+		                             	ESelectItemDialogBehavior.SELECT_ONE,
+		                             	null,
 		                             	_equipmentUiBlock.Intelligent.GetBackPackItems())
 		{
 			m_equipmentPresenter = _equipmentPresenter;
 			m_equipmentUiBlock = _equipmentUiBlock;
 		}
 
-		protected override IEnumerable<EThingCategory> AllowedCategories
-		{
-			get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; }
-		}
+		protected override IEnumerable<EThingCategory> AllowedCategories { get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; } }
 
-		protected override int HeaderTakesLine
-		{
-			get { return 4; }
-		}
+		protected override int HeaderTakesLine { get { return 4; } }
 
 		protected override void DrawHeader()
 		{

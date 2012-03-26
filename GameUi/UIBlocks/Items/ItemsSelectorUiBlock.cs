@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Acts;
@@ -24,7 +23,9 @@ namespace GameUi.UIBlocks.Items
 		private int m_currentPage;
 		private Dictionary<int, List<ILinePresenter>> m_pages;
 
-		protected ItemsSelectorUiBlock(Rct _rct, ESelectItemDialogBehavior _behavior, Act _act,
+		protected ItemsSelectorUiBlock(Rct _rct,
+		                               ESelectItemDialogBehavior _behavior,
+		                               Act _act,
 		                               IEnumerable<ThingDescriptor> _descriptors)
 			: base(_rct, Frame.GoldFrame, FColor.Green)
 		{

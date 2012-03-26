@@ -1,30 +1,31 @@
 ﻿using System;
 using System.Linq;
 using GameCore;
-using GameCore.Acts.Info;
 using GameCore.Acts.System;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameUi.UIBlocks.Help;
-using GameUi.UIBlocks.Items;
 
 namespace GameUi.UIBlocks
 {
 	internal class MainUiBlock : UIBlock
 	{
+		private const int MESSAGES_HEIGHT = 3;
+		private const int STAT_HEIGHT = 2;
 		private readonly UIBlock m_map;
 		private readonly TurnMessageUiBlock m_messages;
 		private readonly UIBlock m_stats;
-		const int MESSAGES_HEIGHT = 3;
-		const int STAT_HEIGHT = 2;
 
 		public MainUiBlock(int _width, int _height)
 			: base(new Rct(0, 0, _width, _height), null, FColor.White)
 		{
-			m_messages = new TurnMessageUiBlock(new Rct(Rct.Left, 0, Rct.Width, MESSAGES_HEIGHT)) { BackgroundColor = FColor.FromArgb(255, 30, 30, 30) };
+			m_messages = new TurnMessageUiBlock(new Rct(Rct.Left, 0, Rct.Width, MESSAGES_HEIGHT)) {BackgroundColor = FColor.FromArgb(255, 30, 30, 30)};
 			m_map = new MapUiBlock(new Rct(ContentRct.Left, m_messages.Rct.Height, Rct.Width, Rct.Height - m_messages.Rct.Height - STAT_HEIGHT));
-			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - STAT_HEIGHT + 1, Rct.Width, STAT_HEIGHT)) { BackgroundColor = FColor.FromArgb(255, 0, 30, 30) };
+			m_stats = new StatsBlock(new Rct(0, Rct.Bottom - STAT_HEIGHT + 1, Rct.Width, STAT_HEIGHT)) {BackgroundColor = FColor.FromArgb(255, 0, 30, 30)};
 		}
+
+		public UIBlock Map { get { return m_map; } }
+
+		public TurnMessageUiBlock Messages { get { return m_messages; } }
 
 		public override void Resize(Rct _newRct)
 		{
@@ -40,16 +41,6 @@ namespace GameUi.UIBlocks
 			m_map.Dispose();
 			m_stats.Dispose();
 			base.Dispose();
-		}
-
-		public UIBlock Map
-		{
-			get { return m_map; }
-		}
-
-		public TurnMessageUiBlock Messages
-		{
-			get { return m_messages; }
 		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
@@ -88,9 +79,9 @@ namespace GameUi.UIBlocks
 		{
 			base.MouseMove(_pnt);
 
-			foreach (var uiBlock in new[]{m_stats, m_messages, m_map})
+			foreach (var uiBlock in new[] {m_stats, m_messages, m_map})
 			{
-				if(uiBlock.ContentRct.Contains(_pnt))
+				if (uiBlock.ContentRct.Contains(_pnt))
 				{
 					uiBlock.MouseMove(_pnt - uiBlock.ContentRct.LeftTop);
 					break;
@@ -102,7 +93,7 @@ namespace GameUi.UIBlocks
 		{
 			base.MouseButtonDown(_pnt, _button);
 
-			foreach (var uiBlock in new[] { m_stats, m_messages, m_map })
+			foreach (var uiBlock in new[] {m_stats, m_messages, m_map})
 			{
 				if (uiBlock.ContentRct.Contains(_pnt))
 				{
@@ -116,7 +107,7 @@ namespace GameUi.UIBlocks
 		{
 			base.MouseButtonUp(_pnt, _button);
 
-			foreach (var uiBlock in new[] { m_stats, m_messages, m_map })
+			foreach (var uiBlock in new[] {m_stats, m_messages, m_map})
 			{
 				if (uiBlock.ContentRct.Contains(_pnt))
 				{
