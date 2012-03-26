@@ -15,9 +15,7 @@ namespace GameUi
 		public static readonly char[] Punctuation = new[] {' ', ',', '.', ':', ';', '!', '?'};
 		private TextLine[] m_textLines;
 
-		public TextPortion(string _text) : this(_text, null)
-		{
-		}
+		public TextPortion(string _text) : this(_text, null) { }
 
 		public TextPortion(string _text, Dictionary<string, FColor> _highlights)
 		{
@@ -39,10 +37,7 @@ namespace GameUi
 		/// </summary>
 		public int FromPart { get; private set; }
 
-		public IEnumerable<TextLine> TextLines
-		{
-			get { return m_textLines; }
-		}
+		public IEnumerable<TextLine> TextLines { get { return m_textLines; } }
 
 		public void Update(int _newFromLine, int _newFromPart)
 		{
@@ -104,10 +99,7 @@ namespace GameUi
 		}
 
 
-		public Point MeasureString(EFonts _font, string _s)
-		{
-			return new Point(15, 15);
-		}
+		public Point MeasureString(EFonts _font, string _s) { return new Point(15, 15); }
 
 		#region Nested type: TextLine
 

@@ -8,22 +8,12 @@ namespace GameUi.UIBlocks.Items
 	internal class SelectItemsUiBlock : ItemsSelectorUiBlock
 	{
 		public SelectItemsUiBlock(Rct _rct, AskMessage _message)
-			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, _message.GetParameters<ThingDescriptor>())
-		{
-		}
+			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, _message.GetParameters<ThingDescriptor>()) { }
 
-		protected override IEnumerable<EThingCategory> AllowedCategories
-		{
-			get { yield break; }
-		}
+		protected override IEnumerable<EThingCategory> AllowedCategories { get { yield break; } }
 
-		protected override int HeaderTakesLine
-		{
-			get { return 0; }
-		}
+		protected override int HeaderTakesLine { get { return 0; } }
 
-		protected override void DrawHeader()
-		{
-		}
+		protected override void DrawHeader() { }
 	}
 }

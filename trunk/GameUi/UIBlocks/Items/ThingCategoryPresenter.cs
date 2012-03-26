@@ -19,7 +19,10 @@ namespace GameUi.UIBlocks.Items
 
 		public virtual void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
-			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')", FColor.Yellow, _line, 0,
+			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')",
+			                  FColor.Yellow,
+			                  _line,
+			                  0,
 			                  EAlignment.LEFT);
 		}
 

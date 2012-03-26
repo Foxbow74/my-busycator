@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Drawing;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -15,14 +14,13 @@ namespace GameUi.UIBlocks
 		public ConfirmQuitBlock()
 			: base(new Rct(2, 2, 15, 5), Frame.SimpleFrame, FColor.Black)
 		{
-			ContentRct = new Rct(ContentRct.Left + 1, ContentRct.Top, ContentRct.Width - 1*2,
-			                                 ContentRct.Height);
+			ContentRct = new Rct(ContentRct.Left + 1,
+			                     ContentRct.Top,
+			                     ContentRct.Width - 1*2,
+			                     ContentRct.Height);
 		}
 
-		public override void DrawContent()
-		{
-			DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), FColor.White, 1, 0, EAlignment.CENTER);
-		}
+		public override void DrawContent() { DrawLine(new TextPortion.TextLine("Уверен? (д/н)", 0, null), FColor.White, 1, 0, EAlignment.CENTER); }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{

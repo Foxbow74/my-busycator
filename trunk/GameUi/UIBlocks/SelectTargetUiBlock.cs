@@ -5,27 +5,20 @@ using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
-using Point = GameCore.Misc.Point;
 
 namespace GameUi.UIBlocks
 {
-	class SelectTargetUiBlock : UiBlockWithText
+	internal class SelectTargetUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
-		private Point m_addPoint;
-		private Point m_center;
 		private readonly int m_maxDistance;
 		private readonly TurnMessageUiBlock m_messages;
 		private readonly List<Point> m_targets = new List<Point>();
+		private Point m_addPoint;
+		private Point m_center;
 		private int m_currentTarget;
 		private Point m_realTarget;
 		private Point m_targetPoint;
-
-		public override void Resize(Rct _newRct)
-		{
-			base.Resize(_newRct);
-			Rebuild();
-		}
 
 		public SelectTargetUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, AskMessage _message)
 			: base(_mapRct, null, FColor.Gray)
@@ -55,12 +48,18 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
+		public override void Resize(Rct _newRct)
+		{
+			base.Resize(_newRct);
+			Rebuild();
+		}
+
 		private void Rebuild()
 		{
 			m_targetPoint = Point.Zero;
-			m_center = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
+			m_center = new Point(ContentRct.Width/2, ContentRct.Height/2);
 			m_addPoint = new Point(ContentRct.Left, ContentRct.Top) + m_center;
-			
+
 			SelectTargetFromList();
 		}
 
@@ -120,9 +119,7 @@ namespace GameUi.UIBlocks
 			m_targetPoint = m_targets[m_currentTarget];
 		}
 
-		public override void DrawBackground()
-		{
-		}
+		public override void DrawBackground() { }
 
 		public override void DrawContent()
 		{
@@ -147,7 +144,7 @@ namespace GameUi.UIBlocks
 
 				if (point.Lenght >= m_maxDistance || (!liveCell.IsCanShootThrough && liveCell.Creature == null))
 				{
-					color =FColor.Red;
+					color = FColor.Red;
 					done = true;
 				}
 				if (!done) pnt = point;
@@ -163,17 +160,14 @@ namespace GameUi.UIBlocks
 			m_realTarget = pnt;
 		}
 
-		public override void MouseMove(Point _pnt)
-		{
-			SetPoint(_pnt);
-		}
+		public override void MouseMove(Point _pnt) { SetPoint(_pnt); }
 
 		private void SetPoint(Point _pnt)
 		{
 			m_targetPoint = _pnt - m_addPoint + ContentRct.LeftTop;
 			if (m_targetPoint.Lenght > m_maxDistance)
 			{
-				m_targetPoint *= m_maxDistance / m_targetPoint.Lenght;
+				m_targetPoint *= m_maxDistance/m_targetPoint.Lenght;
 			}
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}

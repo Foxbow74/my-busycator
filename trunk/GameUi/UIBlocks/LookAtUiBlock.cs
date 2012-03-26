@@ -5,14 +5,22 @@ using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using RusLanguage;
 
 namespace GameUi.UIBlocks
 {
-	class LookAtUiBlock: UiBlockWithText
+	internal class LookAtUiBlock : UiBlockWithText
 	{
-		private Point m_avatarScreenPoint;
 		private readonly TurnMessageUiBlock m_messages;
+		private Point m_avatarScreenPoint;
 		private Point m_targetPoint;
+
+		public LookAtUiBlock(TurnMessageUiBlock _messages, Rct _mapRct)
+			: base(_mapRct, null, FColor.Gray)
+		{
+			m_messages = _messages;
+			Rebuild();
+		}
 
 		public Point TargetPoint
 		{
@@ -33,13 +41,6 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
-		public LookAtUiBlock(TurnMessageUiBlock _messages, Rct _mapRct)
-			: base(_mapRct, null, FColor.Gray)
-		{
-			m_messages = _messages;
-			Rebuild();
-		}
-
 		private void Rebuild()
 		{
 			TargetPoint = Point.Zero;
@@ -51,7 +52,6 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-
 				var newPoint = TargetPoint + dPoint + m_avatarScreenPoint;
 				if (ContentRct.Contains(newPoint))
 				{
@@ -68,9 +68,7 @@ namespace GameUi.UIBlocks
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
-		public override void DrawBackground()
-		{
-		}
+		public override void DrawBackground() { }
 
 		public override void DrawContent()
 		{
@@ -92,7 +90,7 @@ namespace GameUi.UIBlocks
 					s = "там ";
 					ETiles.TARGET_CROSS.GetTile().Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 
-					if(liveCell.Creature!=null)
+					if (liveCell.Creature != null)
 					{
 						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
 					}
@@ -104,14 +102,14 @@ namespace GameUi.UIBlocks
 					{
 						list.Add("вещи");
 					}
-					else if(liveCell.Items.Count()==1)
+					else if (liveCell.Items.Count() == 1)
 					{
 						list.Add(liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell));
 					}
 				}
 				else
 				{
-					s = RusLanguage.Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
+					s = Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
 				}
 				list.Add(liveCell.TerrainAttribute.DisplayName);
 				m_messages.DrawLine(s + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);
@@ -122,10 +120,7 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		public override void MouseMove(Point _pnt)
-		{
-			SetPoint(_pnt);
-		}
+		public override void MouseMove(Point _pnt) { SetPoint(_pnt); }
 
 		private void SetPoint(Point _pnt)
 		{

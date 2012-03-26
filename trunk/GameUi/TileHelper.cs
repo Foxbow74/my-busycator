@@ -16,10 +16,7 @@ namespace GameUi
 			AllTerrainTilesets = new Dictionary<ETerrains, TileSet>();
 		}
 
-		public static ATile FogTile
-		{
-			get { return AllTiles[ETiles.FOG]; }
-		}
+		public static ATile FogTile { get { return AllTiles[ETiles.FOG]; } }
 
 		public static Dictionary<ETerrains, TileSet> AllTerrainTilesets { get; private set; }
 		public static Dictionary<ETiles, ATile> AllTiles { get; private set; }
@@ -70,13 +67,13 @@ namespace GameUi
 
 			foreach (var line in File.ReadAllLines(@"Resources\terrains.dat"))
 			{
-				var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
-				var terrain = (ETerrains)Enum.Parse(typeof(ETerrains), ss[0]);
+				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
+				var terrain = (ETerrains) Enum.Parse(typeof (ETerrains), ss[0]);
 				if (!AllTerrainTilesets.ContainsKey(terrain))
 				{
 					AllTerrainTilesets[terrain] = new TileSet();
 				}
-				var set = (ETextureSet)Enum.Parse(typeof(ETextureSet), ss[1]);
+				var set = (ETextureSet) Enum.Parse(typeof (ETextureSet), ss[1]);
 				var xy = Point.Parse(ss[2]);
 				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
 				AllTerrainTilesets[terrain].AddTile(tile);
@@ -87,15 +84,15 @@ namespace GameUi
 			}
 			foreach (var line in File.ReadAllLines(@"Resources\tiles.dat"))
 			{
-				var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
-				var etile = (ETiles)Enum.Parse(typeof(ETiles), ss[0]);
-				var set = (ETextureSet)Enum.Parse(typeof(ETextureSet), ss[1]);
+				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
+				var etile = (ETiles) Enum.Parse(typeof (ETiles), ss[0]);
+				var set = (ETextureSet) Enum.Parse(typeof (ETextureSet), ss[1]);
 				var xy = Point.Parse(ss[2]);
 				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
 				tile.Tile = etile;
 				AllTiles.Add(etile, tile);
 			}
-			foreach (var key in Enum.GetValues(typeof(ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
+			foreach (var key in Enum.GetValues(typeof (ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
 			{
 				Trace.WriteLine("Tile for " + key + " not defined.");
 			}
@@ -105,9 +102,8 @@ namespace GameUi
 
 			#region old
 
-			foreach (ETerrains terrain in Enum.GetValues(typeof(ETerrains)))
+			foreach (ETerrains terrain in Enum.GetValues(typeof (ETerrains)))
 			{
-				
 				TileSet tl;
 				switch (terrain)
 				{
@@ -128,7 +124,6 @@ namespace GameUi
 							Rp.CreateTile(ETextureSet.GP, 7, 2, FColor.FromArgb(20, 80, 20)),
 							Rp.CreateTile(ETextureSet.GP, 12, 2, FColor.FromArgb(20, 100, 20)),
 							Rp.CreateTile(ETextureSet.GP, 14, 2, FColor.FromArgb(20, 120, 20)),
-
 							Rp.CreateTile(3, 2, FColor.FromArgb(30, 30, 50)),
 							Rp.CreateTile(5, 2, FColor.FromArgb(30, 30, 60)),
 							Rp.CreateTile(7, 2, FColor.FromArgb(20, 20, 80)),
@@ -138,10 +133,9 @@ namespace GameUi
 							Rp.CreateTile(ETextureSet.RB1, 7, 2, FColor.FromArgb(20, 20, 80)),
 							Rp.CreateTile(ETextureSet.RB1, 12, 2, FColor.FromArgb(20, 40, 80)),
 							Rp.CreateTile(ETextureSet.RB1, 14, 2, FColor.FromArgb(20, 90, 30)),
-							Rp.CreateTile(ETextureSet.GP, 7, 2, FColor.FromArgb(20, 80,50)),
+							Rp.CreateTile(ETextureSet.GP, 7, 2, FColor.FromArgb(20, 80, 50)),
 							Rp.CreateTile(ETextureSet.GP, 12, 2, FColor.FromArgb(20, 100, 60)),
 							Rp.CreateTile(ETextureSet.GP, 14, 2, FColor.FromArgb(20, 120, 70)),
-
 							Rp.CreateTile(2, 2, FColor.FromArgb(30, 50, 30)),
 							Rp.CreateTile(ETextureSet.RB1, 2, 2, FColor.FromArgb(30, 60, 30)),
 							Rp.CreateTile(ETextureSet.GP, 2, 2, FColor.FromArgb(20, 80, 20))
@@ -219,7 +213,6 @@ namespace GameUi
 
 			foreach (ETiles tile in Enum.GetValues(typeof (ETiles)))
 			{
-				
 				ATile tl;
 				switch (tile)
 				{
@@ -330,7 +323,7 @@ namespace GameUi
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
-				if(tl!=null)
+				if (tl != null)
 				{
 					tl.Tile = tile;
 				}
@@ -340,10 +333,7 @@ namespace GameUi
 			#endregion
 		}
 
-		public static ATile GetTile(this ETiles _tile)
-		{
-			return AllTiles[_tile];
-		}
+		public static ATile GetTile(this ETiles _tile) { return AllTiles[_tile]; }
 
 		public static ATile GetTile(this ETerrains _terrain, int _index)
 		{

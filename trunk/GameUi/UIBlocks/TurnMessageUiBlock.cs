@@ -10,10 +10,9 @@ namespace GameUi.UIBlocks
 	internal class TurnMessageUiBlock : UiBlockWithText
 	{
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
+		private readonly List<Message> m_turnMessages = new List<Message>();
 		private int m_linesShown;
 		private int m_visibleTill;
-
-		private readonly List<Message> m_turnMessages = new List<Message>();
 
 		public TurnMessageUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Yellow)
@@ -27,7 +26,7 @@ namespace GameUi.UIBlocks
 			MessageManager.NewMessage -= MessageManagerNewMessage;
 			MessageManager.NewWorldMessage -= MessageManagerNewWorldMessage;
 			base.Dispose();
-		} 
+		}
 
 		private void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
@@ -40,15 +39,9 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		private void MessageManagerNewMessage(object _sender, Message _message)
-		{
-			m_turnMessages.Add(_message);
-		}
+		private void MessageManagerNewMessage(object _sender, Message _message) { m_turnMessages.Add(_message); }
 
-		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
-		{
-			throw new NotImplementedException();
-		}
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers) { throw new NotImplementedException(); }
 
 		public override void DrawContent()
 		{
@@ -57,17 +50,17 @@ namespace GameUi.UIBlocks
 			{
 				if (message is SimpleTextMessage)
 				{
-					var tm = (SimpleTextMessage)message;
+					var tm = (SimpleTextMessage) message;
 					strings.Add(tm.Text);
 				}
 			}
 
 			var str = string.Join(", ", strings);
 			var tp = new TextPortion(str, null);
-			tp.SplitByLines((ContentRct.Width - 1) * ATile.Size, Font, 0);
+			tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
 
 			var lines = tp.TextLines.ToArray();
-			if (lines.Length==0) return;
+			if (lines.Length == 0) return;
 
 			var lineNumber = 0;
 			var max = Math.Min(TextLinesMax, lines.Length);

@@ -1,6 +1,5 @@
 ﻿using GameCore;
 using GameCore.Misc;
-using GameCore.PathFinding;
 
 namespace GameUi
 {
@@ -16,10 +15,8 @@ namespace GameUi
 			Rct = new Rct(_x*Size, _y*Size, Size, Size);
 		}
 
-		protected ATile()
-		{
-		}
-		
+		protected ATile() { }
+
 		public FColor Color { get; set; }
 
 		public Rct Rct { get; protected set; }
@@ -33,14 +30,8 @@ namespace GameUi
 		public abstract void Draw(Point _point);
 		public abstract void FogIt(Point _point);
 
-		public string ToText()
-		{
-			return Tile + ToShortText();
-		}
+		public string ToText() { return Tile + ToShortText(); }
 
-		public string ToShortText()
-		{
-			return string.Format("|{3}|{0},{1}|{2}", Rct.Left / Size, Rct.Top / Size, Color.ToShortText(), Set);
-		}
+		public string ToShortText() { return string.Format("|{3}|{0},{1}|{2}", Rct.Left/Size, Rct.Top/Size, Color.ToShortText(), Set); }
 	}
 }

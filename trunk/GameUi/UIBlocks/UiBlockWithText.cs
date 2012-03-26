@@ -6,9 +6,9 @@ using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	abstract class UiBlockWithText:UIBlock
+	internal abstract class UiBlockWithText : UIBlock
 	{
-		protected UiBlockWithText(Rct _rct, Frame _frame, FColor _color, EFonts _font=EFonts.COMMON) : base(_rct, _frame, _color)
+		protected UiBlockWithText(Rct _rct, Frame _frame, FColor _color, EFonts _font = EFonts.COMMON) : base(_rct, _frame, _color)
 		{
 			Font = _font;
 			LineHeight = DrawHelper.MeasureString(_font, "Ay").Height;
@@ -18,20 +18,11 @@ namespace GameUi.UIBlocks
 
 		public EFonts Font { get; private set; }
 
-		public int TextLinesMax
-		{
-			get { return (int)Math.Round((double)ContentRct.Height * ATile.Size / LineHeight); }
-		}
+		public int TextLinesMax { get { return (int) Math.Round((double) ContentRct.Height*ATile.Size/LineHeight); } }
 
-		protected static string JoinCommandCaptions(IEnumerable<string> _s)
-		{
-			return string.Join("   -   ", _s);
-		}
+		protected static string JoinCommandCaptions(IEnumerable<string> _s) { return string.Join("   -   ", _s); }
 
-		public float DrawLine(string _text, FColor _color, int _lineNumber, float _indent, EAlignment _alignment)
-		{
-			return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _lineNumber, _indent, _alignment);
-		}
+		public float DrawLine(string _text, FColor _color, int _lineNumber, float _indent, EAlignment _alignment) { return DrawLine(new TextPortion.TextLine(_text, 0, null), _color, _lineNumber, _indent, _alignment); }
 
 		protected void DrawLine(TextPortion.TextLine _textLine, FColor _color, float _x, float _y)
 		{
@@ -57,13 +48,16 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		protected float DrawLine(TextPortion.TextLine _textLine, FColor _color, int _lineNumber, float _indent,
-								 EAlignment _alignment)
+		protected float DrawLine(TextPortion.TextLine _textLine,
+		                         FColor _color,
+		                         int _lineNumber,
+		                         float _indent,
+		                         EAlignment _alignment)
 		{
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
 			var processedChars = 0;
-			var x = (float)ContentRct.Left * ATile.Size;
+			var x = (float) ContentRct.Left*ATile.Size;
 
 			var lineSize = DrawHelper.MeasureString(Font, line);
 			switch (_alignment)
@@ -75,14 +69,14 @@ namespace GameUi.UIBlocks
 					x += _indent;
 					break;
 				case EAlignment.RIGHT:
-					x += ContentRct.Width * ATile.Size - lineSize.Width - _indent;
+					x += ContentRct.Width*ATile.Size - lineSize.Width - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRct.Width * ATile.Size / 2f - lineSize.Width / 2f;
+					x += ContentRct.Width*ATile.Size/2f - lineSize.Width/2f;
 					break;
 			}
 
-			var y = ContentRct.Top * ATile.Size + _lineNumber * LineHeight;
+			var y = ContentRct.Top*ATile.Size + _lineNumber*LineHeight;
 
 			for (var partIndex = 0; partIndex < part.Length; partIndex++)
 			{

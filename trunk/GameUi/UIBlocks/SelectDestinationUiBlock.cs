@@ -8,20 +8,14 @@ using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	class SelectDestinationUiBlock : UiBlockWithText
+	internal class SelectDestinationUiBlock : UiBlockWithText
 	{
 		private readonly Act m_act;
+		private readonly TurnMessageUiBlock m_messages;
 		private Point m_avatarScreenPoint;
 		private Point m_halfScreen;
-		private readonly TurnMessageUiBlock m_messages;
 		private IEnumerable<Point> m_path;
 		private Point m_targetPoint;
-
-		public override void Resize(Rct _newRct)
-		{
-			base.Resize(_newRct);
-			Rebuild();
-		}
 
 		public SelectDestinationUiBlock(TurnMessageUiBlock _messages, Rct _mapRct, Act _act)
 			: base(_mapRct, null, FColor.Gray)
@@ -31,10 +25,16 @@ namespace GameUi.UIBlocks
 			Rebuild();
 		}
 
+		public override void Resize(Rct _newRct)
+		{
+			base.Resize(_newRct);
+			Rebuild();
+		}
+
 		private void Rebuild()
 		{
 			m_targetPoint = Point.Zero;
-			m_halfScreen = new Point(ContentRct.Width / 2, ContentRct.Height / 2);
+			m_halfScreen = new Point(ContentRct.Width/2, ContentRct.Height/2);
 			m_avatarScreenPoint = m_halfScreen + ContentRct.LeftTop;
 		}
 
@@ -58,7 +58,7 @@ namespace GameUi.UIBlocks
 					break;
 				case ConsoleKey.Enter:
 				case ConsoleKey.M:
-					if (m_path!=null)
+					if (m_path != null)
 					{
 						m_act.AddParameter(m_path);
 						CloseTopBlock();
@@ -68,9 +68,7 @@ namespace GameUi.UIBlocks
 			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
-		public override void DrawBackground()
-		{
-		}
+		public override void DrawBackground() { }
 
 		public override void DrawContent()
 		{
@@ -104,10 +102,7 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		public override void MouseMove(Point _pnt)
-		{
-			SetPoint(_pnt);
-		}
+		public override void MouseMove(Point _pnt) { SetPoint(_pnt); }
 
 		private void SetPoint(Point _pnt)
 		{

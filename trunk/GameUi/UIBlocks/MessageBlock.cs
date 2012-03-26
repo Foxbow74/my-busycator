@@ -11,10 +11,7 @@ namespace GameUi.UIBlocks
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 
 		public MessageBlock(Rct _rct)
-			: base(_rct, null, FColor.Yellow)
-		{
-			MessageManager.NewMessage += MessageManagerNewMessage;
-		}
+			: base(_rct, null, FColor.Yellow) { MessageManager.NewMessage += MessageManagerNewMessage; }
 
 		public override void Dispose()
 		{
@@ -34,10 +31,7 @@ namespace GameUi.UIBlocks
 			m_lines.AddRange(tp.TextLines);
 		}
 
-		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
-		{
-			throw new NotImplementedException();
-		}
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers) { throw new NotImplementedException(); }
 
 		public override void DrawContent()
 		{

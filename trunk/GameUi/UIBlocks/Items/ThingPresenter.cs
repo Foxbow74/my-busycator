@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using GameCore;
-using GameCore.Misc;
 using GameCore.Objects;
 
 namespace GameUi.UIBlocks.Items
@@ -24,26 +22,11 @@ namespace GameUi.UIBlocks.Items
 
 		public bool IsChecked { get; set; }
 
-		public ConsoleKey Key
-		{
-			get { return m_key; }
-		}
+		public ConsoleKey Key { get { return m_key; } }
 
-		public ThingDescriptor ThingDescriptor
-		{
-			get
-			{
-				return m_thingDescriptor;
-			}
-		}
+		public ThingDescriptor ThingDescriptor { get { return m_thingDescriptor; } }
 
-		public int Count
-		{
-			get
-			{
-				return 	m_descriptors.Count(_descriptor => _descriptor.GetName(World.TheWorld.Avatar) == m_thingDescriptor.GetName(World.TheWorld.Avatar));
-			}
-		}
+		public int Count { get { return m_descriptors.Count(_descriptor => _descriptor.GetName(World.TheWorld.Avatar) == m_thingDescriptor.GetName(World.TheWorld.Avatar)); } }
 
 		public string Text
 		{
@@ -59,7 +42,10 @@ namespace GameUi.UIBlocks.Items
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine("+", IsChecked ? FColor.Yellow : FColor.Black, _line, 10, EAlignment.LEFT);
-			_uiBlock.DrawLine(Enum.GetName(typeof(ConsoleKey), Key), FColor.White, _line, 20,
+			_uiBlock.DrawLine(Enum.GetName(typeof (ConsoleKey), Key),
+			                  FColor.White,
+			                  _line,
+			                  20,
 			                  EAlignment.LEFT);
 			_uiBlock.DrawLine(Text, FColor.DarkGray, _line, 40, EAlignment.LEFT);
 		}

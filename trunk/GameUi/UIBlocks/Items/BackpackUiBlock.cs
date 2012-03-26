@@ -13,29 +13,22 @@ namespace GameUi.UIBlocks.Items
 
 		public BackpackUiBlock(Rct _rct)
 			: base(
-				_rct, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER, null,
-				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
-		{
-			m_allowedCategories = new EThingCategory[0];
-		}
+				_rct,
+				ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER,
+				null,
+				World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex)) { m_allowedCategories = new EThingCategory[0]; }
 
 		public BackpackUiBlock(Rct _rct, AskMessage _message)
 			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, World.TheWorld.Avatar.GetBackPackItems().OrderBy(_thingDescriptor => _thingDescriptor.UiOrderIndex))
 
 		{
 			var category = _message.GetParameters<EThingCategory>();
-			m_allowedCategories = category?? new EThingCategory[0];
+			m_allowedCategories = category ?? new EThingCategory[0];
 		}
 
-		protected override IEnumerable<EThingCategory> AllowedCategories
-		{
-			get { return m_allowedCategories; }
-		}
+		protected override IEnumerable<EThingCategory> AllowedCategories { get { return m_allowedCategories; } }
 
-		protected override int HeaderTakesLine
-		{
-			get { return 4; }
-		}
+		protected override int HeaderTakesLine { get { return 4; } }
 
 		protected override void DrawHeader()
 		{
