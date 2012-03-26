@@ -10,30 +10,15 @@ namespace GameCore.Acts.Combat
 {
 	internal class ShootAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 30; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 30; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.T, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.T, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "выстрелить/метнуть"; }
-		}
+		public override string Name { get { return "выстрелить/метнуть"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.COMBAT; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.COMBAT; } }
 
 		public override EActResults Do(Creature _creature)
 		{
@@ -74,7 +59,7 @@ namespace GameCore.Acts.Combat
 				intelligent.TakeOff(EEquipmentPlaces.MISSILES);
 				intelligent.RemoveFromBackpack(item);
 			}
-			if(dPoint==Point.Zero)
+			if (dPoint == Point.Zero)
 			{
 				return EActResults.QUICK_FAIL;
 			}

@@ -12,17 +12,48 @@ namespace GameCore.Mapping.Layers
 {
 	public class Surface : WorldLayer
 	{
+		private static readonly List<string> m_maleNames;
+		private static readonly List<string> m_femaleNames;
 		private EMapBlockTypes[,] m_worldMap;
 		private WorldMapGenerator m_worldMapGenerator;
 
-		private static readonly List<string> m_maleNames;
-		private static readonly List<string> m_femaleNames;
-
 		static Surface()
 		{
-			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
 		}
+
+		public City City { get; private set; }
+
+		public EMapBlockTypes[,] WorldMap
+		{
+			get
+			{
+				if (m_worldMap == null)
+				{
+					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, World.Rnd);
+					m_worldMap = m_worldMapGenerator.Generate();
+
+					City = new City(this, World.Rnd);
+				}
+				return m_worldMap;
+			}
+		}
+
+		//public override float GetFogColorMultiplier(LiveMapCell _liveCell)
+		//{
+		//    return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
+		//}
+
+		public int WorldMapSize
+		{
+			get { return 30; } // 150; }
+		}
+
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
+
+		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.RED_BRICK_WALL; } }
+		public override FColor Ambient { get { return new FColor(1f, 1f, 1f, 0.5f).Multiply(1f); } }
 
 		public string GetNextCitizenName(ESex _sex)
 		{
@@ -43,27 +74,10 @@ namespace GameCore.Mapping.Layers
 			return result;
 		}
 
-		public City City { get; private set; }
-
-		public EMapBlockTypes[,] WorldMap
-		{
-			get
-			{
-				if (m_worldMap == null)
-				{
-					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, World.Rnd);
-					m_worldMap = m_worldMapGenerator.Generate();
-
-					City = new City(this, World.Rnd);
-				}
-				return m_worldMap;
-			}
-		}
-
 		private static void PrepareNicks(string _filename, Random _rnd)
 		{
 			var txt = File.ReadAllText(_filename);
-			while(txt.IndexOf('(')>0)
+			while (txt.IndexOf('(') > 0)
 			{
 				txt = txt.Replace(txt.Substring(txt.IndexOf('('), 3), "");
 			}
@@ -75,33 +89,7 @@ namespace GameCore.Mapping.Layers
 			var check = File.ReadAllText(_filename);
 		}
 
-		//public override float GetFogColorMultiplier(LiveMapCell _liveCell)
-		//{
-		//    return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
-		//}
-
-		public int WorldMapSize
-		{
-			get { return 30; }// 150; }
-		}
-
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces
-		{
-			get
-			{
-				yield return ETerrains.GRASS;
-			}
-		}
-
-		internal override IEnumerable<ETerrains> DefaultWalls
-		{
-			get { yield return ETerrains.RED_BRICK_WALL; }
-		}
-
-		public EMapBlockTypes GetBlockType(Point _blockId)
-		{
-			return WorldMap[_blockId.X + WorldMapSize/2, _blockId.Y + WorldMapSize/2];
-		}
+		public EMapBlockTypes GetBlockType(Point _blockId) { return WorldMap[_blockId.X + WorldMapSize/2, _blockId.Y + WorldMapSize/2]; }
 
 
 		protected override MapBlock GenerateBlock(Point _blockId)
@@ -147,7 +135,7 @@ namespace GameCore.Mapping.Layers
 				var type = GetBlockType(_blockId + dpoint);
 				map[point] = type;
 			}
-			
+
 			var list = new List<EMapBlockTypes>();
 			var baseType = GetBlockType(_blockId);
 			foreach (var point in BaseMapBlock.Rect.AllPoints)
@@ -178,7 +166,7 @@ namespace GameCore.Mapping.Layers
 			}
 
 
-			if(baseType==EMapBlockTypes.CITY)
+			if (baseType == EMapBlockTypes.CITY)
 			{
 				City.GenerateCityBlock(block, rnd);
 			}
@@ -210,7 +198,7 @@ namespace GameCore.Mapping.Layers
 			//    block.Map[i, 8] = ETerrains.RED_BRICK_WALL;
 			//    block.Map[8, i] = ETerrains.RED_BRICK_WALL;
 			//}
-			
+
 			//block.Map[6, 3] = ETerrains.WINDOW;
 			//block.Map[3, 6] = ETerrains.WINDOW;
 			//block.Map[6, 8] = ETerrains.GROUND;
@@ -238,8 +226,8 @@ namespace GameCore.Mapping.Layers
 				var itmcnt = 20 + rnd.Next(rnd.Next(20));
 				for (var i = 0; i < itmcnt; ++i)
 				{
-					var x = rnd.Next(MapBlock.SIZE);
-					var y = rnd.Next(MapBlock.SIZE);
+					var x = rnd.Next(BaseMapBlock.SIZE);
+					var y = rnd.Next(BaseMapBlock.SIZE);
 
 					var attr = TerrainAttribute.GetAttribute(block.Map[x, y]);
 					if (attr.IsPassable > 0)
@@ -248,7 +236,7 @@ namespace GameCore.Mapping.Layers
 						var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
 						var thing = World.Rnd.Next(2) == 0 ? ThingHelper.GetFakedThing(block) : ThingHelper.GetFakedItem(block.RandomSeed);
 
-						if (thing.Is<Stair>() && (x == MapBlock.SIZE - 1 || y == MapBlock.SIZE - 1))
+						if (thing.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
 						{
 							continue;
 						}
@@ -272,14 +260,6 @@ namespace GameCore.Mapping.Layers
 			//block.AddCreature(new Monster(this), new Point(rnd.Next(MapBlock.SIZE), rnd.Next(MapBlock.SIZE)));
 
 			return block;
-		}
-
-		public override FColor Ambient
-		{
-			get
-			{
-				return new FColor(1f,1f,1f,0.5f).Multiply(1f); 
-			}
 		}
 	}
 }

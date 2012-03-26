@@ -10,14 +10,14 @@ namespace GameCore.Mapping
 	public class BaseMapBlock
 	{
 		public const int SIZE = 32;
-		public readonly static Rct Rect = new Rct(0, 0, SIZE, SIZE);
+		public static readonly Rct Rect = new Rct(0, 0, SIZE, SIZE);
 
 		public BaseMapBlock(Point _blockId)
 		{
 			Rooms = new List<Room>();
-			WorldCoords = _blockId * SIZE;
+			WorldCoords = _blockId*SIZE;
 			BlockId = _blockId;
-			Map = new ETerrains[SIZE, SIZE];
+			Map = new ETerrains[SIZE,SIZE];
 			RandomSeed = World.Rnd.Next();
 			Objects = new List<Tuple<Thing, Point>>();
 		}
@@ -44,20 +44,14 @@ namespace GameCore.Mapping
 		{
 			if (_i < 0)
 			{
-				return -(Math.Abs(_i + 1) / SIZE + 1);
+				return -(Math.Abs(_i + 1)/SIZE + 1);
 			}
-			return _i / SIZE;
+			return _i/SIZE;
 		}
 
-		public static Point GetInBlockCoords(Point _point)
-		{
-			return new Point((SIZE + (_point.X % SIZE)) % SIZE, (SIZE + (_point.Y % SIZE)) % SIZE);
-		}
+		public static Point GetInBlockCoords(Point _point) { return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE); }
 
-		public Rct Rct()
-		{
-			return new Rct(BlockId * SIZE, SIZE, SIZE);
-		}
+		public Rct Rct() { return new Rct(BlockId*SIZE, SIZE, SIZE); }
 
 		public void AddRoom(Room _room)
 		{
@@ -65,15 +59,9 @@ namespace GameCore.Mapping
 			_room.AddedToBlock(this);
 		}
 
-		public Point ToWorldCoords(Point _point)
-		{
-			return WorldCoords + _point;
-		}
+		public Point ToWorldCoords(Point _point) { return WorldCoords + _point; }
 
-		public void RemoveObject(Thing _item, Point _inBlockCoords)
-		{
-			Objects.Remove(new Tuple<Thing, Point>(_item, _inBlockCoords));
-		}
+		public void RemoveObject(Thing _item, Point _inBlockCoords) { Objects.Remove(new Tuple<Thing, Point>(_item, _inBlockCoords)); }
 
 		public bool AddObject(Thing _thing, Point _inBlockCoords)
 		{
@@ -84,7 +72,7 @@ namespace GameCore.Mapping
 					.FirstOrDefault();
 				if (stack != null)
 				{
-					stack.Add((StackOfItems)_thing);
+					stack.Add((StackOfItems) _thing);
 					return false;
 				}
 			}
@@ -96,13 +84,13 @@ namespace GameCore.Mapping
 
 	public class MapBlock : BaseMapBlock
 	{
-		public MapBlock(Point _blockId):base(_blockId)
+		public MapBlock(Point _blockId) : base(_blockId)
 		{
 			Creatures = new List<Tuple<Creature, Point>>();
 			SeenCells = new uint[SIZE];
 		}
 
-		public MapBlock(Point _blockId, BaseMapBlock _baseMapBlock): this(_blockId)
+		public MapBlock(Point _blockId, BaseMapBlock _baseMapBlock) : this(_blockId)
 		{
 			foreach (var point in Rect.AllPoints)
 			{
@@ -127,9 +115,9 @@ namespace GameCore.Mapping
 				{
 					if (tuple.Item1 is ILightSource)
 					{
-						yield return new Tuple<ILightSource, Point>((ILightSource)tuple.Item1, tuple.Item2);
+						yield return new Tuple<ILightSource, Point>((ILightSource) tuple.Item1, tuple.Item2);
 					}
-					else if (tuple.Item1.Light!=null)
+					else if (tuple.Item1.Light != null)
 					{
 						yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
 					}
@@ -138,7 +126,6 @@ namespace GameCore.Mapping
 				{
 					if (tuple.Item1.IsAvatar)
 					{
-						
 					}
 					if (tuple.Item1.Light != null) yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
 				}
@@ -149,14 +136,14 @@ namespace GameCore.Mapping
 		{
 			if (_creature is FakedCreature)
 			{
-				_creature = (Creature)((FakedCreature) _creature).ResolveFake(World.TheWorld.Avatar);
+				_creature = (Creature) ((FakedCreature) _creature).ResolveFake(World.TheWorld.Avatar);
 			}
 			Creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
 		}
 
 		public void RemoveCreature(Creature _creature)
 		{
-			if(Creatures.RemoveAll(_tuple => _tuple.Item1 == _creature)==0)
+			if (Creatures.RemoveAll(_tuple => _tuple.Item1 == _creature) == 0)
 			{
 				throw new ApplicationException();
 			}

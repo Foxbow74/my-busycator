@@ -16,17 +16,8 @@ namespace GameCore.PathFinding
 
 		#endregion
 
-		public Point Point
-		{
-			get
-			{
-				return new Point(X,Y);
-			}
-		}
+		public Point Point { get { return new Point(X, Y); } }
 
-		public override string ToString()
-		{
-			return X + ";" + Y;
-		}
+		public override string ToString() { return X + ";" + Y; }
 	}
 }

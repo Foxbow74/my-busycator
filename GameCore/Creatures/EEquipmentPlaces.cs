@@ -40,10 +40,7 @@ namespace GameCore.Creatures
 
 		public EThingCategory[] AbleToEquip { get; set; }
 
-		public static IEnumerable<EEquipmentPlaces> AllValues
-		{
-			get { return Attrs.Keys; }
-		}
+		public static IEnumerable<EEquipmentPlaces> AllValues { get { return Attrs.Keys; } }
 
 		public static Dictionary<EEquipmentPlaces, EquipmentPlacesAttribute> Attrs
 		{
@@ -57,14 +54,8 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public bool IsAbleToEquip(EThingCategory _category)
-		{
-			return AbleToEquip.Length == 0 || AbleToEquip.Contains(_category);
-		}
+		public bool IsAbleToEquip(EThingCategory _category) { return AbleToEquip.Length == 0 || AbleToEquip.Contains(_category); }
 
-		public static EquipmentPlacesAttribute GetAttribute(EEquipmentPlaces _enum)
-		{
-			return Attrs[_enum];
-		}
+		public static EquipmentPlacesAttribute GetAttribute(EEquipmentPlaces _enum) { return Attrs[_enum]; }
 	}
 }

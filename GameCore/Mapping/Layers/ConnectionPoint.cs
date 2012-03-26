@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using GameCore.Misc;
-using GameCore.PathFinding;
 
 namespace GameCore.Mapping.Layers
 {
-	class ConnectionPoint
+	internal class ConnectionPoint
 	{
 		public ConnectionPoint(Point _begin, Point _end, Room _room, EDirections _dir)
 		{
@@ -18,21 +17,14 @@ namespace GameCore.Mapping.Layers
 		internal Point End { get; private set; }
 		internal Room Room { get; private set; }
 		internal EDirections Dir { get; private set; }
-		internal Point BlockId { get { return MapBlock.GetBlockId(End); } }
+		internal Point BlockId { get { return BaseMapBlock.GetBlockId(End); } }
 
-		public override string ToString()
-		{
-			return End + " from " + Begin + " rm:" + Room.RoomRectangle;
-		}
+		public override string ToString() { return End + " from " + Begin + " rm:" + Room.RoomRectangle; }
 	}
 
-	class Connector
+	internal class Connector
 	{
+		public Connector(params Room[] _rooms) { Rooms = new List<Room>(_rooms); }
 		public List<Room> Rooms { get; private set; }
-
-		public Connector(params Room[] _rooms)
-		{
-			Rooms = new List<Room>(_rooms);	
-		}
 	}
 }

@@ -2,8 +2,7 @@
 
 namespace GameCore
 {
-	[Flags]
-	public enum EMaterial
+	[Flags] public enum EMaterial
 	{
 		METAL = 0x1 << 0,
 		WOOD = 0x1 << 1,

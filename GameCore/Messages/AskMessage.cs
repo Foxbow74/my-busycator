@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Acts;
 
 namespace GameCore.Messages
@@ -23,7 +23,7 @@ namespace GameCore.Messages
 		public void AddParameter<T>(T _param)
 		{
 			if (m_parameters == null) m_parameters = new List<Tuple<Type, object>>();
-			m_parameters.Add(new Tuple<Type, object>(typeof(T), _param));
+			m_parameters.Add(new Tuple<Type, object>(typeof (T), _param));
 		}
 
 		public void AddParameter(Type _type, object _param)
@@ -38,7 +38,7 @@ namespace GameCore.Messages
 
 			foreach (var tuple in m_parameters)
 			{
-				if (typeof(T).IsAssignableFrom(tuple.Item1)) yield return (T)tuple.Item2;
+				if (typeof (T).IsAssignableFrom(tuple.Item1)) yield return (T) tuple.Item2;
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace GameCore.Messages
 			{
 				throw new ApplicationException();
 			}
-			return (T)m_parameters.Where(_tuple => typeof (T).IsAssignableFrom(_tuple.Item1)).Select(_tuple1 => _tuple1.Item2).First();
+			return (T) m_parameters.Where(_tuple => typeof (T).IsAssignableFrom(_tuple.Item1)).Select(_tuple1 => _tuple1.Item2).First();
 		}
 	}
 
@@ -66,13 +66,9 @@ namespace GameCore.Messages
 		WORLD_MAP,
 	}
 
-	public class AskMessageNg:AskMessage
+	public class AskMessageNg : AskMessage
 	{
+		public AskMessageNg(Act _act, EAskMessageType _type, params object[] _params) : base(_act, _params) { AskMessageType = _type; }
 		public EAskMessageType AskMessageType { get; private set; }
-
-		public AskMessageNg(Act _act, EAskMessageType _type, params object[] _params) : base(_act, _params)
-		{
-			AskMessageType = _type;
-		}
 	}
 }

@@ -30,7 +30,7 @@ namespace GameCore.Creatures
 		protected Intelligent(WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
 			: base(_layer, _speed)
 		{
-			Sex = World.Rnd.Next(2)==0?ESex.MALE : ESex.FEMALE;
+			Sex = World.Rnd.Next(2) == 0 ? ESex.MALE : ESex.FEMALE;
 			m_intellectGrades = _intellectGrades;
 			switch (_intellectGrades)
 			{
@@ -51,13 +51,27 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public Item this[EEquipmentPlaces _places]
+		public Item this[EEquipmentPlaces _places] { get { return m_equipment[_places]; } }
+
+		public override ILightSource Light
 		{
-			get { return m_equipment[_places]; }
+			get
+			{
+				var tool = this[EEquipmentPlaces.TOOL];
+				if (tool != null && tool.Light != null)
+				{
+					return tool.Light;
+				}
+				return base.Light;
+			}
 		}
 
+		public override string Name { get { return IntelligentName + ", " + Roles.First()[Sex]; } }
+
+		public abstract string IntelligentName { get; }
+
 		/// <summary>
-		/// Добавить в рюкзак и затем экипироваться
+		/// 	Добавить в рюкзак и затем экипироваться
 		/// </summary>
 		/// <param name = "_place"></param>
 		/// <param name = "_item"></param>
@@ -65,7 +79,7 @@ namespace GameCore.Creatures
 		{
 			if (_item is FakedItem)
 			{
-				_item = (Item)((FakedItem) _item).ResolveFake(this);
+				_item = (Item) ((FakedItem) _item).ResolveFake(this);
 			}
 			//_item.Resolve(this);
 			ObjectTaken(_item);
@@ -84,15 +98,9 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public override IEnumerable<ThingDescriptor> GetBackPackItems()
-		{
-			return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, LiveCoords, m_backPack));
-		}
+		public override IEnumerable<ThingDescriptor> GetBackPackItems() { return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, LiveCoords, m_backPack)); }
 
-		public IEnumerable<Tuple<EEquipmentPlaces, Item>> GetEquipment()
-		{
-			return m_equipment.Select(_item => new Tuple<EEquipmentPlaces, Item>(_item.Key, _item.Value));
-		}
+		public IEnumerable<Tuple<EEquipmentPlaces, Item>> GetEquipment() { return m_equipment.Select(_item => new Tuple<EEquipmentPlaces, Item>(_item.Key, _item.Value)); }
 
 		public void TakeOff(EEquipmentPlaces _place)
 		{
@@ -122,32 +130,6 @@ namespace GameCore.Creatures
 			m_equipment[_place] = _item;
 		}
 
-		public void RemoveFromBackpack(Item _item)
-		{
-			m_backPack.GetItems(this).Remove(_item);
-		}
-
-		public override ILightSource Light
-		{
-			get
-			{
-				var tool = this[EEquipmentPlaces.TOOL];
-				if (tool != null && tool.Light!=null)
-				{
-					return tool.Light;
-				}
-				return base.Light;
-			}
-		}
-
-		public override string Name
-		{
-			get
-			{
-				return IntelligentName +", " + Roles.First()[Sex];
-			}
-		}
-
-		public abstract string IntelligentName { get; }
+		public void RemoveFromBackpack(Item _item) { m_backPack.GetItems(this).Remove(_item); }
 	}
 }

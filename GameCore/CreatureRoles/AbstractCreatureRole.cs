@@ -11,23 +11,11 @@ namespace GameCore.CreatureRoles
 		public abstract string Name { get; }
 		public abstract IEnumerable<FColor> Colors { get; }
 
-		public virtual string this[ESex _sex]
-		{
-			get
-			{
-				return Sklonenia.ToSex(Name, _sex);
-			}
-		}
+		public virtual string this[ESex _sex] { get { return Sklonenia.ToSex(Name, _sex); } }
 	}
 
-	public abstract class AbstractCitizenRole:AbstractCreatureRole
+	public abstract class AbstractCitizenRole : AbstractCreatureRole
 	{
-		public void SetBuilding(Intelligent _intelligent,Building _building)
-		{
-			Building = _building;
-			_building.SetOwner(_intelligent);
-		}
-
 		public Building Building { get; private set; }
 
 		public abstract EBuilding BuildingType { get; }
@@ -40,24 +28,24 @@ namespace GameCore.CreatureRoles
 				return result;
 			}
 		}
+
+		public void SetBuilding(Intelligent _intelligent, Building _building)
+		{
+			Building = _building;
+			_building.SetOwner(_intelligent);
+		}
 	}
 
-	class AvatarRole : AbstractCreatureRole
+	internal class AvatarRole : AbstractCreatureRole
 	{
-		public override string Name
-		{
-			get { return "аватар"; }
-		}
+		public override string Name { get { return "аватар"; } }
 
 		public override IEnumerable<FColor> Colors { get { throw new NotImplementedException(); } }
 	}
 
-	class HouseKeeper : AbstractCitizenRole
+	internal class HouseKeeper : AbstractCitizenRole
 	{
-		public override string Name
-		{
-			get { return "владелец"; }
-		}
+		public override string Name { get { return "владелец"; } }
 
 		public override IEnumerable<FColor> Colors
 		{
@@ -70,18 +58,12 @@ namespace GameCore.CreatureRoles
 			}
 		}
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.HOUSE; }
-		}
+		public override EBuilding BuildingType { get { return EBuilding.HOUSE; } }
 	}
 
-	class TavernKeeper : AbstractCitizenRole
+	internal class TavernKeeper : AbstractCitizenRole
 	{
-		public override string Name
-		{
-			get { return "трактирщик"; }
-		}
+		public override string Name { get { return "трактирщик"; } }
 
 		public override IEnumerable<FColor> Colors
 		{
@@ -93,23 +75,14 @@ namespace GameCore.CreatureRoles
 			}
 		}
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.TAVERN; }
-		}
+		public override EBuilding BuildingType { get { return EBuilding.TAVERN; } }
 	}
 
-	class InnKeeper : AbstractCitizenRole
+	internal class InnKeeper : AbstractCitizenRole
 	{
-		public override string Name
-		{
-			get { return "хозяин"; }
-		}
+		public override string Name { get { return "хозяин"; } }
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.INN; }
-		}
+		public override EBuilding BuildingType { get { return EBuilding.INN; } }
 
 		public override IEnumerable<FColor> Colors
 		{
@@ -122,17 +95,11 @@ namespace GameCore.CreatureRoles
 		}
 	}
 
-	class ShopKeeper : AbstractCitizenRole
+	internal class ShopKeeper : AbstractCitizenRole
 	{
-		public override string Name
-		{
-			get { return "торговец"; }
-		}
+		public override string Name { get { return "торговец"; } }
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.SHOP; }
-		}
+		public override EBuilding BuildingType { get { return EBuilding.SHOP; } }
 
 
 		public override IEnumerable<FColor> Colors
@@ -144,21 +111,14 @@ namespace GameCore.CreatureRoles
 				yield return FColor.BlueChalk;
 			}
 		}
-
 	}
 
-	class GraveyardKeeper : AbstractCitizenRole
+	internal class GraveyardKeeper : AbstractCitizenRole
 	{
 		//Sexton
-		public override string Name
-		{
-			get { return "могильщик"; }
-		}
+		public override string Name { get { return "могильщик"; } }
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.GRAVEYARD; }
-		}
+		public override EBuilding BuildingType { get { return EBuilding.GRAVEYARD; } }
 
 
 		public override IEnumerable<FColor> Colors

@@ -8,7 +8,7 @@ namespace GameCore
 	{
 		NONE,
 		[Tiles(0.5f)] HEAP_OF_ITEMS,
-		[Tiles(0.2f)]FOG,
+		[Tiles(0.2f)] FOG,
 		TARGET_DOT,
 		TARGET_CROSS,
 		ON_WALL_LIGHT_SOURCE,
@@ -24,16 +24,16 @@ namespace GameCore
 		STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
 
-		[Tiles(0.2f)]TABLE,
-		[Tiles(0.1f)]CHAIR,
-		[Tiles(0.4f)]BED,
-		[Tiles(0.4f)]BARREL,
+		[Tiles(0.2f)] TABLE,
+		[Tiles(0.1f)] CHAIR,
+		[Tiles(0.4f)] BED,
+		[Tiles(0.4f)] BARREL,
 
-		[Tiles(0.2f)]GUARD,
-		[Tiles(0.2f)]CITIZEN_MALE,
-		[Tiles(0.2f)]CITIZEN_MALE2,
-		[Tiles(0.2f)]CITIZEN_FEMALE,
-		[Tiles(0.2f)]CITIZEN_FEMALE2,
+		[Tiles(0.2f)] GUARD,
+		[Tiles(0.2f)] CITIZEN_MALE,
+		[Tiles(0.2f)] CITIZEN_MALE2,
+		[Tiles(0.2f)] CITIZEN_FEMALE,
+		[Tiles(0.2f)] CITIZEN_FEMALE2,
 		[Tiles(0.3f)] MONSTER,
 
 		[Tiles(0.2f)] SWORD,
@@ -60,9 +60,8 @@ namespace GameCore
 	public class TilesAttribute : Attribute
 	{
 		private static Dictionary<ETiles, TilesAttribute> m_attrs;
-		
-		public TilesAttribute():this(0f)
-		{}
+
+		public TilesAttribute() : this(0f) { }
 
 		public TilesAttribute(float _opacity)
 		{

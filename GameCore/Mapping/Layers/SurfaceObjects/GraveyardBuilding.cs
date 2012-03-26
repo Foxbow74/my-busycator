@@ -4,31 +4,16 @@ using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
-	class GraveyardBuilding:Building
+	internal class GraveyardBuilding : Building
 	{
 		public GraveyardBuilding(City _city)
-			: base(_city)
-		{
-			Sex = ESex.IT;
-		}
+			: base(_city) { Sex = ESex.IT; }
 
-		public override EBuilding BuildingType
-		{
-			get { return EBuilding.GRAVEYARD;}
-		}
+		public override EBuilding BuildingType { get { return EBuilding.GRAVEYARD; } }
 
-		protected override string BuildingName
-		{
-			get { return "кладбище"; }
-		}
+		protected override string BuildingName { get { return "кладбище"; } }
 
-		public override uint MaxCountInCity
-		{
-			get
-			{
-				return 1;
-			}
-		}
+		public override uint MaxCountInCity { get { return 1; } }
 
 		public override void Fill(MapBlock _block)
 		{

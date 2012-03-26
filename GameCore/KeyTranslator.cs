@@ -7,8 +7,7 @@ using GameCore.Objects;
 
 namespace GameCore
 {
-	[Flags]
-	public enum EKeyModifiers
+	[Flags] public enum EKeyModifiers
 	{
 		NONE = 0x0,
 		SHIFT = 0x1,
@@ -22,7 +21,7 @@ namespace GameCore
 		                                                  	{
 		                                                  		ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.LeftArrow,
 		                                                  		ConsoleKey.RightArrow, ConsoleKey.NumPad1, ConsoleKey.NumPad2,
-		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5, 
+		                                                  		ConsoleKey.NumPad3, ConsoleKey.NumPad4, ConsoleKey.NumPad5,
 		                                                  		ConsoleKey.NumPad6, ConsoleKey.NumPad7, ConsoleKey.NumPad8,
 		                                                  		ConsoleKey.NumPad9, ConsoleKey.Home
 		                                                  		, ConsoleKey.PageUp,
@@ -44,15 +43,9 @@ namespace GameCore
 			}
 		}
 
-		public static ConsoleKey[] MoveKeys
-		{
-			get { return m_moveKeys; }
-		}
+		public static ConsoleKey[] MoveKeys { get { return m_moveKeys; } }
 
-		public static IEnumerable<Act> RegisteredActs
-		{
-			get { return m_acts.Select(_pair => _pair.Value).Distinct().Select(GetAct); }
-		}
+		public static IEnumerable<Act> RegisteredActs { get { return m_acts.Select(_pair => _pair.Value).Distinct().Select(GetAct); } }
 
 		public static Act TranslateKey(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
@@ -68,10 +61,7 @@ namespace GameCore
 			return act;
 		}
 
-		private static Act GetAct(Type _type)
-		{
-			return (Act) Activator.CreateInstance(_type);
-		}
+		private static Act GetAct(Type _type) { return (Act) Activator.CreateInstance(_type); }
 
 		private static IEnumerable<Type> GetActTypes()
 		{
@@ -79,7 +69,7 @@ namespace GameCore
 			{
 				foreach (var type in assembly.GetTypes())
 				{
-					if (typeof (Act).IsAssignableFrom(type) && !type.IsAbstract && !typeof(ISpecial).IsAssignableFrom(type))
+					if (typeof (Act).IsAssignableFrom(type) && !type.IsAbstract && !typeof (ISpecial).IsAssignableFrom(type))
 					{
 						yield return type;
 					}

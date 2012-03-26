@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using GameCore.Misc;
 
 namespace GameCore
@@ -1553,19 +1554,17 @@ namespace GameCore
 		public static readonly FColor Zumthor = FromArgb(237, 246, 255);
 		public static readonly FColor Zydeco = FromArgb(2, 64, 44);
 
-
 		#endregion
 
 		public float A;
-		public float R;
-		public float G;
 		public float B;
+		public float G;
+		public float R;
 
 		public FColor(float _a, float _r, float _g, float _b)
 		{
-			if(_a<0 || _r<0 || _b<0 || _g<0)
+			if (_a < 0 || _r < 0 || _b < 0 || _g < 0)
 			{
-				
 			}
 			A = _a;
 			R = _r;
@@ -1581,17 +1580,11 @@ namespace GameCore
 			B = _color.B;
 		}
 
-		public FColor NormalColorOnly
-		{
-			get
-			{
-				return new FColor(1f, R / A, G / A, B / A);
-			}
-		}
+		public FColor NormalColorOnly { get { return new FColor(1f, R/A, G/A, B/A); } }
 
 		public FColor ScreenColorsOnly(FColor _color)
 		{
-			Func<float, float, float> func = (_i, _i1) => 1f - ((1f - _i) * (1f - _i1));
+			Func<float, float, float> func = (_i, _i1) => 1f - ((1f - _i)*(1f - _i1));
 			return new FColor(A, func(R, _color.R), func(G, _color.G), func(B, _color.B));
 		}
 
@@ -1600,26 +1593,17 @@ namespace GameCore
 			var f = Math.Max(A, Math.Max(R, Math.Max(G, B)));
 			f = Math.Max(f, Math.Max(_color.A, Math.Max(_color.R, Math.Max(_color.G, _color.B))));
 
-			Func<float, float, float> func = (_i, _i1) => f - ((1f - _i / f) * (1f - _i1 / f)) * f;
+			Func<float, float, float> func = (_i, _i1) => f - ((1f - _i/f)*(1f - _i1/f))*f;
 
 
 			return new FColor(func(A, _color.A), func(R, _color.R), func(G, _color.G), func(B, _color.B));
 		}
 
-		public FColor Multiply(FColor _color)
-		{
-			return new FColor(A * _color.A, R * _color.R, G * _color.G, B * _color.B);
-		}
+		public FColor Multiply(FColor _color) { return new FColor(A*_color.A, R*_color.R, G*_color.G, B*_color.B); }
 
-		public FColor Multiply(float _f)
-		{
-			return new FColor(A * _f, R * _f, G * _f, B * _f);
-		}
+		public FColor Multiply(float _f) { return new FColor(A*_f, R*_f, G*_f, B*_f); }
 
-		public override string ToString()
-		{
-			return string.Format("f ARGB=({0:N2},{1:N2},{2:N2},{3:N2})", A, R, G, B);
-		}
+		public override string ToString() { return string.Format("f ARGB=({0:N2},{1:N2},{2:N2},{3:N2})", A, R, G, B); }
 
 		public FColor Lerp(FColor _color2, float _f)
 		{
@@ -1633,7 +1617,7 @@ namespace GameCore
 
 		public FColor LerpColorsOnly(FColor _color2, float _f)
 		{
-			if(_f==0)
+			if (_f == 0)
 			{
 				return this;
 			}
@@ -1649,7 +1633,7 @@ namespace GameCore
 		{
 			var max = Math.Max(R, Math.Max(G, B));
 			var min = Math.Min(R, Math.Min(G, B));
-			return (max + min) / 2 * A;
+			return (max + min)/2*A;
 		}
 
 		public FColor ToGrayScale()
@@ -1661,7 +1645,7 @@ namespace GameCore
 		public FColor Clamp()
 		{
 			var k = Math.Max(R, Math.Max(G, B));
-			if(k>1)
+			if (k > 1)
 			{
 				return new FColor(1f, R/k, G/k, B/k);
 			}
@@ -1685,32 +1669,20 @@ namespace GameCore
 			B += _fColor.B;
 		}
 
-		public static FColor FromArgb(int _a, int _r, int _g, int _b)
-		{
-			return new FColor(_a / 255f, _r / 255f, _g / 255f, _b / 255f);
-		}
+		public static FColor FromArgb(int _a, int _r, int _g, int _b) { return new FColor(_a/255f, _r/255f, _g/255f, _b/255f); }
 
-		public static FColor FromArgb(int _r, int _g, int _b)
-		{
-			return new FColor(1f, _r / 255f, _g / 255f, _b / 255f);
-		}
+		public static FColor FromArgb(int _r, int _g, int _b) { return new FColor(1f, _r/255f, _g/255f, _b/255f); }
 
-		public static FColor FromHex(int _hex)
-		{
-			return FromArgb(255, _hex / 256 / 256 & 0xff, _hex / 256 & 0xff, _hex & 0xff);
-		}
+		public static FColor FromHex(int _hex) { return FromArgb(255, _hex/256/256 & 0xff, _hex/256 & 0xff, _hex & 0xff); }
 
 		public static FColor Parse(string _hex)
 		{
-			var n = Int64.Parse(_hex, System.Globalization.NumberStyles.HexNumber);
-			var fColor = new FColor(1f, ((n >> 16) & 0xff) / 255f, ((n >> 8) & 0xff) / 255f, (n & 0xff) / 255f);
+			var n = Int64.Parse(_hex, NumberStyles.HexNumber);
+			var fColor = new FColor(1f, ((n >> 16) & 0xff)/255f, ((n >> 8) & 0xff)/255f, (n & 0xff)/255f);
 			return fColor;
 		}
 
-		public string ToShortText()
-		{
-			return string.Format("{0:X2}{1:X2}{2:X2}", (int)(R * 255), (int)(G * 255), (int)(B * 255)).ToLower();
-		}
+		public string ToShortText() { return string.Format("{0:X2}{1:X2}{2:X2}", (int) (R*255), (int) (G*255), (int) (B*255)).ToLower(); }
 
 		public FColor UpdateAlfa(float _f)
 		{

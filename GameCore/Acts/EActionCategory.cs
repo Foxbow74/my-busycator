@@ -8,8 +8,8 @@ namespace GameCore.Acts
 	{
 		[ActionCategory("Перемещения")] MOVEMENT,
 		[ActionCategory("Бой")] COMBAT,
-		[ActionCategory("Взаимодействие с предметами")]ITEMS,
-		[ActionCategory("Взаимодействие с миром")]WORLD_INTERACTIONS,
+		[ActionCategory("Взаимодействие с предметами")] ITEMS,
+		[ActionCategory("Взаимодействие с миром")] WORLD_INTERACTIONS,
 		[ActionCategory("Информация")] INFORMATION,
 		[ActionCategory("Система")] SYSTEM
 	}
@@ -18,10 +18,7 @@ namespace GameCore.Acts
 	{
 		private static Dictionary<EActionCategory, ActionCategoryAttribute> m_attrs;
 
-		public ActionCategoryAttribute(string _displayName)
-		{
-			DisplayName = _displayName;
-		}
+		public ActionCategoryAttribute(string _displayName) { DisplayName = _displayName; }
 
 		public string DisplayName { get; private set; }
 

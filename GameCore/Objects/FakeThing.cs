@@ -10,28 +10,14 @@ namespace GameCore.Objects
 		private readonly ETiles m_tile;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedFurniture(ETiles _tile, Material _material):base(_material)
-		{
-			m_tile = _tile;
-		}
+		public FakedFurniture(ETiles _tile, Material _material) : base(_material) { m_tile = _tile; }
 
-		public override ETiles Tile
-		{
-			get { return m_tile; }
-		}
+		public override ETiles Tile { get { return m_tile; } }
 
-		public override string Name
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
-		}
+		public override string Name { get { throw new NotImplementedException(); } }
 
-		public override EThingCategory Category
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override EThingCategory Category { get { throw new NotImplementedException(); } }
+		public override EMaterial AllowedMaterials { get { throw new NotImplementedException(); } }
 
 		#region IFaked Members
 
@@ -43,30 +29,13 @@ namespace GameCore.Objects
 
 		#endregion
 
-		public override bool Is<T>() 
-		{
-			return m_types.All(_type => typeof (T).IsAssignableFrom(_type));
-		}
+		public override bool Is<T>() { return m_types.All(_type => typeof (T).IsAssignableFrom(_type)); }
 
-		public override EMaterial AllowedMaterials
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public void Add(Type _type) { m_types.Add(_type); }
 
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
+		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
-
-		protected override int CalcHashCode()
-		{
-			return (int)m_tile;
-		}
+		protected override int CalcHashCode() { return (int) m_tile; }
 	}
 
 	public class FakedCreature : Creature, IFaked
@@ -75,20 +44,11 @@ namespace GameCore.Objects
 		private readonly List<Type> m_types = new List<Type>();
 
 		public FakedCreature(ETiles _tile)
-			: base(null, int.MinValue)
-		{
-			m_tile = _tile;
-		}
+			: base(null, int.MinValue) { m_tile = _tile; }
 
-		public override ETiles Tile
-		{
-			get { return m_tile; }
-		}
+		public override ETiles Tile { get { return m_tile; } }
 
-		public override string Name
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string Name { get { throw new NotImplementedException(); } }
 
 		#region IFaked Members
 
@@ -96,26 +56,17 @@ namespace GameCore.Objects
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
 
-			var thing = (Thing)Activator.CreateInstance(type, new object[] { _creature.Layer, });
+			var thing = (Thing) Activator.CreateInstance(type, new object[] {_creature.Layer,});
 			thing.Resolve(_creature);
 			return thing;
 		}
 
 		#endregion
 
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
+		public void Add(Type _type) { m_types.Add(_type); }
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
+		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
-		public override EThinkingResult Thinking()
-		{
-			throw new NotImplementedException();
-		}
+		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
 	}
 }

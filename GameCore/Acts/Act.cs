@@ -9,10 +9,7 @@ namespace GameCore.Acts
 	{
 		private List<Tuple<Type, object>> m_parameters;
 
-		protected Act()
-		{
-			Count = 1;
-		}
+		protected Act() { Count = 1; }
 
 		protected abstract int TakeTicksOnSingleAction { get; }
 
@@ -21,10 +18,7 @@ namespace GameCore.Acts
 		/// </summary>
 		public int Count { get; protected set; }
 
-		public int TakeTicks
-		{
-			get { return TakeTicksOnSingleAction*Count; }
-		}
+		public int TakeTicks { get { return TakeTicksOnSingleAction*Count; } }
 
 		public bool IsCancelled { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Combat;
@@ -13,12 +12,12 @@ namespace GameCore.Creatures
 {
 	internal class Missile : Creature, ISpecial
 	{
-		private readonly List<Point> m_path;
-		private int m_step = 1;
 		private readonly LightSource m_light;
+		private readonly List<Point> m_path;
+		private Point m_from;
+		private int m_step = 1;
 
 		private Point m_target;
-		private Point m_from;
 
 		public Missile(WorldLayer _layer, Point _liveCoords, int _speed, Item _ammo, Point _target)
 			: base(_layer, _speed)
@@ -31,41 +30,21 @@ namespace GameCore.Creatures
 			LiveCoords = _liveCoords;
 		}
 
-		public override Material Material
-		{
-			get
-			{
-				return Ammo.Material;
-			}
-		}
+		public override Material Material { get { return Ammo.Material; } }
 
-		public override ILightSource Light
-		{
-			get
-			{
-				return m_light;
-			}
-		}
+		public override ILightSource Light { get { return m_light; } }
 
 		public Item Ammo { get; private set; }
 
-		public override ETiles Tile
-		{
-			get { return Ammo.Tile; }
-		}
+		public override ETiles Tile { get { return Ammo.Tile; } }
 
-		public override string Name
-		{
-			get { return Ammo.GetName(World.TheWorld.Avatar); }
-		}
+		public override string Name { get { return Ammo.GetName(World.TheWorld.Avatar); } }
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
 		{
-			var nextPoint = m_path[m_step] - m_path[m_step-1];
+			var nextPoint = m_path[m_step] - m_path[m_step - 1];
 			m_step++;
 
 			var nextCell = this[nextPoint];

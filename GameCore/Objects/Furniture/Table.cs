@@ -2,24 +2,14 @@
 
 namespace GameCore.Objects.Furniture
 {
-	class Table : FurnitureThing
+	internal class Table : FurnitureThing
 	{
-		public Table(Material _material) : base(_material)
-		{
-		}
+		public Table(Material _material) : base(_material) { }
 
-		public override ETiles Tile
-		{
-			get { return ETiles.TABLE; }
-		}
+		public override ETiles Tile { get { return ETiles.TABLE; } }
 
-		public override string Name
-		{
-			get { return "стол"; }
-		}
+		public override string Name { get { return "стол"; } }
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		public override void Resolve(Creature _creature) { }
 	}
 }

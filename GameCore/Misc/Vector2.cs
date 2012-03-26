@@ -23,25 +23,13 @@ namespace GameCore.Misc
 
 		#region Properties
 
-		public static Vector2 Zero
-		{
-			get { return m_zeroVector; }
-		}
+		public static Vector2 Zero { get { return m_zeroVector; } }
 
-		public static Vector2 One
-		{
-			get { return m_unitVector; }
-		}
+		public static Vector2 One { get { return m_unitVector; } }
 
-		public static Vector2 UnitX
-		{
-			get { return m_unitXVector; }
-		}
+		public static Vector2 UnitX { get { return m_unitXVector; } }
 
-		public static Vector2 UnitY
-		{
-			get { return m_unitYVector; }
-		}
+		public static Vector2 UnitY { get { return m_unitYVector; } }
 
 		#endregion Properties
 
@@ -63,26 +51,28 @@ namespace GameCore.Misc
 
 		#region Public Methods
 
+		public bool Equals(Vector2 _other) { return (X == _other.X) && (Y == _other.Y); }
+
 		public IEnumerable<Vector2> GetLineToPoints(Vector2 _point, float _d)
 		{
 			var lx = Math.Abs(_point.X - X);
 			var ly = Math.Abs(_point.Y - Y);
 
-			var max = Math.Max(lx, ly) / _d;
+			var max = Math.Max(lx, ly)/_d;
 
-			float dx = Math.Sign(_point.X - X) * _d;
-			float dy = Math.Sign(_point.Y - Y) * _d;
+			var dx = Math.Sign(_point.X - X)*_d;
+			var dy = Math.Sign(_point.Y - Y)*_d;
 
 			var x = X;
 			var y = Y;
 
 			if (lx > ly)
 			{
-				dy *= ly / lx;
+				dy *= ly/lx;
 			}
 			else if ((lx < ly))
 			{
-				dx *= lx / ly;
+				dx *= lx/ly;
 			}
 
 			yield return this;
@@ -92,11 +82,6 @@ namespace GameCore.Misc
 				y += dy;
 				yield return new Vector2(x, y);
 			}
-		}
-
-		public bool Equals(Vector2 _other)
-		{
-			return (X == _other.X) && (Y == _other.Y);
 		}
 
 		public static Vector2 Add(Vector2 _value1, Vector2 _value2)
@@ -125,8 +110,12 @@ namespace GameCore.Misc
 				MathHelper.Barycentric(_value1.Y, _value2.Y, _value3.Y, _amount1, _amount2));
 		}
 
-		public static void Barycentric(ref Vector2 _value1, ref Vector2 _value2, ref Vector2 _value3, float _amount1,
-		                               float _amount2, out Vector2 _result)
+		public static void Barycentric(ref Vector2 _value1,
+		                               ref Vector2 _value2,
+		                               ref Vector2 _value3,
+		                               float _amount1,
+		                               float _amount2,
+		                               out Vector2 _result)
 		{
 			_result = new Vector2(
 				MathHelper.Barycentric(_value1.X, _value2.X, _value3.X, _amount1, _amount2),
@@ -140,8 +129,12 @@ namespace GameCore.Misc
 				MathHelper.CatmullRom(_value1.Y, _value2.Y, _value3.Y, _value4.Y, _amount));
 		}
 
-		public static void CatmullRom(ref Vector2 _value1, ref Vector2 _value2, ref Vector2 _value3, ref Vector2 _value4,
-		                              float _amount, out Vector2 _result)
+		public static void CatmullRom(ref Vector2 _value1,
+		                              ref Vector2 _value2,
+		                              ref Vector2 _value3,
+		                              ref Vector2 _value4,
+		                              float _amount,
+		                              out Vector2 _result)
 		{
 			_result = new Vector2(
 				MathHelper.CatmullRom(_value1.X, _value2.X, _value3.X, _value4.X, _amount),
@@ -214,15 +207,9 @@ namespace GameCore.Misc
 			_result.Y = _value1.Y*factor;
 		}
 
-		public static float Dot(Vector2 _value1, Vector2 _value2)
-		{
-			return (_value1.X*_value2.X) + (_value1.Y*_value2.Y);
-		}
+		public static float Dot(Vector2 _value1, Vector2 _value2) { return (_value1.X*_value2.X) + (_value1.Y*_value2.Y); }
 
-		public static void Dot(ref Vector2 _value1, ref Vector2 _value2, out float _result)
-		{
-			_result = (_value1.X*_value2.X) + (_value1.Y*_value2.Y);
-		}
+		public static void Dot(ref Vector2 _value1, ref Vector2 _value2, out float _result) { _result = (_value1.X*_value2.X) + (_value1.Y*_value2.Y); }
 
 		public override bool Equals(object _obj)
 		{
@@ -250,10 +237,7 @@ namespace GameCore.Misc
 			result.Y = vector.Y - (normal.Y*val);
 		}
 
-		public override int GetHashCode()
-		{
-			return X.GetHashCode() + Y.GetHashCode();
-		}
+		public override int GetHashCode() { return X.GetHashCode() + Y.GetHashCode(); }
 
 		public static Vector2 Hermite(Vector2 _value1, Vector2 _tangent1, Vector2 _value2, Vector2 _tangent2, float _amount)
 		{
@@ -262,22 +246,20 @@ namespace GameCore.Misc
 			return result;
 		}
 
-		public static void Hermite(ref Vector2 _value1, ref Vector2 _tangent1, ref Vector2 _value2, ref Vector2 _tangent2,
-		                           float _amount, out Vector2 _result)
+		public static void Hermite(ref Vector2 _value1,
+		                           ref Vector2 _tangent1,
+		                           ref Vector2 _value2,
+		                           ref Vector2 _tangent2,
+		                           float _amount,
+		                           out Vector2 _result)
 		{
 			_result.X = MathHelper.Hermite(_value1.X, _tangent1.X, _value2.X, _tangent2.X, _amount);
 			_result.Y = MathHelper.Hermite(_value1.Y, _tangent1.Y, _value2.Y, _tangent2.Y, _amount);
 		}
 
-		public float Length()
-		{
-			return (float) Math.Sqrt((X*X) + (Y*Y));
-		}
+		public float Length() { return (float) Math.Sqrt((X*X) + (Y*Y)); }
 
-		public float LengthSquared()
-		{
-			return (X*X) + (Y*Y);
-		}
+		public float LengthSquared() { return (X*X) + (Y*Y); }
 
 		public static Vector2 Lerp(Vector2 _value1, Vector2 _value2, float _amount)
 		{
@@ -407,10 +389,11 @@ namespace GameCore.Misc
 
 		public override string ToString()
 		{
-			return string.Format("{{X:{0} Y:{1}}}", new object[]
-			                                        	{
-			                                        		X.ToString(), Y.ToString()
-			                                        	});
+			return string.Format("{{X:{0} Y:{1}}}",
+			                     new object[]
+			                     	{
+			                     		X.ToString(), Y.ToString()
+			                     	});
 		}
 
 		#endregion Public Methods
@@ -425,16 +408,10 @@ namespace GameCore.Misc
 		}
 
 
-		public static bool operator ==(Vector2 _value1, Vector2 _value2)
-		{
-			return _value1.X == _value2.X && _value1.Y == _value2.Y;
-		}
+		public static bool operator ==(Vector2 _value1, Vector2 _value2) { return _value1.X == _value2.X && _value1.Y == _value2.Y; }
 
 
-		public static bool operator !=(Vector2 _value1, Vector2 _value2)
-		{
-			return _value1.X != _value2.X || _value1.Y != _value2.Y;
-		}
+		public static bool operator !=(Vector2 _value1, Vector2 _value2) { return _value1.X != _value2.X || _value1.Y != _value2.Y; }
 
 
 		public static Vector2 operator +(Vector2 _value1, Vector2 _value2)

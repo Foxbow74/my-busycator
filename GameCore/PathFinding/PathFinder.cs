@@ -7,7 +7,7 @@ using UnsafeUtils;
 namespace GameCore.PathFinding
 {
 	/// <summary>
-	/// http://www.codeguru.com/csharp/csharp/cs_misc/designtechniques/article.php/c12527__1/A-Star-A-Implementation-in-C-Path-Finding-PathFinder.htm
+	/// 	http://www.codeguru.com/csharp/csharp/cs_misc/designtechniques/article.php/c12527__1/A-Star-A-Implementation-in-C-Path-Finding-PathFinder.htm
 	/// </summary>
 	public class PathFinder
 	{
@@ -30,14 +30,16 @@ namespace GameCore.PathFinding
 		// Heap variables are initializated to default, but I like to do it anyway
 		private const int MH_ESTIMATE = 2;
 		private const int M_SEARCH_LIMIT = 2000;
-		private readonly ushort m_gridX;
-		private readonly ushort m_gridY;
-		private readonly ushort m_gridXMinus1;
-		private readonly ushort m_gridYLog2;
 		private readonly PathFinderNodeFast[] m_calcGrid;
+		private readonly ComparePfNodeMatrix m_comparePfNodeMatrix;
 
 		private readonly sbyte[,] m_direction = new sbyte[8,2]
 		                                        	{{0, -1}, {1, 0}, {0, 1}, {-1, 0}, {1, -1}, {1, 1}, {-1, 1}, {-1, -1}};
+
+		private readonly ushort m_gridX;
+		private readonly ushort m_gridXMinus1;
+		private readonly ushort m_gridY;
+		private readonly ushort m_gridYLog2;
 
 		private readonly PriorityQueueB<int> m_open;
 		private int m_closeNodeCounter;
@@ -60,7 +62,6 @@ namespace GameCore.PathFinding
 		private byte m_openNodeValue = 1;
 		private bool m_stop;
 
-		private ComparePfNodeMatrix m_comparePfNodeMatrix;
 		#endregion
 
 		private int m_sizeInCells;
@@ -69,12 +70,12 @@ namespace GameCore.PathFinding
 		{
 			m_gridY = 0;
 			m_sizeInCells = _sizeInCells;
-			m_calcGrid = new PathFinderNodeFast[_sizeInCells * _sizeInCells];
-			m_gridX = 256;// (ushort)_sizeInCells;
-			m_gridY = 256;// (ushort)_sizeInCells;
+			m_calcGrid = new PathFinderNodeFast[_sizeInCells*_sizeInCells];
+			m_gridX = 256; // (ushort)_sizeInCells;
+			m_gridY = 256; // (ushort)_sizeInCells;
 
-			m_gridXMinus1 = (ushort)(m_gridX - 1);
-			m_gridYLog2 = (ushort)Math.Log(m_gridY, 2);
+			m_gridXMinus1 = (ushort) (m_gridX - 1);
+			m_gridYLog2 = (ushort) Math.Log(m_gridY, 2);
 
 			m_comparePfNodeMatrix = new ComparePfNodeMatrix(m_calcGrid);
 			m_open = new PriorityQueueB<int>(m_comparePfNodeMatrix);
@@ -107,7 +108,7 @@ namespace GameCore.PathFinding
 					m_closeNodeValue += 2;
 
 					m_open.Clear();
-					
+
 					m_location = (start.Y << m_gridYLog2) + start.X;
 					m_endLocation = (_end.Y << m_gridYLog2) + _end.X;
 
@@ -215,7 +216,7 @@ namespace GameCore.PathFinding
 									m_h = MH_ESTIMATE*(diagonal + orthogonal + dxy.X + dxy.Y);
 									break;
 							}
-							
+
 							m_calcGrid[m_newLocation].F = m_newG + m_h;
 							m_open.Push(m_newLocation);
 							m_calcGrid[m_newLocation].Status = m_openNodeValue;
@@ -268,16 +269,16 @@ namespace GameCore.PathFinding
 
 		internal class ComparePfNodeMatrix : IComparer<int>
 		{
-			readonly PathFinderNodeFast[] m_matrix;
+			private readonly PathFinderNodeFast[] m_matrix;
 
 			#region Constructors
-			public ComparePfNodeMatrix(PathFinderNodeFast[] _matrix)
-			{
-				m_matrix = _matrix;
-			}
+
+			public ComparePfNodeMatrix(PathFinderNodeFast[] _matrix) { m_matrix = _matrix; }
+
 			#endregion
 
-			#region IComparer Members
+			#region IComparer<int> Members
+
 			public int Compare(int _a, int _b)
 			{
 				if (m_matrix[_a].F > m_matrix[_b].F)
@@ -286,15 +287,15 @@ namespace GameCore.PathFinding
 					return -1;
 				return 0;
 			}
+
 			#endregion
 
 			public void Clear()
 			{
 				foreach (var pathFinderNodeFast in m_matrix)
 				{
-					if(pathFinderNodeFast.PX!=0)
+					if (pathFinderNodeFast.PX != 0)
 					{
-						
 					}
 				}
 			}

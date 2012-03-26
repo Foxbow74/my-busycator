@@ -7,10 +7,10 @@ namespace GameCore.Misc
 {
 	public class LosManager
 	{
-		private const float VISIBILITY_THRESHOLD = 0.01f;//35f;
-		const double LIGHT_THRESHOLD = 0.0;
+		private const float VISIBILITY_THRESHOLD = 0.01f; //35f;
+		private const double LIGHT_THRESHOLD = 0.0;
 
-		const float DIVIDER = 10f;
+		private const float DIVIDER = 10f;
 
 		private readonly LosCell[] m_inOrder;
 		private readonly LosCell m_root;
@@ -18,7 +18,7 @@ namespace GameCore.Misc
 		public LosManager(int _radius)
 		{
 			m_root = new LosCell(Point.Zero, _radius);
-			var alreadyDone= new Dictionary<Point, LosCell> { { Point.Zero, m_root } };
+			var alreadyDone = new Dictionary<Point, LosCell> {{Point.Zero, m_root}};
 
 
 			var dVectors = new List<Vector2>();
@@ -32,11 +32,11 @@ namespace GameCore.Misc
 			//    }
 			//}
 
-			for (var di = -DIVIDER / 2 + 1; di < DIVIDER / 2; di++)
+			for (var di = -DIVIDER/2 + 1; di < DIVIDER/2; di++)
 			{
-				for (var dj = -DIVIDER / 2 + 1; dj < DIVIDER / 2; dj++)
+				for (var dj = -DIVIDER/2 + 1; dj < DIVIDER/2; dj++)
 				{
-					var dv = new Vector2(di, dj) / DIVIDER;
+					var dv = new Vector2(di, dj)/DIVIDER;
 					if (dv.Length() > Math.Sqrt(2)) continue;
 					dVectors.Add(dv);
 				}
@@ -48,7 +48,7 @@ namespace GameCore.Misc
 			//dVectors.Add(Vector2.Zero);
 
 
-			var dividedPart = 1f / dVectors.Count;
+			var dividedPart = 1f/dVectors.Count;
 
 			for (var i = _radius; i >= -_radius; --i)
 			{
@@ -78,7 +78,7 @@ namespace GameCore.Misc
 						var parentPoint = Point.Zero;
 						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.5f))
 						{
-							var point = new Point((int)Math.Round(lineV.X), (int)Math.Round(lineV.Y));
+							var point = new Point((int) Math.Round(lineV.X), (int) Math.Round(lineV.Y));
 							if (point.Equals(pnt) || point.Lenght > _radius) continue;
 							parentPoint = point;
 							break;
@@ -103,7 +103,7 @@ namespace GameCore.Misc
 				{
 					var cell = pair.Key;
 					var delta = cell.Point.Lenght - losCell.Point.Lenght;
-					if (delta>=0 && delta<0.1f)
+					if (delta >= 0 && delta < 0.1f)
 					{
 						var parent = m_inOrder.Where(_cell => _cell.Cells.Keys.Contains(cell) && _cell.DistanceCoefficient > losCell.DistanceCoefficient);
 
@@ -116,7 +116,6 @@ namespace GameCore.Misc
 			{
 				losCell.BuildCellIndexes(m_inOrder);
 			}
-
 		}
 
 		public void SetVisibleCelss(LiveMap _liveMap, Point _dPoint, FColor _startFrom)
@@ -139,14 +138,14 @@ namespace GameCore.Misc
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
 				var transColor = index == 0 ? FColor.White : liveCell.TransparentColor;
 
-				visibilityCoeff = transColor.A * visibilityCoeff;
+				visibilityCoeff = transColor.A*visibilityCoeff;
 				var childsColor = cvisibles[index].Multiply(transColor);
 
 				if (visibilityCoeff < VISIBILITY_THRESHOLD) continue;
 
 				foreach (var pair in losCell.CellIndexes)
 				{
-					visibles[pair.Key] += pair.Value * visibilityCoeff;
+					visibles[pair.Key] += pair.Value*visibilityCoeff;
 					cvisibles[pair.Key] = cvisibles[pair.Key].ScreenColorsOnly(childsColor);
 				}
 			}
@@ -182,7 +181,7 @@ namespace GameCore.Misc
 			for (var index = 0; index < m_inOrder.Length; index++)
 			{
 				var losCell = m_inOrder[index];
-	
+
 				var powerCoeff = power[index];
 
 				if (powerCoeff < LIGHT_THRESHOLD) continue;
@@ -214,23 +213,23 @@ namespace GameCore.Misc
 				{
 					var i = pair.Key;
 
-					power[i] += pair.Value * powerCoeff;
+					power[i] += pair.Value*powerCoeff;
 					cvisibles[i].AddColorOnly(childsColor);
-					childVisibility[i] = pair.Value * liveCell.Visibility.A;
+					childVisibility[i] = pair.Value*liveCell.Visibility.A;
 				}
 			}
 		}
 	}
 
-	class LosCell
+	internal class LosCell
 	{
 		public LosCell(Point _point, int _radius)
 		{
 			Cells = new Dictionary<LosCell, float>();
 			Point = _point;
-			var r = _point.Lenght / _radius;
+			var r = _point.Lenght/_radius;
 			var fi = Math.Asin(r);
-			var dc = (float)Math.Cos(fi);
+			var dc = (float) Math.Cos(fi);
 			DistanceCoefficient = Math.Min(dc, 1f);
 		}
 
@@ -250,15 +249,12 @@ namespace GameCore.Misc
 			}
 		}
 
-		public override string ToString()
-		{
-			return string.Format("{0}*{2} cells:{1}", Point, Cells.Count, DistanceCoefficient);
-		}
+		public override string ToString() { return string.Format("{0}*{2} cells:{1}", Point, Cells.Count, DistanceCoefficient); }
 
 		public void Add(Point _pnt, float _closedByParent, LosCell _cell)
 		{
 			float value;
-			if(Cells.TryGetValue(_cell, out value))
+			if (Cells.TryGetValue(_cell, out value))
 			{
 				_closedByParent += value;
 			}
@@ -267,7 +263,7 @@ namespace GameCore.Misc
 
 		public void Expand(float _min, float _max)
 		{
-			var v = 1f / (_max - _min);
+			var v = 1f/(_max - _min);
 			DistanceCoefficient = (DistanceCoefficient - _min)*v;
 		}
 

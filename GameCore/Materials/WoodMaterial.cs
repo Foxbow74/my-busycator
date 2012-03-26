@@ -1,42 +1,27 @@
 ﻿namespace GameCore.Materials
 {
-	abstract class WoodMaterial : Material
+	internal abstract class WoodMaterial : Material
 	{
 		protected WoodMaterial(string _name)
-			: base(_name)
-		{
-		}
+			: base(_name) { }
 
-		public override EMaterial MaterialType
-		{
-			get { return EMaterial.WOOD; }
-		}
+		public override EMaterial MaterialType { get { return EMaterial.WOOD; } }
 	}
 
-	class OakMaterial : WoodMaterial
+	internal class OakMaterial : WoodMaterial
 	{
 		public OakMaterial()
-			: base("дуб")
-		{
-		}
+			: base("дуб") { }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.DarkOak; }
-		}
+		public override FColor LerpColor { get { return FColor.DarkOak; } }
 	}
 
 
-	class MappleMaterial : WoodMaterial
+	internal class MappleMaterial : WoodMaterial
 	{
 		public MappleMaterial()
-			: base("клен")
-		{
-		}
+			: base("клен") { }
 
-		public override FColor LerpColor
-		{
-			get { return FColor.Maple; }
-		}
+		public override FColor LerpColor { get { return FColor.Maple; } }
 	}
 }

@@ -17,12 +17,9 @@ namespace GameCore
 		/// <summary>
 		/// 	содержит список активных в данный момент существ
 		/// </summary>
-
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
-		static World()
-		{
-			Rnd = new Random();//WorldSeed
+		static World() { Rnd = new Random(); //WorldSeed
 		}
 
 		public World()
@@ -43,10 +40,7 @@ namespace GameCore
 
 		public static Random Rnd { get; private set; }
 
-		public static int WorldSeed
-		{
-			get { return WORLD_SEED; }
-		}
+		public static int WorldSeed { get { return WORLD_SEED; } }
 
 		public Surface Surface { get; private set; }
 
@@ -57,7 +51,7 @@ namespace GameCore
 			AvatarBlockId = Point.Zero;
 			Avatar = new Avatar(Surface);
 			LiveMap.Actualize();
-			Avatar.LiveCoords = LiveMap.CenterLiveBlock*MapBlock.SIZE;
+			Avatar.LiveCoords = LiveMap.CenterLiveBlock*BaseMapBlock.SIZE;
 		}
 
 		/// <summary>
@@ -68,7 +62,6 @@ namespace GameCore
 			var result = false;
 			using (new Profiler("World.TheWorld.GameUpdated()"))
 			{
-
 				var done = new List<Creature>();
 				while (true)
 				{
@@ -102,7 +95,7 @@ namespace GameCore
 						}
 					}
 
-					if (creature.NextAct==null)
+					if (creature.NextAct == null)
 					{
 						break;
 					}
@@ -111,7 +104,7 @@ namespace GameCore
 
 					EActResults actResult;
 
-					if(creature.IsAvatar)
+					if (creature.IsAvatar)
 					{
 						MessageManager.SendMessage(this, WorldMessage.AvatarBeginsTurn);
 					}
@@ -161,7 +154,7 @@ namespace GameCore
 
 		internal WorldLayer GenerateNewLayer(Creature _creature, Stair _stair)
 		{
-			var rnd = new Random(_creature[0,0].LiveMapBlock.MapBlock.RandomSeed);
+			var rnd = new Random(_creature[0, 0].LiveMapBlock.MapBlock.RandomSeed);
 			var n = rnd.Next();
 			WorldLayer layer;
 			switch (n%1)
@@ -176,9 +169,6 @@ namespace GameCore
 			return layer;
 		}
 
-		public  void SetAvatarBlockId(Point _newBlockId)
-		{
-			AvatarBlockId = _newBlockId;
-		}
+		public void SetAvatarBlockId(Point _newBlockId) { AvatarBlockId = _newBlockId; }
 	}
 }

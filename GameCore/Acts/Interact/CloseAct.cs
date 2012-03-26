@@ -11,44 +11,29 @@ namespace GameCore.Acts.Interact
 {
 	public class CloseAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 20; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 20; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.C, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.C, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "Закрыть сундук/дверь"; }
-		}
+		public override string Name { get { return "Закрыть сундук/дверь"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.WORLD_INTERACTIONS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.WORLD_INTERACTIONS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
 			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
 			{
 				var delta = GetParameter<Point>().FirstOrDefault();
-				if(delta==null)
+				if (delta == null)
 				{
 					//собираем координаты всех закрытых вещей
 					var list = new List<Point>();
 					foreach (var dPoint in Point.NearestDPoints)
 					{
 						var cell = _creature[dPoint];
-						if(cell.Furniture.CanBeClosed(cell, _creature))
+						if (cell.Furniture.CanBeClosed(cell, _creature))
 						{
 							list.Add(dPoint);
 						}
@@ -62,15 +47,15 @@ namespace GameCore.Acts.Interact
 						list.Add(Point.Zero);
 					}
 					var variants = list.Distinct().ToArray();
-					if(variants.Length==0)
+					if (variants.Length == 0)
 					{
 						if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
 						return EActResults.QUICK_FAIL;
 					}
-					if(variants.Length>1)
+					if (variants.Length > 1)
 					{
 						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-						return EActResults.NEED_ADDITIONAL_PARAMETERS;	
+						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
 					delta = variants[0];
 				}
@@ -105,7 +90,7 @@ namespace GameCore.Acts.Interact
 					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}
 				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Where(
-						_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
+					_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));

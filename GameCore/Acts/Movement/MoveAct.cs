@@ -12,35 +12,17 @@ namespace GameCore.Acts.Movement
 {
 	public class MoveAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 100; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 100; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); } }
 
-		public override string Name
-		{
-			get { return "Движение (стороны света)"; }
-		}
+		public override string Name { get { return "Движение (стороны света)"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override string HelpKeys
-		{
-			get { return "стрелки"; }
-		}
+		public override string HelpKeys { get { return "стрелки"; } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.MOVEMENT; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.MOVEMENT; } }
 
 		public override EActResults Do(Creature _creature)
 		{
@@ -51,13 +33,13 @@ namespace GameCore.Acts.Movement
 				var key = GetParameter<ConsoleKey>().Single();
 				delta = KeyTranslator.GetDirection(key);
 			}
-			
-			if(delta.QLenght>1)
+
+			if (delta.QLenght > 1)
 			{
 				throw new ApplicationException("Элементарное перемещение длиннее чем 1");
 			}
 
-			if (delta==Point.Zero)
+			if (delta == Point.Zero)
 			{
 				_creature.AddActToPool(new WaitAct());
 				return EActResults.ACT_REPLACED;

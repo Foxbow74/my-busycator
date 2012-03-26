@@ -10,32 +10,17 @@ using RusLanguage;
 
 namespace GameCore.Acts.Items
 {
-	class DrinkAct : Act
+	internal class DrinkAct : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 30; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 30; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Q, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Q, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "выпить"; }
-		}
+		public override string Name { get { return "выпить"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.ITEMS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.ITEMS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
@@ -79,48 +64,33 @@ namespace GameCore.Acts.Items
 		}
 	}
 
-	class UseTool:Act
+	internal class UseTool : Act
 	{
-		protected override int TakeTicksOnSingleAction
-		{
-			get { return 30; }
-		}
+		protected override int TakeTicksOnSingleAction { get { return 30; } }
 
-		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys
-		{
-			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.U, EKeyModifiers.NONE); }
-		}
+		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.U, EKeyModifiers.NONE); } }
 
-		public override string Name
-		{
-			get { return "задействовать инструмент"; }
-		}
+		public override string Name { get { return "задействовать инструмент"; } }
 
-		public override string HelpText
-		{
-			get { throw new NotImplementedException(); }
-		}
+		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override EActionCategory Category
-		{
-			get { return EActionCategory.ITEMS; }
-		}
+		public override EActionCategory Category { get { return EActionCategory.ITEMS; } }
 
 		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
 			var tool = intelligent[EEquipmentPlaces.TOOL];
 
-			if(tool==null)
+			if (tool == null)
 			{
-				if(_creature.IsAvatar)
+				if (_creature.IsAvatar)
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Ни один инструмент не экипирован!"));
 				}
 				return EActResults.QUICK_FAIL;
 			}
 
-			((ITool)tool).UseTool(intelligent);
+			((ITool) tool).UseTool(intelligent);
 
 			return EActResults.DONE;
 		}

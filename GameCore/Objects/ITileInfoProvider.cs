@@ -1,6 +1,4 @@
-﻿using GameCore.PathFinding;
-
-namespace GameCore.Objects
+﻿namespace GameCore.Objects
 {
 	public interface ITileInfoProvider
 	{

@@ -18,6 +18,22 @@ namespace GameCore.Mapping.Layers
 			FogLightness = FogColor.Lightness();
 		}
 
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
+
+
+		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
+
+		public override FColor Ambient
+		{
+			get
+			{
+				//return new FColor(Color.FromArgb(255, 50, 255, 50)); 
+				return new FColor(0, 0, 0.01f, 0.01f);
+			}
+		}
+
+		public Point EnterCoords { get; private set; }
+
 		public override void AddStair(WorldLayer _enterFromLayer, Point _worldCoords, Stair _stair)
 		{
 			var blockId = BaseMapBlock.GetBlockId(EnterCoords);
@@ -34,21 +50,7 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		public override float GetFogColorMultiplier(LiveMapCell _liveCell)
-		{
-			return _liveCell.DungeonFogColorMultiplier;
-		}
-
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces
-		{
-			get { yield return ETerrains.STONE_FLOOR; }
-		}
-
-
-		internal override IEnumerable<ETerrains> DefaultWalls
-		{
-			get { yield return ETerrains.STONE_WALL; }
-		}
+		public override float GetFogColorMultiplier(LiveMapCell _liveCell) { return _liveCell.DungeonFogColorMultiplier; }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
@@ -56,24 +58,24 @@ namespace GameCore.Mapping.Layers
 			var rnd = new Random(block.RandomSeed);
 			MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
 
-			const int v = MapBlock.SIZE / 2 - 2;
+			const int v = BaseMapBlock.SIZE/2 - 2;
 
-			for (var i = 0; i < v;++i )
+			for (var i = 0; i < v; ++i)
 			{
 				block.Map[i, 0] = ETerrains.STONE_WALL;
 				block.Map[0, i] = ETerrains.STONE_WALL;
-				block.Map[MapBlock.SIZE - 1 - i, 0] = ETerrains.STONE_WALL;
-				block.Map[0, MapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
+				block.Map[BaseMapBlock.SIZE - 1 - i, 0] = ETerrains.STONE_WALL;
+				block.Map[0, BaseMapBlock.SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 
 			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, ThingHelper.GetMaterial<OakMaterial>()), new Point(MapBlock.SIZE - 1, MapBlock.SIZE - 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, ThingHelper.GetMaterial<OakMaterial>()), new Point(MapBlock.SIZE - 1, 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, MapBlock.SIZE - 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, ThingHelper.GetMaterial<OakMaterial>()), new Point(BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, ThingHelper.GetMaterial<OakMaterial>()), new Point(BaseMapBlock.SIZE - 1, 1));
+			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, BaseMapBlock.SIZE - 1));
 
 			{
-				var x = rnd.Next(MapBlock.SIZE);
-				var y = rnd.Next(MapBlock.SIZE);
+				var x = rnd.Next(BaseMapBlock.SIZE);
+				var y = rnd.Next(BaseMapBlock.SIZE);
 				block.AddCreature(new Monster(this), new Point(x, y));
 			}
 
@@ -89,16 +91,5 @@ namespace GameCore.Mapping.Layers
 
 			return block;
 		}
-
-		public override FColor Ambient
-		{
-			get
-			{
-				//return new FColor(Color.FromArgb(255, 50, 255, 50)); 
-				return new FColor(0, 0, 0.01f, 0.01f);
-			}
-		}
-
-		public Point EnterCoords { get; private set; }
 	}
 }
