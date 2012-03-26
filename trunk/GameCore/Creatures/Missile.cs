@@ -65,10 +65,10 @@ namespace GameCore.Creatures
 
 		public override EThinkingResult Thinking()
 		{
-			var nextPoint = m_path[m_step];
+			var nextPoint = m_path[m_step] - m_path[m_step-1];
 			m_step++;
 
-			var nextCell = World.TheWorld.LiveMap.GetCell(nextPoint);
+			var nextCell = this[nextPoint];
 			if (nextCell.Creature != null)
 			{
 				AddActToPool(new AtackAct(), nextPoint);
@@ -88,7 +88,7 @@ namespace GameCore.Creatures
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
-			AddActToPool(new MoveAct(), nextPoint - LiveCoords);
+			AddActToPool(new MoveAct(), nextPoint);
 			return EThinkingResult.NORMAL;
 		}
 

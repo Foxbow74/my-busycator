@@ -62,7 +62,7 @@ namespace GameUi.UIBlocks
 							throw new ArgumentOutOfRangeException();
 					}
 
-					if (World.TheWorld.AvatarBlockId == pnt)
+					if (World.TheWorld.Avatar[0,0].MapBlockId == pnt)
 					{
 						color = FColor.White;
 					}

@@ -42,7 +42,7 @@ namespace GameCore.Objects.Tools
 
 		public override void Resolve(Creature _creature)
 		{
-			m_lightSource = new LightSource(10, new FColor(4f, 1f, 0.9f, 0.5f));
+			m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f));
 		}
 
 		public override FColor LerpColor

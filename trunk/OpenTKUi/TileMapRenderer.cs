@@ -2,7 +2,6 @@
 using System.Drawing;
 using GameCore;
 using GameCore.Misc;
-using GameCore.PathFinding;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using Point = GameCore.Misc.Point;
@@ -66,6 +65,7 @@ namespace OpenTKUi
 					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 				}
 			}
+			//bmp.Save("a.bmp");
 			m_img = new Image(bmp, true);
 		}
 

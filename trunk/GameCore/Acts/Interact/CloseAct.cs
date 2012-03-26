@@ -40,44 +40,61 @@ namespace GameCore.Acts.Interact
 		{
 			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
 			{
-				//собираем координаты всех закрытых вещей
-				var list = new List<Point>();
-				foreach (var cell in Point.NearestDPoints.Select(_point => _creature[_point]))
+				var delta = GetParameter<Point>().FirstOrDefault();
+				if(delta==null)
 				{
-					var cc = cell;
-					if (cc.Furniture.CanBeClosed(cc, _creature))
+					//собираем координаты всех закрытых вещей
+					var list = new List<Point>();
+					foreach (var dPoint in Point.NearestDPoints)
 					{
-						list.Add(cc.LiveCoords);
+						var cell = _creature[dPoint];
+						if(cell.Furniture.CanBeClosed(cell, _creature))
+						{
+							list.Add(dPoint);
+						}
+						else if (cell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cell, _creature)))
+						{
+							list.Add(dPoint);
+						}
 					}
-					else if (cc.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cc, _creature)))
+					if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeClosed(null, _creature)))
 					{
-						list.Add(cc.LiveCoords);
+						list.Add(Point.Zero);
 					}
+					var variants = list.Distinct().ToArray();
+					if(variants.Length==0)
+					{
+						if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
+						return EActResults.QUICK_FAIL;
+					}
+					if(variants.Length>1)
+					{
+						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
+						return EActResults.NEED_ADDITIONAL_PARAMETERS;	
+					}
+					delta = variants[0];
 				}
-				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeClosed(null, _creature)))
-				{
-					list.Add(_creature.LiveCoords);
-				}
+				liveMapCell = _creature[delta];
 
-				var coords = list.Distinct().ToList();
+				//var coords = list.Distinct().ToList();
 
-				if (GetParameter<Point>().Any())
-				{
-					coords = coords.Intersect(GetParameter<Point>()).ToList();
-				}
+				//if (GetParameter<Point>().Any())
+				//{
+				//    coords = coords.Intersect(GetParameter<Point>()).ToList();
+				//}
 
-				if (!coords.Any())
-				{
-					//если нечего закрывать
-					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
-					return EActResults.QUICK_FAIL;
-				}
-				if (coords.Count() > 1)
-				{
-					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-					return EActResults.NEED_ADDITIONAL_PARAMETERS;
-				}
-				liveMapCell = World.TheWorld.LiveMap.GetCell(coords.First());
+				//if (!coords.Any())
+				//{
+				//    //если нечего закрывать
+				//    if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
+				//    return EActResults.QUICK_FAIL;
+				//}
+				//if (coords.Count() > 1)
+				//{
+				//    MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
+				//    return EActResults.NEED_ADDITIONAL_PARAMETERS;
+				//}
+				//liveMapCell = World.TheWorld.LiveMap.GetCell(coords.First());
 			}
 
 			//выясняем, что нужно закрыть
