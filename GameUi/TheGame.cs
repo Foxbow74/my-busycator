@@ -15,7 +15,7 @@ namespace GameUi
 {
 	public class TheGame
 	{
-		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 100;
+		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 50;
 		private const int AUTO_MOVE_REPEAT_AFTER = 200;
 		private readonly List<ConsoleKey> m_downKeys = new List<ConsoleKey>();
 		private readonly IGameProvider m_gameProvider;

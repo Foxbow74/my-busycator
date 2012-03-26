@@ -81,9 +81,9 @@ namespace GameCore.Misc
 			}
 		}
 
-		public double GetDistTill(Point _point)
+		public float GetDistTill(Point _point)
 		{
-			return Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
+			return (float)Math.Sqrt((X - _point.X)*(X - _point.X) + (Y - _point.Y)*(Y - _point.Y));
 		}
 
 		public override string ToString()

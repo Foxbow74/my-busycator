@@ -63,7 +63,7 @@ namespace GameCore.Creatures
 			set
 			{
 				var oldValue = m_liveCoords;
-				m_liveCoords = World.TheWorld.LiveMap.GetCell(value).LiveCoords;
+				m_liveCoords = value==null?null:World.TheWorld.LiveMap.GetCell(value).LiveCoords;
 				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
 			}
 		}

@@ -36,15 +36,15 @@ namespace GameCore.Acts.Combat
 
 		public override EActResults Do(Creature _creature)
 		{
-			var coords = GetParameter<Point>().FirstOrDefault();
-			if (coords == null)
+			var delta = GetParameter<Point>().FirstOrDefault();
+			if (delta == null)
 			{
 				throw new NotImplementedException();
 			}
-			var victim = World.TheWorld.LiveMap.GetCell(coords).Creature;
+			var victim = _creature[delta].Creature;
 			if (victim == null)
 			{
-				_creature.AddActToPool(new MoveAct(), coords - _creature.LiveCoords);
+				_creature.AddActToPool(new MoveAct(), delta);
 				return EActResults.ACT_REPLACED;
 			}
 			return _creature.Atack(victim);
