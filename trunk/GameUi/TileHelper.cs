@@ -60,6 +60,9 @@ namespace GameUi
 					case ETextureSet.HM:
 						Rp.RegisterTexture(set, "Resources\\aq.png");
 						break;
+					case ETextureSet.PH:
+						Rp.RegisterTexture(set, "Resources\\Phoebus_16x16.png");
+						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
@@ -143,15 +146,6 @@ namespace GameUi
 						break;
 					case ETerrains.ROAD:
 						tl = new TileSet();
-						break;
-					case ETerrains.MUSHROOM:
-						tl = new TileSet(
-							Rp.CreateTile(5, 0, FColor.FromArgb(20, 160, 20)),
-							Rp.CreateTile(6, 0, FColor.FromArgb(20, 80, 20)),
-							Rp.CreateTile(7, 1, FColor.FromArgb(20, 90, 20)),
-							Rp.CreateTile(8, 1, FColor.FromArgb(20, 120, 90)),
-							Rp.CreateTile(12, 1, FColor.Gray)
-							);
 						break;
 					case ETerrains.RED_BRICK_WALL:
 						tl = new TileSet(Rp.CreateTile(0, 12, FColor.DarkRed));

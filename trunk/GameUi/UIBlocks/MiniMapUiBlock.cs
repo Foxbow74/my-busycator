@@ -25,6 +25,7 @@ namespace GameUi.UIBlocks
 			var ground = new FColor(1f, 0.3f, 0.2f, 0f);
 			var sea = new FColor(1f, 0.0f, 0.0f, 0.3f);
 			var city = new FColor(1f, 0.5f, 0.4f, 0.2f);
+			var forest = FColor.DarkGreen;
 
 			var size = new Point(World.TheWorld.Surface.WorldMapSize, World.TheWorld.Surface.WorldMapSize);
 
@@ -55,6 +56,9 @@ namespace GameUi.UIBlocks
 							break;
 						case EMapBlockTypes.CITY:
 							color = city;
+							break;
+						case EMapBlockTypes.FOREST:
+							color = forest;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();

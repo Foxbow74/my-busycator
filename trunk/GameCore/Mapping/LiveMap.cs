@@ -130,7 +130,8 @@ namespace GameCore.Mapping
 		{
 			var delta = _pathMapCoords - _creature[0, 0].PathMapCoords;
 			var liveMapCell = _creature[delta];
-			float result;
+
+			var result = 0f;
 			if (_creature.IsAvatar)
 			{
 				if (liveMapCell.Visibility.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)

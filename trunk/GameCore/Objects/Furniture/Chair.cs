@@ -3,6 +3,24 @@ using RusLanguage;
 
 namespace GameCore.Objects.Furniture
 {
+	internal class Grave : FurnitureThing
+	{
+		public Grave(Material _material) : base(_material) 
+		{
+			Sex = ESex.FEMALE;
+		}
+
+		public override string Name { get { return "могила"; } }
+
+		public override EThingCategory Category { get { return EThingCategory.LANDSCAPE; } }
+
+		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
+
+		public override ETiles Tile { get { return ETiles.GRAVE; } }
+
+		public override void Resolve(Creature _creature) {  }
+	}
+
 	internal class Chair : FurnitureThing
 	{
 		public Chair(Material _material)

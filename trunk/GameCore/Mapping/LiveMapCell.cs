@@ -88,29 +88,36 @@ namespace GameCore.Mapping
 
 		public Point LiveCoords { get { return m_liveCoords; } }
 
+		private void UpdateOpacityBase()
+		{
+			var attr = TerrainAttribute;
+			var opacity = attr.Opacity;
+			if (opacity < 1 && Furniture != null)
+			{
+				opacity += Furniture.Opacity;
+			}
+			if (LiveCoords == World.TheWorld.Avatar.LiveCoords)
+			{
+				opacity += World.TheWorld.Avatar.Opacity;
+			}
+			if (opacity < 1)
+			{
+				opacity += Items.Sum(_item => _item.Opacity);
+			}
+			m_opacityBase = opacity;
+		}
+
+		private float m_opacityBase = 0f;
+
 		public float Opacity
 		{
 			get
 			{
-				var attr = TerrainAttribute;
-				var opacity = attr.Opacity;
-				if (opacity < 1 && Furniture != null)
+				if (m_opacityBase < 1 && Creature != null)
 				{
-					opacity += Furniture.Opacity;
+					return m_opacityBase + Creature.Opacity;
 				}
-				if (opacity < 1 && Creature != null)
-				{
-					opacity += Creature.Opacity;
-				}
-				if (LiveCoords == World.TheWorld.Avatar.LiveCoords)
-				{
-					opacity += World.TheWorld.Avatar.Opacity;
-				}
-				if (opacity < 1)
-				{
-					opacity += Items.Sum(_item => _item.Opacity);
-				}
-				return opacity;
+				return m_opacityBase;
 			}
 		}
 
@@ -214,6 +221,7 @@ namespace GameCore.Mapping
 
 			ClearTemp();
 			UpdatePathFinderMapCoord();
+			UpdateOpacityBase();
 		}
 
 		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*BaseMapBlock.SIZE + InBlockCoords; }
@@ -246,6 +254,7 @@ namespace GameCore.Mapping
 			if (m_mapBlock.AddObject(_item, InBlockCoords))
 			{
 				m_items.Add(_item);
+				UpdateOpacityBase();
 			}
 		}
 
@@ -327,6 +336,7 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
+			UpdateOpacityBase();
 			m_mapBlock.RemoveObject(_item, InBlockCoords);
 		}
 	}

@@ -197,6 +197,11 @@ namespace GameCore.Creatures
 		public virtual EActResults Atack(Creature _victim) { return EActResults.ACT_REPLACED; }
 
 		public void ClearActPool() { m_actPool.Clear(); }
+
+		public override string GetFullName()
+		{
+			return Name;
+		}
 	}
 
 

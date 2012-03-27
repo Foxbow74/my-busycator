@@ -113,7 +113,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			}
 		}
 
-		public void GenerateCityBlock(MapBlock _block, Random _rnd)
+		public void GenerateCityBlock(MapBlock _block, Random _rnd, WorldLayer _layer)
 		{
 			for (var i = 0; i < BaseMapBlock.SIZE; ++i)
 			{
@@ -126,7 +126,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
 			{
 				_block.AddRoom(building.Room);
-				building.Fill(_block);
+				building.Fill(_block, _layer);
 				var citizens = m_citizens.Where(_citizen => _citizen.Roles.OfType<AbstractCitizenRole>().First().Building == building).ToArray();
 				foreach (var citizen in citizens)
 				{

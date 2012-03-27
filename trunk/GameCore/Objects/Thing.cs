@@ -52,5 +52,7 @@ namespace GameCore.Objects
 		public override int GetHashCode() { return CalcHashCode(); }
 
 		protected virtual int CalcHashCode() { return GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode()); }
+		
+		public virtual string GetFullName() { return Name + " из " + Material[EPadej.ROD]; }
 	}
 }

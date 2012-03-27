@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Materials;
@@ -65,7 +66,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		protected abstract string BuildingName { get; }
 
-		public virtual void Fill(MapBlock _block)
+		public virtual void Fill(MapBlock _block, WorldLayer _layer)
 		{
 			var mapBlock = _block;
 			var roomRectangle = Room.RoomRectangle;

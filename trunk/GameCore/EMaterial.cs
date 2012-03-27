@@ -8,5 +8,6 @@ namespace GameCore
 		WOOD = 0x1 << 1,
 		MINERAL = 0x1 << 2,
 		FLASH = 0x1 << 3,
+		SHRUB = 0x1 << 4,
 	}
 }

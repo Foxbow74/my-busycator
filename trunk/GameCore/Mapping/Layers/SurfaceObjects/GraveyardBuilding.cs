@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GameCore.Objects;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
@@ -15,22 +16,20 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public override uint MaxCountInCity { get { return 1; } }
 
-		public override void Fill(MapBlock _block)
+		public override void Fill(MapBlock _block, WorldLayer _layer)
 		{
 			var rnd = new Random(_block.RandomSeed);
 
 			InDoorWorldCoords = Room.RoomRectangle.Inflate(-1, -1).BorderPoints.ToArray();
 			OutDoorWorldCoords = Room.RoomRectangle.BorderPoints.ToArray();
 
+			MapBlockHelper.Fill(_block, rnd, _layer, _layer.DefaultEmptySpaces, Room.AreaRectangle);
+
 			foreach (var point in Room.RoomRectangle.AllPoints)
 			{
-				if (rnd.Next(5) == 0 && !InDoorWorldCoords.Contains(point))
+				if (rnd.Next(4) == 0 && !InDoorWorldCoords.Contains(point))
 				{
-					_block.Map[point.X, point.Y] = ETerrains.GRAVE;
-				}
-				else
-				{
-					_block.Map[point.X, point.Y] = ETerrains.GRASS;
+					_block.AddObject(ETiles.GRAVE.GetThing(), point);
 				}
 			}
 		}

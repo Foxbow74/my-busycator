@@ -17,15 +17,16 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		protected Point BedCoords { get; private set; }
 
-		public override void Fill(MapBlock _block)
+		public override void Fill(MapBlock _block, WorldLayer _layer)
 		{
-			base.Fill(_block);
+			base.Fill(_block, _layer);
+
 			var innerPerimeter = Room.RoomRectangle.Inflate(-1, -1);
 			var indoor = InDoorWorldCoords.Select(BaseMapBlock.GetInBlockCoords);
 			var doorCoords = BaseMapBlock.GetInBlockCoords(DoorWorldCoords);
+
 			var corners = innerPerimeter.CornerPoints.Except(indoor).OrderBy(_point => _point.GetDistTill(doorCoords)).ToArray();
 			var allPoints = innerPerimeter.BorderPoints.Except(corners).Except(indoor).OrderByDescending(_point => _point.GetDistTill(doorCoords)).ToArray();
-
 
 			var cornerTiles = new[] {ETiles.NONE, ETiles.NONE, ETiles.CHAIR, ETiles.BARREL}.OrderBy(_tiles => World.Rnd.Next()).ToArray();
 			var perimeterTiles = new[] {ETiles.NONE, ETiles.CHEST, ETiles.WEAPON_RACK, ETiles.ARMOR_RACK, ETiles.CABINET}.OrderBy(_tiles => World.Rnd.Next()).ToArray();

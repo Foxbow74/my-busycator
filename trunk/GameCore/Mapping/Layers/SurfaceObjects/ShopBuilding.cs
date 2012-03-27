@@ -14,9 +14,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public override uint MaxCountInCity { get { return 4; } }
 
-		public override void Fill(MapBlock _block)
+		public override void Fill(MapBlock _block, WorldLayer _layer)
 		{
-			base.Fill(_block);
+			base.Fill(_block, _layer);
 			var innerPerimeter = Room.RoomRectangle.Inflate(-1, -1);
 			var indoor = InDoorWorldCoords.Select(BaseMapBlock.GetInBlockCoords);
 			var doorCoords = BaseMapBlock.GetInBlockCoords(DoorWorldCoords);

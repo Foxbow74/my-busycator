@@ -96,6 +96,7 @@
     <Compile Include="Materials\FlashMaterial.cs" />
     <Compile Include="Materials\MetalMaterial.cs" />
     <Compile Include="Materials\MineralMaterial.cs" />
+    <Compile Include="Materials\ShrubMaterial.cs" />
     <Compile Include="Materials\WoodMaterial.cs" />
     <Compile Include="Messages\AskMessage.cs" />
     <Compile Include="Messages\EMessageType.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Objects\Ammo\StackOfCrossBowBolts.cs" />
     <Compile Include="Objects\BackPack.cs" />
     <Compile Include="Objects\EThingCategory.cs" />
+    <Compile Include="Objects\FakedCreature.cs" />
     <Compile Include="Objects\FakedItem.cs" />
     <Compile Include="Objects\FurnitureThing.cs" />
     <Compile Include="Objects\Furniture\Bed.cs" />
@@ -157,6 +159,7 @@
     <Compile Include="PathFinding\PathFinder.cs" />
     <Compile Include="PathFinding\PathFinderNode.cs" />
     <Compile Include="PathFinding\PriorityQueueB.cs" />
+    <Compile Include="Plants\Tree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Thing.cs" />
     <Compile Include="ETerrains.cs" />
