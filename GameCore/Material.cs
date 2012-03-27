@@ -26,5 +26,10 @@ namespace GameCore
 		public string this[EPadej _padej] { get { return this[_padej, World.TheWorld.Avatar]; } }
 
 		public string this[EPadej _padej, Creature _creature] { get { return Sklonenia.ToPadej(_padej, Name, false, Sex); } }
+
+		public override string ToString()
+		{
+			return "[" + Name + "]";
+		}
 	}
 }

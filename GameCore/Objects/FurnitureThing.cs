@@ -10,7 +10,8 @@
 
 		public override EThingCategory Category { get { return EThingCategory.FURNITURE; } }
 
-		public override EMaterial AllowedMaterials { get { return EMaterial.WOOD | EMaterial.MINERAL | EMaterial.METAL; } }
+		public override EMaterial AllowedMaterials { get { return EMaterial.WOOD; } }
+
 		public void Paint(FColor _lerpColor) { m_lerpColor = _lerpColor; }
 	}
 }

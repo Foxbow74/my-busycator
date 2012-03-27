@@ -20,6 +20,8 @@ namespace RusLanguage
 			if(_target==EPadej.IMEN) return _noun;
 
 			var words = _noun.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+			if(words.Length==0) return string.Empty;
+
 			var noun = words[0];
 			var lastChar = noun[noun.Length - 1];
 			var vow = lastChar;
@@ -119,7 +121,7 @@ namespace RusLanguage
 							isGluh = "гбнстплфхчшщрд".Contains(noun[noun.Length - 1]);
 							break;
 						case ESex.FEMALE:
-							isGluh = "цзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "вцзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
 							break;
 						case ESex.IT:
 							isGluh = "кнстплфхчшщрд".Contains(noun[noun.Length - 1]);

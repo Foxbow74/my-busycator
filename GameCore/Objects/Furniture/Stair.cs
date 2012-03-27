@@ -24,9 +24,20 @@ namespace GameCore.Objects.Furniture
 				m_leadToLayer = World.TheWorld.GenerateNewLayer(_creature, this);
 			}
 			_creature.Layer = m_leadToLayer;
+
 			return EActResults.DONE;
 		}
 
+		public override EThingCategory Category
+		{
+			get { return EThingCategory.LANDSCAPE; }
+		}
+
 		public override void Resolve(Creature _creature) { }
+
+		public override EMaterial AllowedMaterials
+		{
+			get { return EMaterial.MINERAL; }
+		}
 	}
 }

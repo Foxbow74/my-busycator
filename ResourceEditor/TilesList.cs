@@ -50,7 +50,7 @@ namespace ResourceEditor
 			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1), Sorted = true, ContextMenu = cm};
 			Controls.Add(m_lb);
 
-			foreach (var tile in TileHelper.AllTiles.Keys)
+			foreach (ETiles tile in Enum.GetValues(typeof(ETiles)))
 			{
 				m_lb.Items.Add(tile);
 			}
@@ -137,8 +137,11 @@ namespace ResourceEditor
 			{
 				return m_customTiles[(string)_item];
 			}
-			var tile = (Tile)TileHelper.AllTiles[(ETiles) _item];
-			return tile;
+			if (!TileHelper.AllTiles.ContainsKey((ETiles)_item))
+			{
+				TileHelper.AllTiles.Add((ETiles)_item, new Tile(ETextureSet.RJ, 0, 0, FColor.White));
+			}
+			return (Tile)TileHelper.AllTiles[(ETiles)_item];
 		}
 
 		public void AddTile(Tile _tile)

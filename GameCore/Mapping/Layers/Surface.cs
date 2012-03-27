@@ -6,6 +6,7 @@ using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
+using GameCore.Plants;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers
@@ -16,11 +17,18 @@ namespace GameCore.Mapping.Layers
 		private static readonly List<string> m_femaleNames;
 		private EMapBlockTypes[,] m_worldMap;
 		private WorldMapGenerator m_worldMapGenerator;
+		private static readonly List<ETiles> m_forestTiles = new List<ETiles>();
 
 		static Surface()
 		{
 			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
 			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+			m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Tree>()).Select(_tree => _tree.Tile));
+			m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Shrub>()).Select(_tree => _tree.Tile));
+		}
+
+		public Surface()
+		{
 		}
 
 		public City City { get; private set; }
@@ -91,7 +99,6 @@ namespace GameCore.Mapping.Layers
 
 		public EMapBlockTypes GetBlockType(Point _blockId) { return WorldMap[_blockId.X + WorldMapSize/2, _blockId.Y + WorldMapSize/2]; }
 
-
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
 			var block = new MapBlock(_blockId);
@@ -112,11 +119,12 @@ namespace GameCore.Mapping.Layers
 					case EMapBlockTypes.NONE:
 						break;
 					case EMapBlockTypes.CITY:
+					case EMapBlockTypes.FOREST:
 					case EMapBlockTypes.GROUND:
 						terrains.Add(blockTypes, DefaultEmptySpaces.ToArray());
 						break;
 					case EMapBlockTypes.SEA:
-						terrains.Add(blockTypes, new[] {ETerrains.WATER,});
+						terrains.Add(blockTypes, new[] { ETerrains.WATER, });
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -142,9 +150,6 @@ namespace GameCore.Mapping.Layers
 			{
 				list.Clear();
 				var xy = point;
-				list.Add(baseType);
-				list.Add(baseType);
-				list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
 				switch (baseType)
 				{
 					case EMapBlockTypes.CITY:
@@ -152,10 +157,28 @@ namespace GameCore.Mapping.Layers
 						block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
 						break;
 					case EMapBlockTypes.SEA:
-						var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value).First().Key.Key;
-						if (type != EMapBlockTypes.NONE)
 						{
-							block.Map[point.X, point.Y] = terrains[type][rnd.Next(terrains[type].Length)];
+							list.Add(baseType);
+							list.Add(baseType);
+							list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
+
+							var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value).First().Key.Key;
+							if (type != EMapBlockTypes.NONE)
+							{
+								block.Map[point.X, point.Y] = terrains[type][rnd.Next(terrains[type].Length)];
+							}
+						}
+						break;
+					case EMapBlockTypes.FOREST:
+						block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
+						{
+							list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
+
+							var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value + rnd.Next(5)).First().Key.Key;
+							if (type != EMapBlockTypes.NONE && rnd.Next(3)==0)
+							{
+								block.AddObject(m_forestTiles[rnd.Next(m_forestTiles.Count)].GetThing(), point);
+							}
 						}
 						break;
 					case EMapBlockTypes.NONE:
@@ -168,59 +191,8 @@ namespace GameCore.Mapping.Layers
 
 			if (baseType == EMapBlockTypes.CITY)
 			{
-				City.GenerateCityBlock(block, rnd);
+				City.GenerateCityBlock(block, rnd, this);
 			}
-
-			//var type = GetBlockType(_blockId);
-			//switch (type)
-			//{
-			//    case EMapBlockTypes.GROUND:
-			//        MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
-			//        break;
-			//    case EMapBlockTypes.SEA:
-			//        MapBlockHelper.Clear(block, rnd, this, new []{ETerrains.WATER, });
-			//        break;
-			//    case EMapBlockTypes.CITY:
-			//        MapBlockHelper.Clear(block, rnd, this, DefaultEmptySpaces);
-			//        City.GenerateCityBlock(block, rnd);
-			//        break;
-			//    case EMapBlockTypes.NONE:
-			//        break;
-			//    default:
-			//        throw new ArgumentOutOfRangeException();
-			//}
-
-
-			//for (var i = 3; i <= 8; i++)
-			//{
-			//    block.Map[i, 3] = ETerrains.RED_BRICK_WALL;
-			//    block.Map[3, i] = ETerrains.RED_BRICK_WALL;
-			//    block.Map[i, 8] = ETerrains.RED_BRICK_WALL;
-			//    block.Map[8, i] = ETerrains.RED_BRICK_WALL;
-			//}
-
-			//block.Map[6, 3] = ETerrains.WINDOW;
-			//block.Map[3, 6] = ETerrains.WINDOW;
-			//block.Map[6, 8] = ETerrains.GROUND;
-
-			//block.AddObject(ETiles.DOOR.GetThing(), new Point(6, 8));
-			//block.AddObject(new Sign(ETiles.SWORD, FColor.White, "'Оружейник'"), new Point(7, 8));
-
-			//block.AddObject(new OnWallTorch(new LightSource(15, new FColor(4f,1f,1f,0.5f)), EDirections.DOWN), new Point(7, 9));
-
-			//{
-			//    var cnt = rnd.Next(rnd.Next(70));
-			//    for (var i = 0; i < cnt; ++i)
-			//    {
-			//        var x = rnd.Next(MapBlock.SIZE);
-			//        var y = rnd.Next(MapBlock.SIZE);
-			//        var attr = TerrainAttribute.GetAttribute(block.Map[x, y]);
-			//        if (attr.IsPassable > 0)
-			//        {
-			//            block.Map[x, y] = ETerrains.MUSHROOM;
-			//        }
-			//    }
-			//}
 
 			{
 				var itmcnt = 20 + rnd.Next(rnd.Next(20));
@@ -236,9 +208,12 @@ namespace GameCore.Mapping.Layers
 						var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
 						var thing = World.Rnd.Next(2) == 0 ? ThingHelper.GetFakedThing(block) : ThingHelper.GetFakedItem(block.RandomSeed);
 
-						if (thing.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
+						if (thing.Is<Stair>())
 						{
-							continue;
+							if (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1)
+							{
+								continue;
+							}
 						}
 
 						if (thing is Item)
@@ -252,13 +227,11 @@ namespace GameCore.Mapping.Layers
 						{
 							continue;
 						}
+
 						block.AddObject(thing, point);
 					}
 				}
 			}
-
-			//block.AddCreature(new Monster(this), new Point(rnd.Next(MapBlock.SIZE), rnd.Next(MapBlock.SIZE)));
-
 			return block;
 		}
 	}

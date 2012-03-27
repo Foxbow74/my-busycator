@@ -86,7 +86,7 @@ namespace GameCore.Objects
 					_thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}
 			}
-			return _thing.Name + ((_thing is Creature) ? "" : (" из " + _thing.Material[EPadej.ROD]));
+			return _thing.GetFullName();
 		}
 
 		public static string GetName(this ThingDescriptor _thingDescriptor, Creature _creature)
@@ -96,7 +96,7 @@ namespace GameCore.Objects
 			{
 				thing = _thingDescriptor.ResolveThing(_creature);
 			}
-			return thing.Name + " из " + thing.Material[EPadej.ROD];
+			return thing.GetFullName();
 		}
 
 		public static bool IsClosed(this Thing _thing, LiveMapCell _cell, Creature _creature)
@@ -207,10 +207,9 @@ namespace GameCore.Objects
 					FakedFurniture value;
 					if (!m_fakedThings.TryGetValue(key, out value))
 					{
-						value = new FakedFurniture(thing.Tile, material);
+						value = new FakedFurniture(thing);
 						m_fakedThings.Add(key, value);
 					}
-					value.Add(_type);
 				}
 			}
 		}

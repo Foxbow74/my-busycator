@@ -21,6 +21,8 @@ namespace GameCore
 		[Tiles(1f)] DOOR,
 		[Tiles(0.03f)] OPEN_DOOR,
 		[Tiles(0.2f)] CHEST,
+		[Tiles(0.4f)] GRAVE,
+
 		STAIR_DOWN,
 		[Tiles(0.2f)] STAIR_UP,
 
@@ -44,6 +46,8 @@ namespace GameCore
 		[Tiles(0.01f)] POTION,
 		[Tiles(0.01f)] CROSSBOW_BOLT,
 
+		#region frame tiles
+
 		FRAME_L,
 		FRAME_R,
 		FRAME_T,
@@ -54,6 +58,29 @@ namespace GameCore
 		FRAME_BR,
 		SOLID,
 		SIMPLE,
+
+		#endregion
+
+		#region forest tiles
+
+		[Tiles(0.3f)] FOREST_TREE_OAK,
+		[Tiles(0.5f)] FOREST_TREE_MAPLE,
+		[Tiles(0.4f)] FOREST_TREE_ELM,
+		[Tiles(0.2f)] FOREST_TREE_ASH,
+		[Tiles(0.3f)] FOREST_TREE_WILLOW,
+		[Tiles(0.3f)] FOREST_TREE_WALNUT,
+
+		[Tiles(0.4f)] FOREST_TREE_PINE,
+		[Tiles(0.3f)] FOREST_TREE_SPRUCE,
+
+		[Tiles(0.2f)] FOREST_SHRUB_1,
+		[Tiles(0.2f)] FOREST_SHRUB_2,
+		[Tiles(0.2f)] FOREST_SHRUB_3,
+		[Tiles(0.2f)] FOREST_SHRUB_4,
+		[Tiles(0.2f)] FOREST_SHRUB_5,
+
+		#endregion
+
 	}
 
 
@@ -65,14 +92,10 @@ namespace GameCore
 
 		public TilesAttribute(float _opacity)
 		{
-			//IsPassable = _isPassable;
 			Opacity = _opacity;
-			//IsCanShootThrough = _isCanShootThrough;
 		}
 
-		//public float IsPassable { get; private set; }
 		public float Opacity { get; private set; }
-		//public bool IsCanShootThrough { get; private set; }
 
 		public static TilesAttribute GetAttribute(ETiles _enum)
 		{

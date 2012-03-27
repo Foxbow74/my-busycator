@@ -46,6 +46,15 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 							continue;
 						}
 					}
+					d += 0.3;
+					if (d > 0)
+					{
+						if (m_rnd.NextDouble() < d)
+						{
+							map[i, j] = EMapBlockTypes.FOREST;
+							continue;
+						}
+					}
 					map[i, j] = EMapBlockTypes.GROUND;
 				}
 			}

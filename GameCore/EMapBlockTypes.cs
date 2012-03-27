@@ -8,6 +8,7 @@ namespace GameCore
 	{
 		[MapBlockType("ничто")] NONE,
 		[MapBlockType("суша")] GROUND,
+		[MapBlockType("лес")] FOREST,
 		[MapBlockType("море")] SEA,
 		[MapBlockType("суша")] CITY,
 	}

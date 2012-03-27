@@ -72,14 +72,18 @@ namespace GameUi.UIBlocks
 					var visibility = liveCell.Visibility;
 
 					var lighted = GetLighted(liveCell, visibility, ambient);
+
+
+					//lighted = FColor.White;
 					var lightness = lighted.Lightness();
 
 					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
-						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
-						var candidate = terrainTile.Color.Multiply(lighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
-						terrainTile.Draw(screenPoint, candidate);
+						var eTerrains = liveCell.Terrain;
+						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
+						var tcolor = terrainTile.Color.Multiply(lighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
+						terrainTile.Draw(screenPoint, tcolor);
 						//terrainTile.Draw(screenPoint, candidate);
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
@@ -96,8 +100,10 @@ namespace GameUi.UIBlocks
 					{
 						var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell);
 
-						var terrainTile = liveCell.Terrain.GetTile((int) Math.Abs((liveCell.LiveCoords.GetHashCode()*liveCell.Rnd)));
-						terrainTile.Draw(screenPoint, terrainTile.Color.Multiply(0.7f));
+						var eTerrains = liveCell.Terrain;
+						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
+						var tcolor = terrainTile.Color.Multiply(0.7f);
+						terrainTile.Draw(screenPoint, tcolor);
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();

@@ -13,11 +13,9 @@ namespace GameCore
 		[Terrain("болото", ESex.IT)] SWAMP,
 		[Terrain("лава", ESex.FEMALE)] LAVA,
 		[Terrain("дорога", ESex.FEMALE)] ROAD,
-		[Terrain("гриб", 0.7f, 0.4f, true)] MUSHROOM,
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] RED_BRICK_WALL,
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] YELLOW_BRICK_WALL,
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] GRAY_BRICK_WALL,
-		[Terrain("могила", 0.7f, 0.4f, true, ESex.FEMALE)] GRAVE,
 		[Terrain("статуя", 0.7f, 0.8f, true, ESex.FEMALE)] STATUE,
 
 		[Terrain("дубовый пол", ESex.MALE)] WOOD_FLOOR_OAK,
