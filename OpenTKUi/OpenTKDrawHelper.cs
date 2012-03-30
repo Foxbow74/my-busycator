@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using QuickFont;
+using Point = GameCore.Misc.Point;
 
 namespace OpenTKUi
 {
@@ -64,6 +66,20 @@ namespace OpenTKUi
 		}
 
 		public void DrawRect(Rct _rct, FColor _toFColor)
+		{
+			GL.BindTexture(TextureTarget.Texture2D, 0);
+
+			GL.Color4(_toFColor.R, _toFColor.G, _toFColor.B, _toFColor.A);
+
+			GL.Begin(BeginMode.Quads);
+			GL.Vertex2(_rct.Left, _rct.Top);
+			GL.Vertex2(_rct.Right + 1, _rct.Top);
+			GL.Vertex2(_rct.Right + 1, _rct.Bottom + 1);
+			GL.Vertex2(_rct.Left, _rct.Bottom + 1);
+			GL.End();
+		}
+
+		public void DrawRect(RectangleF _rct, FColor _toFColor)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 

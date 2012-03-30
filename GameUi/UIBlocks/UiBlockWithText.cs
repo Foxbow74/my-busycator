@@ -6,7 +6,7 @@ using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	internal abstract class UiBlockWithText : UIBlock
+	public abstract class UiBlockWithText : UIBlock
 	{
 		protected UiBlockWithText(Rct _rct, Frame _frame, FColor _color, EFonts _font = EFonts.COMMON) : base(_rct, _frame, _color)
 		{

@@ -10,7 +10,16 @@ namespace GameCore
 		[MapBlockType("суша")] GROUND,
 		[MapBlockType("лес")] FOREST,
 		[MapBlockType("море")] SEA,
+		[MapBlockType("океан")] DEEP_SEA,
+		[MapBlockType("вода")] FRESH_WATER,
+		[MapBlockType("вода")] DEEP_FRESH_WATER,
 		[MapBlockType("суша")] CITY,
+		[MapBlockType("берег")] COAST,
+		[MapBlockType("горы")] MOUNT,
+		[MapBlockType("болото")]SWAMP,
+		[MapBlockType("вечный снег")]ETERNAL_SNOW,
+		[MapBlockType("редколесье")]SHRUBS,
+
 	}
 
 	public class MapBlockTypeAttribute : Attribute

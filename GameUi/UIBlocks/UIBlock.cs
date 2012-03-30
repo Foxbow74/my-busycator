@@ -5,7 +5,7 @@ using GameCore.Misc;
 
 namespace GameUi.UIBlocks
 {
-	internal class UIBlock
+	public class UIBlock
 	{
 		protected UIBlock(Rct _rct, Frame _frame, FColor _color)
 		{

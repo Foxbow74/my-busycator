@@ -13,18 +13,22 @@ namespace GameCore.Mapping.Layers
 {
 	public class Surface : WorldLayer
 	{
+		public const int WORLD_MAP_SIZE = 256;
+
 		private static readonly List<string> m_maleNames;
 		private static readonly List<string> m_femaleNames;
 		private EMapBlockTypes[,] m_worldMap;
-		private WorldMapGenerator m_worldMapGenerator;
+		private WorldMapGenerator2 m_worldMapGenerator;
 		private static readonly List<ETiles> m_forestTiles = new List<ETiles>();
 
 		static Surface()
 		{
 			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
 			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
-			m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Tree>()).Select(_tree => _tree.Tile));
-			m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Shrub>()).Select(_tree => _tree.Tile));
+
+			for (var i = 0; i < 3; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Tree>()).Select(_tree => _tree.Tile));
+			for (var i = 0; i < 2; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Shrub>()).Select(_tree => _tree.Tile));
+			for (var i = 0; i < 1; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Mushrum>()).Select(_tree => _tree.Tile));
 		}
 
 		public Surface()
@@ -39,7 +43,7 @@ namespace GameCore.Mapping.Layers
 			{
 				if (m_worldMap == null)
 				{
-					m_worldMapGenerator = new WorldMapGenerator(WorldMapSize, World.Rnd);
+					m_worldMapGenerator = new WorldMapGenerator2(WORLD_MAP_SIZE, World.Rnd);
 					m_worldMap = m_worldMapGenerator.Generate();
 
 					City = new City(this, World.Rnd);
@@ -52,11 +56,6 @@ namespace GameCore.Mapping.Layers
 		//{
 		//    return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
 		//}
-
-		public int WorldMapSize
-		{
-			get { return 30; } // 150; }
-		}
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
@@ -97,7 +96,7 @@ namespace GameCore.Mapping.Layers
 			var check = File.ReadAllText(_filename);
 		}
 
-		public EMapBlockTypes GetBlockType(Point _blockId) { return WorldMap[_blockId.X + WorldMapSize/2, _blockId.Y + WorldMapSize/2]; }
+		public EMapBlockTypes GetBlockType(Point _blockId) { return WorldMap[_blockId.X + WORLD_MAP_SIZE/2, _blockId.Y + WORLD_MAP_SIZE/2]; }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
@@ -118,12 +117,20 @@ namespace GameCore.Mapping.Layers
 				{
 					case EMapBlockTypes.NONE:
 						break;
+					case EMapBlockTypes.COAST:
+					case EMapBlockTypes.ETERNAL_SNOW:
+					case EMapBlockTypes.MOUNT:
 					case EMapBlockTypes.CITY:
 					case EMapBlockTypes.FOREST:
+					case EMapBlockTypes.SHRUBS:
+					case EMapBlockTypes.SWAMP:
 					case EMapBlockTypes.GROUND:
 						terrains.Add(blockTypes, DefaultEmptySpaces.ToArray());
 						break;
 					case EMapBlockTypes.SEA:
+					case EMapBlockTypes.DEEP_SEA:
+					case EMapBlockTypes.FRESH_WATER:
+					case EMapBlockTypes.DEEP_FRESH_WATER:
 						terrains.Add(blockTypes, new[] { ETerrains.WATER, });
 						break;
 					default:
@@ -183,8 +190,8 @@ namespace GameCore.Mapping.Layers
 						break;
 					case EMapBlockTypes.NONE:
 						break;
-					default:
-						throw new ArgumentOutOfRangeException();
+					//default:
+						//throw new ArgumentOutOfRangeException();
 				}
 			}
 

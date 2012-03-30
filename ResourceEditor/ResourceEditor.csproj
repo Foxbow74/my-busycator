@@ -69,7 +69,9 @@
       <DependentUpon>TerrainsEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Tile.cs" />
-    <Compile Include="TileEditor.cs" />
+    <Compile Include="TileEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="TileEditor.Designer.cs">
       <DependentUpon>TileEditor.cs</DependentUpon>
     </Compile>
