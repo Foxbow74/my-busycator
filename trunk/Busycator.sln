@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeUtils", "UnsafeUtils\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguage", "RusLanguage\RusLanguage.csproj", "{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{EA2827C0-47DA-479D-BF2F-3EE8C2103537}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -112,6 +114,16 @@ Global
 		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|x86.ActiveCfg = Release|Any CPU
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Debug|x86.ActiveCfg = Debug|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Debug|x86.Build.0 = Debug|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|Any CPU.ActiveCfg = Release|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|Mixed Platforms.Build.0 = Release|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|x86.ActiveCfg = Release|x86
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

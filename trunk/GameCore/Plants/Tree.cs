@@ -58,4 +58,26 @@ namespace GameCore.Plants
 			return Name;
 		}
 	}
+
+	class Mushrum : FurnitureThing
+	{
+		private readonly MushrumMaterial m_material;
+
+		public Mushrum(Material _material) : base(_material) { m_material = (MushrumMaterial)_material; }
+
+		public override ETiles Tile { get { return m_material.MushrumTile; } }
+
+		public override void Resolve(Creature _creature) { }
+
+		public override FColor LerpColor { get { return FColor.Empty; } }
+
+		public override string Name { get { return m_material.MushrumName; } }
+
+		public override EMaterial AllowedMaterials { get { return EMaterial.MUSHRUM; } }
+
+		public override string GetFullName()
+		{
+			return Name;
+		}
+	}
 }

@@ -3,7 +3,7 @@ using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
-	internal class WorldMapGenerator
+	public class WorldMapGenerator
 	{
 		private readonly Random m_rnd;
 		private readonly int m_size;

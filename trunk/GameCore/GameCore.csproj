@@ -83,7 +83,9 @@
     <Compile Include="Mapping\Layers\SurfaceObjects\HouseBuilding.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\InnBuilding.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\ShopBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\SurfaceBlockGenerator.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\TavernBuilding.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\WorldMapGenerator2.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\LiveMap.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="Materials\FlashMaterial.cs" />
     <Compile Include="Materials\MetalMaterial.cs" />
     <Compile Include="Materials\MineralMaterial.cs" />
+    <Compile Include="Materials\MushrumMaterial.cs" />
     <Compile Include="Materials\ShrubMaterial.cs" />
     <Compile Include="Materials\WoodMaterial.cs" />
     <Compile Include="Messages\AskMessage.cs" />
