@@ -15,6 +15,54 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var rnd = new Random(block.RandomSeed);
 			var mp = _surface.WorldMap;
 
+			var pm = new EMapBlockTypes[BaseMapBlock.SIZE,BaseMapBlock.SIZE];
+
+			foreach (var dir in Util.AllDirections)
+			{
+				Point from;
+				Point to;
+				switch (dir)
+				{
+					case EDirections.UP:
+						from = Point.Zero;
+						to = new Point(BaseMapBlock.SIZE-2,0);
+						break;
+					case EDirections.DOWN:
+						from = new Point(1, BaseMapBlock.SIZE - 1);
+						to = new Point(BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 1);
+						break;
+					case EDirections.LEFT:
+						from = new Point(0, BaseMapBlock.SIZE - 1);
+						to = new Point(0, 1);
+						break;
+					case EDirections.RIGHT:
+						from = new Point(BaseMapBlock.SIZE - 1, 0);
+						to = new Point(BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 2);
+						break;
+					default:
+						throw new ArgumentOutOfRangeException();
+				}
+
+				var delta = dir.GetDelta();
+				var nearestBlockId = _blockId + delta;
+				if (_surface.Blocks.ContainsKey(nearestBlockId))
+				{
+					var nearestBlock = _surface.Blocks[nearestBlockId];
+					foreach (var point in from.GetLineToPoints(to))
+					{
+						pm[point.X, point.Y] = ;
+					}
+				}
+				else
+				{
+					var type = _surface.WorldMap[nearestBlockId.X, nearestBlockId.Y];
+					foreach (var point in from.GetLineToPoints(to))
+					{
+						pm[point.X,point.Y] = type;
+					}
+				}
+			}
+
 			//var centers = new Dictionary<Point, Point>();
 			//var dists = new Dictionary<Point, float>();
 			//foreach (var dPoint in Point.NearestDPoints)
