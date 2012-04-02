@@ -8,7 +8,7 @@ namespace GameCore
 	public enum ETerrains
 	{
 		[Terrain("почва", ESex.FEMALE)] GROUND,
-		[Terrain("вода", ESex.FEMALE)] WATER,
+		[Terrain("вода", ESex.FEMALE)] FRESH_WATER,
 		[Terrain("трава", ESex.FEMALE)] GRASS,
 		[Terrain("болото", ESex.IT)] SWAMP,
 		[Terrain("лава", ESex.FEMALE)] LAVA,
@@ -18,10 +18,20 @@ namespace GameCore
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] GRAY_BRICK_WALL,
 		[Terrain("статуя", 0.7f, 0.8f, true, ESex.FEMALE)] STATUE,
 
-		[Terrain("дубовый пол", ESex.MALE)] WOOD_FLOOR_OAK,
-		[Terrain("кленовый пол", ESex.MALE)] WOOD_FLOOR_MAPPLE,
-		[Terrain("каменный пол", ESex.MALE)] STONE_FLOOR,
+		[Terrain("дубовый пол")] WOOD_FLOOR_OAK,
+		[Terrain("кленовый пол")] WOOD_FLOOR_MAPPLE,
+		[Terrain("каменный пол")] STONE_FLOOR,
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] STONE_WALL,
+
+		[Terrain("лес")] FOREST,
+		[Terrain("море", ESex.IT)]SEA,
+		[Terrain("океан")] DEEP_SEA,
+		[Terrain("вода", ESex.FEMALE)] DEEP_FRESH_WATER,
+		[Terrain("песок")] COAST,
+		[Terrain("скала",ESex.FEMALE)] MOUNT,
+		[Terrain("ледник")] ETERNAL_SNOW,
+		[Terrain("куст")] SHRUBS,
+
 
 		[Terrain("up", ESex.IT)] UP,
 		[Terrain("down", ESex.IT)] DOWN,
@@ -36,7 +46,7 @@ namespace GameCore
 	{
 		private static Dictionary<ETerrains, TerrainAttribute> m_attrs;
 
-		public TerrainAttribute(string _displayName, ESex _sex)
+		public TerrainAttribute(string _displayName, ESex _sex = ESex.MALE)
 			: this(_displayName, 1.0f, 0.0f, true, _sex) { }
 
 		public TerrainAttribute(string _displayName, float _isPassable, float _transparency, bool _isCanShootThrough, ESex _sex = ESex.MALE)
@@ -62,6 +72,50 @@ namespace GameCore
 				m_attrs = Util.Fill<ETerrains, TerrainAttribute>();
 			}
 			return m_attrs[_enum];
+		}
+
+		public static EMapBlockTypes GetMapBlockType(ETerrains _terrain)
+		{
+			switch (_terrain)
+			{
+				case ETerrains.GRASS:
+				case ETerrains.GROUND:
+				case ETerrains.ROAD:
+				case ETerrains.RED_BRICK_WALL:
+				case ETerrains.YELLOW_BRICK_WALL:
+				case ETerrains.GRAY_BRICK_WALL:
+				case ETerrains.STATUE:
+				case ETerrains.WOOD_FLOOR_OAK:
+				case ETerrains.WOOD_FLOOR_MAPPLE:
+				case ETerrains.STONE_FLOOR:
+				case ETerrains.RED_BRICK_WINDOW:
+				case ETerrains.GRAY_BRICK_WINDOW:
+				case ETerrains.YELLOW_BRICK_WINDOW:
+				case ETerrains.STONE_WALL:
+					return EMapBlockTypes.GROUND;
+				case ETerrains.FRESH_WATER:
+					return EMapBlockTypes.FRESH_WATER;
+				case ETerrains.DEEP_FRESH_WATER:
+					return EMapBlockTypes.DEEP_FRESH_WATER;
+				case ETerrains.SWAMP:
+					return EMapBlockTypes.SWAMP;
+				case ETerrains.COAST:
+					return EMapBlockTypes.COAST;
+				case ETerrains.DEEP_SEA:
+					return EMapBlockTypes.DEEP_SEA;
+				case ETerrains.ETERNAL_SNOW:
+					return EMapBlockTypes.ETERNAL_SNOW;
+				case ETerrains.FOREST:
+					return EMapBlockTypes.FOREST;
+				case ETerrains.MOUNT:
+					return EMapBlockTypes.MOUNT;
+				case ETerrains.SEA:
+					return EMapBlockTypes.SEA;
+				case ETerrains.SHRUBS:
+					return EMapBlockTypes.SHRUBS;
+				default:
+					throw new ArgumentOutOfRangeException("_terrain");
+			}
 		}
 	}
 }

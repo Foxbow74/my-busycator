@@ -131,7 +131,7 @@ namespace GameCore.Mapping.Layers
 					case EMapBlockTypes.DEEP_SEA:
 					case EMapBlockTypes.FRESH_WATER:
 					case EMapBlockTypes.DEEP_FRESH_WATER:
-						terrains.Add(blockTypes, new[] { ETerrains.WATER, });
+						terrains.Add(blockTypes, new[] { ETerrains.FRESH_WATER, });
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
