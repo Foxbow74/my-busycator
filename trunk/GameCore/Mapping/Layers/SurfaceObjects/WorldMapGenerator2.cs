@@ -98,7 +98,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			var result = new EMapBlockTypes[m_size, m_size];
 
-			var zoneTypes = m_infos.ToDictionary(_pair => _pair.Value.Zone, _pair => _pair.Key);
+			var zoneTypes = m_infos.Where(_valuePair => _valuePair.Value.Zone!=0).ToDictionary(_pair => _pair.Value.Zone, _pair => _pair.Key);
 			for (var x = 0; x < m_size; ++x)
 			{
 				for (var y = 0; y < m_size; ++y)
@@ -115,7 +115,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			return result;
 		}
 
-		private void FillInnerPatches(IEnumerable<ushort> _list, EMapBlockTypes _type) {
+		private void FillInnerPatches(IEnumerable<ushort> _list, EMapBlockTypes _type)
+		{
+			if(!_list.Any()) return;
 			m_infos[_type].Zone = _list.First(_arg => !m_forbidToUnite[_arg]);
 			foreach (var i in _list)
 			{
@@ -149,7 +151,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			return list;
 		}
 
-		private void GenerateBaseMap() {
+		private void GenerateBaseMap() 
+		{
 			InitiallySeedAndGrowPatches();
 
 			GenerateSea();

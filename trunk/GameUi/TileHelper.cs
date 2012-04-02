@@ -165,7 +165,7 @@ namespace GameUi
 					case ETerrains.YELLOW_BRICK_WINDOW:
 						tl = new TileSet(Rp.CreateTile(1, 12, FColor.Gray));
 						break;
-					case ETerrains.WATER:
+					case ETerrains.FRESH_WATER:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 14, 8, FColor.Blue));
 						break;
 					case ETerrains.LAVA:

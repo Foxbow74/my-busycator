@@ -1,31 +1,70 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
+using GameCore.Mapping;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameUi.UIBlocks;
 using UnsafeUtils;
 using GameCore;
+using Point = GameCore.Misc.Point;
 
 namespace ConsoleTests
 {
 	class Program
 	{
-		static void Main(string[] _args) 
+		const int SIZE = 128;
+		static void Main(string[] _args)
 		{
+			var random = new Random();
 			//PerlinTest();
 
-			const int size = 256;
+			var map = GenerateWorldMapTest();
+			var bmp = new Bitmap(MapBlock.SIZE * SIZE, MapBlock.SIZE * SIZE);
+			var blocks = new Dictionary<Point, MapBlock>();
+			var blockPoints = new Rct(0, 0, MapBlock.SIZE, MapBlock.SIZE).AllPoints;
+			var mapPoints = new Rct(0, 0, SIZE, SIZE).AllPoints.OrderBy(_point => random.Next());
+
+			var total = mapPoints.Count();
+			var cur = 0;
+
+			var s = "";
+			foreach (var id in mapPoints)
+			{
+				var block = SurfaceBlockGenerator.GenerateBlock(id, map, blocks);
+				blocks.Add(id, block);
+
+				var s1 = string.Format("{0:N0}%", (100.0*++cur/total));
+				if (s != s1)
+				{
+					Debug.WriteLine(s1);
+					s = s1;
+				}
+
+				var blockId = id*MapBlock.SIZE;
+
+				foreach (var pnt in blockPoints)
+				{
+					var value = block.Map[pnt.X, pnt.Y];
+					var fcolor = MiniMapUiBlock.GetColor(TerrainAttribute.GetMapBlockType(value));
+					var color = Color.FromArgb((int) (fcolor.R*255), (int) (fcolor.G*255), (int) (fcolor.B*255));
+					bmp.SetPixel(pnt.X + blockId.X, pnt.Y + blockId.Y, color);
+				}
+			}
+			bmp.Save("blocks.bmp");
+
+		}
+
+		private static EMapBlockTypes[,] GenerateWorldMapTest()
+		{
 			var random = new Random();
-			var mg =new WorldMapGenerator2(size,random);
+			var mg =new WorldMapGenerator2(SIZE,random);
 			var map = mg.CreatePatchMap();
-			var bmp = new Bitmap(size, size);
+			var bmp = new Bitmap(SIZE, SIZE);
 
-			var colors = new Dictionary<ushort, Color>();
-
-			
-
-			foreach(var pnt in new Rct(0,0,size,size).AllPoints)
+			foreach(var pnt in new Rct(0,0,SIZE,SIZE).AllPoints)
 			{
 				var value = map[pnt.X,pnt.Y];
 				var fcolor = MiniMapUiBlock.GetColor(value);
@@ -33,6 +72,7 @@ namespace ConsoleTests
 				bmp.SetPixel(pnt.X,pnt.Y,color);
 			}
 			bmp.Save("map.bmp");
+			return map;
 		}
 
 		private static void PerlinTest() {
