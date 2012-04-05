@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameCore.Misc
 {
@@ -141,6 +142,34 @@ namespace GameCore.Misc
 		{
 			var ss = _s.Split(new[] {','}, StringSplitOptions.None);
 			return new Point(int.Parse(ss[0]), int.Parse(ss[1]));
+		}
+
+
+		public IEnumerable<Point> GetSpiral(int _size)
+		{
+			var dirs = new[] { EDirections.DOWN, EDirections.RIGHT, EDirections.UP, EDirections.LEFT, }.Select(_dir => _dir.GetDelta()).ToArray();
+			var map = new bool[_size, _size];
+
+			var pos = this;
+			var dirIndex = 0;
+			var cnt = _size * _size - 1;
+			
+			while (true)
+			{
+				map[pos.X, pos.Y] = true;
+				yield return pos;
+				if (--cnt == 0)
+				{
+					yield break;
+				}
+				pos += dirs[dirIndex];
+				var checkIndex = (3 + dirIndex) % 4;
+				var checkPos = pos + dirs[checkIndex];
+				if (!map[checkPos.X, checkPos.Y])
+				{
+					dirIndex = checkIndex;
+				}
+			}
 		}
 
 		#region overrides

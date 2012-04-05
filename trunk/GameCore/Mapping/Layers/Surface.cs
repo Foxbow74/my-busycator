@@ -13,7 +13,7 @@ namespace GameCore.Mapping.Layers
 {
 	public class Surface : WorldLayer
 	{
-		public const int WORLD_MAP_SIZE = 256;
+		public const int WORLD_MAP_SIZE = 128;
 
 		private static readonly List<string> m_maleNames;
 		private static readonly List<string> m_femaleNames;
@@ -45,17 +45,17 @@ namespace GameCore.Mapping.Layers
 				{
 					m_worldMapGenerator = new WorldMapGenerator2(WORLD_MAP_SIZE, World.Rnd);
 					m_worldMap = m_worldMapGenerator.Generate();
-
-					City = new City(this, World.Rnd);
+					
+					var cityBlockIds = m_worldMapGenerator.FindCityPlace((int)Math.Sqrt(WORLD_MAP_SIZE) / 2);
+					foreach (var id in cityBlockIds)
+					{
+						m_worldMap[id.X,id.Y] = EMapBlockTypes.CITY;
+					}
+					City = new City(this, cityBlockIds);
 				}
 				return m_worldMap;
 			}
 		}
-
-		//public override float GetFogColorMultiplier(LiveMapCell _liveCell)
-		//{
-		//    return Math.Max(0.6f, 1f - _liveCell.TerrainAttribute.IsPassable);
-		//}
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
@@ -118,6 +118,7 @@ namespace GameCore.Mapping.Layers
 					case EMapBlockTypes.NONE:
 						break;
 					case EMapBlockTypes.COAST:
+					case EMapBlockTypes.LAKE_COAST:
 					case EMapBlockTypes.ETERNAL_SNOW:
 					case EMapBlockTypes.MOUNT:
 					case EMapBlockTypes.CITY:

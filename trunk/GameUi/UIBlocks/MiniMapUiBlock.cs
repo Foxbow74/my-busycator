@@ -41,9 +41,13 @@ namespace GameUi.UIBlocks
 						color = new FColor(1f, 0.1f, 0.2f, 0.5f);
 						break;
 					case EMapBlockTypes.CITY:
-						color = new FColor(1f, 0.5f, 0.4f, 0.2f);
+						color = FColor.Red;
+						//color = new FColor(1f, 0.5f, 0.4f, 0.2f);
 						break;
 					case EMapBlockTypes.COAST:
+						color = FColor.SandyBeach;
+						break;
+					case EMapBlockTypes.LAKE_COAST:
 						color = FColor.SandyBrown;
 						break;
 					case EMapBlockTypes.MOUNT:

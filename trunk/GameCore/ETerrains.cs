@@ -28,6 +28,7 @@ namespace GameCore
 		[Terrain("океан")] DEEP_SEA,
 		[Terrain("вода", ESex.FEMALE)] DEEP_FRESH_WATER,
 		[Terrain("песок")] COAST,
+		[Terrain("песок")] LAKE_COAST,
 		[Terrain("скала",ESex.FEMALE)] MOUNT,
 		[Terrain("ледник")] ETERNAL_SNOW,
 		[Terrain("куст")] SHRUBS,
@@ -99,6 +100,8 @@ namespace GameCore
 					return EMapBlockTypes.DEEP_FRESH_WATER;
 				case ETerrains.SWAMP:
 					return EMapBlockTypes.SWAMP;
+				case ETerrains.LAKE_COAST:
+					return EMapBlockTypes.LAKE_COAST;
 				case ETerrains.COAST:
 					return EMapBlockTypes.COAST;
 				case ETerrains.DEEP_SEA:

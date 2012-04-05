@@ -156,6 +156,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					case EMapBlockTypes.COAST:
 						tr = ETerrains.COAST;
 						break;
+					case EMapBlockTypes.LAKE_COAST:
+						tr = ETerrains.LAKE_COAST;
+						break;
 					case EMapBlockTypes.MOUNT:
 						tr = ETerrains.MOUNT;
 						break;

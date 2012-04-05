@@ -77,7 +77,6 @@
     <Compile Include="Mapping\Layers\LayerHelper.cs" />
     <Compile Include="Mapping\Layers\Surface.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\City.cs" />
-    <Compile Include="Mapping\Layers\SurfaceObjects\CityGenerator.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\EBuilding.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\GraveyardBuilding.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\HouseBuilding.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Misc;
 
@@ -25,6 +26,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private readonly int[] m_sizes;
 		private readonly bool[,] m_neighbours;
 		private readonly ushort[] m_united;
+		private ushort[] m_allZones;
 		private readonly Dictionary<EMapBlockTypes, MapTypeInfo> m_infos = new Dictionary<EMapBlockTypes, MapTypeInfo>();
 
 		public WorldMapGenerator2(int _size, Random _rnd)
@@ -35,7 +37,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			m_map = new ushort[m_size, m_size];
 			m_rct = new Rct(0, 0, m_size, m_size);
 
-			m_zones = m_imax = m_size * 10;
+			m_zones = m_imax = m_size * m_size / 2;
 			m_forbidToUnite = new bool[m_imax + 1];
 			m_sizes = new int[m_imax + 1];
 			m_neighbours = new bool[m_imax + 1, m_imax + 1];
@@ -44,6 +46,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			m_infos.Add(EMapBlockTypes.SEA, new MapTypeInfo(BORDER_WATER_PART));
 			m_infos.Add(EMapBlockTypes.DEEP_SEA, new MapTypeInfo(0));
 			m_infos.Add(EMapBlockTypes.COAST, new MapTypeInfo(0));
+			m_infos.Add(EMapBlockTypes.LAKE_COAST, new MapTypeInfo(LAKE_COAST_PART));
 			m_infos.Add(EMapBlockTypes.FRESH_WATER, new MapTypeInfo(LAKE_PART));
 			m_infos.Add(EMapBlockTypes.DEEP_FRESH_WATER, new MapTypeInfo(0));
 			m_infos.Add(EMapBlockTypes.ETERNAL_SNOW, new MapTypeInfo(MOUNT_PART));
@@ -74,27 +77,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public EMapBlockTypes[,] CreatePatchMap()
 		{
 			GenerateBaseMap();
-
-			#region создание зоны глубокой морской воды
-
-			{
-				var list = GetInnerPatches(EMapBlockTypes.SEA);
-				list.Add(m_map[0, 0]);
-				FillInnerPatches(list, EMapBlockTypes.DEEP_SEA);
-			}
-
-			#endregion
-
-
-			#region создание зоны глубокой пресной воды
-
-			{
-				var list = GetInnerPatches(EMapBlockTypes.FRESH_WATER);
-				FillInnerPatches(list, EMapBlockTypes.DEEP_FRESH_WATER);
-			}
-
-			#endregion
-
 
 			var result = new EMapBlockTypes[m_size, m_size];
 
@@ -128,11 +110,11 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private List<ushort> GetInnerPatches(EMapBlockTypes _type) {
 			var zone = m_infos[_type].Zone;
 			var list = new List<ushort>();
-			for(ushort i=1;i<=m_imax;++i)
+			foreach (var i in m_allZones)
 			{
 				var flag = true;
 				if (m_united[i] != zone) continue;
-				for(ushort j=1;j<=m_imax;++j)
+				foreach (var j in m_allZones)
 				{
 					if(m_neighbours[i,j])
 					{
@@ -200,9 +182,28 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			#region берега озер
 
-			Belt(m_infos[EMapBlockTypes.FRESH_WATER].Zone, m_infos[EMapBlockTypes.COAST].Zone, totalGround * LAKE_COAST_PART);
+			m_infos[EMapBlockTypes.LAKE_COAST].Zone = Belt(m_infos[EMapBlockTypes.FRESH_WATER].Zone, 0, totalGround * m_infos[EMapBlockTypes.LAKE_COAST].Part);
+			if (m_infos[EMapBlockTypes.LAKE_COAST].Zone != 0)
+			{
+				m_forbidToUnite[m_infos[EMapBlockTypes.LAKE_COAST].Zone] = true;
+			}
 
 			#endregion
+
+
+			#region создание зоны глубокой пресной воды
+
+			{
+				var list = GetInnerPatches(EMapBlockTypes.FRESH_WATER);
+				FillInnerPatches(list, EMapBlockTypes.DEEP_FRESH_WATER);
+				if(m_infos[EMapBlockTypes.DEEP_FRESH_WATER].Zone!=0)
+				{
+					m_forbidToUnite[m_infos[EMapBlockTypes.DEEP_FRESH_WATER].Zone] = true;
+				}
+			}
+
+			#endregion
+
 
 			for (var i = 0; i < 1; i++)
 			{
@@ -222,6 +223,15 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			#endregion
 
+			#region создание зоны глубокой морской воды
+
+			{
+				var list = GetInnerPatches(EMapBlockTypes.SEA);
+				list.Add(m_map[0, 0]);
+				FillInnerPatches(list, EMapBlockTypes.DEEP_SEA);
+			}
+
+			#endregion
 		}
 
 		private void GenerateSea() 
@@ -248,7 +258,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					process = sum < part;
 					if (!process) break;
 
-					for (ushort j = 1; j <= m_imax; ++j)
+					foreach (var j in m_allZones)
 					{
 						if (!m_neighbours[i, j]) continue;
 						i = j;
@@ -264,7 +274,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		private void UnitePatches()
 		{
-			for (ushort i = 1; i <= m_imax; ++i)
+			foreach (var i in m_allZones)
 			{
 				if (m_united[i] != i || m_forbidToUnite[i]) { continue; }
 				var j = (ushort)(m_rnd.Next(m_imax) + 1);
@@ -275,22 +285,26 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			}
 		}
 
-		private void InitiallySeedAndGrowPatches() {
-			for (ushort i = 0; i < m_imax; i++)
+		private void InitiallySeedAndGrowPatches() 
+		{
+			var allZones = new List<ushort>();
+			for (ushort i = 1; i <= m_imax; i++)
 			{
 
 				var xy = new Point(m_rnd.Next(m_size), m_rnd.Next(m_size));
 				if (m_map[xy.X, xy.Y] == 0)
 				{
-					m_sizes[i + 1] = 1;
-					m_united[i + 1] = (ushort)(i + 1);
-					m_map[xy.X, xy.Y] = (ushort)(i + 1);
+					allZones.Add(i);
+					m_sizes[i] = 1;
+					m_united[i] = i;
+					m_map[xy.X, xy.Y] = i;
 				}
 				else
 				{
 					i--;
 				}
 			}
+			m_allZones = allZones.ToArray();
 
 			var points = m_size*m_size - m_imax;
 			var dpoints = Util.AllDirections.Select(_directions => _directions.GetDelta()).ToArray();
@@ -380,7 +394,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			var bltZones = new List<ushort>();
 			if (_connectTo != 0) bltZones.Add(_connectTo);
-			for (ushort i = 1; i <= m_imax; i += 1)
+			foreach (var i in m_allZones)
 			{
 				if (m_united[i] != i || m_forbidToUnite[i] || !m_neighbours[i, _closeTo]) continue;
 				bltZones.Add(i);
@@ -412,7 +426,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					m_zones--;
 
 					//присваиваем всех соседей
-					for (var j = 1; j <= m_imax; ++j)
+					foreach (var j in m_allZones)
 					{
 						if (m_neighbours[j, zone])
 						{
@@ -421,6 +435,53 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 							m_neighbours[zoneI, j] = true;
 							m_neighbours[j, zoneI] = true;
+						}
+					}
+				}
+			}
+		}
+
+		public IEnumerable<Point> FindCityPlace(int _cityBlocks)
+		{
+			var result = new List<Point>();
+			var lakeCoastZone = m_infos[EMapBlockTypes.LAKE_COAST].Zone;
+			var groundZone = m_infos[EMapBlockTypes.GROUND].Zone;
+			var lakeZone = m_infos[EMapBlockTypes.FRESH_WATER].Zone;
+			var zones = new List<ushort>();
+			zones.AddRange(m_allZones.Where(_i => m_united[_i]==groundZone && m_allZones.Any(_j => m_neighbours[_i,_j] && m_united[_j] == lakeZone)));
+			if(!zones.Any())
+			{
+				zones.AddRange(m_allZones.Where(_i => m_united[_i] == lakeCoastZone && m_allZones.Any(_j => m_neighbours[_i, _j] && m_united[_j] == lakeZone)));
+			}
+
+			var center = new Point(m_size / 2, m_size / 2);
+			while (true)
+			{
+				foreach (var point in center.GetSpiral(m_size))
+				{
+					var i = m_map[point.X, point.Y];
+					if (zones.Contains(i))
+					{
+						for (var j = 0; j < 10; ++j)
+						{
+							result.Clear();
+							var pnt = point;
+							var toAdd = _cityBlocks;
+							while (true)
+							{
+								result.Add(pnt);
+								if (--toAdd == 0)
+								{
+									//result = m_rct.AllPoints.Where(_point => m_map[_point.X, _point.Y] == i).ToList();
+									return result;
+								}
+								pnt += World.Rnd.GetRandomDirection().GetDelta();
+								var unitedTo = m_united[m_map[pnt.X, pnt.Y]];
+								if (unitedTo != groundZone && unitedTo != lakeCoastZone)
+								{
+									break;
+								}
+							}
 						}
 					}
 				}

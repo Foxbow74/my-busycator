@@ -15,12 +15,20 @@ namespace ConsoleTests
 {
 	class Program
 	{
-		const int SIZE = 128;
+		const int SIZE = 64;
 		static void Main(string[] _args)
 		{
 			var random = new Random();
 			//PerlinTest();
+			//GenerateBlockMaps(random);
 
+			foreach (var point in new Point(5, 5).GetSpiral(11))
+			{
+				Debug.WriteLine(point);
+			}
+		}
+
+		private static void GenerateBlockMaps(Random random) {
 			var map = GenerateWorldMapTest();
 			var bmp = new Bitmap(MapBlock.SIZE * SIZE, MapBlock.SIZE * SIZE);
 			var blocks = new Dictionary<Point, MapBlock>();
@@ -54,7 +62,6 @@ namespace ConsoleTests
 				}
 			}
 			bmp.Save("blocks.bmp");
-
 		}
 
 		private static EMapBlockTypes[,] GenerateWorldMapTest()
