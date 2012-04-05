@@ -83,7 +83,7 @@ namespace GameUi
 			}
 			foreach (var key in Enum.GetValues(typeof (ETerrains)).Cast<ETerrains>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
 			{
-				Trace.WriteLine("Tile for " + key + " not defined.");
+				Trace.WriteLine("Tile for Terrain " + key + " not defined.");
 			}
 			foreach (var line in File.ReadAllLines(@"Resources\tiles.dat"))
 			{
@@ -97,7 +97,7 @@ namespace GameUi
 			}
 			foreach (var key in Enum.GetValues(typeof (ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
 			{
-				Trace.WriteLine("Tile for " + key + " not defined.");
+				Trace.WriteLine("Tile for Tile" + key + " not defined.");
 			}
 			AllTiles[ETiles.FOG].IsFogTile = true;
 

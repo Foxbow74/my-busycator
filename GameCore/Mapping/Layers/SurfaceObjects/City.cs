@@ -10,20 +10,18 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	public class City
 	{
+		private const int MAX_CITY_BUILDINGS_COUNT = 10;
 		private readonly List<Citizen> m_already = new List<Citizen>();
 		private readonly List<Building> m_buildings = new List<Building>();
 		private readonly List<Citizen> m_citizens = new List<Citizen>();
 		private readonly Point[] m_cityBlockIds;
-		private readonly CityGenerator m_cityGenerator;
 		private readonly List<Tuple<ETiles, FColor>> m_conf = new List<Tuple<ETiles, FColor>>();
 
-		public City(Surface _surface, Random _rnd)
+		public City(Surface _surface, IEnumerable<Point> _cityBlockIds)
 		{
 			Surface = _surface;
-			m_cityGenerator = new CityGenerator(_surface.WorldMap);
-			m_cityBlockIds = m_cityGenerator.GenerateCityArea(_rnd).ToArray();
-
-			AddBuildings(_rnd);
+			m_cityBlockIds = _cityBlockIds.ToArray();
+			AddBuildings();
 		}
 
 		public Surface Surface { get; private set; }
@@ -32,19 +30,20 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public IEnumerable<Citizen> AllCitizens { get { return m_citizens; } }
 
-		private void AddBuildings(Random _rnd)
+		private void AddBuildings()
 		{
 			var allRooms = new Dictionary<Room, Point>();
+			var needRooms = m_cityBlockIds.Length*3;
 			foreach (var blockId in m_cityBlockIds)
 			{
-				var rooms = LayerHelper.GenerateRooms(_rnd, BaseMapBlock.Rect.Inflate(-2, -2).Offset(2, 2), new Point[0], blockId).OrderByDescending(_room => _room.RoomRectangle.Size);
+				var rooms = LayerHelper.GenerateRooms(World.Rnd, BaseMapBlock.Rect.Inflate(-2, -2).Offset(2, 2), new Point[0], blockId).OrderByDescending(_room => _room.RoomRectangle.Size);
 				foreach (var room in rooms)
 				{
 					allRooms.Add(room, blockId);
-					if (allRooms.Count > CityGenerator.MAX_CITY_BUILDINGS_COUNT)
-					{
-						break;
-					}
+					//if (allRooms.Count >= needRooms)
+					//{
+					//    break;
+					//}
 				}
 			}
 
@@ -62,7 +61,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					var role = availableRoles.FirstOrDefault(_role => _role.BuildingType == building.BuildingType);
 					if (role != null)
 					{
-						var citizen = new Citizen(Surface, _rnd);
+						var citizen = new Citizen(Surface, World.Rnd);
 						var citizenRole = (AbstractCitizenRole) Activator.CreateInstance(role.GetType());
 						citizenRole.SetBuilding(citizen, building);
 						citizen.AddRole(citizenRole);
@@ -91,7 +90,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 						}
 						if (citizen == null)
 						{
-							citizen = new Citizen(Surface, _rnd);
+							citizen = new Citizen(Surface, World.Rnd);
 							m_citizens.Add(citizen);
 						}
 						var citizenRole = (AbstractCitizenRole) Activator.CreateInstance(role.GetType());
@@ -102,7 +101,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				}
 			}
 
-			buildings = buildings.OrderBy(_building => _rnd.Next()).ToList();
+			buildings = buildings.OrderBy(_building => World.Rnd.Next()).ToList();
 
 			foreach (var building in buildings)
 			{

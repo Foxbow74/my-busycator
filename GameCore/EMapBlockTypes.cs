@@ -15,6 +15,7 @@ namespace GameCore
 		[MapBlockType("вода")] DEEP_FRESH_WATER,
 		[MapBlockType("суша")] CITY,
 		[MapBlockType("берег")] COAST,
+		[MapBlockType("берег")] LAKE_COAST,
 		[MapBlockType("горы")] MOUNT,
 		[MapBlockType("болото")]SWAMP,
 		[MapBlockType("вечный снег")]ETERNAL_SNOW,
