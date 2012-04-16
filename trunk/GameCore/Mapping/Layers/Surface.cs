@@ -13,12 +13,12 @@ namespace GameCore.Mapping.Layers
 {
 	public class Surface : WorldLayer
 	{
-		public const int WORLD_MAP_SIZE = 128;
+		public const int WORLD_MAP_SIZE = 32;
 
 		private static readonly List<string> m_maleNames;
 		private static readonly List<string> m_femaleNames;
-		private EMapBlockTypes[,] m_worldMap;
-		private WorldMapGenerator2 m_worldMapGenerator;
+		private readonly EMapBlockTypes[,] m_worldMap;
+		private readonly WorldMapGenerator2 m_worldMapGenerator;
 		private static readonly List<ETiles> m_forestTiles = new List<ETiles>();
 
 		static Surface()
@@ -33,29 +33,19 @@ namespace GameCore.Mapping.Layers
 
 		public Surface()
 		{
+			m_worldMapGenerator = new WorldMapGenerator2(WORLD_MAP_SIZE, World.Rnd);
+			m_worldMap = m_worldMapGenerator.Generate();
+
+			var cityBlockIds = m_worldMapGenerator.FindCityPlace((int)Math.Sqrt(WORLD_MAP_SIZE) / 2);
+			foreach (var id in cityBlockIds)
+			{
+				m_worldMap[id.X, id.Y] = EMapBlockTypes.CITY;
+			}
+
+			City = new City(this, cityBlockIds.Select(_point => new Point(_point.X-WORLD_MAP_SIZE/2,_point.Y-WORLD_MAP_SIZE/2)));
 		}
 
 		public City City { get; private set; }
-
-		public EMapBlockTypes[,] WorldMap
-		{
-			get
-			{
-				if (m_worldMap == null)
-				{
-					m_worldMapGenerator = new WorldMapGenerator2(WORLD_MAP_SIZE, World.Rnd);
-					m_worldMap = m_worldMapGenerator.Generate();
-					
-					var cityBlockIds = m_worldMapGenerator.FindCityPlace((int)Math.Sqrt(WORLD_MAP_SIZE) / 2);
-					foreach (var id in cityBlockIds)
-					{
-						m_worldMap[id.X,id.Y] = EMapBlockTypes.CITY;
-					}
-					City = new City(this, cityBlockIds);
-				}
-				return m_worldMap;
-			}
-		}
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
@@ -96,105 +86,109 @@ namespace GameCore.Mapping.Layers
 			var check = File.ReadAllText(_filename);
 		}
 
-		public EMapBlockTypes GetBlockType(Point _blockId) { return WorldMap[_blockId.X + WORLD_MAP_SIZE/2, _blockId.Y + WORLD_MAP_SIZE/2]; }
+		public EMapBlockTypes GetBlockType(Point _blockId) { return m_worldMap[_blockId.X + WORLD_MAP_SIZE/2, _blockId.Y + WORLD_MAP_SIZE/2]; }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
-			var block = new MapBlock(_blockId);
+			//var block = new MapBlock(_blockId);
+
+
+			var block = SurfaceBlockGenerator.GenerateBlock(_blockId, this);
+
 			var rnd = new Random(block.RandomSeed);
 
-			var centers = new Dictionary<Point, Point>();
-			var dists = new Dictionary<Point, float>();
-			foreach (var dPoint in Point.NearestDPoints)
-			{
-				centers[dPoint] = dPoint*BaseMapBlock.SIZE + BaseMapBlock.Rect.Center;
-			}
+			//var centers = new Dictionary<Point, Point>();
+			//var dists = new Dictionary<Point, float>();
+			//foreach (var dPoint in Point.NearestDPoints)
+			//{
+			//    centers[dPoint] = dPoint*BaseMapBlock.SIZE + BaseMapBlock.Rect.Center;
+			//}
 
-			var terrains = new Dictionary<EMapBlockTypes, ETerrains[]>();
-			foreach (EMapBlockTypes blockTypes in Enum.GetValues(typeof (EMapBlockTypes)))
-			{
-				switch (blockTypes)
-				{
-					case EMapBlockTypes.NONE:
-						break;
-					case EMapBlockTypes.COAST:
-					case EMapBlockTypes.LAKE_COAST:
-					case EMapBlockTypes.ETERNAL_SNOW:
-					case EMapBlockTypes.MOUNT:
-					case EMapBlockTypes.CITY:
-					case EMapBlockTypes.FOREST:
-					case EMapBlockTypes.SHRUBS:
-					case EMapBlockTypes.SWAMP:
-					case EMapBlockTypes.GROUND:
-						terrains.Add(blockTypes, DefaultEmptySpaces.ToArray());
-						break;
-					case EMapBlockTypes.SEA:
-					case EMapBlockTypes.DEEP_SEA:
-					case EMapBlockTypes.FRESH_WATER:
-					case EMapBlockTypes.DEEP_FRESH_WATER:
-						terrains.Add(blockTypes, new[] { ETerrains.FRESH_WATER, });
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
-			}
+			//var terrains = new Dictionary<EMapBlockTypes, ETerrains[]>();
+			//foreach (EMapBlockTypes blockTypes in Enum.GetValues(typeof (EMapBlockTypes)))
+			//{
+			//    switch (blockTypes)
+			//    {
+			//        case EMapBlockTypes.NONE:
+			//            break;
+			//        case EMapBlockTypes.COAST:
+			//        case EMapBlockTypes.LAKE_COAST:
+			//        case EMapBlockTypes.ETERNAL_SNOW:
+			//        case EMapBlockTypes.MOUNT:
+			//        case EMapBlockTypes.CITY:
+			//        case EMapBlockTypes.FOREST:
+			//        case EMapBlockTypes.SHRUBS:
+			//        case EMapBlockTypes.SWAMP:
+			//        case EMapBlockTypes.GROUND:
+			//            terrains.Add(blockTypes, DefaultEmptySpaces.ToArray());
+			//            break;
+			//        case EMapBlockTypes.SEA:
+			//        case EMapBlockTypes.DEEP_SEA:
+			//        case EMapBlockTypes.FRESH_WATER:
+			//        case EMapBlockTypes.DEEP_FRESH_WATER:
+			//            terrains.Add(blockTypes, new[] { ETerrains.FRESH_WATER, });
+			//            break;
+			//        default:
+			//            throw new ArgumentOutOfRangeException();
+			//    }
+			//}
 
-			var map = new Dictionary<Point, EMapBlockTypes>();
+			//var map = new Dictionary<Point, EMapBlockTypes>();
 
-			foreach (var point in BaseMapBlock.Rect.AllPoints)
-			{
-				foreach (var center in centers)
-				{
-					dists[center.Key] = (center.Value - point).Lenght;
-				}
-				var dpoint = dists.OrderBy(_pair => _pair.Value + rnd.NextDouble()*16).First().Key;
-				var type = GetBlockType(_blockId + dpoint);
-				map[point] = type;
-			}
+			//foreach (var point in BaseMapBlock.Rect.AllPoints)
+			//{
+			//    foreach (var center in centers)
+			//    {
+			//        dists[center.Key] = (center.Value - point).Lenght;
+			//    }
+			//    var dpoint = dists.OrderBy(_pair => _pair.Value + rnd.NextDouble()*16).First().Key;
+			//    var type = GetBlockType(_blockId + dpoint);
+			//    map[point] = type;
+			//}
 
-			var list = new List<EMapBlockTypes>();
+			//var list = new List<EMapBlockTypes>();
 			var baseType = GetBlockType(_blockId);
-			foreach (var point in BaseMapBlock.Rect.AllPoints)
-			{
-				list.Clear();
-				var xy = point;
-				switch (baseType)
-				{
-					case EMapBlockTypes.CITY:
-					case EMapBlockTypes.GROUND:
-						block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
-						break;
-					case EMapBlockTypes.SEA:
-						{
-							list.Add(baseType);
-							list.Add(baseType);
-							list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
+			//foreach (var point in BaseMapBlock.Rect.AllPoints)
+			//{
+			//    list.Clear();
+			//    var xy = point;
+			//    switch (baseType)
+			//    {
+			//        case EMapBlockTypes.CITY:
+			//        case EMapBlockTypes.GROUND:
+			//            block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
+			//            break;
+			//        case EMapBlockTypes.SEA:
+			//            {
+			//                list.Add(baseType);
+			//                list.Add(baseType);
+			//                list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
 
-							var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value).First().Key.Key;
-							if (type != EMapBlockTypes.NONE)
-							{
-								block.Map[point.X, point.Y] = terrains[type][rnd.Next(terrains[type].Length)];
-							}
-						}
-						break;
-					case EMapBlockTypes.FOREST:
-						block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
-						{
-							list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
+			//                var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value).First().Key.Key;
+			//                if (type != EMapBlockTypes.NONE)
+			//                {
+			//                    block.Map[point.X, point.Y] = terrains[type][rnd.Next(terrains[type].Length)];
+			//                }
+			//            }
+			//            break;
+			//        case EMapBlockTypes.FOREST:
+			//            block.Map[point.X, point.Y] = terrains[baseType][rnd.Next(terrains[baseType].Length)];
+			//            {
+			//                list.AddRange(from dPoint in Point.NearestDPoints select dPoint + xy into key where map.ContainsKey(key) select map[key]);
 
-							var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value + rnd.Next(5)).First().Key.Key;
-							if (type != EMapBlockTypes.NONE && rnd.Next(3)==0)
-							{
-								block.AddObject(m_forestTiles[rnd.Next(m_forestTiles.Count)].GetThing(), point);
-							}
-						}
-						break;
-					case EMapBlockTypes.NONE:
-						break;
-					//default:
-						//throw new ArgumentOutOfRangeException();
-				}
-			}
+			//                var type = list.GroupBy(_types => _types).ToDictionary(_types => _types, _types => _types.Count()).OrderBy(_pair => _pair.Value + rnd.Next(5)).First().Key.Key;
+			//                if (type != EMapBlockTypes.NONE && rnd.Next(3)==0)
+			//                {
+			//                    block.AddObject(m_forestTiles[rnd.Next(m_forestTiles.Count)].GetThing(), point);
+			//                }
+			//            }
+			//            break;
+			//        case EMapBlockTypes.NONE:
+			//            break;
+			//        //default:
+			//            //throw new ArgumentOutOfRangeException();
+			//    }
+			//}
 
 
 			if (baseType == EMapBlockTypes.CITY)

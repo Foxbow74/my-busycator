@@ -147,13 +147,14 @@ namespace GameCore.Misc
 
 		public IEnumerable<Point> GetSpiral(int _size)
 		{
-			var dirs = new[] { EDirections.DOWN, EDirections.RIGHT, EDirections.UP, EDirections.LEFT, }.Select(_dir => _dir.GetDelta()).ToArray();
-			var map = new bool[_size, _size];
+			var dirs = new[] {EDirections.DOWN, EDirections.RIGHT, EDirections.UP, EDirections.LEFT,}.Select(_dir => _dir.GetDelta()).ToArray();
+			var map = new bool[_size,_size];
 
 			var pos = this;
 			var dirIndex = 0;
-			var cnt = _size * _size - 1;
-			
+			var cnt = _size*_size - 1;
+
+
 			while (true)
 			{
 				map[pos.X, pos.Y] = true;
@@ -163,14 +164,16 @@ namespace GameCore.Misc
 					yield break;
 				}
 				pos += dirs[dirIndex];
-				var checkIndex = (3 + dirIndex) % 4;
+				var checkIndex = (3 + dirIndex)%4;
 				var checkPos = pos + dirs[checkIndex];
+				if(checkPos.X<0 || checkPos.X>=_size || checkPos.Y<0 || checkPos.Y>=_size) yield break;
 				if (!map[checkPos.X, checkPos.Y])
 				{
 					dirIndex = checkIndex;
 				}
 			}
 		}
+
 
 		#region overrides
 

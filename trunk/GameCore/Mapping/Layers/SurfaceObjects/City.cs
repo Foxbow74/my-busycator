@@ -14,13 +14,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private readonly List<Citizen> m_already = new List<Citizen>();
 		private readonly List<Building> m_buildings = new List<Building>();
 		private readonly List<Citizen> m_citizens = new List<Citizen>();
-		private readonly Point[] m_cityBlockIds;
 		private readonly List<Tuple<ETiles, FColor>> m_conf = new List<Tuple<ETiles, FColor>>();
 
 		public City(Surface _surface, IEnumerable<Point> _cityBlockIds)
 		{
 			Surface = _surface;
-			m_cityBlockIds = _cityBlockIds.ToArray();
+			CityBlockIds = _cityBlockIds.ToArray();
 			AddBuildings();
 		}
 
@@ -30,11 +29,13 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public IEnumerable<Citizen> AllCitizens { get { return m_citizens; } }
 
+		public Point[] CityBlockIds { get; private set; }
+
 		private void AddBuildings()
 		{
 			var allRooms = new Dictionary<Room, Point>();
-			var needRooms = m_cityBlockIds.Length*3;
-			foreach (var blockId in m_cityBlockIds)
+			var needRooms = CityBlockIds.Length*3;
+			foreach (var blockId in CityBlockIds)
 			{
 				var rooms = LayerHelper.GenerateRooms(World.Rnd, BaseMapBlock.Rect.Inflate(-2, -2).Offset(2, 2), new Point[0], blockId).OrderByDescending(_room => _room.RoomRectangle.Size);
 				foreach (var room in rooms)
