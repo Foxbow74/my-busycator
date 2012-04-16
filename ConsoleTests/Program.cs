@@ -28,41 +28,41 @@ namespace ConsoleTests
 			}
 		}
 
-		private static void GenerateBlockMaps(Random random) {
-			var map = GenerateWorldMapTest();
-			var bmp = new Bitmap(MapBlock.SIZE * SIZE, MapBlock.SIZE * SIZE);
-			var blocks = new Dictionary<Point, MapBlock>();
-			var blockPoints = new Rct(0, 0, MapBlock.SIZE, MapBlock.SIZE).AllPoints;
-			var mapPoints = new Rct(0, 0, SIZE, SIZE).AllPoints.OrderBy(_point => random.Next());
+		//private static void GenerateBlockMaps(Random random) {
+		//    var map = GenerateWorldMapTest();
+		//    var bmp = new Bitmap(MapBlock.SIZE * SIZE, MapBlock.SIZE * SIZE);
+		//    var blocks = new Dictionary<Point, MapBlock>();
+		//    var blockPoints = new Rct(0, 0, MapBlock.SIZE, MapBlock.SIZE).AllPoints;
+		//    var mapPoints = new Rct(0, 0, SIZE, SIZE).AllPoints.OrderBy(_point => random.Next());
 
-			var total = mapPoints.Count();
-			var cur = 0;
+		//    var total = mapPoints.Count();
+		//    var cur = 0;
 
-			var s = "";
-			foreach (var id in mapPoints)
-			{
-				var block = SurfaceBlockGenerator.GenerateBlock(id, map, blocks);
-				blocks.Add(id, block);
+		//    var s = "";
+		//    foreach (var id in mapPoints)
+		//    {
+		//        var block = SurfaceBlockGenerator.GenerateBlock(id, map, blocks);
+		//        blocks.Add(id, block);
 
-				var s1 = string.Format("{0:N0}%", (100.0*++cur/total));
-				if (s != s1)
-				{
-					Debug.WriteLine(s1);
-					s = s1;
-				}
+		//        var s1 = string.Format("{0:N0}%", (100.0*++cur/total));
+		//        if (s != s1)
+		//        {
+		//            Debug.WriteLine(s1);
+		//            s = s1;
+		//        }
 
-				var blockId = id*MapBlock.SIZE;
+		//        var blockId = id*MapBlock.SIZE;
 
-				foreach (var pnt in blockPoints)
-				{
-					var value = block.Map[pnt.X, pnt.Y];
-					var fcolor = MiniMapUiBlock.GetColor(TerrainAttribute.GetMapBlockType(value));
-					var color = Color.FromArgb((int) (fcolor.R*255), (int) (fcolor.G*255), (int) (fcolor.B*255));
-					bmp.SetPixel(pnt.X + blockId.X, pnt.Y + blockId.Y, color);
-				}
-			}
-			bmp.Save("blocks.bmp");
-		}
+		//        foreach (var pnt in blockPoints)
+		//        {
+		//            var value = block.Map[pnt.X, pnt.Y];
+		//            var fcolor = MiniMapUiBlock.GetColor(TerrainAttribute.GetMapBlockType(value));
+		//            var color = Color.FromArgb((int) (fcolor.R*255), (int) (fcolor.G*255), (int) (fcolor.B*255));
+		//            bmp.SetPixel(pnt.X + blockId.X, pnt.Y + blockId.Y, color);
+		//        }
+		//    }
+		//    bmp.Save("blocks.bmp");
+		//}
 
 		private static EMapBlockTypes[,] GenerateWorldMapTest()
 		{

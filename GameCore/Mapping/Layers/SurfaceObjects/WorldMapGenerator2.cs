@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Misc;
 
@@ -13,7 +12,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		const float FOREST_PART = 0.2f;
 		const float MOUNT_PART = 0.01f;
 		const float LAKE_COAST_PART = 0.1f;
-		const float SWAMP_PART = 0.1f;
+		const float SWAMP_PART = 0.03f;
 
 		private readonly Random m_rnd;
 		private readonly int m_size;
@@ -445,47 +444,53 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			var result = new List<Point>();
 			var lakeCoastZone = m_infos[EMapBlockTypes.LAKE_COAST].Zone;
-			var groundZone = m_infos[EMapBlockTypes.GROUND].Zone;
+			var groundZones = new ushort[] { m_infos[EMapBlockTypes.GROUND].Zone, m_infos[EMapBlockTypes.FOREST].Zone, m_infos[EMapBlockTypes.LAKE_COAST].Zone };
 			var lakeZone = m_infos[EMapBlockTypes.FRESH_WATER].Zone;
 			var zones = new List<ushort>();
-			zones.AddRange(m_allZones.Where(_i => m_united[_i]==groundZone && m_allZones.Any(_j => m_neighbours[_i,_j] && m_united[_j] == lakeZone)));
-			if(!zones.Any())
+			zones.AddRange(m_allZones.Where(_i => groundZones.Contains(m_united[_i]) && m_allZones.Any(_j => m_neighbours[_i, _j] && m_united[_j] == lakeZone)));
+			if (!zones.Any())
 			{
 				zones.AddRange(m_allZones.Where(_i => m_united[_i] == lakeCoastZone && m_allZones.Any(_j => m_neighbours[_i, _j] && m_united[_j] == lakeZone)));
 			}
 
-			var center = new Point(m_size / 2, m_size / 2);
-			while (true)
+			var center = new Point(m_size/2, m_size/2);
+			foreach (var point in center.GetSpiral(m_size))
 			{
-				foreach (var point in center.GetSpiral(m_size))
+				var i = m_map[point.X, point.Y];
+				if (zones.Contains(i))
 				{
-					var i = m_map[point.X, point.Y];
-					if (zones.Contains(i))
+					result.Clear();
+					result.Add(point);
+					var need = _cityBlocks - 1;
+					while (need > 0)
 					{
-						for (var j = 0; j < 10; ++j)
+						foreach (var dlt in Util.AllDirections.Select(_directions => _directions.GetDelta()))
 						{
-							result.Clear();
-							var pnt = point;
-							var toAdd = _cityBlocks;
-							while (true)
+							var toAdd = new List<Point>(result);
+							foreach (var pnt in result)
 							{
-								result.Add(pnt);
-								if (--toAdd == 0)
-								{
-									//result = m_rct.AllPoints.Where(_point => m_map[_point.X, _point.Y] == i).ToList();
-									return result;
-								}
-								pnt += World.Rnd.GetRandomDirection().GetDelta();
-								var unitedTo = m_united[m_map[pnt.X, pnt.Y]];
-								if (unitedTo != groundZone && unitedTo != lakeCoastZone)
-								{
-									break;
-								}
+								var npnt = pnt + dlt;
+								if (!groundZones.Contains(m_united[m_map[npnt.X, npnt.Y]]) || toAdd.Contains(npnt)) continue;
+
+								need--;
+								toAdd.Add(npnt);
 							}
+							if (toAdd.Count == result.Count)
+							{
+								need = 0;
+								break;
+							}
+							result.Clear();
+							result.AddRange(toAdd);
 						}
+					}
+					if (result.Count == _cityBlocks)
+					{
+						return result;
 					}
 				}
 			}
+			throw new ApplicationException("Нет места для города");
 		}
 	}
 }

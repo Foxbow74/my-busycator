@@ -48,10 +48,12 @@ namespace GameCore
 
 		private void BornAvatar()
 		{
-			AvatarBlockId = Point.Zero;
+			
 			Avatar = new Avatar(Surface);
+			AvatarBlockId = Surface.City.CityBlockIds[0];// -new Point(Surface.WORLD_MAP_SIZE / 2, Surface.WORLD_MAP_SIZE / 2);
 			LiveMap.Actualize();
-			Avatar.LiveCoords = LiveMap.CenterLiveBlock*BaseMapBlock.SIZE;
+			Avatar.LiveCoords = Point.Zero;
+			
 		}
 
 		/// <summary>
@@ -110,9 +112,7 @@ namespace GameCore
 					}
 					do
 					{
-						//Debug.Write(((Intelligent)creature).IntelligentName + "\t" + creature.NextAct.Name + "\t");
 						actResult = creature.DoAct();
-						//Debug.WriteLine(actResult);
 
 						switch (actResult)
 						{
