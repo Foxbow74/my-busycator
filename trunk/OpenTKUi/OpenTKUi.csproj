@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
-      <HintPath>..\..\OpenTKSample\OpenTK_engine\bin\Debug\OpenTK.dll</HintPath>
+      <HintPath>..\Debug\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
