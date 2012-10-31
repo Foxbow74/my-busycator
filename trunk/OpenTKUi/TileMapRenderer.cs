@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Drawing;
+using System.Drawing.Imaging;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
@@ -65,7 +67,15 @@ namespace OpenTKUi
 					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 				}
 			}
-			//bmp.Save("a.bmp");
+			bmp.Save("resources.png", ImageFormat.Png);
+            foreach (var tileset in TileHelper.AllTerrainTilesets)
+            {
+                var t = tileset.ToString();
+                foreach (var tile in tileset.Value.Tiles)
+                {
+                    var tr = tile.ToText();
+                }
+            }
 			m_img = new Image(bmp, true);
 		}
 

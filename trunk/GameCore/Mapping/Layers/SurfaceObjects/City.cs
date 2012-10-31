@@ -115,13 +115,28 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public void GenerateCityBlock(MapBlock _block, Random _rnd, WorldLayer _layer)
 		{
+            var roadPoints = new List<Point>();
 			for (var i = 0; i < BaseMapBlock.SIZE; ++i)
 			{
-				if (_rnd.Next(2) == 0) _block.Map[0, i] = ETerrains.ROAD;
-				if (_rnd.Next(2) == 0) _block.Map[1, i] = ETerrains.ROAD;
-				if (_rnd.Next(2) == 0) _block.Map[i, 0] = ETerrains.ROAD;
-				if (_rnd.Next(2) == 0) _block.Map[i, 1] = ETerrains.ROAD;
+                if (_rnd.Next(2) == 0) roadPoints.Add(new Point(0, i));
+                if (_rnd.Next(2) == 0) roadPoints.Add(new Point(1, i));
+                if (_rnd.Next(2) == 0) roadPoints.Add(new Point(i, 0));
+                if (_rnd.Next(2) == 0) roadPoints.Add(new Point(i, 1));
 			}
+
+            if (roadPoints.All(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsPassable>0))
+		    {
+                foreach (var point in roadPoints)
+                {
+                    _block.Map[point.X, point.Y] = ETerrains.ROAD;
+                }
+            }
+
+		    var impossible = m_buildings.Where(building =>building.Room.AreaRectangle.AllPoints.Any(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsPassable == 0)).ToArray();
+		    foreach (var building in impossible)
+		    {
+		        m_buildings.Remove(building);
+		    }
 
 			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
 			{

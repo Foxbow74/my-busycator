@@ -90,9 +90,6 @@ namespace GameUi.UIBlocks
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
-							if (World.TheWorld.Avatar[1, 0].WorldCoords == liveCell.WorldCoords)
-							{
-							}
 							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
 						}
 					}
