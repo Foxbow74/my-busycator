@@ -8,7 +8,7 @@ namespace GameCore
 	public enum ETerrains
 	{
 		[Terrain("почва", ESex.FEMALE)] GROUND,
-		[Terrain("вода", ESex.FEMALE)] FRESH_WATER,
+		[Terrain("вода", ESex.FEMALE, 0f)] FRESH_WATER,
 		[Terrain("трава", ESex.FEMALE)] GRASS,
 		[Terrain("болото", ESex.IT)] SWAMP,
 		[Terrain("лава", ESex.FEMALE)] LAVA,
@@ -24,9 +24,9 @@ namespace GameCore
 		[Terrain("стена", 0, 1, false, ESex.FEMALE)] STONE_WALL,
 
 		[Terrain("лес")] FOREST,
-		[Terrain("море", ESex.IT)]SEA,
-		[Terrain("океан")] DEEP_SEA,
-		[Terrain("вода", ESex.FEMALE)] DEEP_FRESH_WATER,
+        [Terrain("море", ESex.IT, 0f)] SEA,
+        [Terrain("океан", 0f)] DEEP_SEA,
+        [Terrain("вода", ESex.FEMALE, 0f)] DEEP_FRESH_WATER,
 		[Terrain("песок")] COAST,
 		[Terrain("песок")] LAKE_COAST,
 		[Terrain("скала",ESex.FEMALE)] MOUNT,
@@ -49,6 +49,9 @@ namespace GameCore
 
 		public TerrainAttribute(string _displayName, ESex _sex = ESex.MALE)
 			: this(_displayName, 1.0f, 0.0f, true, _sex) { }
+
+        public TerrainAttribute(string _displayName, ESex _sex, float isPassable)
+            : this(_displayName, isPassable, 0.0f, true, _sex) { }
 
 		public TerrainAttribute(string _displayName, float _isPassable, float _transparency, bool _isCanShootThrough, ESex _sex = ESex.MALE)
 		{
