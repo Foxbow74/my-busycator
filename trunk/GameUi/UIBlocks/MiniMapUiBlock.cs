@@ -41,7 +41,7 @@ namespace GameUi.UIBlocks
 						color = new FColor(1f, 0.1f, 0.2f, 0.5f);
 						break;
 					case EMapBlockTypes.CITY:
-						color = FColor.Red;
+						color = FColor.Black;
 						//color = new FColor(1f, 0.5f, 0.4f, 0.2f);
 						break;
 					case EMapBlockTypes.COAST:
@@ -104,7 +104,7 @@ namespace GameUi.UIBlocks
 
 					if (World.TheWorld.Avatar[0, 0].MapBlockId == pnt)
 					{
-						color = FColor.White;
+						color = FColor.Crimson;
 					}
 
 					DrawHelper.DrawRect(new RectangleF(halfContentRect.X + pnt.X * rectSize.X, halfContentRect.Y + pnt.Y * rectSize.Y, rectSize.X, rectSize.Y), color);
