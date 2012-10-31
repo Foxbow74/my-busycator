@@ -13,7 +13,7 @@ namespace Busycator
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider() : base(16, 16, 700, 500)
+		public GameProvider() : base(16, 16, 480, 640)
 		{
 			Title = "Busycator";
 			m_game = new TheGame(this);

@@ -68,6 +68,8 @@ namespace GameUi
 				}
 			}
 
+            AllTiles.Add(ETiles.NONE, Rp.CreateTile(ETextureSet.RJ, 0,0,FColor.Empty));
+
 			foreach (var line in File.ReadAllLines(@"Resources\terrains.dat"))
 			{
 				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
@@ -89,6 +91,10 @@ namespace GameUi
 			{
 				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
 				var etile = (ETiles) Enum.Parse(typeof (ETiles), ss[0]);
+                if(etile==ETiles.NONE)
+                {
+                    continue;
+                }
 				var set = (ETextureSet) Enum.Parse(typeof (ETextureSet), ss[1]);
 				var xy = Point.Parse(ss[2]);
 				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));

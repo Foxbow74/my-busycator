@@ -103,15 +103,15 @@ namespace GameUi.UIBlocks
 						var eTerrains = liveCell.Terrain;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 
-						var tcolor = terrainTile.Color.Multiply(0.7f);
+						var tcolor = terrainTile.Color.Multiply(0.7f).ToGrayScale();
 						terrainTile.Draw(screenPoint, tcolor);
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
-							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A), tileInfoProvider.Direction);
+							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).ToGrayScale(), tileInfoProvider.Direction);
 						}
-						ETiles.FOG.GetTile().Draw(screenPoint, FColor.Black);
-						//DrawHelper.FogTile(screenPoint);
+						//ETiles.FOG.GetTile().Draw(screenPoint, FColor.Black);
+						DrawHelper.FogTile(screenPoint);
 					}
 
 

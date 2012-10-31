@@ -196,6 +196,25 @@ namespace GameCore.Mapping.Layers
 				City.GenerateCityBlock(block, rnd, this);
 			}
 
+            var trees = ThingHelper.AllThings().Where(ff => ff.Is<Tree>()).ToArray();
+            var shrubs = ThingHelper.AllThings().Where(ff => ff.Is<Shrub>()).ToArray();
+            foreach (var point in new Rct(0, 0, BaseMapBlock.SIZE, BaseMapBlock.SIZE).AllPoints)
+		    {
+		        if(block.Map[point.X, point.Y]==ETerrains.FOREST)
+		        {
+		            switch (rnd.Next(10))
+		            {
+                        case 0:
+                        case 1:
+                            block.AddObject(shrubs[rnd.Next(shrubs.Length)], point);
+		                    break;
+                        case 2:
+                            block.AddObject(trees[rnd.Next(trees.Length)], point);
+		                    break;
+		            }
+		        }
+		    }
+            
 			{
 				var itmcnt = 20 + rnd.Next(rnd.Next(20));
 				for (var i = 0; i < itmcnt; ++i)
