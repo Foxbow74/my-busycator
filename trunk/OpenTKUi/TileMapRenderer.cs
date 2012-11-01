@@ -1,11 +1,15 @@
 ﻿using System;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Text;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = GameCore.Misc.Point;
 
 namespace OpenTKUi
@@ -31,52 +35,77 @@ namespace OpenTKUi
 			m_tileSizeY = _tileSizeY;
 			ResourceProvider = _resourceProvider;
 
-			var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
-			var sizeInPixels = size * _tileSizeX;
-
-			var begin = 16;
-			for (var i = 1; ;++i )
+			if(File.Exists("resources.png"))
 			{
-				if(sizeInPixels<=begin)
+				var rsrs = (Bitmap)Bitmap.FromFile("resources.png");
+				m_img = new Image(rsrs, false);
+				foreach (var tile in _resourceProvider.Tiles)
 				{
-					sizeInPixels = begin;
-					break;
-				}
-				begin *= 2;
-			}
-
-			var bmp = new Bitmap(sizeInPixels, sizeInPixels);
-			using(var gr = Graphics.FromImage(bmp))
-			{
-				var perRow = sizeInPixels / 16;
-				for (var index = 0; index < _resourceProvider.Tiles.Count; index++)
-				{
-					var tile = _resourceProvider.Tiles[index];
-					var x = index % perRow;
-					var y = index / perRow;
-					var dstRect = new Rct(x * _tileSizeX, y * _tileSizeY, _tileSizeX, _tileSizeY);
-					var srcRect = new Rct(tile.X * _tileSizeX, tile.Y * _tileSizeY, _tileSizeX, _tileSizeY);
-
-					tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
-
-					if(tile.IsFogTile)
+					if (tile.Tile==ETiles.FOG)
 					{
+						tile.IsFogTile = true;
 						TileInfo.FogTexCoords = tile.Texcoords;
 					}
-
-					gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
+					tile.UpdateTexCoords(tile.X, tile.Y, rsrs.Width, rsrs.Height);
 				}
 			}
-			bmp.Save("resources.png", ImageFormat.Png);
-            foreach (var tileset in TileHelper.AllTerrainTilesets)
-            {
-                var t = tileset.ToString();
-                foreach (var tile in tileset.Value.Tiles)
-                {
-                    var tr = tile.ToText();
-                }
-            }
-			m_img = new Image(bmp, true);
+			else
+			{
+				var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
+				var sizeInPixels = size * _tileSizeX;
+
+				var begin = 16;
+				for (var i = 1; ; ++i)
+				{
+					if (sizeInPixels <= begin)
+					{
+						sizeInPixels = begin;
+						break;
+					}
+					begin *= 2;
+				}
+
+				var bmp = new Bitmap(sizeInPixels, sizeInPixels, PixelFormat.Format32bppPArgb);
+				using (var gr = Graphics.FromImage(bmp))
+				{
+					var perRow = sizeInPixels / 16;
+					for (var index = 0; index < _resourceProvider.Tiles.Count; index++)
+					{
+						var tile = _resourceProvider.Tiles[index];
+						var x = index % perRow;
+						var y = index / perRow;
+						var dstRect = new Rct(x * _tileSizeX, y * _tileSizeY, _tileSizeX, _tileSizeY);
+						var srcRect = new Rct(tile.X * _tileSizeX, tile.Y * _tileSizeY, _tileSizeX, _tileSizeY);
+
+						tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
+
+						if (tile.IsFogTile)
+						{
+							TileInfo.FogTexCoords = tile.Texcoords;
+						}
+
+						gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
+					}
+				}
+				bmp.Save("resources.png", ImageFormat.Png);
+
+				var sb = new StringBuilder();
+
+				foreach (var pair in TileHelper.AllTiles)
+				{
+					sb.AppendLine("t|" + pair.Key + "|" + pair.Value.ToResurceText());
+				}
+
+				foreach (var tileset in TileHelper.AllTerrainTilesets)
+				{
+					foreach (var tile in tileset.Value.Tiles)
+					{
+						sb.AppendLine("r|" + tileset.Key + "|" + tile.ToResurceText());
+					}
+				}
+				File.WriteAllText(TileHelper.resources_txt_filename, sb.ToString());
+				m_img = new Image(bmp, true);
+			}
 		}
 
 		public TileMapRenderer(int _screenWidth, int _screenHeight)

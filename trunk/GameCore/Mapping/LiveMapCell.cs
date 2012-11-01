@@ -37,14 +37,22 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Item> Items { get { return m_items; } }
 
-		public FurnitureThing Furniture { get; set; }
+		public FurnitureThing Furniture
+		{
+		    get { return _furniture; }
+		    set
+		    {
+		        _furniture = value;
+                m_transparentColor = null;
+		    }
+		}
 
-		public Creature Creature
+	    public Creature Creature
 		{
 			get
 			{
-				var creature = LiveMapBlock.Creatures.FirstOrDefault(_creature => _creature.LiveCoords == LiveCoords);
-				return creature;
+                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple => _tuple.Item2 == LiveCoords);
+                return tuple==null?null:tuple.Item1;
 			}
 		}
 
@@ -88,68 +96,38 @@ namespace GameCore.Mapping
 
 		public Point LiveCoords { get { return m_liveCoords; } }
 
-		private void UpdateOpacityBase()
-		{
-			var attr = TerrainAttribute;
-			var opacity = attr.Opacity;
-			if (opacity < 1 && Furniture != null)
-			{
-				opacity += Furniture.Opacity;
-			}
-			if (LiveCoords == World.TheWorld.Avatar.LiveCoords)
-			{
-				opacity += World.TheWorld.Avatar.Opacity;
-			}
-			if (opacity < 1)
-			{
-				opacity += Items.Sum(_item => _item.Opacity);
-			}
-			m_opacityBase = opacity;
-		}
+        private FColor? m_transparentColor;
+	    private FurnitureThing _furniture;
 
-		private float m_opacityBase = 0f;
-
-		public float Opacity
+	    public FColor TransparentColor
 		{
 			get
 			{
-				if (m_opacityBase < 1 && Creature != null)
-				{
-					return m_opacityBase + Creature.Opacity;
-				}
-				return m_opacityBase;
-			}
-		}
+                if (m_transparentColor == null)
+                {
+                    var attr = TerrainAttribute;
+                    var opacity = attr.Opacity;
+                    if (opacity < 1 && Furniture != null)
+                    {
+                        opacity += Furniture.Opacity;
+                    }
+                    if (opacity < 1 && Creature != null)
+                    {
+                        opacity += Creature.Opacity;
+                    }
+                    if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
+                    {
+                        opacity += World.TheWorld.Avatar.Opacity;
+                    }
+                    if (opacity < 1)
+                    {
+                        opacity += Items.Sum(_item => _item.Opacity);
+                    }
+                    var trancparence = 1f - Math.Min(1f, opacity);
 
-		public FColor TransparentColor
-		{
-			get
-			{
-				//if (Terrain == ETerrains.RED_BRICK_WINDOW)
-				//{
-				//    return new FColor(1f, 1f, 0, 0);
-				//}
-				var attr = TerrainAttribute;
-				var opacity = attr.Opacity;
-				if (opacity < 1 && Furniture != null)
-				{
-					opacity += Furniture.Opacity;
-				}
-				if (opacity < 1 && Creature != null)
-				{
-					opacity += Creature.Opacity;
-				}
-				if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
-				{
-					opacity += World.TheWorld.Avatar.Opacity;
-				}
-				if (opacity < 1)
-				{
-					opacity += Items.Sum(_item => _item.Opacity);
-				}
-				var trancparence = 1f - Math.Min(1f, opacity);
-
-				return new FColor(trancparence, 1f, 1f, 1f);
+                    m_transparentColor = new FColor(trancparence, 1f, 1f, 1f);
+                }
+			    return m_transparentColor.Value;
 			}
 		}
 
@@ -204,6 +182,8 @@ namespace GameCore.Mapping
 
 		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
+            m_transparentColor = null;
+
 			Rnd = _rnd;
 			m_items.Clear();
 			Furniture = null;
@@ -221,7 +201,6 @@ namespace GameCore.Mapping
 
 			ClearTemp();
 			UpdatePathFinderMapCoord();
-			UpdateOpacityBase();
 		}
 
 		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*BaseMapBlock.SIZE + InBlockCoords; }
@@ -247,14 +226,17 @@ namespace GameCore.Mapping
 			;
 		}
 
-		internal void AddItemIntenal(Item _item) { m_items.Add(_item); }
+		internal void AddItemIntenal(Item _item)
+		{
+		    m_items.Add(_item);
+            m_transparentColor = null;
+		}
 
 		public void AddItem(Item _item)
 		{
 			if (m_mapBlock.AddObject(_item, InBlockCoords))
 			{
 				m_items.Add(_item);
-				UpdateOpacityBase();
 			}
 		}
 
@@ -336,7 +318,7 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
-			UpdateOpacityBase();
+            m_transparentColor = null;
 			m_mapBlock.RemoveObject(_item, InBlockCoords);
 		}
 	}

@@ -24,6 +24,8 @@ namespace GameUi
 		public static IResourceProvider Rp { get; private set; }
 		public static IDrawHelper DrawHelper { get; private set; }
 
+		public static string resources_txt_filename = "resources.txt";
+
 		public static void Init(IResourceProvider _resourceProvider, IDrawHelper _drawHelper)
 		{
 			Rp = _resourceProvider;
@@ -32,86 +34,114 @@ namespace GameUi
 			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 12);
 			Rp.RegisterFont(EFonts.SMALL, "Resources\\monof55.ttf", 8);
 
-			foreach (ETextureSet set in Enum.GetValues(typeof (ETextureSet)))
+			if (File.Exists(resources_txt_filename))
 			{
-				switch (set)
+				foreach (var s in File.ReadAllLines(resources_txt_filename))
 				{
-					case ETextureSet.RJ:
-						Rp.RegisterTexture(set, "Resources\\redjack15v.bmp");
-						break;
-					case ETextureSet.RB1:
-						Rp.RegisterTexture(set, "Resources\\RantingRodent_Brick_01.bmp");
-						break;
-					case ETextureSet.RB2:
-						Rp.RegisterTexture(set, "Resources\\RantingRodent_Brick_02.bmp");
-						break;
-					case ETextureSet.RN1:
-						Rp.RegisterTexture(set, "Resources\\RantingRodent_Natural_01.bmp");
-						break;
-					case ETextureSet.RN2:
-						Rp.RegisterTexture(set, "Resources\\RantingRodent_Natural_02.bmp");
-						break;
-					case ETextureSet.GP:
-						Rp.RegisterTexture(set, "Resources\\gold_plated_16x16.bmp");
-						break;
-					case ETextureSet.NH:
-						Rp.RegisterTexture(set, "Resources\\nethack.bmp");
-						break;
-					case ETextureSet.HM:
-						Rp.RegisterTexture(set, "Resources\\aq.png");
-						break;
-					case ETextureSet.PH:
-						Rp.RegisterTexture(set, "Resources\\Phoebus_16x16.png");
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
+					var arr = s.Split(new[] { '|' }, StringSplitOptions.None);
+					var aTile = Rp.CreateTile(ETextureSet.GP, int.Parse(arr[2]), int.Parse(arr[3]), FColor.Parse(arr[4]));
+					switch (arr[0][0])
+					{
+						case 't':
+							var eTiles = (ETiles)Enum.Parse(typeof(ETiles), arr[1]);
+							aTile.Tile = eTiles;
+							AllTiles.Add(eTiles, aTile);
+							break;
+						case 'r':
+							var terrain = (ETerrains) Enum.Parse(typeof (ETerrains), arr[1]);
+							TileSet set;
+							if (!AllTerrainTilesets.TryGetValue(terrain, out set))
+							{
+								set = new TileSet();
+								AllTerrainTilesets.Add(terrain, set);
+							}
+							set.AddTile(aTile);
+							break;
+					}
 				}
 			}
-
-            AllTiles.Add(ETiles.NONE, Rp.CreateTile(ETextureSet.RJ, 0,0,FColor.Empty));
-
-			foreach (var line in File.ReadAllLines(@"Resources\terrains.dat"))
+			else
 			{
-				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
-				var terrain = (ETerrains) Enum.Parse(typeof (ETerrains), ss[0]);
-				if (!AllTerrainTilesets.ContainsKey(terrain))
+				foreach (ETextureSet set in Enum.GetValues(typeof(ETextureSet)))
 				{
-					AllTerrainTilesets[terrain] = new TileSet();
+					switch (set)
+					{
+						case ETextureSet.RJ:
+							Rp.RegisterTexture(set, "Resources\\redjack15v.bmp");
+							break;
+						case ETextureSet.RB1:
+							Rp.RegisterTexture(set, "Resources\\RantingRodent_Brick_01.bmp");
+							break;
+						case ETextureSet.RB2:
+							Rp.RegisterTexture(set, "Resources\\RantingRodent_Brick_02.bmp");
+							break;
+						case ETextureSet.RN1:
+							Rp.RegisterTexture(set, "Resources\\RantingRodent_Natural_01.bmp");
+							break;
+						case ETextureSet.RN2:
+							Rp.RegisterTexture(set, "Resources\\RantingRodent_Natural_02.bmp");
+							break;
+						case ETextureSet.GP:
+							Rp.RegisterTexture(set, "Resources\\gold_plated_16x16.bmp");
+							break;
+						case ETextureSet.NH:
+							Rp.RegisterTexture(set, "Resources\\nethack.bmp");
+							break;
+						case ETextureSet.HM:
+							Rp.RegisterTexture(set, "Resources\\aq.png");
+							break;
+						case ETextureSet.PH:
+							Rp.RegisterTexture(set, "Resources\\Phoebus_16x16.png");
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
 				}
-				var set = (ETextureSet) Enum.Parse(typeof (ETextureSet), ss[1]);
-				var xy = Point.Parse(ss[2]);
-				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
-				AllTerrainTilesets[terrain].AddTile(tile);
-			}
-			foreach (var key in Enum.GetValues(typeof (ETerrains)).Cast<ETerrains>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
-			{
-				Trace.WriteLine("Tile for Terrain " + key + " not defined.");
-			}
-			foreach (var line in File.ReadAllLines(@"Resources\tiles.dat"))
-			{
-				var ss = line.Split(new[] {'|'}, StringSplitOptions.None);
-				var etile = (ETiles) Enum.Parse(typeof (ETiles), ss[0]);
-                if(etile==ETiles.NONE)
-                {
-                    continue;
-                }
-				var set = (ETextureSet) Enum.Parse(typeof (ETextureSet), ss[1]);
-				var xy = Point.Parse(ss[2]);
-				var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
-				tile.Tile = etile;
-				AllTiles.Add(etile, tile);
-			}
-			foreach (var key in Enum.GetValues(typeof (ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
-			{
-				Trace.WriteLine("Tile for Tile" + key + " not defined.");
-			}
-			AllTiles[ETiles.FOG].IsFogTile = true;
 
+				AllTiles.Add(ETiles.NONE, Rp.CreateTile(ETextureSet.GP, 0, 0, FColor.Empty));
+
+				foreach (var line in File.ReadAllLines(@"Resources\terrains.dat"))
+				{
+					var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
+					var terrain = (ETerrains)Enum.Parse(typeof(ETerrains), ss[0]);
+					if (!AllTerrainTilesets.ContainsKey(terrain))
+					{
+						AllTerrainTilesets[terrain] = new TileSet();
+					}
+					var set = (ETextureSet)Enum.Parse(typeof(ETextureSet), ss[1]);
+					var xy = Point.Parse(ss[2]);
+					var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
+					AllTerrainTilesets[terrain].AddTile(tile);
+				}
+				foreach (var key in Enum.GetValues(typeof(ETerrains)).Cast<ETerrains>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
+				{
+					Trace.WriteLine("Tile for Terrain " + key + " not defined.");
+				}
+				foreach (var line in File.ReadAllLines(@"Resources\tiles.dat"))
+				{
+					var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
+					var etile = (ETiles)Enum.Parse(typeof(ETiles), ss[0]);
+					if (etile == ETiles.NONE)
+					{
+						continue;
+					}
+					var set = (ETextureSet)Enum.Parse(typeof(ETextureSet), ss[1]);
+					var xy = Point.Parse(ss[2]);
+					var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
+					tile.Tile = etile;
+					AllTiles.Add(etile, tile);
+				}
+				foreach (var key in Enum.GetValues(typeof(ETiles)).Cast<ETiles>().Where(_key => !AllTiles.ContainsKey(_key)))
+				{
+					Trace.WriteLine("Tile for Tile" + key + " not defined.");
+				}
+				AllTiles[ETiles.FOG].IsFogTile = true;
+			}
 			return;
 
 			#region old
 
-			foreach (ETerrains terrain in Enum.GetValues(typeof (ETerrains)))
+			foreach (ETerrains terrain in Enum.GetValues(typeof(ETerrains)))
 			{
 				TileSet tl;
 				switch (terrain)
@@ -211,7 +241,7 @@ namespace GameUi
 				AllTerrainTilesets.Add(terrain, tl);
 			}
 
-			foreach (ETiles tile in Enum.GetValues(typeof (ETiles)))
+			foreach (ETiles tile in Enum.GetValues(typeof(ETiles)))
 			{
 				ATile tl;
 				switch (tile)

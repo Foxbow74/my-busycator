@@ -21,6 +21,7 @@ namespace OpenTKUi
 
 		public void UpdateTexCoords(int _x, int _y, float _imgWidth, float _imgHeight)
 		{
+			Rct = new Rct(_x * Size, _y * Size, Size, Size);
 			float u1 = 0.0f, u2 = 0.0f, v1 = 0.0f, v2 = 0.0f;
 
 			if (_x != 0) u1 = 1.0f/(_imgWidth/_x/Size);
@@ -61,10 +62,6 @@ namespace OpenTKUi
 		{
 			GameProvider.TileMapRenderer.FogTile(_point);
 		}
-
-		#region Nested type: TexCoord
-
-		#endregion
 	}
 
 	internal struct TexCoord

@@ -63,17 +63,15 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				var i = 1;
 				Creature first = World.TheWorld.Avatar;
-				foreach (var block in Blocks)
+                foreach (var block in Blocks)
 				{
 					if (block.IsBorder) continue;
-					foreach (var creature in block.Creatures)
+					foreach (var tuple in block.MapBlock.Creatures)
 					{
-						i++;
-						if (first.BusyTill > creature.BusyTill)
+                        if (first.BusyTill > tuple.Item1.BusyTill)
 						{
-							first = creature;
+                            first = tuple.Item1;
 						}
 					}
 				}
