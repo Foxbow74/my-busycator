@@ -66,7 +66,7 @@
       <Name>GameUi</Name>
     </ProjectReference>
     <ProjectReference Include="..\QuickFont\QuickFont.csproj">
-      <Project>{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}</Project>
+      <Project>{bbece6fc-ef63-40f8-a734-a500d1dfc1af}</Project>
       <Name>QuickFont</Name>
     </ProjectReference>
   </ItemGroup>

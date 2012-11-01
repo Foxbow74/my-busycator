@@ -1,7 +1,6 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
-using GameCore.Misc;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
@@ -19,11 +18,23 @@ namespace OpenTKUi
 
 		public Image(Bitmap _bmp, bool _isAlpha)
 		{
-			Bitmap = _bmp;
-			m_alpha = _isAlpha;
+            Width = _bmp.Width;
+            Height = _bmp.Height;
 
-			Width = _bmp.Width;
-			Height = _bmp.Height;
+            if(_bmp.PixelFormat==PixelFormat.Format32bppPArgb)
+		    {
+		        Bitmap = _bmp;
+		    }
+    		else
+		    {
+		        Bitmap = new Bitmap(_bmp.Width, _bmp.Height, PixelFormat.Format32bppPArgb);
+		        using (var gr = Graphics.FromImage(Bitmap))
+		        {
+		            gr.DrawImage(_bmp, 0, 0, Width, Height);
+		        }
+		    }
+
+		    m_alpha = _isAlpha;
 
 			GL.GenTextures(1, out m_texture);
 			GL.BindTexture(TextureTarget.Texture2D, m_texture);
@@ -65,10 +76,9 @@ namespace OpenTKUi
 			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite,
 			                           PixelFormat.Format32bppPArgb);
 
-			FillBackgroundByTransparentColor(data, Color.Empty);
+			FillBackgroundByTransparentColor(data, Color.FromArgb(1,0,0,0));
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
-			              OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
 			Bitmap.UnlockBits(data);
 		}
 

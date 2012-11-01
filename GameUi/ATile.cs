@@ -12,7 +12,7 @@ namespace GameUi
 		{
 			Set = _set;
 			Color = _color;
-			Rct = new Rct(_x*Size, _y*Size, Size, Size);
+            Rct = new Rct(_x, _y, 1, 1) * Size;
 		}
 
 		protected ATile() { }
@@ -30,8 +30,8 @@ namespace GameUi
 		public abstract void Draw(Point _point);
 		public abstract void FogIt(Point _point);
 
-		public string ToText() { return Tile + ToShortText(); }
-
-		public string ToShortText() { return string.Format("|{3}|{0},{1}|{2}", Rct.Left/Size, Rct.Top/Size, Color.ToShortText(), Set); }
-	}
+        public string ToText() { return Tile + ToShortText(); }
+        public string ToShortText() { return string.Format("|{3}|{0},{1}|{2}", Rct.Left / Size, Rct.Top / Size, Color.ToShortText(), Set); }
+        public string ToResurceText() { return string.Format("{0}|{1}|{2}", Rct.Left / Size, Rct.Top / Size, Color.ToShortText()); }
+    }
 }

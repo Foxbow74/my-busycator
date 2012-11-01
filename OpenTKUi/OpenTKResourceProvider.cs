@@ -65,8 +65,8 @@ namespace OpenTKUi
 				charSet.Add(c);
 			}
 			var s = new string(charSet.ToArray());
-			var qfc = new QFontBuilderConfiguration()
-			          	{
+			var qfc = new QFontBuilderConfiguration
+			              {
 			          		charSet = s, 
 							TextGenerationRenderHint = TextGenerationRenderHint.SizeDependent,
 							SuperSampleLevels = 1,
