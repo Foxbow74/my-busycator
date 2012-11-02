@@ -28,6 +28,7 @@ namespace OpenTKUi
 		public int Iteration { get; set; }
 
 		public static OpenTKResourceProvider ResourceProvider { get; private set; }
+		const string ResourcesPngFile = "resources.png";
 
 		public static void Init(int _tileSizeX, int _tileSizeY, OpenTKResourceProvider _resourceProvider)
 		{
@@ -35,9 +36,9 @@ namespace OpenTKUi
 			m_tileSizeY = _tileSizeY;
 			ResourceProvider = _resourceProvider;
 
-			if(File.Exists("resources.png"))
+			if(File.Exists(ResourcesPngFile))
 			{
-				var rsrs = (Bitmap)Bitmap.FromFile("resources.png");
+				var rsrs = (Bitmap)Bitmap.FromFile(ResourcesPngFile);
 				m_img = new Image(rsrs, false);
 				foreach (var tile in _resourceProvider.Tiles)
 				{
@@ -87,7 +88,7 @@ namespace OpenTKUi
 						gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 					}
 				}
-				bmp.Save("resources.png", ImageFormat.Png);
+				bmp.Save(ResourcesPngFile, ImageFormat.Png);
 
 				var sb = new StringBuilder();
 

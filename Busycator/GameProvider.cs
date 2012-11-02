@@ -13,7 +13,7 @@ namespace Busycator
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider() : base(16, 16, 480, 640)
+		public GameProvider() : base(16, 16, 320, 200)
 		{
 			Title = "Busycator";
 			m_game = new TheGame(this);
@@ -78,17 +78,6 @@ namespace Busycator
 		[STAThread] private static void Main()
 		{
 			{
-				//for (int i = 0; i < 10; ++i)
-				//{
-				//    Debug.WriteLine(i);
-				//    var a1 = new A() { B = i, C = 100 - i };
-				//    Debug.WriteLine(a1.GetHashCode());
-				//    var a2 = new A() { B = i, C = 100 - i };
-				//    Debug.WriteLine(a2.GetHashCode());
-				//    var a3 = new A() { B = i, C = 100 - i };
-				//    Debug.WriteLine(a3.GetHashCode());
-				//}
-
 				try
 				{
 					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
@@ -105,11 +94,5 @@ namespace Busycator
 				}
 			}
 		}
-
-		//class A
-		//{
-		//    public int B;
-		//    public int C;
-		//}
 	}
 }

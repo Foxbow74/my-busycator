@@ -42,7 +42,7 @@ namespace ResourceEditor
 			Controls.Add(m_cb);
 
 			ResumeLayout(false);
-			m_cb.SelectedIndex = 0;
+			m_cb.SelectedIndex = m_cb.Items.Count>0?0:-1;
 			CurrentPoint = new Point();
 
 			m_timer.Start();

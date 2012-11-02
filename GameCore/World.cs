@@ -19,7 +19,9 @@ namespace GameCore
 		/// </summary>
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
-		static World() { Rnd = new Random(); //WorldSeed
+		static World() 
+		{
+			Rnd = new Random(WorldSeed); //WorldSeed
 		}
 
 		public World()

@@ -19,7 +19,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguage", "RusLanguage\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTests", "ConsoleTests\ConsoleTests.csproj", "{EA2827C0-47DA-479D-BF2F-3EE8C2103537}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{24D27A79-E736-4935-8C43-EBCC195FAFD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3D23893C-1EDF-481E-95DB-2CF20DF4609A}"
+	ProjectSection(SolutionItems) = preProject
+		Busycator.vsmdi = Busycator.vsmdi
+		Local.testsettings = Local.testsettings
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Busycator.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -125,6 +137,16 @@ Global
 		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|Mixed Platforms.Build.0 = Release|x86
 		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|x86.ActiveCfg = Release|x86
 		{EA2827C0-47DA-479D-BF2F-3EE8C2103537}.Release|x86.Build.0 = Release|x86
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

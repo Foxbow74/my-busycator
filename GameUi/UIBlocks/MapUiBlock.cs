@@ -100,62 +100,15 @@ namespace GameUi.UIBlocks
 						var eTerrains = liveCell.Terrain;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 
-						var tcolor = terrainTile.Color.Multiply(0.7f).ToGrayScale();
+						var tcolor = terrainTile.Color.Multiply(fogColorMultiplier).ToGrayScale();
 						terrainTile.Draw(screenPoint, tcolor);
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tile.GetTile();
 							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).ToGrayScale(), tileInfoProvider.Direction);
 						}
-						//ETiles.FOG.GetTile().Draw(screenPoint, FColor.Black);
 						DrawHelper.FogTile(screenPoint);
 					}
-
-
-					//var terrainColor = terrainTile.Color;
-					//if (terrainColor.Lightness()> worldLayer.FogLightness)
-					//{
-					//    var candidate = terrainColor.Multiply(lighted).Clamp();
-					//    if(candidate.Lightness()>terrainColor.Lightness())
-					//    {
-					//        terrainColor = candidate;
-					//    }
-					//    //terrainColor = terrainColor.Multiply(lighted).Clamp();
-					//}
-
-
-					//if (visibility.A>0 || avatarScreenPoint == screenPoint)
-					//{
-					//    terrainTile.Draw(screenPoint, terrainColor);
-
-					//    liveCell.SetIsSeenBefore();
-
-					//    foreach (var tileInfoProvider in liveCell.TileInfoProviders)
-					//    {
-					//        var tile = tileInfoProvider.Tile.GetTile();
-					//        var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
-					//        tile.Draw(screenPoint, color, tileInfoProvider.Direction);
-					//    }
-					//}
-					//else if (liveCell.IsSeenBefore)
-					//{
-					//    terrainTile.Draw(screenPoint, terrainColor);
-
-					//    var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell); 
-
-					//    //var terrainTile = liveCell.Terrain.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
-					//    var fColor = worldLayer.FogColor.Multiply(fogColorMultiplier);
-					//    //if(fColor.Lightness()<0.1f) continue;
-
-					//    terrainTile.Draw(screenPoint, fColor);
-
-					//    foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
-					//    {
-					//        var tile = tileInfoProvider.Tile.GetTile();
-					//        tile.Draw(screenPoint, fColor, tileInfoProvider.Direction);
-					//    }
-					//    DrawHelper.FogTile(screenPoint);
-					//}
 				}
 			}
 			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
@@ -163,11 +116,6 @@ namespace GameUi.UIBlocks
 
 		internal static FColor GetLighted(LiveMapCell _liveCell, FColor _visibility, FColor _ambient)
 		{
-			//if(_visibility.A>0)
-			//{
-			//    _visibility.UpdateAlfa(_visibility.A + 0.1f);
-			//}
-
 			return _liveCell.Lighted.Screen(_ambient).Multiply(_visibility);
 		}
 

@@ -34,7 +34,7 @@ namespace GameUi
 			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 12);
 			Rp.RegisterFont(EFonts.SMALL, "Resources\\monof55.ttf", 8);
 
-			if (File.Exists(resources_txt_filename))
+			if (File.Exists(resources_txt_filename) && _drawHelper!=null)
 			{
 				foreach (var s in File.ReadAllLines(resources_txt_filename))
 				{
