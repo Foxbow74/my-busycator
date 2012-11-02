@@ -63,13 +63,6 @@ namespace OpenTKUi
 			GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 		}
 
-		/// <summary>
-		/// 	Sets drawing color.
-		/// </summary>
-		/// <param name = "_r">Red intensity.</param>
-		/// <param name = "_g">Green intensity.</param>
-		/// <param name = "_b">Blue intensity.</param>
-		/// <param name = "_a">Alpha intensity.</param>
 		public void Color(byte _r, byte _g, byte _b, byte _a)
 		{
 			GL.Color4(_r, _g, _b, _a);

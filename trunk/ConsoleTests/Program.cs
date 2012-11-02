@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
 using System.Drawing;
-using GameCore.Mapping;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameUi.UIBlocks;

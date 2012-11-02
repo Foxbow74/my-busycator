@@ -23,8 +23,22 @@ namespace GameCore.Mapping.Layers
 
 		static Surface()
 		{
-			m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
-			m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] {','}, StringSplitOptions.RemoveEmptyEntries).ToList();
+			if (File.Exists(@"Resources\malenicks.txt"))
+			{
+				m_maleNames = File.ReadAllText(@"Resources\malenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+			}
+			else
+			{
+				m_maleNames = new List<string> { "TestMale" };
+			}
+			if (File.Exists(@"Resources\femalenicks.txt"))
+			{
+				m_femaleNames = File.ReadAllText(@"Resources\femalenicks.txt").Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+			}
+			else
+			{
+				m_femaleNames = new List<string> { "TestFemale" };
+			}
 
 			for (var i = 0; i < 3; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Tree>()).Select(_tree => _tree.Tile));
 			for (var i = 0; i < 2; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Shrub>()).Select(_tree => _tree.Tile));
@@ -67,7 +81,10 @@ namespace GameCore.Mapping.Layers
 					throw new ArgumentOutOfRangeException("_sex");
 			}
 			var result = list[World.Rnd.Next(list.Count)];
-			list.Remove(result);
+			if (list.Count > 1)
+			{
+				list.Remove(result);
+			}
 			return result;
 		}
 

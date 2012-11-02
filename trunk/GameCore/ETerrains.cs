@@ -25,7 +25,7 @@ namespace GameCore
 
 		[Terrain("лес")] FOREST,
         [Terrain("море", ESex.IT, 0f)] SEA,
-        [Terrain("океан", 0f)] DEEP_SEA,
+        [Terrain("океан", ESex.MALE, 0f)] DEEP_SEA,
         [Terrain("вода", ESex.FEMALE, 0f)] DEEP_FRESH_WATER,
 		[Terrain("песок")] COAST,
 		[Terrain("песок")] LAKE_COAST,

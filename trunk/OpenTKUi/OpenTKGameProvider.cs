@@ -20,6 +20,8 @@ namespace OpenTKUi
 		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
 			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX))
 		{
+			X = 0;
+			Y = 0;
 			VSync = VSyncMode.Off;
 			TileSizeX = _tileSizeX;
 			TileSizeY = _tileSizeY;
