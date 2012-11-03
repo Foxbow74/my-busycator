@@ -45,7 +45,10 @@ namespace GameCore.Objects
 
 		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
 
-		public virtual bool Is<T>() { return typeof (T).IsAssignableFrom(GetType()); }
+		public virtual bool Is<T>()
+		{
+			return typeof (T).IsAssignableFrom(GetType());
+		}
 
 		public bool Equals(Thing _other) { return GetHashCode() == _other.GetHashCode(); }
 

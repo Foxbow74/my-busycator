@@ -66,8 +66,8 @@ namespace GameCore
 		[Tiles(0.3f)] FOREST_TREE_OAK,
 		[Tiles(0.5f)] FOREST_TREE_MAPLE,
 		[Tiles(0.4f)] FOREST_TREE_ELM,
-		[Tiles(0.2f)] FOREST_TREE_ASH,
-		[Tiles(0.3f)] FOREST_TREE_WILLOW,
+		[Tiles(0.4f)] FOREST_TREE_ASH,
+		[Tiles(0.6f)] FOREST_TREE_WILLOW,
 		[Tiles(0.3f)] FOREST_TREE_WALNUT,
 
 		[Tiles(0.4f)] FOREST_TREE_PINE,

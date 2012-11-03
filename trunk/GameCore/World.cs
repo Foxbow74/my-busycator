@@ -12,16 +12,15 @@ namespace GameCore
 {
 	public class World
 	{
-		private const int WORLD_SEED = 1;
 
 		/// <summary>
-		/// 	содержит список активных в данный момент существ
+		/// содержит список активных в данный момент существ
 		/// </summary>
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
 		static World() 
 		{
-			Rnd = new Random(WorldSeed); //WorldSeed
+			Rnd = new Random(Constants.WORLD_SEED); 
 		}
 
 		public World()
@@ -41,8 +40,6 @@ namespace GameCore
 		public Point AvatarBlockId { get; private set; }
 
 		public static Random Rnd { get; private set; }
-
-		public static int WorldSeed { get { return WORLD_SEED; } }
 
 		public Surface Surface { get; private set; }
 

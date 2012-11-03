@@ -29,7 +29,7 @@ namespace GameCore.Mapping
 			m_visibilityManager = new LosManager(AVATAR_SIGHT);
 
 			m_sizeInBlocks = (2*ACTIVE_QRADIUS + 1);
-			SizeInCells = m_sizeInBlocks*BaseMapBlock.SIZE;
+			SizeInCells = m_sizeInBlocks*Constants.MAP_BLOCK_SIZE;
 
 			Blocks = new LiveMapBlock[m_sizeInBlocks,m_sizeInBlocks];
 			Cells = new LiveMapCell[SizeInCells,SizeInCells];
@@ -93,7 +93,7 @@ namespace GameCore.Mapping
 		private Point GetCenterLiveCell()
 		{
 			var inBlock = BaseMapBlock.GetInBlockCoords(World.TheWorld.Avatar.LiveCoords);
-			return CenterLiveBlock*BaseMapBlock.SIZE + inBlock;
+			return CenterLiveBlock*Constants.MAP_BLOCK_SIZE + inBlock;
 		}
 
 		public void SetViewPortSize(Point _size) { m_vieportSize = _size; }
@@ -173,7 +173,7 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					var liveCellZero = blockId*BaseMapBlock.SIZE;
+					var liveCellZero = blockId*Constants.MAP_BLOCK_SIZE;
 					var liveMapBlock = Blocks[blockId.X, blockId.Y];
 
 					foreach (var tuple in liveMapBlock.MapBlock.LightSources)

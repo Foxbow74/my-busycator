@@ -14,7 +14,7 @@ namespace GameCore.Acts
 		protected abstract int TakeTicksOnSingleAction { get; }
 
 		/// <summary>
-		/// 	Сколько раз произведено действие (например взято 10 топоров)
+		/// Сколько раз произведено действие (например взято 10 топоров)
 		/// </summary>
 		public int Count { get; protected set; }
 

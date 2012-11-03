@@ -17,7 +17,7 @@ namespace GameUi.UIBlocks
 			var dPoint = KeyTranslator.GetDirection(_key);
 			if (dPoint != null)
 			{
-				m_message.Act.AddParameter(World.TheWorld.Avatar[dPoint].LiveCoords);
+				m_message.Act.AddParameter(dPoint);
 				CloseTopBlock();
 				return;
 			}

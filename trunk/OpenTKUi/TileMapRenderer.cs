@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Text;
@@ -28,7 +26,6 @@ namespace OpenTKUi
 		public int Iteration { get; set; }
 
 		public static OpenTKResourceProvider ResourceProvider { get; private set; }
-		const string ResourcesPngFile = "resources.png";
 
 		public static void Init(int _tileSizeX, int _tileSizeY, OpenTKResourceProvider _resourceProvider)
 		{
@@ -36,9 +33,9 @@ namespace OpenTKUi
 			m_tileSizeY = _tileSizeY;
 			ResourceProvider = _resourceProvider;
 
-			if(File.Exists(ResourcesPngFile))
+			if (File.Exists(Constants.RESOURCES_PNG_FILE))
 			{
-				var rsrs = (Bitmap)Bitmap.FromFile(ResourcesPngFile);
+				var rsrs = (Bitmap)Bitmap.FromFile(Constants.RESOURCES_PNG_FILE);
 				m_img = new Image(rsrs, false);
 				foreach (var tile in _resourceProvider.Tiles)
 				{
@@ -88,7 +85,7 @@ namespace OpenTKUi
 						gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 					}
 				}
-				bmp.Save(ResourcesPngFile, ImageFormat.Png);
+				bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
 
 				var sb = new StringBuilder();
 
@@ -104,7 +101,7 @@ namespace OpenTKUi
 						sb.AppendLine("r|" + tileset.Key + "|" + tile.ToResurceText());
 					}
 				}
-				File.WriteAllText(TileHelper.resources_txt_filename, sb.ToString());
+				File.WriteAllText(Constants.RESOURCES_TXT_FILENAME, sb.ToString());
 				m_img = new Image(bmp, true);
 			}
 		}
@@ -185,8 +182,8 @@ namespace OpenTKUi
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
 			GL.Begin(BeginMode.Quads);
-			var xy = new Point(_rct.Left, _rct.Top) * ATile.Size;
-			var xy1 = new Point(_rct.Right + 1, _rct.Bottom + 1) * ATile.Size;
+			var xy = new Point(_rct.Left, _rct.Top) * Constants.TILE_SIZE;
+			var xy1 = new Point(_rct.Right + 1, _rct.Bottom + 1) * Constants.TILE_SIZE;
 			GL.Color4(_backgroundColor.R, _backgroundColor.G, _backgroundColor.B, _backgroundColor.A);
 			GL.Vertex2(xy.X, xy.Y);
 			GL.Vertex2(xy1.X, xy.Y);

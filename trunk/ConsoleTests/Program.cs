@@ -27,10 +27,10 @@ namespace ConsoleTests
 
 		//private static void GenerateBlockMaps(Random random) {
 		//    var map = GenerateWorldMapTest();
-		//    var bmp = new Bitmap(MapBlock.SIZE * SIZE, MapBlock.SIZE * SIZE);
+		//    var bmp = new Bitmap(MapBlock.MAP_BLOCK_SIZE * MAP_BLOCK_SIZE, MapBlock.MAP_BLOCK_SIZE * MAP_BLOCK_SIZE);
 		//    var blocks = new Dictionary<Point, MapBlock>();
-		//    var blockPoints = new Rct(0, 0, MapBlock.SIZE, MapBlock.SIZE).AllPoints;
-		//    var mapPoints = new Rct(0, 0, SIZE, SIZE).AllPoints.OrderBy(_point => random.Next());
+		//    var blockPoints = new Rct(0, 0, MapBlock.MAP_BLOCK_SIZE, MapBlock.MAP_BLOCK_SIZE).AllPoints;
+		//    var mapPoints = new Rct(0, 0, MAP_BLOCK_SIZE, MAP_BLOCK_SIZE).AllPoints.OrderBy(_point => random.Next());
 
 		//    var total = mapPoints.Count();
 		//    var cur = 0;
@@ -48,7 +48,7 @@ namespace ConsoleTests
 		//            s = s1;
 		//        }
 
-		//        var blockId = id*MapBlock.SIZE;
+		//        var blockId = id*MapBlock.MAP_BLOCK_SIZE;
 
 		//        foreach (var pnt in blockPoints)
 		//        {
@@ -64,7 +64,7 @@ namespace ConsoleTests
 		private static EMapBlockTypes[,] GenerateWorldMapTest()
 		{
 			var random = new Random();
-			var mg =new WorldMapGenerator2(SIZE,random);
+			var mg =new WorldMapGenerator(SIZE,random);
 			var map = mg.CreatePatchMap();
 			var bmp = new Bitmap(SIZE, SIZE);
 

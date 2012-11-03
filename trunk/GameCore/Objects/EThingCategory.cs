@@ -27,7 +27,7 @@ namespace GameCore.Objects
 		[ThingCategory("Книги", '"', ConsoleKey.D2, EKeyModifiers.SHIFT)] BOOKS,
 		[ThingCategory("Свитки", '?', ConsoleKey.Oem2, EKeyModifiers.SHIFT)] SCROLLS,
 		[ThingCategory("Мебель", '#', ConsoleKey.D3, EKeyModifiers.SHIFT)] FURNITURE,
-		LANDSCAPE
+		[ThingCategory("Окружение", 'v', ConsoleKey.NoName, EKeyModifiers.NONE)] LANDSCAPE
 	}
 
 	public class ThingCategoryAttribute : Attribute

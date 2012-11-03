@@ -10,13 +10,19 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public static MapBlock GenerateBlock(Point _blockId, Surface _surface)
 		{
 			var block = new MapBlock(_blockId);
-			var rnd = new Random(block.RandomSeed);
-
-			var pm = new EMapBlockTypes[BaseMapBlock.SIZE,BaseMapBlock.SIZE];
 			var baseType = _surface.GetBlockType(_blockId);
-					
-			var points = BaseMapBlock.SIZE * BaseMapBlock.SIZE;
-			var toAdd = new List<EMapBlockTypes> { baseType, baseType, baseType };
+			if (baseType == EMapBlockTypes.NONE)
+			{
+				return block;
+			}
+
+			var rnd = new Random(block.RandomSeed);
+			var pm = new EMapBlockTypes[Constants.MAP_BLOCK_SIZE,Constants.MAP_BLOCK_SIZE];
+
+			var points = Constants.MAP_BLOCK_SIZE*Constants.MAP_BLOCK_SIZE;
+			var toAdd = new List<EMapBlockTypes> {baseType, baseType, baseType};
+
+			#region размытие краев с соседними блоками
 
 			foreach (var dir in Util.AllDirections)
 			{
@@ -26,19 +32,19 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				{
 					case EDirections.UP:
 						from = Point.Zero;
-						to = new Point(BaseMapBlock.SIZE - 2, 0);
+						to = new Point(Constants.MAP_BLOCK_SIZE - 2, 0);
 						break;
 					case EDirections.DOWN:
-						from = new Point(1, BaseMapBlock.SIZE - 1);
-						to = new Point(BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 1);
+						from = new Point(1, Constants.MAP_BLOCK_SIZE - 1);
+						to = new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1);
 						break;
 					case EDirections.LEFT:
-						from = new Point(0, BaseMapBlock.SIZE - 1);
+						from = new Point(0, Constants.MAP_BLOCK_SIZE - 1);
 						to = new Point(0, 1);
 						break;
 					case EDirections.RIGHT:
-						from = new Point(BaseMapBlock.SIZE - 1, 0);
-						to = new Point(BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 2);
+						from = new Point(Constants.MAP_BLOCK_SIZE - 1, 0);
+						to = new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 2);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
@@ -47,12 +53,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				var delta = dir.GetDelta();
 				var nearestBlockId = _blockId + delta;
 
-				var type= baseType;
-				if (nearestBlockId.X >= 0 && nearestBlockId.X < Surface.WORLD_MAP_SIZE && nearestBlockId.Y >= 0 &&
-					nearestBlockId.Y < Surface.WORLD_MAP_SIZE)
+				var type = _surface.GetBlockType(nearestBlockId);
+				if (type == EMapBlockTypes.NONE)
 				{
-					type = _surface.GetBlockType(nearestBlockId);
+					type = baseType;
 				}
+
 				toAdd.Add(type);
 
 				if (_surface.Blocks.ContainsKey(nearestBlockId))
@@ -60,7 +66,11 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					var nearestBlock = _surface.Blocks[nearestBlockId];
 					foreach (var point in from.GetLineToPoints(to))
 					{
-						type = TerrainAttribute.GetMapBlockType(nearestBlock.Map[(point.X + delta.X + MapBlock.SIZE)%MapBlock.SIZE, (point.Y + delta.Y + MapBlock.SIZE)%MapBlock.SIZE]);
+						type =
+							TerrainAttribute.GetMapBlockType(
+								nearestBlock.Map[
+									(point.X + delta.X + Constants.MAP_BLOCK_SIZE)%Constants.MAP_BLOCK_SIZE,
+									(point.Y + delta.Y + Constants.MAP_BLOCK_SIZE)%Constants.MAP_BLOCK_SIZE]);
 						pm[point.X, point.Y] = type;
 						points--;
 					}
@@ -74,62 +84,54 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					}
 				}
 			}
+
+			#endregion
+
 			foreach (var t in toAdd)
 			{
-				Point pnt = Point.Zero;
+				var pnt = Point.Zero;
 				while (pm[pnt.X, pnt.Y] != EMapBlockTypes.NONE)
 				{
-					pnt = new Point(1 + rnd.Next(MapBlock.SIZE - 2), 1 + rnd.Next(MapBlock.SIZE - 2));
+					pnt = new Point(1 + rnd.Next(Constants.MAP_BLOCK_SIZE - 2), 1 + rnd.Next(Constants.MAP_BLOCK_SIZE - 2));
 				}
 				pm[pnt.X, pnt.Y] = t;
 				points--;
 			}
-	
+
 			var dpoints = Util.AllDirections.Select(_directions => _directions.GetDelta()).ToArray();
 			while (points > 0)
 			{
-				for (var x = 0; x < BaseMapBlock.SIZE; ++x)
+				for (var x = 0; x < Constants.MAP_BLOCK_SIZE; ++x)
 				{
-					for (var y = 0; y < BaseMapBlock.SIZE; ++y)
+					for (var y = 0; y < Constants.MAP_BLOCK_SIZE; ++y)
 					{
 						var xy = pm[x, y];
-						if (xy != 0)
+						if (xy == 0) continue;
+
+						var dpoint = dpoints[rnd.Next(4)];
+						var x1 = x + dpoint.X;
+						if (x1 < 0 || x1 == Constants.MAP_BLOCK_SIZE) continue;
+						var y1 = y + dpoint.Y;
+						if (y1 < 0 || y1 == Constants.MAP_BLOCK_SIZE) continue;
+						var xy1 = pm[x1, y1];
+						if (xy1 == 0)
 						{
-							var dpoint = dpoints[rnd.Next(4)];
-							var x1 = x + dpoint.X;
-							if (x1 < 0 || x1 == BaseMapBlock.SIZE) continue;
-							var y1 = y + dpoint.Y;
-							if (y1 < 0 || y1 == BaseMapBlock.SIZE) continue;
-							var xy1 = pm[x1, y1];
-							if (xy1 == 0)
-							{
-								//m_sizes[xy]++;
-								pm[x1, y1] = xy;
-								points--;
-							}
-							else if (xy != xy1)
-							{
-								if (xy1 < xy)
-								{
-									var a = xy1;
-									xy1 = xy;
-									xy = a;
-								}
-							}
+							pm[x1, y1] = xy;
+							points--;
 						}
 					}
 				}
 			}
 
+			#region заполнение карты блока
 
-			foreach (var pnt in new Rct(0, 0, MapBlock.SIZE, MapBlock.SIZE).AllPoints)
+			foreach (var pnt in new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE).AllPoints)
 			{
 				ETerrains tr;
-				switch (pm[pnt.X,pnt.Y])
+				switch (pm[pnt.X, pnt.Y])
 				{
 					case EMapBlockTypes.NONE:
 						continue;
-						break;
 					case EMapBlockTypes.GROUND:
 						tr = ETerrains.GRASS;
 						break;
@@ -174,6 +176,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				}
 				block.Map[pnt.X, pnt.Y] = tr;
 			}
+
+			#endregion
 			
 			return block;
 		}

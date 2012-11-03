@@ -23,6 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -58,6 +60,7 @@
     <Compile Include="Acts\System\QuitAct.cs" />
     <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="Acts\WaitAct.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Citizen.cs" />
@@ -84,7 +87,8 @@
     <Compile Include="Mapping\Layers\SurfaceObjects\ShopBuilding.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\SurfaceBlockGenerator.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\TavernBuilding.cs" />
-    <Compile Include="Mapping\Layers\SurfaceObjects\WorldMapGenerator2.cs" />
+    <Compile Include="Mapping\Layers\SurfaceObjects\WorldMapGenerator.cs" />
+    <Compile Include="Mapping\Layers\TestSurfaceGenerator1x1.cs" />
     <Compile Include="Mapping\Layers\TreeMazeDungeonLayer.cs" />
     <Compile Include="Mapping\Layers\WorldLayer.cs" />
     <Compile Include="Mapping\LiveMap.cs" />
@@ -92,7 +96,6 @@
     <Compile Include="Mapping\LiveMapCell.cs" />
     <Compile Include="Mapping\Room.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\Building.cs" />
-    <Compile Include="Mapping\Layers\SurfaceObjects\WorldMapGenerator.cs" />
     <Compile Include="Material.cs" />
     <Compile Include="Materials\FlashMaterial.cs" />
     <Compile Include="Materials\MetalMaterial.cs" />
@@ -146,7 +149,7 @@
     <Compile Include="Messages\WorldMessage.cs" />
     <Compile Include="Objects\Furniture\Chest.cs" />
     <Compile Include="Objects\Furniture\Container.cs" />
-    <Compile Include="Objects\Furniture\Door.cs" />
+    <Compile Include="Objects\Furniture\ClosedDoor.cs" />
     <Compile Include="Objects\FakeThing.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\ThingHelper.cs" />

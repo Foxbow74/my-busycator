@@ -35,7 +35,7 @@ namespace ResourceEditor
 
 			m_btn = new Button(){Text = @"Цвет", Dock = DockStyle.Top, Margin = new Padding(5,0,5,5)};
 
-			m_pnlSample = new PictureBox() { Dock = DockStyle.Top, MinimumSize = new Size(1, ATile.Size * 4), BackgroundImageLayout = ImageLayout.Tile, BackColor = Color.Black, };
+			m_pnlSample = new PictureBox() { Dock = DockStyle.Top, MinimumSize = new Size(1, Constants.TILE_SIZE * 4), BackgroundImageLayout = ImageLayout.Tile, BackColor = Color.Black, };
 
 			m_btn.Click += BtnClick;
 			pnl.SuspendLayout();

@@ -127,7 +127,10 @@ namespace GameCore.Misc
 			}
 		}
 
-		public static IEnumerable<EDirections> AllDirectionsIn(this EDirections _allowed) { return Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL && _allowed.HasFlag(_dir)); }
+		public static IEnumerable<EDirections> AllDirectionsIn(this EDirections _allowed)
+		{
+			return Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL && _allowed.HasFlag(_dir));
+		}
 
 		public static EDirections GetRandomDirections(this Random _random)
 		{

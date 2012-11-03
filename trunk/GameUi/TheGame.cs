@@ -133,7 +133,7 @@ namespace GameUi
 			UIBlock.Init(m_gameProvider.DrawHelper);
 			World.LetItBeeee();
 
-			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/ATile.Size, m_gameProvider.Height/ATile.Size);
+			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/Constants.TILE_SIZE, m_gameProvider.Height/Constants.TILE_SIZE);
 			m_uiBlocks.Push(m_mainUiBlock);
 
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);

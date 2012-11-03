@@ -85,14 +85,14 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var size = new Point(Surface.WORLD_MAP_SIZE, Surface.WORLD_MAP_SIZE);
+			var size = new Point(Constants.WORLD_MAP_SIZE, Constants.WORLD_MAP_SIZE);
 
 			var halfSize = size/2;
 
-			var rsz = Math.Min((float)ContentRct.Width * ATile.Size / size.X, (float)ContentRct.Height * ATile.Size / size.Y);
+			var rsz = Math.Min((float)ContentRct.Width * Constants.TILE_SIZE / size.X, (float)ContentRct.Height * Constants.TILE_SIZE / size.Y);
 			var rectSize = new PointF(rsz, rsz);
-			var halfContentRect = new Point(ContentRct.Left*ATile.Size + ContentRct.Width*ATile.Size/2,
-			                                ContentRct.Top*ATile.Size + ContentRct.Height*ATile.Size/2);
+			var halfContentRect = new Point(ContentRct.Left*Constants.TILE_SIZE + ContentRct.Width*Constants.TILE_SIZE/2,
+			                                ContentRct.Top*Constants.TILE_SIZE + ContentRct.Height*Constants.TILE_SIZE/2);
 
 			for (var i = 0; i < size.X; ++i)
 			{

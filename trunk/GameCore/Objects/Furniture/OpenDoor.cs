@@ -20,7 +20,7 @@ namespace GameCore.Objects.Furniture
 
 		public EActResults Close(Creature _creature, LiveMapCell _liveMapCell)
 		{
-			var door = new Door(Material);
+			var door = new ClosedDoor(Material);
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Furniture = door;
 			if (_creature.IsAvatar) MessageManager.SendMessage(this, this[EPadej.IMEN] + " закрыта.");

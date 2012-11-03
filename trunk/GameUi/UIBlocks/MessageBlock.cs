@@ -27,7 +27,7 @@ namespace GameUi.UIBlocks
 			}
 			var tm = (SimpleTextMessage) _message;
 			var tp = new TextPortion(tm.Text, null);
-			tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
+			tp.SplitByLines((ContentRct.Width - 1)*Constants.TILE_SIZE, Font, 0);
 			m_lines.AddRange(tp.TextLines);
 		}
 

@@ -18,11 +18,11 @@ namespace GameCore.Mapping
 			m_liveMap = _liveMap;
 			LiveMapBlockId = _liveMapBlockId;
 			m_liveMapBlockIndex = _liveMapBlockIndex;
-			m_liveCellZero = LiveMapBlockId*BaseMapBlock.SIZE;
+			m_liveCellZero = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
 
-			for (var i = 0; i < BaseMapBlock.SIZE; i++)
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
 			{
-				for (var j = 0; j < BaseMapBlock.SIZE; j++)
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
 				{
 					m_liveMap.Cells[i + m_liveCellZero.X, j + m_liveCellZero.Y] = new LiveMapCell(this, m_liveCellZero + new Point(i, j));
 				}
@@ -50,10 +50,10 @@ namespace GameCore.Mapping
 
 		public void ClearTemp()
 		{
-			var liveCellZero = LiveMapBlockId*BaseMapBlock.SIZE;
-			for (var i = 0; i < BaseMapBlock.SIZE; i++)
+			var liveCellZero = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
 			{
-				for (var j = 0; j < BaseMapBlock.SIZE; j++)
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
 				{
 					m_liveMap.Cells[liveCellZero.X + i, liveCellZero.Y + j].ClearTemp();
 				}
@@ -64,10 +64,10 @@ namespace GameCore.Mapping
 		{
 			var rnd = new Random(MapBlock.RandomSeed);
 
-			var mapCellZero = m_mapBlock.BlockId*BaseMapBlock.SIZE;
-			for (var i = 0; i < BaseMapBlock.SIZE; i++)
+			var mapCellZero = m_mapBlock.BlockId*Constants.MAP_BLOCK_SIZE;
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
 			{
-				for (var j = 0; j < BaseMapBlock.SIZE; j++)
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
 				{
 					var ij = new Point(i, j);
 					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij, (float) rnd.NextDouble(), m_liveCellZero + ij, m_liveMap);
@@ -95,9 +95,9 @@ namespace GameCore.Mapping
 
 		public void UpdatePathFinderMapCoords()
 		{
-			for (var i = 0; i < BaseMapBlock.SIZE; i++)
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
 			{
-				for (var j = 0; j < BaseMapBlock.SIZE; j++)
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
 				{
 					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].UpdatePathFinderMapCoord();
 				}

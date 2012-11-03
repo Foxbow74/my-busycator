@@ -18,7 +18,7 @@ namespace GameUi.UIBlocks
 
 		public EFonts Font { get; private set; }
 
-		public int TextLinesMax { get { return (int) Math.Round((double) ContentRct.Height*ATile.Size/LineHeight); } }
+		public int TextLinesMax { get { return (int) Math.Round((double) ContentRct.Height*Constants.TILE_SIZE/LineHeight); } }
 
 		protected static string JoinCommandCaptions(IEnumerable<string> _s) { return string.Join("   -   ", _s); }
 
@@ -57,7 +57,7 @@ namespace GameUi.UIBlocks
 			var line = _textLine.Text;
 			var part = line.Split(TextPortion.Punctuation).ToArray();
 			var processedChars = 0;
-			var x = (float) ContentRct.Left*ATile.Size;
+			var x = (float) ContentRct.Left*Constants.TILE_SIZE;
 
 			var lineSize = DrawHelper.MeasureString(Font, line);
 			switch (_alignment)
@@ -69,14 +69,14 @@ namespace GameUi.UIBlocks
 					x += _indent;
 					break;
 				case EAlignment.RIGHT:
-					x += ContentRct.Width*ATile.Size - lineSize.Width - _indent;
+					x += ContentRct.Width*Constants.TILE_SIZE - lineSize.Width - _indent;
 					break;
 				case EAlignment.CENTER:
-					x += ContentRct.Width*ATile.Size/2f - lineSize.Width/2f;
+					x += ContentRct.Width*Constants.TILE_SIZE/2f - lineSize.Width/2f;
 					break;
 			}
 
-			var y = ContentRct.Top*ATile.Size + _lineNumber*LineHeight;
+			var y = ContentRct.Top*Constants.TILE_SIZE + _lineNumber*LineHeight;
 
 			for (var partIndex = 0; partIndex < part.Length; partIndex++)
 			{

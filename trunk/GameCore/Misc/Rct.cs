@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GameCore.Misc
 {
@@ -126,6 +127,12 @@ namespace GameCore.Misc
 				yield return new Point(i, Top);
 				yield return new Point(i, Bottom);
 			}
+		}
+
+		public Point Random(Random _rnd)
+		{
+			var a = AllPoints.ToArray();
+			return a[_rnd.Next(a.Length)];
 		}
 	}
 }

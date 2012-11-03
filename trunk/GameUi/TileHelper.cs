@@ -24,8 +24,6 @@ namespace GameUi
 		public static IResourceProvider Rp { get; private set; }
 		public static IDrawHelper DrawHelper { get; private set; }
 
-		public static string resources_txt_filename = "resources.txt";
-
 		public static void Init(IResourceProvider _resourceProvider, IDrawHelper _drawHelper)
 		{
 			Rp = _resourceProvider;
@@ -34,9 +32,9 @@ namespace GameUi
 			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 12);
 			Rp.RegisterFont(EFonts.SMALL, "Resources\\monof55.ttf", 8);
 
-			if (File.Exists(resources_txt_filename) && _drawHelper!=null)
+			if (File.Exists(Constants.RESOURCES_TXT_FILENAME) && _drawHelper != null)
 			{
-				foreach (var s in File.ReadAllLines(resources_txt_filename))
+				foreach (var s in File.ReadAllLines(Constants.RESOURCES_TXT_FILENAME))
 				{
 					var arr = s.Split(new[] { '|' }, StringSplitOptions.None);
 					var aTile = Rp.CreateTile(ETextureSet.GP, int.Parse(arr[2]), int.Parse(arr[3]), FColor.Parse(arr[4]));
@@ -92,6 +90,12 @@ namespace GameUi
 							break;
 						case ETextureSet.PH:
 							Rp.RegisterTexture(set, "Resources\\Phoebus_16x16.png");
+							break;
+						case ETextureSet.U4:
+							Rp.RegisterTexture(set, "Resources\\Ultima4.png");
+							break;
+						case ETextureSet.U5:
+							Rp.RegisterTexture(set, "Resources\\Ultima5.png");
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
@@ -367,6 +371,10 @@ namespace GameUi
 
 		public static ATile GetTile(this ETerrains _terrain, int _index)
 		{
+			if(_terrain==ETerrains.NONE)
+			{
+				return GetTile(ETiles.NONE);
+			}
 			var ts = AllTerrainTilesets[_terrain];
 			return ts[_index];
 		}

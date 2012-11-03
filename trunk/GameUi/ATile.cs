@@ -5,14 +5,13 @@ namespace GameUi
 {
 	public abstract class ATile
 	{
-		public static int Size = 16;
 		public ETextureSet Set;
 
 		protected ATile(ETextureSet _set, int _x, int _y, FColor _color)
 		{
 			Set = _set;
 			Color = _color;
-            Rct = new Rct(_x, _y, 1, 1) * Size;
+            Rct = new Rct(_x, _y, 1, 1) * Constants.TILE_SIZE;
 		}
 
 		protected ATile() { }
@@ -31,7 +30,7 @@ namespace GameUi
 		public abstract void FogIt(Point _point);
 
         public string ToText() { return Tile + ToShortText(); }
-        public string ToShortText() { return string.Format("|{3}|{0},{1}|{2}", Rct.Left / Size, Rct.Top / Size, Color.ToShortText(), Set); }
-        public string ToResurceText() { return string.Format("{0}|{1}|{2}", Rct.Left / Size, Rct.Top / Size, Color.ToShortText()); }
+        public string ToShortText() { return string.Format("|{3}|{0},{1}|{2}", Rct.Left / Constants.TILE_SIZE, Rct.Top / Constants.TILE_SIZE, Color.ToShortText(), Set); }
+        public string ToResurceText() { return string.Format("{0}|{1}|{2}", Rct.Left / Constants.TILE_SIZE, Rct.Top / Constants.TILE_SIZE, Color.ToShortText()); }
     }
 }

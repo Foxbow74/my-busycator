@@ -7,7 +7,8 @@ namespace GameCore
 {
 	public enum ETerrains
 	{
-		[Terrain("почва", ESex.FEMALE)] GROUND,
+		[Terrain("ничто", ESex.IT, 0)]NONE,
+		[Terrain("почва", ESex.FEMALE)]GROUND,
 		[Terrain("вода", ESex.FEMALE, 0f)] FRESH_WATER,
 		[Terrain("трава", ESex.FEMALE)] GRASS,
 		[Terrain("болото", ESex.IT)] SWAMP,
@@ -31,7 +32,7 @@ namespace GameCore
 		[Terrain("песок")] LAKE_COAST,
 		[Terrain("скала",ESex.FEMALE)] MOUNT,
 		[Terrain("ледник")] ETERNAL_SNOW,
-		[Terrain("куст")] SHRUBS,
+		[Terrain("кустарник")] SHRUBS,
 
 
 		[Terrain("up", ESex.IT)] UP,

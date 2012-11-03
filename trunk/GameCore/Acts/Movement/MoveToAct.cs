@@ -15,7 +15,6 @@ namespace GameCore.Acts.Movement
 
 		public MoveToAct(Creature _creature, IEnumerable<Point> _pathFinderPath) { AddParameter(GetMoveToPath(_creature, _pathFinderPath)); }
 
-
 		protected override int TakeTicksOnSingleAction { get { return 100; } }
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.M, EKeyModifiers.NONE); } }
@@ -73,7 +72,7 @@ namespace GameCore.Acts.Movement
 				_creature.AddActToPool(new MoveAct(), delta);
 				return EActResults.ACT_REPLACED;
 			}
-			else if (nextCell.Furniture != null && nextCell.Furniture.Is<Door>())
+			else if (nextCell.Furniture != null && nextCell.Furniture.Is<ClosedDoor>())
 			{
 				_creature.AddActToPool(new OpenAct(), delta);
 				return EActResults.ACT_REPLACED;

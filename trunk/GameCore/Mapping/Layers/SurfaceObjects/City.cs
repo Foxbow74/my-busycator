@@ -16,7 +16,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private readonly List<Citizen> m_citizens = new List<Citizen>();
 		private readonly List<Tuple<ETiles, FColor>> m_conf = new List<Tuple<ETiles, FColor>>();
 
-		public City(Surface _surface, IEnumerable<Point> _cityBlockIds)
+		public City(Surface _surface, params Point[] _cityBlockIds)
 		{
 			Surface = _surface;
 			CityBlockIds = _cityBlockIds.ToArray();
@@ -116,7 +116,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public void GenerateCityBlock(MapBlock _block, Random _rnd, WorldLayer _layer)
 		{
             var roadPoints = new List<Point>();
-			for (var i = 0; i < BaseMapBlock.SIZE; ++i)
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; ++i)
 			{
                 if (_rnd.Next(2) == 0) roadPoints.Add(new Point(0, i));
                 if (_rnd.Next(2) == 0) roadPoints.Add(new Point(1, i));
