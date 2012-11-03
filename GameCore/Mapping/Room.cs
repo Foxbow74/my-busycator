@@ -71,8 +71,8 @@ namespace GameCore.Mapping
 			BlockId = _mapBlock.BlockId;
 			WorldRoomRectangle = new Rct
 				(
-				RoomRectangle.Left + BlockId.X*BaseMapBlock.SIZE,
-				RoomRectangle.Top + BlockId.Y*BaseMapBlock.SIZE,
+				RoomRectangle.Left + BlockId.X*Constants.MAP_BLOCK_SIZE,
+				RoomRectangle.Top + BlockId.Y*Constants.MAP_BLOCK_SIZE,
 				RoomRectangle.Width,
 				RoomRectangle.Height);
 			RandomSeed = _mapBlock.RandomSeed + RoomRectangle.LeftTop.GetHashCode();

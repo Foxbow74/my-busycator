@@ -203,7 +203,7 @@ namespace GameCore.Mapping
 			UpdatePathFinderMapCoord();
 		}
 
-		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*BaseMapBlock.SIZE + InBlockCoords; }
+		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*Constants.MAP_BLOCK_SIZE + InBlockCoords; }
 
 		public void SetIsSeenBefore()
 		{
@@ -281,7 +281,7 @@ namespace GameCore.Mapping
 			if (Creature != null) return 0f;
 			if (Furniture != null)
 			{
-				if (Furniture.Is<Door>() && Furniture.IsClosed(this, _creature))
+				if (Furniture.Is<ClosedDoor>() && Furniture.IsClosed(this, _creature))
 				{
 					return 0f;
 				}
@@ -299,7 +299,7 @@ namespace GameCore.Mapping
 			if (Creature != null) return 0f;
 			if (Furniture != null)
 			{
-				if (Furniture.Is<Door>() && Furniture.IsClosed(this, _creature))
+				if (Furniture.Is<ClosedDoor>() && Furniture.IsClosed(this, _creature))
 				{
 					return 0.99f;
 				}

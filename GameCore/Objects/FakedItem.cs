@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 
 namespace GameCore.Objects
@@ -32,5 +33,10 @@ namespace GameCore.Objects
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		protected override int CalcHashCode() { return (int) m_tile; }
+
+		public override bool Is<T>()
+		{
+			return m_types.Any(_type => typeof (T).IsAssignableFrom(_type));
+		}
 	}
 }

@@ -53,7 +53,7 @@ namespace ResourceEditor
 			if (_e.Button == MouseButtons.Left)
 			{
 				var pnt = _e.Location;
-				CurrentPoint = new Point(pnt.X/ATile.Size, pnt.Y/ATile.Size);
+				CurrentPoint = new Point(pnt.X/Constants.TILE_SIZE, pnt.Y/Constants.TILE_SIZE);
 			}
 		}
 
@@ -69,7 +69,7 @@ namespace ResourceEditor
 			m_tick++;
 			using (var pen = new Pen(Color.Yellow, 2f) { DashStyle = DashStyle.Dash, DashOffset = m_tick })
 			{
-				_e.Graphics.DrawRectangle(pen, CurrentPoint.X * ATile.Size, CurrentPoint.Y * ATile.Size, ATile.Size, ATile.Size);	
+				_e.Graphics.DrawRectangle(pen, CurrentPoint.X * Constants.TILE_SIZE, CurrentPoint.Y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);	
 			}
 		}
 		

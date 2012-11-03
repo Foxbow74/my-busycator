@@ -73,7 +73,7 @@ namespace GameCore.Mapping.Layers
 							{
 								dir = EDirections.RIGHT;
 							}
-							else if (point.X < BaseMapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
+							else if (point.X < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
 							{
 								dir = EDirections.LEFT;
 							}
@@ -81,7 +81,7 @@ namespace GameCore.Mapping.Layers
 							{
 								dir = EDirections.DOWN;
 							}
-							else if (point.Y < BaseMapBlock.SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
+							else if (point.Y < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
 							{
 								dir = EDirections.UP;
 							}
@@ -124,8 +124,8 @@ namespace GameCore.Mapping.Layers
 			var itmcnt = 2 + _rnd.Next(_rnd.Next(2));
 			for (var i = 0; i < itmcnt; ++i)
 			{
-				var x = _rnd.Next(BaseMapBlock.SIZE);
-				var y = _rnd.Next(BaseMapBlock.SIZE);
+				var x = _rnd.Next(Constants.MAP_BLOCK_SIZE);
+				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
 				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 				if (attr.IsPassable > 0)
@@ -134,7 +134,7 @@ namespace GameCore.Mapping.Layers
 					var any = _block.Creatures.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
 					var creature = ThingHelper.GetFakedCreature(_block);
 
-					if (creature.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
+					if (creature.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{
 						continue;
 					}
@@ -158,8 +158,8 @@ namespace GameCore.Mapping.Layers
 			var itmcnt = 20 + _rnd.Next(_rnd.Next(20));
 			for (var i = 0; i < itmcnt; ++i)
 			{
-				var x = _rnd.Next(BaseMapBlock.SIZE);
-				var y = _rnd.Next(BaseMapBlock.SIZE);
+				var x = _rnd.Next(Constants.MAP_BLOCK_SIZE);
+				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
 				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
 				if (attr.IsPassable > 0)
@@ -168,7 +168,7 @@ namespace GameCore.Mapping.Layers
 					var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
 					var thing = ThingHelper.GetFakedItem(_block.RandomSeed);
 
-					if (thing.Is<Stair>() && (x == BaseMapBlock.SIZE - 1 || y == BaseMapBlock.SIZE - 1))
+					if (thing.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{
 						continue;
 					}
@@ -193,7 +193,7 @@ namespace GameCore.Mapping.Layers
 		{
 			var rnd = new Random(_block.RandomSeed);
 			MapBlockHelper.Clear(_block, rnd, this, DefaultWalls);
-			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, BaseMapBlock.SIZE - 1, BaseMapBlock.SIZE - 1), new List<Point>(_objects), _block.BlockId);
+			var rooms = LayerHelper.GenerateRooms(rnd, new Rct(0, 0, Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1), new List<Point>(_objects), _block.BlockId);
 			foreach (var room in rooms)
 			{
 				MapBlockHelper.Fill(_block, rnd, this, DefaultEmptySpaces, room.RoomRectangle);
@@ -251,7 +251,7 @@ namespace GameCore.Mapping.Layers
 
 					var delta = dir.GetDelta();
 
-					if (!m_mazeBlocks.ContainsKey(BaseMapBlock.GetBlockId(begin + _block.BlockId*BaseMapBlock.SIZE + delta*BaseMapBlock.SIZE)))
+					if (!m_mazeBlocks.ContainsKey(BaseMapBlock.GetBlockId(begin + _block.BlockId*Constants.MAP_BLOCK_SIZE + delta*Constants.MAP_BLOCK_SIZE)))
 					{
 						continue;
 					}
@@ -262,7 +262,7 @@ namespace GameCore.Mapping.Layers
 						if (!_room.AreaRectangle.Contains(end)) break;
 					} while (true);
 
-					cps.Add(new ConnectionPoint(begin + _block.BlockId*BaseMapBlock.SIZE, end + _block.BlockId*BaseMapBlock.SIZE, _room, dir));
+					cps.Add(new ConnectionPoint(begin + _block.BlockId*Constants.MAP_BLOCK_SIZE, end + _block.BlockId*Constants.MAP_BLOCK_SIZE, _room, dir));
 				}
 
 				if (cps.Count > 1 || (trys > 5 && cps.Count > 0) || trys > 20)

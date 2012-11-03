@@ -21,13 +21,13 @@ namespace OpenTKUi
 
 		public void UpdateTexCoords(int _x, int _y, float _imgWidth, float _imgHeight)
 		{
-			Rct = new Rct(_x * Size, _y * Size, Size, Size);
+			Rct = new Rct(_x * Constants.TILE_SIZE, _y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
 			float u1 = 0.0f, u2 = 0.0f, v1 = 0.0f, v2 = 0.0f;
 
-			if (_x != 0) u1 = 1.0f/(_imgWidth/_x/Size);
-			if (Size != 0) u2 = 1.0f/(_imgWidth/Size);
-			if (_y != 0) v1 = 1.0f/(_imgHeight/_y/Size);
-			if (Size != 0) v2 = 1.0f/(_imgHeight/Size);
+			if (_x != 0) u1 = 1.0f/(_imgWidth/_x/Constants.TILE_SIZE);
+			if (Constants.TILE_SIZE != 0) u2 = 1.0f/(_imgWidth/Constants.TILE_SIZE);
+			if (_y != 0) v1 = 1.0f/(_imgHeight/_y/Constants.TILE_SIZE);
+			if (Constants.TILE_SIZE != 0) v2 = 1.0f/(_imgHeight/Constants.TILE_SIZE);
 
 			Texcoords[0].U = u1;
 			Texcoords[0].V = v1;

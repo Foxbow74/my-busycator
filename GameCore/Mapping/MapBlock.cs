@@ -9,15 +9,14 @@ namespace GameCore.Mapping
 {
 	public class BaseMapBlock
 	{
-		public const int SIZE = 32;
-		public static readonly Rct Rect = new Rct(0, 0, SIZE, SIZE);
+		public static readonly Rct Rect = new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE);
 
 		public BaseMapBlock(Point _blockId)
 		{
 			Rooms = new List<Room>();
-			WorldCoords = _blockId*SIZE;
+			WorldCoords = _blockId*Constants.MAP_BLOCK_SIZE;
 			BlockId = _blockId;
-			Map = new ETerrains[SIZE,SIZE];
+			Map = new ETerrains[Constants.MAP_BLOCK_SIZE,Constants.MAP_BLOCK_SIZE];
 			RandomSeed = World.Rnd.Next();
 			Objects = new List<Tuple<Thing, Point>>();
 		}
@@ -44,14 +43,14 @@ namespace GameCore.Mapping
 		{
 			if (_i < 0)
 			{
-				return -(Math.Abs(_i + 1)/SIZE + 1);
+				return -(Math.Abs(_i + 1)/Constants.MAP_BLOCK_SIZE + 1);
 			}
-			return _i/SIZE;
+			return _i/Constants.MAP_BLOCK_SIZE;
 		}
 
-		public static Point GetInBlockCoords(Point _point) { return new Point((SIZE + (_point.X%SIZE))%SIZE, (SIZE + (_point.Y%SIZE))%SIZE); }
+		public static Point GetInBlockCoords(Point _point) { return new Point((Constants.MAP_BLOCK_SIZE + (_point.X%Constants.MAP_BLOCK_SIZE))%Constants.MAP_BLOCK_SIZE, (Constants.MAP_BLOCK_SIZE + (_point.Y%Constants.MAP_BLOCK_SIZE))%Constants.MAP_BLOCK_SIZE); }
 
-		public Rct Rct() { return new Rct(BlockId*SIZE, SIZE, SIZE); }
+		public Rct Rct() { return new Rct(BlockId*Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE); }
 
 		public void AddRoom(Room _room)
 		{
@@ -87,7 +86,7 @@ namespace GameCore.Mapping
 		public MapBlock(Point _blockId) : base(_blockId)
 		{
 			Creatures = new List<Tuple<Creature, Point>>();
-			SeenCells = new uint[SIZE];
+			SeenCells = new uint[Constants.MAP_BLOCK_SIZE];
 		}
 
 		public MapBlock(Point _blockId, BaseMapBlock _baseMapBlock) : this(_blockId)

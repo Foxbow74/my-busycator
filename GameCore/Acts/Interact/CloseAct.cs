@@ -6,6 +6,7 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
+using GameCore.Objects.Furniture;
 
 namespace GameCore.Acts.Interact
 {
@@ -23,7 +24,7 @@ namespace GameCore.Acts.Interact
 
 		public override EActResults Do(Creature _creature)
 		{
-			LiveMapCell liveMapCell; // = Map.GetMapCell(_creature.Coords);
+			LiveMapCell liveMapCell;
 			{
 				var delta = GetParameter<Point>().FirstOrDefault();
 				if (delta == null)
@@ -33,8 +34,13 @@ namespace GameCore.Acts.Interact
 					foreach (var dPoint in Point.NearestDPoints)
 					{
 						var cell = _creature[dPoint];
-						if (cell.Furniture.CanBeClosed(cell, _creature))
+						var furniture = cell.Furniture;
+						if (furniture.CanBeClosed(cell, _creature))
 						{
+							if (furniture.Is<OpenDoor>() && dPoint.Lenght == 0)
+							{
+								continue;
+							}
 							list.Add(dPoint);
 						}
 						else if (cell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cell, _creature)))
@@ -60,26 +66,6 @@ namespace GameCore.Acts.Interact
 					delta = variants[0];
 				}
 				liveMapCell = _creature[delta];
-
-				//var coords = list.Distinct().ToList();
-
-				//if (GetParameter<Point>().Any())
-				//{
-				//    coords = coords.Intersect(GetParameter<Point>()).ToList();
-				//}
-
-				//if (!coords.Any())
-				//{
-				//    //если нечего закрывать
-				//    if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
-				//    return EActResults.QUICK_FAIL;
-				//}
-				//if (coords.Count() > 1)
-				//{
-				//    MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-				//    return EActResults.NEED_ADDITIONAL_PARAMETERS;
-				//}
-				//liveMapCell = World.TheWorld.LiveMap.GetCell(coords.First());
 			}
 
 			//выясняем, что нужно закрыть
@@ -100,11 +86,12 @@ namespace GameCore.Acts.Interact
 				{
 					descriptors = GetParameter<ThingDescriptor>().Intersect(descriptors);
 				}
-				if (descriptors.Count() > 1)
+				var arr = descriptors.ToArray();
+				if (arr.Length > 1)
 				{
-					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, descriptors, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, arr, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
-				return ((ICanbeClosed) descriptors.First().Thing).Close(_creature, liveMapCell);
+				return ((ICanbeClosed)arr[0].Thing).Close(_creature, liveMapCell);
 			}
 		}
 	}

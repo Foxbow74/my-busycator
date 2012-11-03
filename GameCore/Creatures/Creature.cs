@@ -178,16 +178,19 @@ namespace GameCore.Creatures
 
 		public abstract EThinkingResult Thinking();
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null) { return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect)); }
-
-		public IEnumerable<ThingDescriptor> GetNotTakenAvailableItems(IEnumerable<Point> _intersect = null)
+		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
 		{
-			var points = LiveCoords.NearestPoints;
-			if (_intersect != null && _intersect.Any())
+			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect.ToArray()));
+		}
+
+		public ThingDescriptor[] GetNotTakenAvailableItems(Point[] _intersect = null)
+		{
+			var points = Point.NearestDPoints;//  Direction.AllDirectionsIn() LiveCoords.NearestPoints;
+			if (_intersect != null && _intersect.Length>0)
 			{
 				points = points.Intersect(_intersect);
 			}
-			return points.Select(World.TheWorld.LiveMap.GetCell).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors<Item>(this));
+			return points.Select(_point => this[_point]).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors<Item>(this)).ToArray();
 		}
 
 		public virtual IEnumerable<ThingDescriptor> GetBackPackItems() { yield break; }
@@ -209,7 +212,7 @@ namespace GameCore.Creatures
 	{
 		NORMAL,
 		/// <summary>
-		/// 	Существо самоуничтожилось
+		/// Существо самоуничтожилось
 		/// </summary>
 		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}

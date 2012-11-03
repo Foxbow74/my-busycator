@@ -103,7 +103,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			CreateDoor(mapBlock, floor, borderPoints);
 
-			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Center);
+			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Inflate(-1,-1).Random(World.Rnd));
 		}
 
 		private void CreateDoor(MapBlock _mapBlock, ETerrains _floor, IEnumerable<Point> _borderPoints)

@@ -23,15 +23,6 @@ namespace GameCore.Misc
 
 			var dVectors = new List<Vector2>();
 
-			//for (float ro = 0; ro < Math.PI * 2; ro += (float)Math.PI / DIVIDER)
-			//{
-			//    foreach (float r in new float[]{0f,0f,0f,0.1f})
-			//    {
-			//        var dv = new Vector2((float)Math.Sin(ro), (float)Math.Cos(ro)) * r;
-			//        dVectors.Add(dv);
-			//    }
-			//}
-
 			for (var di = -DIVIDER/2 + 1; di < DIVIDER/2; di++)
 			{
 				for (var dj = -DIVIDER/2 + 1; dj < DIVIDER/2; dj++)
@@ -41,12 +32,6 @@ namespace GameCore.Misc
 					dVectors.Add(dv);
 				}
 			}
-
-			//dVectors.Add(Vector2.Zero);
-			//dVectors.Add(Vector2.Zero);
-			//dVectors.Add(Vector2.Zero);
-			//dVectors.Add(Vector2.Zero);
-
 
 			var dividedPart = 1f/dVectors.Count;
 
@@ -72,9 +57,6 @@ namespace GameCore.Misc
 					foreach (var dv in dVectors)
 					{
 						var v = new Vector2(pnt.X, pnt.Y) + dv;
-						//v -= new Vector2(Math.Sign(v.X) / 2f, Math.Sign(v.Y) / 2f);
-						//v+=new Vector2(0.5f, 0.5f);
-
 						var parentPoint = Point.Zero;
 						foreach (var lineV in v.GetLineToPoints(Vector2.Zero, 0.5f))
 						{
@@ -106,7 +88,6 @@ namespace GameCore.Misc
 					if (delta >= 0 && delta < 0.1f)
 					{
 						var parent = m_inOrder.Where(_cell => _cell.Cells.Keys.Contains(cell) && _cell.DistanceCoefficient > losCell.DistanceCoefficient);
-
 						losCell.MoveToParent(cell, parent.OrderByDescending(_cell => _cell.DistanceCoefficient).First());
 					}
 				}
@@ -207,7 +188,6 @@ namespace GameCore.Misc
 				}
 
 				var childsColor = color.Multiply(transColor);
-
 
 				foreach (var pair in losCell.CellIndexes)
 				{

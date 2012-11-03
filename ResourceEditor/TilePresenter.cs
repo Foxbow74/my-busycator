@@ -24,7 +24,7 @@ namespace ResourceEditor
 			m_pb = new PictureBox
 			       	{
 						BackgroundImageLayout = ImageLayout.Center,
-						ClientSize = new Size(ATile.Size, ATile.Size),
+						ClientSize = new Size(Constants.TILE_SIZE, Constants.TILE_SIZE),
 						BackColor = Color.Black,
 						Dock = DockStyle.Fill,
 						Padding = new Padding(2)
@@ -57,15 +57,15 @@ namespace ResourceEditor
 
 		public void Rebuild()
 		{
-			var bmp = new Bitmap(ATile.Size, ATile.Size, PixelFormat.Format32bppPArgb);
+			var bmp = new Bitmap(Constants.TILE_SIZE, Constants.TILE_SIZE, PixelFormat.Format32bppPArgb);
 			var texture = m_rp.TextureSets[Tile.Set];
 			var transparent = texture.GetPixel(0, 0);
 
-			var rct = new Rct(0, 0, ATile.Size, ATile.Size);
+			var rct = new Rct(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 			foreach (var point in rct.AllPoints)
 			{
-				var x = Tile.X * ATile.Size + point.X;
-				var y = Tile.Y * ATile.Size + point.Y;
+				var x = Tile.X * Constants.TILE_SIZE + point.X;
+				var y = Tile.Y * Constants.TILE_SIZE + point.Y;
 
 				var pixel = texture.GetPixel(x, y);
 				if (pixel == transparent) continue;

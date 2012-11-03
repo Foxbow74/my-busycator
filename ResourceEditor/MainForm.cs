@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
+using GameCore;
 using GameUi;
 
 namespace ResourceEditor
@@ -45,6 +47,8 @@ namespace ResourceEditor
 					}
 				}
 			}
+			File.Delete(Constants.RESOURCES_TXT_FILENAME);
+			File.Delete(Constants.RESOURCES_PNG_FILE);
 			m_ssl.Text = @"Выполнено.";
 		}
 

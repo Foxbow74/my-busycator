@@ -16,7 +16,7 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); } }
 
-		public override string Name { get { return "Движение (стороны света)"; } }
+		public override string Name { get { return "движение (стороны света)"; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
@@ -88,9 +88,9 @@ namespace GameCore.Acts.Movement
 					else
 					{
 						var furniture = cell.Furniture;
-						if (furniture != null && furniture.Is<Door>() && furniture.IsClosed(cell, _creature))
+						if (furniture != null && furniture.Is<ClosedDoor>() && furniture.IsClosed(cell, _creature))
 						{
-							_creature.InsertActToPool(this);
+							//_creature.InsertActToPool(this);
 							_creature.InsertActToPool(new OpenAct(), delta);
 							return EActResults.ACT_REPLACED;
 						}

@@ -13,7 +13,8 @@ namespace Busycator
 	{
 		private readonly TheGame m_game;
 
-		public GameProvider() : base(16, 16, 320, 200)
+		public GameProvider()
+			: base(16, 16, 1024, 768)
 		{
 			Title = "Busycator";
 			m_game = new TheGame(this);
@@ -82,7 +83,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
 					{
-						game.Run(0, 60);
+						game.Run(50, 60);
 					}
 				}
 				catch (Exception exception)

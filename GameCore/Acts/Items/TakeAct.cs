@@ -24,7 +24,7 @@ namespace GameCore.Acts.Items
 		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
-			var notTaken = _creature.GetNotTakenAvailableItems(GetParameter<Point>());
+			var notTaken = _creature.GetNotTakenAvailableItems(GetParameter<Point>().ToArray());
 
 			if (!notTaken.Any())
 			{
@@ -48,8 +48,8 @@ namespace GameCore.Acts.Items
 				// Если в параметрах нет уточнений
 				if (notTaken.Count() == 1)
 				{
-					var needToShow = GetParameter<bool>();
-					if (needToShow.Any() && needToShow.Single())
+					var needToShow = GetParameter<bool>().ToArray();
+					if (needToShow.Length>0 && needToShow[0])
 					{
 						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
@@ -84,22 +84,22 @@ namespace GameCore.Acts.Items
 
 			var descriptor = toTake[0];
 			var thing = descriptor.ResolveThing(_creature);
-			IEnumerable<Item> get;
+			Item[] get;
 			if (descriptor.Container == null)
 			{
-				get = World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).Items.Where(_item => _item.Equals(thing));
+				get = World.TheWorld.LiveMap.GetCell(descriptor.LiveCoords).Items.Where(_item => _item.Equals(thing)).ToArray();
 			}
 			else
 			{
-				get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.Equals(thing));
+				get = descriptor.Container.GetItems(_creature).Items.Where(_item => _item.Equals(thing)).ToArray();
 			}
 
 			if (get.Count() > 1)
 			{
-				var cnt = GetParameter<int>();
-				if (cnt.Any())
+				var cnt = GetParameter<int>().ToArray();
+				if (cnt.Length>0)
 				{
-					Count = cnt.Single();
+					Count = cnt[0];
 				}
 				else
 				{

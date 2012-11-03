@@ -57,7 +57,7 @@ namespace GameUi.UIBlocks
 
 			var str = string.Join(", ", strings);
 			var tp = new TextPortion(str, null);
-			tp.SplitByLines((ContentRct.Width - 1)*ATile.Size, Font, 0);
+			tp.SplitByLines((ContentRct.Width - 1)*Constants.TILE_SIZE, Font, 0);
 
 			var lines = tp.TextLines.ToArray();
 			if (lines.Length == 0) return;
