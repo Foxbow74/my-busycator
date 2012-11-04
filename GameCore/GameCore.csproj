@@ -170,6 +170,13 @@
     <Compile Include="ETerrains.cs" />
     <Compile Include="ETiles.cs" />
     <Compile Include="Misc\Util.cs" />
+    <Compile Include="Storage\EStoreKind.cs" />
+    <Compile Include="Storage\StoreClient.cs" />
+    <Compile Include="Storage\StoreServer.cs" />
+    <Compile Include="Storage\XChildObject.cs" />
+    <Compile Include="Storage\XObject.cs" />
+    <Compile Include="Storeable\XMonsterInfo.cs" />
+    <Compile Include="Storeable\XRoot.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +187,10 @@
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
       <Name>UnsafeUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XTransport\XTransport.csproj">
+      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
+      <Name>XTransport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

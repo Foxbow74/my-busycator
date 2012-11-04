@@ -7,11 +7,15 @@ using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
+using GameCore.Storage;
+using GameCore.Storeable;
 
 namespace GameCore
 {
 	public class World
 	{
+		static readonly StoreServer m_srv = new StoreServer();
+		static readonly StoreClient m_cli = new StoreClient();
 
 		/// <summary>
 		/// содержит список активных в данный момент существ
@@ -20,8 +24,16 @@ namespace GameCore
 
 		static World() 
 		{
-			Rnd = new Random(Constants.WORLD_SEED); 
+			Rnd = new Random(Constants.WORLD_SEED);
+			XRoot = m_cli.GetRoot<XRoot>();
 		}
+
+		public static void Save()
+		{
+			m_cli.Save(XRoot.Uid);
+		}
+
+		internal static XRoot XRoot { get; private set; } 
 
 		public World()
 		{
