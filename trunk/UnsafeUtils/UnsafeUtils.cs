@@ -13,7 +13,7 @@ namespace UnsafeUtils
 		{
 			fixed (PathFinderNodeFast* pGrid = _array)
 			{
-				ZeroMemory((byte*) pGrid, sizeof (PathFinderNodeFast)*_array.Length);
+				ZeroMemory((byte*)pGrid, sizeof(PathFinderNodeFast) * _array.Length);
 			}
 		}
 	}

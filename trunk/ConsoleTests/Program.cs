@@ -1,12 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Drawing;
-using GameCore.Mapping.Layers.SurfaceObjects;
-using GameCore.Misc;
-using GameUi.UIBlocks;
-using UnsafeUtils;
-using GameCore;
-using Point = GameCore.Misc.Point;
+﻿using Community.CsharpSqlite.SQLiteClient;
 
 namespace ConsoleTests
 {
@@ -15,14 +7,21 @@ namespace ConsoleTests
 		const int SIZE = 64;
 		static void Main(string[] _args)
 		{
-			var random = new Random();
-			//PerlinTest();
-			//GenerateBlockMaps(random);
+			SqliteConnection dd = new SqliteConnection();
 
-			foreach (var point in new Point(5, 5).GetSpiral(11))
-			{
-				Debug.WriteLine(point);
-			}
+			//StoreServer srv = new StoreServer();
+			//StoreClient cli = new StoreClient();
+
+			//cli.GetRoot<XRoot>();
+
+			//var random = new Random();
+			////PerlinTest();
+			////GenerateBlockMaps(random);
+
+			//foreach (var point in new Point(5, 5).GetSpiral(11))
+			//{
+			//	Debug.WriteLine(point);
+			//}
 		}
 
 		//private static void GenerateBlockMaps(Random random) {
@@ -61,72 +60,72 @@ namespace ConsoleTests
 		//    bmp.Save("blocks.bmp");
 		//}
 
-		private static EMapBlockTypes[,] GenerateWorldMapTest()
-		{
-			var random = new Random();
-			var mg =new WorldMapGenerator(SIZE,random);
-			var map = mg.CreatePatchMap();
-			var bmp = new Bitmap(SIZE, SIZE);
+		//private static EMapBlockTypes[,] GenerateWorldMapTest()
+		//{
+		//	var random = new Random();
+		//	var mg =new WorldMapGenerator(SIZE,random);
+		//	var map = mg.CreatePatchMap();
+		//	var bmp = new Bitmap(SIZE, SIZE);
 
-			foreach(var pnt in new Rct(0,0,SIZE,SIZE).AllPoints)
-			{
-				var value = map[pnt.X,pnt.Y];
-				var fcolor = MiniMapUiBlock.GetColor(value);
-				var color = Color.FromArgb((int)(fcolor.R * 255), (int)(fcolor.G * 255), (int)(fcolor.B * 255));
-				bmp.SetPixel(pnt.X,pnt.Y,color);
-			}
-			bmp.Save("map.bmp");
-			return map;
-		}
+		//	foreach(var pnt in new Rct(0,0,SIZE,SIZE).AllPoints)
+		//	{
+		//		var value = map[pnt.X,pnt.Y];
+		//		var fcolor = MiniMapUiBlock.GetColor(value);
+		//		var color = Color.FromArgb((int)(fcolor.R * 255), (int)(fcolor.G * 255), (int)(fcolor.B * 255));
+		//		bmp.SetPixel(pnt.X,pnt.Y,color);
+		//	}
+		//	bmp.Save("map.bmp");
+		//	return map;
+		//}
 
-		private static void PerlinTest() {
-			const int size = 128;
-			var random = new Random();
-			var wmg = new WorldMapGenerator(size, random);
-			var map = wmg.Generate();
+		//private static void PerlinTest() {
+		//	const int size = 128;
+		//	var random = new Random();
+		//	var wmg = new WorldMapGenerator(size, random);
+		//	var map = wmg.Generate();
 
-			var hs = size/2;
-			var cntr = new GameCore.Misc.Point(hs, hs);
-			for (var k = 0.1f; k < 1f; k += 0.1f)
-			{
-				var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, k, 9, 4, 0, 255);
-				bmp.Save("det_" + k.ToString("N1") + ".bmp");
-			}
-			for (var k = 1; k < 10; k += 1)
-			{
-				var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, 1f, k, 4, 0, 255);
-				bmp.Save("oct_" + k.ToString("N1") + ".bmp");
-				continue;
-				var bitmap = new Bitmap(size, size);
-				var noise = PerlinNoise.Generate(size, size, 0.1f, 1f, 1f, k, 1);
-				for (var i = 0; i < size; ++i)
-				{
-					for (var j = 0; j < size;++j )
-					{
-						var ko = (hs - cntr.GetDistTill(new GameCore.Misc.Point(i, j))) / hs  *  Math.Abs(noise[i, j]);
-						if (ko > 1) ko = 1;
-						if (ko < 0.5) continue;
+		//	var hs = size/2;
+		//	var cntr = new GameCore.Misc.Point(hs, hs);
+		//	for (var k = 0.1f; k < 1f; k += 0.1f)
+		//	{
+		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, k, 9, 4, 0, 255);
+		//		bmp.Save("det_" + k.ToString("N1") + ".bmp");
+		//	}
+		//	for (var k = 1; k < 10; k += 1)
+		//	{
+		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, 1f, k, 4, 0, 255);
+		//		bmp.Save("oct_" + k.ToString("N1") + ".bmp");
+		//		continue;
+		//		var bitmap = new Bitmap(size, size);
+		//		var noise = PerlinNoise.Generate(size, size, 0.1f, 1f, 1f, k, 1);
+		//		for (var i = 0; i < size; ++i)
+		//		{
+		//			for (var j = 0; j < size;++j )
+		//			{
+		//				var ko = (hs - cntr.GetDistTill(new GameCore.Misc.Point(i, j))) / hs  *  Math.Abs(noise[i, j]);
+		//				if (ko > 1) ko = 1;
+		//				if (ko < 0.5) continue;
 						
-						var rgb = (int) (ko*255);
-						bitmap.SetPixel(i, j, Color.FromArgb(rgb, rgb, rgb));
-						switch (map[i, j])
-						{
-							case EMapBlockTypes.NONE:
-								break;
-							case EMapBlockTypes.GROUND:
-							case EMapBlockTypes.FOREST:
-							case EMapBlockTypes.SEA:
-							case EMapBlockTypes.CITY:
-								break;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
-					}
-				}
+		//				var rgb = (int) (ko*255);
+		//				bitmap.SetPixel(i, j, Color.FromArgb(rgb, rgb, rgb));
+		//				switch (map[i, j])
+		//				{
+		//					case EMapBlockTypes.NONE:
+		//						break;
+		//					case EMapBlockTypes.GROUND:
+		//					case EMapBlockTypes.FOREST:
+		//					case EMapBlockTypes.SEA:
+		//					case EMapBlockTypes.CITY:
+		//						break;
+		//					default:
+		//						throw new ArgumentOutOfRangeException();
+		//				}
+		//			}
+		//		}
 
 
-				bitmap.Save("oct_" + k.ToString("N1") + ".bmp");
-			}
-		}
+		//		bitmap.Save("oct_" + k.ToString("N1") + ".bmp");
+		//	}
+		//}
 	}
 }

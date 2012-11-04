@@ -12,8 +12,6 @@ namespace GameUi
 {
 	public class TheGame
 	{
-		private const int AUTO_MOVE_REPEAT_MILLISECONDS = 50;
-		private const int AUTO_MOVE_REPEAT_AFTER = 200;
 		private readonly List<ConsoleKey> m_downKeys = new List<ConsoleKey>();
 		private readonly IGameProvider m_gameProvider;
 
@@ -137,7 +135,7 @@ namespace GameUi
 			m_uiBlocks.Push(m_mainUiBlock);
 
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
-			MessageManager.SendMessage(this, " [?] - экран помощи");
+			MessageManager.SendMessage(this, "[?] - экран помощи");
 		}
 
 		public void UnloadContent() { }
@@ -181,7 +179,7 @@ namespace GameUi
 					var totalMilliseconds = (DateTime.Now - m_moveKeyHoldedSince).TotalMilliseconds;
 					if (m_isAutoRepeateMode)
 					{
-						if (totalMilliseconds > AUTO_MOVE_REPEAT_MILLISECONDS)
+						if (totalMilliseconds > Constants.AUTO_MOVE_REPEAT_MILLISECONDS)
 						{
 							m_moveKeyHoldedSince = DateTime.Now;
 							pressedKeys.AddRange(m_downKeys);
@@ -189,7 +187,7 @@ namespace GameUi
 					}
 					else
 					{
-						if (totalMilliseconds > AUTO_MOVE_REPEAT_AFTER)
+						if (totalMilliseconds > Constants.AUTO_MOVE_REPEAT_AFTER)
 						{
 							m_isAutoRepeateMode = true;
 						}
@@ -216,7 +214,6 @@ namespace GameUi
 			{
 				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
 			}
-			//m_pressed.Clear();
 		}
 
 		public void Draw()
