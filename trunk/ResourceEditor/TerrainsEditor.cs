@@ -52,7 +52,7 @@ namespace ResourceEditor
 			m_lb = new ListBox { Dock = DockStyle.Left, MinimumSize = new Size(150, 1), Sorted = true, ContextMenu = cm };
 			Controls.Add(m_lb);
 
-			foreach (ETerrains terrain in Enum.GetValues(typeof(ETerrains)))
+			foreach (ETile terrain in Enum.GetValues(typeof(ETile)))
 			{
 				m_lb.Items.Add(terrain);
 			}
@@ -149,11 +149,11 @@ namespace ResourceEditor
 			}
 			else
 			{
-				if (!TileHelper.AllTerrainTilesets.ContainsKey((ETerrains)_item))
+				if (!TileHelper.AllTerrainTilesets.ContainsKey((ETile)_item))
 				{
-					TileHelper.AllTerrainTilesets.Add((ETerrains)_item, new TileSet());
+					TileHelper.AllTerrainTilesets.Add((ETile)_item, new TileSet());
 				}
-				ts = TileHelper.AllTerrainTilesets[(ETerrains)_item];
+				ts = TileHelper.AllTerrainTilesets[(ETile)_item];
 			}
 			return ts;
 		}

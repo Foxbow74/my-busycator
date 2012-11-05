@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 using GameCore;
 using GameUi;
+using ResourceEditor.Properties;
 
 namespace ResourceEditor
 {
@@ -36,7 +37,7 @@ namespace ResourceEditor
 
 		private void MMiSaveClick(object _sender, EventArgs _e)
 		{
-			m_ssl.Text = @"Сохраняю...";
+			m_ssl.Text = Resources.Сохраняю;
 			foreach (TabPage tabPage in m_tc.TabPages)
 			{
 				foreach (var control in tabPage.Controls)
@@ -48,7 +49,7 @@ namespace ResourceEditor
 				}
 			}
 			File.Delete(Constants.RESOURCES_PNG_FILE);
-			m_ssl.Text = @"Выполнено.";
+			m_ssl.Text = Resources.Выполнено;
 		}
 
 		private void MTsmiAddTileClick(object _sender, EventArgs _e)

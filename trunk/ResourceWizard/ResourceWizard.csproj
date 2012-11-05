@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ResourceWizard</RootNamespace>
+    <AssemblyName>ResourceWizard</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="StoreableView\TileInfoEditorView.xaml.cs">
+      <DependentUpon>TileInfoEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StoreableView\TileInfoSelectorView.xaml.cs">
+      <DependentUpon>TileInfoSelectorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StoreableVMs\XChildObjectVM.cs" />
+    <Compile Include="StoreableVMs\XMonsterInfoVM.cs" />
+    <Compile Include="StoreableVMs\XNicksInfoVM.cs" />
+    <Compile Include="StoreableVMs\XObjectVM.cs" />
+    <Compile Include="StoreableVMs\XResourceRootVM.cs" />
+    <Compile Include="StoreableVMs\XTerrainInfoVM.cs" />
+    <Compile Include="StoreableVMs\XOldTileInfoVM.cs" />
+    <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
+    <Compile Include="StoreableVMs\XTileSetVM.cs" />
+    <Compile Include="Views\TerrainsTab.xaml.cs">
+      <DependentUpon>TerrainsTab.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextureView.xaml.cs">
+      <DependentUpon>TextureView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TilesTabView.xaml.cs">
+      <DependentUpon>TilesTabView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="VMs\MainVM.cs" />
+    <Compile Include="VMs\TabVM.cs" />
+    <Compile Include="VMs\TextureVM.cs" />
+    <Compile Include="VMs\TilesTabVM.cs" />
+    <Compile Include="XClient.cs" />
+    <Page Include="StoreableView\TileInfoEditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StoreableView\TileInfoSelectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Views\TerrainsTab.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextureView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TilesTabView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Manager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonWpf\ClientCommonWpf.csproj">
+      <Project>{674fda29-11eb-43e2-b1ad-47a86585a9a8}</Project>
+      <Name>ClientCommonWpf</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameCore\GameCore.csproj">
+      <Project>{7ed7d31c-ad6b-4df5-8756-4ca130d451c2}</Project>
+      <Name>GameCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GameUi\GameUi.csproj">
+      <Project>{1cc48a01-ebe0-4c46-890e-24465eebbc7d}</Project>
+      <Name>GameUi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenTKUi\OpenTKUi.csproj">
+      <Project>{bcad98eb-0c52-4186-b8b0-92ab47947796}</Project>
+      <Name>OpenTKUi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
+      <Project>{caac76e7-0dc3-4d27-acc5-2febec5ccb9d}</Project>
+      <Name>RusLanguage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8da672ad-628d-45bc-a1fb-5ad9541397a1}</Project>
+      <Name>UnsafeUtils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XTransport\XTransport.csproj">
+      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

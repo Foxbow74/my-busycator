@@ -8,12 +8,12 @@ namespace ConsoleTests
 		const int SIZE = 64;
 		static void Main(string[] _args)
 		{
-			//var t = World.XRoot.TileInfos.Count;
+			//var t = World.XResourceResourceRoot.TileInfos.Count;
 
-			//StoreServer srv = new StoreServer();
-			//StoreClient cli = new StoreClient();
+			//XResourceServer srv = new XResourceServer();
+			//XResourceClient cli = new XResourceClient();
 
-			//cli.GetRoot<XRoot>();
+			//cli.GetRoot<XResourceResourceRoot>();
 
 			//var random = new Random();
 			////PerlinTest();
@@ -58,7 +58,7 @@ namespace ConsoleTests
 		//            bmp.SetPixel(pnt.X + blockId.X, pnt.Y + blockId.Y, color);
 		//        }
 		//    }
-		//    bmp.Save("blocks.bmp");
+		//    bmp.SaveResources("blocks.bmp");
 		//}
 
 		//private static EMapBlockTypes[,] GenerateWorldMapTest()
@@ -75,7 +75,7 @@ namespace ConsoleTests
 		//		var color = Color.FromArgb((int)(fcolor.R * 255), (int)(fcolor.G * 255), (int)(fcolor.B * 255));
 		//		bmp.SetPixel(pnt.X,pnt.Y,color);
 		//	}
-		//	bmp.Save("map.bmp");
+		//	bmp.SaveResources("map.bmp");
 		//	return map;
 		//}
 
@@ -90,12 +90,12 @@ namespace ConsoleTests
 		//	for (var k = 0.1f; k < 1f; k += 0.1f)
 		//	{
 		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, k, 9, 4, 0, 255);
-		//		bmp.Save("det_" + k.ToString("N1") + ".bmp");
+		//		bmp.SaveResources("det_" + k.ToString("N1") + ".bmp");
 		//	}
 		//	for (var k = 1; k < 10; k += 1)
 		//	{
 		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, 1f, k, 4, 0, 255);
-		//		bmp.Save("oct_" + k.ToString("N1") + ".bmp");
+		//		bmp.SaveResources("oct_" + k.ToString("N1") + ".bmp");
 		//		continue;
 		//		var bitmap = new Bitmap(size, size);
 		//		var noise = PerlinNoise.Generate(size, size, 0.1f, 1f, 1f, k, 1);
@@ -125,7 +125,7 @@ namespace ConsoleTests
 		//		}
 
 
-		//		bitmap.Save("oct_" + k.ToString("N1") + ".bmp");
+		//		bitmap.SaveResources("oct_" + k.ToString("N1") + ".bmp");
 		//	}
 		//}
 	}

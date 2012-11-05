@@ -14,8 +14,8 @@ namespace GameCore
 {
 	public class World
 	{
-		static readonly StoreServer m_srv = new StoreServer();
-		static readonly StoreClient m_cli = new StoreClient();
+		static readonly XResourceServer m_resourceSrv = new XResourceServer();
+		static readonly XResourceClient m_resourceCli = new XResourceClient();
 
 		/// <summary>
 		/// содержит список активных в данный момент существ
@@ -25,15 +25,15 @@ namespace GameCore
 		static World() 
 		{
 			Rnd = new Random(Constants.WORLD_SEED);
-			XRoot = m_cli.GetRoot<XRoot>();
+			XResourceRoot = m_resourceCli.GetRoot<XResourceRoot>();
 		}
 
-		public static void Save()
+		public static void SaveResources()
 		{
-			m_cli.Save(XRoot.Uid);
+			m_resourceCli.Save(XResourceRoot.Uid);
 		}
 
-		internal static XRoot XRoot { get; private set; } 
+		internal static XResourceRoot XResourceRoot { get; private set; } 
 
 		public World()
 		{

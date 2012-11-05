@@ -14,7 +14,7 @@ namespace GameUi
 
 		public List<ATile> Tiles { get; private set; }
 
-		public ETerrains Terrain { get; set; }
+		public ETile Tile { get; set; }
 		public void AddTile(ATile _tile) { Tiles.Add(_tile); }
 	}
 }

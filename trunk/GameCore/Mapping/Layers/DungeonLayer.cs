@@ -18,10 +18,10 @@ namespace GameCore.Mapping.Layers
 			FogLightness = FogColor.Lightness();
 		}
 
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
+		internal override IEnumerable<ETile> DefaultEmptySpaces { get { yield return ETile.STONE_FLOOR; } }
 
 
-		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
+		internal override IEnumerable<ETile> DefaultWalls { get { yield return ETile.STONE_WALL; } }
 
 		public override FColor Ambient
 		{
@@ -62,10 +62,10 @@ namespace GameCore.Mapping.Layers
 
 			for (var i = 0; i < v; ++i)
 			{
-				block.Map[i, 0] = ETerrains.STONE_WALL;
-				block.Map[0, i] = ETerrains.STONE_WALL;
-				block.Map[Constants.MAP_BLOCK_SIZE - 1 - i, 0] = ETerrains.STONE_WALL;
-				block.Map[0, Constants.MAP_BLOCK_SIZE - 1 - i] = ETerrains.STONE_WALL;
+				block.Map[i, 0] = ETile.STONE_WALL;
+				block.Map[0, i] = ETile.STONE_WALL;
+				block.Map[Constants.MAP_BLOCK_SIZE - 1 - i, 0] = ETile.STONE_WALL;
+				block.Map[0, Constants.MAP_BLOCK_SIZE - 1 - i] = ETile.STONE_WALL;
 			}
 
 			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, 1));
@@ -79,14 +79,14 @@ namespace GameCore.Mapping.Layers
 				block.AddCreature(new Monster(this), new Point(x, y));
 			}
 
-			block.Map[9, 9] = ETerrains.RED_BRICK_WALL;
-			block.Map[10, 9] = ETerrains.RED_BRICK_WINDOW;
-			block.Map[11, 9] = ETerrains.RED_BRICK_WALL;
-			block.Map[11, 10] = ETerrains.RED_BRICK_WINDOW;
-			block.Map[9, 10] = ETerrains.RED_BRICK_WINDOW;
-			block.Map[9, 11] = ETerrains.RED_BRICK_WALL;
+			block.Map[9, 9] = ETile.RED_BRICK_WALL;
+			block.Map[10, 9] = ETile.RED_BRICK_WINDOW;
+			block.Map[11, 9] = ETile.RED_BRICK_WALL;
+			block.Map[11, 10] = ETile.RED_BRICK_WINDOW;
+			block.Map[9, 10] = ETile.RED_BRICK_WINDOW;
+			block.Map[9, 11] = ETile.RED_BRICK_WALL;
 			block.AddObject(new ClosedDoor(null), new Point(10, 11));
-			block.Map[11, 11] = ETerrains.RED_BRICK_WALL;
+			block.Map[11, 11] = ETile.RED_BRICK_WALL;
 			//block.AddLightSource(new Point(10, 10), new LightSource(18, new FColor(53f, 0f, 1f, 1f)));
 
 			return block;
