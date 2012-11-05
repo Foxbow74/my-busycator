@@ -29,32 +29,28 @@ namespace GameUi
 			Rp = _resourceProvider;
 			DrawHelper = _drawHelper;
 
-			Rp.RegisterFont(EFonts.COMMON, "Resources\\monof55.ttf", 12);
-			Rp.RegisterFont(EFonts.SMALL, "Resources\\monof55.ttf", 8);
+			Rp.RegisterFont(EFonts.COMMON, "res\\monof55.ttf", 12);
+			Rp.RegisterFont(EFonts.SMALL, "res\\monof55.ttf", 8);
 
-			if (File.Exists(Constants.RESOURCES_TXT_FILENAME) && _drawHelper != null)
+			if(World.XRoot.TileInfos.Count > 0)
 			{
-				foreach (var s in File.ReadAllLines(Constants.RESOURCES_TXT_FILENAME))
+				foreach (var xTileInfo in World.XRoot.TileInfos)
 				{
-					var arr = s.Split(new[] { '|' }, StringSplitOptions.None);
-					var aTile = Rp.CreateTile(ETextureSet.GP, int.Parse(arr[2]), int.Parse(arr[3]), FColor.Parse(arr[4]));
-					switch (arr[0][0])
+					var aTile = Rp.CreateTile(ETextureSet.GP, xTileInfo.X, xTileInfo.Y, FColor.Parse(xTileInfo.Color));
+					aTile.Tile = xTileInfo.Tile;
+					if (xTileInfo.Tile == ETiles.FOG)
 					{
-						case 't':
-							var eTiles = (ETiles)Enum.Parse(typeof(ETiles), arr[1]);
-							aTile.Tile = eTiles;
-							AllTiles.Add(eTiles, aTile);
-							break;
-						case 'r':
-							var terrain = (ETerrains) Enum.Parse(typeof (ETerrains), arr[1]);
-							TileSet set;
-							if (!AllTerrainTilesets.TryGetValue(terrain, out set))
-							{
-								set = new TileSet();
-								AllTerrainTilesets.Add(terrain, set);
-							}
-							set.AddTile(aTile);
-							break;
+						aTile.IsFogTile = true;
+					}
+					AllTiles.Add(xTileInfo.Tile, aTile);	
+				}
+				foreach (var xTileSet in World.XRoot.TileSets)
+				{
+					var set = new TileSet();
+					AllTerrainTilesets.Add(xTileSet.Terrain, set);
+					foreach (var terrainInfo in xTileSet.Children)
+					{
+						set.AddTile(Rp.CreateTile(ETextureSet.GP, terrainInfo.X, terrainInfo.Y, FColor.Parse(terrainInfo.Color)));
 					}
 				}
 			}

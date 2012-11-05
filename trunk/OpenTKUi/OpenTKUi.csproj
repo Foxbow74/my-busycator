@@ -73,6 +73,10 @@
       <Project>{bbece6fc-ef63-40f8-a734-a500d1dfc1af}</Project>
       <Name>QuickFont</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XTransport\XTransport.csproj">
+      <Project>{171F736D-E4BB-438A-9D56-6F8E238814C0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

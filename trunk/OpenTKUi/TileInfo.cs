@@ -36,10 +36,6 @@ namespace OpenTKUi
 		public void Draw(int _iteration, bool _colored, bool _fogOnly, int _layer)
 		{
 			if (m_tiles == null && !_fogOnly) return;
-			if (IsFogged)
-			{
-				
-			}
 			if (_fogOnly && !IsFogged) return;
 
 

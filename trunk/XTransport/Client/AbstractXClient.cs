@@ -225,7 +225,6 @@ namespace XTransport.Client
 
 			var kindId = KindToInt(_child.Kind);
 			var report = new XReport(_child.Uid, _child.GetChanges(), kindId, EState.SINGLE);
-
 			m_transport.AddNew(report, m_sessionId, _collectionOwnerUid);
 
 			var descriptor = new ClientXObjectDescriptor<TKind>(_child, this, kindId, _collectionOwnerUid);

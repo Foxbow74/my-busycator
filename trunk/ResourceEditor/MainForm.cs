@@ -47,7 +47,6 @@ namespace ResourceEditor
 					}
 				}
 			}
-			File.Delete(Constants.RESOURCES_TXT_FILENAME);
 			File.Delete(Constants.RESOURCES_PNG_FILE);
 			m_ssl.Text = @"Выполнено.";
 		}

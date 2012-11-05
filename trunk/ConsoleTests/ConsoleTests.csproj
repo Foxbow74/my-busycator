@@ -92,6 +92,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameCore\GameCore.csproj">
+      <Project>{7ed7d31c-ad6b-4df5-8756-4ca130d451c2}</Project>
+      <Name>GameCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\XTransport\XTransport.csproj">
+      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

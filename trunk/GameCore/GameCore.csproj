@@ -177,6 +177,9 @@
     <Compile Include="Storage\XObject.cs" />
     <Compile Include="Storeable\XMonsterInfo.cs" />
     <Compile Include="Storeable\XRoot.cs" />
+    <Compile Include="Storeable\XTerrainInfo.cs" />
+    <Compile Include="Storeable\XTileInfo.cs" />
+    <Compile Include="Storeable\XTileSet.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>
