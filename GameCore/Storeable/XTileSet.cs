@@ -12,18 +12,18 @@ namespace GameCore.Storeable
 		private readonly IXValue<int> m_eTerrains;
 
 		[X("LIST")]
-		private ICollection<XTerrainInfo> m_value;
+		private ICollection<XTerrainInfo> m_children;
 
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.TILE_SET;} 
 		}
 
-		public ETerrains Terrain{get { return (ETerrains)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; }}
+		public ETile Tile{get { return (ETile)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; }}
 
 		public ICollection<XTerrainInfo> Children
 		{
-			get { return m_value; }
+			get { return m_children; }
 		}
 
 	}

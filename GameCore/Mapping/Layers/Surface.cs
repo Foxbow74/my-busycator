@@ -26,9 +26,9 @@ namespace GameCore.Mapping.Layers
 		{
 			var separator = new[] {','};
 
-			if(World.XRoot.NickInfos.Count>0)
+			if(World.XResourceRoot.NickInfos.Count>0)
 			{
-				foreach (var nicksInfo in World.XRoot.NickInfos)
+				foreach (var nicksInfo in World.XResourceRoot.NickInfos)
 				{
 					switch (nicksInfo.Sex)
 					{
@@ -66,9 +66,9 @@ namespace GameCore.Mapping.Layers
 					m_femaleNames = new List<string> {"TestFemale"};
 				}
 
-				World.XRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
-				World.XRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
-				World.Save();
+				World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
+				World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
+				World.SaveResources();
 			}
 		}
 
@@ -107,11 +107,11 @@ namespace GameCore.Mapping.Layers
 
 		public City City { get; private set; }
 
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
+		internal override IEnumerable<ETile> DefaultEmptySpaces { get { yield return ETile.GRASS; } }
 
-		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.RED_BRICK_WALL; } }
+		internal override IEnumerable<ETile> DefaultWalls { get { yield return ETile.RED_BRICK_WALL; } }
 		
-		public override FColor Ambient { get { return new FColor(1f, 1f, 1f, 0.5f).Multiply(2f); } }
+		public override FColor Ambient { get { return new FColor(1f, 1f, 1f, 0.5f).Multiply(0.8f); } }
 
 		public string GetNextCitizenName(ESex _sex)
 		{
@@ -180,7 +180,7 @@ namespace GameCore.Mapping.Layers
 		    {
 				switch (block.Map[point.X, point.Y])
 			    {
-					case ETerrains.FOREST:
+					case ETile.FOREST:
 						switch (rnd.Next(10))
 						{
 							case 0:
@@ -194,7 +194,7 @@ namespace GameCore.Mapping.Layers
 								break;
 						}
 						break;
-					case ETerrains.SHRUBS:
+					case ETile.SHRUBS:
 						switch (rnd.Next(7))
 						{
 							case 0:

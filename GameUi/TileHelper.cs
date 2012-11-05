@@ -13,12 +13,12 @@ namespace GameUi
 		static TileHelper()
 		{
 			AllTiles = new Dictionary<ETiles, ATile>();
-			AllTerrainTilesets = new Dictionary<ETerrains, TileSet>();
+			AllTerrainTilesets = new Dictionary<ETile, TileSet>();
 		}
 
 		public static ATile FogTile { get { return AllTiles[ETiles.FOG]; } }
 
-		public static Dictionary<ETerrains, TileSet> AllTerrainTilesets { get; private set; }
+		public static Dictionary<ETile, TileSet> AllTerrainTilesets { get; private set; }
 		public static Dictionary<ETiles, ATile> AllTiles { get; private set; }
 
 		public static IResourceProvider Rp { get; private set; }
@@ -32,11 +32,11 @@ namespace GameUi
 			Rp.RegisterFont(EFonts.COMMON, "res\\monof55.ttf", 12);
 			Rp.RegisterFont(EFonts.SMALL, "res\\monof55.ttf", 8);
 
-			if(World.XRoot.TileInfos.Count > 0)
+			if (_drawHelper!=null && World.XResourceRoot.TileInfos.Count > 0)
 			{
-				foreach (var xTileInfo in World.XRoot.TileInfos)
+				foreach (var xTileInfo in World.XResourceRoot.TileInfos)
 				{
-					var aTile = Rp.CreateTile(ETextureSet.GP, xTileInfo.X, xTileInfo.Y, FColor.Parse(xTileInfo.Color));
+					var aTile = Rp.CreateTile(ETextureSet.GP, xTileInfo.X, xTileInfo.Y, xTileInfo.Color);
 					aTile.Tile = xTileInfo.Tile;
 					if (xTileInfo.Tile == ETiles.FOG)
 					{
@@ -44,10 +44,10 @@ namespace GameUi
 					}
 					AllTiles.Add(xTileInfo.Tile, aTile);	
 				}
-				foreach (var xTileSet in World.XRoot.TileSets)
+				foreach (var xTileSet in World.XResourceRoot.TileSets)
 				{
 					var set = new TileSet();
-					AllTerrainTilesets.Add(xTileSet.Terrain, set);
+					AllTerrainTilesets.Add(xTileSet.Tile, set);
 					foreach (var terrainInfo in xTileSet.Children)
 					{
 						set.AddTile(Rp.CreateTile(ETextureSet.GP, terrainInfo.X, terrainInfo.Y, FColor.Parse(terrainInfo.Color)));
@@ -103,7 +103,7 @@ namespace GameUi
 				foreach (var line in File.ReadAllLines(@"Resources\terrains.dat"))
 				{
 					var ss = line.Split(new[] { '|' }, StringSplitOptions.None);
-					var terrain = (ETerrains)Enum.Parse(typeof(ETerrains), ss[0]);
+					var terrain = (ETile)Enum.Parse(typeof(ETile), ss[0]);
 					if (!AllTerrainTilesets.ContainsKey(terrain))
 					{
 						AllTerrainTilesets[terrain] = new TileSet();
@@ -113,7 +113,7 @@ namespace GameUi
 					var tile = Rp.CreateTile(set, xy.X, xy.Y, FColor.Parse(ss[3]));
 					AllTerrainTilesets[terrain].AddTile(tile);
 				}
-				foreach (var key in Enum.GetValues(typeof(ETerrains)).Cast<ETerrains>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
+				foreach (var key in Enum.GetValues(typeof(ETile)).Cast<ETile>().Where(_key => !AllTerrainTilesets.ContainsKey(_key)))
 				{
 					Trace.WriteLine("Tile for Terrain " + key + " not defined.");
 				}
@@ -141,15 +141,15 @@ namespace GameUi
 
 			#region old
 
-			foreach (ETerrains terrain in Enum.GetValues(typeof(ETerrains)))
+			foreach (ETile terrain in Enum.GetValues(typeof(ETile)))
 			{
 				TileSet tl;
 				switch (terrain)
 				{
-					case ETerrains.GROUND:
+					case ETile.GROUND:
 						tl = new TileSet(Rp.CreateTile(0, 0, FColor.FromArgb(10, 20, 10)));
 						break;
-					case ETerrains.GRASS:
+					case ETile.GRASS:
 						tl = new TileSet(
 							Rp.CreateTile(3, 2, FColor.FromArgb(30, 50, 30)),
 							Rp.CreateTile(5, 2, FColor.FromArgb(30, 60, 30)),
@@ -180,64 +180,64 @@ namespace GameUi
 							Rp.CreateTile(ETextureSet.GP, 2, 2, FColor.FromArgb(20, 80, 20))
 							);
 						break;
-					case ETerrains.ROAD:
+					case ETile.ROAD:
 						tl = new TileSet();
 						break;
-					case ETerrains.RED_BRICK_WALL:
+					case ETile.RED_BRICK_WALL:
 						tl = new TileSet(Rp.CreateTile(0, 12, FColor.DarkRed));
 						break;
-					case ETerrains.YELLOW_BRICK_WALL:
+					case ETile.YELLOW_BRICK_WALL:
 						tl = new TileSet(Rp.CreateTile(0, 12, FColor.DarkGoldenrod));
 						break;
-					case ETerrains.GRAY_BRICK_WALL:
+					case ETile.GRAY_BRICK_WALL:
 						tl = new TileSet(Rp.CreateTile(0, 12, FColor.Gray));
 						break;
-					case ETerrains.RED_BRICK_WINDOW:
+					case ETile.RED_BRICK_WINDOW:
 						tl = new TileSet(Rp.CreateTile(1, 12, FColor.DarkRed));
 						break;
-					case ETerrains.GRAY_BRICK_WINDOW:
+					case ETile.GRAY_BRICK_WINDOW:
 						tl = new TileSet(Rp.CreateTile(1, 12, FColor.DarkGoldenrod));
 						break;
-					case ETerrains.YELLOW_BRICK_WINDOW:
+					case ETile.YELLOW_BRICK_WINDOW:
 						tl = new TileSet(Rp.CreateTile(1, 12, FColor.Gray));
 						break;
-					case ETerrains.FRESH_WATER:
+					case ETile.FRESH_WATER:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 14, 8, FColor.Blue));
 						break;
-					case ETerrains.LAVA:
+					case ETile.LAVA:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 14, 8, FColor.Red));
 						break;
-					case ETerrains.SWAMP:
+					case ETile.SWAMP:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 14, 8, FColor.DarkKhaki));
 						break;
-					case ETerrains.UP:
+					case ETile.UP:
 						tl = new TileSet(Rp.CreateTile(14, 1, FColor.Gray));
 						break;
-					case ETerrains.DOWN:
+					case ETile.DOWN:
 						tl = new TileSet(Rp.CreateTile(15, 1, FColor.Gray));
 						break;
-					case ETerrains.LEFT:
+					case ETile.LEFT:
 						tl = new TileSet(Rp.CreateTile(1, 1, FColor.Gray));
 						break;
-					case ETerrains.RIGHT:
+					case ETile.RIGHT:
 						tl = new TileSet(Rp.CreateTile(0, 1, FColor.Gray));
 						break;
-					case ETerrains.STONE_FLOOR:
+					case ETile.STONE_FLOOR:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 4, 8, FColor.FromArgb(255, 30, 30, 50)));
 						break;
-					case ETerrains.WOOD_FLOOR_MAPPLE:
+					case ETile.WOOD_FLOOR_MAPPLE:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 13, 3, FColor.Maple.Multiply(0.4f)));
 						break;
-					case ETerrains.WOOD_FLOOR_OAK:
+					case ETile.WOOD_FLOOR_OAK:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.RB1, 13, 3, FColor.DarkOak.Multiply(0.4f)));
 						break;
-					case ETerrains.STONE_WALL:
+					case ETile.STONE_WALL:
 						tl = new TileSet(Rp.CreateTile(ETextureSet.GP, 3, 10, FColor.FromArgb(255, 100, 100, 200)));
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();
 				}
-				tl.Terrain = terrain;
+				tl.Tile = terrain;
 				AllTerrainTilesets.Add(terrain, tl);
 			}
 
@@ -365,13 +365,13 @@ namespace GameUi
 
 		public static ATile GetTile(this ETiles _tile) { return AllTiles[_tile]; }
 
-		public static ATile GetTile(this ETerrains _terrain, int _index)
+		public static ATile GetTile(this ETile _tile, int _index)
 		{
-			if(_terrain==ETerrains.NONE)
+			if(_tile==ETile.NONE)
 			{
 				return GetTile(ETiles.NONE);
 			}
-			var ts = AllTerrainTilesets[_terrain];
+			var ts = AllTerrainTilesets[_tile];
 			return ts[_index];
 		}
 	}

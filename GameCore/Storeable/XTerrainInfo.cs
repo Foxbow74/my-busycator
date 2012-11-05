@@ -7,6 +7,7 @@ namespace GameCore.Storeable
 	{
 		public XTerrainInfo() { }
 
+		[X("TEXTURE")]private readonly IXValue<int> m_eTexture;
 		[X("X")]private IXValue<int> m_x;
 		[X("Y")]private IXValue<int> m_y;
 		[X("Color")]private IXValue<string> m_color;
@@ -22,6 +23,6 @@ namespace GameCore.Storeable
 
 		public string Color { get { return m_color.Value; } set { m_color.Value = value; } }
 
-
+		public int Texture { get { return m_eTexture.Value; } set { m_eTexture.Value = value; } }
 	}
 }

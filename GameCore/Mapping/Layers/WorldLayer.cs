@@ -31,8 +31,8 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		internal abstract IEnumerable<ETerrains> DefaultEmptySpaces { get; }
-		internal abstract IEnumerable<ETerrains> DefaultWalls { get; }
+		internal abstract IEnumerable<ETile> DefaultEmptySpaces { get; }
+		internal abstract IEnumerable<ETile> DefaultWalls { get; }
 
 		public abstract FColor Ambient { get; }
 

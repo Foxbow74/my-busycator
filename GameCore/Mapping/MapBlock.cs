@@ -16,7 +16,7 @@ namespace GameCore.Mapping
 			Rooms = new List<Room>();
 			WorldCoords = _blockId*Constants.MAP_BLOCK_SIZE;
 			BlockId = _blockId;
-			Map = new ETerrains[Constants.MAP_BLOCK_SIZE,Constants.MAP_BLOCK_SIZE];
+			Map = new ETile[Constants.MAP_BLOCK_SIZE,Constants.MAP_BLOCK_SIZE];
 			RandomSeed = World.Rnd.Next();
 			Objects = new List<Tuple<Thing, Point>>();
 		}
@@ -29,7 +29,7 @@ namespace GameCore.Mapping
 
 		public int RandomSeed { get; protected set; }
 
-		public ETerrains[,] Map { get; private set; }
+		public ETile[,] Map { get; private set; }
 
 		public List<Room> Rooms { get; private set; }
 
