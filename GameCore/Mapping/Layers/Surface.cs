@@ -7,6 +7,7 @@ using GameCore.Misc;
 using GameCore.Objects;
 using GameCore.Objects.Furniture;
 using GameCore.Plants;
+using GameCore.Storeable;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers
@@ -20,30 +21,55 @@ namespace GameCore.Mapping.Layers
 		private static readonly List<string> m_maleNames;
 		private static readonly List<string> m_femaleNames;
 		private readonly EMapBlockTypes[,] m_worldMap;
-		private static readonly List<ETiles> m_forestTiles = new List<ETiles>();
 
 		static Surface()
 		{
-			if (File.Exists(Constants.RESOURCES_MALENICKS_TXT))
-			{
-				m_maleNames = File.ReadAllText(Constants.RESOURCES_MALENICKS_TXT).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-			}
-			else
-			{
-				m_maleNames = new List<string> { "TestMale" };
-			}
-			if (File.Exists(Constants.RESOURCES_FEMALENICKS_TXT))
-			{
-				m_femaleNames = File.ReadAllText(Constants.RESOURCES_FEMALENICKS_TXT).Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-			}
-			else
-			{
-				m_femaleNames = new List<string> { "TestFemale" };
-			}
+			var separator = new[] {','};
 
-			for (var i = 0; i < 3; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Tree>()).Select(_tree => _tree.Tile));
-			for (var i = 0; i < 2; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Shrub>()).Select(_tree => _tree.Tile));
-			for (var i = 0; i < 1; ++i) m_forestTiles.AddRange(ThingHelper.AllThings().Where(_furniture => _furniture.Is<Mushrum>()).Select(_tree => _tree.Tile));
+			if(World.XRoot.NickInfos.Count>0)
+			{
+				foreach (var nicksInfo in World.XRoot.NickInfos)
+				{
+					switch (nicksInfo.Sex)
+					{
+						case ESex.MALE:
+							m_maleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+							break;
+						case ESex.FEMALE:
+							m_femaleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+				}
+			}
+			else
+			{
+				if (File.Exists(Constants.RESOURCES_MALENICKS_TXT))
+				{
+					m_maleNames =
+						File.ReadAllText(Constants.RESOURCES_MALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
+							ToList();
+				}
+				else
+				{
+					m_maleNames = new List<string> {"TestMale"};
+				}
+				if (File.Exists(Constants.RESOURCES_FEMALENICKS_TXT))
+				{
+					m_femaleNames =
+						File.ReadAllText(Constants.RESOURCES_FEMALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
+							ToList();
+				}
+				else
+				{
+					m_femaleNames = new List<string> {"TestFemale"};
+				}
+
+				World.XRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
+				World.XRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
+				World.Save();
+			}
 		}
 
 		/// <summary>

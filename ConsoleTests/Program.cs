@@ -1,4 +1,5 @@
 ﻿using Community.CsharpSqlite.SQLiteClient;
+using GameCore;
 
 namespace ConsoleTests
 {
@@ -7,7 +8,7 @@ namespace ConsoleTests
 		const int SIZE = 64;
 		static void Main(string[] _args)
 		{
-			SqliteConnection dd = new SqliteConnection();
+			//var t = World.XRoot.TileInfos.Count;
 
 			//StoreServer srv = new StoreServer();
 			//StoreClient cli = new StoreClient();

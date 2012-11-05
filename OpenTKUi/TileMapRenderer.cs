@@ -2,9 +2,9 @@
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Text;
 using GameCore;
 using GameCore.Misc;
+using GameCore.Storeable;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -87,21 +87,22 @@ namespace OpenTKUi
 				}
 				bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
 
-				var sb = new StringBuilder();
-
 				foreach (var pair in TileHelper.AllTiles)
 				{
-					sb.AppendLine("t|" + pair.Key + "|" + pair.Value.ToResurceText());
+					World.XRoot.TileInfos.Add(new XTileInfo() { Tile=pair.Key, X=pair.Value.Rct.Left / Constants.TILE_SIZE, Y=pair.Value.Rct.Top / Constants.TILE_SIZE, Color=pair.Value.Color.ToShortText() });
 				}
 
 				foreach (var tileset in TileHelper.AllTerrainTilesets)
 				{
+					var xTileSet = new XTileSet { Terrain = tileset.Key };
+					World.XRoot.TileSets.Add(xTileSet);
 					foreach (var tile in tileset.Value.Tiles)
 					{
-						sb.AppendLine("r|" + tileset.Key + "|" + tile.ToResurceText());
+						xTileSet.Children.Add(new XTerrainInfo(){X=tile.Rct.Left / Constants.TILE_SIZE, Y=tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color.ToShortText()});
 					}
 				}
-				File.WriteAllText(Constants.RESOURCES_TXT_FILENAME, sb.ToString());
+
+				World.Save();
 				m_img = new Image(bmp, true);
 			}
 		}

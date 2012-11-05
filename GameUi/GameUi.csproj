@@ -129,9 +129,13 @@
       <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
       <Name>RusLanguage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\XTransport\XTransport.csproj">
+      <Project>{171F736D-E4BB-438A-9D56-6F8E238814C0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\monof55.ttf">
+    <None Include="res\monof55.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
