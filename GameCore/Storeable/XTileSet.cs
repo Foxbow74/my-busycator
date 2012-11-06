@@ -1,30 +1,21 @@
-using System.Collections.Generic;
 using GameCore.Storage;
 using XTransport;
 
 namespace GameCore.Storeable
 {
-	class XTileSet:XObject
+	class XTileSet : XAbstractTileSet
 	{
 		public XTileSet() { }
 
-		[X("TERRAIN")]
-		private readonly IXValue<int> m_eTerrains;
-
-		[X("LIST")]
-		private ICollection<XTerrainInfo> m_children;
+		[X("TILE")]
+		private readonly IXValue<int> m_tiles;
 
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.TILE_SET;} 
 		}
 
-		public ETile Tile{get { return (ETile)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; }}
-
-		public ICollection<XTerrainInfo> Children
-		{
-			get { return m_children; }
-		}
+		public ETiles Tile{get { return (ETiles)m_tiles.Value; } set { m_tiles.Value = (int)value; }}
 
 	}
 }

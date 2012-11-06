@@ -36,23 +36,23 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public virtual uint MinCountInCity { get { return 1; } }
 		public virtual uint MaxCountInCity { get { return uint.MaxValue; } }
 
-		private static IEnumerable<Tuple<ETile, ETile>> Walls
+		private static IEnumerable<Tuple<ETerrains, ETerrains>> Walls
 		{
 			get
 			{
-				yield return new Tuple<ETile, ETile>(ETile.GRAY_BRICK_WALL, ETile.GRAY_BRICK_WINDOW);
-				yield return new Tuple<ETile, ETile>(ETile.RED_BRICK_WALL, ETile.RED_BRICK_WINDOW);
-				yield return new Tuple<ETile, ETile>(ETile.YELLOW_BRICK_WALL, ETile.YELLOW_BRICK_WINDOW);
+				yield return new Tuple<ETerrains, ETerrains>(ETerrains.GRAY_BRICK_WALL, ETerrains.GRAY_BRICK_WINDOW);
+				yield return new Tuple<ETerrains, ETerrains>(ETerrains.RED_BRICK_WALL, ETerrains.RED_BRICK_WINDOW);
+				yield return new Tuple<ETerrains, ETerrains>(ETerrains.YELLOW_BRICK_WALL, ETerrains.YELLOW_BRICK_WINDOW);
 			}
 		}
 
-		private static IEnumerable<ETile> Floors
+		private static IEnumerable<ETerrains> Floors
 		{
 			get
 			{
-				yield return ETile.STONE_FLOOR;
-				yield return ETile.WOOD_FLOOR_MAPPLE;
-				yield return ETile.WOOD_FLOOR_OAK;
+				yield return ETerrains.STONE_FLOOR;
+				yield return ETerrains.WOOD_FLOOR_MAPPLE;
+				yield return ETerrains.WOOD_FLOOR_OAK;
 			}
 		}
 
@@ -106,7 +106,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Inflate(-1,-1).Random(World.Rnd));
 		}
 
-		private void CreateDoor(MapBlock _mapBlock, ETile _floor, IEnumerable<Point> _borderPoints)
+		private void CreateDoor(MapBlock _mapBlock, ETerrains _floor, IEnumerable<Point> _borderPoints)
 		{
 			var doorCoords = Room.RoomRectangle.Center;
 			var prevPoint = doorCoords;

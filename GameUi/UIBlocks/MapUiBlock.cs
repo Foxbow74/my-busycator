@@ -80,7 +80,7 @@ namespace GameUi.UIBlocks
 					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
 					{
 						liveCell.SetIsSeenBefore();
-						var eTerrains = liveCell.Tile;
+						var eTerrains = liveCell.Terrains;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 						var tcolor = terrainTile.Color.Multiply(lighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
 						terrainTile.Draw(screenPoint, tcolor);
@@ -97,7 +97,7 @@ namespace GameUi.UIBlocks
 					{
 						var fogColorMultiplier = worldLayer.GetFogColorMultiplier(liveCell);
 
-						var eTerrains = liveCell.Tile;
+						var eTerrains = liveCell.Terrains;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
 
 						var tcolor = terrainTile.Color.Multiply(fogColorMultiplier).ToGrayScale();

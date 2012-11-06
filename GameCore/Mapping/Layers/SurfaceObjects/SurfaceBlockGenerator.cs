@@ -127,49 +127,49 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			foreach (var pnt in new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE).AllPoints)
 			{
-				ETile tr;
+				ETerrains tr;
 				switch (pm[pnt.X, pnt.Y])
 				{
 					case EMapBlockTypes.NONE:
 						continue;
 					case EMapBlockTypes.GROUND:
-						tr = ETile.GRASS;
+						tr = ETerrains.GRASS;
 						break;
 					case EMapBlockTypes.FOREST:
-						tr = ETile.FOREST;
+						tr = ETerrains.FOREST;
 						break;
 					case EMapBlockTypes.SEA:
-						tr = ETile.SEA;
+						tr = ETerrains.SEA;
 						break;
 					case EMapBlockTypes.DEEP_SEA:
-						tr = ETile.DEEP_SEA;
+						tr = ETerrains.DEEP_SEA;
 						break;
 					case EMapBlockTypes.FRESH_WATER:
-						tr = ETile.FRESH_WATER;
+						tr = ETerrains.FRESH_WATER;
 						break;
 					case EMapBlockTypes.DEEP_FRESH_WATER:
-						tr = ETile.DEEP_FRESH_WATER;
+						tr = ETerrains.DEEP_FRESH_WATER;
 						break;
 					case EMapBlockTypes.CITY:
-						tr = ETile.GROUND;
+						tr = ETerrains.GROUND;
 						break;
 					case EMapBlockTypes.COAST:
-						tr = ETile.COAST;
+						tr = ETerrains.COAST;
 						break;
 					case EMapBlockTypes.LAKE_COAST:
-						tr = ETile.LAKE_COAST;
+						tr = ETerrains.LAKE_COAST;
 						break;
 					case EMapBlockTypes.MOUNT:
-						tr = ETile.MOUNT;
+						tr = ETerrains.MOUNT;
 						break;
 					case EMapBlockTypes.SWAMP:
-						tr = ETile.SWAMP;
+						tr = ETerrains.SWAMP;
 						break;
 					case EMapBlockTypes.ETERNAL_SNOW:
-						tr = ETile.ETERNAL_SNOW;
+						tr = ETerrains.ETERNAL_SNOW;
 						break;
 					case EMapBlockTypes.SHRUBS:
-						tr = ETile.SHRUBS;
+						tr = ETerrains.SHRUBS;
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

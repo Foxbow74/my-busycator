@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore;
-using GameCore.PathFinding;
 using OpenTK.Graphics.OpenGL;
 
 namespace OpenTKUi
@@ -27,6 +26,7 @@ namespace OpenTKUi
 
 		public TileInfo(int _x, int _y, int _width, int _height)
 		{
+			
 			m_x = _x * _width;
 			m_y = _y * _height;
 			m_width = _width;

@@ -5,8 +5,8 @@ namespace GameCore.Storage
 		ALL,
 		MONSTER_INFO,
 		TILE_INFO,
-		TERRAIN_INFO,
 		TILE_SET,
-		NICKS_INFO
+		NICKS_INFO,
+		TERRAIN_SET
 	}
 }

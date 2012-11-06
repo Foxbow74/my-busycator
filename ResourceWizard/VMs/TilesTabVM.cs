@@ -5,7 +5,7 @@ namespace ResourceWizard.VMs
 {
 	class TilesTabVM : TabVM
 	{
-		public ReadOnlyObservableCollection<XOldTileInfoVM> Tiles { get { return Manager.Instance.XRoot.TileInfosObsCol; } }
+		public ReadOnlyObservableCollection<XTileSetVM> Tiles { get { return Manager.Instance.XRoot.TileSetsObsCol; } }
 
 		public TilesTabVM()
 		{

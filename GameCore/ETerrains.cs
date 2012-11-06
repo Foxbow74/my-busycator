@@ -5,7 +5,7 @@ using RusLanguage;
 
 namespace GameCore
 {
-	public enum ETile
+	public enum ETerrains
 	{
 		[Terrain("ничто", ESex.IT, 0)]NONE,
 		[Terrain("почва", ESex.FEMALE)]GROUND,
@@ -46,7 +46,7 @@ namespace GameCore
 
 	public class TerrainAttribute : Attribute
 	{
-		private static Dictionary<ETile, TerrainAttribute> m_attrs;
+		private static Dictionary<ETerrains, TerrainAttribute> m_attrs;
 
 		public TerrainAttribute(string _displayName, ESex _sex = ESex.MALE)
 			: this(_displayName, 1.0f, 0.0f, true, _sex) { }
@@ -70,58 +70,58 @@ namespace GameCore
 		public float Opacity { get; private set; }
 		public bool IsCanShootThrough { get; private set; }
 
-		public static TerrainAttribute GetAttribute(ETile _enum)
+		public static TerrainAttribute GetAttribute(ETerrains _enum)
 		{
 			if (m_attrs == null)
 			{
-				m_attrs = Util.Fill<ETile, TerrainAttribute>();
+				m_attrs = Util.Fill<ETerrains, TerrainAttribute>();
 			}
 			return m_attrs[_enum];
 		}
 
-		public static EMapBlockTypes GetMapBlockType(ETile _tile)
+		public static EMapBlockTypes GetMapBlockType(ETerrains terrains)
 		{
-			switch (_tile)
+			switch (terrains)
 			{
-				case ETile.GRASS:
-				case ETile.GROUND:
-				case ETile.ROAD:
-				case ETile.RED_BRICK_WALL:
-				case ETile.YELLOW_BRICK_WALL:
-				case ETile.GRAY_BRICK_WALL:
-				case ETile.STATUE:
-				case ETile.WOOD_FLOOR_OAK:
-				case ETile.WOOD_FLOOR_MAPPLE:
-				case ETile.STONE_FLOOR:
-				case ETile.RED_BRICK_WINDOW:
-				case ETile.GRAY_BRICK_WINDOW:
-				case ETile.YELLOW_BRICK_WINDOW:
-				case ETile.STONE_WALL:
+				case ETerrains.GRASS:
+				case ETerrains.GROUND:
+				case ETerrains.ROAD:
+				case ETerrains.RED_BRICK_WALL:
+				case ETerrains.YELLOW_BRICK_WALL:
+				case ETerrains.GRAY_BRICK_WALL:
+				case ETerrains.STATUE:
+				case ETerrains.WOOD_FLOOR_OAK:
+				case ETerrains.WOOD_FLOOR_MAPPLE:
+				case ETerrains.STONE_FLOOR:
+				case ETerrains.RED_BRICK_WINDOW:
+				case ETerrains.GRAY_BRICK_WINDOW:
+				case ETerrains.YELLOW_BRICK_WINDOW:
+				case ETerrains.STONE_WALL:
 					return EMapBlockTypes.GROUND;
-				case ETile.FRESH_WATER:
+				case ETerrains.FRESH_WATER:
 					return EMapBlockTypes.FRESH_WATER;
-				case ETile.DEEP_FRESH_WATER:
+				case ETerrains.DEEP_FRESH_WATER:
 					return EMapBlockTypes.DEEP_FRESH_WATER;
-				case ETile.SWAMP:
+				case ETerrains.SWAMP:
 					return EMapBlockTypes.SWAMP;
-				case ETile.LAKE_COAST:
+				case ETerrains.LAKE_COAST:
 					return EMapBlockTypes.LAKE_COAST;
-				case ETile.COAST:
+				case ETerrains.COAST:
 					return EMapBlockTypes.COAST;
-				case ETile.DEEP_SEA:
+				case ETerrains.DEEP_SEA:
 					return EMapBlockTypes.DEEP_SEA;
-				case ETile.ETERNAL_SNOW:
+				case ETerrains.ETERNAL_SNOW:
 					return EMapBlockTypes.ETERNAL_SNOW;
-				case ETile.FOREST:
+				case ETerrains.FOREST:
 					return EMapBlockTypes.FOREST;
-				case ETile.MOUNT:
+				case ETerrains.MOUNT:
 					return EMapBlockTypes.MOUNT;
-				case ETile.SEA:
+				case ETerrains.SEA:
 					return EMapBlockTypes.SEA;
-				case ETile.SHRUBS:
+				case ETerrains.SHRUBS:
 					return EMapBlockTypes.SHRUBS;
 				default:
-					throw new ArgumentOutOfRangeException("_tile");
+					throw new ArgumentOutOfRangeException("terrains");
 			}
 		}
 	}

@@ -39,11 +39,6 @@ namespace OpenTKUi
 				m_img = new Image(rsrs, false);
 				foreach (var tile in _resourceProvider.Tiles)
 				{
-					if (tile.Tile==ETiles.FOG)
-					{
-						tile.IsFogTile = true;
-						TileInfo.FogTexCoords = tile.Texcoords;
-					}
 					tile.UpdateTexCoords(tile.X, tile.Y, rsrs.Width, rsrs.Height);
 				}
 			}
@@ -77,11 +72,6 @@ namespace OpenTKUi
 
 						tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
 
-						if (tile.IsFogTile)
-						{
-							TileInfo.FogTexCoords = tile.Texcoords;
-						}
-
 						gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
 					}
 				}
@@ -89,22 +79,29 @@ namespace OpenTKUi
 
 				foreach (var pair in TileHelper.AllTiles)
 				{
-					World.XResourceRoot.TileInfos.Add(new XTileInfo { Texture = (int)pair.Value.Set, Tile = pair.Key, X = pair.Value.Rct.Left / Constants.TILE_SIZE, Y = pair.Value.Rct.Top / Constants.TILE_SIZE, Color = pair.Value.Color });
+					var xTileSet = new XTileSet {Tile = pair.Key,};
+					World.XResourceRoot.TileSets.Add(xTileSet);
+					foreach (var tile in pair.Value.Tiles)
+					{
+						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, X = tile.Rct.Left / Constants.TILE_SIZE, Y = tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color });	
+					}
 				}
 
 				foreach (var tileset in TileHelper.AllTerrainTilesets)
 				{
-					var xTileSet = new XTileSet { Tile = tileset.Key };
-					World.XResourceRoot.TileSets.Add(xTileSet);
+					var xTerrainSet = new XTerrainSet { Terrains = tileset.Key };
+					World.XResourceRoot.TerrainSets.Add(xTerrainSet);
 					foreach (var tile in tileset.Value.Tiles)
 					{
-						xTileSet.Children.Add(new XTerrainInfo { Texture = (int)tile.Set, X = tile.Rct.Left / Constants.TILE_SIZE, Y = tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color.ToShortText() });
+						xTerrainSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, X = tile.Rct.Left / Constants.TILE_SIZE, Y = tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color });
 					}
 				}
 
 				World.SaveResources();
 				m_img = new Image(bmp, true);
 			}
+
+			TileInfo.FogTexCoords = ((OpenTKTile)TileHelper.AllTiles[ETiles.FOG].Tiles[0]).Texcoords;
 		}
 
 		public TileMapRenderer(int _screenWidth, int _screenHeight)
