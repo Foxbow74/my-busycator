@@ -14,7 +14,7 @@ namespace ResourceWizard.StoreableVMs
 		private ICollection<XTileSetVM> m_tileSets;
 
 		[X((int)EStoreKind.TERRAIN_SET)]
-		private ICollection<XTileSetVM> m_terrainSets;
+		private ICollection<XTerrainSetVM> m_terrainSets;
 
 		[X((int)EStoreKind.NICKS_INFO)]
 		private ICollection<XNicksInfoVM> m_nicksInfos;
@@ -30,10 +30,16 @@ namespace ResourceWizard.StoreableVMs
 		}
 
 		public ReadOnlyObservableCollection<XTileSetVM> TileSetsObsCol { get; private set; }
+		public ReadOnlyObservableCollection<XTerrainSetVM> TerrainSetsObsCol { get; private set; }
 
 		public ICollection<XTileSetVM> TileSets
 		{
 			get { return m_tileSets; }
+		}
+
+		public ICollection<XTerrainSetVM> TerrainSets
+		{
+			get { return m_terrainSets; }
 		}
 
 		public ICollection<XNicksInfoVM> NickInfos { get { return m_nicksInfos; } }
@@ -42,6 +48,7 @@ namespace ResourceWizard.StoreableVMs
 		{
 			base.InstantiationFinished();
 			TileSetsObsCol = CreateObservableCollection(m_tileSets);
+			TerrainSetsObsCol = CreateObservableCollection(m_terrainSets);
 		}
 	}
 }

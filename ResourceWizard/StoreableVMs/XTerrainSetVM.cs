@@ -16,12 +16,12 @@ namespace ResourceWizard.StoreableVMs
 			get { return EStoreKind.TERRAIN_SET; }
 		}
 
-		public ETerrains Terrains { get { return (ETerrains)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; } }
+		public ETerrains Terrain { get { return (ETerrains)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; } }
 
 		protected override void InstantiationFinished()
 		{
 			base.InstantiationFinished();
-			BindProperty(m_eTerrains, ()=>Terrains);
+			BindProperty(m_eTerrains, ()=>Terrain);
 		}
 	}
 }

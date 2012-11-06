@@ -5,9 +5,9 @@ namespace ResourceWizard.Views
 	/// <summary>
 	/// Interaction logic for TerrainsTab.xaml
 	/// </summary>
-	public partial class TerrainsTab : UserControl
+	public partial class TerrainsTabView : UserControl
 	{
-		public TerrainsTab()
+		public TerrainsTabView()
 		{
 			InitializeComponent();
 		}

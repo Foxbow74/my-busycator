@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
+using GameCore.Misc;
 using GameCore.Storage;
 using GameUi;
 using ResourceWizard.StoreableVMs;
@@ -17,7 +18,6 @@ namespace ResourceWizard
 
 		private Manager()
 		{
-			//XRoot.TileSets
 		}
 
 		public XResourceRootVM XRoot
@@ -36,7 +36,7 @@ namespace ResourceWizard
 		}
 
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
-		readonly Dictionary<ETextureSet, Dictionary<Point, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Point, Bitmap>>();
+		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, Color>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, Color>, Bitmap>>();
 
 
 		public Bitmap this[ETextureSet _set]
@@ -92,18 +92,19 @@ namespace ResourceWizard
 			}
 		}
 
-		public Bitmap this[ETextureSet _texture, int _x, int _y]
+		public Bitmap this[ETextureSet _texture, int _x, int _y, Color _color, FColor _fColor]
 		{
 			get
 			{
-				Dictionary<Point, Bitmap> dictionary;
+				Dictionary<Tuple<int, int, Color>, Bitmap> dictionary;
 				if (!m_tiles.TryGetValue(_texture, out dictionary))
 				{
-					dictionary = new Dictionary<Point, Bitmap>();
+					dictionary = new Dictionary<Tuple<int, int, Color>, Bitmap>();
 					m_tiles[_texture] = dictionary;
 				}
 				Bitmap bitmap;
-				if (!dictionary.TryGetValue(new Point(_x, _y), out bitmap))
+				var key = new Tuple<int, int, Color>(_x, _y, _color);
+				if (!dictionary.TryGetValue(key, out bitmap))
 				{
 					var txtr = this[_texture];
 					bitmap = new Bitmap(Constants.TILE_SIZE, Constants.TILE_SIZE);
@@ -111,6 +112,18 @@ namespace ResourceWizard
 					{
 						gr.DrawImage(txtr, 0, 0, new Rectangle(Constants.TILE_SIZE * _x, Constants.TILE_SIZE * _y, Constants.TILE_SIZE, Constants.TILE_SIZE), GraphicsUnit.Pixel);
 					}
+					var transparent = txtr.GetPixel(0, 0);
+					var rct = new Rct(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+					foreach (var point in rct.AllPoints)
+					{
+						var pixel = bitmap.GetPixel(point.X, point.Y);
+						if (pixel == transparent) continue;
+						var fcolor = new FColor(pixel.A, pixel.R, pixel.G, pixel.B).Multiply(1f / 255f);
+						var result = fcolor.Multiply(_fColor).Multiply(255);
+						bitmap.SetPixel(point.X, point.Y, Color.FromArgb((int)result.A, (int)result.R, (int)result.G, (int)result.B));
+					}
+
+					dictionary.Add(key, bitmap);
 				}
 				return bitmap;
 			}

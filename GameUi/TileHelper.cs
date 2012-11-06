@@ -37,7 +37,7 @@ namespace GameUi
 				{
 					var set = new TileSet();
 					AllTiles.Add(xTileSet.Tile, set);
-					foreach (XTileInfo tileInfo in xTileSet.Children)
+					foreach (XTileInfo tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
 						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
 					}
@@ -46,7 +46,7 @@ namespace GameUi
 				{
 					var set = new TileSet();
 					AllTerrainTilesets.Add(xTileSet.Terrains, set);
-					foreach (var tileInfo in xTileSet.Children)
+					foreach (var tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
 						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
 					}
