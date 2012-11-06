@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
+using System.Windows.Threading;
 using GameCore;
 using GameCore.Misc;
 using GameCore.Storage;
@@ -11,6 +13,8 @@ namespace ResourceWizard
 {
 	class Manager
 	{
+		public readonly ColorDialog ColorDialog = new ColorDialog { FullOpen = true };
+
 		readonly XResourceServer m_resourceSrv = new XResourceServer();
 		readonly XClient m_resourceCli = new XClient();
 
@@ -35,8 +39,12 @@ namespace ResourceWizard
 			get { return m_instance ?? (m_instance = new Manager()); }
 		}
 
+		public Dispatcher Dispatcher { get; set; }
+
+		public XTileInfoVM TileBuffer { get; set; }
+
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
-		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, Color>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, Color>, Bitmap>>();
+		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool>, Bitmap>>();
 
 
 		public Bitmap this[ETextureSet _set]
@@ -92,18 +100,18 @@ namespace ResourceWizard
 			}
 		}
 
-		public Bitmap this[ETextureSet _texture, int _x, int _y, Color _color, FColor _fColor]
+		public Bitmap this[ETextureSet _texture, int _x, int _y, Color _color, FColor _fColor, bool _removeTransparency]
 		{
 			get
 			{
-				Dictionary<Tuple<int, int, Color>, Bitmap> dictionary;
+				Dictionary<Tuple<int, int, FColor, bool>, Bitmap> dictionary;
 				if (!m_tiles.TryGetValue(_texture, out dictionary))
 				{
-					dictionary = new Dictionary<Tuple<int, int, Color>, Bitmap>();
+					dictionary = new Dictionary<Tuple<int, int, FColor, bool>, Bitmap>();
 					m_tiles[_texture] = dictionary;
 				}
 				Bitmap bitmap;
-				var key = new Tuple<int, int, Color>(_x, _y, _color);
+				var key = new Tuple<int, int, FColor, bool>(_x, _y, _fColor, _removeTransparency);
 				if (!dictionary.TryGetValue(key, out bitmap))
 				{
 					var txtr = this[_texture];
@@ -120,6 +128,10 @@ namespace ResourceWizard
 						if (pixel == transparent) continue;
 						var fcolor = new FColor(pixel.A, pixel.R, pixel.G, pixel.B).Multiply(1f / 255f);
 						var result = fcolor.Multiply(_fColor).Multiply(255);
+						if (_removeTransparency)
+						{
+							result.A = 255;
+						}
 						bitmap.SetPixel(point.X, point.Y, Color.FromArgb((int)result.A, (int)result.R, (int)result.G, (int)result.B));
 					}
 

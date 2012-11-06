@@ -6,18 +6,20 @@
              xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs" mc:Ignorable="d" 
 			 d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}"
              d:DesignHeight="300" d:DesignWidth="300">
-	<Border BorderThickness="2" BorderBrush="{Binding Brush}" Margin="1,2" Background="Black">
-		<Image Source="{Binding Image}" Margin="2"/>
-		<Border.ContextMenu>
-			<ContextMenu>
-				<MenuItem Header="Выбрать цвет" Command="{Binding SelectColorCommand}"/>
-				<Separator/>
-				<MenuItem Header="Дублировать" Command="{Binding DublicateCommand}"/>
-				<MenuItem Header="Сдвинуть влево" Command="{Binding MoveLeftCommand}"/>
-				<MenuItem Header="Сдвинуть вправо" Command="{Binding MoveRightCommand}"/>
-				<Separator/>
-				<MenuItem Header="Удалить"  Command="{Binding DeleteCommand}"/>
-			</ContextMenu>
-		</Border.ContextMenu>
-	</Border>
+	<StackPanel  Margin="1,2">
+		<Border BorderThickness="1" Background="{Binding Brush}" BorderBrush="Black" CornerRadius="2" Width="10" Height="10" HorizontalAlignment="Center" Margin="0,0,0,4">
+			<Border.InputBindings>
+				<MouseBinding MouseAction="LeftClick" Command="{Binding SelectColorCommand}"/>
+			</Border.InputBindings>
+		</Border>
+		<Border Background="Black">
+			<Image Source="{Binding Image}" Margin="2"/>
+		</Border>
+		<Border Background="Magenta" Margin="0,2">
+			<Image Source="{Binding Image}" Margin="2"/>
+		</Border>
+		<Border Background="White">
+			<Image Source="{Binding Image}" Margin="2"/>
+		</Border>
+	</StackPanel>
 </UserControl>
