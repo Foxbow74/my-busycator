@@ -62,13 +62,19 @@
     <Compile Include="StoreableView\TileInfoSelectorView.xaml.cs">
       <DependentUpon>TileInfoSelectorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StoreableView\TileInfoView.xaml.cs">
+      <DependentUpon>TileInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StoreableView\TileSetView.xaml.cs">
+      <DependentUpon>TileSetView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="StoreableVMs\XAbstractTileSetVM.cs" />
     <Compile Include="StoreableVMs\XChildObjectVM.cs" />
     <Compile Include="StoreableVMs\XMonsterInfoVM.cs" />
     <Compile Include="StoreableVMs\XNicksInfoVM.cs" />
     <Compile Include="StoreableVMs\XObjectVM.cs" />
     <Compile Include="StoreableVMs\XResourceRootVM.cs" />
-    <Compile Include="StoreableVMs\XOldTileInfoVM.cs" />
+    <Compile Include="StoreableVMs\XTileInfoVM.cs" />
     <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
     <Compile Include="StoreableVMs\XTileSetVM.cs" />
     <Compile Include="Views\TerrainsTab.xaml.cs">
@@ -90,6 +96,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="StoreableView\TileInfoSelectorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StoreableView\TileInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StoreableView\TileSetView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

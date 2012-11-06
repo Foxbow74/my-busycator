@@ -1,6 +1,5 @@
 ﻿using GameCore;
 using GameCore.Misc;
-using GameCore.PathFinding;
 using GameUi;
 
 namespace OpenTKUi
@@ -21,7 +20,7 @@ namespace OpenTKUi
 
 		public void UpdateTexCoords(int _x, int _y, float _imgWidth, float _imgHeight)
 		{
-			Rct = new Rct(_x * Constants.TILE_SIZE, _y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+			Point = new Point(_x, _y);
 			float u1 = 0.0f, u2 = 0.0f, v1 = 0.0f, v2 = 0.0f;
 
 			if (_x != 0) u1 = 1.0f/(_imgWidth/_x/Constants.TILE_SIZE);

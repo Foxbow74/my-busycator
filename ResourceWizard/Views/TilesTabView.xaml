@@ -3,14 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView" mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+			 xmlns:VMs="clr-namespace:ResourceWizard.VMs" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance VMs:TilesTabVM}">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="*"/>
 			<ColumnDefinition Width="5*"/>
 		</Grid.ColumnDefinitions>
 		<ListBox ItemsSource="{Binding Tiles}" DisplayMemberPath="Tile" x:Name="lb" SelectedIndex="0" Margin="10,10,0,10"/>
-		<StoreableView:TileInfoSelectorView Grid.Column="1" DataContext="{Binding ElementName=lb, Path=SelectedItem}"/>
+		<ContentPresenter Content="{Binding ElementName=lb, Path=SelectedItem}" Grid.Column="1" />
 	</Grid>
 </UserControl>

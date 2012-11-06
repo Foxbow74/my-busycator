@@ -16,13 +16,13 @@ namespace ResourceWizard.StoreableVMs
 			get { return EStoreKind.TILE_SET; }
 		}
 
-		public ETiles Terrains { get { return (ETiles)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
+		public ETiles Tile { get { return (ETiles)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
 
 
 		protected override void InstantiationFinished()
 		{
 			base.InstantiationFinished();
-			BindProperty(m_eTile, () => Terrains);
+			BindProperty(m_eTile, () => Tile);
 		}
 	}
 }

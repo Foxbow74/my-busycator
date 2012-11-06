@@ -35,21 +35,21 @@ namespace ResourceWizard
 			get { return m_instance ?? (m_instance = new Manager()); }
 		}
 
-		readonly Dictionary<ETextureSet,Bitmap> m_textures = new Dictionary<ETextureSet, Bitmap>();
+		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
+		readonly Dictionary<ETextureSet, Dictionary<Point, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Point, Bitmap>>();
 
 
 		public Bitmap this[ETextureSet _set]
 		{
 			get
 			{
-				Bitmap value;
+				OpenTKUi.Image value;
 				if(!m_textures.TryGetValue(_set, out value))
 				{
 					string fileName;
 					switch (_set)
 					{
 						case ETextureSet.RJ:
-							
 							fileName = "Resources\\redjack15v.bmp";
 							break;
 						case ETextureSet.RB1:
@@ -85,10 +85,34 @@ namespace ResourceWizard
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
-					value = (Bitmap)Bitmap.FromFile(fileName);
+					value = new OpenTKUi.Image(new Bitmap(fileName), true, false);
 					m_textures[_set] = value;
 				}
-				return value;
+				return value.Bitmap;
+			}
+		}
+
+		public Bitmap this[ETextureSet _texture, int _x, int _y]
+		{
+			get
+			{
+				Dictionary<Point, Bitmap> dictionary;
+				if (!m_tiles.TryGetValue(_texture, out dictionary))
+				{
+					dictionary = new Dictionary<Point, Bitmap>();
+					m_tiles[_texture] = dictionary;
+				}
+				Bitmap bitmap;
+				if (!dictionary.TryGetValue(new Point(_x, _y), out bitmap))
+				{
+					var txtr = this[_texture];
+					bitmap = new Bitmap(Constants.TILE_SIZE, Constants.TILE_SIZE);
+					using(var gr = Graphics.FromImage(bitmap))
+					{
+						gr.DrawImage(txtr, 0, 0, new Rectangle(Constants.TILE_SIZE * _x, Constants.TILE_SIZE * _y, Constants.TILE_SIZE, Constants.TILE_SIZE), GraphicsUnit.Pixel);
+					}
+				}
+				return bitmap;
 			}
 		}
 	}
