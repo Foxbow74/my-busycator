@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:VMs="clr-namespace:ResourceWizard.VMs"
         xmlns:Views="clr-namespace:ResourceWizard.Views" xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
-        xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView" Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
+        xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView" Title="MainWindow" Height="350" Width="525" WindowState="Maximized" >
 	<Window.Resources>
 		<DataTemplate DataType="{x:Type VMs:TilesTabVM}">
 			<Views:TilesTabView/>
 		</DataTemplate>
 		<DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">
-			<Views:TerrainsTabView/>
+			<Views:TilesTabView/>
 		</DataTemplate>
 		<DataTemplate DataType="{x:Type VMs:TextureVM}">
 			<Views:TextureView/>
@@ -23,5 +23,5 @@
 			<StoreableView:TileInfoView/>
 		</DataTemplate>
 	</Window.Resources>
-	<TabControl ItemsSource="{Binding Tabs}" DisplayMemberPath="DisplayName" SelectedIndex="0"/>
+	<TabControl ItemsSource="{Binding Tabs}" DisplayMemberPath="DisplayName" SelectedIndex="0" Background="Gray"/>
 </Window>

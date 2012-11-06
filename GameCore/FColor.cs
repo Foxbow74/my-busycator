@@ -1677,6 +1677,10 @@ namespace GameCore
 
 		public static FColor Parse(string _hex)
 		{
+			if(string.IsNullOrEmpty(_hex))
+			{
+				return Black;
+			}
 			var n = Int64.Parse(_hex, NumberStyles.HexNumber);
 			var fColor = new FColor(1f, ((n >> 16) & 0xff)/255f, ((n >> 8) & 0xff)/255f, (n & 0xff)/255f);
 			return fColor;

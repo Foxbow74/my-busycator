@@ -3,19 +3,82 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs" mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
-    <Grid>
+             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
+             xmlns:Views="clr-namespace:ResourceWizard.Views" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
+	<UserControl.Resources>
+		<DataTemplate DataType="{x:Type StoreableVMs:XAbstractTileSetVM}" x:Key="TT">
+			<Grid  d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="*"/>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="*"/>
+				</Grid.ColumnDefinitions>
+				<CheckBox IsChecked="{Binding RemoveTransparency}" Foreground="White">Убрать полупрозрачность рисунка</CheckBox>
+				<ToolBar Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2">
+					<MenuItem Header="Выбрать цвет" Command="{Binding SelectColorCommand}"/>
+					<Separator/>
+					<MenuItem Header="Дублировать" Command="{Binding DublicateCommand}"/>
+					<MenuItem Header="Сдвинуть влево" Command="{Binding MoveLeftCommand}"/>
+					<MenuItem Header="Сдвинуть вправо" Command="{Binding MoveRightCommand}"/>
+					<Separator/>
+					<MenuItem Header="Копировать" Command="{Binding CopyCommand}"/>
+					<MenuItem Header="Вставить" Command="{Binding PasteCommand}"/>
+					<Separator/>
+					<MenuItem Header="Удалить"  Command="{Binding DeleteCommand}"/>
+				</ToolBar>
+				<Grid Grid.Row="2" HorizontalAlignment="Left" Width="300">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="Auto"/>
+						<ColumnDefinition Width="5"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
+					<Label Grid.Row="0">R</Label>
+					<Slider Grid.Row="0" Grid.Column="2" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding ColorR}"/>
+					<Label Grid.Row="1">G</Label>
+					<Slider Grid.Row="1" Grid.Column="2" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding ColorG}"/>
+					<Label Grid.Row="2">B</Label>
+					<Slider Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding ColorB}"/>
+				</Grid>
+				<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Black" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Image Source="{Binding}" Stretch="None"/>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>		
+				</ItemsControl>
+				<Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshMosaicCommand}">Обновить</Button>
+				<Views:TextureView Grid.Row="3" DataContext="{Binding TextureVM}" Grid.ColumnSpan="2"/>
+			</Grid>
+		</DataTemplate>
+	</UserControl.Resources>
+		<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<ListBox ItemsSource="{Binding ChildrenObsCol}" BorderThickness="0" Background="Transparent">
+		<ListBox ItemsSource="{Binding ChildrenObsCol}" BorderThickness="0,0,0,1" Background="DarkGray" x:Name="lb" SelectedItem="{Binding SelectedItem}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Horizontal"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
+		<ContentPresenter Grid.Row="1" Margin="0,10" Content="{Binding ElementName=lb, Path=SelectedItem}" ContentTemplate="{StaticResource TT}"/>
 	</Grid>
 </UserControl>

@@ -14,7 +14,7 @@ namespace ResourceWizard
 		{
 			base.OnStartup(e);
 			XClient.UiDispatcher = Dispatcher;
-
+			Manager.Instance.Dispatcher = Dispatcher;
 			var mw = new MainWindow(){DataContext = new MainVM()};
 			mw.Show();
 		}

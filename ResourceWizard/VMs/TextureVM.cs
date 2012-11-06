@@ -4,15 +4,18 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using ClientCommonWpf;
+using GameCore;
 using GameUi;
+using ResourceWizard.StoreableVMs;
 
 namespace ResourceWizard.VMs
 {
 	internal class TextureVM : AbstractViewModel
 	{
+		private readonly XTileInfoVM m_xTileInfoVM;
 		private ETextureSet m_texture;
-		private double m_cursorX;
-		private double m_cursorY;
+		private int m_cursorX;
+		private int m_cursorY;
 
 		public ETextureSet Texture
 		{
@@ -24,8 +27,12 @@ namespace ResourceWizard.VMs
 			}
 		}
 
-		public TextureVM()
+		public TextureVM(XTileInfoVM _xTileInfoVM)
 		{
+			Texture = _xTileInfoVM.Texture;
+			CursorX = _xTileInfoVM.X * Constants.TILE_SIZE;
+			CursorY = _xTileInfoVM.Y * Constants.TILE_SIZE;
+			m_xTileInfoVM = _xTileInfoVM;
 			Sets = new ObservableCollection<ETextureSet>(Enum.GetValues(typeof(ETextureSet)).Cast<ETextureSet>());
 			TextureClick = new RelayCommand(ExecuteTextureClick);
 			SetCommand = new RelayCommand(ExecuteSetCommand, CanSetCommand);
@@ -44,12 +51,17 @@ namespace ResourceWizard.VMs
 
 		private void ExecuteAddCommand(object _obj)
 		{
-			
+			var vm = new XTileInfoVM {Texture = Texture, X = CursorX/Constants.TILE_SIZE, Y = CursorY/Constants.TILE_SIZE, Color = m_xTileInfoVM.Color, Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1};
+			m_xTileInfoVM.Parent.Children.Add(vm);
+			m_xTileInfoVM.Parent.SelectedItem = vm;
 		}
 
 		private void ExecuteSetCommand(object _obj)
 		{
-			
+			m_xTileInfoVM.Texture = Texture;
+			m_xTileInfoVM.X = CursorX / Constants.TILE_SIZE;
+			m_xTileInfoVM.Y = CursorY / Constants.TILE_SIZE;
+			m_xTileInfoVM.RefreshImage();
 		}
 
 		private void ExecuteTextureClick(object _o)
@@ -71,7 +83,7 @@ namespace ResourceWizard.VMs
 
 		public Point MousePoint { get; set; }
 
-		public double CursorX
+		public int CursorX
 		{
 			get { return m_cursorX; }
 			set
@@ -81,7 +93,7 @@ namespace ResourceWizard.VMs
 			}
 		}
 
-		public double CursorY
+		public int CursorY
 		{
 			get { return m_cursorY; }
 			set
