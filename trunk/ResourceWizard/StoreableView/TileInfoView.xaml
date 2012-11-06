@@ -6,7 +6,18 @@
              xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs" mc:Ignorable="d" 
 			 d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-		<Image Source="{Binding Image}"/>
-	</Grid>
+	<Border BorderThickness="2" BorderBrush="{Binding Brush}" Margin="1,2" Background="Black">
+		<Image Source="{Binding Image}" Margin="2"/>
+		<Border.ContextMenu>
+			<ContextMenu>
+				<MenuItem Header="Выбрать цвет" Command="{Binding SelectColorCommand}"/>
+				<Separator/>
+				<MenuItem Header="Дублировать" Command="{Binding DublicateCommand}"/>
+				<MenuItem Header="Сдвинуть влево" Command="{Binding MoveLeftCommand}"/>
+				<MenuItem Header="Сдвинуть вправо" Command="{Binding MoveRightCommand}"/>
+				<Separator/>
+				<MenuItem Header="Удалить"  Command="{Binding DeleteCommand}"/>
+			</ContextMenu>
+		</Border.ContextMenu>
+	</Border>
 </UserControl>

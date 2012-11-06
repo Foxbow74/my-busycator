@@ -81,9 +81,10 @@ namespace OpenTKUi
 				{
 					var xTileSet = new XTileSet {Tile = pair.Key,};
 					World.XResourceRoot.TileSets.Add(xTileSet);
-					foreach (var tile in pair.Value.Tiles)
+					for (int index = 0; index < pair.Value.Tiles.Count; index++)
 					{
-						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color });	
+						var tile = pair.Value.Tiles[index];
+						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color, Order = index });
 					}
 				}
 
@@ -91,9 +92,10 @@ namespace OpenTKUi
 				{
 					var xTerrainSet = new XTerrainSet { Terrains = tileset.Key };
 					World.XResourceRoot.TerrainSets.Add(xTerrainSet);
-					foreach (var tile in tileset.Value.Tiles)
+					for (int index = 0; index < tileset.Value.Tiles.Count; index++)
 					{
-						xTerrainSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color });
+						var tile = tileset.Value.Tiles[index];
+						xTerrainSet.Children.Add(new XTileInfo {Texture = (int) tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color, Order = index });
 					}
 				}
 

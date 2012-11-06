@@ -10,7 +10,7 @@
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
-		<ListBox ItemsSource="{Binding ChildrenObsCol}">
+		<ListBox ItemsSource="{Binding ChildrenObsCol}" BorderThickness="0" Background="Transparent">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Horizontal"/>

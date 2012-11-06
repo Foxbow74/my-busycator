@@ -7,6 +7,9 @@
 		<DataTemplate DataType="{x:Type VMs:TilesTabVM}">
 			<Views:TilesTabView/>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">
+			<Views:TerrainsTabView/>
+		</DataTemplate>
 		<DataTemplate DataType="{x:Type VMs:TextureVM}">
 			<Views:TextureView/>
 		</DataTemplate>

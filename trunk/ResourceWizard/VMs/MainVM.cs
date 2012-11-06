@@ -10,7 +10,8 @@ namespace ResourceWizard.VMs
 		{
 			Tabs = new ObservableCollection<TabVM>
 				       {
-					       new TilesTabVM()
+					       new TilesTabVM(),
+						   new TerrainsTabVM(),
 				       };
 		}
 	}
