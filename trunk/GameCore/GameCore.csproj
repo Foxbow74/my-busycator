@@ -167,7 +167,7 @@
     <Compile Include="Plants\Tree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Thing.cs" />
-    <Compile Include="ETile.cs" />
+    <Compile Include="ETerrains.cs" />
     <Compile Include="ETiles.cs" />
     <Compile Include="Misc\Util.cs" />
     <Compile Include="Storage\EStoreKind.cs" />
@@ -175,10 +175,11 @@
     <Compile Include="Storage\XResourceServer.cs" />
     <Compile Include="Storage\XChildObject.cs" />
     <Compile Include="Storage\XObject.cs" />
+    <Compile Include="Storeable\XAbstractTileSet.cs" />
     <Compile Include="Storeable\XMonsterInfo.cs" />
     <Compile Include="Storeable\XNicksInfo.cs" />
     <Compile Include="Storeable\XResourceRoot.cs" />
-    <Compile Include="Storeable\XTerrainInfo.cs" />
+    <Compile Include="Storeable\XTerrainSet.cs" />
     <Compile Include="Storeable\XTileInfo.cs" />
     <Compile Include="Storeable\XTileSet.cs" />
     <Compile Include="World.cs" />

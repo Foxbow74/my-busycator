@@ -128,7 +128,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		    {
                 foreach (var point in roadPoints)
                 {
-                    _block.Map[point.X, point.Y] = ETile.ROAD;
+                    _block.Map[point.X, point.Y] = ETerrains.ROAD;
                 }
             }
 

@@ -3,12 +3,11 @@ using XTransport;
 
 namespace GameCore.Storeable
 {
-	class XTileInfo : XObject
+	class XTileInfo : XChildObject<XAbstractTileSet>
 	{
 		public XTileInfo(){}
 
 		[X("TEXTURE")]private readonly IXValue<int> m_eTexture;
-		[X("ETile")]private IXValue<int> m_eTile;
 		[X("X")]private IXValue<int> m_x;
 		[X("Y")]private IXValue<int> m_y;
 		[X("Color")]private IXValue<string> m_color;
@@ -23,8 +22,6 @@ namespace GameCore.Storeable
 		public int Y { get { return m_y.Value; } set { m_y.Value = value; } }
 
 		public FColor Color { get { return FColor.Parse(m_color.Value); } set { m_color.Value = value.ToShortText(); } }
-
-		public ETiles Tile { get { return (ETiles)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
 
 		public int Texture { get { return m_eTexture.Value; } set { m_eTexture.Value = value; } }
 	}

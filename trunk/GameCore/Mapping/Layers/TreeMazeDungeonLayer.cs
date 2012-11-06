@@ -95,9 +95,9 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		internal override IEnumerable<ETile> DefaultWalls { get { yield return ETile.STONE_WALL; } }
+		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
 
-		internal override IEnumerable<ETile> DefaultEmptySpaces { get { yield return ETile.STONE_FLOOR; } }
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
 
 		public override FColor Ambient { get { return new FColor(1f, 0.1f, 0f, 0f); } }
 

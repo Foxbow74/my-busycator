@@ -17,7 +17,7 @@ namespace ResourceWizard
 
 		private Manager()
 		{
-			var t = XRoot.NickInfos.Count;
+			//XRoot.TileSets
 		}
 
 		public XResourceRootVM XRoot

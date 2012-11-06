@@ -65,18 +65,18 @@ namespace GameCore.Misc
 			}
 		}
 
-		public static ETile GetTerrain(this EDirections _direction)
+		public static ETerrains GetTerrain(this EDirections _direction)
 		{
 			switch (_direction)
 			{
 				case EDirections.UP:
-					return ETile.UP;
+					return ETerrains.UP;
 				case EDirections.DOWN:
-					return ETile.DOWN;
+					return ETerrains.DOWN;
 				case EDirections.LEFT:
-					return ETile.LEFT;
+					return ETerrains.LEFT;
 				case EDirections.RIGHT:
-					return ETile.RIGHT;
+					return ETerrains.RIGHT;
 				default:
 					throw new ArgumentOutOfRangeException("_direction");
 			}

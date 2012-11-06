@@ -107,9 +107,9 @@ namespace GameCore.Mapping.Layers
 
 		public City City { get; private set; }
 
-		internal override IEnumerable<ETile> DefaultEmptySpaces { get { yield return ETile.GRASS; } }
+		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
-		internal override IEnumerable<ETile> DefaultWalls { get { yield return ETile.RED_BRICK_WALL; } }
+		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.RED_BRICK_WALL; } }
 		
 		public override FColor Ambient { get { return new FColor(1f, 1f, 1f, 0.5f).Multiply(0.8f); } }
 
@@ -180,7 +180,7 @@ namespace GameCore.Mapping.Layers
 		    {
 				switch (block.Map[point.X, point.Y])
 			    {
-					case ETile.FOREST:
+					case ETerrains.FOREST:
 						switch (rnd.Next(10))
 						{
 							case 0:
@@ -194,7 +194,7 @@ namespace GameCore.Mapping.Layers
 								break;
 						}
 						break;
-					case ETile.SHRUBS:
+					case ETerrains.SHRUBS:
 						switch (rnd.Next(7))
 						{
 							case 0:

@@ -16,7 +16,6 @@ namespace ResourceEditor
 		public MainForm()
 		{
 			TileHelper.Init(m_rp, null);
-			m_rp.FillTiles();
 
 			SuspendLayout();
 			m_tc = new TabControl { Dock = DockStyle.Fill, Appearance = TabAppearance.Normal, };

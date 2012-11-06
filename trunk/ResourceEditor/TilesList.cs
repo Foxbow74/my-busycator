@@ -139,9 +139,9 @@ namespace ResourceEditor
 			}
 			if (!TileHelper.AllTiles.ContainsKey((ETiles)_item))
 			{
-				TileHelper.AllTiles.Add((ETiles)_item, new Tile(ETextureSet.RJ, 0, 0, FColor.White));
+				TileHelper.AllTiles.Add((ETiles)_item, new TileSet(new Tile(ETextureSet.RJ, 0, 0, FColor.White)));
 			}
-			return (Tile)TileHelper.AllTiles[(ETiles)_item];
+			return (Tile)TileHelper.AllTiles[(ETiles)_item][0];
 		}
 
 		public void AddTile(Tile _tile)

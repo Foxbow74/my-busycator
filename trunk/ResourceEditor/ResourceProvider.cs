@@ -11,7 +11,6 @@ namespace ResourceEditor
 
 		public ResourceProvider()
 		{
-			Tiles = new Dictionary<ETiles, ATile>();
 			TextureSets = new Dictionary<ETextureSet, Bitmap>();
 		}
 
@@ -41,14 +40,6 @@ namespace ResourceEditor
 		{
 			var tile = new Tile(ETextureSet.RJ, _col, _row, _color);
 			return tile;
-		}
-
-		public void FillTiles()
-		{
-			foreach (var pair in TileHelper.AllTiles)
-			{
-				Tiles.Add(pair.Key, pair.Value);
-			}
 		}
 	}
 }

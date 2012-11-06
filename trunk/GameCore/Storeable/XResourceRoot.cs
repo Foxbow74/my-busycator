@@ -7,8 +7,8 @@ namespace GameCore.Storeable
 	class XResourceRoot : XObject
 	{
 		[X((int)EStoreKind.MONSTER_INFO)]private ICollection<XMonsterInfo> m_monsterInfos;
-		
-		[X((int)EStoreKind.TILE_INFO)]private ICollection<XTileInfo> m_tileInfos;
+
+		[X((int)EStoreKind.TERRAIN_SET)]private ICollection<XTerrainSet> m_terrainSets;
 		
 		[X((int)EStoreKind.TILE_SET)]private ICollection<XTileSet> m_tileSets;
 
@@ -24,9 +24,9 @@ namespace GameCore.Storeable
 			get { return m_monsterInfos; }
 		}
 
-		public ICollection<XTileInfo> TileInfos
+		public ICollection<XTerrainSet> TerrainSets
 		{
-			get { return m_tileInfos; }
+			get { return m_terrainSets; }
 		}
 
 		public ICollection<XTileSet> TileSets
