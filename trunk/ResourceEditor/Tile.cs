@@ -21,7 +21,7 @@ namespace ResourceEditor
 		{
 			X = _x;
 			Y = _y;
-			Rct = new Rct(_x * Constants.TILE_SIZE, _y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+			Point = new Point(_x,_y);
 			Set = _set;
 			Color = _color;
 		}

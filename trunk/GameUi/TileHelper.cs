@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using GameCore;
 using GameCore.Misc;
+using GameCore.Storeable;
 
 namespace GameUi
 {
@@ -36,18 +37,18 @@ namespace GameUi
 				{
 					var set = new TileSet();
 					AllTiles.Add(xTileSet.Tile, set);
-					foreach (var tileInfo in xTileSet.Children)
+					foreach (XTileInfo tileInfo in xTileSet.Children)
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.X, tileInfo.Y, tileInfo.Color));
+						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
 					}
 				}
 				foreach (var xTileSet in World.XResourceRoot.TerrainSets)
 				{
 					var set = new TileSet();
 					AllTerrainTilesets.Add(xTileSet.Terrains, set);
-					foreach (var terrainInfo in xTileSet.Children)
+					foreach (var tileInfo in xTileSet.Children)
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, terrainInfo.X, terrainInfo.Y, terrainInfo.Color));
+						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
 					}
 				}
 			}

@@ -16,7 +16,7 @@ namespace OpenTKUi
 		{
 		}
 
-		public Image(Bitmap _bmp, bool _isAlpha)
+		public Image(Bitmap _bmp, bool _isAlpha, bool _glFunctionality = true)
 		{
             Width = _bmp.Width;
             Height = _bmp.Height;
@@ -36,20 +36,26 @@ namespace OpenTKUi
 
 		    m_alpha = _isAlpha;
 
-			GL.GenTextures(1, out m_texture);
-			GL.BindTexture(TextureTarget.Texture2D, m_texture);
+			if (_glFunctionality)
+			{
+				GL.GenTextures(1, out m_texture);
+				GL.BindTexture(TextureTarget.Texture2D, m_texture);
+			}
 
 			if (m_alpha)
 			{
-				FillBackgroundByTransparentColorAndCopyBits();
+				FillBackgroundByTransparentColorAndCopyBits(_glFunctionality);
 			}
 			else
 			{
 				CopyBits();
 			}
 
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
-			GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+			if (_glFunctionality)
+			{
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
+				GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
+			}
 		}
 
 		public float Width { get; private set; }
@@ -71,24 +77,29 @@ namespace OpenTKUi
 
 		#endregion
 
-		private void FillBackgroundByTransparentColorAndCopyBits()
+		private void FillBackgroundByTransparentColorAndCopyBits(bool _glFunctionality = true)
 		{
 			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite,
 			                           PixelFormat.Format32bppPArgb);
 
 			FillBackgroundByTransparentColor(data, Color.FromArgb(1,0,0,0));
 
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			if (_glFunctionality)
+			{
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+			}
 			Bitmap.UnlockBits(data);
 		}
 
-		private void CopyBits()
+		private void CopyBits(bool _glFunctionality = true)
 		{
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly,
-									   PixelFormat.Format32bppPArgb);
-			GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
-			              OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-			GL.Finish();
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+
+			if (_glFunctionality)
+			{
+				GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+				GL.Finish();
+			}
 			Bitmap.UnlockBits(data);
 		}
 

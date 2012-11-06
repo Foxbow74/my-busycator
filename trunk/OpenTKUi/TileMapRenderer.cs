@@ -35,7 +35,7 @@ namespace OpenTKUi
 
 			if (File.Exists(Constants.RESOURCES_PNG_FILE))
 			{
-				var rsrs = (Bitmap)Bitmap.FromFile(Constants.RESOURCES_PNG_FILE);
+				var rsrs = new Bitmap(Constants.RESOURCES_PNG_FILE);
 				m_img = new Image(rsrs, false);
 				foreach (var tile in _resourceProvider.Tiles)
 				{
@@ -83,7 +83,7 @@ namespace OpenTKUi
 					World.XResourceRoot.TileSets.Add(xTileSet);
 					foreach (var tile in pair.Value.Tiles)
 					{
-						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, X = tile.Rct.Left / Constants.TILE_SIZE, Y = tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color });	
+						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color });	
 					}
 				}
 
@@ -93,7 +93,7 @@ namespace OpenTKUi
 					World.XResourceRoot.TerrainSets.Add(xTerrainSet);
 					foreach (var tile in tileset.Value.Tiles)
 					{
-						xTerrainSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, X = tile.Rct.Left / Constants.TILE_SIZE, Y = tile.Rct.Top / Constants.TILE_SIZE, Color = tile.Color });
+						xTerrainSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = tile.Color });
 					}
 				}
 
