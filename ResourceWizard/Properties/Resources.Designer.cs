@@ -181,6 +181,16 @@ namespace ResourceWizard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap pawn_glass_white {
+            get {
+                object obj = ResourceManager.GetObject("pawn_glass_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Phoebus_16x16 {
             get {
                 object obj = ResourceManager.GetObject("Phoebus_16x16", resourceCulture);
