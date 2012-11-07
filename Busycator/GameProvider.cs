@@ -83,7 +83,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
 					{
-						game.Run(50, 60);
+						game.Run(60, 60);
 					}
 				}
 				catch (Exception exception)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -25,6 +26,12 @@ namespace GameCore
 		static World() 
 		{
 			Rnd = new Random(Constants.WORLD_SEED);
+
+            if (!File.Exists(Constants.RESOURCES_DB_FILE))
+            {
+                throw new ApplicationException("Не найдена база ресурсов " + Constants.RESOURCES_DB_FILE);
+            }
+
 			XResourceRoot = m_resourceCli.GetRoot<XResourceRoot>();
 		}
 

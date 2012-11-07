@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using GameCore;
 using GameCore.Misc;
 using GameCore.Storage;
 using GameUi;
+using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
+using RusLanguage;
 using Color = System.Drawing.Color;
 
 namespace ResourceWizard
 {
 	class Manager
 	{
-		public readonly ColorDialog ColorDialog = new ColorDialog { FullOpen = true };
+		public readonly ColorDialog COLOR_DIALOG = new ColorDialog { FullOpen = true };
 
 		readonly XResourceServer m_resourceSrv = new XResourceServer();
 		readonly XClient m_resourceCli = new XClient();
@@ -35,11 +39,88 @@ namespace ResourceWizard
 
 		public void Save()
 		{
-			XRoot.BeforeSave();
+            PackTiles();
+            XRoot.BeforeSave();
+
+            if(XRoot.NickInfos.Count==0)
+            {
+                var males = new XNicksInfoVM();
+                var females = new XNicksInfoVM();
+                XRoot.NickInfos.Add(males);
+                XRoot.NickInfos.Add(females);
+
+                males.Sex = ESex.MALE;
+                males.Nicks = Resources.malenicks;
+
+                females.Sex = ESex.FEMALE;
+                females.Nicks = Resources.femalenicks;
+            }
 			m_resourceCli.Save(XRoot);
 		}
 
-		public static Manager Instance
+        private void PackTiles()
+        {
+            var tileInfos = XRoot.TerrainSets.Cast<XAbstractTileSetVM>().Union(XRoot.TileSets).SelectMany(_vm => _vm.Children).GroupBy(_vm => Tuple.Create(_vm.Texture, _vm.X, _vm.Y, _vm.RemoveTransparency, _vm.GrayScale)).ToList();
+            var size = (int)Math.Sqrt(tileInfos.Count) + 1;
+            var sizeInPixels = size * Constants.TILE_SIZE;
+
+            var begin = 16;
+            for (var i = 1; ; ++i)
+            {
+                if (sizeInPixels <= begin)
+                {
+                    sizeInPixels = begin;
+                    break;
+                }
+                begin *= 2;
+            }
+
+            var bmp = new Bitmap(sizeInPixels, sizeInPixels, PixelFormat.Format32bppPArgb);
+            var srcRect = new Rectangle(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
+            using (var gr = Graphics.FromImage(bmp))
+            {
+                var perRow = sizeInPixels / 16;
+                for (var index = 0; index < tileInfos.Count; index++)
+                {
+                    var grouping = tileInfos[index];
+                    var x = (index + 1) % perRow;
+                    var y = (index + 1) / perRow;
+
+                    var isNone = false;
+                    var prnt = grouping.First().Parent;
+                    if(prnt is XTileSetVM)
+                    {
+                        isNone = ((XTileSetVM)prnt).Key == ETiles.NONE;
+                    }
+                    else if(prnt is XTerrainSetVM)
+                    {
+                        isNone = ((XTerrainSetVM)prnt).Key == ETerrains.NONE;
+                    }
+
+                    if(isNone)
+                    {
+                        x = 0;
+                        y = 0;
+                    }
+                    foreach (var vm in grouping)
+                    {
+                        vm.CX = x;
+                        vm.CY = y;
+                    }
+
+                    if(isNone) continue;
+
+                    var dstRect = new Rectangle(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+                    
+                    var key = grouping.Key;
+
+                    gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White, key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
+                }
+            }
+            bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
+	    }
+
+	    public static Manager Instance
 		{
 			get { return m_instance ?? (m_instance = new Manager()); }
 		}
@@ -49,7 +130,7 @@ namespace ResourceWizard
 		public XTileInfoVM TileBuffer { get; set; }
 
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
-		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool>, Bitmap>>();
+        readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
 
 
 		public Bitmap this[ETextureSet _set]
@@ -59,64 +140,64 @@ namespace ResourceWizard
 				OpenTKUi.Image value;
 				if(!m_textures.TryGetValue(_set, out value))
 				{
-					string fileName;
+					Bitmap bmp;
 					switch (_set)
 					{
 						case ETextureSet.RJ:
-							fileName = "Resources\\redjack15v.bmp";
+                            bmp = Resources.redjack15v;
 							break;
 						case ETextureSet.RB1:
-							fileName = "Resources\\RantingRodent_Brick_01.bmp";
+							bmp = Resources.RantingRodent_Brick_01;
 							break;
 						case ETextureSet.RB2:
-							fileName = "Resources\\RantingRodent_Brick_02.bmp";
+                            bmp = Resources.RantingRodent_Brick_02;
 							break;
 						case ETextureSet.RN1:
-							fileName = "Resources\\RantingRodent_Natural_01.bmp";
+							bmp = Resources.RantingRodent_Natural_01;
 							break;
 						case ETextureSet.RN2:
-							fileName = "Resources\\RantingRodent_Natural_02.bmp";
+							bmp = Resources.RantingRodent_Natural_02;
 							break;
 						case ETextureSet.GP:
-							fileName = "Resources\\gold_plated_16x16.bmp";
+                            bmp = Resources.gold_plated_16x16;
 							break;
 						case ETextureSet.NH:
-							fileName = "Resources\\nethack.bmp";
+							bmp = Resources.nethack;
 							break;
 						case ETextureSet.HM:
-							fileName = "Resources\\aq.png";
+							bmp = Resources.aq;
 							break;
 						case ETextureSet.PH:
-							fileName = "Resources\\Phoebus_16x16.png";
+							bmp = Resources.Phoebus_16x16;
 							break;
 						case ETextureSet.U4:
-							fileName = "Resources\\Ultima4.png";
+                            bmp = Resources.Ultima4;
 							break;
 						case ETextureSet.U5:
-							fileName = "Resources\\Ultima5.png";
+							bmp = Resources.Ultima5;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
-					value = new OpenTKUi.Image(new Bitmap(fileName), true, false);
+					value = new OpenTKUi.Image(bmp, true, false);
 					m_textures[_set] = value;
 				}
 				return value.Bitmap;
 			}
 		}
 
-		public Bitmap this[ETextureSet _texture, int _x, int _y, Color _color, FColor _fColor, bool _removeTransparency]
+		public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale]
 		{
 			get
 			{
-				Dictionary<Tuple<int, int, FColor, bool>, Bitmap> dictionary;
+                Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap> dictionary;
 				if (!m_tiles.TryGetValue(_texture, out dictionary))
 				{
-					dictionary = new Dictionary<Tuple<int, int, FColor, bool>, Bitmap>();
+                    dictionary = new Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>();
 					m_tiles[_texture] = dictionary;
 				}
 				Bitmap bitmap;
-				var key = new Tuple<int, int, FColor, bool>(_x, _y, _fColor, _removeTransparency);
+                var key = new Tuple<int, int, FColor, bool, bool>(_x, _y, _fColor, _removeTransparency,_grayScale);
 				if (!dictionary.TryGetValue(key, out bitmap))
 				{
 					var txtr = this[_texture];
@@ -132,6 +213,10 @@ namespace ResourceWizard
 						var pixel = bitmap.GetPixel(point.X, point.Y);
 						if (pixel == transparent) continue;
 						var fcolor = new FColor(pixel.A, pixel.R, pixel.G, pixel.B).Multiply(1f / 255f);
+                        if(_grayScale)
+                        {
+                            fcolor = fcolor.ToGrayScale();
+                        }
 						var result = fcolor.Multiply(_fColor).GetColor();//.Multiply(255);
 						if (_removeTransparency)
 						{

@@ -207,6 +207,48 @@
   <ItemGroup>
     <None Include="Resources\components.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gold_plated_16x16.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\malenicks.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\nethack.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Phoebus_16x16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RantingRodent_Brick_01.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RantingRodent_Brick_02.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RantingRodent_Natural_01.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RantingRodent_Natural_02.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redjack15v.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ultima4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Ultima5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\aq.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\femalenicks.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\yinyang.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
