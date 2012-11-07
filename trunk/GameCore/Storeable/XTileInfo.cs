@@ -8,6 +8,7 @@ namespace GameCore.Storeable
 		public XTileInfo(){}
 
 		[X("TEXTURE")]private readonly IXValue<int> m_eTexture;
+
 		[X("X")]
 		private IXValue<int> m_x;
 		[X("Y")]

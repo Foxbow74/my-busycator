@@ -174,8 +174,8 @@ namespace GameCore.Mapping.Layers
 				City.GenerateCityBlock(block, rnd, this);
 			}
 
-            var trees = ThingHelper.AllThings().Where(ff => ff.Is<Tree>()).ToArray();
-            var shrubs = ThingHelper.AllThings().Where(ff => ff.Is<Shrub>()).ToArray();
+            var trees = ThingHelper.AllThings().Where(_ff => _ff.Is<Tree>()).ToArray();
+            var shrubs = ThingHelper.AllThings().Where(_ff => _ff.Is<Shrub>()).ToArray();
             foreach (var point in new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE).AllPoints)
 		    {
 				switch (block.Map[point.X, point.Y])
