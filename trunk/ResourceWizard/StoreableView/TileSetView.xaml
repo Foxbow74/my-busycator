@@ -8,39 +8,71 @@
              xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
 	<UserControl.Resources>
-		<Style x:Key="ib" TargetType="Button">
-			<Style.Triggers>
-				<Trigger Property="IsEnabled" Value="True">
-					<Trigger.Setters>
-						<Setter Property="ContentTemplate">
-							<Setter.Value>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
-										<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
-									</StackPanel>
-								</DataTemplate>
-							</Setter.Value>
-						</Setter>
-					</Trigger.Setters>
-				</Trigger>
-				<Trigger Property="IsEnabled" Value="False">
-					<Trigger.Setters>
-						<Setter Property="ContentTemplate">
-							<Setter.Value>
-								<DataTemplate>
-									<StackPanel Orientation="Horizontal">
-										<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
-										<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
-									</StackPanel>
-								</DataTemplate>
-							</Setter.Value>
-						</Setter>
-					</Trigger.Setters>
-				</Trigger>
-			</Style.Triggers>
-		</Style>
-		<DataTemplate DataType="{x:Type StoreableVMs:XAbstractTileSetVM}" x:Key="TT">
+        <Style x:Key="ib" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Trigger.Setters>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="itb" TargetType="ToggleButton">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Trigger.Setters>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Trigger.Setters>
+                        <Setter Property="ContentTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger.Setters>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <DataTemplate DataType="{x:Type StoreableVMs:XAbstractTileSetVM}" x:Key="TT">
 			<Grid  d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
@@ -52,10 +84,13 @@
 					<ColumnDefinition Width="Auto"/>
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
-				<CheckBox IsChecked="{Binding RemoveTransparency}" Foreground="White">Убрать полупрозрачность рисунка</CheckBox>
-				<ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
+                <CheckBox IsChecked="{Binding RemoveTransparency}" Foreground="White">Убрать полупрозрачность рисунка</CheckBox>
+                <ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
 					<ToolBar>
-						<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
+                        <ToggleButton ToolTip="Черно-белый" IsChecked="{Binding GrayScale}" >
+                            <Image Width="24" Source="{Binding GrayScaleImage}"/>
+                        </ToggleButton>
+                        <Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
 						<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
 						<Button ToolTip="Выбрать цвет" Command="{Binding SelectColorCommand}" cc:ButtonProperties.Image="{Binding ColorsImage}" cc:ButtonProperties.DisabledImage="{Binding ColorsImageD}" Style="{StaticResource ib}"/>
 						<Separator/>

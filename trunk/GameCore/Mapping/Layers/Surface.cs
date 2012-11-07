@@ -45,30 +45,31 @@ namespace GameCore.Mapping.Layers
 			}
 			else
 			{
-				if (File.Exists(Constants.RESOURCES_MALENICKS_TXT))
-				{
-					m_maleNames =
-						File.ReadAllText(Constants.RESOURCES_MALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
-							ToList();
-				}
-				else
-				{
-					m_maleNames = new List<string> {"TestMale"};
-				}
-				if (File.Exists(Constants.RESOURCES_FEMALENICKS_TXT))
-				{
-					m_femaleNames =
-						File.ReadAllText(Constants.RESOURCES_FEMALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
-							ToList();
-				}
-				else
-				{
-					m_femaleNames = new List<string> {"TestFemale"};
-				}
+                throw new ApplicationException("База ресурсов не содержит информацию об именах.");
+                //if (File.Exists(Constants.RESOURCES_MALENICKS_TXT))
+                //{
+                //    m_maleNames =
+                //        File.ReadAllText(Constants.RESOURCES_MALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
+                //            ToList();
+                //}
+                //else
+                //{
+                //    m_maleNames = new List<string> {"TestMale"};
+                //}
+                //if (File.Exists(Constants.RESOURCES_FEMALENICKS_TXT))
+                //{
+                //    m_femaleNames =
+                //        File.ReadAllText(Constants.RESOURCES_FEMALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
+                //            ToList();
+                //}
+                //else
+                //{
+                //    m_femaleNames = new List<string> {"TestFemale"};
+                //}
 
-				World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
-				World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
-				World.SaveResources();
+                //World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
+                //World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
+                //World.SaveResources();
 			}
 		}
 

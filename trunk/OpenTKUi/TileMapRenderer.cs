@@ -40,67 +40,68 @@ namespace OpenTKUi
 			}
 			else
 			{
-				var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
-				var sizeInPixels = size * Constants.TILE_SIZE;
+                throw new ApplicationException("Не найден файл с тайлами " + Constants.RESOURCES_PNG_FILE);
+                //var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
+                //var sizeInPixels = size * Constants.TILE_SIZE;
 
-				var begin = 16;
-				for (var i = 1; ; ++i)
-				{
-					if (sizeInPixels <= begin)
-					{
-						sizeInPixels = begin;
-						break;
-					}
-					begin *= 2;
-				}
+                //var begin = 16;
+                //for (var i = 1; ; ++i)
+                //{
+                //    if (sizeInPixels <= begin)
+                //    {
+                //        sizeInPixels = begin;
+                //        break;
+                //    }
+                //    begin *= 2;
+                //}
 
-				var bmp = new Bitmap(sizeInPixels, sizeInPixels, PixelFormat.Format32bppPArgb);
-				using (var gr = Graphics.FromImage(bmp))
-				{
-					var perRow = sizeInPixels / 16;
-					for (var index = 0; index < _resourceProvider.Tiles.Count; index++)
-					{
-						var tile = _resourceProvider.Tiles[index];
-						var x = index % perRow;
-						var y = index / perRow;
-						var dstRect = new Rct(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
-						var srcRect = new Rct(tile.X * Constants.TILE_SIZE, tile.Y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+                //var bmp = new Bitmap(sizeInPixels, sizeInPixels, PixelFormat.Format32bppPArgb);
+                //using (var gr = Graphics.FromImage(bmp))
+                //{
+                //    var perRow = sizeInPixels / 16;
+                //    for (var index = 0; index < _resourceProvider.Tiles.Count; index++)
+                //    {
+                //        var tile = _resourceProvider.Tiles[index];
+                //        var x = index % perRow;
+                //        var y = index / perRow;
+                //        var dstRect = new Rct(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+                //        var srcRect = new Rct(tile.X * Constants.TILE_SIZE, tile.Y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
-						tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
+                //        tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
 
-						gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
-					}
-				}
-				bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
+                //        gr.DrawImage(_resourceProvider[tile.Set].Bitmap, new Rectangle(dstRect.Left, dstRect.Top, dstRect.Width, dstRect.Height), new Rectangle(srcRect.Left, srcRect.Top, srcRect.Width, srcRect.Height), GraphicsUnit.Pixel);
+                //    }
+                //}
+                //bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
 
-				foreach (var pair in TileHelper.AllTiles)
-				{
-					var xTileSet = new XTileSet {Tile = pair.Key,};
-					World.XResourceRoot.TileSets.Add(xTileSet);
-					for (int index = 0; index < pair.Value.Tiles.Count; index++)
-					{
-						var tile = pair.Value.Tiles[index];
-						var xcolor = tile.Color.GetXColor();
-						World.XResourceRoot.Colors.Add(xcolor);
-						xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = xcolor, Order = index });
-					}
-				}
+                //foreach (var pair in TileHelper.AllTiles)
+                //{
+                //    var xTileSet = new XTileSet {Tile = pair.Key,};
+                //    World.XResourceRoot.TileSets.Add(xTileSet);
+                //    for (int index = 0; index < pair.Value.Tiles.Count; index++)
+                //    {
+                //        var tile = pair.Value.Tiles[index];
+                //        var xcolor = tile.Color.GetXColor();
+                //        World.XResourceRoot.Colors.Add(xcolor);
+                //        xTileSet.Children.Add(new XTileInfo { Texture = (int)tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = xcolor, Order = index });
+                //    }
+                //}
 
-				foreach (var tileset in TileHelper.AllTerrainTilesets)
-				{
-					var xTerrainSet = new XTerrainSet { Terrains = tileset.Key };
-					World.XResourceRoot.TerrainSets.Add(xTerrainSet);
-					for (int index = 0; index < tileset.Value.Tiles.Count; index++)
-					{
-						var tile = tileset.Value.Tiles[index];
-						var xcolor = tile.Color.GetXColor();
-						World.XResourceRoot.Colors.Add(xcolor);
-						xTerrainSet.Children.Add(new XTileInfo {Texture = (int) tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = xcolor, Order = index });
-					}
-				}
+                //foreach (var tileset in TileHelper.AllTerrainTilesets)
+                //{
+                //    var xTerrainSet = new XTerrainSet { Terrains = tileset.Key };
+                //    World.XResourceRoot.TerrainSets.Add(xTerrainSet);
+                //    for (int index = 0; index < tileset.Value.Tiles.Count; index++)
+                //    {
+                //        var tile = tileset.Value.Tiles[index];
+                //        var xcolor = tile.Color.GetXColor();
+                //        World.XResourceRoot.Colors.Add(xcolor);
+                //        xTerrainSet.Children.Add(new XTileInfo {Texture = (int) tile.Set, CX = tile.Point.X, CY = tile.Point.Y, X = tile.SrcPoint.X, Y = tile.SrcPoint.Y, Color = xcolor, Order = index });
+                //    }
+                //}
 
-				World.SaveResources();
-				m_img = new Image(bmp, true);
+                //World.SaveResources();
+                //m_img = new Image(bmp, true);
 			}
 
 			TileInfo.FogTexCoords = ((OpenTKTile)TileHelper.AllTiles[ETiles.FOG].Tiles[0]).Texcoords;
