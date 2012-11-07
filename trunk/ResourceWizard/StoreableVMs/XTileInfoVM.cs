@@ -70,6 +70,7 @@ namespace ResourceWizard.StoreableVMs
 		public BitmapSource RightImage { get { return Resources.navigate_right.Source(); } }
 		public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
         public BitmapSource GrayScaleImage { get { return Resources.yinyang.Source(); } }
+        public BitmapSource RemoveTransparencyImage { get { return Resources.pawn_glass_white.Source(); } }
         
 		public BitmapSource CopyImageD { get { return Resources.copy.SourceDisabled(); } }
 		public BitmapSource PasteImageD { get { return Resources.paste.SourceDisabled(); } }
@@ -177,7 +178,11 @@ namespace ResourceWizard.StoreableVMs
 	    private void ExecuteDeleteCommand(object _obj)
 	    {
 	        Parent.Children.Remove(this);
-	        Parent.SelectedItem = Parent.Children.OrderBy(_vm => _vm.Order).Last(_vm => _vm.Order < Order);
+            Parent.SelectedItem = Parent.Children.OrderBy(_vm => _vm.Order).LastOrDefault(_vm => _vm.Order < Order);
+            if(Parent.SelectedItem == null)
+            {
+                Parent.SelectedItem = Parent.Children.OrderBy(_vm => _vm.Order).Last();
+            }
 	    }
 
 	    private void ExecuteMoveRightCommand(object _obj)

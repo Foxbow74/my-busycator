@@ -1638,8 +1638,8 @@ namespace GameCore
 
 		public FColor ToGrayScale()
 		{
-			var mid = (R + G + B)/4;
-			return new FColor(1f, mid, mid, mid);
+			var y = 0.2125f * R + 0.7154f * G + 0.0721f * B;
+			return new FColor(1f, y, y, y);
 		}
 
 		public FColor Clamp()
