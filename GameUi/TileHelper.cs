@@ -39,7 +39,7 @@ namespace GameUi
 					AllTiles.Add(xTileSet.Tile, set);
 					foreach (XTileInfo tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
+						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
 					}
 				}
 				foreach (var xTileSet in World.XResourceRoot.TerrainSets)
@@ -48,7 +48,7 @@ namespace GameUi
 					AllTerrainTilesets.Add(xTileSet.Terrains, set);
 					foreach (var tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color));
+						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
 					}
 				}
 			}

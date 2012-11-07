@@ -4,9 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
-             xmlns:Views="clr-namespace:ResourceWizard.Views" mc:Ignorable="d" 
+             xmlns:Views="clr-namespace:ResourceWizard.Views"
+             xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
 	<UserControl.Resources>
+		<Style x:Key="ib" TargetType="Button">
+			<Style.Triggers>
+				<Trigger Property="IsEnabled" Value="True">
+					<Trigger.Setters>
+						<Setter Property="ContentTemplate">
+							<Setter.Value>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+										<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+									</StackPanel>
+								</DataTemplate>
+							</Setter.Value>
+						</Setter>
+					</Trigger.Setters>
+				</Trigger>
+				<Trigger Property="IsEnabled" Value="False">
+					<Trigger.Setters>
+						<Setter Property="ContentTemplate">
+							<Setter.Value>
+								<DataTemplate>
+									<StackPanel Orientation="Horizontal">
+										<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+										<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+									</StackPanel>
+								</DataTemplate>
+							</Setter.Value>
+						</Setter>
+					</Trigger.Setters>
+				</Trigger>
+			</Style.Triggers>
+		</Style>
 		<DataTemplate DataType="{x:Type StoreableVMs:XAbstractTileSetVM}" x:Key="TT">
 			<Grid  d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}">
 				<Grid.RowDefinitions>
@@ -20,18 +53,19 @@
 					<ColumnDefinition Width="*"/>
 				</Grid.ColumnDefinitions>
 				<CheckBox IsChecked="{Binding RemoveTransparency}" Foreground="White">Убрать полупрозрачность рисунка</CheckBox>
-				<ToolBar Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2">
-					<MenuItem Header="Выбрать цвет" Command="{Binding SelectColorCommand}"/>
-					<Separator/>
-					<MenuItem Header="Дублировать" Command="{Binding DublicateCommand}"/>
-					<MenuItem Header="Сдвинуть влево" Command="{Binding MoveLeftCommand}"/>
-					<MenuItem Header="Сдвинуть вправо" Command="{Binding MoveRightCommand}"/>
-					<Separator/>
-					<MenuItem Header="Копировать" Command="{Binding CopyCommand}"/>
-					<MenuItem Header="Вставить" Command="{Binding PasteCommand}"/>
-					<Separator/>
-					<MenuItem Header="Удалить"  Command="{Binding DeleteCommand}"/>
-				</ToolBar>
+				<ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
+					<ToolBar>
+						<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
+						<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
+						<Button ToolTip="Выбрать цвет" Command="{Binding SelectColorCommand}" cc:ButtonProperties.Image="{Binding ColorsImage}" cc:ButtonProperties.DisabledImage="{Binding ColorsImageD}" Style="{StaticResource ib}"/>
+						<Separator/>
+						<Button ToolTip="Дублировать" Command="{Binding DublicateCommand}" cc:ButtonProperties.Image="{Binding DuplicateImage}" cc:ButtonProperties.DisabledImage="{Binding DuplicateImageD}" Style="{StaticResource ib}"/>
+						<Button ToolTip="Сдвинуть влево" Command="{Binding MoveLeftCommand}" cc:ButtonProperties.Image="{Binding LeftImage}" cc:ButtonProperties.DisabledImage="{Binding LeftImageD}" Style="{StaticResource ib}"/>
+						<Button ToolTip="Сдвинуть вправо" Command="{Binding MoveRightCommand}" cc:ButtonProperties.Image="{Binding RightImage}" cc:ButtonProperties.DisabledImage="{Binding RightImageD}" Style="{StaticResource ib}"/>
+						<Separator/>
+						<Button ToolTip="Удалить" Command="{Binding DeleteCommand}" cc:ButtonProperties.Image="{Binding DeleteImage}" cc:ButtonProperties.DisabledImage="{Binding DeleteImageD}" Style="{StaticResource ib}"/>
+					</ToolBar>
+				</ToolBarTray>
 				<Grid Grid.Row="2" HorizontalAlignment="Left" Width="300">
 					<Grid.RowDefinitions>
 						<RowDefinition Height="Auto"/>

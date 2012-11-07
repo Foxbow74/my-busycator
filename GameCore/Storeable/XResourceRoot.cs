@@ -14,6 +14,8 @@ namespace GameCore.Storeable
 
 		[X((int)EStoreKind.NICKS_INFO)]private ICollection<XNicksInfo> m_nicksInfos;
 
+		[X((int)EStoreKind.COLOR)]private ICollection<XColor> m_colors;
+
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.ALL; }
@@ -32,6 +34,11 @@ namespace GameCore.Storeable
 		public ICollection<XTileSet> TileSets
 		{
 			get { return m_tileSets; }
+		}
+
+		public ICollection<XColor> Colors
+		{
+			get { return m_colors; }
 		}
 
 		public ICollection<XNicksInfo> NickInfos { get { return m_nicksInfos; } }

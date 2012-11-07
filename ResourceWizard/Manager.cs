@@ -8,6 +8,7 @@ using GameCore.Misc;
 using GameCore.Storage;
 using GameUi;
 using ResourceWizard.StoreableVMs;
+using Color = System.Drawing.Color;
 
 namespace ResourceWizard
 {
@@ -32,7 +33,11 @@ namespace ResourceWizard
 			}
 		}
 
-		public void Save() { World.SaveResources(); }
+		public void Save()
+		{
+			XRoot.BeforeSave();
+			m_resourceCli.Save(XRoot);
+		}
 
 		public static Manager Instance
 		{
@@ -127,12 +132,12 @@ namespace ResourceWizard
 						var pixel = bitmap.GetPixel(point.X, point.Y);
 						if (pixel == transparent) continue;
 						var fcolor = new FColor(pixel.A, pixel.R, pixel.G, pixel.B).Multiply(1f / 255f);
-						var result = fcolor.Multiply(_fColor).Multiply(255);
+						var result = fcolor.Multiply(_fColor).GetColor();//.Multiply(255);
 						if (_removeTransparency)
 						{
 							result.A = 255;
 						}
-						bitmap.SetPixel(point.X, point.Y, Color.FromArgb((int)result.A, (int)result.R, (int)result.G, (int)result.B));
+						bitmap.SetPixel(point.X, point.Y, Color.FromArgb(result.A, result.R, result.G, result.B));
 					}
 
 					dictionary.Add(key, bitmap);

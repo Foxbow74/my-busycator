@@ -14,7 +14,7 @@ namespace GameCore.Storeable
 		private IXValue<int> m_y;
 
 		[X("Color")]
-		private IXValue<string> m_color;
+		private IXValue<XColor> m_color;
 
 		public override EStoreKind Kind
 		{
@@ -61,7 +61,7 @@ namespace GameCore.Storeable
 		#endregion
 
 
-		public FColor Color { get { return FColor.Parse(m_color.Value); } set { m_color.Value = value.ToShortText(); } }
+		public XColor Color { get { return m_color.Value; } set { m_color.Value = value; } }
 
 		public int Texture { get { return m_eTexture.Value; } set { m_eTexture.Value = value; } }
 	}

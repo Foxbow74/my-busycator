@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using GameCore.Storage;
@@ -49,6 +50,18 @@ namespace ResourceWizard.StoreableVMs
 			base.InstantiationFinished();
 			TileSetsObsCol = CreateObservableCollection(m_tileSets);
 			TerrainSetsObsCol = CreateObservableCollection(m_terrainSets);
+		}
+
+		public void BeforeSave()
+		{
+			foreach (var xTileSetVM in TileSets.Cast<XAbstractTileSetVM>().Union(TerrainSets))
+			{
+				foreach (var vm in xTileSetVM.Children)
+				{
+					vm.BeforeSave();
+				}
+			}
+			
 		}
 	}
 }
