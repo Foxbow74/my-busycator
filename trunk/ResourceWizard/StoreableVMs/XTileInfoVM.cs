@@ -7,6 +7,7 @@ using ClientCommonWpf;
 using GameCore;
 using GameCore.Storage;
 using GameUi;
+using ResourceWizard.Properties;
 using ResourceWizard.VMs;
 using XTransport;
 using XTransport.WPF;
@@ -15,6 +16,43 @@ namespace ResourceWizard.StoreableVMs
 {
 	class XTileInfoVM : ClientXChildObjectVM<EStoreKind, XAbstractTileSetVM>
 	{
+		private FColor m_fColor;
+
+		public FColor FColor
+		{
+			get
+			{
+				if(m_fColor.Equals(default(FColor)))
+				{
+					m_fColor = Color.GetFColor();
+				}
+				return m_fColor;
+			}
+			set
+			{
+				m_fColor = value;
+				OnPropertyChanged(()=>FColor);
+				OnPropertyChanged(() => Brush);
+				RefreshImage();
+			}
+		}
+
+		public BitmapSource CopyImage { get { return Resources.copy.Source(); } }
+		public BitmapSource PasteImage { get { return Resources.paste.Source(); } }
+		public BitmapSource DuplicateImage { get { return Resources.components.Source(); } }
+		public BitmapSource DeleteImage { get { return Resources.delete2.Source(); } }
+		public BitmapSource LeftImage { get { return Resources.navigate_left.Source(); } }
+		public BitmapSource RightImage { get { return Resources.navigate_right.Source(); } }
+		public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
+
+		public BitmapSource CopyImageD { get { return Resources.copy.SourceDisabled(); } }
+		public BitmapSource PasteImageD { get { return Resources.paste.SourceDisabled(); } }
+		public BitmapSource DuplicateImageD { get { return Resources.components.SourceDisabled(); } }
+		public BitmapSource DeleteImageD { get { return Resources.delete2.SourceDisabled(); } }
+		public BitmapSource LeftImageD { get { return Resources.navigate_left.SourceDisabled(); } }
+		public BitmapSource RightImageD { get { return Resources.navigate_right.SourceDisabled(); } }
+		public BitmapSource ColorsImageD { get { return Resources.colors.SourceDisabled(); } }
+
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.TILE_INFO; }
@@ -36,7 +74,7 @@ namespace ResourceWizard.StoreableVMs
 		{
 			var b = Manager.Instance.TileBuffer;
 
-			var d = new XTileInfoVM { X = b.X, Y = b.Y, Color = b.Color, Texture = b.Texture, Order = Order + 1 };
+			var d = new XTileInfoVM { X = b.X, Y = b.Y, FColor = b.FColor, Texture = b.Texture, Order = Order + 1 };
 			foreach (var vm in Parent.Children)
 			{
 				if (vm.Order > Order)
@@ -70,7 +108,7 @@ namespace ResourceWizard.StoreableVMs
 
 		private void ExecuteDublicateCommand(object _obj)
 		{
-			var d = new XTileInfoVM {X = X, Y = Y, Color = Color, Texture = Texture, Order = Order+1};
+			var d = new XTileInfoVM {X = X, Y = Y, FColor = FColor, Texture = Texture, Order = Order+1};
 			foreach (var vm in Parent.Children)
 			{
 				if(vm.Order>Order)
@@ -87,7 +125,7 @@ namespace ResourceWizard.StoreableVMs
 			Manager.Instance.ColorDialog.Color = WColor;
 			if (Manager.Instance.ColorDialog.ShowDialog() != DialogResult.Cancel)
 			{
-				Color = new FColor(Manager.Instance.ColorDialog.Color.A / 255f, Manager.Instance.ColorDialog.Color.R / 255f, Manager.Instance.ColorDialog.Color.G / 255f, Manager.Instance.ColorDialog.Color.B / 255f);
+				FColor = Manager.Instance.ColorDialog.Color.GetFColor();;
 			}
 		}
 
@@ -95,8 +133,7 @@ namespace ResourceWizard.StoreableVMs
 		{
 			get
 			{
-				var clr = Color.Multiply(255f);
-				return System.Drawing.Color.FromArgb((int)clr.A, (int)clr.R, (int)clr.G, (int)clr.B);
+				return FColor.GetDColor();
 			}
 		}
 
@@ -112,7 +149,7 @@ namespace ResourceWizard.StoreableVMs
 		[X("TEXTURE")]private readonly IXValue<int> m_eTexture;
 		[X("X")]private IXValue<int> m_x;
 		[X("Y")]private IXValue<int> m_y;
-		[X("Color")]private IXValue<string> m_color;
+		[X("Color")]private IXValue<XColorVM> m_color;
 		[X("CX")]private IXValue<int> m_cx;
 		[X("CY")]private IXValue<int> m_cy;
 		private bool m_removeTransparency;
@@ -123,14 +160,12 @@ namespace ResourceWizard.StoreableVMs
 		public int CX { get { return m_cx.Value; } set { m_cx.Value = value; } }
 		public int CY { get { return m_cy.Value; } set { m_cy.Value = value; } }
 
-		public FColor Color
+		public XColorVM Color
 		{
-			get { return FColor.Parse(m_color.Value); }
+			get { return m_color.Value; }
 			set
 			{
-				m_color.Value = value.ToShortText();
-				OnPropertyChanged(()=>Brush);
-				RefreshImage();
+				m_color.Value = value;
 			}
 		}
 
@@ -146,7 +181,6 @@ namespace ResourceWizard.StoreableVMs
 		protected override void InstantiationFinished()
 		{
 			base.InstantiationFinished();
-			BindProperty(m_color, () => Color);
 			BindProperty(m_eTexture, () => Texture);
 			BindProperty(m_x, () => X);
 			BindProperty(m_y, () => Y);
@@ -160,9 +194,9 @@ namespace ResourceWizard.StoreableVMs
 			get { return m_textureVM??(m_textureVM=new TextureVM(this)); }
 		}
 
-		public BitmapSource Image { get { return Manager.Instance[Texture, X, Y, WColor, Color, RemoveTransparency].Source(); } }
+		public BitmapSource Image { get { return Manager.Instance[Texture, X, Y, WColor, FColor, RemoveTransparency].Source(); } }
 
-		public Brush Brush { get { return new SolidColorBrush(System.Windows.Media.Color.FromArgb((byte)(Color.A * 255), (byte)(Color.R * 255), (byte)(Color.G * 255), (byte)(Color.B * 255))); } }
+		public Brush Brush { get { return new SolidColorBrush(FColor.GetColor()); } }
 
 		public RelayCommand SelectColorCommand { get; private set; }
 
@@ -184,9 +218,9 @@ namespace ResourceWizard.StoreableVMs
 			}
 		}
 
-		public float ColorR { get { return Color.R; } set { Color = new FColor(1, value, Color.G, Color.B); } }
-		public float ColorG { get { return Color.G; } set { Color = new FColor(1, Color.R, value, Color.B); } }
-		public float ColorB { get { return Color.B; } set { Color = new FColor(1, Color.R, Color.G, value); } }
+		public float ColorR { get { return FColor.R; } set { FColor = new FColor(1, value, FColor.G, FColor.B); } }
+		public float ColorG { get { return FColor.G; } set { FColor = new FColor(1, FColor.R, value, FColor.B); } }
+		public float ColorB { get { return FColor.B; } set { FColor = new FColor(1, FColor.R, FColor.G, value); } }
 
 		public RelayCommand RefreshMosaicCommand { get; private set; }
 
@@ -196,6 +230,14 @@ namespace ResourceWizard.StoreableVMs
 		public void RefreshImage()
 		{
 			OnPropertyChanged(() => Image);
+		}
+
+		public void BeforeSave()
+		{
+			if (!Color.GetFColor().Equals(FColor))
+			{
+				Color = m_fColor.GetXColorVM();
+			}
 		}
 	}
 }

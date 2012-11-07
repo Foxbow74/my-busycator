@@ -32,7 +32,14 @@ namespace ResourceWizard.StoreableVMs
 
 		public XTileInfoVM SelectedItem
 		{
-			get { return m_selectedItem; }
+			get
+			{
+				if(m_selectedItem==null)
+				{
+					m_selectedItem = m_children.FirstOrDefault();
+				}
+				return m_selectedItem;
+			}
 			set
 			{
 				m_selectedItem = value;
@@ -70,7 +77,6 @@ namespace ResourceWizard.StoreableVMs
 		{
 			ChildrenObsCol = CreateObservableCollection(m_children);
 			CollectionViewSource.GetDefaultView(ChildrenObsCol).SortDescriptions.Add(new SortDescription("Order", ListSortDirection.Ascending));
-			SelectedItem = m_children.FirstOrDefault();
 
 			((INotifyCollectionChanged)ChildrenObsCol).CollectionChanged += ChildrenObsColOnCollectionChanged;
 		}

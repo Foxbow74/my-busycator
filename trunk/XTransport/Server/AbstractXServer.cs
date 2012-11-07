@@ -271,7 +271,7 @@ namespace XTransport.Server
 
 		private void OnServerObjectSaved(Guid _uid, SessionId _sessionId)
 		{
-			Console.WriteLine("SAVED:" + _uid);
+			//Console.WriteLine("SAVED:" + _uid);
 			if (m_serverObjectSaved != null)
 			{
 				if (IsAsync)

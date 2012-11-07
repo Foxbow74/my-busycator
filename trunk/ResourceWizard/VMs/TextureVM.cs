@@ -51,7 +51,7 @@ namespace ResourceWizard.VMs
 
 		private void ExecuteAddCommand(object _obj)
 		{
-			var vm = new XTileInfoVM {Texture = Texture, X = CursorX/Constants.TILE_SIZE, Y = CursorY/Constants.TILE_SIZE, Color = m_xTileInfoVM.Color, Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1};
+			var vm = new XTileInfoVM {Texture = Texture, X = CursorX/Constants.TILE_SIZE, Y = CursorY/Constants.TILE_SIZE, FColor = m_xTileInfoVM.FColor, Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1};
 			m_xTileInfoVM.Parent.Children.Add(vm);
 			m_xTileInfoVM.Parent.SelectedItem = vm;
 		}

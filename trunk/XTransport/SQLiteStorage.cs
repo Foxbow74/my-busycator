@@ -38,14 +38,16 @@ namespace XTransport
 			m_type2Tables.Add(typeof (string), "strings");
 			m_type2Tables.Add(typeof (DateTime), "dates");
 			m_type2Tables.Add(typeof (double), "doubles");
-			m_type2Tables.Add(typeof (decimal), "decimals");
+			m_type2Tables.Add(typeof(decimal), "decimals");
+			m_type2Tables.Add(typeof(float), "floats");
 
 			m_tables2Type.Add(typeof (int), _o => new StorageValue<int> {Val = (int) _o});
 			m_tables2Type.Add(typeof (Guid), _o => new StorageValue<Guid> {Val = new Guid((string) _o)});
 			m_tables2Type.Add(typeof (string), _o => new StorageValue<string> {Val = (string) _o});
 			m_tables2Type.Add(typeof (DateTime), _o => new StorageValue<DateTime> {Val = (DateTime) _o});
 			m_tables2Type.Add(typeof (double), _o => new StorageValue<double> {Val = (double) _o});
-			m_tables2Type.Add(typeof (decimal), _o => new StorageValue<decimal> {Val = Decimal.Parse((string) _o)});
+			m_tables2Type.Add(typeof(decimal), _o => new StorageValue<decimal> { Val = Decimal.Parse((string)_o) });
+			m_tables2Type.Add(typeof(float), _o => new StorageValue<float> { Val = (float)(double)_o });
 		}
 
 		public SQLiteStorage(string _dbName)
@@ -64,6 +66,7 @@ namespace XTransport
 			CreateCommand("CREATE TABLE IF NOT EXISTS dates ( id INTEGER NOT NULL, value DATETIME)").ExecuteNonQuery();
 			CreateCommand("CREATE TABLE IF NOT EXISTS strings ( id INTEGER NOT NULL, value TEXT)").ExecuteNonQuery();
 			CreateCommand("CREATE TABLE IF NOT EXISTS doubles ( id INTEGER NOT NULL, value REAL)").ExecuteNonQuery();
+			CreateCommand("CREATE TABLE IF NOT EXISTS floats ( id INTEGER NOT NULL, value REAL)").ExecuteNonQuery();
 			CreateCommand("CREATE TABLE IF NOT EXISTS decimals ( id INTEGER NOT NULL, value TEXT)").ExecuteNonQuery();
 			CreateCommand("CREATE TABLE IF NOT EXISTS blobs ( id INTEGER NOT NULL, value BLOB)").ExecuteNonQuery();
 
@@ -75,6 +78,7 @@ namespace XTransport
 			CreateCommand("CREATE INDEX IF NOT EXISTS  guids_idx ON guids (id)").ExecuteNonQuery();
 			CreateCommand("CREATE INDEX IF NOT EXISTS  dates_idx ON dates (id)").ExecuteNonQuery();
 			CreateCommand("CREATE INDEX IF NOT EXISTS  doubles_idx ON doubles (id)").ExecuteNonQuery();
+			CreateCommand("CREATE INDEX IF NOT EXISTS  floats_idx ON floats (id)").ExecuteNonQuery();
 			CreateCommand("CREATE INDEX IF NOT EXISTS  decimals_idx ON decimals (id)").ExecuteNonQuery();
 			CreateCommand("CREATE INDEX IF NOT EXISTS  blobs_idx ON blobs (id)").ExecuteNonQuery();
 		}

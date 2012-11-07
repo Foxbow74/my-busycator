@@ -71,6 +71,7 @@
     <Compile Include="StoreableVMs\ATileSetFactory.cs" />
     <Compile Include="StoreableVMs\XAbstractTileSetVM.cs" />
     <Compile Include="StoreableVMs\XChildObjectVM.cs" />
+    <Compile Include="StoreableVMs\XColorVM.cs" />
     <Compile Include="StoreableVMs\XMonsterInfoVM.cs" />
     <Compile Include="StoreableVMs\XNicksInfoVM.cs" />
     <Compile Include="StoreableVMs\XObjectVM.cs" />
@@ -185,7 +186,27 @@
       <Name>XTransport</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\copy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\paste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\navigate_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\navigate_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\colors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\components.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

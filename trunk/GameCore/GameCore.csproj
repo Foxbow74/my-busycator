@@ -176,6 +176,7 @@
     <Compile Include="Storage\XChildObject.cs" />
     <Compile Include="Storage\XObject.cs" />
     <Compile Include="Storeable\XAbstractTileSet.cs" />
+    <Compile Include="Storeable\XColor.cs" />
     <Compile Include="Storeable\XMonsterInfo.cs" />
     <Compile Include="Storeable\XNicksInfo.cs" />
     <Compile Include="Storeable\XResourceRoot.cs" />

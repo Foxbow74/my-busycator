@@ -7,6 +7,7 @@ namespace GameCore.Storage
 		TILE_INFO,
 		TILE_SET,
 		NICKS_INFO,
-		TERRAIN_SET
+		TERRAIN_SET,
+		COLOR
 	}
 }

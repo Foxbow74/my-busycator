@@ -12,16 +12,11 @@ namespace ResourceWizard.VMs
 		public TerrainsTabVM()
 		{
 			Set = Manager.Instance.XRoot.TerrainSetsObsCol;
-			foreach (ETerrains key in Enum.GetValues(typeof(ETerrains)))
+			foreach (var vm in from ETerrains key in Enum.GetValues(typeof(ETerrains)) where Set.All(_vm => _vm.Key != key) && key!=ETerrains.NONE select new XTerrainSetVM { Key = key, })
 			{
-				if (Set.All(_vm => _vm.Key != key) && key!=ETerrains.NONE)
-				{
-					var vm = new XTerrainSetVM { Key = key, };
-					Manager.Instance.XRoot.TerrainSets.Add(vm);
-					vm.Children.Add(new XTileInfoVM());
-				}
+				Manager.Instance.XRoot.TerrainSets.Add(vm);
+				vm.Children.Add(new XTileInfoVM());
 			}
-
 		}
 
 		public ReadOnlyObservableCollection<XTerrainSetVM> Set { get; private set; }
