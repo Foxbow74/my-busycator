@@ -14,8 +14,6 @@ namespace OpenTKUi
 {
 	class TileMapRenderer:IDisposable
 	{
-		private static int m_tileSizeX;
-		private static int m_tileSizeY;
 		private readonly int m_screenWidth;
 		private readonly int m_screenHeight;
 		private readonly TileInfo[,] m_tiles;
@@ -27,10 +25,8 @@ namespace OpenTKUi
 
 		public static OpenTKResourceProvider ResourceProvider { get; private set; }
 
-		public static void Init(int _tileSizeX, int _tileSizeY, OpenTKResourceProvider _resourceProvider)
+		public static void Init(OpenTKResourceProvider _resourceProvider)
 		{
-			m_tileSizeX = _tileSizeX;
-			m_tileSizeY = _tileSizeY;
 			ResourceProvider = _resourceProvider;
 
 			if (File.Exists(Constants.RESOURCES_PNG_FILE))
@@ -45,7 +41,7 @@ namespace OpenTKUi
 			else
 			{
 				var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
-				var sizeInPixels = size * _tileSizeX;
+				var sizeInPixels = size * Constants.TILE_SIZE;
 
 				var begin = 16;
 				for (var i = 1; ; ++i)
@@ -67,8 +63,8 @@ namespace OpenTKUi
 						var tile = _resourceProvider.Tiles[index];
 						var x = index % perRow;
 						var y = index / perRow;
-						var dstRect = new Rct(x * _tileSizeX, y * _tileSizeY, _tileSizeX, _tileSizeY);
-						var srcRect = new Rct(tile.X * _tileSizeX, tile.Y * _tileSizeY, _tileSizeX, _tileSizeY);
+						var dstRect = new Rct(x * Constants.TILE_SIZE, y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
+						var srcRect = new Rct(tile.X * Constants.TILE_SIZE, tile.Y * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE);
 
 						tile.UpdateTexCoords(x, y, sizeInPixels, sizeInPixels);
 
@@ -114,15 +110,15 @@ namespace OpenTKUi
 		{
 			m_screenWidth = _screenWidth;
 			m_screenHeight = _screenHeight;
-			
-			m_tilesInRow = m_screenWidth/m_tileSizeX;
-			m_tilesInColumn = _screenHeight/m_tileSizeY;
+
+			m_tilesInRow = m_screenWidth / Constants.TILE_SIZE;
+			m_tilesInColumn = _screenHeight / Constants.TILE_SIZE;
 			m_tiles = new TileInfo[m_tilesInRow, m_tilesInColumn];
 			for (var i = 0; i < m_tilesInRow; i++)
 			{
 				for (var j = 0; j < m_tilesInColumn; j++)
 				{
-					m_tiles[i,j] = new TileInfo(i, j, m_tileSizeX, m_tileSizeY);
+					m_tiles[i, j] = new TileInfo(i, j, Constants.TILE_SIZE, Constants.TILE_SIZE);
 				}
 			}
 		}

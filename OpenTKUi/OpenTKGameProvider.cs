@@ -23,8 +23,6 @@ namespace OpenTKUi
 			X = 0;
 			Y = 0;
 			VSync = VSyncMode.Off;
-			TileSizeX = _tileSizeX;
-			TileSizeY = _tileSizeY;
 			m_core.Reset();
 			Keyboard.KeyDown += KeyboardKeyDown;
 			Keyboard.KeyUp += KeyboardKeyUp;
@@ -52,7 +50,7 @@ namespace OpenTKUi
 					btn = EMouseButton.RIGHT;
 					break;
 			}
-			MouseButtonUp(new Point(_e.X / TileSizeX, _e.Y / TileSizeY), btn);
+			MouseButtonUp(new Point(_e.X / Constants.TILE_SIZE, _e.Y / Constants.TILE_SIZE), btn);
 		}
 
 		private void MouseButtonDownInternal(object _sender, MouseButtonEventArgs _e)
@@ -70,12 +68,12 @@ namespace OpenTKUi
 					btn = EMouseButton.RIGHT;
 					break;
 			}
-			MouseButtonDown(new Point(_e.X / TileSizeX, _e.Y / TileSizeY), btn);
+			MouseButtonDown(new Point(_e.X / Constants.TILE_SIZE, _e.Y / Constants.TILE_SIZE), btn);
 		}
 
 		private void MouseMoveInternal(object _sender, MouseMoveEventArgs _e)
 		{
-			MouseMove(new Point(_e.X / TileSizeX, _e.Y / TileSizeY));
+			MouseMove(new Point(_e.X / Constants.TILE_SIZE, _e.Y / Constants.TILE_SIZE));
 		}
 
 		protected virtual void MouseButtonUp(Point _pnt, EMouseButton _button)
@@ -117,12 +115,12 @@ namespace OpenTKUi
 
 		public int WidthInCells
 		{
-			get { return Width/TileSizeX; }
+			get { return Width / Constants.TILE_SIZE; }
 		}
 
 		public int HeightInCells
 		{
-			get { return Height/TileSizeY; }
+			get { return Height / Constants.TILE_SIZE; }
 		}
 
 		public bool IsActive
@@ -142,10 +140,6 @@ namespace OpenTKUi
 			}
 		}
 
-		public int TileSizeX { get; private set; }
-
-		public int TileSizeY { get; private set; }
-
 		public void DrawTextLayer()
 		{
 			//m_drawHelper.DrawTextBitmap();
@@ -162,7 +156,7 @@ namespace OpenTKUi
 
 		protected void OnLoadFinished()
 		{
-			TileMapRenderer.Init(TileSizeX, TileSizeY, m_resourceProvider);
+			TileMapRenderer.Init(m_resourceProvider);
 		}
 
 		protected override void OnUnload(EventArgs _e)
