@@ -55,6 +55,10 @@ namespace OpenTKUi
 
 		public void RegisterFont(EFonts _font, string _fileName, int _pointSize)
 		{
+            if(!File.Exists(_fileName))
+            {
+                throw new ApplicationException("Не найден файл " + Path.GetFullPath(_fileName));
+            }
 			var charSet = new List<char>();
 			for (var c = ' '; c < '}'; ++c)
 			{

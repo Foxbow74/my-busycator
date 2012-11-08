@@ -29,7 +29,7 @@ namespace GameCore
 
             if (!File.Exists(Constants.RESOURCES_DB_FILE))
             {
-                throw new ApplicationException("Не найдена база ресурсов " + Constants.RESOURCES_DB_FILE);
+                throw new ApplicationException("Не найдена база ресурсов " + Path.GetFullPath(Constants.RESOURCES_DB_FILE));
             }
 
 			XResourceRoot = m_resourceCli.GetRoot<XResourceRoot>();

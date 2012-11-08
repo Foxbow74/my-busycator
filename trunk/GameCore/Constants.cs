@@ -2,9 +2,9 @@
 {
 	public static class Constants
 	{
-        public const string RESOURCES_PNG_FILE = @"Resources\resources.png";
-        public const string RESOURCES_DB_FILE = @"Resources\resources.dat";
-        public const string RESOURCES_FONT_FILE = @"Resources\monof55.ttf";
+        public const string RESOURCES_PNG_FILE = @"..\resources\resources.png";
+        public const string RESOURCES_DB_FILE = @"..\resources\resources.dat";
+        public const string RESOURCES_FONT_FILE = @"..\resources\monof55.ttf";
 
         /// <summary>
         /// Размер мира в блоках, если 1 - строит тестовую карту, в зависимости от <see cref="WORLD_SEED"/>
