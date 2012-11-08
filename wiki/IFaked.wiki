@@ -1,5 +1,7 @@
 =IFaked:[ISpecial]=
 
-<code language="cs">
-Thing ResolveFake(Creature _creature);
-</code>
+Указывает, что реализующий его тип не является полноценным объектом и будет конкретизирован (разрезолвлен) только при попытке взаимодействия с этим объектом.
+
+Фэйки несут информацию об их имени, о том как их отрисовать и как их разрезолвить.
+
+<code language="cs">Thing ResolveFake(Creature _creature);</code>
