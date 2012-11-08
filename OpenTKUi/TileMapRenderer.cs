@@ -37,7 +37,7 @@ namespace OpenTKUi
 			}
 			else
 			{
-                throw new ApplicationException("Не найден файл с тайлами " + Constants.RESOURCES_PNG_FILE);
+                throw new ApplicationException("Не найден файл с тайлами " + Path.GetFullPath(Constants.RESOURCES_PNG_FILE));
                 //var size = (int)Math.Sqrt(_resourceProvider.Tiles.Count) + 1;
                 //var sizeInPixels = size * Constants.TILE_SIZE;
 
