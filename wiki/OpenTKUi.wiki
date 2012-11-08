@@ -2,4 +2,9 @@
 
 Обертка для [http://www.opentk.com/ Open Toolkit], бесплатной библиотеки, которая позволяет использовать OpenGL, OpenGL|ES, OpenCL и OpenAL APIs из управляемых языков.
 
-Реализует все интерфейсы для отображение и взаимодействия с игрой.
+Реализует все интерфейсы для отображение и взаимодействия с игрой, а именно:
+
+* [IResourceProvider GameUi.IResourceProvider]
+* [IDrawHelper GameUi.IDrawHelper]
+* [IGameProvider GameUi.IGameProvider]
+* [ATile GameUi.ATile]
