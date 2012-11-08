@@ -1,0 +1,3 @@
+= OpenTKUi =
+
+Обертка для [http://www.opentk.com/ Open Toolkit], бесплатной библиотеки, которая позволяет использовать OpenGL, OpenGL|ES, OpenCL и OpenAL APIs из управляемых языков.
