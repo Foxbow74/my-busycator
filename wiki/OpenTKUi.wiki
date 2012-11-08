@@ -4,7 +4,7 @@
 
 Реализует все интерфейсы для отображение и взаимодействия с игрой, а именно:
 
-* [IResourceProvider GameUi.IResourceProvider]
-* [IDrawHelper GameUi.IDrawHelper]
-* [IGameProvider GameUi.IGameProvider]
-* [ATile GameUi.ATile]
+ * [IResourceProvider GameUi.IResourceProvider]
+ * [IDrawHelper GameUi.IDrawHelper]
+ * [IGameProvider GameUi.IGameProvider]
+ * [ATile GameUi.ATile]
