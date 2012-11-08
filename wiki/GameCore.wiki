@@ -7,5 +7,5 @@
  * [GameCore_Objects_Thing GameCore.Objects.Thing]
 
 ==Основные интерфейсы==
- * [GameCore_Objects_IFaked GameCore.Objects.IFaked]
- * [GameCore_Objects_ISpecial GameCore.Objects.ISpecial]
+ * [IFaked GameCore.Objects.IFaked]
+ * [ISpecial GameCore.Objects.ISpecial]
