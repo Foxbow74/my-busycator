@@ -1,13 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Drawing;
-using System.Drawing.Imaging;
 using GameCore;
 using GameCore.Misc;
-using GameCore.Storeable;
 using GameUi;
 using OpenTK.Graphics.OpenGL;
-using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = GameCore.Misc.Point;
 
 namespace OpenTKUi
