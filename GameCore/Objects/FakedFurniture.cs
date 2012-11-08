@@ -34,7 +34,7 @@ namespace GameCore.Objects
 
 		#endregion
 
-		public override bool Is<T>() { return typeof(T).IsAssignableFrom(m_thing.GetType()); }
+		public override bool Is<T>() { return m_thing is T; }
 
 		protected override int CalcHashCode() { return m_thing.GetHashCode(); }
 
