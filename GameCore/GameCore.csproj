@@ -151,7 +151,7 @@
     <Compile Include="Objects\Furniture\Chest.cs" />
     <Compile Include="Objects\Furniture\Container.cs" />
     <Compile Include="Objects\Furniture\ClosedDoor.cs" />
-    <Compile Include="Objects\FakeThing.cs" />
+    <Compile Include="Objects\FakedFurniture.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\ThingHelper.cs" />
     <Compile Include="Objects\TileInfoProvider.cs" />
