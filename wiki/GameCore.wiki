@@ -1,6 +1,7 @@
-#GameCore
+=GameCore=
 
-= GameCore =
+Содержит все игровые сущности, собственно и есть сама игра, отделенная от средств визуализации и пользовательского интерфейса.
 
-Содержит класс [GameCore_World GameCore.World] и все остальные игровые сущности.
-[GameCore] Ничего не знает о методах визуализации.
+==Основные классы==
+ * [GameCore_World GameCore.World]
+ * [GameCore_Objects_Thing GameCore.Objects.Thing]
