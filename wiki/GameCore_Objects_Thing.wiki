@@ -1,6 +1,4 @@
-
-
-= Introduction =
+=GameCore.Objects.Thing=
 
 Add your content here.
 
