@@ -1,4 +1,4 @@
-=IFaked : ISpecial=
+=IFaked:[ISpecial]=
 
 <code language="cs">
 Thing ResolveFake(Creature _creature);
