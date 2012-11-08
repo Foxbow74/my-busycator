@@ -3,8 +3,8 @@
 Содержит все игровые сущности, собственно и есть сама игра, отделенная от средств визуализации и пользовательского интерфейса.
 
 ==Основные классы==
- * [GameCore_World GameCore.World]
- * [GameCore_Objects_Thing GameCore.Objects.Thing]
+ * [World GameCore.World]
+ * [Thing GameCore.Objects.Thing]
 
 ==Основные интерфейсы==
  * [IFaked GameCore.Objects.IFaked]
