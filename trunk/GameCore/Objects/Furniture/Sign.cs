@@ -2,6 +2,9 @@
 
 namespace GameCore.Objects.Furniture
 {
+	/// <summary>
+	/// Табличка на здании, на стене
+	/// </summary>
 	public class Sign : FurnitureThing, ISpecial
 	{
 		private readonly string m_name;

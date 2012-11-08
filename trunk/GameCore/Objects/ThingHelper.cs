@@ -6,7 +6,6 @@ using GameCore.Mapping;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects.Furniture;
-using RusLanguage;
 
 namespace GameCore.Objects
 {
@@ -179,7 +178,8 @@ namespace GameCore.Objects
 			var athing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
-				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtp))
+				var mtpLocal = mtp;
+				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
 				{
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
 
@@ -200,7 +200,8 @@ namespace GameCore.Objects
 			var athing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
-				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtp))
+				var mtpLocal = mtp;
+				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
 				{
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
 					var key = new Tuple<ETiles, Material>(thing.Tile, material);
@@ -216,7 +217,7 @@ namespace GameCore.Objects
 
 		public static Thing ResolveThing(Type _type, Material _material, Creature _creature)
 		{
-			var thing = (Thing) Activator.CreateInstance(_type, new object[] {_material,});
+			var thing = (Thing) Activator.CreateInstance(_type, new object[] {_material});
 			thing.Resolve(_creature);
 			return thing;
 		}

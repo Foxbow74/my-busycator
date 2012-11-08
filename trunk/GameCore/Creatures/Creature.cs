@@ -41,7 +41,7 @@ namespace GameCore.Creatures
 		/// <summary>
 		/// 	Скорость существа, валидно значение >0, множитель, на который умножается время выполнения действия, 100 - нормальная скорость человека
 		/// </summary>
-		public int Speed { get; private set; }
+		public int Speed { get; protected set; }
 
 		/// <summary>
 		/// 	Live координаты
