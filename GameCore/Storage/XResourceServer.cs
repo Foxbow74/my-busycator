@@ -8,7 +8,7 @@ namespace GameCore.Storage
 	{
 		protected override bool IsAsync
 		{
-			get { return true; }
+			get { return false; }
 		}
 
 		protected override IStorage CreateStorage()

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
-using GameCore.Mapping.Layers;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
 
@@ -100,7 +99,10 @@ namespace GameUi.UIBlocks
 				{
 					var pnt = new Point(i, j) - halfSize;
 					var type = World.TheWorld.Surface.GetBlockType(pnt);
-					var color = GetColor(type);
+                    
+                    //if(World.TheWorld.Surface[pnt].SeenCells.All(_u => _u==0)) continue;
+					
+                    var color = GetColor(type);
 
 					if (World.TheWorld.Avatar[0, 0].MapBlockId == pnt)
 					{
