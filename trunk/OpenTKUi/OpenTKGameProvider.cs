@@ -4,6 +4,7 @@ using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK;
+using OpenTK.Graphics;
 using OpenTK.Input;
 
 namespace OpenTKUi
@@ -17,8 +18,8 @@ namespace OpenTKUi
 		private OpenTKResourceProvider m_resourceProvider;
 		private TileMapRenderer m_tileMapRenderer;
 
-		public OpenTKGameProvider(int _tileSizeX, int _tileSizeY, int _screenWidth, int _screenHeight)
-			: base(_tileSizeX*(_screenWidth/_tileSizeX), _tileSizeX*(_screenHeight/_tileSizeX))
+		public OpenTKGameProvider(int _screenWidth, int _screenHeight)
+			: base(Constants.TILE_SIZE * (_screenWidth / Constants.TILE_SIZE), Constants.TILE_SIZE * (_screenHeight / Constants.TILE_SIZE))
 		{
 			X = 0;
 			Y = 0;
@@ -26,11 +27,10 @@ namespace OpenTKUi
 			m_core.Reset();
 			Keyboard.KeyDown += KeyboardKeyDown;
 			Keyboard.KeyUp += KeyboardKeyUp;
-			OpenTKTile.GameProvider = this;
-
 			Mouse.Move += MouseMoveInternal;
 			Mouse.ButtonUp += MouseButtonUpInternal;
 			Mouse.ButtonDown += MouseButtonDownInternal;
+			OpenTKTile.GameProvider = this;
 		}
 
 		#region mouse handling
@@ -125,7 +125,7 @@ namespace OpenTKUi
 
 		public bool IsActive
 		{
-			get { return Focused && WidthInCells > 0 && HeightInCells > 0; }
+			get { return Focused && (Width / Constants.TILE_SIZE) > 0 && (Height / Constants.TILE_SIZE) > 0; }
 		}
 
 		internal TileMapRenderer TileMapRenderer
@@ -138,11 +138,6 @@ namespace OpenTKUi
 				}
 				return m_tileMapRenderer;
 			}
-		}
-
-		public void DrawTextLayer()
-		{
-			//m_drawHelper.DrawTextBitmap();
 		}
 
 		#endregion
@@ -181,9 +176,12 @@ namespace OpenTKUi
 
 		protected override void OnUpdateFrame(FrameEventArgs _e)
 		{
-			if (!IsActive) return;
-			base.OnUpdateFrame(_e);
-			TileMapRenderer.Iteration++;
+			using (new Profiler())
+			{
+				if (!IsActive) return;
+				base.OnUpdateFrame(_e);
+				TileMapRenderer.Iteration++;
+			}
 		}
 
 		protected virtual void OnRenderFinished()
@@ -192,7 +190,6 @@ namespace OpenTKUi
 			{
 				if (!IsActive) return;
 				TileMapRenderer.Draw();
-				DrawTextLayer();
 				SwapBuffers();
 			}
 		}
@@ -305,14 +302,6 @@ namespace OpenTKUi
 					break;
 				default:
 					var keyName = Enum.GetName(typeof (Key), _key);
-
-					//switch (_key)
-					//{
-					//    //case Key.One:
-					//        _consoleKey = ConsoleKey.D1;
-					//        Debug.WriteLine(_key + " ( Delta= " + ((int)_consoleKey - (int)_key));
-					//        break;
-					//}
 
 					if (Enum.TryParse(keyName, true, out _consoleKey))
 					{

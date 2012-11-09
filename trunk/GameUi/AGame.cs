@@ -14,6 +14,5 @@ namespace GameUi
 		KeyState KeyState { get; }
 		void Clear(FColor _color);
 		void Exit();
-		void DrawTextLayer();
 	}
 }
