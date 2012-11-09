@@ -12,9 +12,13 @@ namespace GameCore.Objects
 
 		public abstract string Name { get; }
 
+		/// <summary>
+		/// Прозрачность объекта, используется для рассчета области видимости игрока
+		/// </summary>
 		public virtual float Opacity { get { return TilesAttribute.GetAttribute(Tile).Opacity; } }
 
 		public abstract EThingCategory Category { get; }
+
 		public virtual ILightSource Light { get { return null; } }
 
 		public abstract EMaterial AllowedMaterials { get; }
@@ -38,9 +42,9 @@ namespace GameCore.Objects
 		public override string ToString() { return this.GetName(World.TheWorld.Avatar); }
 
 		/// <summary>
-		/// 	Заполнить параметры вещи, происходит один раз
+		/// Заполнить параметры сущности, происходит один раз для сущности
 		/// </summary>
-		/// <param name = "_creature"></param>
+		/// <param name = "_creature">Существо, инициатор резолва</param>
 		public abstract void Resolve(Creature _creature);
 
 		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }

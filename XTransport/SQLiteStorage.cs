@@ -22,8 +22,7 @@ namespace XTransport
 
 		private static readonly Dictionary<Type, string> m_type2Tables = new Dictionary<Type, string>();
 
-		private static readonly Dictionary<Type, Func<object, IStorageValue>> m_tables2Type =
-			new Dictionary<Type, Func<object, IStorageValue>>();
+		private static readonly Dictionary<Type, Func<object, IStorageValue>> m_tables2Type = new Dictionary<Type, Func<object, IStorageValue>>();
 
 		private readonly AutoResetEvent m_autoResetEvent = new AutoResetEvent(true);
 
@@ -31,58 +30,75 @@ namespace XTransport
 
 		private DbTransaction m_transaction;
 
-		static SQLiteStorage()
+		private void RegisterTypes()
 		{
-			m_type2Tables.Add(typeof (int), "ints");
-			m_type2Tables.Add(typeof (Guid), "guids");
-			m_type2Tables.Add(typeof (string), "strings");
-			m_type2Tables.Add(typeof (DateTime), "dates");
-			m_type2Tables.Add(typeof (double), "doubles");
-			m_type2Tables.Add(typeof(decimal), "decimals");
-			m_type2Tables.Add(typeof(float), "floats");
+			RegisterType(_o => (long)_o, SQL_TYPE_INTEGER);
+			RegisterType(_o => (int)_o, SQL_TYPE_INTEGER);
+			RegisterType(_o => (byte)_o, SQL_TYPE_INTEGER);
+			RegisterType(_o => (short)_o, SQL_TYPE_INTEGER);
+			RegisterType(_o => new Guid((string)_o), SQL_TYPE_GUID);
+			RegisterType(_o => (string)_o, SQL_TYPE_TEXT);
+			RegisterType(_o => (DateTime)_o, SQL_TYPE_DATETIME);
+			RegisterType(_o => (double)_o, SQL_TYPE_REAL);
+			RegisterType(_o => (float)_o, SQL_TYPE_REAL);
+			RegisterType(_o => (decimal)_o, SQL_TYPE_REAL);
 
-			m_tables2Type.Add(typeof (int), _o => new StorageValue<int> {Val = (int) _o});
-			m_tables2Type.Add(typeof (Guid), _o => new StorageValue<Guid> {Val = new Guid((string) _o)});
-			m_tables2Type.Add(typeof (string), _o => new StorageValue<string> {Val = (string) _o});
-			m_tables2Type.Add(typeof (DateTime), _o => new StorageValue<DateTime> {Val = (DateTime) _o});
-			m_tables2Type.Add(typeof (double), _o => new StorageValue<double> {Val = (double) _o});
-			m_tables2Type.Add(typeof(decimal), _o => new StorageValue<decimal> { Val = Decimal.Parse((string)_o) });
-			m_tables2Type.Add(typeof(float), _o => new StorageValue<float> { Val = (float)(double)_o });
+			//m_type2Tables.Add(typeof (int), "ints");
+			//m_type2Tables.Add(typeof (Guid), "guids");
+			//m_type2Tables.Add(typeof (string), "strings");
+			//m_type2Tables.Add(typeof (DateTime), "dates");
+			//m_type2Tables.Add(typeof (double), "doubles");
+			//m_type2Tables.Add(typeof(decimal), "decimals");
+			//m_type2Tables.Add(typeof(float), "floats");
+
+			//m_tables2Type.Add(typeof (int), _o => new StorageValue<int> {Val = (int) _o});
+			//m_tables2Type.Add(typeof (Guid), _o => new StorageValue<Guid> {Val = new Guid((string) _o)});
+			//m_tables2Type.Add(typeof (string), _o => new StorageValue<string> {Val = (string) _o});
+			//m_tables2Type.Add(typeof (DateTime), _o => new StorageValue<DateTime> {Val = (DateTime) _o});
+			//m_tables2Type.Add(typeof (double), _o => new StorageValue<double> {Val = (double) _o});
+			//m_tables2Type.Add(typeof(decimal), _o => new StorageValue<decimal> { Val = Decimal.Parse((string)_o) });
+			//m_tables2Type.Add(typeof(float), _o => new StorageValue<float> { Val = (float)(double)_o });
 		}
+
+		private const string SQL_TYPE_INTEGER = "INTEGER";
+		private const string SQL_TYPE_GUID = "GUID";
+		private const string SQL_TYPE_DATETIME = "DATETIME";
+		private const string SQL_TYPE_TEXT = "TEXT";
+		private const string SQL_TYPE_REAL = "REAL";
+		private const string SQL_TYPE_BLOB = "BLOB";
+
+		private void RegisterType<T>(Func<object, T> _func, string _sqliteType)
+		{
+			if(m_type2Tables.ContainsKey(typeof(T))) return;
+
+			var name = typeof (T).Name + "s";
+			m_type2Tables[typeof(T)] = name;
+			m_tables2Type[typeof(T)] = _o => new StorageValue<T> { Val = _func(_o) };
+			CreateCommand("CREATE TABLE IF NOT EXISTS " + name + " ( id " + _sqliteType + " NOT NULL, value INTEGER)").ExecuteNonQuery();
+			CreateCommand("CREATE INDEX IF NOT EXISTS  " + name + "_idx ON " + name + " (id)").ExecuteNonQuery();
+		}
+
+		static readonly List<string> m_initialized = new List<string>();
 
 		public SQLiteStorage(string _dbName)
 		{
 			var cs = string.Format("BinaryGUID=True, uri=file:{0}", _dbName);
 			m_connection = new SqliteConnection(cs);
 			m_connection.Open();
-			CreateTablesIfNotExists();
+
+			if (!m_initialized.Contains(_dbName))
+			{
+				CreateCommand("CREATE TABLE IF NOT EXISTS main ( id INTEGER PRIMARY KEY AUTOINCREMENT, uid GUID, parent GUID, kind INTEGER, field INTEGER, vfrom DATETIME NOT NULL, vtill DATETIME)").ExecuteNonQuery();
+
+				CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx1 ON main (id)").ExecuteNonQuery();
+				CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx2 ON main (uid)").ExecuteNonQuery();
+				CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx3 ON main (parent)").ExecuteNonQuery();
+
+				RegisterTypes();
+
+				m_initialized.Add(_dbName);
+			}
 		}
-
-		private void CreateTablesIfNotExists()
-		{
-			CreateCommand("CREATE TABLE IF NOT EXISTS main ( id INTEGER PRIMARY KEY AUTOINCREMENT, uid GUID, parent GUID, kind INTEGER, field INTEGER, vfrom DATETIME NOT NULL, vtill DATETIME)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS ints ( id INTEGER NOT NULL, value INTEGER)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS guids ( id INTEGER NOT NULL, value GUID)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS dates ( id INTEGER NOT NULL, value DATETIME)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS strings ( id INTEGER NOT NULL, value TEXT)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS doubles ( id INTEGER NOT NULL, value REAL)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS floats ( id INTEGER NOT NULL, value REAL)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS decimals ( id INTEGER NOT NULL, value TEXT)").ExecuteNonQuery();
-			CreateCommand("CREATE TABLE IF NOT EXISTS blobs ( id INTEGER NOT NULL, value BLOB)").ExecuteNonQuery();
-
-			CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx1 ON main (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx2 ON main (uid)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  main_idx3 ON main (parent)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  ints_idx ON ints (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  strings_idx ON strings (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  guids_idx ON guids (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  dates_idx ON dates (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  doubles_idx ON doubles (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  floats_idx ON floats (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  decimals_idx ON decimals (id)").ExecuteNonQuery();
-			CreateCommand("CREATE INDEX IF NOT EXISTS  blobs_idx ON blobs (id)").ExecuteNonQuery();
-		}
-
 
 		#region IStorage Members
 

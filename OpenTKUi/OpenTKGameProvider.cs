@@ -174,24 +174,17 @@ namespace OpenTKUi
 			base.OnResize(_e);
 		}
 
-		protected override void OnUpdateFrame(FrameEventArgs _e)
+		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			using (new Profiler())
-			{
-				if (!IsActive) return;
-				base.OnUpdateFrame(_e);
-				TileMapRenderer.Iteration++;
-			}
+			base.OnRenderFrame(_e);
+			TileMapRenderer.Iteration++;
 		}
 
 		protected virtual void OnRenderFinished()
 		{
-			using (new Profiler())
-			{
-				if (!IsActive) return;
-				TileMapRenderer.Draw();
-				SwapBuffers();
-			}
+			if (!IsActive) return;
+			TileMapRenderer.Draw();
+			SwapBuffers();
 		}
 
 		private void KeyboardKeyUp(object _sender, KeyboardKeyEventArgs _e)

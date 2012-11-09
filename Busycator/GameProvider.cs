@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -15,7 +16,7 @@ namespace Busycator
 		private readonly TheGame m_game;
 
 		public GameProvider()
-			: base(800, 600)
+			: base(320, 200)
 		{
 			Title = "Busycator";
 			m_game = new TheGame(this);
@@ -50,14 +51,6 @@ namespace Busycator
 			Profiler.Report();
 		}
 
-		protected override void OnUpdateFrame(FrameEventArgs _e)
-		{
-			base.OnUpdateFrame(_e);
-			if (!IsActive) return;
-
-			m_game.Update(KeyState);
-		}
-
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
 			DateTime now = DateTime.Now;
@@ -65,15 +58,15 @@ namespace Busycator
 			{
 
 				var avatar = World.TheWorld.Avatar;
-				var s = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1/_e.Time);
-				if (Title != s)
-				{
-					Title = s;
-				}
+				Title = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1 / _e.Time);
+
+				base.OnRenderFrame(_e);
+	
+				m_game.Update(KeyState);
+				
 				//if (m_game.IsNeedDraw)
 				{
 					Clear(FColor.Empty);
-
 					m_game.Draw();
 					OnRenderFinished();
 				}
@@ -102,6 +95,7 @@ namespace Busycator
 					File.Delete(path);
 					File.AppendAllText(path, exception.Message);
 					File.AppendAllText(path, exception.StackTrace);
+					Process.Start("error_file.txt");
 				}
 			}
 		}
