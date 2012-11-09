@@ -12,12 +12,11 @@ namespace ResourceWizard.VMs
 		public TerrainsTabVM()
 		{
 			Set = Manager.Instance.XRoot.TerrainSetsObsCol;
-			var todel = Set.Where(_vm => _vm.Key == ETerrains.NONE).ToArray();
-			foreach (var vm in todel)
-			{
-				Manager.Instance.XRoot.TerrainSets.Remove(vm);
-			}
-			Manager.Instance.Save();
+            var todel = Set.Where(_vm => _vm.Key == ETerrains.NONE).ToArray();
+            foreach (var vm in todel)
+            {
+                Manager.Instance.XRoot.TerrainSets.Remove(vm);
+            }
 
 			foreach (var key in from ETerrains key in Enum.GetValues(typeof(ETerrains)) where Set.All(_vm => _vm.Key != key) && key != ETerrains.NONE select key)
 			{

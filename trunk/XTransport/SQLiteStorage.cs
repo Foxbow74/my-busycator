@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Threading;
 using Community.CsharpSqlite.SQLiteClient;
 using XTransport.Server;
@@ -24,7 +25,7 @@ namespace XTransport
 
 		private static readonly Dictionary<Type, Func<object, IStorageValue>> m_tables2Type = new Dictionary<Type, Func<object, IStorageValue>>();
 
-		private readonly AutoResetEvent m_autoResetEvent = new AutoResetEvent(true);
+		readonly AutoResetEvent m_autoResetEvent = new AutoResetEvent(true);
 
 		private readonly SqliteConnection m_connection;
 
@@ -32,16 +33,16 @@ namespace XTransport
 
 		private void RegisterTypes()
 		{
-			RegisterType(_o => (long)_o, SQL_TYPE_INTEGER);
-			RegisterType(_o => (int)_o, SQL_TYPE_INTEGER);
-			RegisterType(_o => (byte)_o, SQL_TYPE_INTEGER);
-			RegisterType(_o => (short)_o, SQL_TYPE_INTEGER);
-			RegisterType(_o => new Guid((string)_o), SQL_TYPE_GUID);
-			RegisterType(_o => (string)_o, SQL_TYPE_TEXT);
-			RegisterType(_o => (DateTime)_o, SQL_TYPE_DATETIME);
-			RegisterType(_o => (double)_o, SQL_TYPE_REAL);
-			RegisterType(_o => (float)_o, SQL_TYPE_REAL);
-			RegisterType(_o => (decimal)_o, SQL_TYPE_REAL);
+            RegisterType(_o => (long)_o, SQL_TYPE_INTEGER, "longs");
+            RegisterType(_o => (int)_o, SQL_TYPE_INTEGER, "ints");
+            RegisterType(_o => (byte)_o, SQL_TYPE_INTEGER, "bytes");
+            RegisterType(_o => (short)_o, SQL_TYPE_INTEGER, "shorts");
+            RegisterType(_o => new Guid((string)_o), SQL_TYPE_GUID, "guids");
+            RegisterType(_o => (string) _o, SQL_TYPE_TEXT, "strings");
+            RegisterType(_o => (DateTime)_o, SQL_TYPE_DATETIME, "dates");
+            RegisterType(_o => (double)_o, SQL_TYPE_REAL, "doubles");
+            RegisterType(_o => (float)(double)_o, SQL_TYPE_REAL, "floats");
+            RegisterType(_o => (decimal)_o, SQL_TYPE_REAL, "decimals");
 
 			//m_type2Tables.Add(typeof (int), "ints");
 			//m_type2Tables.Add(typeof (Guid), "guids");
@@ -67,11 +68,10 @@ namespace XTransport
 		private const string SQL_TYPE_REAL = "REAL";
 		private const string SQL_TYPE_BLOB = "BLOB";
 
-		private void RegisterType<T>(Func<object, T> _func, string _sqliteType)
+		private void RegisterType<T>(Func<object, T> _func, string _sqliteType, string name)
 		{
 			if(m_type2Tables.ContainsKey(typeof(T))) return;
 
-			var name = typeof (T).Name + "s";
 			m_type2Tables[typeof(T)] = name;
 			m_tables2Type[typeof(T)] = _o => new StorageValue<T> { Val = _func(_o) };
 			CreateCommand("CREATE TABLE IF NOT EXISTS " + name + " ( id " + _sqliteType + " NOT NULL, value INTEGER)").ExecuteNonQuery();
@@ -85,6 +85,8 @@ namespace XTransport
 			var cs = string.Format("BinaryGUID=True, uri=file:{0}", _dbName);
 			m_connection = new SqliteConnection(cs);
 			m_connection.Open();
+
+            m_connection.StateChange+=ConnectionOnStateChange;
 
 			if (!m_initialized.Contains(_dbName))
 			{
@@ -100,14 +102,21 @@ namespace XTransport
 			}
 		}
 
-		#region IStorage Members
+	    private void ConnectionOnStateChange(object _sender, StateChangeEventArgs _stateChangeEventArgs)
+	    {
+            Debug.WriteLine("C:" + _stateChangeEventArgs.CurrentState);
+            Debug.WriteLine("O:" + _stateChangeEventArgs.OriginalState);
+	    }
+
+	    #region IStorage Members
 
 		public void Dispose()
 		{
 			if (m_connection.State != ConnectionState.Closed)
 			{
-				m_connection.Close();
-				m_connection.Dispose();
+                m_connection.Close();
+                m_connection.StateChange -= ConnectionOnStateChange;
+                m_connection.Dispose();
 			}
 		}
 
@@ -118,6 +127,7 @@ namespace XTransport
 
 		public void Delete(Guid _uid, int _field, DateTime _now)
 		{
+            Debug.WriteLine("DELETED: " + _uid);
 			ExecuteNonQuery("UPDATE main SET vtill=@till WHERE uid=@uid"
 			                , new SqliteParameter("@uid", _uid)
 							, new SqliteParameter("@till", _now));
@@ -156,8 +166,7 @@ namespace XTransport
 		public IEnumerable<StorageRootObject> LoadRoot()
 		{
 			var now = DateTime.Now;
-			using (
-				var rdr = CreateCommand("select * from main where parent IS NULL").ExecuteReader(CommandBehavior.CloseConnection))
+			using (var rdr = CreateCommand("select * from main where parent IS NULL").ExecuteReader(CommandBehavior.CloseConnection))
 			{
 				while (rdr.Read())
 				{
@@ -312,11 +321,6 @@ namespace XTransport
 		private int ExecuteNonQuery(SqliteCommand _cmd)
 		{
 			var affected = _cmd.ExecuteNonQuery();
-			//Debug.WriteLine(affected + "\t" + _cmd.CommandText);
-			//foreach (SqliteParameter parameter in _cmd.Parameters)
-			//{
-			//    Debug.WriteLine("\t" + parameter.ParameterName + "\t" + parameter.Value);
-			//}
 			if (_cmd.GetLastErrorCode() != 0)
 			{
 				RollBack();
@@ -324,7 +328,8 @@ namespace XTransport
 			}
 			return affected;
 		}
-		public int InsertMain(UplodableObject _uplodableObject, Guid _parent = default(Guid), int? _field = null)
+
+	    public int InsertMain(UplodableObject _uplodableObject, Guid _parent = default(Guid), int? _field = null)
 		{
 			var now = DateTime.Now;
 			int result;
@@ -357,8 +362,8 @@ namespace XTransport
 			public Transaction(SQLiteStorage _storage)
 			{
 				m_storage = _storage;
-				_storage.m_autoResetEvent.WaitOne();
-				_storage.m_transaction = _storage.m_connection.BeginTransaction();
+                _storage.m_autoResetEvent.WaitOne();
+                _storage.m_transaction = _storage.m_connection.BeginTransaction();
 			}
 
 			#region IDisposable Members
@@ -369,9 +374,9 @@ namespace XTransport
 				{
 					m_storage.m_transaction.Commit();
 					m_storage.m_transaction.Dispose();
-					m_storage.m_transaction = null;
+                    m_storage.m_transaction = null;
 				}
-				m_storage.m_autoResetEvent.Set();
+                m_storage.m_autoResetEvent.Set();
 			}
 
 			#endregion

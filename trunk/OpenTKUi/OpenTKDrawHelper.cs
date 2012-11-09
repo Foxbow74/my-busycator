@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
 using GameCore.Misc;
@@ -37,21 +36,19 @@ namespace OpenTKUi
 
 		#region IDrawHelper Members
 
-		public void ClearTiles(Rct _rct, FColor _backgroundColor)
+	    public void ClearTiles(Rct _rct, FColor _backgroundColor)
 		{
 			if(m_gameProvider.TileMapRenderer==null) return;
 			m_gameProvider.TileMapRenderer.Clear(_rct, _backgroundColor);
 		}
 
-		public System.Drawing.SizeF MeasureString(EFonts _font, string _string)
+		public SizeF MeasureString(EFonts _font, string _string)
 		{
 			var qFont = m_resourceProvider[_font];
 			return qFont.Measure(_string);
 		}
 
-		private readonly Dictionary<EFonts, QFont> m_qfonts = new Dictionary<EFonts, QFont>();
-
-		public void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color)
+	    public void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color)
 		{
 			var qFont = m_resourceProvider[_font];
 			QFont.Begin();
@@ -65,7 +62,12 @@ namespace OpenTKUi
 			m_gameProvider.TileMapRenderer.FogTile(_point);
 		}
 
-		public void DrawRect(Rct _rct, FColor _toFColor)
+	    public IImageContainer CreateImageContainer(Bitmap _bitmap)
+	    {
+	        return new Image(_bitmap, false);
+	    }
+
+	    public void DrawRect(Rct _rct, FColor _toFColor)
 		{
 			GL.BindTexture(TextureTarget.Texture2D, 0);
 
@@ -93,6 +95,25 @@ namespace OpenTKUi
 			GL.End();
 		}
 
+
+        public void DrawRect(RectangleF _rct, IImageContainer _imageContainer)
+        {
+            GL.BindTexture(TextureTarget.Texture2D, ((Image)_imageContainer).Texture);
+
+            GL.Color4(1f, 1f, 1f, 1f);
+
+            GL.Begin(BeginMode.Quads);
+            GL.TexCoord2(0, 0);
+            GL.Vertex2(_rct.Left, _rct.Top);
+            GL.TexCoord2(1f, 0);
+            GL.Vertex2(_rct.Right + 1, _rct.Top);
+            GL.TexCoord2(1f, 1f);
+            GL.Vertex2(_rct.Right + 1, _rct.Bottom + 1);
+            GL.TexCoord2(0, 1f);
+            GL.Vertex2(_rct.Left, _rct.Bottom + 1);
+            GL.End();
+        }
+
 		#endregion
 
 		public static void DrawTexture(Image _image)
@@ -104,7 +125,7 @@ namespace OpenTKUi
 			GL.Begin(BeginMode.Quads);
 			GL.TexCoord2(0, 0);
 			GL.Vertex2(0, 0);
-			GL.TexCoord2(1f, 0);
+            GL.TexCoord2(1f, 0);
 			GL.Vertex2(_image.Width, 0);
 			GL.TexCoord2(1f, 1f);
 			GL.Vertex2(_image.Width, _image.Height);

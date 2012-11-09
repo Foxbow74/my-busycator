@@ -1,12 +1,13 @@
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using GameUi;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace OpenTKUi
 {
-	public class Image : IDisposable
+    public class Image : IImageContainer
 	{
 		private readonly bool m_alpha;
 		private uint m_texture;
