@@ -76,6 +76,7 @@
     <Compile Include="StoreableVMs\XNicksInfoVM.cs" />
     <Compile Include="StoreableVMs\XObjectVM.cs" />
     <Compile Include="StoreableVMs\XResourceRootVM.cs" />
+    <Compile Include="StoreableVMs\XThingInfoVM.cs" />
     <Compile Include="StoreableVMs\XTileInfoVM.cs" />
     <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
     <Compile Include="StoreableVMs\XTileSetVM.cs" />

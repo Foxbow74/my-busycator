@@ -3,7 +3,15 @@
 	public interface ITileInfoProvider
 	{
 		ETiles Tile { get; }
+
+		/// <summary>
+		/// Цвет, который дает конкретный предмет своему тайлу. Считается линейной интерполяцией от альфы
+		/// </summary>
 		FColor LerpColor { get; }
+
+		/// <summary>
+		/// Позволяет поворачивать тайл при отрисовке, по дефолту <see cref="EDirections.DOWN"/>
+		/// </summary>
 		EDirections Direction { get; }
 	}
 }

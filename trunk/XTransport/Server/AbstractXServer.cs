@@ -221,7 +221,7 @@ namespace XTransport.Server
 				return false;
 			}
 
-			if (obj.Stored == 0 && _uid != GetRootUid())
+			if (obj.Stored == 0 && _uid != GetRootUid() && obj.ValidTill<_now)
 			{
 				obj.Stored = obj.GetCurrentGeneration(_sessionId);
 				obj.StoredId = _st.InsertMain(obj.Uid, obj.Kind, _now);
@@ -247,7 +247,7 @@ namespace XTransport.Server
 			}
 
 			var saved = false;
-			if (child.Stored == 0)
+			if (child.Stored == 0 && child.ValidTill < _now)
 			{
 				saved = true;
 				child.ValidFrom = _now;

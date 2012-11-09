@@ -11,10 +11,19 @@ namespace ResourceWizard.VMs
 		public TilesTabVM()
 		{
 			Set = Manager.Instance.XRoot.TileSetsObsCol;
-			foreach (var vm in from ETiles key in Enum.GetValues(typeof(ETiles)) where Set.All(_vm => _vm.Key != key) && key!=ETiles.NONE select new XTileSetVM { Key = key, })
+			var todel = Set.Where(_vm => _vm.Key == ETiles.NONE).ToArray();
+			foreach (var vm in todel)
 			{
-				Manager.Instance.XRoot.TileSets.Add(vm);
-				vm.Children.Add(new XTileInfoVM());
+				Manager.Instance.XRoot.TileSets.Remove(vm);
+			}
+			Manager.Instance.Save();
+
+			foreach (var key in from ETiles key in Enum.GetValues(typeof(ETiles)) where Set.All(_vm => _vm.Key != key) && key!=ETiles.NONE select key)
+			{
+				var set = new XTileSetVM();
+				Manager.Instance.XRoot.TileSets.Add(set);
+				set.Key = key;
+				set.Children.Add(new XTileInfoVM());
 			}
 		}
 
