@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
@@ -14,7 +15,7 @@ namespace Busycator
 		private readonly TheGame m_game;
 
 		public GameProvider()
-			: base(16, 16, 320, 200)
+			: base(800, 600)
 		{
 			Title = "Busycator";
 			m_game = new TheGame(this);
@@ -38,7 +39,7 @@ namespace Busycator
 			base.OnResize(_e);
 			if (IsActive)
 			{
-				m_game.WindowClientSizeChanged(WidthInCells, HeightInCells);
+				m_game.WindowClientSizeChanged(Width / Constants.TILE_SIZE, Height / Constants.TILE_SIZE);
 			}
 		}
 
@@ -59,21 +60,30 @@ namespace Busycator
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			if (!IsActive) return;
-
-			var avatar = World.TheWorld.Avatar;
-			Title = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1/_e.Time);
-			//if (m_game.IsNeedDraw)
+			DateTime now = DateTime.Now;
+			if (IsActive)
 			{
-				Clear(FColor.Empty);
 
-				using (new Profiler("m_game.Draw();"))
+				var avatar = World.TheWorld.Avatar;
+				var s = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1/_e.Time);
+				if (Title != s)
 				{
-					m_game.Draw();
+					Title = s;
 				}
+				//if (m_game.IsNeedDraw)
+				{
+					Clear(FColor.Empty);
 
-				OnRenderFinished();
+					m_game.Draw();
+					OnRenderFinished();
+				}
 			}
+			var ts = DateTime.Now - now;
+			if (ts.Milliseconds < 100 / 6)
+			{
+				Thread.Sleep(100 / 6 - ts.Milliseconds);
+			}
+
 		}
 
 		[STAThread] private static void Main()
@@ -83,7 +93,7 @@ namespace Busycator
 				{
 					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
 					{
-						game.Run(60, 60);
+						game.Run(60);
 					}
 				}
 				catch (Exception exception)
