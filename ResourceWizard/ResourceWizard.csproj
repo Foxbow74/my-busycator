@@ -80,16 +80,21 @@
     <Compile Include="StoreableVMs\XTileInfoVM.cs" />
     <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
     <Compile Include="StoreableVMs\XTileSetVM.cs" />
+    <Compile Include="Views\ThinksTabView.xaml.cs">
+      <DependentUpon>ThinksTabView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TextureView.xaml.cs">
       <DependentUpon>TextureView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\TilesTabView.xaml.cs">
-      <DependentUpon>TilesTabView.xaml</DependentUpon>
+    <Compile Include="Views\TabView.xaml.cs">
+      <DependentUpon>TabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="VMs\MainVM.cs" />
+    <Compile Include="VMs\SetTabVM.cs" />
     <Compile Include="VMs\TabVM.cs" />
     <Compile Include="VMs\TerrainsTabVM.cs" />
     <Compile Include="VMs\TextureVM.cs" />
+    <Compile Include="VMs\ThinksTabVM.cs" />
     <Compile Include="VMs\TilesTabVM.cs" />
     <Compile Include="XClient.cs" />
     <Page Include="StoreableView\TileInfoEditorView.xaml">
@@ -108,6 +113,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\ThinksTabView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,7 +133,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\TilesTabView.xaml">
+    <Page Include="Views\TabView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

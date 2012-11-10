@@ -5,12 +5,15 @@
         xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView" Title="MainWindow" Height="350" Width="525" WindowState="Maximized" >
 	<Window.Resources>
 		<DataTemplate DataType="{x:Type VMs:TilesTabVM}">
-			<Views:TilesTabView/>
+			<Views:TabView/>
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">
-			<Views:TilesTabView/>
-		</DataTemplate>
-		<DataTemplate DataType="{x:Type VMs:TextureVM}">
+        <DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">
+            <Views:TabView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type VMs:ThinksTabVM}">
+            <Views:ThinksTabView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type VMs:TextureVM}">
 			<Views:TextureView/>
 		</DataTemplate>
 		<DataTemplate DataType="{x:Type StoreableVMs:XTileSetVM}">
