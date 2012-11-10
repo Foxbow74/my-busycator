@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="ResourceWizard.Views.ThinksTabView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:VMs="clr-namespace:ResourceWizard.VMs" xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance VMs:ThinksTabVM}">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBar>
+            <ToolBarPanel>
+                <Button Content="Добавить новый" Command="{Binding AddCommand}"/>
+            </ToolBarPanel>
+        </ToolBar>
+        <TreeView MinWidth="200" ItemsSource="{Binding Set}" Margin="10,10,0,10" x:Name="tv" Grid.Row="1">
+            <TreeView.Resources>
+                <HierarchicalDataTemplate ItemsSource="{Binding ChildrentObsCol}" DataType="{x:Type StoreableVMs:XThingInfoVM}">
+                    <TextBlock Text="{Binding Name}" Width="200" Background="Red">
+                        <TextBlock.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Добавить чилд" Command="{Binding AddChildCommand}"/>
+                                <MenuItem Header="Удалить" Command="{Binding DeleteCommand}"/>
+                            </ContextMenu>
+                        </TextBlock.ContextMenu>
+                    </TextBlock>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <!--<ListBox  MinWidth="200" ItemsSource="{Binding Set}" Margin="10,10,0,10" x:Name="tv" Grid.Row="1"></ListBox>-->
+        <GridSplitter Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="DarkGray" Width="5" Margin="10,10" Grid.RowSpan="2"/>
+        <ContentPresenter Content="{Binding ElementName=tv, Path=SelectedItem}" Grid.Column="2"  Margin="0,10,10,10" Grid.RowSpan="2"/>
+	</Grid>
+</UserControl>

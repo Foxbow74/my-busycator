@@ -4,31 +4,31 @@ using GameCore.Misc;
 
 namespace GameCore.Objects
 {
-	public enum EThingCategory
-	{
-		[ThingCategory("Шлемы", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] HELMETS,
-		[ThingCategory("Ожерелья", '\'', ConsoleKey.Oem7, EKeyModifiers.NONE)] NECKLACES,
-		[ThingCategory("Одежда", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] WEAR,
-		[ThingCategory("Броня", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] ARMOR,
-		[ThingCategory("Пояса", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] GIRGLE,
-		[ThingCategory("Плащи", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] CLOACK,
-		[ThingCategory("Наручи", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] BRACERS,
-		[ThingCategory("Перчатки", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] GAUNTLETS,
-		[ThingCategory("Обувь", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] BOOTS,
-		[ThingCategory("Оружие", '(', ConsoleKey.D9, EKeyModifiers.SHIFT)] WEAPON,
-		[ThingCategory("Метательное оружие", '}', ConsoleKey.Oem6, EKeyModifiers.SHIFT)] MISSILE_WEAPON,
+public enum EThingCategory
+{
+    [ThingCategory("Шлемы", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] HELMETS,
+    [ThingCategory("Ожерелья", '\'', ConsoleKey.Oem7, EKeyModifiers.NONE)] NECKLACES,
+    [ThingCategory("Одежда", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] WEAR,
+    [ThingCategory("Броня", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] ARMOR,
+    [ThingCategory("Пояса", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] GIRGLE,
+    [ThingCategory("Плащи", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] CLOACK,
+    [ThingCategory("Наручи", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] BRACERS,
+    [ThingCategory("Перчатки", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] GAUNTLETS,
+    [ThingCategory("Обувь", '[', ConsoleKey.Oem5, EKeyModifiers.NONE)] BOOTS,
+    [ThingCategory("Оружие", '(', ConsoleKey.D9, EKeyModifiers.SHIFT)] WEAPON,
+    [ThingCategory("Метательное оружие", '}', ConsoleKey.Oem6, EKeyModifiers.SHIFT)] MISSILE_WEAPON,
 
-		[ThingCategory("Кольца", '=', ConsoleKey.OemPlus, EKeyModifiers.NONE)] RINGS,
-		[ThingCategory("Пища", '%', ConsoleKey.D5, EKeyModifiers.SHIFT)] FOOD,
-		[ThingCategory("Снадобья", '!', ConsoleKey.D1, EKeyModifiers.SHIFT)] POTION,
-		[ThingCategory("Снаряды", '/', ConsoleKey.Oem2, EKeyModifiers.NONE)] MISSILES,
-		[ThingCategory("Инструменты", ']', ConsoleKey.Oem6, EKeyModifiers.NONE)] TOOLS,
-		[ThingCategory("Жезлы", '\\', ConsoleKey.Oem5, EKeyModifiers.NONE)] WANDS,
-		[ThingCategory("Книги", '"', ConsoleKey.D2, EKeyModifiers.SHIFT)] BOOKS,
-		[ThingCategory("Свитки", '?', ConsoleKey.Oem2, EKeyModifiers.SHIFT)] SCROLLS,
-		[ThingCategory("Мебель", '#', ConsoleKey.D3, EKeyModifiers.SHIFT)] FURNITURE,
-		[ThingCategory("Окружение", 'v', ConsoleKey.NoName, EKeyModifiers.NONE)] LANDSCAPE
-	}
+    [ThingCategory("Кольца", '=', ConsoleKey.OemPlus, EKeyModifiers.NONE)] RINGS,
+    [ThingCategory("Пища", '%', ConsoleKey.D5, EKeyModifiers.SHIFT)] FOOD,
+    [ThingCategory("Снадобья", '!', ConsoleKey.D1, EKeyModifiers.SHIFT)] POTION,
+    [ThingCategory("Снаряды", '/', ConsoleKey.Oem2, EKeyModifiers.NONE)] MISSILES,
+    [ThingCategory("Инструменты", ']', ConsoleKey.Oem6, EKeyModifiers.NONE)] TOOLS,
+    [ThingCategory("Жезлы", '\\', ConsoleKey.Oem5, EKeyModifiers.NONE)] WANDS,
+    [ThingCategory("Книги", '"', ConsoleKey.D2, EKeyModifiers.SHIFT)] BOOKS,
+    [ThingCategory("Свитки", '?', ConsoleKey.Oem2, EKeyModifiers.SHIFT)] SCROLLS,
+    [ThingCategory("Мебель", '#', ConsoleKey.D3, EKeyModifiers.SHIFT)] FURNITURE,
+    [ThingCategory("Окружение", 'v', ConsoleKey.NoName, EKeyModifiers.NONE)] LANDSCAPE
+}
 
 	public class ThingCategoryAttribute : Attribute
 	{

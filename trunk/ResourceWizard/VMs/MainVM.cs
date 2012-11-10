@@ -5,15 +5,16 @@ namespace ResourceWizard.VMs
 {
 	class MainVM
 	{
-		public ObservableCollection<TabVM> Tabs { get; private set; }
+        public ObservableCollection<AbstractViewModel> Tabs { get; private set; }
 
 		public MainVM()
 		{
 			SaveCommand = new RelayCommand(_o => Manager.Instance.Save());
-			Tabs = new ObservableCollection<TabVM>
+			Tabs = new ObservableCollection<AbstractViewModel>
 				       {
 					       new TilesTabVM(),
 						   new TerrainsTabVM(),
+                           new ThinksTabVM(),
 				       };
 		}
 
