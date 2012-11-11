@@ -72,6 +72,7 @@
     <Compile Include="EEffect.cs" />
     <Compile Include="Effect.cs" />
     <Compile Include="Effects\HealEffect.cs" />
+    <Compile Include="ELevel.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="EMaterial.cs" />
     <Compile Include="FColor.cs" />
