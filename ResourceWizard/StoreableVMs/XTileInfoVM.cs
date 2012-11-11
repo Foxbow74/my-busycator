@@ -25,12 +25,12 @@ namespace ResourceWizard.StoreableVMs
 	    [X("CX")]private IXValue<int> m_cx;
 	    [X("CY")]private IXValue<int> m_cy;
 	    [X("Order")]private IXValue<int> m_order;
-	    [X("X")]private IXValue<int> m_x;
+        [X("X")]private IXValue<int> m_x;
 	    [X("Y")]private IXValue<int> m_y;
 
-        private TextureVM m_textureVM;
         private FColor m_fColor;
-
+        private TextureVM m_textureVM;
+	    
 	    public XTileInfoVM()
 	    {
 	        SelectColorCommand = new RelayCommand(ExecuteSelectColorCommand);
@@ -47,10 +47,6 @@ namespace ResourceWizard.StoreableVMs
 		{
 			get
 			{
-				if(m_fColor.Equals(default(FColor)))
-				{
-					m_fColor = Color.GetFColor();
-				}
 				return m_fColor;
 			}
 			set
@@ -96,14 +92,7 @@ namespace ResourceWizard.StoreableVMs
 		public int CX { get { return m_cx.Value; } set { m_cx.Value = value; } }
 		public int CY { get { return m_cy.Value; } set { m_cy.Value = value; } }
 
-		public XColorVM Color
-		{
-			get { return m_color.Value; }
-			set
-			{
-				m_color.Value = value;
-			}
-		}
+	    public XColorVM Color { get; set; }
 
 		public ETextureSet Texture
 		{
@@ -144,10 +133,6 @@ namespace ResourceWizard.StoreableVMs
             get { return m_grayScale.Value; }
             set { m_grayScale.Value = value; RefreshImage(); }
         }
-
-		public float ColorR { get { return FColor.R; } set { FColor = new FColor(1, value, FColor.G, FColor.B); } }
-		public float ColorG { get { return FColor.G; } set { FColor = new FColor(1, FColor.R, value, FColor.B); } }
-		public float ColorB { get { return FColor.B; } set { FColor = new FColor(1, FColor.R, FColor.G, value); } }
 
 		public RelayCommand RefreshMosaicCommand { get; private set; }
 
@@ -231,6 +216,12 @@ namespace ResourceWizard.StoreableVMs
 	        BindProperty(m_cx, () => CX);
 	        BindProperty(m_cy, () => CY);
 	        BindProperty(m_order, ()=>Order);
+            m_fColor = m_color.Value.GetFColor();
+            Color = new XColorVM();
+            Color.Set(m_fColor);
+            Color.SetDispatcher(Manager.Instance.Dispatcher);
+            Color.BindProps();
+	        Color.PropertyChanged += (_sender, _args) => FColor = Color.GetFColor();
 	    }
 
 	    public void RefreshImage()
@@ -240,9 +231,9 @@ namespace ResourceWizard.StoreableVMs
 
 		public void BeforeSave()
 		{
-			if (!Color.GetFColor().Equals(FColor))
+            if (!m_color.Value.GetFColor().Equals(FColor))
 			{
-				Color = m_fColor.GetXColorVM();
+                m_color.Value.Set(m_fColor);
 			}
 		}
 	}

@@ -37,10 +37,15 @@ namespace XTransport.WPF
 		void IXClientUserInternal<TKind>.SetClient(AbstractXClient<TKind> _client)
 		{
 			Client = _client;
-			m_uiDispatcher = (_client).GetUiDispatcherInternal();
+			SetDispatcher(_client.GetUiDispatcherInternal());
 		}
 
 		#endregion
+
+        public void SetDispatcher(Dispatcher _dispatcher)
+        {
+            m_uiDispatcher = _dispatcher;
+        }
 
 		public Cursor CurrentCursor { get; private set; }
 

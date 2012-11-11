@@ -35,7 +35,7 @@ namespace XTransport
 		{
             RegisterType(_o => (long)_o, SQL_TYPE_INTEGER, "longs");
             RegisterType(_o => (int)_o, SQL_TYPE_INTEGER, "ints");
-            RegisterType(_o => (byte)_o, SQL_TYPE_INTEGER, "bytes");
+            RegisterType(_o => (byte)(int)_o, SQL_TYPE_INTEGER, "bytes");
             RegisterType(_o => (short)_o, SQL_TYPE_INTEGER, "shorts");
             RegisterType(_o => new Guid((string)_o), SQL_TYPE_GUID, "guids");
             RegisterType(_o => (string) _o, SQL_TYPE_TEXT, "strings");
