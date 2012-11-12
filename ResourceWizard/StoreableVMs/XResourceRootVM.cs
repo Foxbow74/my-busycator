@@ -22,6 +22,10 @@ namespace ResourceWizard.StoreableVMs
 
 		public void BeforeSave()
 		{
+			foreach (var vm in ThingInfos)
+			{
+				vm.BeforeSave();
+			}
 			foreach (var xTileSetVM in TileSets.Cast<XAbstractTileSetVM>().Union(TerrainSets))
 			{
 				foreach (var vm in xTileSetVM.Children)

@@ -59,14 +59,22 @@ namespace ResourceWizard.StoreableVMs
             BindProperty(m_b, () => B);
         }
 
-        public void Set(FColor _fColor)
-        {
-            R = _fColor.R;
-            G = _fColor.G;
-            B = _fColor.B;
-            A = _fColor.A;
-        }
-    }
+		public void Set(FColor _fColor)
+		{
+			R = _fColor.R;
+			G = _fColor.G;
+			B = _fColor.B;
+			A = _fColor.A;
+		}
+
+		public void Set(XColorVM _xColor)
+		{
+			R = _xColor.R;
+			G = _xColor.G;
+			B = _xColor.B;
+			A = _xColor.A;
+		}
+	}
 
     static class XColorHelper
     {
@@ -76,6 +84,16 @@ namespace ResourceWizard.StoreableVMs
             return new FColor(_xc.A, _xc.R, _xc.G, _xc.B);
         }
 
+		public static System.Drawing.Color GetDColor(this XColorVM _xc)
+		{
+			return System.Drawing.Color.FromArgb((byte)(_xc.A * 255), (byte)(_xc.R * 255), (byte)(_xc.G * 255), (byte)(_xc.B * 255));
+		}
+
+		public static System.Windows.Media.Color GetColor(this XColorVM _xc)
+		{
+			return System.Windows.Media.Color.FromArgb((byte)(_xc.A * 255), (byte)(_xc.R * 255), (byte)(_xc.G * 255), (byte)(_xc.B * 255));
+		}
+		
         public static System.Windows.Media.Color GetColor(this FColor _fc)
         {
             return System.Windows.Media.Color.FromArgb((byte)(_fc.A * 255), (byte)(_fc.R * 255), (byte)(_fc.G * 255), (byte)(_fc.B * 255));

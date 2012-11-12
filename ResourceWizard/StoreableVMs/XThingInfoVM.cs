@@ -1,18 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using ClientCommonWpf;
 using GameCore;
 using GameCore.Objects;
 using GameCore.Storage;
 using RusLanguage;
 using XTransport;
+using Brush = System.Windows.Media.Brush;
 
 namespace ResourceWizard.StoreableVMs
 {
 	class XThingInfoVM:XChildObjectVM<XThingInfoVM>
 	{
+		public XThingInfoVM()
+		{
+			Color = new XColorVM();
+			Color.SetDispatcher(Manager.Instance.Dispatcher);
+			Color.BindProps();
+			Color.PropertyChanged += (_sender, _args) => RefreshImage();
+
+			AddChildCommand = new RelayCommand(ExecuteAddChild, CanExecuteAddChild);
+			DeleteCommand = new RelayCommand(ExecuteDelete, CanExecuteDelete);
+		}
+
+
+		public void RefreshImage()
+		{
+			OnPropertyChanged(() => Brush);
+			OnPropertyChanged(() => Image);
+		}
+
+		public BitmapSource Image { get { return Bitmap.Source(); } }
+
+		public Brush Brush { get { return new SolidColorBrush(Color.GetColor()); } }
+
+		public Bitmap Bitmap
+		{
+			get { return Manager.Instance[Tile.Texture, Tile.X, Tile.Y, Color.GetFColor(), false, false]; }
+		}
+
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.THING_INFO; }
@@ -33,7 +64,9 @@ namespace ResourceWizard.StoreableVMs
 		public ESex Sex { get { return (ESex)m_sex.Value; } set { m_sex.Value = (byte)value; } }
 		public EThingCategory Category { get { return (EThingCategory)m_category.Value; } set { m_category.Value = (byte)value; } }
         public ELevel Level { get { return (ELevel)m_level.Value; } set { m_level.Value = (byte)value; } }
-		public XColorVM Color { get { return m_color.Value; } set { m_color.Value = value; } }
+
+		public XColorVM Color{ get; set; }
+
 	    public XTileInfoVM Tile { get { return m_tileInfo.Value; } set { m_tileInfo.Value = value; } }
         public float Opacity { get { return m_opacity.Value; } set { m_opacity.Value = value; } }
 
@@ -52,12 +85,8 @@ namespace ResourceWizard.StoreableVMs
             BindProperty(m_tileInfo, () => Tile);
             BindProperty(m_tileInfo, () => TileSet);
             BindProperty(m_opacity, () => Opacity);
-        }
 
-        public XThingInfoVM()
-        {
-            AddChildCommand = new RelayCommand(ExecuteAddChild, CanExecuteAddChild);
-            DeleteCommand = new RelayCommand(ExecuteDelete, CanExecuteDelete);
+			Color.Set(m_color.Value);
         }
 
         protected virtual bool CanExecuteDelete(object _obj)
@@ -123,5 +152,17 @@ namespace ResourceWizard.StoreableVMs
                 }
             }
 	    }
+
+		public void BeforeSave()
+		{
+			if (!m_color.Value.GetFColor().Equals(Color.GetFColor()))
+			{
+				m_color.Value.Set(Color);
+			}
+			foreach (var vm in Children)
+			{
+				vm.BeforeSave();
+			}
+		}
 	}
 }

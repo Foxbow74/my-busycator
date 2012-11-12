@@ -11,8 +11,11 @@ namespace GameCore
     {
         [Level("Херовиль")]
         HEROVILL,
-
-        [Level("Даль страшная")]
+		
+		[Level("За городской стеной")]
+		WILDERNESS,
+		
+		[Level("Даль страшная")]
         DANGERNESS,
     }
 
