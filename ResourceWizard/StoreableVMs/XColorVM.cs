@@ -66,14 +66,6 @@ namespace ResourceWizard.StoreableVMs
 			B = _fColor.B;
 			A = _fColor.A;
 		}
-
-		public void Set(XColorVM _xColor)
-		{
-			R = _xColor.R;
-			G = _xColor.G;
-			B = _xColor.B;
-			A = _xColor.A;
-		}
 	}
 
     static class XColorHelper
@@ -91,7 +83,7 @@ namespace ResourceWizard.StoreableVMs
 
 		public static System.Windows.Media.Color GetColor(this XColorVM _xc)
 		{
-			return System.Windows.Media.Color.FromArgb((byte)(_xc.A * 255), (byte)(_xc.R * 255), (byte)(_xc.G * 255), (byte)(_xc.B * 255));
+		    return GetColor(_xc.GetFColor());
 		}
 		
         public static System.Windows.Media.Color GetColor(this FColor _fc)

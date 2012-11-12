@@ -56,7 +56,6 @@ namespace ResourceWizard.VMs
 			vm.Texture = Texture;
 			vm.X = CursorX/Constants.TILE_SIZE;
 			vm.Y = CursorY/Constants.TILE_SIZE;
-			vm.Color.Set(m_xTileInfoVM.Color);
 			vm.Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1;
 			m_xTileInfoVM.Parent.SelectedItem = vm;
 		}

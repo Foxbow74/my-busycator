@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ClientCommonWpf;
 using GameCore;
 using GameCore.Objects;
 using GameCore.Storage;
+using ResourceWizard.Properties;
 using RusLanguage;
 using XTransport;
 using Brush = System.Windows.Media.Brush;
@@ -24,12 +26,16 @@ namespace ResourceWizard.StoreableVMs
 			Color.BindProps();
 			Color.PropertyChanged += (_sender, _args) => RefreshImage();
 
-			AddChildCommand = new RelayCommand(ExecuteAddChild, CanExecuteAddChild);
+            SelectColorCommand = new RelayCommand(ExecuteSelectColorCommand);
+            AddChildCommand = new RelayCommand(ExecuteAddChild, CanExecuteAddChild);
 			DeleteCommand = new RelayCommand(ExecuteDelete, CanExecuteDelete);
 		}
 
+        public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
 
-		public void RefreshImage()
+        public BitmapSource ColorsImageD { get { return Resources.colors.SourceDisabled(); } }
+        
+        public void RefreshImage()
 		{
 			OnPropertyChanged(() => Brush);
 			OnPropertyChanged(() => Image);
@@ -77,6 +83,17 @@ namespace ResourceWizard.StoreableVMs
             get { return m_thingInfos; }
         }
 
+        public RelayCommand SelectColorCommand { get; private set; }
+
+        private void ExecuteSelectColorCommand(object _obj)
+        {
+            Manager.Instance.COLOR_DIALOG.Color = Color.GetDColor();
+            if (Manager.Instance.COLOR_DIALOG.ShowDialog() != DialogResult.Cancel)
+            {
+                Color.Set(Manager.Instance.COLOR_DIALOG.Color.GetFColor());
+            }
+        }
+
         protected override void InstantiationFinished()
         {
             base.InstantiationFinished();
@@ -86,7 +103,7 @@ namespace ResourceWizard.StoreableVMs
             BindProperty(m_tileInfo, () => TileSet);
             BindProperty(m_opacity, () => Opacity);
 
-			Color.Set(m_color.Value);
+            Color.Set(m_color.Value.GetFColor());
         }
 
         protected virtual bool CanExecuteDelete(object _obj)
@@ -157,7 +174,7 @@ namespace ResourceWizard.StoreableVMs
 		{
 			if (!m_color.Value.GetFColor().Equals(Color.GetFColor()))
 			{
-				m_color.Value.Set(Color);
+				m_color.Value.Set(Color.GetFColor());
 			}
 			foreach (var vm in Children)
 			{
