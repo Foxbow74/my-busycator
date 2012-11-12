@@ -217,6 +217,7 @@ namespace ResourceWizard.StoreableVMs
 	        BindProperty(m_cx, () => CX);
 	        BindProperty(m_cy, () => CY);
 	        BindProperty(m_order, ()=>Order);
+            Color.Set(m_color.Value.GetFColor());
 	    }
 
 	    public void RefreshImage()
