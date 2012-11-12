@@ -15,7 +15,7 @@
 		<Border Background="Black">
 			<Image Source="{Binding Image}" Margin="2"/>
 		</Border>
-		<Border Background="Magenta" Margin="0,2">
+		<Border Background="DarkGray" Margin="0,2">
 			<Image Source="{Binding Image}" Margin="2"/>
 		</Border>
 		<Border Background="White">

@@ -9,22 +9,6 @@
         <DataTemplate DataType="{x:Type StoreableVMs:XTileInfoVM}">
             <Image Source="{Binding Image}"/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type StoreableVMs:XTileSetVM}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="c1"/>
-                    <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Key}"/>
-                <ItemsControl ItemsSource="{Binding ChildrenObsCol}" Grid.Column="1">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </Grid>
-        </DataTemplate>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -53,13 +37,7 @@
         <ComboBox ItemsSource="{Binding ELevels}" SelectedItem="{Binding Level}" Grid.Row="2" Grid.Column="2"/>
 
         <Label Content="Набор тайлов" Grid.Row="3"/>
-        <Grid IsSharedSizeScope="True" Grid.Row="3" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" SharedSizeGroup="c1"/>
-                <ColumnDefinition Width="Auto" SharedSizeGroup="c2"/>
-            </Grid.ColumnDefinitions>
-            <ComboBox ItemsSource="{Binding TileSetsObsCol}" SelectedItem="{Binding TileSet}" Grid.ColumnSpan="2" HorizontalAlignment="Stretch"/>
-        </Grid>
+        <ComboBox ItemsSource="{Binding TileSetsObsCol}" SelectedItem="{Binding TileSet}" HorizontalAlignment="Stretch" DisplayMemberPath="Key" Grid.Row="3" Grid.Column="2"/>
         <Label Content="Тайл" Grid.Row="4"/>
         <ListBox ItemsSource="{Binding TileSet.ChildrenObsCol}" SelectedItem="{Binding Tile}" Grid.Row="4" Grid.Column="2">
             <ListBox.ItemsPanel>

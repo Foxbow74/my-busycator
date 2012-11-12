@@ -73,7 +73,7 @@
 					</ToolBar>
 				</ToolBarTray>
                 <ContentPresenter Content="{Binding Color}" Width="300"/>
-				<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Black" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
+				<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
 							<Image Source="{Binding}" Stretch="None" SnapsToDevicePixels="True"/>

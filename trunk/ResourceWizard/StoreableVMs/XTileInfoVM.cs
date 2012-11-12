@@ -21,16 +21,21 @@ namespace ResourceWizard.StoreableVMs
 	    [X("TEXTURE")]private readonly IXValue<int> m_eTexture;
 	    [X("GRAYSCALE")]private readonly IXValue<bool> m_grayScale;
 	    [X("REMOVE_TRANSPARENCY")]private readonly IXValue<bool> m_removeTransparency;
+	    [X("Color")]private IXValue<XColorVM> m_color;
 	    [X("CX")]private IXValue<int> m_cx;
 	    [X("CY")]private IXValue<int> m_cy;
 	    [X("Order")]private IXValue<int> m_order;
-        [X("X")]private IXValue<int> m_x;
+	    [X("X")]private IXValue<int> m_x;
 	    [X("Y")]private IXValue<int> m_y;
 
         private TextureVM m_textureVM;
-	    
+
 	    public XTileInfoVM()
 	    {
+            Color = new XColorVM();
+            Color.SetDispatcher(Manager.Instance.Dispatcher);
+            Color.Set(m_color.Value.GetFColor());
+	        Color.PropertyChanged += (_sender, _args) => RefreshImage();
 	        SelectColorCommand = new RelayCommand(ExecuteSelectColorCommand);
 	        DublicateCommand = new RelayCommand(ExecuteDublicateCommand);
 	        DeleteCommand = new RelayCommand(ExecuteDeleteCommand, _o => Parent.Children.Count>1);
@@ -41,7 +46,7 @@ namespace ResourceWizard.StoreableVMs
 	        PasteCommand = new RelayCommand(ExecutePasteCommand, _o => Manager.Instance.TileBuffer!=null);
 	    }
 
-		public BitmapSource CopyImage { get { return Resources.copy.Source(); } }
+        public BitmapSource CopyImage { get { return Resources.copy.Source(); } }
 		public BitmapSource PasteImage { get { return Resources.paste.Source(); } }
 		public BitmapSource DuplicateImage { get { return Resources.components.Source(); } }
 		public BitmapSource DeleteImage { get { return Resources.delete2.Source(); } }
@@ -75,7 +80,10 @@ namespace ResourceWizard.StoreableVMs
 		public int CX { get { return m_cx.Value; } set { m_cx.Value = value; } }
 		public int CY { get { return m_cy.Value; } set { m_cy.Value = value; } }
 
-	    public XColorVM Color { get; set; }
+	    public XColorVM Color
+	    {
+	        get; private set;
+		}
 
 		public ETextureSet Texture
 		{
@@ -122,22 +130,16 @@ namespace ResourceWizard.StoreableVMs
 		public RelayCommand CopyCommand { get; private set; }
 		public RelayCommand PasteCommand { get; private set; }
 
-		public void RefreshImage()
-		{
-			OnPropertyChanged(() => Image);
-		}
-
 	    public Bitmap Bitmap
 	    {
-            get { return Manager.Instance[Texture, X, Y, FColor.White, RemoveTransparency, GrayScale]; }
+            get { return Manager.Instance[Texture, X, Y, Color.GetFColor(), RemoveTransparency, GrayScale]; }
 	    }
 
 	    private void ExecutePasteCommand(object _obj)
 	    {
 	        var b = Manager.Instance.TileBuffer;
 
-	    	var d = new XTileInfoVM();
-			
+	        var d = new XTileInfoVM();
 	        foreach (var vm in Parent.Children)
 	        {
 	            if (vm.Order > Order)
@@ -146,13 +148,12 @@ namespace ResourceWizard.StoreableVMs
 	            }
 	        }
 	        Parent.Children.Add(d);
+            d.X = b.X;
+            d.Y = b.Y;
+            d.Color.Set(b.Color.GetFColor());
+            d.Texture = b.Texture;
+	        d.Order = Order + 1;
 	        Parent.SelectedItem = d;
-
-			d.Color.Set(Color);
-			d.X = X;
-			d.Y = Y;
-			d.Texture = Texture;
-			d.Order = Order + 1;
 	    }
 
 	    private void ExecuteDeleteCommand(object _obj)
@@ -190,13 +191,11 @@ namespace ResourceWizard.StoreableVMs
 	            }
 	        }
 	        Parent.Children.Add(d);
-
-			d.Color.Set(Color);
-			d.X = X;
-			d.Y = Y;
-			d.Texture = Texture;
-	    	d.Order = Order + 1;
-
+            d.X = X;
+            d.Y = Y;
+            d.Color.Set(Color.GetFColor());;
+            d.Texture = Texture;
+            d.Order = Order + 1;
 	        Parent.SelectedItem = d;
 	    }
 
@@ -220,9 +219,17 @@ namespace ResourceWizard.StoreableVMs
 	        BindProperty(m_order, ()=>Order);
 	    }
 
+	    public void RefreshImage()
+		{
+			OnPropertyChanged(() => Image);
+		}
+
 		public void BeforeSave()
 		{
-			
+			if (!m_color.Value.GetFColor().Equals(Color.GetFColor()))
+			{
+				Color.Set(Color.GetFColor());
+			}
 		}
 	}
 }
