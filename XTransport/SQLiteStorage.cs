@@ -33,6 +33,7 @@ namespace XTransport
 
 		private void RegisterTypes()
 		{
+            RegisterType(_o => 0!=(int)_o, SQL_TYPE_INTEGER, "bools");
             RegisterType(_o => (long)_o, SQL_TYPE_INTEGER, "longs");
             RegisterType(_o => (int)_o, SQL_TYPE_INTEGER, "ints");
             RegisterType(_o => (byte)(int)_o, SQL_TYPE_INTEGER, "bytes");

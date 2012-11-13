@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -47,7 +48,11 @@ namespace ResourceWizard.StoreableVMs
 
 		public Bitmap Bitmap
 		{
-			get { return Manager.Instance[Tile.Texture, Tile.X, Tile.Y, Color.GetFColor(), false, false]; }
+			get
+			{
+                if (Tile == null) return null;
+			    return Manager.Instance[Tile, Color.GetFColor(), Tile.RemoveTransparency, Tile.GrayScale];
+			}
 		}
 
 		public override EStoreKind Kind
@@ -66,8 +71,8 @@ namespace ResourceWizard.StoreableVMs
         [X((int)EStoreKind.TILE_INFO)]private IXValue<XTileInfoVM> m_tileInfo;
 
 		public XTileInfoVM TileInfoVM { get { return m_tileInfoVM.Value; } set { m_tileInfoVM.Value = value; } }
-		public string Name { get { return m_name.Value; } set { m_name.Value = value; } }
-		public ESex Sex { get { return (ESex)m_sex.Value; } set { m_sex.Value = (byte)value; } }
+		public string Name { get { return m_name.Value; } set { m_name.Value = value; OnPropertyChanged(()=>Skloneniya); } }
+        public ESex Sex { get { return (ESex)m_sex.Value; } set { m_sex.Value = (byte)value; OnPropertyChanged(() => Skloneniya); } }
 		public EThingCategory Category { get { return (EThingCategory)m_category.Value; } set { m_category.Value = (byte)value; } }
         public ELevel Level { get { return (ELevel)m_level.Value; } set { m_level.Value = (byte)value; } }
 
@@ -170,6 +175,14 @@ namespace ResourceWizard.StoreableVMs
             }
         }
 
+        public IEnumerable<ESex> ESexs
+        {
+            get
+            {
+                return Enum.GetValues(typeof(ESex)).Cast<ESex>();
+            }
+        }
+
         public ReadOnlyObservableCollection<XTileSetVM> TileSetsObsCol { get { return Manager.Instance.XRoot.TileSetsObsCol; } }
 	    public XTileSetVM TileSet
 	    {
@@ -186,7 +199,20 @@ namespace ResourceWizard.StoreableVMs
             }
 	    }
 
-		public void BeforeSave()
+	    public string Skloneniya
+	    {
+	        get
+	        {
+                var sb = new StringBuilder();
+	            foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
+	            {
+	                sb.AppendLine(padej + " : " + Sklonenia.ToPadej(padej, Name, false, Sex));
+	            }
+	            return sb.ToString();
+	        }
+	    }
+
+	    public void BeforeSave()
 		{
 			if (!m_color.Value.GetFColor().Equals(Color.GetFColor()))
 			{

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:VMs="clr-namespace:ResourceWizard.VMs" xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance VMs:ThinksTabVM}">
+             d:DesignHeight="300" d:DesignWidth="300" d:DataContext="{d:DesignInstance VMs:ThingsTabVM}">
     <Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="Auto"/>

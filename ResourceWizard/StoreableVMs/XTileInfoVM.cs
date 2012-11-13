@@ -18,6 +18,7 @@ namespace ResourceWizard.StoreableVMs
 {
 	class XTileInfoVM : ClientXChildObjectVM<EStoreKind, XAbstractTileSetVM>
 	{
+#pragma warning disable 649
 	    [X("TEXTURE")]private readonly IXValue<int> m_eTexture;
 	    [X("GRAYSCALE")]private readonly IXValue<bool> m_grayScale;
 	    [X("REMOVE_TRANSPARENCY")]private readonly IXValue<bool> m_removeTransparency;
@@ -27,16 +28,17 @@ namespace ResourceWizard.StoreableVMs
 	    [X("Order")]private IXValue<int> m_order;
 	    [X("X")]private IXValue<int> m_x;
 	    [X("Y")]private IXValue<int> m_y;
+#pragma warning restore 649
 
         private TextureVM m_textureVM;
 
 	    public XTileInfoVM()
 	    {
             Color = new XColorVM();
+            Color.BindProps();
             Color.SetDispatcher(Manager.Instance.Dispatcher);
             Color.Set(m_color.Value.GetFColor());
 	        Color.PropertyChanged += (_sender, _args) => RefreshImage();
-	        SelectColorCommand = new RelayCommand(ExecuteSelectColorCommand);
 	        DublicateCommand = new RelayCommand(ExecuteDublicateCommand);
 	        DeleteCommand = new RelayCommand(ExecuteDeleteCommand, _o => Parent.Children.Count>1);
 	        MoveLeftCommand = new RelayCommand(ExecuteMoveLeftCommand, _o => Parent.Children.Any(_vm => _vm.Order<Order));
@@ -52,7 +54,6 @@ namespace ResourceWizard.StoreableVMs
 		public BitmapSource DeleteImage { get { return Resources.delete2.Source(); } }
 		public BitmapSource LeftImage { get { return Resources.navigate_left.Source(); } }
 		public BitmapSource RightImage { get { return Resources.navigate_right.Source(); } }
-		public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
         public BitmapSource GrayScaleImage { get { return Resources.yinyang.Source(); } }
         public BitmapSource RemoveTransparencyImage { get { return Resources.pawn_glass_white.Source(); } }
         
@@ -62,7 +63,6 @@ namespace ResourceWizard.StoreableVMs
 		public BitmapSource DeleteImageD { get { return Resources.delete2.SourceDisabled(); } }
 		public BitmapSource LeftImageD { get { return Resources.navigate_left.SourceDisabled(); } }
 		public BitmapSource RightImageD { get { return Resources.navigate_right.SourceDisabled(); } }
-		public BitmapSource ColorsImageD { get { return Resources.colors.SourceDisabled(); } }
         
 		public override EStoreKind Kind
 		{
@@ -102,8 +102,6 @@ namespace ResourceWizard.StoreableVMs
 		public BitmapSource Image { get { return Bitmap.Source(); } }
 
 		public Brush Brush { get { return new SolidColorBrush(Color.GetColor()); } }
-
-		public RelayCommand SelectColorCommand { get; private set; }
 
 		public RelayCommand DublicateCommand { get; private set; }
 
@@ -197,15 +195,6 @@ namespace ResourceWizard.StoreableVMs
             d.Texture = Texture;
             d.Order = Order + 1;
 	        Parent.SelectedItem = d;
-	    }
-
-	    private void ExecuteSelectColorCommand(object _obj)
-	    {
-	        Manager.Instance.COLOR_DIALOG.Color = Color.GetDColor();
-	        if (Manager.Instance.COLOR_DIALOG.ShowDialog() != DialogResult.Cancel)
-	        {
-	            Color.Set(Manager.Instance.COLOR_DIALOG.Color.GetFColor());
-	        }
 	    }
 
 	    protected override void InstantiationFinished()

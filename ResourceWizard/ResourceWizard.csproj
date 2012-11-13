@@ -86,8 +86,8 @@
     <Compile Include="StoreableVMs\XTileInfoVM.cs" />
     <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
     <Compile Include="StoreableVMs\XTileSetVM.cs" />
-    <Compile Include="Views\ThinksTabView.xaml.cs">
-      <DependentUpon>ThinksTabView.xaml</DependentUpon>
+    <Compile Include="Views\ThingsTabView.xaml.cs">
+      <DependentUpon>ThingsTabView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TextureView.xaml.cs">
       <DependentUpon>TextureView.xaml</DependentUpon>
@@ -100,7 +100,7 @@
     <Compile Include="VMs\TabVM.cs" />
     <Compile Include="VMs\TerrainsTabVM.cs" />
     <Compile Include="VMs\TextureVM.cs" />
-    <Compile Include="VMs\ThinksTabVM.cs" />
+    <Compile Include="VMs\ThingsTabVM.cs" />
     <Compile Include="VMs\TilesTabVM.cs" />
     <Compile Include="XClient.cs" />
     <Page Include="Dictionary.xaml">
@@ -131,7 +131,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ThinksTabView.xaml">
+    <Page Include="Views\ThingsTabView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

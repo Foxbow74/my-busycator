@@ -7,36 +7,36 @@
              xmlns:VMs="clr-namespace:ResourceWizard.VMs" mc:Ignorable="d"  
 			 d:DataContext="{d:DesignInstance VMs:TextureVM}"
              d:DesignHeight="300" d:DesignWidth="300">
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
-		<ComboBox ItemsSource="{Binding Sets}" SelectedItem="{Binding Texture}"/>
-		<Grid Grid.Row="1" Margin="0,10">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="Auto"/>
-			</Grid.ColumnDefinitions>
-			<Canvas x:Name="cnv" Grid.Column="0">
-				<Canvas.LayoutTransform>
-					<ScaleTransform ScaleX="{Binding ElementName=sl, Path=Value}" ScaleY="{Binding ElementName=sl, Path=Value}"/>
-				</Canvas.LayoutTransform>
-				<Image Source="{Binding TextureSource}" SnapsToDevicePixels="True" Stretch="None" Canvas.Top="0" ccw:PointHandler.HandleMouse="True" ccw:PointHandler.LastPoint="{Binding MousePoint, Mode=OneWayToSource}">
-					<Image.ContextMenu>
-						<ContextMenu>
-							<MenuItem Header="Установить" Command="{Binding SetCommand}"/>
-							<MenuItem Header="Добавить"  Command="{Binding AddCommand}"/>
-						</ContextMenu>
-					</Image.ContextMenu>
-					<Image.InputBindings>
-						<MouseBinding MouseAction="LeftClick" Command="{Binding TextureClick}"/>
-						<MouseBinding MouseAction="RightClick" Command="{Binding TextureClick}"/>
-					</Image.InputBindings>
-				</Image>
-				<Border Canvas.Left="{Binding CursorX}" Canvas.Top="{Binding CursorY}" Width="16" Height="16" BorderThickness="2" BorderBrush="Yellow"/>
-			</Canvas>
-			<Slider Grid.Column="2" Minimum="1" Maximum="3" x:Name="sl" Value="1" Margin="10,10,0,0" Width="200"/>
-		</Grid>
-	</Grid>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ComboBox ItemsSource="{Binding Sets}" SelectedItem="{Binding Texture}"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Canvas>
+                <Canvas.LayoutTransform>
+                    <ScaleTransform ScaleX="{Binding ElementName=sl, Path=Value}" ScaleY="{Binding ElementName=sl, Path=Value}"/>
+                </Canvas.LayoutTransform>
+                <Image Source="{Binding TextureSource}" SnapsToDevicePixels="True" Stretch="None" Canvas.Top="0" ccw:PointHandler.HandleMouse="True" ccw:PointHandler.LastPoint="{Binding MousePoint, Mode=OneWayToSource}">
+                    <Image.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Установить" Command="{Binding SetCommand}"/>
+                            <MenuItem Header="Добавить"  Command="{Binding AddCommand}"/>
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                    <Image.InputBindings>
+                        <MouseBinding MouseAction="LeftClick" Command="{Binding TextureClick}"/>
+                        <MouseBinding MouseAction="RightClick" Command="{Binding TextureClick}"/>
+                    </Image.InputBindings>
+                </Image>
+                <Border Canvas.Left="{Binding CursorX}" Canvas.Top="{Binding CursorY}" Width="16" Height="16" BorderThickness="2" BorderBrush="Yellow"/>
+            </Canvas>
+            <Slider Grid.Column="2" Minimum="1" Maximum="3" x:Name="sl" Value="1" Margin="10,0,0,0" Width="200"/>
+        </Grid>
+    </Grid>
 </UserControl>
