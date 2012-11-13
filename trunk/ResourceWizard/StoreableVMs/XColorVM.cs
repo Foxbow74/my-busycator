@@ -1,11 +1,29 @@
-﻿using GameCore;
+﻿using System.Windows.Forms;
+using System.Windows.Media.Imaging;
+using ClientCommonWpf;
+using GameCore;
 using GameCore.Storage;
+using ResourceWizard.Properties;
 using XTransport;
 
 namespace ResourceWizard.StoreableVMs
 {
     internal class XColorVM : XObjectVM
     {
+        public XColorVM()
+        {
+            SelectColorCommand = new RelayCommand(ExecuteSelectColorCommand);
+        }
+
+        private void ExecuteSelectColorCommand(object _obj)
+        {
+            Manager.Instance.COLOR_DIALOG.Color = this.GetDColor();
+            if (Manager.Instance.COLOR_DIALOG.ShowDialog() != DialogResult.Cancel)
+            {
+                Set(Manager.Instance.COLOR_DIALOG.Color.GetFColor());
+            }
+        }
+
         public override EStoreKind Kind
         {
             get { return EStoreKind.COLOR; }
@@ -20,6 +38,10 @@ namespace ResourceWizard.StoreableVMs
         [X("B")]
         private IXValue<float> m_b;
 
+        public RelayCommand SelectColorCommand { get; private set; }
+
+        public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
+        public BitmapSource ColorsImageD { get { return Resources.colors.SourceDisabled(); } }
 
         public float A
         {

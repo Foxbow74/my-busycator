@@ -3,9 +3,9 @@ using ResourceWizard.StoreableVMs;
 
 namespace ResourceWizard.VMs
 {
-    internal class ThinksTabVM : SetTabVM
+    internal class ThingsTabVM : SetTabVM
     {
-        public ThinksTabVM()
+        public ThingsTabVM()
         {
         }
 
@@ -16,7 +16,7 @@ namespace ResourceWizard.VMs
 
         public override string DisplayName
         {
-            get { return "Thinks"; }
+            get { return "Things"; }
         }
 
         public string SearchText { get; set; }

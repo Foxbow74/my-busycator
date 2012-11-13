@@ -33,7 +33,6 @@
 				<Separator/>
 				<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
 				<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
-				<Button ToolTip="Выбрать цвет" Command="{Binding SelectColorCommand}" cc:ButtonProperties.Image="{Binding ColorsImage}" cc:ButtonProperties.DisabledImage="{Binding ColorsImageD}" Style="{StaticResource ib}"/>
 				<Separator/>
 				<Button ToolTip="Дублировать" Command="{Binding DublicateCommand}" cc:ButtonProperties.Image="{Binding DuplicateImage}" cc:ButtonProperties.DisabledImage="{Binding DuplicateImageD}" Style="{StaticResource ib}"/>
 				<Button ToolTip="Сдвинуть влево" Command="{Binding MoveLeftCommand}" cc:ButtonProperties.Image="{Binding LeftImage}" cc:ButtonProperties.DisabledImage="{Binding LeftImageD}" Style="{StaticResource ib}"/>

@@ -14,7 +14,7 @@ namespace ResourceWizard.VMs
 				       {
 					       new TilesTabVM(),
 						   new TerrainsTabVM(),
-                           new ThinksTabVM(),
+                           new ThingsTabVM(),
 				       };
 		}
 

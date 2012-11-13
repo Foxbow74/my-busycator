@@ -14,15 +14,10 @@
 			<ListBox.Resources>
 				<DataTemplate DataType="{x:Type StoreableVMs:XTileInfoVM}">
 					<StackPanel  Margin="1,2">
-						<Border BorderThickness="1" Background="{Binding Brush}" BorderBrush="Black" CornerRadius="2" Width="10" Height="10" HorizontalAlignment="Center" Margin="0,0,0,4">
-							<Border.InputBindings>
-								<MouseBinding MouseAction="LeftClick" Command="{Binding SelectColorCommand}"/>
-							</Border.InputBindings>
-						</Border>
 						<Border Background="Black">
 							<Image Source="{Binding Image}" Margin="2"/>
 						</Border>
-						<Border Background="DarkGray" Margin="0,2">
+						<Border Background="Transparent" Margin="0,2">
 							<Image Source="{Binding Image}" Margin="2"/>
 						</Border>
 						<Border Background="White">
@@ -37,6 +32,6 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
-		<ContentPresenter Grid.Row="1" Margin="0,10" Content="{Binding ElementName=lb, Path=SelectedItem}"/>
+		<ContentPresenter Grid.Row="1" Margin="0,0" Content="{Binding ElementName=lb, Path=SelectedItem}"/>
 	</Grid>
 </UserControl>

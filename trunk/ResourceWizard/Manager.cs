@@ -186,7 +186,16 @@ namespace ResourceWizard
 			}
 		}
 
-		public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale]
+	    public Bitmap this[XTileInfoVM _tile, FColor _fColor, bool _removeTransparency, bool _grayScale]
+	    {
+	        get
+	        {
+                if (_tile == null) return null;
+	            return this[_tile.Texture, _tile.X, _tile.Y, _fColor, _removeTransparency, _grayScale];
+	        }
+	    }
+
+	    public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale]
 		{
 			get
 			{

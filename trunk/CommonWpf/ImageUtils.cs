@@ -13,6 +13,8 @@ namespace ClientCommonWpf
 
 		public static BitmapSource Source(this Bitmap _bmp)
 		{
+            if (_bmp == null) return null;
+
 			BitmapSource value;
 			if(!m_sources.TryGetValue(_bmp, out value))
 			{
