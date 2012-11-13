@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView"
                     xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
-                    xmlns:Views="clr-namespace:ResourceWizard.Views" xmlns:VMs="clr-namespace:ResourceWizard.VMs">
+                    xmlns:Views="clr-namespace:ResourceWizard.Views" xmlns:VMs="clr-namespace:ResourceWizard.VMs"
+                    xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf">
     <Style TargetType="{x:Type Label}">
         <Style.Setters>
             <Setter Property="Foreground" Value="White"/>
@@ -21,7 +22,39 @@
             <Setter Property="MinWidth" Value="200"/>
         </Style.Setters>
     </Style>
-    <DataTemplate DataType="{x:Type VMs:TilesTabVM}">
+	<Style x:Key="ib" TargetType="Button">
+		<Style.Triggers>
+			<Trigger Property="IsEnabled" Value="True">
+				<Trigger.Setters>
+					<Setter Property="ContentTemplate">
+						<Setter.Value>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+									<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+								</StackPanel>
+							</DataTemplate>
+						</Setter.Value>
+					</Setter>
+				</Trigger.Setters>
+			</Trigger>
+			<Trigger Property="IsEnabled" Value="False">
+				<Trigger.Setters>
+					<Setter Property="ContentTemplate">
+						<Setter.Value>
+							<DataTemplate>
+								<StackPanel Orientation="Horizontal">
+									<Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
+									<ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
+								</StackPanel>
+							</DataTemplate>
+						</Setter.Value>
+					</Setter>
+				</Trigger.Setters>
+			</Trigger>
+		</Style.Triggers>
+	</Style>
+	<DataTemplate DataType="{x:Type VMs:TilesTabVM}">
         <Views:TabView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">

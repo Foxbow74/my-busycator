@@ -48,10 +48,6 @@
         </ListBox>
         <Label Content="Прозрачность" Grid.Row="5"/>
         <Slider Grid.Row="5" Grid.Column="2" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding Opacity}"/>
-        <Label Content="Цвет" Grid.Row="6"/>
-        <Label Content="R" Grid.Row="6"/>
-        <Label Content="G" Grid.Row="6"/>
-        <Label Content="B" Grid.Row="6"/>
-        <Label Content="A" Grid.Row="6"/>
+		<ContentPresenter Grid.Row="6" Content="{Binding Color}" Grid.ColumnSpan="3"/>
     </Grid>
 </UserControl>

@@ -3,105 +3,40 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
-             xmlns:Views="clr-namespace:ResourceWizard.Views"
-             xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf" mc:Ignorable="d" 
+             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs" mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
-	<UserControl.Resources>
-        <Style x:Key="ib" TargetType="Button">
-            <Style.Triggers>
-                <Trigger Property="IsEnabled" Value="True">
-                    <Trigger.Setters>
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.Image), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
-                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger.Setters>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Trigger.Setters>
-                        <Setter Property="ContentTemplate">
-                            <Setter.Value>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="24" Source="{Binding Path=(cc:ButtonProperties.DisabledImage), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></Image>
-                                        <ContentPresenter Content="{Binding Path=Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}"></ContentPresenter>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Trigger.Setters>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <DataTemplate DataType="{x:Type StoreableVMs:XAbstractTileSetVM}" x:Key="TT">
-			<Grid  d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="Auto"/>
-					<RowDefinition Height="*"/>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition Width="Auto"/>
-					<ColumnDefinition Width="*"/>
-				</Grid.ColumnDefinitions>
-                <ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
-					<ToolBar>
-                        <ToggleButton ToolTip="Черно-белый" IsChecked="{Binding GrayScale}" >
-                            <Image Width="24" Source="{Binding GrayScaleImage}"/>
-                        </ToggleButton>
-                        <ToggleButton ToolTip="Убрать полупрозрачность рисунка" IsChecked="{Binding RemoveTransparency}" >
-                            <Image Width="24" Source="{Binding RemoveTransparencyImage}"/>
-                        </ToggleButton>
-                        <Separator/>
-                        <Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
-						<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
-						<Button ToolTip="Выбрать цвет" Command="{Binding SelectColorCommand}" cc:ButtonProperties.Image="{Binding ColorsImage}" cc:ButtonProperties.DisabledImage="{Binding ColorsImageD}" Style="{StaticResource ib}"/>
-                        <Separator/>
-                        <Button ToolTip="Дублировать" Command="{Binding DublicateCommand}" cc:ButtonProperties.Image="{Binding DuplicateImage}" cc:ButtonProperties.DisabledImage="{Binding DuplicateImageD}" Style="{StaticResource ib}"/>
-						<Button ToolTip="Сдвинуть влево" Command="{Binding MoveLeftCommand}" cc:ButtonProperties.Image="{Binding LeftImage}" cc:ButtonProperties.DisabledImage="{Binding LeftImageD}" Style="{StaticResource ib}"/>
-						<Button ToolTip="Сдвинуть вправо" Command="{Binding MoveRightCommand}" cc:ButtonProperties.Image="{Binding RightImage}" cc:ButtonProperties.DisabledImage="{Binding RightImageD}" Style="{StaticResource ib}"/>
-						<Separator/>
-						<Button ToolTip="Удалить" Command="{Binding DeleteCommand}" cc:ButtonProperties.Image="{Binding DeleteImage}" cc:ButtonProperties.DisabledImage="{Binding DeleteImageD}" Style="{StaticResource ib}"/>
-					</ToolBar>
-				</ToolBarTray>
-                <ContentPresenter Content="{Binding Color}" Width="300"/>
-				<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate>
-							<Image Source="{Binding}" Stretch="None" SnapsToDevicePixels="True"/>
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-					<ItemsControl.ItemsPanel>
-						<ItemsPanelTemplate>
-							<WrapPanel />
-						</ItemsPanelTemplate>
-					</ItemsControl.ItemsPanel>		
-				</ItemsControl>
-				<Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshMosaicCommand}">Обновить</Button>
-				<Views:TextureView Grid.Row="3" DataContext="{Binding TextureVM}" Grid.ColumnSpan="2"/>
-			</Grid>
-		</DataTemplate>
-	</UserControl.Resources>
 		<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<ListBox ItemsSource="{Binding ChildrenObsCol}" BorderThickness="0,0,0,1" Background="DarkGray" x:Name="lb" SelectedItem="{Binding SelectedItem}">
+			<ListBox.Resources>
+				<DataTemplate DataType="{x:Type StoreableVMs:XTileInfoVM}">
+					<StackPanel  Margin="1,2">
+						<Border BorderThickness="1" Background="{Binding Brush}" BorderBrush="Black" CornerRadius="2" Width="10" Height="10" HorizontalAlignment="Center" Margin="0,0,0,4">
+							<Border.InputBindings>
+								<MouseBinding MouseAction="LeftClick" Command="{Binding SelectColorCommand}"/>
+							</Border.InputBindings>
+						</Border>
+						<Border Background="Black">
+							<Image Source="{Binding Image}" Margin="2"/>
+						</Border>
+						<Border Background="DarkGray" Margin="0,2">
+							<Image Source="{Binding Image}" Margin="2"/>
+						</Border>
+						<Border Background="White">
+							<Image Source="{Binding Image}" Margin="2"/>
+						</Border>
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.Resources>
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel Orientation="Horizontal"/>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
-		<ContentPresenter Grid.Row="1" Margin="0,10" Content="{Binding ElementName=lb, Path=SelectedItem}" ContentTemplate="{StaticResource TT}"/>
+		<ContentPresenter Grid.Row="1" Margin="0,10" Content="{Binding ElementName=lb, Path=SelectedItem}"/>
 	</Grid>
 </UserControl>

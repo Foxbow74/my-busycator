@@ -21,13 +21,6 @@ namespace ResourceWizard.VMs
 
         public string SearchText { get; set; }
 
-        private string m_selectedPath;
-        public string SelectedPath
-        {
-            get { return m_selectedPath; }
-            set { m_selectedPath = value; }
-        }
-
         protected override void ExecuteAdd(object _obj)
         {
             var t = new XThingInfoVM();
