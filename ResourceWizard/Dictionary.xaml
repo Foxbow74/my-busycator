@@ -3,8 +3,12 @@
                     xmlns:StoreableView="clr-namespace:ResourceWizard.StoreableView"
                     xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
                     xmlns:Views="clr-namespace:ResourceWizard.Views" xmlns:VMs="clr-namespace:ResourceWizard.VMs"
-                    xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf">
-    <Style TargetType="{x:Type Label}">
+                    xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf"
+                    xmlns:local="clr-namespace:ResourceWizard">
+
+	<local:TestConverter x:Key="testConverter" />
+	
+	<Style TargetType="{x:Type Label}">
         <Style.Setters>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -22,6 +26,226 @@
             <Setter Property="MinWidth" Value="200"/>
         </Style.Setters>
     </Style>
+	<Style x:Key="SliderButtonStyle" TargetType="{x:Type RepeatButton}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="IsTabStop" Value="false"/>
+		<Setter Property="Focusable" Value="false"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type RepeatButton}">
+					<Border Background="Transparent" />
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<LinearGradientBrush x:Key="NormalBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFF" Offset="0.0"/>
+				<GradientStop Color="#CCC" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="HorizontalNormalBrush" StartPoint="0,0" EndPoint="1,0">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFF" Offset="0.0"/>
+				<GradientStop Color="#CCC" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="LightBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFF" Offset="0.0"/>
+				<GradientStop Color="#EEE" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="HorizontalLightBrush" StartPoint="0,0" EndPoint="1,0">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFF" Offset="0.0"/>
+				<GradientStop Color="#EEE" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="DarkBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#FFF" Offset="0.0"/>
+				<GradientStop Color="#AAA" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="PressedBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#BBB" Offset="0.0"/>
+				<GradientStop Color="#EEE" Offset="0.1"/>
+				<GradientStop Color="#EEE" Offset="0.9"/>
+				<GradientStop Color="#FFF" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<SolidColorBrush x:Key="DisabledForegroundBrush" Color="#888" />
+
+	<SolidColorBrush x:Key="DisabledBackgroundBrush" Color="#EEE" />
+
+	<SolidColorBrush x:Key="WindowBackgroundBrush" Color="#FFF" />
+
+	<SolidColorBrush x:Key="SelectedBackgroundBrush" Color="#DDD" />
+
+	<!-- Border Brushes -->
+
+	<LinearGradientBrush x:Key="NormalBorderBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#CCC" Offset="0.0"/>
+				<GradientStop Color="#444" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="HorizontalNormalBorderBrush" StartPoint="0,0" EndPoint="1,0">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#CCC" Offset="0.0"/>
+				<GradientStop Color="#444" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="DefaultedBorderBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#777" Offset="0.0"/>
+				<GradientStop Color="#000" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="PressedBorderBrush" StartPoint="0,0" EndPoint="0,1">
+		<GradientBrush.GradientStops>
+			<GradientStopCollection>
+				<GradientStop Color="#444" Offset="0.0"/>
+				<GradientStop Color="#888" Offset="1.0"/>
+			</GradientStopCollection>
+		</GradientBrush.GradientStops>
+	</LinearGradientBrush>
+
+	<SolidColorBrush x:Key="DisabledBorderBrush" Color="#AAA" />
+
+	<SolidColorBrush x:Key="SolidBorderBrush" Color="#888" />
+
+	<SolidColorBrush x:Key="LightBorderBrush" Color="#AAA" />
+
+	<!-- Miscellaneous Brushes -->
+	<SolidColorBrush x:Key="GlyphBrush" Color="#444" />
+
+	<SolidColorBrush x:Key="LightColorBrush" Color="#DDD" />
+
+	<Style x:Key="SliderThumbStyle" TargetType="{x:Type Thumb}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="{x:Type Thumb}">
+					<Border Name="Ellipse" Background="{StaticResource NormalBrush}" BorderBrush="{StaticResource NormalBorderBrush}" BorderThickness="1" CornerRadius="5">
+						<TextBlock Margin="3">
+							<TextBlock.Text>
+								<Binding RelativeSource="{RelativeSource AncestorType=Slider}" Path="Value" Converter="{StaticResource testConverter}"/>
+							</TextBlock.Text>
+						</TextBlock>
+					</Border>
+					<ControlTemplate.Triggers>
+						<Trigger Property="IsMouseOver" Value="True">
+							<Setter TargetName="Ellipse" Property="Background" Value="{StaticResource DarkBrush}"/>
+						</Trigger>
+						<Trigger Property="IsEnabled" Value="false">
+							<Setter TargetName="Ellipse" Property="Background" Value="{StaticResource DisabledBackgroundBrush}"/>
+						</Trigger>
+					</ControlTemplate.Triggers>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<ControlTemplate x:Key="HorizontalSlider" TargetType="{x:Type Slider}">
+		<Grid>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto" MinHeight="{TemplateBinding Slider.MinHeight}"/>
+				<RowDefinition Height="Auto"/>
+			</Grid.RowDefinitions>
+			<TickBar 
+      Name="TopTick"
+      SnapsToDevicePixels="True" 
+      Placement="Top"
+      Fill="{StaticResource GlyphBrush}"
+      Height="4"
+      Visibility="Collapsed" />
+			<Border 
+      Name="TrackBackground"
+      Margin="0"
+      CornerRadius="2" 
+      Height="4"
+      Grid.Row="1"
+      Background="{StaticResource LightBrush}" 
+      BorderBrush="{StaticResource NormalBorderBrush}"
+      BorderThickness="1" />
+			<Track Grid.Row="1" Name="PART_Track">
+				<Track.DecreaseRepeatButton>
+					<RepeatButton 
+          Style="{StaticResource SliderButtonStyle}"
+          Command="Slider.DecreaseLarge" />
+				</Track.DecreaseRepeatButton>
+				<Track.Thumb>
+					<Thumb Style="{StaticResource SliderThumbStyle}" />
+				</Track.Thumb>
+				<Track.IncreaseRepeatButton>
+					<RepeatButton 
+          Style="{StaticResource SliderButtonStyle}"
+          Command="Slider.IncreaseLarge" />
+				</Track.IncreaseRepeatButton>
+			</Track>
+			<TickBar 
+      Name="BottomTick"
+      SnapsToDevicePixels="True" 
+      Grid.Row="2"
+      Fill="{TemplateBinding Foreground}"
+      Placement="Bottom"
+      Height="4"
+      Visibility="Collapsed" />
+		</Grid>
+		<ControlTemplate.Triggers>
+			<Trigger Property="TickPlacement" Value="TopLeft">
+				<Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+			</Trigger>
+			<Trigger Property="TickPlacement" Value="BottomRight">
+				<Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+			</Trigger>
+			<Trigger Property="TickPlacement" Value="Both">
+				<Setter TargetName="TopTick" Property="Visibility" Value="Visible"/>
+				<Setter TargetName="BottomTick" Property="Visibility" Value="Visible"/>
+			</Trigger>
+		</ControlTemplate.Triggers>
+	</ControlTemplate>
+
+	<Style TargetType="{x:Type Slider}">
+		<Setter Property="SnapsToDevicePixels" Value="true"/>
+		<Setter Property="OverridesDefaultStyle" Value="true"/>
+		<Setter Property="Template" Value="{StaticResource HorizontalSlider}" />
+	</Style>
+	
 	<Style x:Key="ib" TargetType="Button">
 		<Style.Triggers>
 			<Trigger Property="IsEnabled" Value="True">

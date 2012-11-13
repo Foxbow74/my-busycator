@@ -101,7 +101,8 @@ namespace ResourceWizard.StoreableVMs
             BindProperty(m_name, ()=>Name);
             BindProperty(m_tileInfo, () => Tile);
             BindProperty(m_tileInfo, () => TileSet);
-            BindProperty(m_opacity, () => Opacity);
+			BindProperty(m_opacity, () => Opacity);
+			BindProperty(m_sex, () => Sex);
 
             Color.Set(m_color.Value.GetFColor());
         }
