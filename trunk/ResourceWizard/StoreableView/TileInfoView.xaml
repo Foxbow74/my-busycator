@@ -3,23 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs" mc:Ignorable="d" 
+             xmlns:StoreableVMs="clr-namespace:ResourceWizard.StoreableVMs"
+             xmlns:cc="clr-namespace:ClientCommonWpf;assembly=ClientCommonWpf"
+             xmlns:Views="clr-namespace:ResourceWizard.Views" mc:Ignorable="d" 
 			 d:DataContext="{d:DesignInstance StoreableVMs:XTileInfoVM}"
              d:DesignHeight="300" d:DesignWidth="300">
-	<StackPanel  Margin="1,2">
-		<Border BorderThickness="1" Background="{Binding Brush}" BorderBrush="Black" CornerRadius="2" Width="10" Height="10" HorizontalAlignment="Center" Margin="0,0,0,4">
-			<Border.InputBindings>
-				<MouseBinding MouseAction="LeftClick" Command="{Binding SelectColorCommand}"/>
-			</Border.InputBindings>
-		</Border>
-		<Border Background="Black">
-			<Image Source="{Binding Image}" Margin="2"/>
-		</Border>
-		<Border Background="DarkGray" Margin="0,2">
-			<Image Source="{Binding Image}" Margin="2"/>
-		</Border>
-		<Border Background="White">
-			<Image Source="{Binding Image}" Margin="2"/>
-		</Border>
-	</StackPanel>
+	<UserControl.Resources>
+		<ResourceDictionary Source="/Dictionary.xaml"/>
+	</UserControl.Resources>
+	<Grid >
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
+			<ToolBar>
+				<ToggleButton ToolTip="Черно-белый" IsChecked="{Binding GrayScale}" >
+					<Image Width="24" Source="{Binding GrayScaleImage}"/>
+				</ToggleButton>
+				<ToggleButton ToolTip="Убрать полупрозрачность рисунка" IsChecked="{Binding RemoveTransparency}" >
+					<Image Width="24" Source="{Binding RemoveTransparencyImage}"/>
+				</ToggleButton>
+				<Separator/>
+				<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
+				<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
+				<Button ToolTip="Выбрать цвет" Command="{Binding SelectColorCommand}" cc:ButtonProperties.Image="{Binding ColorsImage}" cc:ButtonProperties.DisabledImage="{Binding ColorsImageD}" Style="{StaticResource ib}"/>
+				<Separator/>
+				<Button ToolTip="Дублировать" Command="{Binding DublicateCommand}" cc:ButtonProperties.Image="{Binding DuplicateImage}" cc:ButtonProperties.DisabledImage="{Binding DuplicateImageD}" Style="{StaticResource ib}"/>
+				<Button ToolTip="Сдвинуть влево" Command="{Binding MoveLeftCommand}" cc:ButtonProperties.Image="{Binding LeftImage}" cc:ButtonProperties.DisabledImage="{Binding LeftImageD}" Style="{StaticResource ib}"/>
+				<Button ToolTip="Сдвинуть вправо" Command="{Binding MoveRightCommand}" cc:ButtonProperties.Image="{Binding RightImage}" cc:ButtonProperties.DisabledImage="{Binding RightImageD}" Style="{StaticResource ib}"/>
+				<Separator/>
+				<Button ToolTip="Удалить" Command="{Binding DeleteCommand}" cc:ButtonProperties.Image="{Binding DeleteImage}" cc:ButtonProperties.DisabledImage="{Binding DeleteImageD}" Style="{StaticResource ib}"/>
+			</ToolBar>
+		</ToolBarTray>
+		<ContentPresenter Content="{Binding Color}" Width="300" Grid.Row="2" Grid.Column="0"/>
+		<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
+			<ItemsControl.ItemTemplate>
+				<DataTemplate>
+					<Image Source="{Binding}" Stretch="None" SnapsToDevicePixels="True"/>
+				</DataTemplate>
+			</ItemsControl.ItemTemplate>
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<WrapPanel />
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
+		<Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshMosaicCommand}">Обновить</Button>
+		<Views:TextureView Grid.Row="3" DataContext="{Binding TextureVM}" Grid.ColumnSpan="2"/>
+	</Grid>
 </UserControl>

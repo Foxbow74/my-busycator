@@ -132,7 +132,22 @@ namespace ResourceWizard.StoreableVMs
         {
             var n = new XThingInfoVM();
             Children.Add(n);
-            n.Name = "Новый чилд";
+
+        	n.Color = Color;
+        	n.Level = Level;
+        	n.Sex = Sex;
+        	n.TileSet = TileSet;
+        	n.Tile = Tile;
+			n.Category = Category;
+			n.Opacity = 1;
+			for (var i = 1; ; ++i)
+			{
+				if(Children.All(_vm=>_vm.Name!=(Name + i)))
+				{
+					n.Name = Name + i;
+					break;
+				}
+			}
         }
         
         public RelayCommand AddChildCommand { get; private set; }
