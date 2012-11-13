@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Windows.Data;
 using System.Windows.Threading;
 using GameCore.Storage;
 using XTransport.Client;
@@ -39,6 +41,21 @@ namespace ResourceWizard
 
 		public static Dispatcher UiDispatcher { get; set; }
 
+
+	}
+
+	public class TestConverter : IValueConverter
+	{
+
+		public object Convert(object _value, Type _targetType, object _parameter, CultureInfo _culture)
+		{
+			return String.Format(_culture, "{0:N2}", _value);
+		}
+
+		public object ConvertBack(object _value, Type _targetType, object _parameter, CultureInfo _culture)
+		{
+			throw new NotImplementedException();
+		}
 
 	}
 }
