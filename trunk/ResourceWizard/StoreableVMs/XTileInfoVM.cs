@@ -28,6 +28,7 @@ namespace ResourceWizard.StoreableVMs
 	    [X("Order")]private IXValue<int> m_order;
 	    [X("X")]private IXValue<int> m_x;
 	    [X("Y")]private IXValue<int> m_y;
+        [X("Opacity")]private IXValue<float> m_opacity;
 #pragma warning restore 649
 
         private TextureVM m_textureVM;
@@ -79,6 +80,7 @@ namespace ResourceWizard.StoreableVMs
 		public int Y { get { return m_y.Value; } set { m_y.Value = value; } }
 		public int CX { get { return m_cx.Value; } set { m_cx.Value = value; } }
 		public int CY { get { return m_cy.Value; } set { m_cy.Value = value; } }
+        public float Opacity { get { return m_opacity.Value; } set { m_opacity.Value = value; } }
 
 	    public XColorVM Color
 	    {
@@ -148,10 +150,12 @@ namespace ResourceWizard.StoreableVMs
 	        Parent.Children.Add(d);
             d.X = b.X;
             d.Y = b.Y;
+            d.Opacity = 1;
             d.Color.Set(b.Color.GetFColor());
             d.Texture = b.Texture;
 	        d.Order = Order + 1;
 	        Parent.SelectedItem = d;
+            Parent.RefreshChildren();
 	    }
 
 	    private void ExecuteDeleteCommand(object _obj)
@@ -168,14 +172,14 @@ namespace ResourceWizard.StoreableVMs
 	    {
 	        Parent.Children.OrderBy(_vm => _vm.Order).First(_vm => _vm.Order > Order).Order--;
 	        Order++;
-	        CollectionViewSource.GetDefaultView(Parent.ChildrenObsCol).Refresh();
+            Parent.RefreshChildren();
 	    }
 
 	    private void ExecuteMoveLeftCommand(object _obj)
 	    {
 	        Parent.Children.OrderBy(_vm => _vm.Order).Last(_vm => _vm.Order < Order).Order++;
 	        Order--;
-	        CollectionViewSource.GetDefaultView(Parent.ChildrenObsCol).Refresh();
+            Parent.RefreshChildren();
 	    }
 
 	    private void ExecuteDublicateCommand(object _obj)
@@ -191,10 +195,12 @@ namespace ResourceWizard.StoreableVMs
 	        Parent.Children.Add(d);
             d.X = X;
             d.Y = Y;
+            d.Opacity = 1;
             d.Color.Set(Color.GetFColor());;
             d.Texture = Texture;
             d.Order = Order + 1;
 	        Parent.SelectedItem = d;
+            Parent.RefreshChildren();
 	    }
 
 	    protected override void InstantiationFinished()
@@ -206,6 +212,7 @@ namespace ResourceWizard.StoreableVMs
 	        BindProperty(m_cx, () => CX);
 	        BindProperty(m_cy, () => CY);
 	        BindProperty(m_order, ()=>Order);
+            BindProperty(m_opacity, () => Opacity); 
             Color.Set(m_color.Value.GetFColor());
 	    }
 

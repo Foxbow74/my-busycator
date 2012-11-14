@@ -18,6 +18,8 @@ namespace ResourceWizard.StoreableVMs
 
 		public ETerrains Key { get { return (ETerrains)m_eTerrains.Value; } set { m_eTerrains.Value = (int)value; } }
 
+        public string KeyName { get { return Key.ToString(); } }
+
 		protected override void InstantiationFinished()
 		{
 			base.InstantiationFinished();

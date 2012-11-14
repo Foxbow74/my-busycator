@@ -18,6 +18,8 @@ namespace ResourceWizard.StoreableVMs
 
 		public ETiles Key { get { return (ETiles)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
 
+        public string KeyName { get { return Key.ToString(); } }
+        
 		protected override void InstantiationFinished()
 		{
 			base.InstantiationFinished();

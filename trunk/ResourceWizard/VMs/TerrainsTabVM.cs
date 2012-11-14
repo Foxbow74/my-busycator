@@ -1,6 +1,8 @@
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Windows.Data;
 using GameCore;
 using ResourceWizard.StoreableVMs;
 
@@ -12,6 +14,7 @@ namespace ResourceWizard.VMs
 		public TerrainsTabVM()
 		{
 			Set = Manager.Instance.XRoot.TerrainSetsObsCol;
+
             var todel = Set.Where(_vm => _vm.Key == ETerrains.NONE).ToArray();
             foreach (var vm in todel)
             {
@@ -25,7 +28,9 @@ namespace ResourceWizard.VMs
 				set.Key = key;
 				set.Children.Add(new XTileInfoVM());
 			}
-		}
+
+            CollectionViewSource.GetDefaultView(Set).SortDescriptions.Add(new SortDescription("KeyName", ListSortDirection.Ascending));
+        }
 
 		public ReadOnlyObservableCollection<XTerrainSetVM> Set { get; private set; }
 		
