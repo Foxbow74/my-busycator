@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RusLanguage
@@ -111,6 +112,8 @@ namespace RusLanguage
 				throw new ApplicationException();
 			}
 
+			var isMyagk = "".Contains(vow);
+
 			var isGluh = false;
 			switch (sklon)
 			{
@@ -121,7 +124,7 @@ namespace RusLanguage
 							isGluh = "гбнстплфхчшщрд".Contains(noun[noun.Length - 1]);
 							break;
 						case ESex.FEMALE:
-							isGluh = "вцзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "квцзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
 							break;
 						case ESex.IT:
 							isGluh = "кнстплфхчшщрд".Contains(noun[noun.Length - 1]);
@@ -168,84 +171,132 @@ namespace RusLanguage
 				isGluh = false;
 			}
 
+			
+			var rr = new Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>>();
 
-			switch (sklon)
+			for (var i = 1; i <= 3; ++i)
 			{
-				case 1:
-					switch (_target)
+				rr.Add(i, new Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>());
+				foreach (ESex sex in Enum.GetValues(typeof(ESex)))
+				{
+					rr[i].Add(sex, new Dictionary<EPadej, Dictionary<bool, string>>());
+					foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
 					{
-						case EPadej.ROD:
-							noun += isGluh ? "ы" : "и";
-							break;
-						case EPadej.DAT:
-							noun += "е";
-							break;
-						case EPadej.VIN:
-							noun += isGluh ? "у" : "ю";
-							break;
-						case EPadej.TVOR:
-							noun += isGluh ? "ой" : "ей";
-							break;
-						case EPadej.PREDL:
-							noun += "е";
-							break;
-						default:
-							throw new ArgumentOutOfRangeException("_target");
+						rr[i][sex].Add(padej, new Dictionary<bool, string>());
 					}
-					break;
-				case 2:
-					switch (_target)
-					{
-						case EPadej.ROD:
-							noun += isGluh ? "а" : "я";
-							break;
-						case EPadej.DAT:
-							noun += isGluh ? "у" : "ю";
-							break;
-						case EPadej.VIN:
-							if(_sex==ESex.MALE)
-							{
-								
-							}
-							else
-							{
-								noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "о" : "е");
-							}
-							break;
-						case EPadej.TVOR:
-							noun += isGluh ? "ом" : "ем";
-							break;
-						case EPadej.PREDL:
-							noun += "е";
-							break;
-						default:
-							throw new ArgumentOutOfRangeException("_target");
-					}
-					break;
-				case 3:
-					switch (_target)
-					{
-						case EPadej.ROD:
-							noun += "и";
-							break;
-						case EPadej.DAT:
-							noun += "и";
-							break;
-						case EPadej.VIN:
-							noun += "ь";
-							break;
-						case EPadej.TVOR:
-							noun += "ью";
-							break;
-						case EPadej.PREDL:
-							noun += "и";
-							break;
-						default:
-							throw new ArgumentOutOfRangeException("_target");
-					}
-					break;
+				}
 			}
 
+			rr[1][ESex.FEMALE][EPadej.ROD][true] = "и";
+			rr[1][ESex.FEMALE][EPadej.ROD][false] = "и";
+
+			rr[1][ESex.FEMALE][EPadej.VIN][true] = "у";
+			rr[1][ESex.FEMALE][EPadej.VIN][false] = "у";
+
+			rr[1][ESex.FEMALE][EPadej.TVOR][true] = "ой";
+			rr[1][ESex.FEMALE][EPadej.TVOR][false] = "ой";
+
+			rr[1][ESex.FEMALE][EPadej.PREDL][true] = "е";
+			rr[1][ESex.FEMALE][EPadej.PREDL][false] = "е";
+
+			rr[1][ESex.MALE][EPadej.ROD][true] = "ы";
+			rr[1][ESex.MALE][EPadej.ROD][false] = "и";
+
+			rr[1][ESex.MALE][EPadej.VIN][true] = "у";
+			rr[1][ESex.MALE][EPadej.VIN][false] = "ю";
+
+			rr[1][ESex.MALE][EPadej.TVOR][true] = "ой";
+			rr[1][ESex.MALE][EPadej.TVOR][false] = "ей";
+
+			rr[1][ESex.MALE][EPadej.PREDL][true] = "е";
+			rr[1][ESex.MALE][EPadej.PREDL][false] = "е";
+
+			string value;
+			if (rr[sklon][_sex][_target].TryGetValue(isGluh, out value))
+			{
+				noun += value;
+			}
+			else
+			{
+
+				switch (sklon)
+				{
+					case 1:
+						throw new ApplicationException("не должно сюда попасть");
+						//switch (_target)
+						//{
+						//    case EPadej.ROD:
+						//        noun += isGluh ? "ы" : "и";
+						//        break;
+						//    case EPadej.DAT:
+						//        noun += "е";
+						//        break;
+						//    case EPadej.VIN:
+						//        noun += isGluh ? "у" : "ю";
+						//        break;
+						//    case EPadej.TVOR:
+						//        noun += isGluh ? "ой" : "ей";
+						//        break;
+						//    case EPadej.PREDL:
+						//        noun += "е";
+						//        break;
+						//    default:
+						//        throw new ArgumentOutOfRangeException("_target");
+						//}
+						break;
+					case 2:
+						switch (_target)
+						{
+							case EPadej.ROD:
+								noun += isGluh ? "а" : "я";
+								break;
+							case EPadej.DAT:
+								noun += isGluh ? "у" : "ю";
+								break;
+							case EPadej.VIN:
+								if (_sex == ESex.MALE)
+								{
+
+								}
+								else
+								{
+									noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "о" : "е");
+								}
+								break;
+							case EPadej.TVOR:
+								noun += isGluh ? "ом" : "ем";
+								break;
+							case EPadej.PREDL:
+								noun += "е";
+								break;
+							default:
+								throw new ArgumentOutOfRangeException("_target");
+						}
+						break;
+					case 3:
+						switch (_target)
+						{
+							case EPadej.ROD:
+								noun += "и";
+								break;
+							case EPadej.DAT:
+								noun += "и";
+								break;
+							case EPadej.VIN:
+								noun += "ь";
+								break;
+							case EPadej.TVOR:
+								noun += "ью";
+								break;
+							case EPadej.PREDL:
+								noun += "и";
+								break;
+							default:
+								throw new ArgumentOutOfRangeException("_target");
+						}
+						break;
+				}
+			}
 			words[0] = noun;
 			return string.Join(" ", words);
 		}
