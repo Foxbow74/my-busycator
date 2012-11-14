@@ -190,10 +190,13 @@ namespace RusLanguage
 			rr[1][ESex.FEMALE][EPadej.ROD][true] = "и";
 			rr[1][ESex.FEMALE][EPadej.ROD][false] = "и";
 
-			rr[1][ESex.FEMALE][EPadej.VIN][true] = "у";
-			rr[1][ESex.FEMALE][EPadej.VIN][false] = "у";
+            rr[1][ESex.FEMALE][EPadej.VIN][true] = "у";
+            rr[1][ESex.FEMALE][EPadej.VIN][false] = "у";
 
-			rr[1][ESex.FEMALE][EPadej.TVOR][true] = "ой";
+            rr[1][ESex.FEMALE][EPadej.DAT][true] = "е";
+            rr[1][ESex.FEMALE][EPadej.DAT][false] = "е";
+
+            rr[1][ESex.FEMALE][EPadej.TVOR][true] = "ой";
 			rr[1][ESex.FEMALE][EPadej.TVOR][false] = "ой";
 
 			rr[1][ESex.FEMALE][EPadej.PREDL][true] = "е";
@@ -205,7 +208,10 @@ namespace RusLanguage
 			rr[1][ESex.MALE][EPadej.VIN][true] = "у";
 			rr[1][ESex.MALE][EPadej.VIN][false] = "ю";
 
-			rr[1][ESex.MALE][EPadej.TVOR][true] = "ой";
+            rr[1][ESex.MALE][EPadej.DAT][true] = "е";
+            rr[1][ESex.MALE][EPadej.DAT][false] = "е";
+
+            rr[1][ESex.MALE][EPadej.TVOR][true] = "ой";
 			rr[1][ESex.MALE][EPadej.TVOR][false] = "ей";
 
 			rr[1][ESex.MALE][EPadej.PREDL][true] = "е";
@@ -223,26 +229,6 @@ namespace RusLanguage
 				{
 					case 1:
 						throw new ApplicationException("не должно сюда попасть");
-						//switch (_target)
-						//{
-						//    case EPadej.ROD:
-						//        noun += isGluh ? "ы" : "и";
-						//        break;
-						//    case EPadej.DAT:
-						//        noun += "е";
-						//        break;
-						//    case EPadej.VIN:
-						//        noun += isGluh ? "у" : "ю";
-						//        break;
-						//    case EPadej.TVOR:
-						//        noun += isGluh ? "ой" : "ей";
-						//        break;
-						//    case EPadej.PREDL:
-						//        noun += "е";
-						//        break;
-						//    default:
-						//        throw new ArgumentOutOfRangeException("_target");
-						//}
 						break;
 					case 2:
 						switch (_target)

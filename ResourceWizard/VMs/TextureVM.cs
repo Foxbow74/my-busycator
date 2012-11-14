@@ -51,13 +51,15 @@ namespace ResourceWizard.VMs
 
 		private void ExecuteAddCommand(object _obj)
 		{
-			var vm = new XTileInfoVM();;
-			m_xTileInfoVM.Parent.Children.Add(vm);
-			vm.Texture = Texture;
-			vm.X = CursorX/Constants.TILE_SIZE;
-			vm.Y = CursorY/Constants.TILE_SIZE;
-			vm.Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1;
-			m_xTileInfoVM.Parent.SelectedItem = vm;
+			var d = new XTileInfoVM();;
+			m_xTileInfoVM.Parent.Children.Add(d);
+			d.Texture = Texture;
+            d.Opacity = 1;
+			d.X = CursorX/Constants.TILE_SIZE;
+			d.Y = CursorY/Constants.TILE_SIZE;
+			d.Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1;
+			m_xTileInfoVM.Parent.SelectedItem = d;
+            m_xTileInfoVM.Parent.RefreshChildren();
 		}
 
 		private void ExecuteSetCommand(object _obj)

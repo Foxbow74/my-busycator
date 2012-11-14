@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
@@ -18,7 +17,9 @@ namespace ResourceWizard.StoreableVMs
 		}
 
 		[X("LIST")]
+#pragma warning disable 649
 		private ICollection<XTileInfoVM> m_children;
+#pragma warning restore 649
 
 		private XTileInfoVM m_selectedItem;
 		private ObservableCollection<ImageSource> m_mosaic;
@@ -77,13 +78,11 @@ namespace ResourceWizard.StoreableVMs
 		{
 			ChildrenObsCol = CreateObservableCollection(m_children);
 			CollectionViewSource.GetDefaultView(ChildrenObsCol).SortDescriptions.Add(new SortDescription("Order", ListSortDirection.Ascending));
-
-			((INotifyCollectionChanged)ChildrenObsCol).CollectionChanged += ChildrenObsColOnCollectionChanged;
 		}
 
-		private void ChildrenObsColOnCollectionChanged(object _sender, NotifyCollectionChangedEventArgs _notifyCollectionChangedEventArgs)
-		{
-			UpdateMosaic();
-		}
+        public void RefreshChildren()
+        {
+            CollectionViewSource.GetDefaultView(ChildrenObsCol).Refresh();
+        }
 	}
 }

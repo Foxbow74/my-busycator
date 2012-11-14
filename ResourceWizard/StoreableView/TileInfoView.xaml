@@ -15,14 +15,16 @@
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="Auto"/>
-			<ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
 		</Grid.ColumnDefinitions>
-		<ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="2" IsLocked="True">
+		<ToolBarTray Grid.Row="1" Margin="0,5" Grid.ColumnSpan="3" IsLocked="True">
 			<ToolBar>
 				<ToggleButton ToolTip="Черно-белый" IsChecked="{Binding GrayScale}" >
 					<Image Width="24" Source="{Binding GrayScaleImage}"/>
@@ -41,8 +43,10 @@
 				<Button ToolTip="Удалить" Command="{Binding DeleteCommand}" cc:ButtonProperties.Image="{Binding DeleteImage}" cc:ButtonProperties.DisabledImage="{Binding DeleteImageD}" Style="{StaticResource ib}"/>
 			</ToolBar>
 		</ToolBarTray>
-		<ContentPresenter Content="{Binding Color}" Width="300" Grid.Row="2" Grid.Column="0"/>
-		<ItemsControl Grid.Row="2" Grid.Column="1" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
+		<ContentPresenter Content="{Binding Color}" Width="300" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <Label Content="Прозрачность" Grid.Row="3"/>
+        <Slider Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding Opacity}"/>
+        <ItemsControl Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
 			<ItemsControl.ItemTemplate>
 				<DataTemplate>
 					<Image Source="{Binding}" Stretch="None" SnapsToDevicePixels="True"/>
@@ -54,7 +58,7 @@
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 		</ItemsControl>
-		<Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshMosaicCommand}">Обновить</Button>
-		<Views:TextureView Grid.Row="3" DataContext="{Binding TextureVM}" Grid.ColumnSpan="2"/>
+		<Button Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding RefreshMosaicCommand}">Обновить</Button>
+		<Views:TextureView Grid.Row="4" DataContext="{Binding TextureVM}" Grid.ColumnSpan="3"/>
 	</Grid>
 </UserControl>

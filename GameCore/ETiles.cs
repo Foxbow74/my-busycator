@@ -85,6 +85,15 @@ namespace GameCore
 		[Tiles(0.02f)] FOREST_MUSHROOM4,
 		[Tiles(0.02f)] FOREST_MUSHROOM5,
 		#endregion
+
+        CITIZEN,
+        AVATAR,
+        TREE,
+        SHRUBS,
+        MUSHROOM,
+        FRAME1,
+        FRAME2,
+        FRAME3,
 	}
 
 
