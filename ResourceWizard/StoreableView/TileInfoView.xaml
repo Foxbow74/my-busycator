@@ -44,7 +44,8 @@
 			</ToolBar>
 		</ToolBarTray>
 		<ContentPresenter Content="{Binding Color}" Width="300" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <Label Content="Прозрачность" Grid.Row="3"/>
+		<Label Content="Непрозрачность" Grid.Row="3" ToolTip="Используется для рассчета области видимости игрока, указывает, на сколько объект перекрывает обзор находящегося за ним пространства. Пример: Закрытая дверь = 1.0, открытая дверь = 0.1"/>
+		
         <Slider Grid.Row="3" Grid.Column="1" Minimum="0" Maximum="1" VerticalAlignment="Center" Value="{Binding Opacity}"/>
         <ItemsControl Grid.Row="2" Grid.Column="2" ItemsSource="{Binding Parent.Mosaic}" Background="Transparent" Margin="10,5,0,5" MaxWidth="512" MaxHeight="128">
 			<ItemsControl.ItemTemplate>

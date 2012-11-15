@@ -72,9 +72,6 @@
     <Compile Include="StoreableView\XColorView.xaml.cs">
       <DependentUpon>XColorView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="StoreableView\XThingInfoView.xaml.cs">
-      <DependentUpon>XThingInfoView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="StoreableVMs\ATileSetFactory.cs" />
     <Compile Include="StoreableVMs\XAbstractTileSetVM.cs" />
     <Compile Include="StoreableVMs\XChildObjectVM.cs" />
@@ -83,13 +80,9 @@
     <Compile Include="StoreableVMs\XNicksInfoVM.cs" />
     <Compile Include="StoreableVMs\XObjectVM.cs" />
     <Compile Include="StoreableVMs\XResourceRootVM.cs" />
-    <Compile Include="StoreableVMs\XThingInfoVM.cs" />
     <Compile Include="StoreableVMs\XTileInfoVM.cs" />
     <Compile Include="StoreableVMs\XTerrainSetVM.cs" />
     <Compile Include="StoreableVMs\XTileSetVM.cs" />
-    <Compile Include="Views\ThingsTabView.xaml.cs">
-      <DependentUpon>ThingsTabView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TextureView.xaml.cs">
       <DependentUpon>TextureView.xaml</DependentUpon>
     </Compile>
@@ -101,7 +94,6 @@
     <Compile Include="VMs\TabVM.cs" />
     <Compile Include="VMs\TerrainsTabVM.cs" />
     <Compile Include="VMs\TextureVM.cs" />
-    <Compile Include="VMs\ThingsTabVM.cs" />
     <Compile Include="VMs\TilesTabVM.cs" />
     <Compile Include="XClient.cs" />
     <Page Include="Dictionary.xaml">
@@ -127,14 +119,6 @@
     <Page Include="StoreableView\XColorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="StoreableView\XThingInfoView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ThingsTabView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

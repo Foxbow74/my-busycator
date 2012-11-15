@@ -301,9 +301,6 @@
     <DataTemplate DataType="{x:Type VMs:TerrainsTabVM}">
         <Views:TabView/>
     </DataTemplate>
-    <DataTemplate DataType="{x:Type VMs:ThingsTabVM}">
-        <Views:ThinksTabView/>
-    </DataTemplate>
     <DataTemplate DataType="{x:Type VMs:TextureVM}">
         <Views:TextureView/>
     </DataTemplate>
@@ -315,9 +312,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type StoreableVMs:XTileInfoVM}">
         <StoreableView:TileInfoView/>
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type StoreableVMs:XThingInfoVM}">
-        <StoreableView:XThingInfoView/>
     </DataTemplate>
     <DataTemplate DataType="{x:Type StoreableVMs:XColorVM}">
         <StoreableView:XColorView/>

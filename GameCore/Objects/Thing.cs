@@ -13,7 +13,7 @@ namespace GameCore.Objects
 		public abstract string Name { get; }
 
 		/// <summary>
-		/// Прозрачность объекта, используется для рассчета области видимости игрока
+		/// Непрозрачность объекта, используется для рассчета области видимости игрока
 		/// </summary>
 		public virtual float Opacity
 		{
