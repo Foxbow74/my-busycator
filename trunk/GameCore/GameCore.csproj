@@ -169,7 +169,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Objects\Thing.cs" />
     <Compile Include="ETerrains.cs" />
-    <Compile Include="ETiles.cs" />
+    <Compile Include="ETileset.cs" />
     <Compile Include="Misc\Util.cs" />
     <Compile Include="Storage\EStoreKind.cs" />
     <Compile Include="Storage\XResourceClient.cs" />

@@ -14,7 +14,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		private readonly List<Citizen> m_already = new List<Citizen>();
 		private readonly List<Building> m_buildings = new List<Building>();
 		private readonly List<Citizen> m_citizens = new List<Citizen>();
-		private readonly List<Tuple<ETiles, FColor>> m_conf = new List<Tuple<ETiles, FColor>>();
+		private readonly List<Tuple<ETileset, FColor>> m_conf = new List<Tuple<ETileset, FColor>>();
 
 		public City(Surface _surface, params Point[] _cityBlockIds)
 		{
@@ -152,7 +152,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					Debug.WriteLine(citizen);
 					m_already.Add(citizen);
 
-					Tuple<ETiles, FColor> tuple = null;
+					Tuple<ETileset, FColor> tuple = null;
 					foreach (var color in citizen.Roles.First().Colors)
 					{
 						tuple = Tuple.Create(citizen.Tileset, color);

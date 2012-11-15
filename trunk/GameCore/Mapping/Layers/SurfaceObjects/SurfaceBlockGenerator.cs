@@ -22,7 +22,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var points = Constants.MAP_BLOCK_SIZE*Constants.MAP_BLOCK_SIZE;
 			var toAdd = new List<EMapBlockTypes> {baseType, baseType, baseType};
 
-			#region размытие краев с соседними блоками
+			#region размытие границ с соседними блоками
 
 			foreach (var dir in Util.AllDirections)
 			{

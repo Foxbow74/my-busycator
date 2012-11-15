@@ -11,9 +11,9 @@ namespace GameCore.Objects
 {
 	public static class ThingHelper
 	{
-		private static readonly Dictionary<Tuple<ETiles, Material>, FakedFurniture> m_fakedThings = new Dictionary<Tuple<ETiles, Material>, FakedFurniture>();
-		private static readonly Dictionary<Tuple<ETiles, Material>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETiles, Material>, FakedItem>();
-		private static readonly Dictionary<Tuple<ETiles, Material>, FakedCreature> m_fakedMonsters = new Dictionary<Tuple<ETiles, Material>, FakedCreature>();
+		private static readonly Dictionary<Tuple<ETileset, Material>, FakedFurniture> m_fakedThings = new Dictionary<Tuple<ETileset, Material>, FakedFurniture>();
+		private static readonly Dictionary<Tuple<ETileset, Material>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETileset, Material>, FakedItem>();
+		private static readonly Dictionary<Tuple<ETileset, Material>, FakedCreature> m_fakedMonsters = new Dictionary<Tuple<ETileset, Material>, FakedCreature>();
 		private static readonly List<Material> m_materials = new List<Material>();
 
 		static ThingHelper()
@@ -122,43 +122,43 @@ namespace GameCore.Objects
 
 		public static bool IsFake(this Thing _thing) { return _thing is IFaked; }
 
-		public static FakedFurniture GetThing(this ETiles _tile, Material _material = null)
+		public static FakedFurniture GetThing(this ETileset _tileset, Material _material = null)
 		{
 			if (_material == null)
 			{
-				var arr = m_fakedThings.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				var arr = m_fakedThings.Where(_pair => _pair.Key.Item1 == _tileset).ToArray();
 				return arr.RandomItem(World.Rnd).Value;
 			}
-			var key = new Tuple<ETiles, Material>(_tile, _material);
+			var key = new Tuple<ETileset, Material>(_tileset, _material);
 			FakedFurniture furniture;
-			return m_fakedThings.TryGetValue(key, out furniture) ? furniture : m_fakedThings.First(_pair => _pair.Key.Item1 == _tile).Value;
+			return m_fakedThings.TryGetValue(key, out furniture) ? furniture : m_fakedThings.First(_pair => _pair.Key.Item1 == _tileset).Value;
 		}
 
-		public static FakedItem GetItem(this ETiles _tile, Material _material = null)
+		public static FakedItem GetItem(this ETileset _tileset, Material _material = null)
 		{
 			if (_material == null)
 			{
-				var arr = m_fakedItems.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				var arr = m_fakedItems.Where(_pair => _pair.Key.Item1 == _tileset).ToArray();
 				return arr.RandomItem(World.Rnd).Value;
 			}
-			return m_fakedItems[new Tuple<ETiles, Material>(_tile, _material)];
+			return m_fakedItems[new Tuple<ETileset, Material>(_tileset, _material)];
 		}
 
-		public static FakedCreature GetMonster(this ETiles _tile, Material _material = null)
+		public static FakedCreature GetMonster(this ETileset _tileset, Material _material = null)
 		{
 			if (_material == null)
 			{
-				var arr = m_fakedMonsters.Where(_pair => _pair.Key.Item1 == _tile).ToArray();
+				var arr = m_fakedMonsters.Where(_pair => _pair.Key.Item1 == _tileset).ToArray();
 				return arr.RandomItem(World.Rnd).Value;
 			}
-			return m_fakedMonsters[new Tuple<ETiles, Material>(_tile, _material)];
+			return m_fakedMonsters[new Tuple<ETileset, Material>(_tileset, _material)];
 		}
 
 		private static void RegisterCreatureType(Type _type)
 		{
 			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			FakedCreature value;
-			var key = new Tuple<ETiles, Material>(thing.Tileset, GetMaterial<FlashMaterial>());
+			var key = new Tuple<ETileset, Material>(thing.Tileset, GetMaterial<FlashMaterial>());
 			if (!m_fakedMonsters.TryGetValue(key, out value))
 			{
 				value = new FakedCreature(thing.Tileset);
@@ -184,7 +184,7 @@ namespace GameCore.Objects
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
 
 					FakedItem value;
-					var key = new Tuple<ETiles, Material>(thing.Tileset, material);
+					var key = new Tuple<ETileset, Material>(thing.Tileset, material);
 					if (!m_fakedItems.TryGetValue(key, out value))
 					{
 						value = new FakedItem(thing.Tileset, material);
@@ -204,7 +204,7 @@ namespace GameCore.Objects
 				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
 				{
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
-					var key = new Tuple<ETiles, Material>(thing.Tileset, material);
+					var key = new Tuple<ETileset, Material>(thing.Tileset, material);
 					FakedFurniture value;
 					if (!m_fakedThings.TryGetValue(key, out value))
 					{
@@ -224,21 +224,21 @@ namespace GameCore.Objects
 
 		public static Thing GetFakedThing(MapBlock _block)
 		{
-			var keys = new List<Tuple<ETiles, Material>>(m_fakedThings.Keys);
+			var keys = new List<Tuple<ETileset, Material>>(m_fakedThings.Keys);
 			var index = World.Rnd.Next(keys.Count);
 			return m_fakedThings[keys[index]];
 		}
 
 		public static FakedItem GetFakedItem(int _blockRandomSeed)
 		{
-			var keys = new List<Tuple<ETiles, Material>>(m_fakedItems.Keys);
+			var keys = new List<Tuple<ETileset, Material>>(m_fakedItems.Keys);
 			var index = World.Rnd.Next(keys.Count);
 			return m_fakedItems[keys[index]];
 		}
 
 		public static FakedCreature GetFakedCreature(MapBlock _block)
 		{
-			var keys = new List<Tuple<ETiles, Material>>(m_fakedMonsters.Keys);
+			var keys = new List<Tuple<ETileset, Material>>(m_fakedMonsters.Keys);
 			return m_fakedMonsters[keys[World.Rnd.Next(keys.Count)]];
 		}
 

@@ -4,20 +4,20 @@ namespace GameUi
 {
 	public class Frame
 	{
-		public static Frame SimpleFrame = new Frame(ETiles.FRAME1);
+		public static Frame SimpleFrame = new Frame(ETileset.FRAME1);
 
-		public static Frame GoldFrame = new Frame(ETiles.FRAME2);
+		public static Frame GoldFrame = new Frame(ETileset.FRAME2);
 
-		public Frame(ETiles _tile)
+		public Frame(ETileset _tileset)
 		{
-			TopLeft = _tile.GetTile(0);
-			Top = _tile.GetTile(1);
-			TopRight = _tile.GetTile(2);
-			Right = _tile.GetTile(3);
-			BottmoRight = _tile.GetTile(4);
-			Bottom = _tile.GetTile(5);
-			BottomLeft = _tile.GetTile(6);
-			Left = _tile.GetTile(7);
+			TopLeft = _tileset.GetTile(0);
+			Top = _tileset.GetTile(1);
+			TopRight = _tileset.GetTile(2);
+			Right = _tileset.GetTile(3);
+			BottmoRight = _tileset.GetTile(4);
+			Bottom = _tileset.GetTile(5);
+			BottomLeft = _tileset.GetTile(6);
+			Left = _tileset.GetTile(7);
 		}
 
 		public ATile Left { get; private set; }

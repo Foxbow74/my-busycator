@@ -2,7 +2,7 @@
 {
 	public interface ITileInfoProvider
 	{
-		ETiles Tileset { get; }
+		ETileset Tileset { get; }
 
 		/// <summary>
 		/// Цвет, который дает конкретный предмет своему тайлу. Считается линейной интерполяцией от альфы

@@ -2,7 +2,7 @@
 
 namespace GameCore
 {
-	public enum ETiles
+	public enum ETileset
 	{
 		NONE,
 		HEAP_OF_ITEMS,
@@ -89,15 +89,15 @@ namespace GameCore
 
 	public static class TileInfoProvider
 	{
-		public static Dictionary<ETiles, List<float>> m_opacities = new Dictionary<ETiles, List<float>>();
+		public static Dictionary<ETileset, List<float>> m_opacities = new Dictionary<ETileset, List<float>>();
 
-		public static void SetOpacity(ETiles _tile, int _index, float _opacity)
+		public static void SetOpacity(ETileset _tileset, int _index, float _opacity)
 		{
 			List<float> list;
-			if (!m_opacities.TryGetValue(_tile, out list))
+			if (!m_opacities.TryGetValue(_tileset, out list))
 			{
 				list = new List<float>();
-				m_opacities.Add(_tile, list);
+				m_opacities.Add(_tileset, list);
 			}
 			while (list.Count <= _index)
 			{
@@ -106,9 +106,9 @@ namespace GameCore
 			list[_index] = _opacity;
 		}
 
-		public static float GetOpacity(ETiles _tile, int _index)
+		public static float GetOpacity(ETileset _tileset, int _index)
 		{
-			var list = m_opacities[_tile];
+			var list = m_opacities[_tileset];
 			return list[_index % list.Count];
 		}
 	}

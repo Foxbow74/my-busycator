@@ -79,9 +79,9 @@ namespace GameCore
 			return m_attrs[_enum];
 		}
 
-		public static EMapBlockTypes GetMapBlockType(ETerrains terrains)
+		public static EMapBlockTypes GetMapBlockType(ETerrains _terrains)
 		{
-			switch (terrains)
+			switch (_terrains)
 			{
 				case ETerrains.GRASS:
 				case ETerrains.GROUND:
@@ -121,7 +121,7 @@ namespace GameCore
 				case ETerrains.SHRUBS:
 					return EMapBlockTypes.SHRUBS;
 				default:
-					throw new ArgumentOutOfRangeException("terrains");
+					throw new ArgumentOutOfRangeException("_terrains");
 			}
 		}
 	}

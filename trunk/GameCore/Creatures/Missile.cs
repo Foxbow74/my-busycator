@@ -36,7 +36,7 @@ namespace GameCore.Creatures
 
 		public Item Ammo { get; private set; }
 
-		public override ETiles Tileset { get { return Ammo.Tileset; } }
+		public override ETileset Tileset { get { return Ammo.Tileset; } }
 
 		public override string Name { get { return Ammo.GetName(World.TheWorld.Avatar); } }
 

@@ -15,7 +15,7 @@ namespace GameCore.Storeable
 			get { return EStoreKind.TILE_SET;} 
 		}
 
-		public ETiles Tile{get { return (ETiles)m_tiles.Value; } set { m_tiles.Value = (int)value; }}
+		public ETileset Tileset{get { return (ETileset)m_tiles.Value; } set { m_tiles.Value = (int)value; }}
 
 	}
 }

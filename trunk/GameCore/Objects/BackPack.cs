@@ -11,7 +11,7 @@ namespace GameCore.Objects
 	{
 		public BackPack() : base(null) { }
 
-		public override ETiles Tileset { get { throw new NotImplementedException(); } }
+		public override ETileset Tileset { get { throw new NotImplementedException(); } }
 
 		public override string Name { get { return "рюкзак"; } }
 

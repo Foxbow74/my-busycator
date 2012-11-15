@@ -16,7 +16,7 @@ namespace ResourceWizard.StoreableVMs
 			get { return EStoreKind.TILE_SET; }
 		}
 
-		public ETiles Key { get { return (ETiles)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
+		public ETileset Key { get { return (ETileset)m_eTile.Value; } set { m_eTile.Value = (int)value; } }
 
         public string KeyName { get { return Key.ToString(); } }
         

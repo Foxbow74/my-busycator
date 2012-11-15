@@ -8,15 +8,15 @@ namespace GameCore.Objects.Furniture
 	public class Sign : FurnitureThing, ISpecial
 	{
 		private readonly string m_name;
-		private readonly ETiles m_tileset;
+		private readonly ETileset m_tileset;
 
-		public Sign(ETiles _tileset, Material _material, string _name) : base(_material)
+		public Sign(ETileset _tileset, Material _material, string _name) : base(_material)
 		{
 			m_tileset = _tileset;
 			m_name = _name;
 		}
 
-		public override ETiles Tileset { get { return m_tileset; } }
+		public override ETileset Tileset { get { return m_tileset; } }
 
 		public override string Name { get { return m_name; } }
 

@@ -40,7 +40,7 @@ namespace OpenTKUi
                 throw new ApplicationException("Не найден файл с тайлами " + Path.GetFullPath(Constants.RESOURCES_PNG_FILE));
 			}
 
-			TileInfo.FogTexCoords = ((OpenTKTile)TileHelper.AllTiles[ETiles.FOG].Tiles[0]).Texcoords;
+			TileInfo.FogTexCoords = ((OpenTKTile)TileHelper.AllTiles[ETileset.FOG].Tiles[0]).Texcoords;
 		}
 
 		public TileMapRenderer(int _screenWidth, int _screenHeight)
