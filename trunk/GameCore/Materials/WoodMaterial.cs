@@ -9,7 +9,7 @@ namespace GameCore.Materials
 
 		public override EMaterial MaterialType { get { return EMaterial.WOOD; } }
 
-		public abstract ETiles TreeTile { get; }
+		public abstract int TreeTileIndex { get; }
 	}
 
 	internal class OakMaterial : WoodMaterial
@@ -19,7 +19,10 @@ namespace GameCore.Materials
 
 		public override FColor LerpColor { get { return FColor.DarkOak; } }
 
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_OAK; } }
+		public override int TreeTileIndex
+		{
+			get { return 0; }
+		}
 	}
 
 	internal class AshMaterial : WoodMaterial
@@ -28,7 +31,10 @@ namespace GameCore.Materials
 			: base("ясень") { }
 
 		public override FColor LerpColor { get { return FColor.Ash; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_ASH; } }
+		public override int TreeTileIndex
+		{
+			get { return 1; }
+		}
 	}
 
 	internal class MapleMaterial : WoodMaterial
@@ -37,7 +43,10 @@ namespace GameCore.Materials
 			: base("клен") { }
 
 		public override FColor LerpColor { get { return FColor.Maple; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_MAPLE; } }
+		public override int TreeTileIndex
+		{
+			get { return 2; }
+		}
 	}
 
 	internal class WalnutMaterial : WoodMaterial
@@ -46,7 +55,10 @@ namespace GameCore.Materials
 			: base("орех") { }
 
 		public override FColor LerpColor { get { return FColor.Walnut; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_WALNUT; } }
+		public override int TreeTileIndex
+		{
+			get { return 3; }
+		}
 	}
 
 	internal class WillowMaterial : WoodMaterial
@@ -55,7 +67,10 @@ namespace GameCore.Materials
 			: base("ива") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.WildWillow; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_WILLOW; } }
+		public override int TreeTileIndex
+		{
+			get { return 4; }
+		}
 	}
 
 	internal class PineMaterial : WoodMaterial
@@ -64,7 +79,10 @@ namespace GameCore.Materials
 			: base("сосна") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.PineTree; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_PINE; } }
+		public override int TreeTileIndex
+		{
+			get { return 5; }
+		}
 	}
 	
 	internal class SpruceMaterial : WoodMaterial
@@ -73,6 +91,9 @@ namespace GameCore.Materials
 			: base("ель") { Sex = ESex.IT; }
 
 		public override FColor LerpColor { get { return FColor.LimedSpruce; } }
-		public override ETiles TreeTile { get { return ETiles.FOREST_TREE_SPRUCE; } }
+		public override int TreeTileIndex
+		{
+			get { return 6; }
+		}
 	}
 }

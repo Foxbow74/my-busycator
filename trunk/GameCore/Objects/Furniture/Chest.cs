@@ -13,7 +13,7 @@ namespace GameCore.Objects.Furniture
 	{
 		public Chest(Material _material) : base(_material) { ELockType = ELockType.SIMPLE; }
 
-		public override ETiles Tile { get { return ETiles.CHEST; } }
+		public override ETiles Tileset { get { return ETiles.CHEST; } }
 
 		public override string Name { get { return "сундук"; } }
 

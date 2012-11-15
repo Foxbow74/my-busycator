@@ -11,7 +11,7 @@ namespace GameCore.Objects.Furniture.LightSources
 		public OnWallTorch(LightSource _lightSource, EDirections _direction, Material _material)
 			: base(_lightSource, _material) { m_direction = _direction; }
 
-		public override ETiles Tile { get { return ETiles.ON_WALL_LIGHT_SOURCE; } }
+		public override ETiles Tileset { get { return ETiles.ON_WALL_LIGHT_SOURCE; } }
 
 		public override string Name { get { return "факел"; } }
 

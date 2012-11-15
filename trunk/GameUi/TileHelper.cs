@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using GameCore;
 using GameCore.Storeable;
@@ -35,9 +34,13 @@ namespace GameUi
 				{
 					var set = new TileSet();
 					AllTiles.Add(xTileSet.Tile, set);
-					foreach (XTileInfo tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
+					var array = xTileSet.Children.OrderBy(_info => _info.Order).ToArray();
+					for (int index = 0; index < array.Length; index++)
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
+						var tileInfo = array[index];
+						var atile = Rp.CreateTile(tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor());
+						TileInfoProvider.SetOpacity(xTileSet.Tile, index, tileInfo.Opacity);
+						set.AddTile(atile);
 					}
 				}
 				foreach (var xTileSet in World.XResourceRoot.TerrainSets)
@@ -46,7 +49,7 @@ namespace GameUi
 					AllTerrainTilesets.Add(xTileSet.Terrains, set);
 					foreach (var tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
-						set.AddTile(Rp.CreateTile(ETextureSet.GP, tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
+						set.AddTile(Rp.CreateTile(tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
 					}
 				}
 			}
@@ -364,15 +367,19 @@ namespace GameUi
 			#endregion
 		}
 
-		public static ATile GetTile(this ETiles _tile) { return AllTiles[_tile][0]; }
-
-		public static ATile GetTile(this ETerrains terrains, int _index)
+		public static ATile GetTile(this ETiles _tile, int _index)
 		{
-			if(terrains==ETerrains.NONE)
+			var r = AllTiles[_tile];
+			return r[_index % r.Tiles.Count];
+		}
+
+		public static ATile GetTile(this ETerrains _terrains, int _index)
+		{
+			if(_terrains==ETerrains.NONE)
 			{
-				return GetTile(ETiles.NONE);
+				return ETiles.NONE.GetTile(0);
 			}
-			var ts = AllTerrainTilesets[terrains];
+			var ts = AllTerrainTilesets[_terrains];
 			return ts[_index];
 		}
 	}

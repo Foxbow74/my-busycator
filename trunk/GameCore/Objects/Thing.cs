@@ -15,7 +15,10 @@ namespace GameCore.Objects
 		/// <summary>
 		/// Прозрачность объекта, используется для рассчета области видимости игрока
 		/// </summary>
-		public virtual float Opacity { get { return TilesAttribute.GetAttribute(Tile).Opacity; } }
+		public virtual float Opacity
+		{
+			get { return TileInfoProvider.GetOpacity(Tileset, TileIndex); }
+		}
 
 		public abstract EThingCategory Category { get; }
 
@@ -31,11 +34,16 @@ namespace GameCore.Objects
 
 		#region ITileInfoProvider Members
 
-		public abstract ETiles Tile { get; }
+		public abstract ETiles Tileset { get; }
 
 		public virtual FColor LerpColor { get { return Material.LerpColor; } }
 
 		public virtual EDirections Direction { get { return EDirections.DOWN; } }
+
+		public virtual int TileIndex
+		{
+			get { return 0; }
+		}
 
 		#endregion
 

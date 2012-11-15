@@ -13,7 +13,7 @@ namespace GameCore.Creatures
 		public Monster(WorldLayer _layer)
 			: base(_layer, 100) { }
 
-		public override ETiles Tile { get { return ETiles.MONSTER; } }
+		public override ETiles Tileset { get { return ETiles.MONSTER; } }
 
 		public override string Name { get { return "существо" + Nn; } }
 

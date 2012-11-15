@@ -18,21 +18,19 @@ namespace GameCore.Creatures
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
 
-		public override ETiles Tile
+		public override ETiles Tileset
 		{
 			get
 			{
-				switch (Sex)
-				{
-					case ESex.MALE:
-						return Nn%2 == 0 ? ETiles.CITIZEN_MALE : ETiles.CITIZEN_MALE2;
-						break;
-					case ESex.FEMALE:
-						return Nn%2 == 0 ? ETiles.CITIZEN_FEMALE : ETiles.CITIZEN_FEMALE2;
-						break;
-					default:
-						throw new ArgumentOutOfRangeException();
-				}
+				return ETiles.CITIZEN;
+			}
+		}
+
+		public override int TileIndex
+		{
+			get
+			{
+				return Nn;
 			}
 		}
 

@@ -27,7 +27,7 @@ namespace GameCore.Storeable
 	{
 		public static FColor GetFColor(this XColor _xc)
 		{
-			if (_xc == null) return FColor.Empty;
+			if (_xc == null) return FColor.White;
 			return new FColor(_xc.A, _xc.R, _xc.G, _xc.B);
 		}
 

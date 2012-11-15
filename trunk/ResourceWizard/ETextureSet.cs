@@ -1,4 +1,4 @@
-﻿namespace GameUi
+namespace ResourceWizard
 {
 	public enum ETextureSet
 	{

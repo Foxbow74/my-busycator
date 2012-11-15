@@ -11,7 +11,7 @@ namespace OpenTKUi
 		public int X { get; private set; }
 		public int Y { get; private set; }
 
-		public OpenTKTile(ETextureSet _set, int _x, int _y, FColor _color) : base(_set, _x, _y, _color)
+		public OpenTKTile(int _x, int _y, FColor _color) : base(_x, _y, _color)
 		{
 			Texcoords = new TexCoord[4];
 			X = _x;

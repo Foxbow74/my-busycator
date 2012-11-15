@@ -47,6 +47,10 @@ namespace GameCore.Storeable
 		[X("CY")]
 		private IXValue<int> m_cy;
 
+
+		[X("Opacity")]
+		private IXValue<float> m_opacity;
+
 		public int CX
 		{
 			get { return m_cx.Value; }
@@ -65,5 +69,15 @@ namespace GameCore.Storeable
 		public XColor Color { get { return m_color.Value; } set { m_color.Value = value; } }
 
 		public int Texture { get { return m_eTexture.Value; } set { m_eTexture.Value = value; } }
+
+		public float Opacity
+		{
+			get {
+				return m_opacity.Value;
+			}
+			set {
+				m_opacity.Value = value;
+			}
+		}
 	}
 }

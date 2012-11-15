@@ -158,10 +158,10 @@ namespace GameCore.Objects
 		{
 			var thing = (Thing) Activator.CreateInstance(_type, new object[] {null});
 			FakedCreature value;
-			var key = new Tuple<ETiles, Material>(thing.Tile, GetMaterial<FlashMaterial>());
+			var key = new Tuple<ETiles, Material>(thing.Tileset, GetMaterial<FlashMaterial>());
 			if (!m_fakedMonsters.TryGetValue(key, out value))
 			{
-				value = new FakedCreature(thing.Tile);
+				value = new FakedCreature(thing.Tileset);
 				m_fakedMonsters.Add(key, value);
 			}
 			value.Add(_type);
@@ -184,10 +184,10 @@ namespace GameCore.Objects
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
 
 					FakedItem value;
-					var key = new Tuple<ETiles, Material>(thing.Tile, material);
+					var key = new Tuple<ETiles, Material>(thing.Tileset, material);
 					if (!m_fakedItems.TryGetValue(key, out value))
 					{
-						value = new FakedItem(thing.Tile, material);
+						value = new FakedItem(thing.Tileset, material);
 						m_fakedItems.Add(key, value);
 					}
 					value.Add(_type);
@@ -204,7 +204,7 @@ namespace GameCore.Objects
 				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
 				{
 					var thing = (Thing) Activator.CreateInstance(_type, new object[] {material});
-					var key = new Tuple<ETiles, Material>(thing.Tile, material);
+					var key = new Tuple<ETiles, Material>(thing.Tileset, material);
 					FakedFurniture value;
 					if (!m_fakedThings.TryGetValue(key, out value))
 					{

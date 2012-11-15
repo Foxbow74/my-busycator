@@ -88,7 +88,7 @@ namespace GameUi.UIBlocks
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
-							var tile = tileInfoProvider.Tile.GetTile();
+							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
 							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
 						}
@@ -104,14 +104,14 @@ namespace GameUi.UIBlocks
 						terrainTile.Draw(screenPoint, tcolor);
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
-							var tile = tileInfoProvider.Tile.GetTile();
+							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
 							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).ToGrayScale(), tileInfoProvider.Direction);
 						}
 						DrawHelper.FogTile(screenPoint);
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tile.GetTile().Draw(avatarScreenPoint, FColor.White);
+			World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
 		}
 
 		internal static FColor GetLighted(LiveMapCell _liveCell, FColor _visibility, FColor _ambient)

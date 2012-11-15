@@ -155,7 +155,6 @@
     <Compile Include="Objects\FakedFurniture.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\ThingHelper.cs" />
-    <Compile Include="Objects\TileInfoProvider.cs" />
     <Compile Include="Objects\Tools\Torch.cs" />
     <Compile Include="Objects\Weapons\Axe.cs" />
     <Compile Include="Objects\Weapons\CrossBow.cs" />

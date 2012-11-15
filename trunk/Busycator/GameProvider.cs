@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using GameCore;
+using GameCore.Creatures;
 using GameCore.Misc;
 using GameUi;
 using OpenTK;
