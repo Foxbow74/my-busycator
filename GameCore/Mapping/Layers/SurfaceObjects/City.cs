@@ -48,7 +48,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				}
 			}
 
-			var availableBuildings = Util.GetAllTypesOf<Building>().Select(_type => (Building) Activator.CreateInstance(_type, new object[] {this})).ToArray();
+			var availableBuildings = Util.GetAllTypesOf<Building>().Select(_type => (Building) Activator.CreateInstance(_type, this)).ToArray();
 			var availableRoles = Util.GetAllTypesOf<AbstractCitizenRole>().Select(_type => (AbstractCitizenRole) Activator.CreateInstance(_type)).ToArray();
 
 			var buildings = new List<Building>();
@@ -57,7 +57,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			{
 				for (var i = 0; i < abuilding.MinCountInCity; i++)
 				{
-					var building = (Building) Activator.CreateInstance(abuilding.GetType(), new object[] {this});
+					var building = (Building) Activator.CreateInstance(abuilding.GetType(), this);
 
 					var role = availableRoles.FirstOrDefault(_role => _role.BuildingType == building.BuildingType);
 					if (role != null)
@@ -80,7 +80,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					var count = buildings.Count(_building => _building.GetType() == abuilding.GetType());
 					if (count >= abuilding.MaxCountInCity) continue;
 
-					var building = (Building) Activator.CreateInstance(abuilding.GetType(), new object[] {this});
+					var building = (Building) Activator.CreateInstance(abuilding.GetType(), this);
 					var role = availableRoles.FirstOrDefault(_role => _role.BuildingType == building.BuildingType);
 					if (role != null)
 					{

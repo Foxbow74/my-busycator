@@ -5,7 +5,7 @@ using System.Linq;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 using GameCore.Plants;
 using GameCore.Storeable;
 using RusLanguage;
@@ -175,8 +175,8 @@ namespace GameCore.Mapping.Layers
 				City.GenerateCityBlock(block, rnd, this);
 			}
 
-            var trees = ThingHelper.AllThings().Where(_ff => _ff.Is<Tree>()).ToArray();
-            var shrubs = ThingHelper.AllThings().Where(_ff => _ff.Is<Shrub>()).ToArray();
+            var trees = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<Tree>()).ToArray();
+            var shrubs = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<Shrub>()).ToArray();
             foreach (var point in new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE).AllPoints)
 		    {
 				switch (block.Map[point.X, point.Y])

@@ -1,6 +1,6 @@
 using GameCore.Mapping.Layers;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
 	internal class StairUp : Stair
 	{
@@ -9,7 +9,7 @@ namespace GameCore.Objects.Furniture
 
 		public StairUp(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.STAIR_UP; } }
+        public override int TileIndex { get { return 11; } }
 
 		public override string Name { get { return "лестница вверх"; } }
 	}

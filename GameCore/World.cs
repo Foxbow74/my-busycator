@@ -7,7 +7,7 @@ using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 using GameCore.Storage;
 using GameCore.Storeable;
 
@@ -15,8 +15,8 @@ namespace GameCore
 {
 	public class World
 	{
-		static readonly XResourceServer m_resourceSrv = new XResourceServer();
-		static readonly XResourceClient m_resourceCli = new XResourceClient();
+		static XResourceServer m_resourceSrv;
+		static XResourceClient m_resourceCli;
 
 		/// <summary>
 		/// содержит список активных в данный момент существ
@@ -31,16 +31,25 @@ namespace GameCore
             {
                 throw new ApplicationException("Не найдена база ресурсов " + Path.GetFullPath(Constants.RESOURCES_DB_FILE));
             }
-
-			XResourceRoot = m_resourceCli.GetRoot<XResourceRoot>();
 		}
 
 		public static void SaveResources()
 		{
-			m_resourceCli.Save(XResourceRoot.Uid);
+            XClient.Save(XResourceRoot.Uid);
 		}
 
-		internal static XResourceRoot XResourceRoot { get; private set; } 
+        private static XResourceClient XClient
+        {get
+        {
+            if(m_resourceCli==null)
+            {
+                m_resourceSrv = new XResourceServer();
+                m_resourceCli = new XResourceClient();
+            }
+            return m_resourceCli;
+        }}
+
+        internal static XResourceRoot XResourceRoot { get { return XClient.GetRoot<XResourceRoot>(); } } 
 
 		public World()
 		{

@@ -3,9 +3,9 @@ using GameCore.Creatures;
 using GameCore.Mapping.Layers;
 using RusLanguage;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
-	public abstract class Stair : FurnitureThing
+	public abstract class Stair : Furniture
 	{
 		private WorldLayer m_leadToLayer;
 

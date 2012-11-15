@@ -1,11 +1,11 @@
 ﻿using GameCore.Creatures;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
 	/// <summary>
 	/// Табличка на здании, на стене
 	/// </summary>
-	public class Sign : FurnitureThing, ISpecial
+	public class Sign : Furniture, ISpecial
 	{
 		private readonly string m_name;
 		private readonly ETileset m_tileset;

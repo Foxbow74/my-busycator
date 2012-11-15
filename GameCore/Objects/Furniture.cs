@@ -1,12 +1,14 @@
 ﻿namespace GameCore.Objects
 {
-	public abstract class FurnitureThing : Thing
+	public abstract class Furniture : Thing
 	{
 		private FColor m_lerpColor;
 
-		protected FurnitureThing(Material _material) : base(_material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
+		protected Furniture(Material _material) : base(_material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
+
+        public override ETileset Tileset{ get { return ETileset.FURNITURE; } }
 
 		public override EThingCategory Category { get { return EThingCategory.FURNITURE; } }
 

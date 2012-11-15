@@ -6,7 +6,7 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Acts.Interact
 {
@@ -43,7 +43,7 @@ namespace GameCore.Acts.Interact
 							}
 							list.Add(dPoint);
 						}
-						else if (cell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cell, _creature)))
+						else if (cell.GetAllAvailableItemDescriptors<Furniture>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cell, _creature)))
 						{
 							list.Add(dPoint);
 						}
@@ -75,7 +75,7 @@ namespace GameCore.Acts.Interact
 				{
 					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
 				}
-				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<FurnitureThing>(_creature).Where(
+				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Furniture>(_creature).Where(
 					_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{

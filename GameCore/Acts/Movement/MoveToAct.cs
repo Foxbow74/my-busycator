@@ -5,7 +5,7 @@ using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Acts.Movement
 {

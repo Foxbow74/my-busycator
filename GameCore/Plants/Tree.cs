@@ -4,7 +4,7 @@ using GameCore.Objects;
 
 namespace GameCore.Plants
 {
-	class Tree : FurnitureThing
+	class Tree : Furniture
 	{
 		private readonly WoodMaterial m_material;
 
@@ -45,7 +45,7 @@ namespace GameCore.Plants
 		}
 	}
 	
-	class Shrub: FurnitureThing
+	class Shrub: Furniture
 	{
 		private readonly ShrubMaterial m_material;
 
@@ -75,7 +75,7 @@ namespace GameCore.Plants
 		}
 	}
 
-	class Mushrum : FurnitureThing
+	class Mushrum : Furniture
 	{
 		private readonly MushrumMaterial m_material;
 

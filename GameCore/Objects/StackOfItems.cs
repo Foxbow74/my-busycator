@@ -34,7 +34,7 @@ namespace GameCore.Objects
 		public StackOfItems GetOne()
 		{
 			Count--;
-			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType(), new object[] {Material});
+			var stackOfAmmo = (StackOfAmmo) Activator.CreateInstance(GetType(), Material);
 			stackOfAmmo.Count = 1;
 			return stackOfAmmo;
 		}

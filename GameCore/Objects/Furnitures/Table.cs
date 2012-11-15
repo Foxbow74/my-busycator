@@ -1,12 +1,12 @@
 ﻿using GameCore.Creatures;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
-	internal class Table : FurnitureThing
+	internal class Table : Furniture
 	{
 		public Table(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.TABLE; } }
+        public override int TileIndex { get { return 12; } }
 
 		public override string Name { get { return "стол"; } }
 

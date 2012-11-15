@@ -6,7 +6,7 @@ using GameCore.Mapping.Layers;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Mapping
 {
@@ -37,7 +37,7 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Item> Items { get { return m_items; } }
 
-		public FurnitureThing Furniture
+		public Furniture Furniture
 		{
 		    get { return _furniture; }
 		    set
@@ -97,7 +97,7 @@ namespace GameCore.Mapping
 		public Point LiveCoords { get { return m_liveCoords; } }
 
         private FColor? m_transparentColor;
-	    private FurnitureThing _furniture;
+	    private Furniture _furniture;
 
 	    public FColor TransparentColor
 		{
@@ -252,7 +252,7 @@ namespace GameCore.Mapping
 		{
 			var fakedThing = (FakedFurniture) Furniture;
 			m_mapBlock.RemoveObject(fakedThing, InBlockCoords);
-			Furniture = (FurnitureThing) fakedThing.ResolveFake(_creature);
+			Furniture = (Furniture) fakedThing.ResolveFake(_creature);
 			m_mapBlock.AddObject(Furniture, InBlockCoords);
 			return Furniture;
 		}

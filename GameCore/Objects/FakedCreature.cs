@@ -22,7 +22,7 @@ namespace GameCore.Objects
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
 
-			var thing = (Thing) Activator.CreateInstance(type, new object[] {_creature.Layer,});
+			var thing = (Thing) Activator.CreateInstance(type, _creature.Layer);
 			thing.Resolve(_creature);
 			return thing;
 		}

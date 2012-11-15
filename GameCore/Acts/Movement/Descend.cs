@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Messages;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Acts.Movement
 {

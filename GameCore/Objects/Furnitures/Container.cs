@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using GameCore.Creatures;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
 	public interface IContainer
 	{
 		ItemsCollection GetItems(Creature _creature);
 	}
 
-	internal abstract class Container : FurnitureThing, IContainer
+	internal abstract class Container : Furniture, IContainer
 	{
 		private ItemsCollection m_items;
 
