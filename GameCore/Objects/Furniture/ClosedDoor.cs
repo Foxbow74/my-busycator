@@ -12,7 +12,7 @@ namespace GameCore.Objects.Furniture
 
 		public ClosedDoor(Material _material) : base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile { get { return ETiles.DOOR; } }
+		public override ETiles Tileset { get { return ETiles.DOOR; } }
 
 		public override string Name { get { return "дверь"; } }
 

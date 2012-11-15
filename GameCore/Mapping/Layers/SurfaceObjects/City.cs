@@ -155,7 +155,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					Tuple<ETiles, FColor> tuple = null;
 					foreach (var color in citizen.Roles.First().Colors)
 					{
-						tuple = Tuple.Create(citizen.Tile, color);
+						tuple = Tuple.Create(citizen.Tileset, color);
 						if (!m_conf.Contains(tuple))
 						{
 							break;

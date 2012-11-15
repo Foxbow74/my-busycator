@@ -7,12 +7,12 @@ namespace GameCore.Objects
 {
 	public class FakedItem : Item, IFaked
 	{
-		private readonly ETiles m_tile;
+		private readonly ETiles m_tileset;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedItem(ETiles _tile, Material _material) : base(_material) { m_tile = _tile; }
+		public FakedItem(ETiles _tileset, Material _material) : base(_material) { m_tileset = _tileset; }
 
-		public override ETiles Tile { get { return m_tile; } }
+		public override ETiles Tileset { get { return m_tileset; } }
 
 		public override string Name { get { throw new NotImplementedException(); } }
 
@@ -32,7 +32,7 @@ namespace GameCore.Objects
 
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
-		protected override int CalcHashCode() { return (int) m_tile; }
+		protected override int CalcHashCode() { return (int) m_tileset; }
 
 		public override bool Is<T>()
 		{

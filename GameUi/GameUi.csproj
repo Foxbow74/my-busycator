@@ -38,6 +38,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ATile.cs" />
     <Compile Include="EAlignment.cs" />
     <Compile Include="EFonts.cs" />
     <Compile Include="EMouseButton.cs" />
@@ -49,12 +50,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextPortion.cs" />
     <Compile Include="TheGame.cs" />
-    <Compile Include="ETextureSet.cs" />
     <Compile Include="TileHelper.cs" />
     <Compile Include="TileSet.cs" />
     <Compile Include="UIBlocks\AskDirectionUiBlock.cs" />
     <Compile Include="UIBlocks\AskHowMuchUiBlock.cs" />
-    <Compile Include="ATile.cs" />
     <Compile Include="UIBlocks\ConfirmQuitBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpKeyBindingUiBlock.cs" />
     <Compile Include="UIBlocks\Help\HelpUiBlock.cs" />

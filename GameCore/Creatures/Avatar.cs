@@ -18,7 +18,7 @@ namespace GameCore.Creatures
 			Equip(EEquipmentPlaces.TOOL, ETiles.TORCH.GetItem());
 		}
 
-		public override ETiles Tile { get { return ETiles.GUARD; } }
+		public override ETiles Tileset { get { return ETiles.GUARD; } }
 
 		public override string IntelligentName { get { return "Дима"; } }
 

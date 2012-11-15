@@ -16,7 +16,7 @@ namespace GameCore.Objects.Furniture
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 
-		public override ETiles Tile { get { return ETiles.GRAVE; } }
+		public override ETiles Tileset { get { return ETiles.GRAVE; } }
 
 		public override void Resolve(Creature _creature) {  }
 	}
@@ -26,7 +26,7 @@ namespace GameCore.Objects.Furniture
 		public Chair(Material _material)
 			: base(_material) { }
 
-		public override ETiles Tile { get { return ETiles.CHAIR; } }
+		public override ETiles Tileset { get { return ETiles.CHAIR; } }
 
 		public override string Name { get { return "стул"; } }
 
@@ -38,7 +38,7 @@ namespace GameCore.Objects.Furniture
 		public Cabinet(Material _material)
 			: base(_material) { }
 
-		public override ETiles Tile { get { return ETiles.CABINET; } }
+		public override ETiles Tileset { get { return ETiles.CABINET; } }
 
 		public override string Name { get { return "шкаф"; } }
 
@@ -50,7 +50,7 @@ namespace GameCore.Objects.Furniture
 		public ArmorRack(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile { get { return ETiles.ARMOR_RACK; } }
+		public override ETiles Tileset { get { return ETiles.ARMOR_RACK; } }
 
 		public override string Name { get { return "стойка для брони"; } }
 
@@ -62,7 +62,7 @@ namespace GameCore.Objects.Furniture
 		public WeaponRack(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile { get { return ETiles.WEAPON_RACK; } }
+		public override ETiles Tileset { get { return ETiles.WEAPON_RACK; } }
 
 		public override string Name { get { return "стойка для оружия"; } }
 
@@ -74,7 +74,7 @@ namespace GameCore.Objects.Furniture
 		public Barrel(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tile { get { return ETiles.BARREL; } }
+		public override ETiles Tileset { get { return ETiles.BARREL; } }
 
 		public override string Name { get { return "бочка"; } }
 

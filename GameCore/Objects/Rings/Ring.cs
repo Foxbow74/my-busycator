@@ -6,7 +6,7 @@ namespace GameCore.Objects.Rings
 	{
 		public Ring(Material _material) : base(_material) { }
 
-		public override ETiles Tile { get { return ETiles.RING; } }
+		public override ETiles Tileset { get { return ETiles.RING; } }
 
 		public override EThingCategory Category { get { return EThingCategory.RINGS; } }
 

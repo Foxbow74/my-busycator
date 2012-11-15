@@ -16,7 +16,15 @@ namespace GameCore.Plants
 			Sex = m_material.Sex;
 		}
 
-		public override ETiles Tile { get { return m_material.TreeTile; } }
+		public override ETiles Tileset { get { return ETiles.TREES; } }
+
+		public override int TileIndex
+		{
+			get
+			{
+				return m_material.TreeTileIndex;
+			}
+		}
 
 		public override FColor LerpColor
 		{
@@ -43,7 +51,15 @@ namespace GameCore.Plants
 
 		public Shrub(Material _material) : base(_material) { m_material = (ShrubMaterial)_material; }
 
-		public override ETiles Tile { get { return m_material.ShroobTile; } }
+		public override ETiles Tileset { get { return ETiles.SHRUBS; } }
+
+		public override int TileIndex
+		{
+			get
+			{
+				return m_material.ShroobTileIndex;
+			}
+		}
 
 		public override void Resolve(Creature _creature) {  }
 
@@ -65,7 +81,15 @@ namespace GameCore.Plants
 
 		public Mushrum(Material _material) : base(_material) { m_material = (MushrumMaterial)_material; }
 
-		public override ETiles Tile { get { return m_material.MushrumTile; } }
+		public override ETiles Tileset { get { return ETiles.MUSHROOMS; } }
+
+		public override int TileIndex
+		{
+			get
+			{
+				return m_material.MushrumTileIndex;
+			}
+		}
 
 		public override void Resolve(Creature _creature) { }
 

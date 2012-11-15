@@ -14,9 +14,9 @@ namespace GameCore.Objects
 
 		public override FColor LerpColor{ get{ return m_thing.LerpColor; } }
 
-		public override ETiles Tile
+		public override ETiles Tileset
 		{
-			get { return m_thing.Tile; }
+			get { return m_thing.Tileset; }
 		}
 
 		public override string Name { get { return m_thing.Name; } }

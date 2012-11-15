@@ -1,122 +1,115 @@
-﻿using System;
-using System.Collections.Generic;
-using GameCore.Misc;
+﻿using System.Collections.Generic;
 
 namespace GameCore
 {
 	public enum ETiles
 	{
 		NONE,
-		[Tiles(0.5f)] HEAP_OF_ITEMS,
-		[Tiles(0.2f)] FOG,
+		HEAP_OF_ITEMS,
+		FOG,
 		TARGET_DOT,
 		TARGET_CROSS,
 		ON_WALL_LIGHT_SOURCE,
 		LIGHT_SOURCE,
 		TORCH,
 
-		[Tiles(0.9f)] CABINET,
-		[Tiles(0.5f)] ARMOR_RACK,
-		[Tiles(0.5f)] WEAPON_RACK,
-		[Tiles(1f)] DOOR,
-		[Tiles(0.03f)] OPEN_DOOR,
-		[Tiles(0.2f)] CHEST,
-		[Tiles(0.4f)] GRAVE,
+		CABINET,
+		ARMOR_RACK,
+		WEAPON_RACK,
+		DOOR,
+		OPEN_DOOR,
+		CHEST,
+		GRAVE,
 
 		STAIR_DOWN,
-		[Tiles(0.2f)] STAIR_UP,
+		STAIR_UP,
 
-		[Tiles(0.2f)] TABLE,
-		[Tiles(0.1f)] CHAIR,
-		[Tiles(0.4f)] BED,
-		[Tiles(0.4f)] BARREL,
+		TABLE,
+		CHAIR,
+		BED,
+		BARREL,
 
-		[Tiles(0.2f)] GUARD,
-		[Tiles(0.2f)] CITIZEN_MALE,
-		[Tiles(0.2f)] CITIZEN_MALE2,
-		[Tiles(0.2f)] CITIZEN_FEMALE,
-		[Tiles(0.2f)] CITIZEN_FEMALE2,
-		[Tiles(0.3f)] MONSTER,
+		GUARD,
+		ZZ11,
+		ZZ12,
+		ZZ13,
+		ZZ14,
+		MONSTER,
 
-		[Tiles(0.2f)] SWORD,
-		[Tiles(0.2f)] MAGIC_SWORD,
-		[Tiles(0.3f)] AXE,
-		[Tiles(0.2f)] CROSSBOW,
-		[Tiles(0.01f)] RING,
-		[Tiles(0.01f)] POTION,
-		[Tiles(0.01f)] CROSSBOW_BOLT,
+		SWORD,
+		MAGIC_SWORD,
+		AXE,
+		CROSSBOW,
+		RING,
+		POTION,
+		CROSSBOW_BOLT,
 
-		#region frame tiles
+		ZZ01,
+		ZZ02,
+		ZZ03,
+		ZZ04,
+		ZZ05,
+		ZZ06,
+		ZZ07,
+		ZZ08,
+		ZZ09,
+		ZZ10,
 
-		FRAME_L,
-		FRAME_R,
-		FRAME_T,
-		FRAME_B,
-		FRAME_TL,
-		FRAME_TR,
-		FRAME_BL,
-		FRAME_BR,
-		SOLID,
-		SIMPLE,
+		ZZ15,
+		ZZ16,
+		ZZ17,
+		ZZ18,
+		ZZ19,
+		ZZ20,
 
-		#endregion
+		ZZ21,
+		ZZ22,
 
-		#region forest tiles
+		ZZ23,
+		ZZ24,
+		ZZ25,
+		ZZ26,
+		ZZ27,
 
-		[Tiles(0.3f)] FOREST_TREE_OAK,
-		[Tiles(0.5f)] FOREST_TREE_MAPLE,
-		[Tiles(0.4f)] FOREST_TREE_ELM,
-		[Tiles(0.4f)] FOREST_TREE_ASH,
-		[Tiles(0.6f)] FOREST_TREE_WILLOW,
-		[Tiles(0.3f)] FOREST_TREE_WALNUT,
+		ZZ28,
+		ZZ29,
+		ZZ30,
+		ZZ31,
+		ZZ32,
 
-		[Tiles(0.4f)] FOREST_TREE_PINE,
-		[Tiles(0.3f)] FOREST_TREE_SPRUCE,
-
-		[Tiles(0.2f)] FOREST_SHRUB_1,
-		[Tiles(0.2f)] FOREST_SHRUB_2,
-		[Tiles(0.2f)] FOREST_SHRUB_3,
-		[Tiles(0.2f)] FOREST_SHRUB_4,
-		[Tiles(0.2f)] FOREST_SHRUB_5,
-
-		[Tiles(0.02f)] FOREST_MUSHROOM1,
-		[Tiles(0.02f)] FOREST_MUSHROOM2,
-		[Tiles(0.02f)] FOREST_MUSHROOM3,
-		[Tiles(0.02f)] FOREST_MUSHROOM4,
-		[Tiles(0.02f)] FOREST_MUSHROOM5,
-		#endregion
-
-        CITIZEN,
-        AVATAR,
-        TREE,
-        SHRUBS,
-        MUSHROOM,
-        FRAME1,
-        FRAME2,
-        FRAME3,
+		CITIZEN,
+		AVATAR,
+		TREES,
+		SHRUBS,
+		MUSHROOMS,
+		FRAME1,
+		FRAME2,
+		FRAME3,
 	}
 
-
-	public class TilesAttribute : Attribute
+	public static class TileInfoProvider
 	{
-		private static Dictionary<ETiles, TilesAttribute> m_attrs;
+		public static Dictionary<ETiles, List<float>> m_opacities = new Dictionary<ETiles, List<float>>();
 
-		public TilesAttribute() : this(0f) { }
-
-		public TilesAttribute(float _opacity)
+		public static void SetOpacity(ETiles _tile, int _index, float _opacity)
 		{
-			Opacity = _opacity;
+			List<float> list;
+			if (!m_opacities.TryGetValue(_tile, out list))
+			{
+				list = new List<float>();
+				m_opacities.Add(_tile, list);
+			}
+			while (list.Count <= _index)
+			{
+				list.Add(0f);
+			}
+			list[_index] = _opacity;
 		}
 
-		public float Opacity { get; private set; }
-
-		public static TilesAttribute GetAttribute(ETiles _enum)
+		public static float GetOpacity(ETiles _tile, int _index)
 		{
-			if (m_attrs == null)
-			{
-				m_attrs = Util.Fill<ETiles, TilesAttribute>();
-			}
-			return m_attrs[_enum];
+			var list = m_opacities[_tile];
+			return list[_index % list.Count];
 		}
 	}
 }
