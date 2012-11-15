@@ -6,13 +6,13 @@ namespace GameCore.Objects
 {
 	public class FakedCreature : Creature, IFaked
 	{
-		private readonly ETiles m_tileset;
+		private readonly ETileset m_tileset;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedCreature(ETiles _tileset)
+		public FakedCreature(ETileset _tileset)
 			: base(null, int.MinValue) { m_tileset = _tileset; }
 
-		public override ETiles Tileset { get { return m_tileset; } }
+		public override ETileset Tileset { get { return m_tileset; } }
 
 		public override string Name { get { throw new NotImplementedException(); } }
 

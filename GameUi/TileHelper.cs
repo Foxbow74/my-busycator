@@ -10,12 +10,12 @@ namespace GameUi
 	{
 		static TileHelper()
 		{
-			AllTiles = new Dictionary<ETiles, TileSet>();
+			AllTiles = new Dictionary<ETileset, TileSet>();
 			AllTerrainTilesets = new Dictionary<ETerrains, TileSet>();
 		}
 
 		public static Dictionary<ETerrains, TileSet> AllTerrainTilesets { get; private set; }
-		public static Dictionary<ETiles, TileSet> AllTiles { get; private set; }
+		public static Dictionary<ETileset, TileSet> AllTiles { get; private set; }
 
 		public static IResourceProvider Rp { get; private set; }
 		public static IDrawHelper DrawHelper { get; private set; }
@@ -33,13 +33,13 @@ namespace GameUi
 				foreach (var xTileSet in World.XResourceRoot.TileSets)
 				{
 					var set = new TileSet();
-					AllTiles.Add(xTileSet.Tile, set);
+					AllTiles.Add(xTileSet.Tileset, set);
 					var array = xTileSet.Children.OrderBy(_info => _info.Order).ToArray();
 					for (int index = 0; index < array.Length; index++)
 					{
 						var tileInfo = array[index];
 						var atile = Rp.CreateTile(tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor());
-						TileInfoProvider.SetOpacity(xTileSet.Tile, index, tileInfo.Opacity);
+						TileInfoProvider.SetOpacity(xTileSet.Tileset, index, tileInfo.Opacity);
 						set.AddTile(atile);
 					}
 				}
@@ -367,9 +367,9 @@ namespace GameUi
 			#endregion
 		}
 
-		public static ATile GetTile(this ETiles _tile, int _index)
+		public static ATile GetTile(this ETileset _tileset, int _index)
 		{
-			var r = AllTiles[_tile];
+			var r = AllTiles[_tileset];
 			return r[_index % r.Tiles.Count];
 		}
 
@@ -377,7 +377,7 @@ namespace GameUi
 		{
 			if(_terrains==ETerrains.NONE)
 			{
-				return ETiles.NONE.GetTile(0);
+				return ETileset.NONE.GetTile(0);
 			}
 			var ts = AllTerrainTilesets[_terrains];
 			return ts[_index];

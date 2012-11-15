@@ -8,7 +8,7 @@ namespace GameCore.Objects.Furniture
 		public Bed(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETiles Tileset { get { return ETiles.BED; } }
+		public override ETileset Tileset { get { return ETileset.BED; } }
 
 		public override string Name { get { return "кровать"; } }
 

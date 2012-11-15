@@ -16,7 +16,7 @@ namespace GameCore.Plants
 			Sex = m_material.Sex;
 		}
 
-		public override ETiles Tileset { get { return ETiles.TREES; } }
+		public override ETileset Tileset { get { return ETileset.TREES; } }
 
 		public override int TileIndex
 		{
@@ -51,7 +51,7 @@ namespace GameCore.Plants
 
 		public Shrub(Material _material) : base(_material) { m_material = (ShrubMaterial)_material; }
 
-		public override ETiles Tileset { get { return ETiles.SHRUBS; } }
+		public override ETileset Tileset { get { return ETileset.SHRUBS; } }
 
 		public override int TileIndex
 		{
@@ -81,7 +81,7 @@ namespace GameCore.Plants
 
 		public Mushrum(Material _material) : base(_material) { m_material = (MushrumMaterial)_material; }
 
-		public override ETiles Tileset { get { return ETiles.MUSHROOMS; } }
+		public override ETileset Tileset { get { return ETileset.MUSHROOMS; } }
 
 		public override int TileIndex
 		{

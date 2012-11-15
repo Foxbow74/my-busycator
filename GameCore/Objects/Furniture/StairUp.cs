@@ -9,7 +9,7 @@ namespace GameCore.Objects.Furniture
 
 		public StairUp(Material _material) : base(_material) { }
 
-		public override ETiles Tileset { get { return ETiles.STAIR_UP; } }
+		public override ETileset Tileset { get { return ETileset.STAIR_UP; } }
 
 		public override string Name { get { return "лестница вверх"; } }
 	}

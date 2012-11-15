@@ -34,7 +34,7 @@ namespace GameCore.Objects
 
 		#region ITileInfoProvider Members
 
-		public abstract ETiles Tileset { get; }
+		public abstract ETileset Tileset { get; }
 
 		public virtual FColor LerpColor { get { return Material.LerpColor; } }
 

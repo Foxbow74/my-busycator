@@ -90,15 +90,15 @@ namespace GameUi.UIBlocks
 
 					if (ContentRct.Contains(pnt + m_avatarScreenPoint))
 					{
-						ETiles.TARGET_DOT.GetTile(0).Draw(pnt + m_avatarScreenPoint, color);
+						ETileset.TARGET_DOT.GetTile(0).Draw(pnt + m_avatarScreenPoint, color);
 					}
 				}
-				ETiles.TARGET_CROSS.GetTile(0).Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
+				ETileset.TARGET_CROSS.GetTile(0).Draw(m_targetPoint + m_avatarScreenPoint, FColor.Gold);
 			}
 			else
 			{
 				m_path = null;
-				ETiles.TARGET_CROSS.GetTile(0).Draw(m_targetPoint + m_avatarScreenPoint, FColor.Red);
+				ETileset.TARGET_CROSS.GetTile(0).Draw(m_targetPoint + m_avatarScreenPoint, FColor.Red);
 			}
 		}
 

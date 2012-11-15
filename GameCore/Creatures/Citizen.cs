@@ -18,11 +18,11 @@ namespace GameCore.Creatures
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
 
-		public override ETiles Tileset
+		public override ETileset Tileset
 		{
 			get
 			{
-				return ETiles.CITIZEN;
+				return ETileset.CITIZEN;
 			}
 		}
 

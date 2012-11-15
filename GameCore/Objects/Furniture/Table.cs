@@ -6,7 +6,7 @@ namespace GameCore.Objects.Furniture
 	{
 		public Table(Material _material) : base(_material) { }
 
-		public override ETiles Tileset { get { return ETiles.TABLE; } }
+		public override ETileset Tileset { get { return ETileset.TABLE; } }
 
 		public override string Name { get { return "стол"; } }
 

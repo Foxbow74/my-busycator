@@ -92,7 +92,7 @@ namespace GameCore.Objects
 
 			public override EThingCategory Category { get { throw new NotImplementedException(); } }
 
-			public override ETiles Tileset { get { throw new NotImplementedException(); } }
+			public override ETileset Tileset { get { throw new NotImplementedException(); } }
 
 			public override string Name { get { throw new NotImplementedException(); } }
 

@@ -18,7 +18,7 @@ namespace GameCore.Objects.Tools
 
 		public Torch(Material _material) : base(_material) { }
 
-		public override ETiles Tileset { get { return ETiles.TORCH; } }
+		public override ETileset Tileset { get { return ETileset.TORCH; } }
 
 		public override string Name { get { return "факел"; } }
 

@@ -7,12 +7,12 @@ namespace GameCore.Objects
 {
 	public class FakedItem : Item, IFaked
 	{
-		private readonly ETiles m_tileset;
+		private readonly ETileset m_tileset;
 		private readonly List<Type> m_types = new List<Type>();
 
-		public FakedItem(ETiles _tileset, Material _material) : base(_material) { m_tileset = _tileset; }
+		public FakedItem(ETileset _tileset, Material _material) : base(_material) { m_tileset = _tileset; }
 
-		public override ETiles Tileset { get { return m_tileset; } }
+		public override ETileset Tileset { get { return m_tileset; } }
 
 		public override string Name { get { throw new NotImplementedException(); } }
 

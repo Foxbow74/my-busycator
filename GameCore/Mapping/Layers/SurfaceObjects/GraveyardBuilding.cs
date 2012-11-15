@@ -29,7 +29,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			{
 				if (rnd.Next(4) == 0 && !InDoorWorldCoords.Contains(point))
 				{
-					_block.AddObject(ETiles.GRAVE.GetThing(), point);
+					_block.AddObject(ETileset.GRAVE.GetThing(), point);
 				}
 			}
 		}

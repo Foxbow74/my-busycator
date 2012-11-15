@@ -28,15 +28,15 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var corners = innerPerimeter.CornerPoints.Except(indoor).OrderBy(_point => _point.GetDistTill(doorCoords)).ToArray();
 			var allPoints = innerPerimeter.BorderPoints.Except(corners).Except(indoor).OrderByDescending(_point => _point.GetDistTill(doorCoords)).ToArray();
 
-			var cornerTiles = new[] {ETiles.NONE, ETiles.NONE, ETiles.CHAIR, ETiles.BARREL}.OrderBy(_tiles => World.Rnd.Next()).ToArray();
-			var perimeterTiles = new[] {ETiles.NONE, ETiles.CHEST, ETiles.WEAPON_RACK, ETiles.ARMOR_RACK, ETiles.CABINET}.OrderBy(_tiles => World.Rnd.Next()).ToArray();
+			var cornerTiles = new[] {ETileset.NONE, ETileset.NONE, ETileset.CHAIR, ETileset.BARREL}.OrderBy(_tiles => World.Rnd.Next()).ToArray();
+			var perimeterTiles = new[] {ETileset.NONE, ETileset.CHEST, ETileset.WEAPON_RACK, ETileset.ARMOR_RACK, ETileset.CABINET}.OrderBy(_tiles => World.Rnd.Next()).ToArray();
 			BedCoords = allPoints[0];
-			_block.AddObject(ETiles.BED.GetThing(), BedCoords);
+			_block.AddObject(ETileset.BED.GetThing(), BedCoords);
 			for (var index = 1; index < allPoints.Length; index++)
 			{
 				var point = allPoints[index];
 				var tile = perimeterTiles[index%perimeterTiles.Length];
-				if (tile != ETiles.NONE)
+				if (tile != ETileset.NONE)
 				{
 					_block.AddObject(tile.GetThing(), point);
 				}
@@ -46,7 +46,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			{
 				var point = corners[index];
 				var tile = cornerTiles[index%cornerTiles.Length];
-				if (tile != ETiles.NONE)
+				if (tile != ETileset.NONE)
 				{
 					_block.AddObject(tile.GetThing(), point);
 				}

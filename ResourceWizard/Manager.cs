@@ -90,7 +90,7 @@ namespace ResourceWizard
                     var prnt = grouping.First().Parent;
                     if(prnt is XTileSetVM)
                     {
-                        isNone = ((XTileSetVM)prnt).Key == ETiles.NONE;
+                        isNone = ((XTileSetVM)prnt).Key == ETileset.NONE;
                     }
                     else if(prnt is XTerrainSetVM)
                     {

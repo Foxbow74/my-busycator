@@ -14,13 +14,13 @@ namespace ResourceWizard.VMs
 		{
 			Set = Manager.Instance.XRoot.TileSetsObsCol;
             
-            var todel = Set.Where(_vm => _vm.Key == ETiles.NONE).ToArray();
+            var todel = Set.Where(_vm => _vm.Key == ETileset.NONE).ToArray();
             foreach (var vm in todel)
             {
                 Manager.Instance.XRoot.TileSets.Remove(vm);
             }
 
-			foreach (var key in from ETiles key in Enum.GetValues(typeof(ETiles)) where Set.All(_vm => _vm.Key != key) && key!=ETiles.NONE select key)
+			foreach (var key in from ETileset key in Enum.GetValues(typeof(ETileset)) where Set.All(_vm => _vm.Key != key) && key!=ETileset.NONE select key)
 			{
 				var set = new XTileSetVM();
 				Manager.Instance.XRoot.TileSets.Add(set);

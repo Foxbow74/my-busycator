@@ -127,7 +127,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			InDoorWorldCoords = new[] {prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key}.Select(_mapBlock.ToWorldCoords).ToArray();
 
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
-			var fakedFurniture = ETiles.DOOR.GetThing();
+			var fakedFurniture = ETileset.DOOR.GetThing();
 			var door = fakedFurniture.ResolveFake(World.TheWorld.Avatar);
 			_mapBlock.AddObject(door, doorCoords);
 		}
