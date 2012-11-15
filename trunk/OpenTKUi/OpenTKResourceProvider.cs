@@ -45,11 +45,11 @@ namespace OpenTKUi
 			var s = new string(charSet.ToArray());
 			var qfc = new QFontBuilderConfiguration
 			              {
-			          		charSet = s, 
-							TextGenerationRenderHint = TextGenerationRenderHint.SizeDependent,
-							SuperSampleLevels = 1,
+			          		charSet = s,
+                            TextGenerationRenderHint = TextGenerationRenderHint.SizeDependent | TextGenerationRenderHint.AntiAlias,
+							SuperSampleLevels = 4,
 			          	};
-			var qFont = new QFont(_fileName, _pointSize, FontStyle.Regular, qfc);
+			var qFont = new QFont(_fileName, _pointSize, FontStyle.Bold, qfc);
 
 			m_fonts[_font] = qFont;
 		}

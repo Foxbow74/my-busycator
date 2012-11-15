@@ -4,8 +4,8 @@ using GameCore.Creatures;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture;
-using GameCore.Objects.Furniture.LightSources;
+using GameCore.Objects.Furnitures;
+using GameCore.Objects.Furnitures.LightSources;
 
 namespace GameCore.Mapping.Layers
 {

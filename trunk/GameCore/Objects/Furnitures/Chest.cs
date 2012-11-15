@@ -7,13 +7,13 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using RusLanguage;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
 	internal class Chest : Container, ICanbeOpened
 	{
 		public Chest(Material _material) : base(_material) { ELockType = ELockType.SIMPLE; }
 
-		public override ETileset Tileset { get { return ETileset.CHEST; } }
+        public override int TileIndex { get { return 7; } }
 
 		public override string Name { get { return "сундук"; } }
 

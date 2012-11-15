@@ -1,9 +1,9 @@
 ﻿using GameCore.Creatures;
 using RusLanguage;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
-	internal class Grave : FurnitureThing
+	internal class Grave : Furniture
 	{
 		public Grave(Material _material) : base(_material) 
 		{
@@ -16,65 +16,65 @@ namespace GameCore.Objects.Furniture
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 
-		public override ETileset Tileset { get { return ETileset.GRAVE; } }
+        public override int TileIndex { get { return 6; } }
 
 		public override void Resolve(Creature _creature) {  }
 	}
 
-	internal class Chair : FurnitureThing
+	internal class Chair : Furniture
 	{
 		public Chair(Material _material)
 			: base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.CHAIR; } }
+        public override int TileIndex { get { return 2; } }
 
 		public override string Name { get { return "стул"; } }
 
 		public override void Resolve(Creature _creature) { }
 	}
 
-	internal class Cabinet : FurnitureThing
+	internal class Cabinet : Furniture
 	{
 		public Cabinet(Material _material)
 			: base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.CABINET; } }
+        public override int TileIndex { get { return 1; } }
 
 		public override string Name { get { return "шкаф"; } }
 
 		public override void Resolve(Creature _creature) { }
 	}
 
-	internal class ArmorRack : FurnitureThing
+	internal class ArmorRack : Furniture
 	{
 		public ArmorRack(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.ARMOR_RACK; } }
+        public override int TileIndex { get { return 3; } }
 
 		public override string Name { get { return "стойка для брони"; } }
 
 		public override void Resolve(Creature _creature) { }
 	}
 
-	internal class WeaponRack : FurnitureThing
+	internal class WeaponRack : Furniture
 	{
 		public WeaponRack(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.WEAPON_RACK; } }
+        public override int TileIndex { get { return 4; } }
 
 		public override string Name { get { return "стойка для оружия"; } }
 
 		public override void Resolve(Creature _creature) { }
 	}
 
-	internal class Barrel : FurnitureThing
+	internal class Barrel : Furniture
 	{
 		public Barrel(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.BARREL; } }
+        public override int TileIndex { get { return 5; } }
 
 		public override string Name { get { return "бочка"; } }
 

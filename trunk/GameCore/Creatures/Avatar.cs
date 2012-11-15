@@ -13,12 +13,14 @@ namespace GameCore.Creatures
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
 			AddRole(new AvatarRole());
-			Equip(EEquipmentPlaces.MISSILE_WEAPON, ETileset.CROSSBOW.GetItem());
+			//Equip(EEquipmentPlaces.MISSILE_WEAPON, ETileset.CROSSBOW.GetItem());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()) {Count = 100});
-			Equip(EEquipmentPlaces.TOOL, ETileset.TORCH.GetItem());
+			//Equip(EEquipmentPlaces.TOOL, ETileset.TORCH.GetItem());
 		}
 
-		public override ETileset Tileset { get { return ETileset.GUARD; } }
+        public override ETileset Tileset { get { return ETileset.AVATAR; } }
+
+        public override int TileIndex { get { return 2; } }
 
 		public override string IntelligentName { get { return "Дима"; } }
 

@@ -7,8 +7,8 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using GameCore;
 using GameCore.Misc;
+using GameCore.Objects;
 using GameCore.Storage;
-using GameUi;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
 using RusLanguage;
@@ -20,7 +20,10 @@ namespace ResourceWizard
 	{
 		public readonly ColorDialog COLOR_DIALOG = new ColorDialog { FullOpen = true };
 
+#pragma warning disable 169
 		readonly XResourceServer m_resourceSrv = new XResourceServer();
+#pragma warning restore 169
+
 		readonly XClient m_resourceCli = new XClient();
 
 		private static Manager m_instance;
@@ -28,6 +31,20 @@ namespace ResourceWizard
 		private Manager()
 		{
 		}
+
+        public IEnumerable<Thing> GetThings(ETileset _tileset)
+        {
+            if(m_allThings==null)
+            {
+                m_allThings = ThingHelper.AllThings;
+            }
+            return m_allThings.Where(_thing => _thing.Tileset==_tileset);
+        }
+
+        public IEnumerable<Thing> GetThings(ETileset _tileset, int _index)
+        {
+            return GetThings(_tileset).Where(_thing => _thing.TileIndex==_index);
+        }
 
 		public XResourceRootVM XRoot
 		{
@@ -131,9 +148,10 @@ namespace ResourceWizard
 
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
         readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
+	    private IEnumerable<Thing> m_allThings;
 
 
-		public Bitmap this[ETextureSet _set]
+	    public Bitmap this[ETextureSet _set]
 		{
 			get
 			{

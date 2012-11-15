@@ -4,15 +4,15 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using RusLanguage;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
-	internal class ClosedDoor : FurnitureThing, ICanbeOpened
+	internal class ClosedDoor : Furniture, ICanbeOpened
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 
 		public ClosedDoor(Material _material) : base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.DOOR; } }
+        public override int TileIndex { get { return 8; } }
 
 		public override string Name { get { return "дверь"; } }
 

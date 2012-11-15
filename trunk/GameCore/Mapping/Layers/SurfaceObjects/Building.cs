@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Objects;
-using GameCore.Objects.Furniture.LightSources;
+using GameCore.Objects.Furnitures;
+using GameCore.Objects.Furnitures.LightSources;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
@@ -127,9 +127,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			InDoorWorldCoords = new[] {prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key}.Select(_mapBlock.ToWorldCoords).ToArray();
 
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
-			var fakedFurniture = ETileset.DOOR.GetThing();
-			var door = fakedFurniture.ResolveFake(World.TheWorld.Avatar);
-			_mapBlock.AddObject(door, doorCoords);
+            var doors = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<ClosedDoor>()).ToArray();
+			_mapBlock.AddObject(doors[0], doorCoords);
 		}
 
 		public virtual bool IsFit(Room _room) { return true; }

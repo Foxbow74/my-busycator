@@ -53,7 +53,7 @@ namespace ResourceWizard.StoreableVMs
 			get { return m_mosaic??(m_mosaic = new ObservableCollection<ImageSource>(GetMosaicItems())); }
 		}
 
-		public void UpdateMosaic()
+	    public void UpdateMosaic()
 		{
 			Mosaic.Clear();
 			foreach (var imageSource in GetMosaicItems())

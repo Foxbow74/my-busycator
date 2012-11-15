@@ -7,13 +7,15 @@
              d:DesignHeight="300" d:DesignWidth="600" d:DataContext="{d:DesignInstance StoreableVMs:XAbstractTileSetVM}">
 		<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		<ListBox ItemsSource="{Binding ChildrenObsCol}" BorderThickness="0,0,0,1" Background="DarkGray" x:Name="lb" SelectedItem="{Binding SelectedItem}">
 			<ListBox.Resources>
 				<DataTemplate DataType="{x:Type StoreableVMs:XTileInfoVM}">
 					<StackPanel  Margin="1,2">
+                        <TextBlock Text="{Binding Order}" HorizontalAlignment="Center" Margin="0,5" FontSize="8"/>
 						<Border Background="Black">
 							<Image Source="{Binding Image}" Margin="2"/>
 						</Border>
@@ -32,6 +34,9 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
-		<ContentPresenter Grid.Row="1" Margin="0,0" Content="{Binding ElementName=lb, Path=SelectedItem}"/>
+        <Expander Grid.Row="1" Header="Классы, ссылающиеся на данный ETileSet">
+            <ListBox ItemsSource="{Binding References}"/>
+        </Expander>
+        <ContentPresenter Grid.Row="2" Margin="0,0" Content="{Binding ElementName=lb, Path=SelectedItem}"/>
 	</Grid>
 </UserControl>

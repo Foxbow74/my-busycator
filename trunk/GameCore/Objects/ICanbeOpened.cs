@@ -1,7 +1,7 @@
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Objects
 {

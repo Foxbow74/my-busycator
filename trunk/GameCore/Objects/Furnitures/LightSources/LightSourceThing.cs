@@ -1,9 +1,9 @@
 ﻿using GameCore.Mapping;
 using GameCore.Misc;
 
-namespace GameCore.Objects.Furniture.LightSources
+namespace GameCore.Objects.Furnitures.LightSources
 {
-	internal abstract class LightSourceFurniture : FurnitureThing, ILightSource
+	internal abstract class LightSourceFurniture : Furniture, ILightSource
 	{
 		private readonly LightSource m_lightSource;
 

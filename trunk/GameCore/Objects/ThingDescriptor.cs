@@ -1,6 +1,6 @@
 ﻿using GameCore.Creatures;
 using GameCore.Misc;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Objects
 {
@@ -39,7 +39,7 @@ namespace GameCore.Objects
 				{
 					Thing = liveMapCell.ResolveFakeItem(_creature, (FakedItem) Thing);
 				}
-				else if (Thing is FurnitureThing)
+				else if (Thing is Furniture)
 				{
 					Thing = liveMapCell.ResolveFakeFurniture(_creature);
 				}

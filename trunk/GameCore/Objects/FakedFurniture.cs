@@ -3,7 +3,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Objects
 {
-	public class FakedFurniture : FurnitureThing, IFaked
+	public class FakedFurniture : Furniture, IFaked
 	{
 		private readonly Thing m_thing;
 
@@ -11,6 +11,14 @@ namespace GameCore.Objects
 		{
 			m_thing = _thing;
 		}
+
+        public override int TileIndex
+        {
+            get
+            {
+                return m_thing.TileIndex;
+            }
+        }
 
 		public override FColor LerpColor{ get{ return m_thing.LerpColor; } }
 

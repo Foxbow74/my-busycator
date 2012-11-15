@@ -2,7 +2,7 @@
 using GameCore.Creatures;
 using GameCore.Misc;
 
-namespace GameCore.Objects.Furniture.LightSources
+namespace GameCore.Objects.Furnitures.LightSources
 {
 	internal class OnWallTorch : LightSourceFurniture, ISpecial
 	{

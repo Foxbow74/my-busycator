@@ -1,14 +1,14 @@
 ﻿using GameCore.Creatures;
 using RusLanguage;
 
-namespace GameCore.Objects.Furniture
+namespace GameCore.Objects.Furnitures
 {
-	internal class Bed : FurnitureThing
+	internal class Bed : Furniture
 	{
 		public Bed(Material _material)
 			: base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.BED; } }
+        public override int TileIndex { get { return 0; } }
 
 		public override string Name { get { return "кровать"; } }
 

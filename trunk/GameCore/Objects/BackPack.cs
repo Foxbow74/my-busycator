@@ -1,6 +1,6 @@
 ﻿using System;
 using GameCore.Creatures;
-using GameCore.Objects.Furniture;
+using GameCore.Objects.Furnitures;
 
 namespace GameCore.Objects
 {
