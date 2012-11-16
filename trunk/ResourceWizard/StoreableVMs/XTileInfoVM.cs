@@ -1,13 +1,10 @@
 ﻿using System.Drawing;
 using System.Linq;
-using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ClientCommonWpf;
 using GameCore;
 using GameCore.Storage;
-using GameUi;
 using ResourceWizard.Properties;
 using ResourceWizard.VMs;
 using XTransport;
@@ -180,8 +177,8 @@ namespace ResourceWizard.StoreableVMs
 	        Parent.Children.OrderBy(_vm => _vm.Order).Last(_vm => _vm.Order < Order).Order++;
 	        Order--;
             Parent.RefreshChildren();
-	    }
-
+        }
+        
 	    private void ExecuteDublicateCommand(object _obj)
 	    {
 	        var d = new XTileInfoVM();
@@ -196,7 +193,7 @@ namespace ResourceWizard.StoreableVMs
             d.X = X;
             d.Y = Y;
             d.Opacity = 1;
-            d.Color.Set(Color.GetFColor());;
+            d.Color.Set(Color.GetFColor());
             d.Texture = Texture;
             d.Order = Order + 1;
 	        Parent.SelectedItem = d;
@@ -225,8 +222,26 @@ namespace ResourceWizard.StoreableVMs
 		{
 			if (!m_color.Value.GetFColor().Equals(Color.GetFColor()))
 			{
-				Color.Set(Color.GetFColor());
+                if (m_color.Value==null)
+                {
+                    m_color.Value = new XColorVM();
+                    Manager.Instance.XRoot.Colors.Add(m_color.Value);
+                }
+                m_color.Value.Set(Color.GetFColor());    
 			}
+
+            //if (Parent is XTileSetVM)
+            //{
+            //    switch (((XTileSetVM) Parent).Key)
+            //    {
+            //        case ETileset.TREES:
+            //            Opacity = 0.7f;
+            //            break;
+            //        case ETileset.SHRUBS:
+            //            Opacity = 0.3f;
+            //            break;
+            //    }
+            //}
 		}
 	}
 }

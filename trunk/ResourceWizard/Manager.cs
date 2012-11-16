@@ -73,6 +73,8 @@ namespace ResourceWizard
                 females.Nicks = Resources.femalenicks;
             }
 			m_resourceCli.Save(XRoot);
+
+            m_resourceSrv.Shrink();
 		}
 
         private void PackTiles()

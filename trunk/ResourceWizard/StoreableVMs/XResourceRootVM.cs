@@ -14,7 +14,8 @@ namespace ResourceWizard.StoreableVMs
 		[X((int) EStoreKind.MONSTER_INFO)] private ICollection<XMonsterInfoVM> m_monsterInfos;
 		[X((int) EStoreKind.NICKS_INFO)] private ICollection<XNicksInfoVM> m_nicksInfos;
 		[X((int) EStoreKind.TERRAIN_SET)] private ICollection<XTerrainSetVM> m_terrainSets;
-		[X((int) EStoreKind.TILE_SET)] private ICollection<XTileSetVM> m_tileSets;
+        [X((int)EStoreKind.TILE_SET)] private ICollection<XTileSetVM> m_tileSets;
+        [X((int)EStoreKind.COLOR)] private ICollection<XColorVM> m_colors;
 #pragma warning restore 649
 
 		#endregion
@@ -69,6 +70,11 @@ namespace ResourceWizard.StoreableVMs
 		{
 			get { return m_tileSets; }
 		}
+
+        public ICollection<XColorVM> Colors
+        {
+            get { return m_colors; }
+        }
 
 		public ReadOnlyObservableCollection<XTileSetVM> TileSetsObsCol { get; private set; }
 

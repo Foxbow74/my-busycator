@@ -33,18 +33,18 @@ namespace GameCore.Creatures
 		public int Nn { get; private set; }
 
 		/// <summary>
-		/// 	Ход в игре с точки зрения существа
-		/// 	Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе
+		/// Ход в игре с точки зрения существа
+		/// Так как скорости не однородны, с точки зрения медленных или быстрых монстров выглядит иначе
 		/// </summary>
 		public long Turn { get; private set; }
 
 		/// <summary>
-		/// 	Скорость существа, валидно значение >0, множитель, на который умножается время выполнения действия, 100 - нормальная скорость человека
+		/// Скорость существа, валидно значение >0, множитель, на который умножается время выполнения действия, 100 - нормальная скорость человека
 		/// </summary>
 		public int Speed { get; protected set; }
 
 		/// <summary>
-		/// 	Live координаты
+		/// Live координаты
 		/// </summary>
 		public Point LiveCoords
 		{
@@ -205,15 +205,5 @@ namespace GameCore.Creatures
 		{
 			return Name;
 		}
-	}
-
-
-	public enum EThinkingResult
-	{
-		NORMAL,
-		/// <summary>
-		/// Существо самоуничтожилось
-		/// </summary>
-		SHOULD_BE_REMOVED_FROM_QUEUE,
 	}
 }

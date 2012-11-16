@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenTKUi", "OpenTKUi\OpenTK
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickFont", "QuickFont\QuickFont.csproj", "{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceEditor", "ResourceEditor\ResourceEditor.csproj", "{B0337238-313F-4582-8E78-F4205BDFD1C7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeUtils", "UnsafeUtils\UnsafeUtils.csproj", "{8DA672AD-628D-45BC-A1FB-5AD9541397A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguage", "RusLanguage\RusLanguage.csproj", "{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}"
@@ -25,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Busycator.vsmdi = Busycator.vsmdi
 		Local.testsettings = Local.testsettings
+		Performance1.psess = Performance1.psess
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
@@ -33,6 +32,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceWizard", "ResourceWizard\ResourceWizard.csproj", "{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientCommonWpf", "CommonWpf\ClientCommonWpf.csproj", "{674FDA29-11EB-43E2-B1AD-47A86585A9A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{08A6105E-3CB4-4DA8-8DE7-71A040A0C19A}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -102,17 +105,6 @@ Global
 		{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}.Release|x86.ActiveCfg = Release|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Debug|x86.Build.0 = Debug|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B0337238-313F-4582-8E78-F4205BDFD1C7}.Release|x86.ActiveCfg = Release|Any CPU
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -190,6 +182,16 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{674FDA29-11EB-43E2-B1AD-47A86585A9A8} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{BCAD98EB-0C52-4186-B8B0-92AB47947796} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{8DA672AD-628D-45BC-A1FB-5AD9541397A1} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{171F736D-E4BB-438A-9D56-6F8E238814C0} = {5EFF147D-0F93-47DE-82C7-7416AA1AEBFC}
+		{24D27A79-E736-4935-8C43-EBCC195FAFD9} = {08A6105E-3CB4-4DA8-8DE7-71A040A0C19A}
+		{EA2827C0-47DA-479D-BF2F-3EE8C2103537} = {08A6105E-3CB4-4DA8-8DE7-71A040A0C19A}
 	EndGlobalSection
 	GlobalSection(Performance) = preSolution
 		HasPerformanceSessions = true
