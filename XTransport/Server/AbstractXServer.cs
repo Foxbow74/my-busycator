@@ -353,5 +353,31 @@ namespace XTransport.Server
 		}
 
 		#endregion
+
+        public void Shrink()
+        {
+            IsShrinking = true;
+            var root = Root;
+            foreach (var o in m_objects)
+            {
+                if(o.Value == root)
+                {
+                    continue;
+                }
+                o.Value.PrepareToShrink(m_sessions.First().Key);
+            }
+
+            using (var st = CreateStorage())
+            {
+                using (st.CreateTransaction())
+                {
+                    st.DeleteAll();
+                    SaveInternal(root.Uid, st, DateTime.Now, m_sessions.First().Key);
+                }
+                st.Shrink();
+            }
+        }
+
+        internal bool IsShrinking { get; private set; }
 	}
 }

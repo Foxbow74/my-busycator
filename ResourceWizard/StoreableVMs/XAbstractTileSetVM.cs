@@ -82,6 +82,11 @@ namespace ResourceWizard.StoreableVMs
 
         public void RefreshChildren()
         {
+            var arr = Children.OrderBy(_vm => _vm.Order).ToArray();
+            for (var index = 0; index < arr.Length; index++)
+            {
+                arr[index].Order = index;
+            }
             CollectionViewSource.GetDefaultView(ChildrenObsCol).Refresh();
         }
 	}

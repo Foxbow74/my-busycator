@@ -103,6 +103,20 @@ namespace XTransport
 			}
 		}
 
+        public void DeleteAll()
+        {
+            ExecuteNonQuery("DELETE FROM main");
+            foreach (var table in m_type2Tables.Values)
+            {
+                ExecuteNonQuery("DELETE FROM " + table);
+            }
+        }
+
+	    public void Shrink()
+	    {
+            ExecuteNonQuery("VACUUM");
+	    }
+
 	    private void ConnectionOnStateChange(object _sender, StateChangeEventArgs _stateChangeEventArgs)
 	    {
             Debug.WriteLine("C:" + _stateChangeEventArgs.CurrentState);
@@ -164,7 +178,7 @@ namespace XTransport
 			return new Guid(scalar);
 		}
 
-		public IEnumerable<StorageRootObject> LoadRoot()
+	    public IEnumerable<StorageRootObject> LoadRoot()
 		{
 			var now = DateTime.Now;
 			using (var rdr = CreateCommand("select * from main where parent IS NULL").ExecuteReader(CommandBehavior.CloseConnection))

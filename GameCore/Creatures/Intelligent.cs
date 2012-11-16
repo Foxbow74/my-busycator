@@ -8,6 +8,9 @@ using RusLanguage;
 
 namespace GameCore.Creatures
 {
+    /// <summary>
+    /// Существо, достаточно интеллектуальное, чтобы иметь инвентарь и использовать предметы
+    /// </summary>
 	public abstract class Intelligent : Creature
 	{
 		#region EIntellectGrades enum
