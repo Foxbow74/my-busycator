@@ -4,7 +4,7 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Acts.Items
@@ -36,9 +36,9 @@ namespace GameCore.Acts.Items
 				return EActResults.QUICK_FAIL;
 			}
 
-			var toTake = GetParameter<ThingDescriptor>().ToList();
+			var toTake = GetParameter<EssenceDescriptor>().ToList();
 
-			if (toTake.Any(_thingDescriptor => _thingDescriptor == ThingDescriptor.Empty))
+			if (toTake.Any(_thingDescriptor => _thingDescriptor == EssenceDescriptor.Empty))
 			{
 				return EActResults.QUICK_FAIL;
 			}
@@ -83,7 +83,7 @@ namespace GameCore.Acts.Items
 			}
 
 			var descriptor = toTake[0];
-			var thing = descriptor.ResolveThing(_creature);
+			var thing = descriptor.ResolveEssence(_creature);
 			Item[] get;
 			if (descriptor.Container == null)
 			{

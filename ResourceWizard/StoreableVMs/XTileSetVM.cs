@@ -20,7 +20,7 @@ namespace ResourceWizard.StoreableVMs
 	    {
 	        get
 	        {
-                return Manager.Instance.GetThings(Key)
+                return Manager.Instance.GetEssences(Key)
                     .GroupBy(_thing => _thing.TileIndex)
                     .OrderBy(_things => _things.Key)
                     .Select(_grouping => _grouping.Key.ToString("00") + " - " + 

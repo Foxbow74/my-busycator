@@ -7,11 +7,11 @@ using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Creatures
 {
-	public abstract class Creature : Thing
+	public abstract class Creature : Essence
 	{
 		private static int m_n;
 		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
@@ -20,7 +20,7 @@ namespace GameCore.Creatures
 		private Point m_liveCoords;
 
 		protected Creature(WorldLayer _layer, int _speed)
-			: base(ThingHelper.GetMaterial<FlashMaterial>())
+			: base(EssenceHelper.GetMaterial<FlashMaterial>())
 		{
 			Speed = _speed;
 			Luck = 25;
@@ -89,7 +89,7 @@ namespace GameCore.Creatures
 
 		public int Luck { get; protected set; }
 
-		public override EThingCategory Category { get { throw new NotImplementedException(); } }
+		public override EEssenceCategory Category { get { throw new NotImplementedException(); } }
 		public override EMaterial AllowedMaterials { get { return EMaterial.FLASH; } }
 
 		#region Act functionality
@@ -178,12 +178,12 @@ namespace GameCore.Creatures
 
 		public abstract EThinkingResult Thinking();
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
+		public IEnumerable<EssenceDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
 		{
 			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect.ToArray()));
 		}
 
-		public ThingDescriptor[] GetNotTakenAvailableItems(Point[] _intersect = null)
+		public EssenceDescriptor[] GetNotTakenAvailableItems(Point[] _intersect = null)
 		{
 			var points = Point.NearestDPoints;//  Direction.AllDirectionsIn() LiveCoords.NearestPoints;
 			if (_intersect != null && _intersect.Length>0)
@@ -193,7 +193,7 @@ namespace GameCore.Creatures
 			return points.Select(_point => this[_point]).SelectMany(_cell => _cell.GetAllAvailableItemDescriptors<Item>(this)).ToArray();
 		}
 
-		public virtual IEnumerable<ThingDescriptor> GetBackPackItems() { yield break; }
+		public virtual IEnumerable<EssenceDescriptor> GetBackPackItems() { yield break; }
 
 		protected override int CalcHashCode() { return base.CalcHashCode() ^ Nn; }
 

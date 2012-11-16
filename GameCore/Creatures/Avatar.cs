@@ -2,8 +2,10 @@
 using GameCore.CreatureRoles;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
-using GameCore.Objects;
-using GameCore.Objects.Ammo;
+using GameCore.Essences;
+using GameCore.Essences.Ammo;
+using GameCore.Essences.Tools;
+using GameCore.Essences.Weapons;
 
 namespace GameCore.Creatures
 {
@@ -13,9 +15,9 @@ namespace GameCore.Creatures
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
 			AddRole(new AvatarRole());
-			//Equip(EEquipmentPlaces.MISSILE_WEAPON, ETileset.CROSSBOW.GetItem());
-			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(ThingHelper.GetMaterial<BrassMaterial>()) {Count = 100});
-			//Equip(EEquipmentPlaces.TOOL, ETileset.TORCH.GetItem());
+			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<CrossBow>());
+			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(EssenceHelper.GetMaterial<BrassMaterial>()) {Count = 100});
+			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<Torch>());
 		}
 
         public override ETileset Tileset { get { return ETileset.AVATAR; } }

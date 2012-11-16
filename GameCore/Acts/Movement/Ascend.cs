@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Messages;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences.Things;
 
 namespace GameCore.Acts.Movement
 {
@@ -20,8 +20,8 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature)
 		{
-			var furniture = _creature[0, 0].Furniture;
-			if (!(furniture is StairUp))
+			var thing = _creature[0, 0].Thing;
+			if (!(thing is StairUp))
 			{
 				if (_creature.IsAvatar)
 				{
@@ -29,7 +29,7 @@ namespace GameCore.Acts.Movement
 				}
 				return EActResults.QUICK_FAIL;
 			}
-			return ((Stair) furniture).MoveToLayer(_creature);
+			return ((Stair) thing).MoveToLayer(_creature);
 		}
 	}
 }

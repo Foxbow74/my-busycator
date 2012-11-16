@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Mapping
 {
@@ -80,9 +80,9 @@ namespace GameCore.Mapping
 				{
 					m_liveMap.Cells[cellId.X, cellId.Y].AddItemIntenal((Item) tuple.Item1);
 				}
-				else if (tuple.Item1.Is<Furniture>())
+				else if (tuple.Item1.Is<Thing>())
 				{
-					m_liveMap.Cells[cellId.X, cellId.Y].Furniture = (Furniture) tuple.Item1;
+					m_liveMap.Cells[cellId.X, cellId.Y].Thing = (Thing) tuple.Item1;
 				}
 			}
 			foreach (var tuple in m_mapBlock.Creatures)

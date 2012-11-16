@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Creatures
@@ -98,7 +98,7 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public override IEnumerable<ThingDescriptor> GetBackPackItems() { return m_backPack.GetItems(this).Items.Select(_item => new ThingDescriptor(_item, LiveCoords, m_backPack)); }
+		public override IEnumerable<EssenceDescriptor> GetBackPackItems() { return m_backPack.GetItems(this).Items.Select(_item => new EssenceDescriptor(_item, LiveCoords, m_backPack)); }
 
 		public IEnumerable<Tuple<EEquipmentPlaces, Item>> GetEquipment() { return m_equipment.Select(_item => new Tuple<EEquipmentPlaces, Item>(_item.Key, _item.Value)); }
 

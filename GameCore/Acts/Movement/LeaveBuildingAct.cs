@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Acts.Movement
 {

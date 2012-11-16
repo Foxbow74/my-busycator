@@ -5,8 +5,8 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 
 namespace GameCore.Acts.Interact
 {
@@ -34,21 +34,21 @@ namespace GameCore.Acts.Interact
 					foreach (var dPoint in Point.NearestDPoints)
 					{
 						var cell = _creature[dPoint];
-						var furniture = cell.Furniture;
-						if (furniture.CanBeClosed(cell, _creature))
+						var thing = cell.Thing;
+						if (thing.CanBeClosed(cell, _creature))
 						{
-							if (furniture.Is<OpenDoor>() && dPoint.Lenght == 0)
+							if (thing.Is<OpenDoor>() && dPoint.Lenght == 0)
 							{
 								continue;
 							}
 							list.Add(dPoint);
 						}
-						else if (cell.GetAllAvailableItemDescriptors<Furniture>(_creature).Any(_descriptor => _descriptor.Thing.CanBeClosed(cell, _creature)))
+						else if (cell.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _descriptor.Essence.CanBeClosed(cell, _creature)))
 						{
 							list.Add(dPoint);
 						}
 					}
-					if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Thing.CanBeClosed(null, _creature)))
+					if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Essence.CanBeClosed(null, _creature)))
 					{
 						list.Add(Point.Zero);
 					}
@@ -70,28 +70,28 @@ namespace GameCore.Acts.Interact
 
 			//выясняем, что нужно закрыть
 			{
-				var list = new List<ThingDescriptor>();
-				if (liveMapCell.Furniture.Is<ICanbeClosed>())
+				var list = new List<EssenceDescriptor>();
+				if (liveMapCell.Thing.Is<ICanbeClosed>())
 				{
-					list.Add(new ThingDescriptor(liveMapCell.Furniture, liveMapCell.LiveCoords, null));
+					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
 				}
-				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Furniture>(_creature).Where(
-					_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
+				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(
+					_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
-					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Thing.CanBeClosed(liveMapCell, _creature)));
+					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
 				}
 				var descriptors = list.Distinct();
-				if (GetParameter<ThingDescriptor>().Any())
+				if (GetParameter<EssenceDescriptor>().Any())
 				{
-					descriptors = GetParameter<ThingDescriptor>().Intersect(descriptors);
+					descriptors = GetParameter<EssenceDescriptor>().Intersect(descriptors);
 				}
 				var arr = descriptors.ToArray();
 				if (arr.Length > 1)
 				{
 					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, arr, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
 				}
-				return ((ICanbeClosed)arr[0].Thing).Close(_creature, liveMapCell);
+				return ((ICanbeClosed)arr[0].Essence).Close(_creature, liveMapCell);
 			}
 		}
 	}

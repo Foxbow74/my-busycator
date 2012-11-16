@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Messages;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Acts.Items
@@ -23,7 +23,7 @@ namespace GameCore.Acts.Items
 		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
-			var descriptors = GetParameter<ThingDescriptor>().ToArray();
+			var descriptors = GetParameter<EssenceDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
 				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER | ESelectItemDialogBehavior.SELECT_ONE));
@@ -41,7 +41,7 @@ namespace GameCore.Acts.Items
 
 			var descriptor = descriptors[0];
 
-			if (descriptor == ThingDescriptor.Empty)
+			if (descriptor == EssenceDescriptor.Empty)
 			{
 				return EActResults.QUICK_FAIL;
 			}
@@ -64,7 +64,7 @@ namespace GameCore.Acts.Items
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
 			}
-			var item = (Item) descriptor.Thing;
+			var item = (Item) descriptor.Essence;
 			for (var i = 0; i < Count; ++i)
 			{
 				intelligent.RemoveFromBackpack(item);

@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore
 {
@@ -14,6 +14,6 @@ namespace GameCore
 		public string Name { get; private set; }
 		public abstract EEffect EffectType { get; }
 
-		public abstract bool Act(Thing _target);
+		public abstract bool Act(Essence _target);
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects

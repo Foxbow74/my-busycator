@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Threading;
 using GameCore;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 using GameCore.Storage;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
@@ -32,18 +32,18 @@ namespace ResourceWizard
 		{
 		}
 
-        public IEnumerable<Thing> GetThings(ETileset _tileset)
+        public IEnumerable<Essence> GetEssences(ETileset _tileset)
         {
-            if(m_allThings==null)
+            if(m_allEssences==null)
             {
-                m_allThings = ThingHelper.AllThings;
+                m_allEssences = EssenceHelper.AllEssences;
             }
-            return m_allThings.Where(_thing => _thing.Tileset==_tileset);
+            return m_allEssences.Where(_thing => _thing.Tileset==_tileset);
         }
 
-        public IEnumerable<Thing> GetThings(ETileset _tileset, int _index)
+        public IEnumerable<Essence> GetEssences(ETileset _tileset, int _index)
         {
-            return GetThings(_tileset).Where(_thing => _thing.TileIndex==_index);
+            return GetEssences(_tileset).Where(_thing => _thing.TileIndex==_index);
         }
 
 		public XResourceRootVM XRoot
@@ -148,7 +148,7 @@ namespace ResourceWizard
 
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
         readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
-	    private IEnumerable<Thing> m_allThings;
+	    private IEnumerable<Essence> m_allEssences;
 
 
 	    public Bitmap this[ETextureSet _set]

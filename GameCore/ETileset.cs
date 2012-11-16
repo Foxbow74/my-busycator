@@ -30,7 +30,7 @@ namespace GameCore
         ZZ45,
 
 		GUARD,
-		FURNITURE,
+		THING,
 		ZZ12,
 		ZZ13,
 		ZZ14,
