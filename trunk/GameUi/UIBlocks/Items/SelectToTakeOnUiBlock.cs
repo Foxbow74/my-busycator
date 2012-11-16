@@ -3,7 +3,7 @@ using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameUi.UIBlocks.Items
 {
@@ -25,7 +25,7 @@ namespace GameUi.UIBlocks.Items
 			m_equipmentUiBlock = _equipmentUiBlock;
 		}
 
-		protected override IEnumerable<EThingCategory> AllowedCategories { get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; } }
+		protected override IEnumerable<EEssenceCategory> AllowedCategories { get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; } }
 
 		protected override int HeaderTakesLine { get { return 4; } }
 
@@ -36,9 +36,9 @@ namespace GameUi.UIBlocks.Items
 			DrawLine("ДОСТУПНЫЙ ВЕС:", ForeColor, 2, 0, EAlignment.RIGHT);
 		}
 
-		protected override void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)
+		protected override void AddCheckedItemToResult(EssenceDescriptor _essenceDescriptor)
 		{
-			m_equipmentUiBlock.Intelligent.TakeOn(m_equipmentPresenter.Place, (Item) _thingDescriptor.Thing);
+			m_equipmentUiBlock.Intelligent.TakeOn(m_equipmentPresenter.Place, (Item) _essenceDescriptor.Essence);
 			m_equipmentUiBlock.Rebuild();
 		}
 	}

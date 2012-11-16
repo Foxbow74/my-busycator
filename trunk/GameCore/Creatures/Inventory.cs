@@ -1,4 +1,4 @@
-﻿using GameCore.Objects;
+﻿using GameCore.Essences;
 
 namespace GameCore.Creatures
 {

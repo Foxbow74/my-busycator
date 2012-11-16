@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
@@ -26,13 +26,13 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			MapBlockHelper.Fill(_block, rnd, _layer, _layer.DefaultEmptySpaces, Room.AreaRectangle);
 
-		    var graves = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<Grave>()).ToArray();
+		    var graves = EssenceHelper.GetAllThings<Grave>().ToArray();
 
 			foreach (var point in Room.RoomRectangle.AllPoints)
 			{
 				if (rnd.Next(4) == 0 && !InDoorWorldCoords.Contains(point))
 				{
-					_block.AddObject(graves[rnd.Next(graves.Length)], point);
+					_block.AddEssence(graves[rnd.Next(graves.Length)], point);
 				}
 			}
 		}

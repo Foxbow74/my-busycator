@@ -5,8 +5,8 @@ using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 
 namespace GameCore.Acts.Movement
 {
@@ -53,10 +53,10 @@ namespace GameCore.Acts.Movement
 
 				if (_creature.IsAvatar)
 				{
-					var furniture = cell.Furniture;
-					if (furniture != null)
+					var thing = cell.Thing;
+					if (thing != null)
 					{
-						mess += ", " + furniture.GetName(_creature, cell);
+						mess += ", " + thing.GetName(_creature, cell);
 					}
 					var items = cell.Items.ToArray();
 					if (items.Length > 0)
@@ -87,8 +87,8 @@ namespace GameCore.Acts.Movement
 					}
 					else
 					{
-						var furniture = cell.Furniture;
-						if (furniture != null && furniture.Is<ClosedDoor>() && furniture.IsClosed(cell, _creature))
+						var thing = cell.Thing;
+						if (thing != null && thing.Is<ClosedDoor>() && thing.IsClosed(cell, _creature))
 						{
 							//_creature.InsertActToPool(this);
 							_creature.InsertActToPool(new OpenAct(), delta);

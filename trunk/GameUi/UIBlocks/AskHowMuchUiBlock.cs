@@ -2,7 +2,7 @@
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameUi.UIBlocks
 {
@@ -65,6 +65,6 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		public override void DrawContent() { DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.GetFirstParameter<ThingDescriptor>().Thing.GetName(World.TheWorld.Avatar), m_message.GetFirstParameter<int>()), ForeColor, 0, 0, EAlignment.LEFT); }
+		public override void DrawContent() { DrawLine(string.Format("{0}, количество ({1}): " + m_count, m_message.GetFirstParameter<EssenceDescriptor>().Essence.GetName(World.TheWorld.Avatar), m_message.GetFirstParameter<int>()), ForeColor, 0, 0, EAlignment.LEFT); }
 	}
 }

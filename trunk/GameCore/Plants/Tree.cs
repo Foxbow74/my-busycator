@@ -1,10 +1,10 @@
 ﻿using GameCore.Creatures;
 using GameCore.Materials;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Plants
 {
-	class Tree : Furniture
+	class Tree : Thing
 	{
 		private readonly WoodMaterial m_material;
 
@@ -33,7 +33,7 @@ namespace GameCore.Plants
 
 		public override string Name { get { return m_material.Name; } }
 
-		public override EThingCategory Category { get { return EThingCategory.LANDSCAPE; } }
+		public override EEssenceCategory Category { get { return EEssenceCategory.LANDSCAPE; } }
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.WOOD; } }
 
@@ -45,7 +45,7 @@ namespace GameCore.Plants
 		}
 	}
 	
-	class Shrub: Furniture
+	class Shrub: Thing
 	{
 		private readonly ShrubMaterial m_material;
 
@@ -75,7 +75,7 @@ namespace GameCore.Plants
 		}
 	}
 
-	class Mushrum : Furniture
+	class Mushrum : Thing
 	{
 		private readonly MushrumMaterial m_material;
 

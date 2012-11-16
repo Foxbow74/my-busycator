@@ -1,4 +1,4 @@
-﻿using GameCore.Objects;
+﻿using GameCore.Essences;
 
 namespace GameCore.Effects
 {
@@ -8,6 +8,6 @@ namespace GameCore.Effects
 
 		public override EEffect EffectType { get { return EEffect.HEAL | EEffect.SELF; } }
 
-		public override bool Act(Thing _target) { return true; }
+		public override bool Act(Essence _target) { return true; }
 	}
 }

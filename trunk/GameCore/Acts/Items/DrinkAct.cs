@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Messages;
-using GameCore.Objects;
-using GameCore.Objects.Potions;
-using GameCore.Objects.Tools;
+using GameCore.Essences;
+using GameCore.Essences.Potions;
+using GameCore.Essences.Tools;
 using RusLanguage;
 
 namespace GameCore.Acts.Items
@@ -25,24 +25,24 @@ namespace GameCore.Acts.Items
 		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
-			var descriptors = GetParameter<ThingDescriptor>().ToArray();
+			var descriptors = GetParameter<EssenceDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EThingCategory.POTION}));
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EEssenceCategory.POTION}));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 			var descriptor = descriptors[0];
-			if (descriptor == ThingDescriptor.Empty)
+			if (descriptor == EssenceDescriptor.Empty)
 			{
 				return EActResults.QUICK_FAIL;
 			}
-			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Thing.Equals(descriptor)).ToArray();
+			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Essence.Equals(descriptor)).ToArray();
 
 			if (total.Length == 0)
 			{
 				throw new ApplicationException("в рюкзаке нет такого предмета");
 			}
-			var item = (Potion) descriptor.Thing;
+			var item = (Potion) descriptor.Essence;
 
 			if (!item.IsAllowToDrink(_creature))
 			{

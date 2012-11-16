@@ -5,8 +5,8 @@ using GameCore.Creatures;
 using GameCore.Mapping.Layers;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 
 namespace GameCore.Mapping
 {
@@ -37,12 +37,12 @@ namespace GameCore.Mapping
 
 		public IEnumerable<Item> Items { get { return m_items; } }
 
-		public Furniture Furniture
+		public Thing Thing
 		{
-		    get { return _furniture; }
+		    get { return m_thing; }
 		    set
 		    {
-		        _furniture = value;
+		        m_thing = value;
                 m_transparentColor = null;
 		    }
 		}
@@ -66,9 +66,9 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (Furniture != null)
+				if (Thing != null)
 				{
-					yield return Furniture;
+					yield return Thing;
 				}
 				foreach (var item in Items)
 				{
@@ -87,9 +87,9 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (ThingHelper.Is<Stair>(Furniture))
+				if (EssenceHelper.Is<Stair>(Thing))
 				{
-					yield return Furniture;
+					yield return Thing;
 				}
 			}
 		}
@@ -97,7 +97,7 @@ namespace GameCore.Mapping
 		public Point LiveCoords { get { return m_liveCoords; } }
 
         private FColor? m_transparentColor;
-	    private Furniture _furniture;
+	    private Thing m_thing;
 
 	    public FColor TransparentColor
 		{
@@ -107,9 +107,9 @@ namespace GameCore.Mapping
                 {
                     var attr = TerrainAttribute;
                     var opacity = attr.Opacity;
-                    if (opacity < 1 && Furniture != null)
+                    if (opacity < 1 && Thing != null)
                     {
-                        opacity += Furniture.Opacity;
+                        opacity += Thing.Opacity;
                     }
                     if (opacity < 1 && Creature != null)
                     {
@@ -166,7 +166,7 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (ThingHelper.Is<Stair>(Furniture)) return 1f;
+				if (EssenceHelper.Is<Stair>(Thing)) return 1f;
 				return TerrainAttribute.IsPassable == 0 ? 1f : 0.8f;
 			}
 		}
@@ -175,7 +175,7 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				if (ThingHelper.Is<Stair>(Furniture)) return 1f;
+				if (EssenceHelper.Is<Stair>(Thing)) return 1f;
 				return TerrainAttribute.IsPassable == 0 ? 0.8f : 1f;
 			}
 		}
@@ -186,7 +186,7 @@ namespace GameCore.Mapping
 
 			Rnd = _rnd;
 			m_items.Clear();
-			Furniture = null;
+			Thing = null;
 
 			WorldCoords = _worldCoords;
 			InBlockCoords = _inBlockCoords;
@@ -234,7 +234,7 @@ namespace GameCore.Mapping
 
 		public void AddItem(Item _item)
 		{
-			if (m_mapBlock.AddObject(_item, InBlockCoords))
+			if (m_mapBlock.AddEssence(_item, InBlockCoords))
 			{
 				m_items.Add(_item);
 			}
@@ -248,29 +248,29 @@ namespace GameCore.Mapping
 			return item;
 		}
 
-		public Thing ResolveFakeFurniture(Creature _creature)
+		public Essence ResolveFakeThing(Creature _creature)
 		{
-			var fakedThing = (FakedFurniture) Furniture;
-			m_mapBlock.RemoveObject(fakedThing, InBlockCoords);
-			Furniture = (Furniture) fakedThing.ResolveFake(_creature);
-			m_mapBlock.AddObject(Furniture, InBlockCoords);
-			return Furniture;
+			var fakedThing = (FakedThing) Thing;
+			m_mapBlock.RemoveEssence(fakedThing, InBlockCoords);
+			Thing = (Thing) fakedThing.ResolveFake(_creature);
+			m_mapBlock.AddEssence(Thing, InBlockCoords);
+			return Thing;
 		}
 
-		public IEnumerable<ThingDescriptor> GetAllAvailableItemDescriptors<TThing>(Creature _creature) where TThing : Thing
+		public IEnumerable<EssenceDescriptor> GetAllAvailableItemDescriptors<TEssence>(Creature _creature) where TEssence : Essence
 		{
-			foreach (var item in Items.OfType<TThing>())
+			foreach (var item in Items.OfType<TEssence>())
 			{
-				yield return new ThingDescriptor(item, LiveCoords, null);
+				yield return new EssenceDescriptor(item, LiveCoords, null);
 			}
-			if (typeof (TThing).IsAssignableFrom(typeof (Item)))
+			if (typeof (TEssence).IsAssignableFrom(typeof (Item)))
 			{
-				var furniture = Furniture as Container;
-				if (furniture != null && !furniture.IsClosed(this, _creature))
+				var thing = Thing as Container;
+				if (thing != null && !thing.IsClosed(this, _creature))
 				{
-					foreach (var item in furniture.GetItems(_creature).Items.OfType<TThing>())
+					foreach (var item in thing.GetItems(_creature).Items.OfType<TEssence>())
 					{
-						yield return new ThingDescriptor(item, LiveCoords, furniture);
+						yield return new EssenceDescriptor(item, LiveCoords, thing);
 					}
 				}
 			}
@@ -279,9 +279,9 @@ namespace GameCore.Mapping
 		public float GetIsPassableBy(Creature _creature)
 		{
 			if (Creature != null) return 0f;
-			if (Furniture != null)
+			if (Thing != null)
 			{
-				if (Furniture.Is<ClosedDoor>() && Furniture.IsClosed(this, _creature))
+				if (Thing.Is<ClosedDoor>() && Thing.IsClosed(this, _creature))
 				{
 					return 0f;
 				}
@@ -297,9 +297,9 @@ namespace GameCore.Mapping
 		public float GetPfIsPassableBy(Creature _creature)
 		{
 			if (Creature != null) return 0f;
-			if (Furniture != null)
+			if (Thing != null)
 			{
-				if (Furniture.Is<ClosedDoor>() && Furniture.IsClosed(this, _creature))
+				if (Thing.Is<ClosedDoor>() && Thing.IsClosed(this, _creature))
 				{
 					return 0.99f;
 				}
@@ -319,7 +319,7 @@ namespace GameCore.Mapping
 				throw new ApplicationException();
 			}
             m_transparentColor = null;
-			m_mapBlock.RemoveObject(_item, InBlockCoords);
+			m_mapBlock.RemoveEssence(_item, InBlockCoords);
 		}
 	}
 }

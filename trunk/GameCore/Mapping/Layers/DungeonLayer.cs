@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
-using GameCore.Objects.Furnitures.LightSources;
+using GameCore.Essences;
+using GameCore.Essences.Things;
+using GameCore.Essences.Things.LightSources;
 
 namespace GameCore.Mapping.Layers
 {
@@ -42,11 +42,11 @@ namespace GameCore.Mapping.Layers
 
 			if (_stair is StairUp)
 			{
-				block.AddObject(new StairDown(_enterFromLayer, ThingHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
+				block.AddEssence(new StairDown(_enterFromLayer, EssenceHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
 			}
 			else
 			{
-				block.AddObject(new StairUp(_enterFromLayer, ThingHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
+				block.AddEssence(new StairUp(_enterFromLayer, EssenceHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
 			}
 		}
 
@@ -68,10 +68,10 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, Constants.MAP_BLOCK_SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, ThingHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, ThingHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, 1));
-			block.AddObject(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, ThingHelper.GetMaterial<OakMaterial>()), new Point(1, Constants.MAP_BLOCK_SIZE - 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, EssenceHelper.GetMaterial<OakMaterial>()), new Point(1, 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, EssenceHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, EssenceHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, EssenceHelper.GetMaterial<OakMaterial>()), new Point(1, Constants.MAP_BLOCK_SIZE - 1));
 
 			{
 				var x = rnd.Next(Constants.MAP_BLOCK_SIZE);
@@ -85,7 +85,7 @@ namespace GameCore.Mapping.Layers
 			block.Map[11, 10] = ETerrains.RED_BRICK_WINDOW;
 			block.Map[9, 10] = ETerrains.RED_BRICK_WINDOW;
 			block.Map[9, 11] = ETerrains.RED_BRICK_WALL;
-			block.AddObject(new ClosedDoor(null), new Point(10, 11));
+			block.AddEssence(new ClosedDoor(null), new Point(10, 11));
 			block.Map[11, 11] = ETerrains.RED_BRICK_WALL;
 			//block.AddLightSource(new Point(10, 10), new LightSource(18, new FColor(53f, 0f, 1f, 1f)));
 

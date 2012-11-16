@@ -4,9 +4,9 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
-using GameCore.Objects.Furnitures.LightSources;
+using GameCore.Essences;
+using GameCore.Essences.Things;
+using GameCore.Essences.Things.LightSources;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
@@ -103,7 +103,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			CreateDoor(mapBlock, floor, borderPoints);
 
-			mapBlock.AddObject(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), ThingHelper.GetMaterial<BrassMaterial>()), roomRectangle.Inflate(-1,-1).Random(World.Rnd));
+			mapBlock.AddEssence(new IndoorLight(new LightSource(10, new FColor(3f, 1f, 1f, 0.5f)), EssenceHelper.GetMaterial<BrassMaterial>()), roomRectangle.Inflate(-1,-1).Random(World.Rnd));
 		}
 
 		private void CreateDoor(MapBlock _mapBlock, ETerrains _floor, IEnumerable<Point> _borderPoints)
@@ -127,8 +127,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			InDoorWorldCoords = new[] {prevPoint + borders[0].Key, prevPoint, prevPoint + borders[1].Key}.Select(_mapBlock.ToWorldCoords).ToArray();
 
 			_mapBlock.Map[doorCoords.X, doorCoords.Y] = _floor;
-            var doors = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<ClosedDoor>()).ToArray();
-			_mapBlock.AddObject(doors[0], doorCoords);
+            var doors = EssenceHelper.GetAllThings<ClosedDoor>().ToArray();
+			_mapBlock.AddEssence(doors[0], doorCoords);
 		}
 
 		public virtual bool IsFit(Room _room) { return true; }

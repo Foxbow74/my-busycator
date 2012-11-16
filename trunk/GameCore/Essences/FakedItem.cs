@@ -1,0 +1,55 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GameCore.Creatures;
+
+namespace GameCore.Essences
+{
+	public class FakedItem : Item, IFaked
+	{
+		private readonly ETileset m_tileset;
+	    private readonly int m_tileIndex;
+	    private readonly List<Type> m_types = new List<Type>();
+
+		public FakedItem(ETileset _tileset, Material _material, int _tileIndex) : base(_material)
+		{
+		    m_tileset = _tileset;
+		    m_tileIndex = _tileIndex;
+		}
+
+	    public override int TileIndex
+        {
+            get
+            {
+                return m_tileIndex;
+            }
+        }
+
+	    public override ETileset Tileset { get { return m_tileset; } }
+
+		public override string Name { get { throw new NotImplementedException(); } }
+
+		public override EEssenceCategory Category { get { throw new NotImplementedException(); } }
+
+		#region IFaked Members
+
+		public Essence ResolveFake(Creature _creature)
+		{
+			var type = m_types[World.Rnd.Next(m_types.Count)];
+			return EssenceHelper.ResolveEssence(type, Material, _creature);
+		}
+
+		#endregion
+
+		public void Add(Type _type) { m_types.Add(_type); }
+
+		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
+
+		protected override int CalcHashCode() { return (int) m_tileset; }
+
+		public override bool Is<T>()
+		{
+			return m_types.Any(_type => typeof (T).IsAssignableFrom(_type));
+		}
+	}
+}

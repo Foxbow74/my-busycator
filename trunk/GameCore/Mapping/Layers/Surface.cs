@@ -4,10 +4,9 @@ using System.IO;
 using System.Linq;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 using GameCore.Plants;
-using GameCore.Storeable;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers
@@ -95,7 +94,7 @@ namespace GameCore.Mapping.Layers
 				default:
 					var worldMapGenerator = new WorldMapGenerator(Constants.WORLD_MAP_SIZE, World.Rnd);
 					m_worldMap = worldMapGenerator.Generate();
-					var cityBlockIds = worldMapGenerator.FindCityPlace((int)Math.Sqrt(Constants.WORLD_MAP_SIZE) / 2);
+					var cityBlockIds = worldMapGenerator.FindCityPlace((int)Math.Sqrt(Constants.WORLD_MAP_SIZE) / 2).ToArray();
 					foreach (var id in cityBlockIds)
 					{
 						m_worldMap[id.X, id.Y] = EMapBlockTypes.CITY;
@@ -175,8 +174,9 @@ namespace GameCore.Mapping.Layers
 				City.GenerateCityBlock(block, rnd, this);
 			}
 
-            var trees = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<Tree>()).ToArray();
-            var shrubs = ThingHelper.AllFakedFurniture().Where(_ff => _ff.Is<Shrub>()).ToArray();
+			var trees = EssenceHelper.GetAllThings<Tree>().ToArray();
+            var shrubs = EssenceHelper.GetAllThings<Shrub>().ToArray();
+
             foreach (var point in new Rct(0, 0, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE).AllPoints)
 		    {
 				switch (block.Map[point.X, point.Y])
@@ -186,12 +186,12 @@ namespace GameCore.Mapping.Layers
 						{
 							case 0:
 							case 1:
-								block.AddObject(shrubs[rnd.Next(shrubs.Length)], point);
+								block.AddEssence(shrubs[rnd.Next(shrubs.Length)], point);
 								break;
 							case 2:
 							case 3:
 							case 4:
-								block.AddObject(trees[rnd.Next(trees.Length)], point);
+								block.AddEssence(trees[rnd.Next(trees.Length)], point);
 								break;
 						}
 						break;
@@ -202,10 +202,10 @@ namespace GameCore.Mapping.Layers
 							case 1:
 							case 2:
 							case 3:
-								block.AddObject(shrubs[rnd.Next(shrubs.Length)], point);
+								block.AddEssence(shrubs[rnd.Next(shrubs.Length)], point);
 								break;
 							case 4:
-								block.AddObject(trees[rnd.Next(trees.Length)], point);
+								block.AddEssence(trees[rnd.Next(trees.Length)], point);
 								break;
 						}
 						break;
@@ -235,7 +235,7 @@ namespace GameCore.Mapping.Layers
 				{
 					var point = new Point(x, y);
 					var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-					var thing = World.Rnd.Next(2) == 0 ? ThingHelper.GetFakedThing(block) : ThingHelper.GetFakedItem(block.RandomSeed);
+					var thing = World.Rnd.Next(2) == 0 ? EssenceHelper.GetFakedThing(rnd) : EssenceHelper.GetRandomFakedItem(rnd);
 
 					if (thing.Is<Stair>())
 					{
@@ -257,7 +257,7 @@ namespace GameCore.Mapping.Layers
 						continue;
 					}
 
-					block.AddObject(thing, point);
+					block.AddEssence(thing, point);
 				}
 			}
 		}

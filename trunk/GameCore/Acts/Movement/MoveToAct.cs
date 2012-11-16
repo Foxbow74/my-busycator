@@ -5,7 +5,7 @@ using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences.Things;
 
 namespace GameCore.Acts.Movement
 {
@@ -72,7 +72,7 @@ namespace GameCore.Acts.Movement
 				_creature.AddActToPool(new MoveAct(), delta);
 				return EActResults.ACT_REPLACED;
 			}
-			else if (nextCell.Furniture != null && nextCell.Furniture.Is<ClosedDoor>())
+			else if (nextCell.Thing != null && nextCell.Thing.Is<ClosedDoor>())
 			{
 				_creature.AddActToPool(new OpenAct(), delta);
 				return EActResults.ACT_REPLACED;

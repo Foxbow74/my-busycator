@@ -3,7 +3,7 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Creatures

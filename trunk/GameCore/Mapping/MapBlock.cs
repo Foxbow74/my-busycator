@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Mapping
 {
@@ -18,10 +18,10 @@ namespace GameCore.Mapping
 			BlockId = _blockId;
 			Map = new ETerrains[Constants.MAP_BLOCK_SIZE,Constants.MAP_BLOCK_SIZE];
 			RandomSeed = World.Rnd.Next();
-			Objects = new List<Tuple<Thing, Point>>();
+			Objects = new List<Tuple<Essence, Point>>();
 		}
 
-		public List<Tuple<Thing, Point>> Objects { get; private set; }
+		public List<Tuple<Essence, Point>> Objects { get; private set; }
 
 		public Point WorldCoords { get; private set; }
 
@@ -60,23 +60,23 @@ namespace GameCore.Mapping
 
 		public Point ToWorldCoords(Point _point) { return WorldCoords + _point; }
 
-		public void RemoveObject(Thing _item, Point _inBlockCoords) { Objects.Remove(new Tuple<Thing, Point>(_item, _inBlockCoords)); }
+		public void RemoveEssence(Essence _item, Point _inBlockCoords) { Objects.Remove(new Tuple<Essence, Point>(_item, _inBlockCoords)); }
 
-		public bool AddObject(Thing _thing, Point _inBlockCoords)
+		public bool AddEssence(Essence _essence, Point _inBlockCoords)
 		{
-			if (_thing is StackOfItems)
+			if (_essence is StackOfItems)
 			{
-				var stack = Objects.Where(_tuple => _tuple.Item2 == _inBlockCoords && _tuple.Item1.Equals(_thing))
+				var stack = Objects.Where(_tuple => _tuple.Item2 == _inBlockCoords && _tuple.Item1.Equals(_essence))
 					.Select(_tuple => _tuple.Item1).OfType<StackOfItems>()
 					.FirstOrDefault();
 				if (stack != null)
 				{
-					stack.Add((StackOfItems) _thing);
+					stack.Add((StackOfItems) _essence);
 					return false;
 				}
 			}
 
-			Objects.Add(new Tuple<Thing, Point>(_thing, _inBlockCoords));
+			Objects.Add(new Tuple<Essence, Point>(_essence, _inBlockCoords));
 			return true;
 		}
 	}

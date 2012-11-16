@@ -6,7 +6,7 @@ using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameCore.Creatures
 {

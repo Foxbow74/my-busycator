@@ -4,7 +4,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 using RusLanguage;
 
 namespace GameUi.UIBlocks
@@ -94,9 +94,9 @@ namespace GameUi.UIBlocks
 					{
 						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
 					}
-					if (liveCell.Furniture != null)
+					if (liveCell.Thing != null)
 					{
-						list.Add(liveCell.Furniture.GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Thing.GetName(World.TheWorld.Avatar, liveCell));
 					}
 					if (liveCell.Items.Count() > 1)
 					{

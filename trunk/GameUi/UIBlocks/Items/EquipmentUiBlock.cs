@@ -5,7 +5,7 @@ using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameUi.UIBlocks.Items
 {

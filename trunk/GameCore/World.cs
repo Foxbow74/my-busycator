@@ -7,7 +7,7 @@ using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects.Furnitures;
+using GameCore.Essences.Things;
 using GameCore.Storage;
 using GameCore.Storeable;
 

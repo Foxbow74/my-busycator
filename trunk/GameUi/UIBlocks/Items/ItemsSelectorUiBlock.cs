@@ -5,7 +5,7 @@ using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Objects;
+using GameCore.Essences;
 
 namespace GameUi.UIBlocks.Items
 {
@@ -13,10 +13,10 @@ namespace GameUi.UIBlocks.Items
 	{
 		private readonly Act m_act;
 		private readonly ESelectItemDialogBehavior m_behavior;
-		private readonly IEnumerable<ThingDescriptor> m_descriptors;
+		private readonly IEnumerable<EssenceDescriptor> m_descriptors;
 
-		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory> m_filters =
-			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EThingCategory>();
+		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EEssenceCategory> m_filters =
+			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EEssenceCategory>();
 
 		private char m_currentFilter = '*';
 
@@ -26,7 +26,7 @@ namespace GameUi.UIBlocks.Items
 		protected ItemsSelectorUiBlock(Rct _rct,
 		                               ESelectItemDialogBehavior _behavior,
 		                               Act _act,
-		                               IEnumerable<ThingDescriptor> _descriptors)
+		                               IEnumerable<EssenceDescriptor> _descriptors)
 			: base(_rct, Frame.GoldFrame, FColor.Green)
 		{
 			m_behavior = _behavior;
@@ -38,7 +38,7 @@ namespace GameUi.UIBlocks.Items
 		/// <summary>
 		/// 	Empty if no filter
 		/// </summary>
-		protected abstract IEnumerable<EThingCategory> AllowedCategories { get; }
+		protected abstract IEnumerable<EEssenceCategory> AllowedCategories { get; }
 
 		protected abstract int HeaderTakesLine { get; }
 
@@ -55,7 +55,7 @@ namespace GameUi.UIBlocks.Items
 			m_pages.Clear();
 
 			var categories =
-				m_descriptors.Select(_descriptor => _descriptor.Thing.Category).Distinct().OrderBy(_category => _category);
+				m_descriptors.Select(_descriptor => _descriptor.Essence.Category).Distinct().OrderBy(_category => _category);
 
 			if (AllowedCategories.Any())
 			{
@@ -64,12 +64,12 @@ namespace GameUi.UIBlocks.Items
 
 			foreach (var cat in categories)
 			{
-				var attribute = ThingCategoryAttribute.GetAttribute(cat);
+				var attribute = EssenceCategoryAttribute.GetAttribute(cat);
 				if (m_currentFilter != '*' && attribute.C != m_currentFilter) continue;
-				foreach (var descriptor in m_descriptors.Where(_descriptor => _descriptor.Thing.Category == cat))
+				foreach (var descriptor in m_descriptors.Where(_descriptor => _descriptor.Essence.Category == cat))
 				{
-					if (done.Contains(descriptor.Thing.GetHashCode())) continue;
-					done.Add(descriptor.Thing.GetHashCode());
+					if (done.Contains(descriptor.Essence.GetHashCode())) continue;
+					done.Add(descriptor.Essence.GetHashCode());
 
 					if (page == null)
 					{
@@ -80,10 +80,10 @@ namespace GameUi.UIBlocks.Items
 					}
 					if (attribute.DisplayName != currentCategory)
 					{
-						page.Add(new ThingCategoryPresenter(cat));
+						page.Add(new EssenceCategoryPresenter(cat));
 						currentCategory = attribute.DisplayName;
 					}
-					page.Add(new ThingPresenter(key, descriptor, m_descriptors));
+					page.Add(new EssencePresenter(key, descriptor, m_descriptors));
 					key++;
 					if (page.Count == linesPerPage - 1)
 					{
@@ -119,10 +119,10 @@ namespace GameUi.UIBlocks.Items
 				var page = m_pages[m_currentPage];
 				foreach (var presenter in page)
 				{
-					if (presenter is ThingCategoryPresenter)
+					if (presenter is EssenceCategoryPresenter)
 					{
-						var category = ((ThingCategoryPresenter) presenter).Category;
-						var attribute = ThingCategoryAttribute.GetAttribute(category);
+						var category = ((EssenceCategoryPresenter) presenter).Category;
+						var attribute = EssenceCategoryAttribute.GetAttribute(category);
 						m_filters[new Tuple<ConsoleKey, EKeyModifiers>(attribute.Key, attribute.Modifiers)] = category;
 					}
 					presenter.DrawLine(line++, this);
@@ -132,7 +132,7 @@ namespace GameUi.UIBlocks.Items
 					var filters = "*" +
 					              string.Join("",
 					                          m_filters.Values.Select(
-					                          	_category => ThingCategoryAttribute.GetAttribute(_category).C.ToString()));
+					                          	_category => EssenceCategoryAttribute.GetAttribute(_category).C.ToString()));
 					bottomString.Insert(0, "[" + filters + "] фильтровать");
 				}
 			}
@@ -157,7 +157,7 @@ namespace GameUi.UIBlocks.Items
 				{
 					if (pair.Key.Item1 == _key && pair.Key.Item2 == _modifiers)
 					{
-						m_currentFilter = ThingCategoryAttribute.GetAttribute(pair.Value).C;
+						m_currentFilter = EssenceCategoryAttribute.GetAttribute(pair.Value).C;
 						Rebuild();
 						return;
 					}
@@ -188,7 +188,7 @@ namespace GameUi.UIBlocks.Items
 
 			if (m_pages.Count > 0)
 			{
-				foreach (var presenter in m_pages[m_currentPage].OfType<ThingPresenter>())
+				foreach (var presenter in m_pages[m_currentPage].OfType<EssencePresenter>())
 				{
 					if (presenter.Key == _key)
 					{
@@ -209,7 +209,7 @@ namespace GameUi.UIBlocks.Items
 			if (_consoleKey == ConsoleKey.Enter)
 			{
 				var presenters =
-					m_pages.SelectMany(_pair => _pair.Value).OfType<ThingPresenter>().Where(_presenter => _presenter.IsChecked);
+					m_pages.SelectMany(_pair => _pair.Value).OfType<EssencePresenter>().Where(_presenter => _presenter.IsChecked);
 
 				if (presenters.Any())
 				{
@@ -217,7 +217,7 @@ namespace GameUi.UIBlocks.Items
 					{
 						if (linePresenter.IsChecked)
 						{
-							AddCheckedItemToResult(linePresenter.ThingDescriptor);
+							AddCheckedItemToResult(linePresenter.EssenceDescriptor);
 						}
 					}
 					return;
@@ -225,15 +225,15 @@ namespace GameUi.UIBlocks.Items
 			}
 			if (m_act != null)
 			{
-				m_act.AddParameter(ThingDescriptor.Empty);
+				m_act.AddParameter(EssenceDescriptor.Empty);
 			}
 		}
 
-		protected virtual void AddCheckedItemToResult(ThingDescriptor _thingDescriptor)
+		protected virtual void AddCheckedItemToResult(EssenceDescriptor _essenceDescriptor)
 		{
 			if (m_act != null)
 			{
-				m_act.AddParameter(_thingDescriptor);
+				m_act.AddParameter(_essenceDescriptor);
 			}
 		}
 	}

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Objects;
-using GameCore.Objects.Furnitures;
-using GameCore.Objects.Furnitures.LightSources;
+using GameCore.Essences;
+using GameCore.Essences.Things;
+using GameCore.Essences.Things.LightSources;
 
 namespace GameCore.Mapping.Layers
 {
@@ -87,7 +87,7 @@ namespace GameCore.Mapping.Layers
 							}
 							if (dir == EDirections.NONE) continue;
 							var fColor = new FColor(3f, (float) _rnd.NextDouble(), (float) _rnd.NextDouble(), (float) _rnd.NextDouble());
-							mapBlock.AddObject(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, ThingHelper.GetMaterial<OakMaterial>()), point);
+							mapBlock.AddEssence(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, EssenceHelper.GetMaterial<OakMaterial>()), point);
 							break;
 						}
 					}
@@ -132,7 +132,7 @@ namespace GameCore.Mapping.Layers
 				{
 					var point = new Point(x, y);
 					var any = _block.Creatures.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-					var creature = ThingHelper.GetFakedCreature(_block);
+					var creature = EssenceHelper.GetFakedCreature(_block);
 
 					if (creature.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{
@@ -166,7 +166,7 @@ namespace GameCore.Mapping.Layers
 				{
 					var point = new Point(x, y);
 					var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-					var thing = ThingHelper.GetFakedItem(_block.RandomSeed);
+					var thing = EssenceHelper.GetRandomFakedItem(_rnd);
 
 					if (thing.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{
@@ -184,7 +184,7 @@ namespace GameCore.Mapping.Layers
 					{
 						continue;
 					}
-					_block.AddObject(thing, point);
+					_block.AddEssence(thing, point);
 				}
 			}
 		}
