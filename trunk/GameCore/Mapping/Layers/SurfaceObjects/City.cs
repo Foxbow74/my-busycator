@@ -20,7 +20,10 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			Surface = _surface;
 			CityBlockIds = _cityBlockIds.ToArray();
-			AddBuildings();
+            if (Constants.WORLD_MAP_SIZE > 2)
+            {
+                AddBuildings();
+            }
 		}
 
 		public Surface Surface { get; private set; }

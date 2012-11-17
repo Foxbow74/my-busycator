@@ -22,5 +22,6 @@ namespace GameCore.Acts
 		/// 	ќпераци€ провалена, но врем€ почти не потрачено
 		/// </summary>
 		QUICK_FAIL,
+	    NONE
 	}
 }

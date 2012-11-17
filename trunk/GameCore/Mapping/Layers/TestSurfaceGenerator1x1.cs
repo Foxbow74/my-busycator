@@ -1,4 +1,7 @@
 ﻿using System;
+using GameCore.Essences.Mechanisms;
+using GameCore.Essences.Things.LightSources;
+using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
@@ -16,16 +19,14 @@ namespace GameCore.Mapping.Layers
 			m_blocks = new EMapBlockTypes[1, 1];
 			switch (Constants.WORLD_SEED)
 			{
-				case 1:
-					Generate1();
+                case 0:
+                    m_blocks[0, 0] = EMapBlockTypes.ETERNAL_SNOW;
+			        break;
+                case 1:
+                case 2:
+                    m_blocks[0, 0] = EMapBlockTypes.GROUND;
 					break;
 			}
-		}
-
-		private void Generate1()
-		{
-			m_blocks[0,0] = EMapBlockTypes.GROUND;
-
 		}
 
 		public EMapBlockTypes[,] Generate()
@@ -33,13 +34,31 @@ namespace GameCore.Mapping.Layers
 			return m_blocks;
 		}
 
-		public static void Fill(MapBlock _block, int _worldSeed)
+        public static void Fill(MapBlock _block, int _worldSeed, EMapBlockTypes _baseType)
 		{
-			_block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(2, 1));
-			_block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(1, 2));
+            if (_baseType==EMapBlockTypes.NONE) return;
 
-			_block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(4, 1));
-			_block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(3, 2));
+            switch (Constants.WORLD_SEED)
+            {
+                case 0:
+                    World.TheWorld.Avatar.Layer.Ambient = FColor.Empty;
+                    _block.Map[16,16]=ETerrains.GRAY_BRICK_WALL;
+                    _block.AddEssence(new IndoorLight(new LightSource(12, new FColor(5f, 1f, 0f, 0f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(10, 17));
+                    _block.AddEssence(new IndoorLight(new LightSource(12, new FColor(5f, 0f, 1f, 0f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(22, 22));
+                    _block.AddEssence(new IndoorLight(new LightSource(12, new FColor(5f, 0f, 0f, 1f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(22, 10));
+                    break;
+                case 1:
+                    _block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(2, 1));
+			        _block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(1, 2));
+
+			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(4, 1));
+			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(3, 2));
+                    break;
+                case 2:
+                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(2, 4));
+					_block.AddEssence(new Button(EssenceHelper.GetMaterial<BrassMaterial>(), 0), new Point(4, 4));
+                    break;
+            }
 		}
 	}
 }

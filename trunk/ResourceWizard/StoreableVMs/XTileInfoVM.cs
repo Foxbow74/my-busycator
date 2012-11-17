@@ -147,7 +147,9 @@ namespace ResourceWizard.StoreableVMs
 	        Parent.Children.Add(d);
             d.X = b.X;
             d.Y = b.Y;
-            d.Opacity = 1;
+            d.Opacity = b.Opacity;
+            d.RemoveTransparency = b.RemoveTransparency;
+            d.GrayScale = b.GrayScale;
             d.Color.Set(b.Color.GetFColor());
             d.Texture = b.Texture;
 	        d.Order = Order + 1;
@@ -193,6 +195,8 @@ namespace ResourceWizard.StoreableVMs
             d.X = X;
             d.Y = Y;
             d.Opacity = 1;
+            d.RemoveTransparency = RemoveTransparency;
+            d.GrayScale = GrayScale;
             d.Color.Set(Color.GetFColor());
             d.Texture = Texture;
             d.Order = Order + 1;

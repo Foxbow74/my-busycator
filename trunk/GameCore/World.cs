@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using GameCore.Acts;
 using GameCore.Creatures;
+using GameCore.Essences.Mechanisms;
+using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences.Things;
 using GameCore.Storage;
 using GameCore.Storeable;
 
@@ -15,8 +16,13 @@ namespace GameCore
 {
 	public class World
 	{
+// ReSharper disable NotAccessedField.Local
 		static XResourceServer m_resourceSrv;
+// ReSharper restore NotAccessedField.Local
+
 		static XResourceClient m_resourceCli;
+
+		private readonly Dictionary<uint, Tuple<IRemoteActivation, Point>> m_remoteActivation = new Dictionary<uint, Tuple<IRemoteActivation, Point>>();
 
 		/// <summary>
 		/// содержит список активных в данный момент существ
@@ -33,12 +39,15 @@ namespace GameCore
             }
 		}
 
-		public static void SaveResources()
+		public World()
 		{
-            XClient.Save(XResourceRoot.Uid);
+			LiveMap = new LiveMap();
+			m_layers.Add(Surface = new Surface());
+
+			WorldTick = 0;
 		}
 
-        private static XResourceClient XClient
+		private static XResourceClient XClient
         {get
         {
             if(m_resourceCli==null)
@@ -49,15 +58,7 @@ namespace GameCore
             return m_resourceCli;
         }}
 
-        internal static XResourceRoot XResourceRoot { get { return XClient.GetRoot<XResourceRoot>(); } } 
-
-		public World()
-		{
-			LiveMap = new LiveMap();
-			m_layers.Add(Surface = new Surface());
-
-			WorldTick = 0;
-		}
+        internal static XResourceRoot XResourceRoot { get { return XClient.GetRoot<XResourceRoot>(); } }
 
 		public static World TheWorld { get; private set; }
 
@@ -72,6 +73,11 @@ namespace GameCore
 		public Surface Surface { get; private set; }
 
 		public LiveMap LiveMap { get; private set; }
+
+		public static void SaveResources()
+		{
+			XClient.Save(XResourceRoot.Uid);
+		}
 
 		private void BornAvatar()
 		{
@@ -197,5 +203,15 @@ namespace GameCore
 		}
 
 		public void SetAvatarBlockId(Point _newBlockId) { AvatarBlockId = _newBlockId; }
+
+		public void RegisterRemoteActivation(uint _mechanismId, IRemoteActivation _mechanism, Point _worldCoords)
+		{
+			m_remoteActivation.Add(_mechanismId, new Tuple<IRemoteActivation, Point>(_mechanism, _worldCoords));
+		}
+
+		public Tuple<IRemoteActivation, Point> GetRemoteActivation(uint _mechanismId)
+		{
+			return m_remoteActivation[_mechanismId];
+		}
 	}
 }

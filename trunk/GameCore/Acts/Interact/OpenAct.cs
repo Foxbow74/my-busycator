@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Essences.Mechanisms;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 
@@ -25,47 +25,20 @@ namespace GameCore.Acts.Interact
 		public override EActResults Do(Creature _creature)
 		{
 			LiveMapCell liveMapCell;
+
+			var find = Find(_creature, _essence => _essence is IInteractiveThing, out liveMapCell);
+			switch (find)
 			{
-				//собираем координаты всех закрытых вещей
-				var list = new List<Point>();
-				foreach (var point in Point.NearestDPoints)
-				{
-					var cc = _creature[point];
-					if (cc.Thing.IsClosed(cc, _creature))
-					{
-						list.Add(point);
-					}
-					else if (cc.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _descriptor.Essence.IsClosed(cc, _creature)))
-					{
-						list.Add(point);
-					}
-				}
-				if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Essence.IsClosed(null, _creature)))
-				{
-					list.Add(Point.Zero);
-				}
-
-				var coords = list.Distinct().ToList();
-
-				if (GetParameter<Point>().Any())
-				{
-					coords = coords.Intersect(GetParameter<Point>()).ToList();
-				}
-
-				if (!coords.Any())
-				{
-					//если нечего открывать
+				case EActResults.QUICK_FAIL:
 					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "открыть что?"));
-					return EActResults.QUICK_FAIL;
-				}
-				if (coords.Count() > 1)
-				{
-					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-					return EActResults.NEED_ADDITIONAL_PARAMETERS;
-				}
-				liveMapCell = _creature[coords.First()];
-			}
+					return find;
+				case EActResults.NONE:
+					break;
+				default:
+					return find;
 
+			}
+			
 			//выясняем, что нужно открыть
 			{
 				var list = new List<EssenceDescriptor>();

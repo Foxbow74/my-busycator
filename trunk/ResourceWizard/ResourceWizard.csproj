@@ -265,6 +265,42 @@
   <ItemGroup>
     <None Include="Resources\pawn_glass_white.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wintersnow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sammerrock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\summergrass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\summertrees.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\summerwater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wasterock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wastetree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wastewaste.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wastewater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\winterrock.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\wintertrees.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\winterwater.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
