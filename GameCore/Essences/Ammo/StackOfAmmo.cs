@@ -6,6 +6,11 @@ namespace GameCore.Essences.Ammo
 	{
 		protected StackOfAmmo(Material _material) : base(_material) { }
 
+        public override ETileset Tileset
+        {
+            get { return ETileset.MISSILES; }
+        }
+
 		public override EEssenceCategory Category { get { return EEssenceCategory.MISSILES; } }
 
 		protected override int GetStartCount(Creature _creature) { return (int) (_creature.GetLuckRandom*25) + 1; }

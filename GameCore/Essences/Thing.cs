@@ -8,7 +8,7 @@
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
 
-        public override ETileset Tileset{ get { return ETileset.THING; } }
+        public override ETileset Tileset{ get { return ETileset.THINGS; } }
 
 		public override EEssenceCategory Category { get { return EEssenceCategory.THING; } }
 

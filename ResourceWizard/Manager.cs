@@ -151,6 +151,14 @@ namespace ResourceWizard
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
         readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
 	    private IEnumerable<Essence> m_allEssences;
+	    
+	    public bool HasChanges
+	    {
+	        get
+	        {
+	            return XRoot.IsDirty;
+	        }
+	    }
 
 
 	    public Bitmap this[ETextureSet _set]

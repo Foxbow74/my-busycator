@@ -7,6 +7,14 @@ namespace GameCore.Essences.Things.LightSources
 	{
 		private readonly LightSource m_lightSource;
 
+        public override ETileset Tileset
+        {
+            get
+            {
+                return ETileset.LIGHT_SOURCES;
+            }
+        }
+
 		protected LightSourceThing(LightSource _lightSource, Material _material) : base(_material) { m_lightSource = _lightSource; }
 
 		#region ILightSource Members

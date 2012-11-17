@@ -259,7 +259,7 @@ namespace GameCore.Essences
 						continue;
 					}
 
-					foreach (var material in m_materials.Where(_material => _material.MaterialType == am))
+                    foreach (var material in m_materials.Where(_material => am.HasFlag(_material.MaterialType)))
 					{
 						yield return (Essence) Activator.CreateInstance(type, material);
 					}

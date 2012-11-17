@@ -9,7 +9,13 @@ namespace GameCore.Essences.Things.LightSources
 		public IndoorLight(LightSource _lightSource, Material _material)
 			: base(_lightSource, _material) { }
 
-		public override ETileset Tileset { get { return ETileset.LIGHT_SOURCE; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
 		public override string Name { get { return "светильник"; } }
 

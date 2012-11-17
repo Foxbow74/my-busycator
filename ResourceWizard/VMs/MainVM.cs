@@ -9,7 +9,7 @@ namespace ResourceWizard.VMs
 
 		public MainVM()
 		{
-			SaveCommand = new RelayCommand(_o => Manager.Instance.Save());
+			SaveCommand = new RelayCommand(_o => Manager.Instance.Save(), CanExecuteSave);
 			Tabs = new ObservableCollection<AbstractViewModel>
 				       {
 					       new TilesTabVM(),
@@ -17,6 +17,11 @@ namespace ResourceWizard.VMs
 				       };
 		}
 
-		public RelayCommand SaveCommand { get; private set; }
+	    private bool CanExecuteSave(object _obj)
+	    {
+            return Manager.Instance.HasChanges;
+	    }
+
+	    public RelayCommand SaveCommand { get; private set; }
 	}
 }

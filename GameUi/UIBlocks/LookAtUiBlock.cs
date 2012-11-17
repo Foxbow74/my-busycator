@@ -79,7 +79,7 @@ namespace GameUi.UIBlocks
 			var liveCell = World.TheWorld.Avatar[TargetPoint];
 			if (liveCell.IsSeenBefore)
 			{
-				ETileset.TARGET_CROSS.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
+                ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
 
 				var lighted = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
 
@@ -88,7 +88,7 @@ namespace GameUi.UIBlocks
 				if (lighted.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
 				{
 					s = "там ";
-					ETileset.TARGET_CROSS.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
+                    ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 
 					if (liveCell.Creature != null)
 					{
@@ -116,7 +116,7 @@ namespace GameUi.UIBlocks
 			}
 			else
 			{
-				ETileset.TARGET_CROSS.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Red);
+                ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Red);
 			}
 		}
 

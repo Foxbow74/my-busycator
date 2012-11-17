@@ -4,7 +4,13 @@ namespace GameCore.Essences.Ammo
 	{
 		public StackOfCrossBowBolts(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.CROSSBOW_BOLT; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
 		protected override string NameOfSingle { get { return "болт"; } }
 	}

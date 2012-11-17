@@ -6,6 +6,8 @@ namespace GameCore.Essences.Weapons
 	{
 		protected Weapon(Material _material) : base(_material) { }
 
+        public override ETileset Tileset { get { return ETileset.WEAPONS; } }
+
 		public override EEssenceCategory Category { get { return EEssenceCategory.WEAPON; } }
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.METAL | EMaterial.WOOD | EMaterial.MINERAL; } }
