@@ -4,7 +4,13 @@ namespace GameCore.Essences.Weapons
 	{
 		public Axe(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.AXE; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
 		public override string Name { get { return "топор"; } }
 	}

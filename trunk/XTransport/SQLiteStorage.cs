@@ -71,7 +71,7 @@ namespace XTransport
 
 		private void RegisterType<T>(Func<object, T> _func, string _sqliteType, string name)
 		{
-			if(m_type2Tables.ContainsKey(typeof(T))) return;
+			//if(m_type2Tables.ContainsKey(typeof(T))) return;
 
 			m_type2Tables[typeof(T)] = name;
 			m_tables2Type[typeof(T)] = _o => new StorageValue<T> { Val = _func(_o) };
@@ -87,9 +87,7 @@ namespace XTransport
 			m_connection = new SqliteConnection(cs);
 			m_connection.Open();
 
-            m_connection.StateChange+=ConnectionOnStateChange;
-
-			if (!m_initialized.Contains(_dbName))
+			//if (!m_initialized.Contains(_dbName))
 			{
 				CreateCommand("CREATE TABLE IF NOT EXISTS main ( id INTEGER PRIMARY KEY AUTOINCREMENT, uid GUID, parent GUID, kind INTEGER, field INTEGER, vfrom DATETIME NOT NULL, vtill DATETIME)").ExecuteNonQuery();
 
@@ -117,12 +115,6 @@ namespace XTransport
             ExecuteNonQuery("VACUUM");
 	    }
 
-	    private void ConnectionOnStateChange(object _sender, StateChangeEventArgs _stateChangeEventArgs)
-	    {
-            Debug.WriteLine("C:" + _stateChangeEventArgs.CurrentState);
-            Debug.WriteLine("O:" + _stateChangeEventArgs.OriginalState);
-	    }
-
 	    #region IStorage Members
 
 		public void Dispose()
@@ -130,7 +122,6 @@ namespace XTransport
 			if (m_connection.State != ConnectionState.Closed)
 			{
                 m_connection.Close();
-                m_connection.StateChange -= ConnectionOnStateChange;
                 m_connection.Dispose();
 			}
 		}

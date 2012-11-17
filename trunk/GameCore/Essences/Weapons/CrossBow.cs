@@ -4,7 +4,13 @@ namespace GameCore.Essences.Weapons
 	{
 		public CrossBow(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.CROSSBOW; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
 		public override string Name { get { return "арбалет"; } }
 	}

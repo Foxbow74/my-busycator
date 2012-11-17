@@ -7,7 +7,13 @@ namespace GameCore.Essences.Potions
 	{
 		public Potion(Material _material) : base(_material) { Sex = ESex.FEMALE; }
 
-		public override ETileset Tileset { get { return ETileset.POTION; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
 		public override string Name { get { return "булька"; } }
 
