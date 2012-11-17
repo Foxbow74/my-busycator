@@ -1,6 +1,5 @@
+using System;
 using GameCore.Creatures;
-using GameCore.Essences.Weapons;
-using GameCore.Mapping;
 using GameCore.Misc;
 
 namespace GameCore.Essences.Mechanisms
@@ -36,13 +35,20 @@ namespace GameCore.Essences.Mechanisms
 		{
 			var creatureLiveCell = _creature[0, 0];
 			var delta = _worldCoords - creatureLiveCell.WorldCoords;
-			_creature[delta.X,delta.Y].AddItem(EssenceHelper.GetFirstFoundedItem<Axe>());
-		}
-	}
+			var myCell = _creature[delta.X, delta.Y];
 
-	public interface IRemoteActivation
-	{
-		uint MechanismId { get; }
-		void RemoteActivation(Creature _creature, Point _worldCoords);
+			switch (Effect)
+			{
+				case EMagicPlateEffect.RANDOM_MONSTER_APPEAR:
+					if (myCell.Creature==null)
+					{
+						var creature = (Creature)EssenceHelper.GetFirstFoundedCreature<Monster>().ResolveFake(_creature);
+						myCell.AddCreature(creature);
+					}
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 	}
 }

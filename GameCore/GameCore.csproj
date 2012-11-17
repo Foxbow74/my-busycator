@@ -77,6 +77,7 @@
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="EMaterial.cs" />
     <Compile Include="Essences\Mechanisms\Button.cs" />
+    <Compile Include="IRemoteActivation.cs" />
     <Compile Include="Essences\Mechanisms\Lever.cs" />
     <Compile Include="Essences\Mechanisms\MagicPlate.cs" />
     <Compile Include="Essences\Mechanisms\Mechanism.cs" />

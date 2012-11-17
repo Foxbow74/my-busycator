@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using GameCore.Acts;
 using GameCore.Creatures;
+using GameCore.Essences;
 using GameCore.Essences.Mechanisms;
 using GameCore.Essences.Things;
 using GameCore.Mapping;
