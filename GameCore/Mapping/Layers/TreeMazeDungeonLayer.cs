@@ -99,8 +99,6 @@ namespace GameCore.Mapping.Layers
 
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
 
-		public override FColor Ambient { get { return new FColor(1f, 0.1f, 0f, 0f); } }
-
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{
 			BaseMapBlock baseMapBlock;

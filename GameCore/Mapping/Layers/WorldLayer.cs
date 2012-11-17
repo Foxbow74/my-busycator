@@ -34,7 +34,7 @@ namespace GameCore.Mapping.Layers
 		internal abstract IEnumerable<ETerrains> DefaultEmptySpaces { get; }
 		internal abstract IEnumerable<ETerrains> DefaultWalls { get; }
 
-		public abstract FColor Ambient { get; }
+        public FColor Ambient { get; set; }
 
 		public Dictionary<Point, MapBlock> Blocks { get; private set; }
 		public virtual float GetFogColorMultiplier(LiveMapCell _liveCell) { return _liveCell.FogColorMultiplier; }

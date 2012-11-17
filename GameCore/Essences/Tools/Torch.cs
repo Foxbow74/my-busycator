@@ -18,7 +18,13 @@ namespace GameCore.Essences.Tools
 
 		public Torch(Material _material) : base(_material) { }
 
-		public override ETileset Tileset { get { return ETileset.TORCH; } }
+        public override int TileIndex
+        {
+            get
+            {
+                return 2;
+            }
+        }
 
 		public override string Name { get { return "факел"; } }
 
@@ -63,6 +69,6 @@ namespace GameCore.Essences.Tools
 		#endregion
 
 		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
-		public override void Resolve(Creature _creature) { m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f)); }
-	}
+        public override void Resolve(Creature _creature) { m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f)); }
+    }
 }

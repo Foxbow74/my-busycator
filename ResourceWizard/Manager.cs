@@ -74,7 +74,7 @@ namespace ResourceWizard
             }
 			m_resourceCli.Save(XRoot);
 
-            m_resourceSrv.Shrink();
+           // m_resourceSrv.Shrink();
 		}
 
         private void PackTiles()
@@ -156,7 +156,8 @@ namespace ResourceWizard
 	    {
 	        get
 	        {
-	            return XRoot.IsDirty;
+	            return true;
+	            //return XRoot.IsDirty;
 	        }
 	    }
 
@@ -204,6 +205,15 @@ namespace ResourceWizard
 						case ETextureSet.U5:
 							bmp = Resources.Ultima5;
 							break;
+                        case ETextureSet.WC_WS:
+					        bmp = Resources.wintersnow;
+					        break;
+                        case ETextureSet.WC_SG:
+					        bmp = Resources.summergrass;
+					        break;
+                        case ETextureSet.WC_SW:
+					        bmp = Resources.summerwater;
+					        break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}

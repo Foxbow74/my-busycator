@@ -184,4 +184,40 @@
   <data name="pawn_glass_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pawn_glass_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="sammerrock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sammerrock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="summergrass" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\summergrass.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="summertrees" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\summertrees.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="summerwater" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\summerwater.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wasterock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wasterock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wastetree" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wastetree.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wastewaste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wastewaste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wastewater" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wastewater.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winterrock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\winterrock.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wintersnow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wintersnow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="wintertrees" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\wintertrees.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="winterwater" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\winterwater.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

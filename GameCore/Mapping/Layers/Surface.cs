@@ -23,7 +23,7 @@ namespace GameCore.Mapping.Layers
 
 		static Surface()
 		{
-			var separator = new[] {','};
+            var separator = new[] {','};
 
 			if(World.XResourceRoot.NickInfos.Count>0)
 			{
@@ -45,30 +45,6 @@ namespace GameCore.Mapping.Layers
 			else
 			{
                 throw new ApplicationException("База ресурсов не содержит информацию об именах.");
-                //if (File.Exists(Constants.RESOURCES_MALENICKS_TXT))
-                //{
-                //    m_maleNames =
-                //        File.ReadAllText(Constants.RESOURCES_MALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
-                //            ToList();
-                //}
-                //else
-                //{
-                //    m_maleNames = new List<string> {"TestMale"};
-                //}
-                //if (File.Exists(Constants.RESOURCES_FEMALENICKS_TXT))
-                //{
-                //    m_femaleNames =
-                //        File.ReadAllText(Constants.RESOURCES_FEMALENICKS_TXT).Split(separator, StringSplitOptions.RemoveEmptyEntries).
-                //            ToList();
-                //}
-                //else
-                //{
-                //    m_femaleNames = new List<string> {"TestFemale"};
-                //}
-
-                //World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.FEMALE, Nicks = string.Join(",", m_femaleNames) });
-                //World.XResourceRoot.NickInfos.Add(new XNicksInfo() { Sex = ESex.MALE, Nicks = string.Join(",", m_maleNames) });
-                //World.SaveResources();
 			}
 		}
 
@@ -77,18 +53,13 @@ namespace GameCore.Mapping.Layers
 		/// </summary>
 		public Surface()
 		{
+            Ambient = new FColor(1f, 1f, 1f, 0.9f).Multiply(1.0f);
+
 			switch (Constants.WORLD_MAP_SIZE)
 			{
 				case 1:
-					switch (Constants.WORLD_SEED)
-					{
-						case 1:
-							var r = new TestSurfaceGenerator1x1(World.Rnd);
-							m_worldMap = r.Generate();
-							break;
-						default:
-							throw new ApplicationException("Йё!");
-					}
+                    var r1 = new TestSurfaceGenerator1x1(World.Rnd);
+                    m_worldMap = r1.Generate();
 					City = new City(this, new Point(0,0));
 					break;
 				default:
@@ -110,8 +81,6 @@ namespace GameCore.Mapping.Layers
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
 		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.RED_BRICK_WALL; } }
-		
-		public override FColor Ambient { get { return new FColor(1f, 1f, 1f, 0.5f).Multiply(0.8f); } }
 
 		public string GetNextCitizenName(ESex _sex)
 		{
@@ -213,7 +182,7 @@ namespace GameCore.Mapping.Layers
 		    }
 			if(Constants.WORLD_MAP_SIZE==1)
 			{
-				TestSurfaceGenerator1x1.Fill(block, Constants.WORLD_SEED);
+				TestSurfaceGenerator1x1.Fill(block, Constants.WORLD_SEED, baseType);
 			}
 			else
 			{

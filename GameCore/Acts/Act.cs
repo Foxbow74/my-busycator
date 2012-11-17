@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GameCore.Creatures;
+using GameCore.Essences;
+using GameCore.Mapping;
+using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameCore.Acts
 {
@@ -144,6 +149,52 @@ namespace GameCore.Acts
 			{
 				if (typeof (T).IsAssignableFrom(tuple.Item1)) yield return (T) tuple.Item2;
 			}
+		}
+
+
+		protected EActResults Find(Creature _creature, Predicate<Essence> _predicate, out LiveMapCell _liveMapCell)
+		{
+			_liveMapCell = null;
+
+			var list = new List<Point>();
+			foreach (var point in Point.NearestDPoints)
+			{
+				var cc = _creature[point];
+				if (_predicate(cc.Thing))
+				{
+					list.Add(point);
+				}
+				else if (
+					cc.GetAllAvailableItemDescriptors<Thing>(_creature).Any(
+						_descriptor => _predicate(_descriptor.Essence)))
+				{
+					list.Add(point);
+				}
+			}
+			if (_creature.GetBackPackItems().Any(_descriptor => _predicate(_descriptor.Essence)))
+			{
+				list.Add(Point.Zero);
+			}
+
+			var coords = list.Distinct().ToList();
+
+			if (GetParameter<Point>().Any())
+			{
+				coords = coords.Intersect(GetParameter<Point>()).ToList();
+			}
+
+			if (!coords.Any())
+			{
+				return EActResults.QUICK_FAIL;
+			}
+			if (coords.Count() > 1)
+			{
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
+				return EActResults.NEED_ADDITIONAL_PARAMETERS;
+			}
+			_liveMapCell = _creature[coords.First()];
+			return EActResults.NONE;
+
 		}
 	}
 }

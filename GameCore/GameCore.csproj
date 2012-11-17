@@ -49,6 +49,7 @@
     <Compile Include="Acts\EActResults.cs" />
     <Compile Include="Acts\Info\HelpAct.cs" />
     <Compile Include="Acts\Info\Inventory.cs" />
+    <Compile Include="Acts\Interact\InterractAct.cs" />
     <Compile Include="Acts\Items\DrinkAct.cs" />
     <Compile Include="Acts\Items\DropAct.cs" />
     <Compile Include="Acts\Movement\Ascend.cs" />
@@ -75,7 +76,12 @@
     <Compile Include="ELevel.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="EMaterial.cs" />
+    <Compile Include="Essences\Mechanisms\Button.cs" />
+    <Compile Include="Essences\Mechanisms\Lever.cs" />
+    <Compile Include="Essences\Mechanisms\MagicPlate.cs" />
+    <Compile Include="Essences\Mechanisms\Mechanism.cs" />
     <Compile Include="FColor.cs" />
+    <Compile Include="Mapping\BaseMapBlock.cs" />
     <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
     <Compile Include="Mapping\Layers\LayerHelper.cs" />
@@ -165,6 +171,8 @@
     <Compile Include="PathFinding\PathFinder.cs" />
     <Compile Include="PathFinding\PathFinderNode.cs" />
     <Compile Include="PathFinding\PriorityQueueB.cs" />
+    <Compile Include="Plants\Mushrum.cs" />
+    <Compile Include="Plants\Shrub.cs" />
     <Compile Include="Plants\Tree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Essences\Essence.cs" />
@@ -208,6 +216,7 @@
     <Content Include="Documentations\Story\Forge of Gods.txt" />
     <Content Include="Documentations\Story\Zomby.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,13 +5,13 @@ namespace GameCore
 	public enum ETileset
 	{
 		NONE,
-		HEAP_OF_ITEMS,
+		MECHANISMS,
 		FOG,
 		TARGETING,
 		ZZ49,
 		ZZ50,
 		LIGHT_SOURCES,
-		TORCH,
+		ZZ52,
 
 		ZZ33,
 		ZZ34,

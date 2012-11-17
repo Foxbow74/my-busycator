@@ -30,9 +30,9 @@ namespace GameCore
         [Terrain("вода", ESex.FEMALE, 0f)] DEEP_FRESH_WATER,
 		[Terrain("песок")] COAST,
 		[Terrain("песок")] LAKE_COAST,
-		[Terrain("скала",ESex.FEMALE)] MOUNT,
+		[Terrain("скала",0.1f,0.5f,false,ESex.FEMALE)] MOUNT,
 		[Terrain("ледник")] ETERNAL_SNOW,
-		[Terrain("кустарник")] SHRUBS,
+		[Terrain("кустарник",0.5f,0.7f,true)] SHRUBS,
 
 
 		[Terrain("up", ESex.IT)] UP,
@@ -51,8 +51,8 @@ namespace GameCore
 		public TerrainAttribute(string _displayName, ESex _sex = ESex.MALE)
 			: this(_displayName, 1.0f, 0.0f, true, _sex) { }
 
-        public TerrainAttribute(string _displayName, ESex _sex, float isPassable)
-            : this(_displayName, isPassable, 0.0f, true, _sex) { }
+        public TerrainAttribute(string _displayName, ESex _sex, float _isPassable)
+            : this(_displayName, _isPassable, 0.0f, true, _sex) { }
 
 		public TerrainAttribute(string _displayName, float _isPassable, float _transparency, bool _isCanShootThrough, ESex _sex = ESex.MALE)
 		{

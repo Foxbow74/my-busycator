@@ -13,5 +13,8 @@ namespace ResourceWizard
 		PH,
 		U4,
 		U5,
+        WC_WS,
+        WC_SG,
+        WC_SW,
 	}
 }

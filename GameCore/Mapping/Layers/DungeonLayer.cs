@@ -13,6 +13,7 @@ namespace GameCore.Mapping.Layers
 	{
 		public DungeonLayer(Point _enterCoords)
 		{
+		    Ambient = new FColor(0, 0, 0.01f, 0.01f);
 			EnterCoords = _enterCoords;
 			FogColor = FColor.FromArgb(255, 100, 100, 100);
 			FogLightness = FogColor.Lightness();
@@ -22,15 +23,6 @@ namespace GameCore.Mapping.Layers
 
 
 		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
-
-		public override FColor Ambient
-		{
-			get
-			{
-				//return new FColor(Color.FromArgb(255, 50, 255, 50)); 
-				return new FColor(0, 0, 0.01f, 0.01f);
-			}
-		}
 
 		public Point EnterCoords { get; private set; }
 
