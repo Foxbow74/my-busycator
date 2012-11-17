@@ -240,6 +240,15 @@ namespace GameCore.Mapping
 			}
 		}
 
+		public void AddCreature(Creature _creature)
+		{
+			if (Creature == null)
+			{
+				_creature.LiveCoords = LiveCoords;
+				m_mapBlock.AddCreature(_creature, InBlockCoords);
+			}
+		}
+
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
 			RemoveItem(_fakeItem);

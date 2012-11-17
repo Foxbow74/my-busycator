@@ -98,6 +98,11 @@ namespace GameCore.Essences
 		{
 			return m_fakedItems.Values.First(_item => _item.Is<T>());
 		}
+		
+		public static FakedCreature GetFirstFoundedCreature<T>() where T : Creature
+		{
+			return m_fakedCreatures.Values.First(_item => _item.Is<T>());
+		}
 
 		public static IEnumerable<FakedThing> GetAllThings<T>() where T : Thing
 		{
@@ -107,6 +112,11 @@ namespace GameCore.Essences
 		public static IEnumerable<FakedItem> GetAllItems<T>() where T : Item
 		{
 			return m_fakedItems.Values.Where(_item => _item.Is<T>());
+		}
+
+		public static IEnumerable<FakedCreature> GetAllCreatures<T>() where T : Item
+		{
+			return m_fakedCreatures.Values.Where(_item => _item.Is<T>());
 		}
 
 		public static TMaterial GetMaterial<TMaterial>() where TMaterial : Material

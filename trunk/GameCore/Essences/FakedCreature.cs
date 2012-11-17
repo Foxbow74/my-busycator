@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 
 namespace GameCore.Essences
@@ -21,7 +22,6 @@ namespace GameCore.Essences
 		public Essence ResolveFake(Creature _creature)
 		{
 			var type = m_types[World.Rnd.Next(m_types.Count)];
-
 			var thing = (Essence) Activator.CreateInstance(type, _creature.Layer);
 			thing.Resolve(_creature);
 			return thing;
@@ -37,5 +37,10 @@ namespace GameCore.Essences
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
+
+		public override bool Is<T>()
+		{
+			return m_types.Any(_type => typeof(T).IsAssignableFrom(_type));
+		}
 	}
 }
