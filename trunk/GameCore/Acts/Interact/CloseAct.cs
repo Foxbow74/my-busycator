@@ -25,48 +25,63 @@ namespace GameCore.Acts.Interact
 		public override EActResults Do(Creature _creature)
 		{
 			LiveMapCell liveMapCell;
+
+			var find = Find(_creature, (_essence, _cell) => _essence.CanBeClosed(_cell, _creature), out liveMapCell);
+			switch (find)
 			{
-				var delta = GetParameter<Point>().FirstOrDefault();
-				if (delta == null)
-				{
-					//собираем координаты всех закрытых вещей
-					var list = new List<Point>();
-					foreach (var dPoint in Point.NearestDPoints)
-					{
-						var cell = _creature[dPoint];
-						var thing = cell.Thing;
-						if (thing.CanBeClosed(cell, _creature))
-						{
-							if (thing.Is<OpenDoor>() && dPoint.Lenght == 0)
-							{
-								continue;
-							}
-							list.Add(dPoint);
-						}
-						else if (cell.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _descriptor.Essence.CanBeClosed(cell, _creature)))
-						{
-							list.Add(dPoint);
-						}
-					}
-					if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Essence.CanBeClosed(null, _creature)))
-					{
-						list.Add(Point.Zero);
-					}
-					var variants = list.Distinct().ToArray();
-					if (variants.Length == 0)
-					{
-						if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
-						return EActResults.QUICK_FAIL;
-					}
-					if (variants.Length > 1)
-					{
-						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-						return EActResults.NEED_ADDITIONAL_PARAMETERS;
-					}
-					delta = variants[0];
-				}
-				liveMapCell = _creature[delta];
+				case EActResults.QUICK_FAIL:
+					if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "открыть что?"));
+					return find;
+				case EActResults.NONE:
+					break;
+				default:
+					return find;
+
 			}
+
+			//LiveMapCell liveMapCell;
+			//{
+			//    var delta = GetParameter<Point>().FirstOrDefault();
+			//    if (delta == null)
+			//    {
+			//        //собираем координаты всех закрытых вещей
+			//        var list = new List<Point>();
+			//        foreach (var dPoint in Point.NearestDPoints)
+			//        {
+			//            var cell = _creature[dPoint];
+			//            var thing = cell.Thing;
+			//            if (thing.CanBeClosed(cell, _creature))
+			//            {
+			//                if (thing.Is<OpenDoor>() && dPoint.Lenght == 0)
+			//                {
+			//                    continue;
+			//                }
+			//                list.Add(dPoint);
+			//            }
+			//            else if (cell.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _descriptor.Essence.CanBeClosed(cell, _creature)))
+			//            {
+			//                list.Add(dPoint);
+			//            }
+			//        }
+			//        if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Essence.CanBeClosed(null, _creature)))
+			//        {
+			//            list.Add(Point.Zero);
+			//        }
+			//        var variants = list.Distinct().ToArray();
+			//        if (variants.Length == 0)
+			//        {
+			//            if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
+			//            return EActResults.QUICK_FAIL;
+			//        }
+			//        if (variants.Length > 1)
+			//        {
+			//            MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
+			//            return EActResults.NEED_ADDITIONAL_PARAMETERS;
+			//        }
+			//        delta = variants[0];
+			//    }
+			//    liveMapCell = _creature[delta];
+			//}
 
 			//выясняем, что нужно закрыть
 			{

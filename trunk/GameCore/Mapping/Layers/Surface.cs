@@ -155,12 +155,12 @@ namespace GameCore.Mapping.Layers
 						{
 							case 0:
 							case 1:
-								block.AddEssence(shrubs[rnd.Next(shrubs.Length)], point);
+								block.AddEssence(shrubs.RandomItem(rnd), point);
 								break;
 							case 2:
 							case 3:
 							case 4:
-								block.AddEssence(trees[rnd.Next(trees.Length)], point);
+								block.AddEssence(trees.RandomItem(rnd), point);
 								break;
 						}
 						break;
@@ -171,10 +171,10 @@ namespace GameCore.Mapping.Layers
 							case 1:
 							case 2:
 							case 3:
-								block.AddEssence(shrubs[rnd.Next(shrubs.Length)], point);
+								block.AddEssence(shrubs.RandomItem(rnd), point);
 								break;
 							case 4:
-								block.AddEssence(trees[rnd.Next(trees.Length)], point);
+								block.AddEssence(trees.RandomItem(rnd), point);
 								break;
 						}
 						break;

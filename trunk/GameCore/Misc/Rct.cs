@@ -131,8 +131,7 @@ namespace GameCore.Misc
 
 		public Point Random(Random _rnd)
 		{
-			var a = AllPoints.ToArray();
-			return a[_rnd.Next(a.Length)];
+			return AllPoints.ToArray().RandomItem(_rnd);
 		}
 	}
 }

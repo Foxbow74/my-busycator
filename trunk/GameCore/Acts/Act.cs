@@ -152,7 +152,7 @@ namespace GameCore.Acts
 		}
 
 
-		protected EActResults Find(Creature _creature, Predicate<Essence> _predicate, out LiveMapCell _liveMapCell)
+		protected EActResults Find(Creature _creature, Func<Essence, LiveMapCell, bool> _predicate, out LiveMapCell _liveMapCell)
 		{
 			_liveMapCell = null;
 
@@ -160,18 +160,16 @@ namespace GameCore.Acts
 			foreach (var point in Point.NearestDPoints)
 			{
 				var cc = _creature[point];
-				if (_predicate(cc.Thing))
+				if (_predicate(cc.Thing, cc))
 				{
 					list.Add(point);
 				}
-				else if (
-					cc.GetAllAvailableItemDescriptors<Thing>(_creature).Any(
-						_descriptor => _predicate(_descriptor.Essence)))
+				else if (cc.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _predicate(_descriptor.Essence, cc)))
 				{
 					list.Add(point);
 				}
 			}
-			if (_creature.GetBackPackItems().Any(_descriptor => _predicate(_descriptor.Essence)))
+			if (_creature.GetBackPackItems().Any(_descriptor => _predicate(_descriptor.Essence, null)))
 			{
 				list.Add(Point.Zero);
 			}

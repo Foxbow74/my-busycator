@@ -17,7 +17,7 @@ namespace GameCore.Mapping
 			{
 				for (var j = 0; j < _rct.Height; ++j)
 				{
-					_block.Map[i + _rct.Left, j + _rct.Top] = def[_rnd.Next(def.Length)];
+					_block.Map[i + _rct.Left, j + _rct.Top] = def.RandomItem(_rnd);
 				}
 			}
 		}

@@ -2,6 +2,7 @@
 using System.Linq;
 using GameCore.Essences;
 using GameCore.Essences.Things;
+using GameCore.Misc;
 using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
@@ -32,7 +33,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			{
 				if (rnd.Next(4) == 0 && !InDoorWorldCoords.Contains(point))
 				{
-					_block.AddEssence(graves[rnd.Next(graves.Length)], point);
+					_block.AddEssence(graves.RandomItem(rnd), point);
 				}
 			}
 		}

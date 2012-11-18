@@ -894,7 +894,7 @@ namespace GameCore.Mapping.Layers
 						MapBlockHelper.Clear(block, rnd, this, DefaultWalls);
 						m_mazeBlocks[blockId] = block;
 					}
-					block.Map[inBlock.X, inBlock.Y] = defEmpty[rnd.Next(defEmpty.Length)];
+					block.Map[inBlock.X, inBlock.Y] = defEmpty.RandomItem(rnd);
 
 					if (index != 0 && index < line.Length - 1)
 					{

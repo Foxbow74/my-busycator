@@ -4,6 +4,7 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Essences;
+using GameCore.Misc;
 using RusLanguage;
 
 namespace GameCore.Creatures
@@ -51,8 +52,7 @@ namespace GameCore.Creatures
 
 			#region выбираем случайное здание отличное от текущего
 
-			var arr = ((Surface) Layer).City.Buildings.ToArray();
-			var build = arr[World.Rnd.Next(arr.Length)];
+			var build = ((Surface) Layer).City.Buildings.ToArray().RandomItem(World.Rnd);
 
 			#endregion
 

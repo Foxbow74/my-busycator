@@ -79,14 +79,12 @@ namespace GameCore.Essences
 
 		public static FakedItem GetRandomFakedItem(Random _rnd)
 		{
-			var arr = m_fakedItems.Values.ToArray();
-			return arr[_rnd.Next(arr.Length)];
+			return m_fakedItems.Values.ToArray().RandomItem(_rnd);
 		}
 
 		public static Essence GetFakedThing(Random _rnd)
 		{
-			var arr = m_fakedThings.Values.ToArray();
-			return arr[_rnd.Next(arr.Length)];
+			return m_fakedThings.Values.ToArray().RandomItem(_rnd);
 		}
 
 		public static FakedThing GetFirstFoundedThing<T>() where T : Thing

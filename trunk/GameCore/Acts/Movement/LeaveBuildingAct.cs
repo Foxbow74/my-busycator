@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Essences;
+using GameCore.Misc;
 
 namespace GameCore.Acts.Movement
 {
@@ -23,7 +24,7 @@ namespace GameCore.Acts.Movement
 			if (building != null)
 			{
 				var coords = _creature[0, 0].WorldCoords;
-				var p = building.OutDoorWorldCoords[World.Rnd.Next(building.OutDoorWorldCoords.Length)];
+				var p = building.OutDoorWorldCoords.RandomItem(World.Rnd);
 				if (_creature[p - coords].GetIsPassableBy(_creature) > 0)
 				{
 					_creature.AddActToPool(new MoveToAct(), p);
