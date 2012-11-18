@@ -26,7 +26,7 @@ namespace GameCore.Acts.Interact
 		{
 			LiveMapCell liveMapCell;
 
-			var find = Find(_creature, _essence => _essence is IInteractiveThing, out liveMapCell);
+			var find = Find(_creature, (_essence, _cell) => _essence.IsClosed(_cell, _creature), out liveMapCell);
 			switch (find)
 			{
 				case EActResults.QUICK_FAIL:

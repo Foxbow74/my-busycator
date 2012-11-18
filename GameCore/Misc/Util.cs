@@ -138,10 +138,9 @@ namespace GameCore.Misc
 			return dirs;
 		}
 
-		public static EDirections GetRandomDirection(this Random _random)
+		public static EDirections GetRandomDirection(this Random _rnd)
 		{
-			var dir = AllDirections[_random.Next(AllDirections.Length)];
-			return dir;
+			return AllDirections.RandomItem(_rnd);
 		}
 
 		public static T RandomItem<T>(this T[] _array, Random _rnd) { return _array[_rnd.Next(_array.Length)]; }
