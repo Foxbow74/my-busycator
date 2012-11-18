@@ -52,6 +52,7 @@
     <Compile Include="Acts\Interact\InterractAct.cs" />
     <Compile Include="Acts\Items\DrinkAct.cs" />
     <Compile Include="Acts\Items\DropAct.cs" />
+    <Compile Include="Acts\Items\UseTool.cs" />
     <Compile Include="Acts\Movement\Ascend.cs" />
     <Compile Include="Acts\Movement\Descend.cs" />
     <Compile Include="Acts\Movement\LeaveBuildingAct.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Creatures\EThinkingResult.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Missile.cs" />
+    <Compile Include="Creatures\Monsters\Wolf.cs" />
     <Compile Include="EDirections.cs" />
     <Compile Include="EEffect.cs" />
     <Compile Include="Effect.cs" />
@@ -112,6 +114,8 @@
     <Compile Include="Materials\ShrubMaterial.cs" />
     <Compile Include="Materials\WoodMaterial.cs" />
     <Compile Include="Messages\AskMessage.cs" />
+    <Compile Include="Messages\AskMessageNg.cs" />
+    <Compile Include="Messages\EAskMessageType.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
     <Compile Include="Misc\LightSource.cs" />

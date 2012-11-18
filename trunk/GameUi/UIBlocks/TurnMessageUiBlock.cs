@@ -53,6 +53,11 @@ namespace GameUi.UIBlocks
 					var tm = (SimpleTextMessage) message;
 					strings.Add(tm.Text);
 				}
+				else if (message is SoundTextMessage)
+				{
+					var tm = (SoundTextMessage)message;
+					strings.Add("где-то " + tm.Text);
+				}
 			}
 
 			var str = string.Join(", ", strings);

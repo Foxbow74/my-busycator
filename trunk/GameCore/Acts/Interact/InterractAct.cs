@@ -65,18 +65,18 @@ namespace GameCore.Acts.Interact
 			{
 				var list = new List<EssenceDescriptor>();
 				if ((liveMapCell.Thing.Is<ClosedDoor>() || liveMapCell.Thing.Is<Chest>()) &&
-				    liveMapCell.Thing.IsClosed(liveMapCell, _creature))
+				    liveMapCell.Thing.IsLockedFor(liveMapCell, _creature))
 				{
 					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
 				}
 				list.AddRange(
 					liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(
-						_descriptor => EssenceHelper.IsClosed(_descriptor.Essence, liveMapCell, _creature)));
+						_descriptor => EssenceHelper.IsLockedFor(_descriptor.Essence, liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
 					list.AddRange(
 						_creature.GetBackPackItems().Where(
-							_descriptor => _descriptor.Essence.IsClosed(liveMapCell, _creature)));
+							_descriptor => _descriptor.Essence.IsLockedFor(liveMapCell, _creature)));
 				}
 				var descriptors = list.Distinct();
 				if (GetParameter<EssenceDescriptor>().Any())

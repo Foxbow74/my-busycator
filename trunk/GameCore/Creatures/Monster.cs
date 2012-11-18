@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
@@ -6,20 +7,78 @@ using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
-	public class Monster : Creature
+	public abstract class Monster : Creature
 	{
 		private int m_skip;
 
-		public Monster(WorldLayer _layer)
-			: base(_layer, 100) { }
+		public Monster(WorldLayer _layer, int _speed)
+			: base(_layer, _speed)
+		{
+		}
+
+		protected FColor m_lerpColor;
+
+		public override FColor LerpColor
+		{
+			get { return m_lerpColor; }
+		}
 
 		public override ETileset Tileset { get { return ETileset.MONSTERS; } }
-
-		public override string Name { get { return "существо" + Nn; } }
 
 		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
+		{
+			switch (Behaviour)
+			{
+				case EMonsterBehaviour.FOLLOW_AVATAR_INDUNGEON:
+					return FollowAvatarIndungeon();
+				case EMonsterBehaviour.ATACK_AVATAR:
+					return AtackAvatar();
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		private EThinkingResult AtackAvatar()
+		{
+			var myLiveCell = this[0, 0];
+			var destLiveCell = World.TheWorld.Avatar[0, 0];
+
+			var d = myLiveCell.LiveCoords.GetDistTill(destLiveCell.LiveCoords);
+			if (d < 2)
+			{
+				AddActToPool(new WaitAct());
+				return EThinkingResult.NORMAL;
+			}
+			{
+				///Найти путь к одной из соседних клеток рядом с аватаром
+				var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords.AllNeighbours.ToArray().RandomItem(World.Rnd));
+				if (path != null)
+				{
+					AddActToPool(new MoveToAct(this, path));
+					return EThinkingResult.NORMAL;
+				}
+			}
+
+			{
+				var phi = World.Rnd.NextDouble()*Math.PI*2;
+				var ro = World.Rnd.NextDouble()*10;
+				var dx = (int) (Math.Cos(phi)*ro);
+				var dy = (int) (Math.Sin(phi)*ro);
+
+				var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords + new Point(dx,dy));
+				if (path != null)
+				{
+					AddActToPool(new MoveToAct(this, path));
+					return EThinkingResult.NORMAL;
+				}
+			}
+			AddActToPool(new WaitAct());
+			return EThinkingResult.NORMAL;
+		}
+
+		private EThinkingResult FollowAvatarIndungeon()
 		{
 			var myLiveCell = this[0, 0];
 			if (m_skip > 0 || !myLiveCell.IsSeenBefore)
@@ -35,7 +94,9 @@ namespace GameCore.Creatures
 				return EThinkingResult.NORMAL;
 			}
 
-			var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords + Point.NearestDPoints.ToArray().RandomItem(World.Rnd));
+			var path = World.TheWorld.LiveMap.PathFinder.FindPath(this,
+			                                                      destLiveCell.PathMapCoords +
+			                                                      Point.NearestDPoints.ToArray().RandomItem(World.Rnd));
 			if (path != null)
 			{
 				AddActToPool(new MoveToAct(this, path));
@@ -49,5 +110,13 @@ namespace GameCore.Creatures
 			AddActToPool(new MoveAct(), new Point(World.Rnd.Next(3) - 1, World.Rnd.Next(3) - 1));
 			return EThinkingResult.NORMAL;
 		}
+
+		public EMonsterBehaviour Behaviour { get; set; }
+	}
+
+	public enum EMonsterBehaviour
+	{
+		FOLLOW_AVATAR_INDUNGEON,
+		ATACK_AVATAR,
 	}
 }

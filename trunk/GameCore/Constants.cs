@@ -14,7 +14,7 @@
         /// <summary>
         /// Сид рандомайзера мира
         /// </summary>
-		public static int WORLD_SEED = 1;
+		public static int WORLD_SEED = 2;
 
         /// <summary>
         /// Размер блока карты

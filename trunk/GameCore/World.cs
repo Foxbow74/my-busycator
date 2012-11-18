@@ -124,6 +124,7 @@ namespace GameCore
 							case EThinkingResult.NORMAL:
 								break;
 							case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
+								creature.LiveCoords = null;
 								//m_activeCreatures.Remove(creature);
 								continue;
 							default:

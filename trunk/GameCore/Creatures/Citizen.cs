@@ -61,7 +61,7 @@ namespace GameCore.Creatures
 			foreach (var inDoorWorldCoord in build.InDoorWorldCoords)
 			{
 				var destLiveCell = this[inDoorWorldCoord - currentLiveCell.WorldCoords];
-				if (destLiveCell.GetPfIsPassableBy(this) > 0)
+				if (destLiveCell.GetIsPassableBy(this, true) > 0)
 				{
 					var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords);
 					if (path != null)

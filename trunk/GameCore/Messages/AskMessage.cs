@@ -51,24 +51,4 @@ namespace GameCore.Messages
 			return (T) m_parameters.Where(_tuple => typeof (T).IsAssignableFrom(_tuple.Item1)).Select(_tuple1 => _tuple1.Item2).First();
 		}
 	}
-
-	public enum EAskMessageType
-	{
-		LOOK_AT,
-		ASK_DIRECTION,
-		HELP,
-		HOW_MUCH,
-		ASK_SHOOT_TARGET,
-		ASK_DESTINATION,
-		SELECT_THINGS,
-		SELECT_THINGS_FROM_BACK_PACK,
-		INVENTORY,
-		WORLD_MAP,
-	}
-
-	public class AskMessageNg : AskMessage
-	{
-		public AskMessageNg(Act _act, EAskMessageType _type, params object[] _params) : base(_act, _params) { AskMessageType = _type; }
-		public EAskMessageType AskMessageType { get; private set; }
-	}
 }

@@ -28,6 +28,13 @@ namespace GameCore.Creatures
 			m_layer = _layer;
 		}
 
+		private Point m_pathMapCoords = null;
+
+		public Point PathMapCoords
+		{
+			get { return m_pathMapCoords ?? (m_pathMapCoords = this[0, 0].PathMapCoords); }
+		}
+
 		public IEnumerable<AbstractCreatureRole> Roles { get { return m_roles; } }
 
 		public int Nn { get; private set; }
@@ -51,6 +58,8 @@ namespace GameCore.Creatures
 			get { return m_liveCoords; }
 			set
 			{
+				m_pathMapCoords = null;
+				
 				var oldValue = m_liveCoords;
 				m_liveCoords = value == null ? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
 				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
@@ -70,6 +79,7 @@ namespace GameCore.Creatures
 				{
 					throw new ApplicationException("Лишнее действие");
 				}
+				m_pathMapCoords = null;
 				var oldLayer = m_layer;
 				m_layer = value;
 				if (oldLayer != null)
@@ -185,7 +195,7 @@ namespace GameCore.Creatures
 
 		public EssenceDescriptor[] GetNotTakenAvailableItems(Point[] _intersect = null)
 		{
-			var points = Point.NearestDPoints;//  Direction.AllDirectionsIn() LiveCoords.NearestPoints;
+			var points = Point.NearestDPoints.AsEnumerable();
 			if (_intersect != null && _intersect.Length>0)
 			{
 				points = points.Intersect(_intersect);

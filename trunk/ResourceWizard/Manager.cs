@@ -133,7 +133,16 @@ namespace ResourceWizard
                     
                     var key = grouping.Key;
 
-                    gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White, key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
+					//if (grouping.First().Parent is XTileSetVM)
+					//{
+					//    var ts = (XTileSetVM)grouping.First().Parent;
+					//    if(ts.Key==ETileset.SPLATTERS)
+					//    {
+					//        gr.DrawImage(this[key.Item1, key.Item2, key.Item3, grouping.First().Color.GetFColor(), key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
+					//        continue;
+					//    }
+					//}
+					gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White.UpdateAlfa(grouping.First().Color.A), key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
                 }
             }
             bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
