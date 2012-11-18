@@ -82,6 +82,11 @@ namespace GameCore.Essences
 			return m_fakedItems.Values.ToArray().RandomItem(_rnd);
 		}
 
+		public static FakedCreature GetRandomFakedCreature<T>(Random _rnd) where T:Creature
+		{
+			return m_fakedCreatures.Values.Where(_creature => _creature.Is<T>()).ToArray().RandomItem(_rnd);
+		}
+
 		public static Essence GetFakedThing(Random _rnd)
 		{
 			return m_fakedThings.Values.ToArray().RandomItem(_rnd);
@@ -165,7 +170,7 @@ namespace GameCore.Essences
 			return _essence != null && _essence.Is<T>();
 		}
 
-		public static bool IsClosed(this Essence _essence, LiveMapCell _cell, Creature _creature)
+		public static bool IsLockedFor(this Essence _essence, LiveMapCell _cell, Creature _creature)
 		{
 			if (_essence == null) return false;
 			if (_essence.IsFake())

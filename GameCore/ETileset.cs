@@ -8,7 +8,7 @@ namespace GameCore
 		MECHANISMS,
 		FOG,
 		TARGETING,
-		ZZ49,
+		SPLATTERS,
 		ZZ50,
 		LIGHT_SOURCES,
 		ZZ52,
@@ -89,6 +89,11 @@ namespace GameCore
 
 	public static class TileInfoProvider
 	{
+		static TileInfoProvider()
+		{
+			m_opacities.Add(ETileset.NONE, new List<float>(){0f});
+		}
+
 		public static Dictionary<ETileset, List<float>> m_opacities = new Dictionary<ETileset, List<float>>();
 
 		public static void SetOpacity(ETileset _tileset, int _index, float _opacity)

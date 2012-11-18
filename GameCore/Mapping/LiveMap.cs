@@ -126,7 +126,7 @@ namespace GameCore.Mapping
 
 		public byte GetPfIsPassable(Point _pathMapCoords, Creature _creature)
 		{
-			var delta = _pathMapCoords - _creature[0, 0].PathMapCoords;
+			var delta = _pathMapCoords - _creature.PathMapCoords;
 			var liveMapCell = _creature[delta];
 
 			var result = 0f;
@@ -134,7 +134,7 @@ namespace GameCore.Mapping
 			{
 				if (liveMapCell.Visibility.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
 				{
-					result = liveMapCell.GetPfIsPassableBy(_creature);
+					result = liveMapCell.GetIsPassableBy(_creature,true);
 				}
 				else if (liveMapCell.IsSeenBefore)
 				{
@@ -147,7 +147,7 @@ namespace GameCore.Mapping
 			}
 			else
 			{
-				result = liveMapCell.GetPfIsPassableBy(_creature);
+				result = liveMapCell.GetIsPassableBy(_creature, true);
 			}
 			if (result == 0) return 0;
 			return (byte) (255 - result*254);
@@ -218,13 +218,25 @@ namespace GameCore.Mapping
 		public void CreaturesCellChanged(Creature _creature, Point _oldLiveCoords, Point _newLiveCoords)
 		{
 			if (_oldLiveCoords != null && _newLiveCoords != null && BaseMapBlock.GetInBlockCoords(_oldLiveCoords) == BaseMapBlock.GetInBlockCoords(_newLiveCoords)) return;
-			var oldBlock = _oldLiveCoords != null ? GetCell(_oldLiveCoords).LiveMapBlock : null;
-			if (_newLiveCoords == null)
+
+			LiveMapBlock oldBlock = null;
+			if(_oldLiveCoords!=null)
 			{
-				oldBlock.RemoveCreature(_creature, _oldLiveCoords);
-				return;
+				var oldCell = GetCell(_oldLiveCoords);
+				oldCell.ResetTempStates();
+
+				oldBlock = oldCell.LiveMapBlock;
+				if (_newLiveCoords == null)
+				{
+					oldBlock.RemoveCreature(_creature, _oldLiveCoords);
+					return;
+				}
 			}
-			var newBlock = GetCell(_newLiveCoords).LiveMapBlock;
+
+			var cell = GetCell(_newLiveCoords);
+			cell.ResetTempStates();
+
+			var newBlock = cell.LiveMapBlock;
 			if (newBlock != oldBlock)
 			{
 				newBlock.AddCreature(_creature, _newLiveCoords);

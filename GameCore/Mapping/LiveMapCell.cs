@@ -43,7 +43,7 @@ namespace GameCore.Mapping
 		    set
 		    {
 		        m_thing = value;
-                m_transparentColor = null;
+				ResetTempStates();
 		    }
 		}
 
@@ -66,6 +66,10 @@ namespace GameCore.Mapping
 		{
 			get
 			{
+				foreach (var splatter in m_splatters)
+				{
+					yield return splatter;
+				}
 				if (Thing != null)
 				{
 					yield return Thing;
@@ -182,7 +186,7 @@ namespace GameCore.Mapping
 
 		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
-            m_transparentColor = null;
+			ResetTempStates();
 
 			Rnd = _rnd;
 			m_items.Clear();
@@ -229,7 +233,7 @@ namespace GameCore.Mapping
 		internal void AddItemIntenal(Item _item)
 		{
 		    m_items.Add(_item);
-            m_transparentColor = null;
+			ResetTempStates();
 		}
 
 		public void AddItem(Item _item)
@@ -245,7 +249,7 @@ namespace GameCore.Mapping
 			if (Creature == null)
 			{
 				_creature.LiveCoords = LiveCoords;
-				m_mapBlock.AddCreature(_creature, InBlockCoords);
+				//m_mapBlock.AddCreature(_creature, InBlockCoords);
 			}
 		}
 
@@ -275,7 +279,7 @@ namespace GameCore.Mapping
 			if (typeof (TEssence).IsAssignableFrom(typeof (Item)))
 			{
 				var thing = Thing as Container;
-				if (thing != null && !thing.IsClosed(this, _creature))
+				if (thing != null && !thing.IsLockedFor(this, _creature))
 				{
 					foreach (var item in thing.GetItems(_creature).Items.OfType<TEssence>())
 					{
@@ -285,41 +289,42 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public float GetIsPassableBy(Creature _creature)
+		private float? m_isPassable = null;
+		private List<Splatter> m_splatters = new List<Splatter>();
+
+		public float GetIsPassableBy(Creature _creature, bool _pathFinding = false)
+		{
+			if(m_isPassable.HasValue) return m_isPassable.Value;
+
+			if (Creature != null)
+			{
+				m_isPassable = 0;
+				return 0f;
+			}
+			
+			if (Thing != null)
+			{
+				if (Thing.Is<ClosedDoor>() && Thing.IsLockedFor(this, _creature))
+				{
+					return _pathFinding?0.99f:0f;
+				}
+			}
+			m_isPassable = TerrainAttribute.IsPassable;
+			return m_isPassable.Value;
+		}
+
+		public float GetIsCanShootThrough(Missile _creature)
 		{
 			if (Creature != null) return 0f;
 			if (Thing != null)
 			{
-				if (Thing.Is<ClosedDoor>() && Thing.IsClosed(this, _creature))
+				if (Thing.Is<ClosedDoor>() && Thing.IsLockedFor(this, _creature))
 				{
 					return 0f;
 				}
 			}
-			if (_creature is Missile)
-			{
-				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
-			}
-			return TerrainAttribute.IsPassable;
+			return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
 		}
-
-
-		public float GetPfIsPassableBy(Creature _creature)
-		{
-			if (Creature != null) return 0f;
-			if (Thing != null)
-			{
-				if (Thing.Is<ClosedDoor>() && Thing.IsClosed(this, _creature))
-				{
-					return 0.99f;
-				}
-			}
-			if (_creature is Missile)
-			{
-				return TerrainAttribute.IsCanShootThrough ? 1f : 0f;
-			}
-			return TerrainAttribute.IsPassable;
-		}
-
 
 		public void RemoveItem(Item _item)
 		{
@@ -327,8 +332,19 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
-            m_transparentColor = null;
+			ResetTempStates();
 			m_mapBlock.RemoveEssence(_item, InBlockCoords);
+		}
+
+		public void ResetTempStates()
+		{
+			m_transparentColor = null;
+			m_isPassable = null;
+		}
+
+		public void AddSplatter(Splatter _splatter)
+		{
+			m_splatters.Add(_splatter);
 		}
 	}
 }

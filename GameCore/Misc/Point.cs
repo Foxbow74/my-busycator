@@ -33,28 +33,31 @@ namespace GameCore.Misc
 		{
 			get
 			{
-				for (var i = -1; i <= 1; ++i)
-				{
-					for (var j = -1; j <= 1; ++j)
-					{
-						yield return new Point(X + i, Y + j);
-					}
-				}
+				return NearestDPoints.Select(_point => _point + this);
 			}
 		}
 
 
-		public static IEnumerable<Point> NearestDPoints
+		private static Point[] m_nearestDPoints = null;
+
+		public static Point[] NearestDPoints
 		{
 			get
 			{
-				for (var i = -1; i <= 1; ++i)
+				if (m_nearestDPoints==null)
 				{
-					for (var j = -1; j <= 1; ++j)
+					var list = new List<Point>();
+
+					for (var i = -1; i <= 1; ++i)
 					{
-						yield return new Point(i, j);
+						for (var j = -1; j <= 1; ++j)
+						{
+							list.Add(new Point(i, j));
+						}
 					}
+					m_nearestDPoints = list.ToArray();
 				}
+				return m_nearestDPoints;
 			}
 		}
 

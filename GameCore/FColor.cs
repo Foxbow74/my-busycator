@@ -1690,8 +1690,9 @@ namespace GameCore
 
 		public FColor UpdateAlfa(float _f)
 		{
-			A = _f;
-			return this;
+			return new FColor(_f,R,G,B);
+			//A = _f;
+			//return this;
 		}
 	}
 }

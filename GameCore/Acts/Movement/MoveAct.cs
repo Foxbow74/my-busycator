@@ -88,7 +88,7 @@ namespace GameCore.Acts.Movement
 					else
 					{
 						var thing = cell.Thing;
-						if (thing != null && thing.Is<ClosedDoor>() && thing.IsClosed(cell, _creature))
+						if (thing != null && thing.Is<ClosedDoor>() && thing.IsLockedFor(cell, _creature))
 						{
 							//_creature.InsertActToPool(this);
 							_creature.InsertActToPool(new OpenAct(), delta);

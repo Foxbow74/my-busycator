@@ -1,5 +1,6 @@
 using System;
 using GameCore.Creatures;
+using GameCore.Messages;
 using GameCore.Misc;
 
 namespace GameCore.Essences.Mechanisms
@@ -42,8 +43,11 @@ namespace GameCore.Essences.Mechanisms
 				case EMagicPlateEffect.RANDOM_MONSTER_APPEAR:
 					if (myCell.Creature==null)
 					{
-						var creature = (Creature)EssenceHelper.GetFirstFoundedCreature<Monster>().ResolveFake(_creature);
-						myCell.AddCreature(creature);
+						var monster = (Monster)EssenceHelper.GetRandomFakedCreature<Monster>(World.Rnd).ResolveFake(_creature);
+						monster.Behaviour=EMonsterBehaviour.ATACK_AVATAR;
+						myCell.AddCreature(monster);
+
+						MessageManager.SendMessage(this, new SoundTextMessage("послышался всплеск"));
 					}
 					break;
 				default:

@@ -12,4 +12,14 @@
 
 		public string Text { get; protected set; }
 	}
+
+	public class SoundTextMessage : Message
+	{
+		public SoundTextMessage(string _text)
+		{
+			Text = _text;
+		}
+
+		public string Text { get; protected set; }
+	}
 }
