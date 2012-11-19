@@ -90,7 +90,7 @@ namespace GameCore.Essences
 
 			public int Count { get; set; }
 
-			public override EEssenceCategory Category { get { throw new NotImplementedException(); } }
+			public override EItemCategory Category { get { throw new NotImplementedException(); } }
 
 			public override ETileset Tileset { get { throw new NotImplementedException(); } }
 

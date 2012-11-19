@@ -128,7 +128,7 @@
     <Compile Include="Essences\Ammo\StackOfAmmo.cs" />
     <Compile Include="Essences\Ammo\StackOfCrossBowBolts.cs" />
     <Compile Include="Essences\BackPack.cs" />
-    <Compile Include="Essences\EEssenceCategory.cs" />
+    <Compile Include="Essences\EItemCategory.cs" />
     <Compile Include="Essences\FakedCreature.cs" />
     <Compile Include="Essences\FakedItem.cs" />
     <Compile Include="Essences\Thing.cs" />

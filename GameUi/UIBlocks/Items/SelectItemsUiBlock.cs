@@ -10,7 +10,7 @@ namespace GameUi.UIBlocks.Items
 		public SelectItemsUiBlock(Rct _rct, AskMessage _message)
 			: base(_rct, _message.GetFirstParameter<ESelectItemDialogBehavior>(), _message.Act, _message.GetParameters<EssenceDescriptor>()) { }
 
-		protected override IEnumerable<EEssenceCategory> AllowedCategories { get { yield break; } }
+		protected override IEnumerable<EItemCategory> AllowedCategories { get { yield break; } }
 
 		protected override int HeaderTakesLine { get { return 0; } }
 

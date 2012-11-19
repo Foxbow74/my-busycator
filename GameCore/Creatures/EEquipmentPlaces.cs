@@ -8,21 +8,21 @@ namespace GameCore.Creatures
 {
 	public enum EEquipmentPlaces
 	{
-		[EquipmentPlaces("Голова", EEssenceCategory.HELMETS)] HEAD,
-		[EquipmentPlaces("Шея", EEssenceCategory.NECKLACES)] NECK,
-		[EquipmentPlaces("Тело", EEssenceCategory.WEAR, EEssenceCategory.ARMOR)] BODY,
-		[EquipmentPlaces("Пояс", EEssenceCategory.GIRGLE)] GIRGLE,
-		[EquipmentPlaces("Накидка", EEssenceCategory.CLOACK)] CLOACK,
+		[EquipmentPlaces("Голова", EItemCategory.HELMETS)] HEAD,
+		[EquipmentPlaces("Шея", EItemCategory.NECKLACES)] NECK,
+		[EquipmentPlaces("Тело", EItemCategory.WEAR, EItemCategory.ARMOR)] BODY,
+		[EquipmentPlaces("Пояс", EItemCategory.GIRGLE)] GIRGLE,
+		[EquipmentPlaces("Накидка", EItemCategory.CLOACK)] CLOACK,
 		[EquipmentPlaces("Правая рука")] RIGHT_HAND,
 		[EquipmentPlaces("Левая рука")] LEFT_HAND,
-		[EquipmentPlaces("Кольцо на правой руке", EEssenceCategory.RINGS)] RIGHT_RING,
-		[EquipmentPlaces("Кольцо на левой руке", EEssenceCategory.RINGS)] LEFT_RING,
-		[EquipmentPlaces("Наручи", EEssenceCategory.BRACERS)] BRACERS,
-		[EquipmentPlaces("Перчатки", EEssenceCategory.GAUNTLETS)] GAUNTLETS,
-		[EquipmentPlaces("Обувь", EEssenceCategory.BOOTS)] BOOTS,
-		[EquipmentPlaces("Метательное оружие", EEssenceCategory.MISSILE_WEAPON)] MISSILE_WEAPON,
+		[EquipmentPlaces("Кольцо на правой руке", EItemCategory.RINGS)] RIGHT_RING,
+		[EquipmentPlaces("Кольцо на левой руке", EItemCategory.RINGS)] LEFT_RING,
+		[EquipmentPlaces("Наручи", EItemCategory.BRACERS)] BRACERS,
+		[EquipmentPlaces("Перчатки", EItemCategory.GAUNTLETS)] GAUNTLETS,
+		[EquipmentPlaces("Обувь", EItemCategory.BOOTS)] BOOTS,
+		[EquipmentPlaces("Метательное оружие", EItemCategory.MISSILE_WEAPON)] MISSILE_WEAPON,
 		[EquipmentPlaces("Снаряды")] MISSILES,
-		[EquipmentPlaces("Инструмент", EEssenceCategory.TOOLS)] TOOL,
+		[EquipmentPlaces("Инструмент", EItemCategory.TOOLS)] TOOL,
 	}
 
 
@@ -30,7 +30,7 @@ namespace GameCore.Creatures
 	{
 		private static Dictionary<EEquipmentPlaces, EquipmentPlacesAttribute> m_attrs;
 
-		public EquipmentPlacesAttribute(string _displayName, params EEssenceCategory[] _ableToEquip)
+		public EquipmentPlacesAttribute(string _displayName, params EItemCategory[] _ableToEquip)
 		{
 			DisplayName = _displayName;
 			AbleToEquip = _ableToEquip;
@@ -38,7 +38,7 @@ namespace GameCore.Creatures
 
 		public string DisplayName { get; private set; }
 
-		public EEssenceCategory[] AbleToEquip { get; set; }
+		public EItemCategory[] AbleToEquip { get; set; }
 
 		public static IEnumerable<EEquipmentPlaces> AllValues { get { return Attrs.Keys; } }
 
@@ -54,7 +54,7 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public bool IsAbleToEquip(EEssenceCategory _category) { return AbleToEquip.Length == 0 || AbleToEquip.Contains(_category); }
+		public bool IsAbleToEquip(EItemCategory _category) { return AbleToEquip.Length == 0 || AbleToEquip.Contains(_category); }
 
 		public static EquipmentPlacesAttribute GetAttribute(EEquipmentPlaces _enum) { return Attrs[_enum]; }
 	}

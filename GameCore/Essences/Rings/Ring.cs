@@ -14,7 +14,7 @@ namespace GameCore.Essences.Rings
             }
         }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.RINGS; } }
+		public override EItemCategory Category { get { return EItemCategory.RINGS; } }
 
 		public override string Name { get { return "кольцо"; } }
 

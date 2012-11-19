@@ -27,9 +27,9 @@ namespace GameCore.Essences
 
 	    public override ETileset Tileset { get { return m_tileset; } }
 
-		public override string Name { get { throw new NotImplementedException(); } }
+		public override EItemCategory Category{ get { throw new NotImplementedException(); } }
 
-		public override EEssenceCategory Category { get { throw new NotImplementedException(); } }
+		public override string Name { get { throw new NotImplementedException(); } }
 
 		#region IFaked Members
 

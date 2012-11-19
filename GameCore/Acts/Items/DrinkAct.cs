@@ -27,7 +27,7 @@ namespace GameCore.Acts.Items
 			var descriptors = GetParameter<EssenceDescriptor>().ToArray();
 			if (descriptors.Length == 0)
 			{
-				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EEssenceCategory.POTION}));
+				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EItemCategory.POTION}));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
 			var descriptor = descriptors[0];

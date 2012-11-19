@@ -8,7 +8,7 @@ namespace GameCore.Essences.Weapons
 
         public override ETileset Tileset { get { return ETileset.WEAPONS; } }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.WEAPON; } }
+		public override EItemCategory Category { get { return EItemCategory.WEAPON; } }
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.METAL | EMaterial.WOOD | EMaterial.MINERAL; } }
 		public override void Resolve(Creature _creature) { }

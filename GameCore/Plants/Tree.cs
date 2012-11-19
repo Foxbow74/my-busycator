@@ -33,8 +33,6 @@ namespace GameCore.Plants
 
 		public override string Name { get { return m_material.Name; } }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.LANDSCAPE; } }
-
 		public override EMaterial AllowedMaterials { get { return EMaterial.WOOD; } }
 
 		public override void Resolve(Creature _creature) { }

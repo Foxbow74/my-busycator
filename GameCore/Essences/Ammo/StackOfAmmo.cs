@@ -11,7 +11,7 @@ namespace GameCore.Essences.Ammo
             get { return ETileset.MISSILES; }
         }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.MISSILES; } }
+		public override EItemCategory Category { get { return EItemCategory.MISSILES; } }
 
 		protected override int GetStartCount(Creature _creature) { return (int) (_creature.GetLuckRandom*25) + 1; }
 	}

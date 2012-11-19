@@ -28,11 +28,6 @@ namespace GameCore.Essences.Things
 			return EActResults.DONE;
 		}
 
-		public override EEssenceCategory Category
-		{
-			get { return EEssenceCategory.LANDSCAPE; }
-		}
-
 		public override void Resolve(Creature _creature) { }
 
 		public override EMaterial AllowedMaterials
