@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Essences;
 using GameCore.Essences.Mechanisms;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Mapping
 {

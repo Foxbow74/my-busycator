@@ -24,13 +24,12 @@ namespace GameCore.Acts.Items
 		public override EActResults Do(Creature _creature)
 		{
 			var intelligent = (Intelligent) _creature;
-			var descriptors = GetParameter<EssenceDescriptor>().ToArray();
-			if (descriptors.Length == 0)
+			EssenceDescriptor descriptor;
+			if (!TryGetParameter(out descriptor))
 			{
 				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS_FROM_BACK_PACK, ESelectItemDialogBehavior.SELECT_ONE, new[] {EItemCategory.POTION}));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;
 			}
-			var descriptor = descriptors[0];
 			if (descriptor == EssenceDescriptor.Empty)
 			{
 				return EActResults.QUICK_FAIL;

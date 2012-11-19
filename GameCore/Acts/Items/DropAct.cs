@@ -47,22 +47,26 @@ namespace GameCore.Acts.Items
 			}
 
 			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature) == descriptor.GetName(_creature)).Count();
-			Count = 1;
 			if (total == 0)
 			{
 				throw new ApplicationException("в рюкзаке нет такого предмета");
 			}
 			if (total > 1)
 			{
-				if (GetParameter<int>().Any())
+				int cnt;
+				if (TryGetParameter(out cnt))
 				{
-					Count = GetParameter<int>().Single();
+					Count = cnt;
 				}
 				else
 				{
 					MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.HOW_MUCH, descriptor, total));
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}
+			}
+			else
+			{
+				Count = 1;
 			}
 			var item = (Item) descriptor.Essence;
 			for (var i = 0; i < Count; ++i)

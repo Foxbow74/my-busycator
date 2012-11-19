@@ -7,6 +7,7 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
+using UnsafeUtils;
 
 namespace GameCore.Acts.Movement
 {
@@ -26,12 +27,10 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature)
 		{
-			var delta = GetParameter<Point>().FirstOrDefault();
-
-			if (delta == null)
+			Point delta;
+			if (!TryGetParameter(out delta))
 			{
-				var key = GetParameter<ConsoleKey>().Single();
-				delta = KeyTranslator.GetDirection(key);
+				delta = KeyTranslator.GetDirection(GetFirstParameter<ConsoleKey>());
 			}
 
 			if (delta.QLenght > 1)

@@ -7,6 +7,7 @@ using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
+using UnsafeUtils;
 
 namespace GameCore.Mapping
 {

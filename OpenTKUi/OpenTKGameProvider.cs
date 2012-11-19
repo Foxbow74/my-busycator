@@ -6,6 +6,7 @@ using GameUi;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
+using UnsafeUtils;
 
 namespace OpenTKUi
 {

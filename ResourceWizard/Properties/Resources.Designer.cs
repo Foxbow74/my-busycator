@@ -111,6 +111,86 @@ namespace ResourceWizard.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_armor32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_armor32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster132 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster132", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster232 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster232", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster332 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster332", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster432 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster432", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster532 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster532", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster632 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster632", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_monster732 {
+            get {
+                object obj = ResourceManager.GetObject("dg_monster732", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Бастет,Клёпа,Лаура,Тинга,Уда,Сузани,Муня,Нитка,Чая,Рэда,Сапфирина,Лика,Рича,Швабра,Сандра,Тайша,Аюта,Жека,Улана,Асла,Авиаджи,Луиза,Алько,Аэлита,Чарда,Санта,Крыса,Олери,Санда,Жанетта,Чанита,Экса,Барса,Сэтти,Бени,Луша,Вето,Герда,Тася,Анчута,Ешка,Китася,Йоланта,Лаванда,Фемида,Руста,Саламбо,Енса,Сентап,Целли,Твити,Миля,Капитолина,Мава,Тушка,Ундина,Буна,Мелисса,Юда,Арга,Кинель,Ара,Криза,Фалька,Альджетта,Жалли,Лекси,Фелика,Жеси,Охра,Йаки,Юрга,Креди,Мышка,Рифка,Хильда,Фрося,Жасмин,Илга,Тойра,Цанта,Хальта,Аремо,Даф [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string femalenicks {

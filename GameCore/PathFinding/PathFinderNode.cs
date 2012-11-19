@@ -1,4 +1,5 @@
 ﻿using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.PathFinding
 {

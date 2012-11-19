@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Misc;
 using GameCore.Essences;
+using UnsafeUtils;
 
 namespace GameCore
 {

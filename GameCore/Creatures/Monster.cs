@@ -4,6 +4,7 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Creatures
 {

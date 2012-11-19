@@ -5,6 +5,7 @@ using GameCore;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameUi.UIBlocks
 {

@@ -220,4 +220,28 @@
   <data name="winterwater" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\winterwater.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="dg_armor32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_armor32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster132" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster132.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster232" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster232.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster332" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster332.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster432" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster432.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster532" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster532.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster632" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster632.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_monster732" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_monster732.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

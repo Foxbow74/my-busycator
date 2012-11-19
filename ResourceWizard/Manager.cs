@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
@@ -182,6 +183,7 @@ namespace ResourceWizard
 				{
 					if (!m_ttextures.TryGetValue(_set, out value))
 					{
+						int scale = 1;
 						Bitmap bmp;
 						switch (_set)
 						{
@@ -227,10 +229,55 @@ namespace ResourceWizard
 							case ETextureSet.WC_SW:
 								bmp = Resources.summerwater;
 								break;
+							case ETextureSet.dg_armor32:
+								bmp = Resources.dg_armor32;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster1:
+								bmp = Resources.dg_monster132;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster2:
+								bmp = Resources.dg_monster232;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster3:
+								bmp = Resources.dg_monster332;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster4:
+								bmp = Resources.dg_monster432;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster5:
+								bmp = Resources.dg_monster532;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster6:
+								bmp = Resources.dg_monster632;
+								scale = 2;
+								break;
+							case ETextureSet.dg_monster7:
+								bmp = Resources.dg_monster732;
+								scale = 2;
+								break;
 							default:
 								throw new ArgumentOutOfRangeException();
 						}
+						if(scale==2)
+						{
+							var value2 = new OpenTKUi.Image(bmp, true, false);
+							var bmp2 = new Bitmap(bmp.Width / 2, bmp.Height / 2, PixelFormat.Format32bppPArgb);
+							using (var gr = Graphics.FromImage(bmp2))
+							{
+								gr.InterpolationMode=InterpolationMode.HighQualityBicubic;
+								gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height), new Rectangle(0, 0, bmp.Width, bmp.Height), GraphicsUnit.Pixel);
+							}
+							bmp = bmp2;
+						}
+						
 						value = new OpenTKUi.Image(bmp, false, false);
+
 						m_ttextures[_set] = value;
 					}
 				}

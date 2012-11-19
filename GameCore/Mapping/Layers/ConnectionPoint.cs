@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {

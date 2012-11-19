@@ -15,12 +15,14 @@ namespace GameCore.Mapping
 		//2 - active creatures
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
+		private const int SIZE_IN_BLOCKS = (2 * ACTIVE_QRADIUS + 1);
 		public const int AVATAR_SIGHT = 25;
+		public const int SIZE_IN_CELLS = SIZE_IN_BLOCKS*Constants.MAP_BLOCK_SIZE;
+
 		public static readonly Point ActiveQpoint = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);
 
 		private readonly Point[] m_blockIds;
 
-		private readonly int m_sizeInBlocks;
 		private readonly LosManager m_visibilityManager;
 		private Point m_vieportSize;
 
@@ -28,17 +30,14 @@ namespace GameCore.Mapping
 		{
 			m_visibilityManager = new LosManager(AVATAR_SIGHT);
 
-			m_sizeInBlocks = (2*ACTIVE_QRADIUS + 1);
-			SizeInCells = m_sizeInBlocks*Constants.MAP_BLOCK_SIZE;
-
-			Blocks = new LiveMapBlock[m_sizeInBlocks,m_sizeInBlocks];
-			Cells = new LiveMapCell[SizeInCells,SizeInCells];
+			Blocks = new LiveMapBlock[SIZE_IN_BLOCKS,SIZE_IN_BLOCKS];
+			Cells = new LiveMapCell[SIZE_IN_CELLS,SIZE_IN_CELLS];
 
 			CenterLiveBlock = Point.Zero;
 
 			{
 				var blockIds = new List<Point>();
-				for (var i = 0; i < m_sizeInBlocks; i++) for (var j = 0; j < m_sizeInBlocks; j++) blockIds.Add(new Point(i, j));
+				for (var i = 0; i < SIZE_IN_BLOCKS; i++) for (var j = 0; j < SIZE_IN_BLOCKS; j++) blockIds.Add(new Point(i, j));
 				m_blockIds = blockIds.ToArray();
 			}
 
@@ -48,7 +47,7 @@ namespace GameCore.Mapping
 				Blocks[id.X, id.Y] = new LiveMapBlock(this, id, index);
 			}
 
-			PathFinder = new PathFinder(SizeInCells);
+			PathFinder = new PathFinder(SIZE_IN_CELLS);
 		}
 
 		public PathFinder PathFinder { get; private set; }
@@ -57,7 +56,7 @@ namespace GameCore.Mapping
 
 		public LiveMapCell[,] Cells { get; private set; }
 
-		public static int SizeInCells { get; private set; }
+		
 
 		public Creature FirstActiveCreature
 		{
@@ -106,7 +105,7 @@ namespace GameCore.Mapping
 				var d = (ActiveQpoint - CenterLiveBlock);
 				foreach (var blockId in m_blockIds)
 				{
-					var edelta = (blockId + d).Wrap(m_sizeInBlocks, m_sizeInBlocks) - ActiveQpoint;
+					var edelta = (blockId + d).Wrap(SIZE_IN_BLOCKS, SIZE_IN_BLOCKS) - ActiveQpoint;
 					var liveMapBlock = Blocks[blockId.X, blockId.Y];
 					if (liveMapBlock.MapBlock == null)
 					{
@@ -198,7 +197,7 @@ namespace GameCore.Mapping
 			}
 		}
 
-		private Point Wrap(Point _liveBlockId) { return _liveBlockId.Wrap(m_sizeInBlocks, m_sizeInBlocks); }
+		private Point Wrap(Point _liveBlockId) { return _liveBlockId.Wrap(SIZE_IN_BLOCKS, SIZE_IN_BLOCKS); }
 
 		public void CreaturesLayerChanged(Creature _creature, WorldLayer _oldLayer, WorldLayer _newLayer)
 		{
@@ -220,13 +219,13 @@ namespace GameCore.Mapping
 			if (_oldLiveCoords != null && _newLiveCoords != null && BaseMapBlock.GetInBlockCoords(_oldLiveCoords) == BaseMapBlock.GetInBlockCoords(_newLiveCoords)) return;
 
 			LiveMapBlock oldBlock = null;
-			if(_oldLiveCoords!=null)
+			if (_oldLiveCoords != null)
 			{
 				var oldCell = GetCell(_oldLiveCoords);
 				oldCell.ResetTempStates();
 
 				oldBlock = oldCell.LiveMapBlock;
-				if (_newLiveCoords == null)
+				if (_newLiveCoords==null)
 				{
 					oldBlock.RemoveCreature(_creature, _oldLiveCoords);
 					return;
@@ -269,7 +268,7 @@ namespace GameCore.Mapping
 			return Cells[coords.X, coords.Y];
 		}
 
-		public static Point WrapCellCoords(Point _point) { return _point.Wrap(SizeInCells, SizeInCells); }
+		public static Point WrapCellCoords(Point _point) { return _point.Wrap(SIZE_IN_CELLS, SIZE_IN_CELLS); }
 
 		public void Reset()
 		{

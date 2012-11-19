@@ -1,5 +1,11 @@
-﻿using Community.CsharpSqlite.SQLiteClient;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Community.CsharpSqlite.SQLiteClient;
 using GameCore;
+using GameCore.Misc;
+using UnsafeUtils;
 
 namespace ConsoleTests
 {
@@ -8,125 +14,317 @@ namespace ConsoleTests
 		const int SIZE = 64;
 		static void Main(string[] _args)
 		{
-			//var t = World.XResourceResourceRoot.TileInfos.Count;
 
-			//XResourceServer srv = new XResourceServer();
-			//XResourceClient cli = new XResourceClient();
+			var lst = new List<Tuple<int, int>>();
+			var ll = 10;
+			for (var i = -ll; i < ll; ++i)
+			{
+				for (var j = -ll; j < ll; ++j)
+				{
+					lst.Add(new Tuple<int, int>(i, j));
+				}
+			}
 
-			//cli.GetRoot<XResourceResourceRoot>();
 
-			//var random = new Random();
-			////PerlinTest();
-			////GenerateBlockMaps(random);
+			var faPoints = new List<Point>();
+			var points = new List<OldPoint>();
+			{
+				for (var k = 0; k <20; ++k)
+				{
+					Debug.WriteLine(k);
+					using (new Profiler("Point"))
+					{
+						int ee = 0;
+						foreach (var tuple in lst)
+						{
+							faPoints.Add(new Point(tuple.Item1, tuple.Item2));
+						}
+						foreach (var point in faPoints)
+						{
+							foreach (var pnt in faPoints)
+							{
+								if (pnt== point)
+								{
+									ee++;
+								}
+							}
+						}
+					}
 
-			//foreach (var point in new Point(5, 5).GetSpiral(11))
-			//{
-			//	Debug.WriteLine(point);
-			//}
+					using (new Profiler("OldPoint"))
+					{
+						int ee = 0;
+						foreach (var tuple in lst)
+						{
+							points.Add(new OldPoint(tuple.Item1, tuple.Item2));
+						}
+						foreach (var point in points)
+						{
+							foreach (var pnt in points)
+							{
+								if (pnt==point)
+								{
+									ee++;
+								}
+							}
+						}
+					}
+
+				}
+			}
+
+			Profiler.Report();
+			
 		}
 
-		//private static void GenerateBlockMaps(Random random) {
-		//    var map = GenerateWorldMapTest();
-		//    var bmp = new Bitmap(MapBlock.MAP_BLOCK_SIZE * MAP_BLOCK_SIZE, MapBlock.MAP_BLOCK_SIZE * MAP_BLOCK_SIZE);
-		//    var blocks = new Dictionary<Point, MapBlock>();
-		//    var blockPoints = new Rct(0, 0, MapBlock.MAP_BLOCK_SIZE, MapBlock.MAP_BLOCK_SIZE).AllPoints;
-		//    var mapPoints = new Rct(0, 0, MAP_BLOCK_SIZE, MAP_BLOCK_SIZE).AllPoints.OrderBy(_point => random.Next());
+		public static int Method<T>(List<Tuple<int, int>> _lst, List<T> _points, Func<int, int, T> _func, Func<T, T, bool> _eq) where T : struct
+		{
+			int ee = 0;
+			foreach (var tuple in _lst)
+			{
+				_points.Add(_func(tuple.Item1, tuple.Item2));
+			}
+			foreach (var point in _points)
+			{
+				foreach (var pnt in _points)
+				{
+					if (_eq(pnt, point))
+					{
+						ee++;
+					}
+				}
+			}
+			return ee;
+		}
 
-		//    var total = mapPoints.Count();
-		//    var cur = 0;
+		public static int MethodFor<T>(List<Tuple<int, int>> _lst, List<T> _points, Func<int, int, T> _func, Func<T, T, bool> _eq) where T : struct
+		{
+			int ee = 0;
+			for (int index = 0; index < _lst.Count; index++)
+			{
+				var tuple = _lst[index];
+				_points.Add(_func(tuple.Item1, tuple.Item2));
+			}
+			for (int index = 0; index < _points.Count; index++)
+			{
+				var point = _points[index];
+				for (int i = 0; i < _points.Count; i++)
+				{
+					var pnt = _points[i];
+					if (_eq(pnt, point))
+					{
+						ee++;
+					}
+				}
+			}
+			return ee;
+		}
 
-		//    var s = "";
-		//    foreach (var id in mapPoints)
-		//    {
-		//        var block = SurfaceBlockGenerator.GenerateBlock(id, map, blocks);
-		//        blocks.Add(id, block);
+		public static int MethodAr<T>(List<Tuple<int, int>> _lst, List<T> _points, Func<int, int, T> _func, Func<T, T, bool> _eq) where T : struct
+		{
+			int ee = 0;
+			foreach (var tuple in _lst)
+			{
+				_points.Add(_func(tuple.Item1, tuple.Item2));
+			}
+			var arr = _points.ToArray();
 
-		//        var s1 = string.Format("{0:N0}%", (100.0*++cur/total));
-		//        if (s != s1)
-		//        {
-		//            Debug.WriteLine(s1);
-		//            s = s1;
-		//        }
+			foreach (var point in arr)
+			{
+				foreach (var pnt in arr)
+				{
+					if (_eq(pnt, point))
+					{
+						ee++;
+					}
+				}
+			}
+			return ee;
+		}
 
-		//        var blockId = id*MapBlock.MAP_BLOCK_SIZE;
+		public static int MethodArFor<T>(List<Tuple<int, int>> _lst, List<T> _points, Func<int, int, T> _func, Func<T, T, bool> _eq) where T : struct
+		{
+			int ee = 0;
+			for (int index = 0; index < _lst.Count; index++)
+			{
+				var tuple = _lst[index];
+				_points.Add(_func(tuple.Item1, tuple.Item2));
+			}
+			var arr = _points.ToArray();
 
-		//        foreach (var pnt in blockPoints)
-		//        {
-		//            var value = block.Map[pnt.X, pnt.Y];
-		//            var fcolor = MiniMapUiBlock.GetColor(TerrainAttribute.GetMapBlockType(value));
-		//            var color = Color.FromArgb((int) (fcolor.R*255), (int) (fcolor.G*255), (int) (fcolor.B*255));
-		//            bmp.SetPixel(pnt.X + blockId.X, pnt.Y + blockId.Y, color);
-		//        }
-		//    }
-		//    bmp.SaveResources("blocks.bmp");
-		//}
-
-		//private static EMapBlockTypes[,] GenerateWorldMapTest()
-		//{
-		//	var random = new Random();
-		//	var mg =new WorldMapGenerator(SIZE,random);
-		//	var map = mg.CreatePatchMap();
-		//	var bmp = new Bitmap(SIZE, SIZE);
-
-		//	foreach(var pnt in new Rct(0,0,SIZE,SIZE).AllPoints)
-		//	{
-		//		var value = map[pnt.X,pnt.Y];
-		//		var fcolor = MiniMapUiBlock.GetColor(value);
-		//		var color = Color.FromArgb((int)(fcolor.R * 255), (int)(fcolor.G * 255), (int)(fcolor.B * 255));
-		//		bmp.SetPixel(pnt.X,pnt.Y,color);
-		//	}
-		//	bmp.SaveResources("map.bmp");
-		//	return map;
-		//}
-
-		//private static void PerlinTest() {
-		//	const int size = 128;
-		//	var random = new Random();
-		//	var wmg = new WorldMapGenerator(size, random);
-		//	var map = wmg.Generate();
-
-		//	var hs = size/2;
-		//	var cntr = new GameCore.Misc.Point(hs, hs);
-		//	for (var k = 0.1f; k < 1f; k += 0.1f)
-		//	{
-		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, k, 9, 4, 0, 255);
-		//		bmp.SaveResources("det_" + k.ToString("N1") + ".bmp");
-		//	}
-		//	for (var k = 1; k < 10; k += 1)
-		//	{
-		//		var bmp = PerlinNoise.GenerateBitmap(size, size, 0.1f, 1f, 1f, k, 4, 0, 255);
-		//		bmp.SaveResources("oct_" + k.ToString("N1") + ".bmp");
-		//		continue;
-		//		var bitmap = new Bitmap(size, size);
-		//		var noise = PerlinNoise.Generate(size, size, 0.1f, 1f, 1f, k, 1);
-		//		for (var i = 0; i < size; ++i)
-		//		{
-		//			for (var j = 0; j < size;++j )
-		//			{
-		//				var ko = (hs - cntr.GetDistTill(new GameCore.Misc.Point(i, j))) / hs  *  Math.Abs(noise[i, j]);
-		//				if (ko > 1) ko = 1;
-		//				if (ko < 0.5) continue;
-						
-		//				var rgb = (int) (ko*255);
-		//				bitmap.SetPixel(i, j, Color.FromArgb(rgb, rgb, rgb));
-		//				switch (map[i, j])
-		//				{
-		//					case EMapBlockTypes.NONE:
-		//						break;
-		//					case EMapBlockTypes.GROUND:
-		//					case EMapBlockTypes.FOREST:
-		//					case EMapBlockTypes.SEA:
-		//					case EMapBlockTypes.CITY:
-		//						break;
-		//					default:
-		//						throw new ArgumentOutOfRangeException();
-		//				}
-		//			}
-		//		}
-
-
-		//		bitmap.SaveResources("oct_" + k.ToString("N1") + ".bmp");
-		//	}
-		//}
+			for (int i = 0; i < arr.Length; i++)
+			{
+				var point = arr[i];
+				for (int index = 0; index < arr.Length; index++)
+				{
+					var pnt = arr[index];
+					if (_eq(pnt, point))
+					{
+						ee++;
+					}
+				}
+			}
+			return ee;
+		}
+		public static int MethodLq<T>(List<Tuple<int, int>> _lst, List<T> _points, Func<int, int, T> _func, Func<T, T, bool> _eq) where T : struct
+		{
+			_points.AddRange(_lst.Select(_tuple => _func(_tuple.Item1, _tuple.Item2)));
+			var arr = _points.ToArray();
+			return (from point in arr from pnt in arr where _eq(pnt, point) select point).Count();
+		}
 	}
+
+
+}
+
+public class OldPoint
+{
+	static OldPoint()
+	{
+		Zero = new OldPoint(0, 0);
+		Null = new OldPoint(Int32.MaxValue, Int32.MaxValue);
+	}
+
+	public OldPoint(int _x, int _y)
+	{
+		X = _x;
+		Y = _y;
+	}
+
+	public static OldPoint Zero { get; private set; }
+
+	public static OldPoint Null { get; private set; }
+
+	public bool IsNull
+	{
+		get { return X == Int32.MaxValue; }
+
+	}
+	public bool IsNotNull
+	{
+		get { return X != Int32.MaxValue; }
+
+	}
+
+	public int X;
+	public int Y;
+
+	public float Lenght { get { return (float)Math.Sqrt((float)X * X + (float)Y * Y); } }
+
+	public float QLenght { get { return Math.Max(Math.Abs(X), Math.Abs(Y)); } }
+
+	public IEnumerable<OldPoint> NearestPoints
+	{
+		get
+		{
+			var p = this;
+			return NearestDPoints.Select(_point => _point + p);
+		}
+	}
+
+
+	private static OldPoint[] m_nearestDPoints = null;
+
+	public static OldPoint[] NearestDPoints
+	{
+		get
+		{
+			if (m_nearestDPoints == null)
+			{
+				var list = new List<OldPoint>();
+
+				for (var i = -1; i <= 1; ++i)
+				{
+					for (var j = -1; j <= 1; ++j)
+					{
+						list.Add(new OldPoint(i, j));
+					}
+				}
+				m_nearestDPoints = list.ToArray();
+			}
+			return m_nearestDPoints;
+		}
+	}
+
+	public IEnumerable<OldPoint> AllNeighbours
+	{
+		get
+		{
+			yield return new OldPoint(X - 1, Y - 1);
+			yield return new OldPoint(X, Y - 1);
+			yield return new OldPoint(X + 1, Y - 1);
+			yield return new OldPoint(X - 1, Y);
+			yield return new OldPoint(X + 1, Y - 1);
+			yield return new OldPoint(X - 1, Y + 1);
+			yield return new OldPoint(X, Y + 1);
+			yield return new OldPoint(X + 1, Y + 1);
+		}
+	}
+
+	public float GetDistTill(OldPoint _point) { return (float)Math.Sqrt((X - _point.X) * (X - _point.X) + (Y - _point.Y) * (Y - _point.Y)); }
+
+	public override string ToString() { return string.Format("P({0};{1})", X, Y); }
+
+	public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
+
+	public override int GetHashCode() { return X ^ (Y << 16); }
+
+	public IEnumerable<OldPoint> GetLineToPoints(OldPoint _point)
+	{
+		double lx = Math.Abs(_point.X - X);
+		double ly = Math.Abs(_point.Y - Y);
+
+		var max = Math.Max(lx, ly);
+
+		double dx = Math.Sign(_point.X - X);
+		double dy = Math.Sign(_point.Y - Y);
+		;
+
+		double x = X;
+		double y = Y;
+
+		if (lx > ly)
+		{
+			dy *= ly / lx;
+		}
+		else if ((lx < ly))
+		{
+			dx *= lx / ly;
+		}
+
+		yield return this;
+		for (var i = 0; i < max; ++i)
+		{
+			x += dx;
+			y += dy;
+			yield return new OldPoint((int)Math.Round(x), (int)Math.Round(y));
+		}
+	}
+
+
+	public OldPoint Wrap(int _width, int _height) { return new OldPoint((X + 100 * _width) % _width, (Y + 100 * _height) % _height); }
+
+	#region overrides
+
+	public static OldPoint operator +(OldPoint _a, OldPoint _b) { return new OldPoint(_a.X + _b.X, _a.Y + _b.Y); }
+
+	public static OldPoint operator -(OldPoint _a, OldPoint _b) { return new OldPoint(_a.X - _b.X, _a.Y - _b.Y); }
+
+	public static OldPoint operator *(OldPoint _a, float _c) { return new OldPoint((int)Math.Round(_a.X * _c), (int)Math.Round(_a.Y * _c)); }
+
+	public static OldPoint operator *(OldPoint _a, OldPoint _b) { return new OldPoint(_a.X * _b.X, _a.Y * _b.Y); }
+
+	public static OldPoint operator /(OldPoint _a, int _c) { return new OldPoint(_a.X / _c, _a.Y / _c); }
+
+	public static bool operator ==(OldPoint _a, OldPoint _b)
+	{
+		return _a.X == _b.X && _a.Y == _b.Y;
+	}
+
+	public static bool operator !=(OldPoint _a, OldPoint _b)
+	{
+		return _a.X != _b.X || _a.Y != _b.Y;
+	}
+
+	#endregion
 }

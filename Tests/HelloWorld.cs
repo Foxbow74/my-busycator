@@ -20,5 +20,13 @@ namespace Tests
 			SendKey(ConsoleKey.UpArrow);
 			Assert.AreEqual(current, Avatar[0, 0].WorldCoords);
 		}
+
+
+		[TestMethod]
+		public void ТыКто()
+		{
+			var current = Avatar[0, 0].WorldCoords;
+			SendKey(ConsoleKey.Y);
+		}
 	}
 }

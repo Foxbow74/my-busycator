@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Weapons;
+using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {
@@ -55,8 +56,8 @@ namespace GameCore.Mapping.Layers
 			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(3, 2));
                     break;
                 case 2:
-                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(2, 4));
-					_block.AddEssence(new Button(EssenceHelper.GetMaterial<BrassMaterial>(), 0), new Point(14, 4));
+                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(14, 14));
+					_block.AddEssence(new Button(EssenceHelper.GetMaterial<BrassMaterial>(), 0), new Point(1, 1));
                     break;
             }
 		}
