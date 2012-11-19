@@ -179,7 +179,7 @@ namespace GameCore
 			TheWorld.BornAvatar();
 		}
 
-		public void KeyPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		public void KeyPressed(ConsoleKey _key, EKeyModifiers _modifiers=EKeyModifiers.NONE)
 		{
 			var act = KeyTranslator.TranslateKey(_key, _modifiers);
 			if (act == null) return;

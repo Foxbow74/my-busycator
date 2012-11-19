@@ -56,7 +56,7 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public ETerrains Terrains { get; private set; }
+		public ETerrains Terrain { get; private set; }
 
 		public TerrainAttribute TerrainAttribute { get; private set; }
 
@@ -197,8 +197,8 @@ namespace GameCore.Mapping
 			m_mapBlock = _mapBlock;
 			m_seenMask = ((UInt32) 1) << InBlockCoords.X;
 
-			Terrains = _mapBlock.Map[_inBlockCoords.X, _inBlockCoords.Y];
-			TerrainAttribute = TerrainAttribute.GetAttribute(Terrains);
+			Terrain = _mapBlock.Map[_inBlockCoords.X, _inBlockCoords.Y];
+			TerrainAttribute = TerrainAttribute.GetAttribute(Terrain);
 
 			IsSeenBefore = (_mapBlock.SeenCells[_inBlockCoords.Y] & m_seenMask) != 0;
 			OnLiveMapCoords = _onLiveMapCoords;
