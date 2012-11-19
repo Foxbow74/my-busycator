@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace GameCore.Misc
 {
-	public class Point
+	public struct Point
 	{
-		static Point() { Zero = new Point(); }
+		static Point() { Zero = new Point(){X=0,Y=0}; }
 
 		public Point(int _x, int _y)
 		{
@@ -14,16 +14,10 @@ namespace GameCore.Misc
 			Y = _y;
 		}
 
-		public Point()
-		{
-			X = 0;
-			Y = 0;
-		}
-
 		public static Point Zero { get; private set; }
 
-		public int X { get; set; }
-		public int Y { get; set; }
+		public int X;
+		public int Y;
 
 		public float Lenght { get { return (float) Math.Sqrt((float) X*X + (float) Y*Y); } }
 
