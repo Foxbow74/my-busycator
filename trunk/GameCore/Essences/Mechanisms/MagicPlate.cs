@@ -2,6 +2,7 @@ using System;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Essences.Mechanisms
 {

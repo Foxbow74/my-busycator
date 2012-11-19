@@ -37,8 +37,8 @@ namespace GameCore.Acts.Combat
 				}
 			}
 
-			var dPoint = GetParameter<Point>().FirstOrDefault();
-			if (dPoint == null)
+			Point dPoint;
+			if (!TryGetParameter(out dPoint))
 			{
 				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_SHOOT_TARGET, 10));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;

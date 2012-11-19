@@ -1,5 +1,6 @@
 ﻿using GameCore.Mapping;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Essences.Things.LightSources
 {

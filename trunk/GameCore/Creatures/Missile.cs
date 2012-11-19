@@ -7,6 +7,7 @@ using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;
+using UnsafeUtils;
 
 namespace GameCore.Creatures
 {

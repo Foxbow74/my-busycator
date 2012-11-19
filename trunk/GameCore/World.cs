@@ -12,6 +12,7 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Storage;
 using GameCore.Storeable;
+using UnsafeUtils;
 
 namespace GameCore
 {
@@ -125,7 +126,6 @@ namespace GameCore
 								break;
 							case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
 								creature.LiveCoords = null;
-								//m_activeCreatures.Remove(creature);
 								continue;
 							default:
 								throw new ArgumentOutOfRangeException();

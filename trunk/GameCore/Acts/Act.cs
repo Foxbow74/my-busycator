@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Text;
 using GameCore.Creatures;
 using GameCore.Essences;
@@ -147,10 +148,42 @@ namespace GameCore.Acts
 
 			foreach (var tuple in m_parameters)
 			{
-				if (typeof (T).IsAssignableFrom(tuple.Item1)) yield return (T) tuple.Item2;
+				if (typeof(T).IsAssignableFrom(tuple.Item1)) yield return (T)tuple.Item2;
 			}
 		}
 
+		public bool TryGetParameter<T>(out T _value)
+		{
+			if (m_parameters != null)
+			{
+				foreach (var tuple in m_parameters)
+				{
+					if (typeof(T).IsAssignableFrom(tuple.Item1))
+					{
+						_value = (T) tuple.Item2;
+						return true;
+					}
+				}
+			}
+			_value = default(T);
+			return false;
+		}
+
+
+		public T GetFirstParameter<T>()
+		{
+			if (m_parameters != null)
+			{
+				foreach (var tuple in m_parameters)
+				{
+					if (typeof(T).IsAssignableFrom(tuple.Item1))
+					{
+						return (T)tuple.Item2;
+					}
+				}
+			}
+			throw new InstanceNotFoundException();
+		}
 
 		protected EActResults Find(Creature _creature, Func<Essence, LiveMapCell, bool> _predicate, out LiveMapCell _liveMapCell)
 		{

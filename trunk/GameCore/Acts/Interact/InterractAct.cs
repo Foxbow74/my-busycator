@@ -60,38 +60,6 @@ namespace GameCore.Acts.Interact
 			{
 				throw new NotImplementedException();
 			}
-
-			//вы€сн€ем, что нужно открыть
-			{
-				var list = new List<EssenceDescriptor>();
-				if ((liveMapCell.Thing.Is<ClosedDoor>() || liveMapCell.Thing.Is<Chest>()) &&
-				    liveMapCell.Thing.IsLockedFor(liveMapCell, _creature))
-				{
-					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
-				}
-				list.AddRange(
-					liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(
-						_descriptor => EssenceHelper.IsLockedFor(_descriptor.Essence, liveMapCell, _creature)));
-				if (liveMapCell.LiveCoords == _creature.LiveCoords)
-				{
-					list.AddRange(
-						_creature.GetBackPackItems().Where(
-							_descriptor => _descriptor.Essence.IsLockedFor(liveMapCell, _creature)));
-				}
-				var descriptors = list.Distinct();
-				if (GetParameter<EssenceDescriptor>().Any())
-				{
-					descriptors = GetParameter<EssenceDescriptor>().Intersect(descriptors);
-				}
-				if (descriptors.Count() > 1)
-				{
-					MessageManager.SendMessage(this,
-					                           new AskMessageNg(this, EAskMessageType.SELECT_THINGS, descriptors,
-					                                            ESelectItemDialogBehavior.SELECT_MULTIPLE |
-					                                            ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
-				}
-				return ((ICanbeOpened) descriptors.First().Essence).Open(_creature, liveMapCell);
-			}
 		}
 	}
 }

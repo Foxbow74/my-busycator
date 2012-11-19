@@ -6,6 +6,7 @@ using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Materials;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Essences
 {

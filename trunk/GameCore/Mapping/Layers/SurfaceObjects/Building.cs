@@ -8,6 +8,7 @@ using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
 using RusLanguage;
+using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

@@ -4,6 +4,7 @@ using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using RusLanguage;
+using UnsafeUtils;
 
 namespace GameCore.Essences.Tools
 {

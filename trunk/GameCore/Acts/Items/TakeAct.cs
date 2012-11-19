@@ -6,6 +6,7 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;
 using RusLanguage;
+using UnsafeUtils;
 
 namespace GameCore.Acts.Items
 {

@@ -4,11 +4,12 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using GameCore;
-using GameCore.Creatures;
+using UnsafeUtils;
 using GameCore.Misc;
 using GameUi;
 using OpenTK;
 using OpenTKUi;
+using UnsafeUtils;
 
 namespace Busycator
 {

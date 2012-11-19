@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using ResourceWizard.VMs;
 using ResourceWizard.Views;
-using UnsafeUtils;
 
 namespace ResourceWizard
 {
@@ -13,10 +12,6 @@ namespace ResourceWizard
 
 		protected override void OnStartup(StartupEventArgs e)
 		{
-			var p = sizeof (float);
-			var t = new FastPointTest();
-			
-
 			base.OnStartup(e);
 			XClient.UiDispatcher = Dispatcher;
 			Manager.Instance.Application = this;

@@ -34,13 +34,14 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>
     </DocumentationFile>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -96,6 +97,10 @@
     <ProjectReference Include="..\GameCore\GameCore.csproj">
       <Project>{7ed7d31c-ad6b-4df5-8756-4ca130d451c2}</Project>
       <Name>GameCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
+      <Name>UnsafeUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\XTransport\XTransport.csproj">
       <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>

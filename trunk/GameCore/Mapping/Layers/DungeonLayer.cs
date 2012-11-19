@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
+using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {

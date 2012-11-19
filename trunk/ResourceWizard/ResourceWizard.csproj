@@ -19,7 +19,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\Compiled\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -300,6 +300,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\winterwater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_armor32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster732.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster132.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster232.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster332.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster432.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster532.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_monster632.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

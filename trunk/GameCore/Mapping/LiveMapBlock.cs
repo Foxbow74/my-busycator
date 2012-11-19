@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Misc;
 using GameCore.Essences;
+using UnsafeUtils;
 
 namespace GameCore.Mapping
 {

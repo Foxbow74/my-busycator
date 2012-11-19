@@ -6,6 +6,7 @@ using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences.Things;
+using UnsafeUtils;
 
 namespace GameCore.Acts.Movement
 {
@@ -33,10 +34,9 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature)
 		{
-			var target = GetParameter<Point>().FirstOrDefault();
-			var way = GetParameter<IEnumerable<Point>>().FirstOrDefault();
+			IEnumerable<Point> way;
 
-			if (way != null)
+			if (TryGetParameter(out way))
 			{
 				var result = EActResults.DONE;
 				var pnt = way.First();
@@ -53,7 +53,8 @@ namespace GameCore.Acts.Movement
 				return result;
 			}
 
-			if (target == null)
+			Point target;
+			if (!TryGetParameter(out target))
 			{
 				MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DESTINATION));
 				return EActResults.NEED_ADDITIONAL_PARAMETERS;

@@ -16,7 +16,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>true</Optimize>
     <OutputPath>..\Compiled\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -72,6 +72,10 @@
     <ProjectReference Include="..\QuickFont\QuickFont.csproj">
       <Project>{bbece6fc-ef63-40f8-a734-a500d1dfc1af}</Project>
       <Name>QuickFont</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
+      <Name>UnsafeUtils</Name>
     </ProjectReference>
     <ProjectReference Include="..\XTransport\XTransport.csproj">
       <Project>{171F736D-E4BB-438A-9D56-6F8E238814C0}</Project>

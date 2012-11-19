@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace GameCore.Misc
 {
-	public struct Point
+	public class Point
 	{
-		static Point() { Zero = new Point(){X=0,Y=0}; }
+		static Point() { Zero = new Point(0,0); }
 
 		public Point(int _x, int _y)
 		{

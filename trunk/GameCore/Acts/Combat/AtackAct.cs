@@ -21,8 +21,8 @@ namespace GameCore.Acts.Combat
 
 		public override EActResults Do(Creature _creature)
 		{
-			var delta = GetParameter<Point>().FirstOrDefault();
-			if (delta == null)
+			Point delta;
+			if (!TryGetParameter(out delta))
 			{
 				throw new NotImplementedException();
 			}

@@ -8,6 +8,7 @@ using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
 using GameCore.Misc;
+using UnsafeUtils;
 
 namespace GameCore.Creatures
 {
@@ -239,7 +240,7 @@ namespace GameCore.Creatures
 				m_pathMapCoords = null;
 
 				var oldValue = m_liveCoords;
-				m_liveCoords = value == null ? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
+				m_liveCoords = value==null? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
 				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
 			}
 		}
@@ -249,7 +250,14 @@ namespace GameCore.Creatures
 
 		public Point PathMapCoords
 		{
-			get { return m_pathMapCoords ?? (m_pathMapCoords = this[0, 0].PathMapCoords); }
+			get
+			{
+				if(m_pathMapCoords==null)
+				{
+					m_pathMapCoords = this[0, 0].PathMapCoords;
+				}
+				return m_pathMapCoords;
+			}
 		}
 
 		public IEnumerable<AbstractCreatureRole> Roles

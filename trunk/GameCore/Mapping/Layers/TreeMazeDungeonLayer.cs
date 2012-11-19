@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
+using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {
@@ -245,7 +246,7 @@ namespace GameCore.Mapping.Layers
 							throw new ArgumentOutOfRangeException();
 					}
 
-					var end = begin.Clone();
+					var end = begin;
 
 					var delta = dir.GetDelta();
 
@@ -733,12 +734,8 @@ namespace GameCore.Mapping.Layers
 					}
 					foreach (var cp in cps)
 					{
-						if (cp.End == new Point(-2, 73))
-						{
-						}
 						var delta = cp.Dir.GetDelta();
 						var point = cp.End;
-						Room rm = null;
 						var i = 0;
 						var flag = false;
 						for (; i < 10; ++i)
@@ -759,7 +756,7 @@ namespace GameCore.Mapping.Layers
 							}
 							else
 							{
-								rm = rooms.FirstOrDefault(_room => _room.WorldRoomRectangle.Contains(point));
+								var rm = rooms.FirstOrDefault(_room => _room.WorldRoomRectangle.Contains(point));
 								if (rm != null)
 								{
 									ConnectTwoRooms(room, rm, forbid, connectors, cp.Begin, cp.End, point - delta);
