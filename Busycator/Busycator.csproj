@@ -73,6 +73,10 @@
       <Project>{BCAD98EB-0C52-4186-B8B0-92AB47947796}</Project>
       <Name>OpenTKUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
+      <Name>UnsafeUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameProvider.cs" />
