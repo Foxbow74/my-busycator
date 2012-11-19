@@ -1563,9 +1563,6 @@ namespace GameCore
 
 		public FColor(float _a, float _r, float _g, float _b)
 		{
-			if (_a < 0 || _r < 0 || _b < 0 || _g < 0)
-			{
-			}
 			A = _a;
 			R = _r;
 			G = _g;
@@ -1592,11 +1589,12 @@ namespace GameCore
 		{
 			var f = Math.Max(A, Math.Max(R, Math.Max(G, B)));
 			f = Math.Max(f, Math.Max(_color.A, Math.Max(_color.R, Math.Max(_color.G, _color.B))));
+			return new FColor(Screen(A, _color.A, f), Screen(R, _color.R, f), Screen(G, _color.G, f), Screen(B, _color.B, f));
+		}
 
-			Func<float, float, float> func = (_i, _i1) => f - ((1f - _i/f)*(1f - _i1/f))*f;
-
-
-			return new FColor(func(A, _color.A), func(R, _color.R), func(G, _color.G), func(B, _color.B));
+		private static float Screen(float _i, float _i1, float _f)
+		{
+			return _f - ((1f - _i/_f)*(1f - _i1/_f))*_f;
 		}
 
 		public FColor Multiply(FColor _color) { return new FColor(A*_color.A, R*_color.R, G*_color.G, B*_color.B); }
@@ -1650,7 +1648,6 @@ namespace GameCore
 				return new FColor(1f, R/k, G/k, B/k);
 			}
 			return this;
-			//return new FColor(Math.Min(1f, A), Math.Min(1f, R), Math.Min(1f, G), Math.Min(1f, B));
 		}
 
 		public void AddColorOnly(FColor _fColor)
@@ -1675,24 +1672,9 @@ namespace GameCore
 
 		public static FColor FromHex(int _hex) { return FromArgb(255, _hex/256/256 & 0xff, _hex/256 & 0xff, _hex & 0xff); }
 
-		public static FColor Parse(string _hex)
-		{
-			if(string.IsNullOrEmpty(_hex))
-			{
-				return Black;
-			}
-			var n = Int64.Parse(_hex, NumberStyles.HexNumber);
-			var fColor = new FColor(1f, ((n >> 16) & 0xff)/255f, ((n >> 8) & 0xff)/255f, (n & 0xff)/255f);
-			return fColor;
-		}
-
-		public string ToShortText() { return string.Format("{0:X2}{1:X2}{2:X2}", (int) (R*255), (int) (G*255), (int) (B*255)).ToLower(); }
-
 		public FColor UpdateAlfa(float _f)
 		{
 			return new FColor(_f,R,G,B);
-			//A = _f;
-			//return this;
 		}
 	}
 }
