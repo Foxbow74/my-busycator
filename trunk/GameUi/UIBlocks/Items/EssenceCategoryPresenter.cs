@@ -7,13 +7,13 @@ namespace GameUi.UIBlocks.Items
 	{
 		private readonly EssenceCategoryAttribute m_attribute;
 
-		public EssenceCategoryPresenter(EEssenceCategory _category)
+		public EssenceCategoryPresenter(EItemCategory _category)
 		{
 			Category = _category;
 			m_attribute = EssenceCategoryAttribute.GetAttribute(_category);
 		}
 
-		public EEssenceCategory Category { get; private set; }
+		public EItemCategory Category { get; private set; }
 
 		#region ILinePresenter Members
 

@@ -12,6 +12,6 @@
             }
         }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.MISSILE_WEAPON; } }
+		public override EItemCategory Category { get { return EItemCategory.MISSILE_WEAPON; } }
 	}
 }

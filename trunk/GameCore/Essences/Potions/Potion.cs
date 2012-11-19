@@ -17,7 +17,7 @@ namespace GameCore.Essences.Potions
 
 		public override string Name { get { return "булька"; } }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.POTION; } }
+		public override EItemCategory Category { get { return EItemCategory.POTION; } }
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 

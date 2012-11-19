@@ -15,8 +15,6 @@ namespace GameCore.Essences
 
 		public override string Name { get { return "рюкзак"; } }
 
-		public override EEssenceCategory Category { get { throw new NotImplementedException(); } }
-
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 	}
 }

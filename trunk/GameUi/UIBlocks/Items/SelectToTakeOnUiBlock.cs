@@ -25,7 +25,7 @@ namespace GameUi.UIBlocks.Items
 			m_equipmentUiBlock = _equipmentUiBlock;
 		}
 
-		protected override IEnumerable<EEssenceCategory> AllowedCategories { get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; } }
+		protected override IEnumerable<EItemCategory> AllowedCategories { get { return EquipmentPlacesAttribute.GetAttribute(m_equipmentPresenter.Place).AbleToEquip; } }
 
 		protected override int HeaderTakesLine { get { return 4; } }
 

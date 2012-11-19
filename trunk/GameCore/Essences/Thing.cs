@@ -10,8 +10,6 @@
 
         public override ETileset Tileset{ get { return ETileset.THINGS; } }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.THING; } }
-
 		public override EMaterial AllowedMaterials { get { return EMaterial.METAL|EMaterial.MINERAL|EMaterial.WOOD; } }
 
 		public void Paint(FColor _lerpColor) { m_lerpColor = _lerpColor; }

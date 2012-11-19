@@ -4,7 +4,7 @@ using GameCore.Misc;
 
 namespace GameCore.Essences
 {
-    public enum EEssenceCategory
+    public enum EItemCategory
     {
         [EssenceCategory("-", ' ', ConsoleKey.NoName, EKeyModifiers.NONE)]
         NONE,
@@ -47,15 +47,11 @@ namespace GameCore.Essences
         BOOKS,
         [EssenceCategory("Свитки", '?', ConsoleKey.Oem2, EKeyModifiers.SHIFT)]
         SCROLLS,
-        [EssenceCategory("Остальное", '#', ConsoleKey.D3, EKeyModifiers.SHIFT)]
-        THING,
-        [EssenceCategory("Окружение", 'v', ConsoleKey.NoName, EKeyModifiers.NONE)]
-        LANDSCAPE
     }
 
     public class EssenceCategoryAttribute : Attribute
     {
-        private static Dictionary<EEssenceCategory, EssenceCategoryAttribute> m_attrs;
+        private static Dictionary<EItemCategory, EssenceCategoryAttribute> m_attrs;
 
         public EssenceCategoryAttribute(string _displayName, char _char, ConsoleKey _key, EKeyModifiers _modifiers)
         {
@@ -70,11 +66,11 @@ namespace GameCore.Essences
         public ConsoleKey Key { get; set; }
         public EKeyModifiers Modifiers { get; set; }
 
-        public static EssenceCategoryAttribute GetAttribute(EEssenceCategory _enum)
+        public static EssenceCategoryAttribute GetAttribute(EItemCategory _enum)
         {
             if (m_attrs == null)
             {
-                m_attrs = Util.Fill<EEssenceCategory, EssenceCategoryAttribute>();
+                m_attrs = Util.Fill<EItemCategory, EssenceCategoryAttribute>();
             }
             return m_attrs[_enum];
         }

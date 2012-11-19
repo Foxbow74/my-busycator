@@ -20,8 +20,6 @@ namespace GameCore.Essences
 			get { return TileInfoProvider.GetOpacity(Tileset, TileIndex); }
 		}
 
-		public abstract EEssenceCategory Category { get; }
-
 		public virtual ILightSource Light { get { return null; } }
 
 		public abstract EMaterial AllowedMaterials { get; }

@@ -29,7 +29,6 @@ namespace GameCore.Essences
 
 		public override string Name { get { return m_essence.Name; } }
 
-		public override EEssenceCategory Category { get { return m_essence.Category; } }
 		public override EMaterial AllowedMaterials { get { return m_essence.AllowedMaterials; } }
 
 		#region IFaked Members

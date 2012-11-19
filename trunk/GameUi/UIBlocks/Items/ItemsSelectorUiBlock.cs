@@ -15,8 +15,8 @@ namespace GameUi.UIBlocks.Items
 		private readonly ESelectItemDialogBehavior m_behavior;
 		private readonly IEnumerable<EssenceDescriptor> m_descriptors;
 
-		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EEssenceCategory> m_filters =
-			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EEssenceCategory>();
+		private readonly Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EItemCategory> m_filters =
+			new Dictionary<Tuple<ConsoleKey, EKeyModifiers>, EItemCategory>();
 
 		private char m_currentFilter = '*';
 
@@ -38,7 +38,7 @@ namespace GameUi.UIBlocks.Items
 		/// <summary>
 		/// 	Empty if no filter
 		/// </summary>
-		protected abstract IEnumerable<EEssenceCategory> AllowedCategories { get; }
+		protected abstract IEnumerable<EItemCategory> AllowedCategories { get; }
 
 		protected abstract int HeaderTakesLine { get; }
 
@@ -55,7 +55,7 @@ namespace GameUi.UIBlocks.Items
 			m_pages.Clear();
 
 			var categories =
-				m_descriptors.Select(_descriptor => _descriptor.Essence.Category).Distinct().OrderBy(_category => _category);
+				m_descriptors.Select(_descriptor => _descriptor.Essence).OfType<Item>().Select(_item => _item.Category).Distinct().OrderBy(_category => _category);
 
 			if (AllowedCategories.Any())
 			{
@@ -66,10 +66,14 @@ namespace GameUi.UIBlocks.Items
 			{
 				var attribute = EssenceCategoryAttribute.GetAttribute(cat);
 				if (m_currentFilter != '*' && attribute.C != m_currentFilter) continue;
-				foreach (var descriptor in m_descriptors.Where(_descriptor => _descriptor.Essence.Category == cat))
+				foreach (var descriptor in m_descriptors)
 				{
-					if (done.Contains(descriptor.Essence.GetHashCode())) continue;
-					done.Add(descriptor.Essence.GetHashCode());
+					var item = descriptor.Essence as Item;
+
+					if(item==null) continue;
+
+					if (done.Contains(item.GetHashCode())) continue;
+					done.Add(item.GetHashCode());
 
 					if (page == null)
 					{

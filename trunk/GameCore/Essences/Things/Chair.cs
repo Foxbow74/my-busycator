@@ -12,8 +12,6 @@ namespace GameCore.Essences.Things
 
 		public override string Name { get { return "могила"; } }
 
-		public override EEssenceCategory Category { get { return EEssenceCategory.LANDSCAPE; } }
-
 		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 
         public override int TileIndex { get { return 6; } }
