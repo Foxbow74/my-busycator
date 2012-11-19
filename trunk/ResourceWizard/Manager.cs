@@ -73,9 +73,15 @@ namespace ResourceWizard
                 females.Nicks = Resources.femalenicks;
             }
 			m_resourceCli.Save(XRoot);
-
-           // m_resourceSrv.Shrink();
 		}
+
+
+		public void Shrink()
+		{
+			m_resourceSrv.Shrink();
+			Application.MainWindow.Close();
+		}
+
 
         private void PackTiles()
         {
@@ -106,7 +112,9 @@ namespace ResourceWizard
                     var y = (index + 1) / perRow;
 
                     var isNone = false;
-                    var prnt = grouping.First().Parent;
+                	var xTileInfoVM = grouping.First();
+
+                	var prnt = xTileInfoVM.Parent;
                     if(prnt is XTileSetVM)
                     {
                         isNone = ((XTileSetVM)prnt).Key == ETileset.NONE;
@@ -133,16 +141,7 @@ namespace ResourceWizard
                     
                     var key = grouping.Key;
 
-					//if (grouping.First().Parent is XTileSetVM)
-					//{
-					//    var ts = (XTileSetVM)grouping.First().Parent;
-					//    if(ts.Key==ETileset.SPLATTERS)
-					//    {
-					//        gr.DrawImage(this[key.Item1, key.Item2, key.Item3, grouping.First().Color.GetFColor(), key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
-					//        continue;
-					//    }
-					//}
-					gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White.UpdateAlfa(grouping.First().Color.A), key.Item4, key.Item5], dstRect, srcRect, GraphicsUnit.Pixel);
+					gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White.UpdateAlfa(xTileInfoVM.Color.A), key.Item4, key.Item5, xTileInfoVM.Parent is XTerrainSetVM], dstRect, srcRect, GraphicsUnit.Pixel);
                 }
             }
             bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);
@@ -158,6 +157,7 @@ namespace ResourceWizard
 		public XTileInfoVM TileBuffer { get; set; }
 
 		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_textures = new Dictionary<ETextureSet, OpenTKUi.Image>();
+		readonly Dictionary<ETextureSet, OpenTKUi.Image> m_ttextures = new Dictionary<ETextureSet, OpenTKUi.Image>();
         readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
 	    private IEnumerable<Essence> m_allEssences;
 	    
@@ -170,65 +170,80 @@ namespace ResourceWizard
 	        }
 	    }
 
+		public App Application { get; set; }
 
-	    public Bitmap this[ETextureSet _set]
+
+		public Bitmap this[ETextureSet _set, bool _isTerrain]
 		{
 			get
 			{
 				OpenTKUi.Image value;
-				if(!m_textures.TryGetValue(_set, out value))
+				if (_isTerrain)
 				{
-					Bitmap bmp;
-					switch (_set)
+					if (!m_ttextures.TryGetValue(_set, out value))
 					{
-						case ETextureSet.RJ:
-                            bmp = Resources.redjack15v;
-							break;
-						case ETextureSet.RB1:
-							bmp = Resources.RantingRodent_Brick_01;
-							break;
-						case ETextureSet.RB2:
-                            bmp = Resources.RantingRodent_Brick_02;
-							break;
-						case ETextureSet.RN1:
-							bmp = Resources.RantingRodent_Natural_01;
-							break;
-						case ETextureSet.RN2:
-							bmp = Resources.RantingRodent_Natural_02;
-							break;
-						case ETextureSet.GP:
-                            bmp = Resources.gold_plated_16x16;
-							break;
-						case ETextureSet.NH:
-							bmp = Resources.nethack;
-							break;
-						case ETextureSet.HM:
-							bmp = Resources.aq;
-							break;
-						case ETextureSet.PH:
-							bmp = Resources.Phoebus_16x16;
-							break;
-						case ETextureSet.U4:
-                            bmp = Resources.Ultima4;
-							break;
-						case ETextureSet.U5:
-							bmp = Resources.Ultima5;
-							break;
-                        case ETextureSet.WC_WS:
-					        bmp = Resources.wintersnow;
-					        break;
-                        case ETextureSet.WC_SG:
-					        bmp = Resources.summergrass;
-					        break;
-                        case ETextureSet.WC_SW:
-					        bmp = Resources.summerwater;
-					        break;
-						default:
-							throw new ArgumentOutOfRangeException();
+						Bitmap bmp;
+						switch (_set)
+						{
+							case ETextureSet.RJ:
+								bmp = Resources.redjack15v;
+								break;
+							case ETextureSet.RB1:
+								bmp = Resources.RantingRodent_Brick_01;
+								break;
+							case ETextureSet.RB2:
+								bmp = Resources.RantingRodent_Brick_02;
+								break;
+							case ETextureSet.RN1:
+								bmp = Resources.RantingRodent_Natural_01;
+								break;
+							case ETextureSet.RN2:
+								bmp = Resources.RantingRodent_Natural_02;
+								break;
+							case ETextureSet.GP:
+								bmp = Resources.gold_plated_16x16;
+								break;
+							case ETextureSet.NH:
+								bmp = Resources.nethack;
+								break;
+							case ETextureSet.HM:
+								bmp = Resources.aq;
+								break;
+							case ETextureSet.PH:
+								bmp = Resources.Phoebus_16x16;
+								break;
+							case ETextureSet.U4:
+								bmp = Resources.Ultima4;
+								break;
+							case ETextureSet.U5:
+								bmp = Resources.Ultima5;
+								break;
+							case ETextureSet.WC_WS:
+								bmp = Resources.wintersnow;
+								break;
+							case ETextureSet.WC_SG:
+								bmp = Resources.summergrass;
+								break;
+							case ETextureSet.WC_SW:
+								bmp = Resources.summerwater;
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+						value = new OpenTKUi.Image(bmp, false, false);
+						m_ttextures[_set] = value;
 					}
-					value = new OpenTKUi.Image(bmp, true, false);
-					m_textures[_set] = value;
 				}
+				else
+				{
+					if (!m_textures.TryGetValue(_set, out value))
+					{
+						var bmp = this[_set, true];
+						value = new OpenTKUi.Image(bmp, true, false);
+						m_textures[_set] = value;
+					}
+				}
+
 				return value.Bitmap;
 			}
 		}
@@ -238,11 +253,11 @@ namespace ResourceWizard
 	        get
 	        {
                 if (_tile == null) return null;
-	            return this[_tile.Texture, _tile.X, _tile.Y, _fColor, _removeTransparency, _grayScale];
+	            return this[_tile.Texture, _tile.X, _tile.Y, _fColor, _removeTransparency, _grayScale, _tile.Parent is XTerrainSetVM];
 	        }
 	    }
 
-	    public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale]
+		public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale, bool _isTerrain]
 		{
 			get
 			{
@@ -256,7 +271,7 @@ namespace ResourceWizard
                 var key = new Tuple<int, int, FColor, bool, bool>(_x, _y, _fColor, _removeTransparency,_grayScale);
 				if (!dictionary.TryGetValue(key, out bitmap))
 				{
-					var txtr = this[_texture];
+					var txtr = this[_texture, _isTerrain];
 					bitmap = new Bitmap(Constants.TILE_SIZE, Constants.TILE_SIZE);
 					using(var gr = Graphics.FromImage(bitmap))
 					{

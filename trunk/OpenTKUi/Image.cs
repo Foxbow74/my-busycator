@@ -49,7 +49,7 @@ namespace OpenTKUi
 			}
 			else
 			{
-				CopyBits();
+				CopyBits(_glFunctionality);
 			}
 
 			if (_glFunctionality)
@@ -80,8 +80,7 @@ namespace OpenTKUi
 
 		private void FillBackgroundByTransparentColorAndCopyBits(bool _glFunctionality = true)
 		{
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite,
-			                           PixelFormat.Format32bppPArgb);
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppPArgb);
 
 			FillBackgroundByTransparentColor(data, Color.FromArgb(1,0,0,0));
 
@@ -94,7 +93,7 @@ namespace OpenTKUi
 
 		private void CopyBits(bool _glFunctionality = true)
 		{
-			var data = Bitmap.LockBits(new Rectangle(0, 0, (int) Width, (int) Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+			var data = Bitmap.LockBits(new Rectangle(0, 0, (int)Width, (int)Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppPArgb);
 
 			if (_glFunctionality)
 			{
