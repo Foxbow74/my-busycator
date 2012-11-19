@@ -66,6 +66,7 @@
     <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Citizen.cs" />
+    <Compile Include="Creatures\ECreatureSize.cs" />
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
     <Compile Include="Creatures\EThinkingResult.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
