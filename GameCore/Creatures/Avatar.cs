@@ -15,6 +15,7 @@ namespace GameCore.Creatures
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
 			AddRole(new AvatarRole());
+			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<Sword>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<CrossBow>());
 			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(EssenceHelper.GetMaterial<BrassMaterial>()) {Count = 100});
 			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<Torch>());

@@ -117,5 +117,10 @@ namespace GameUi.UIBlocks
 		public SystemMessage(ESystemMessage _message) { Message = _message; }
 
 		public ESystemMessage Message { get; private set; }
+
+		public override string ToString()
+		{
+			return Message.ToString();
+		}
 	}
 }

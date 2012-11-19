@@ -11,6 +11,11 @@
 		public EMessageType Type { get; protected set; }
 
 		public string Text { get; protected set; }
+
+		public override string ToString()
+		{
+			return Text;
+		}
 	}
 
 	public class SoundTextMessage : Message
@@ -21,5 +26,10 @@
 		}
 
 		public string Text { get; protected set; }
+
+		public override string ToString()
+		{
+			return Text;
+		}
 	}
 }
