@@ -82,7 +82,7 @@ namespace ResourceWizard.VMs
 
 		public BitmapSource TextureSource
 		{
-			get { return Manager.Instance[Texture].Source(); }
+			get { return Manager.Instance[Texture, m_xTileInfoVM.Parent is XTerrainSetVM].Source(); }
 		}
 
 		public RelayCommand TextureClick { get; private set; }

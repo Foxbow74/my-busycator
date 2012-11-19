@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using ClientCommonWpf;
-using GameCore;
 using GameCore.Storage;
 using ResourceWizard.Properties;
 using ResourceWizard.VMs;
@@ -129,7 +128,7 @@ namespace ResourceWizard.StoreableVMs
 
 	    public Bitmap Bitmap
 	    {
-            get { return Manager.Instance[Texture, X, Y, Color.GetFColor(), RemoveTransparency, GrayScale]; }
+			get { return Manager.Instance[Texture, X, Y, Color.GetFColor(), RemoveTransparency, GrayScale, Parent is XTerrainSetVM]; }
 	    }
 
 	    private void ExecutePasteCommand(object _obj)
