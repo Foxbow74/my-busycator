@@ -23,7 +23,5 @@ namespace GameUi
 		public abstract void Draw(Point _point, FColor _color);
 		public abstract void Draw(Point _point);
 		public abstract void FogIt(Point _point);
-
-        public string ToResurceText() { return string.Format("{0}|{1}|{2}", Point.X, Point.Y, Color.ToShortText()); }
     }
 }
