@@ -165,8 +165,8 @@ namespace ResourceWizard
 	    {
 	        get
 	        {
-	            return true;
-	            //return XRoot.IsDirty;
+	            //return true;
+	            return XRoot.IsDirty;
 	        }
 	    }
 
