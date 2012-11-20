@@ -7,15 +7,19 @@ namespace GameCore.Storeable
 	{
 		public XTileInfo(){}
 
-		[X("TEXTURE")]private readonly IXValue<int> m_eTexture;
+#pragma warning disable 649
+		[X("TEXTURE")]
+		private readonly IXValue<int> m_eTexture;
+		[X("X")]private IXValue<int> m_x;
+		[X("Y")]private IXValue<int> m_y;
+		[X("Color")]private IXValue<XColor> m_color;
+		[X("Order")]private IXValue<int> m_order;
 
-		[X("X")]
-		private IXValue<int> m_x;
-		[X("Y")]
-		private IXValue<int> m_y;
+		[X("CX")]private IXValue<int> m_cx;
+		[X("CY")]private IXValue<int> m_cy;
+		[X("Opacity")]private IXValue<float> m_opacity;
+#pragma warning restore 649
 
-		[X("Color")]
-		private IXValue<XColor> m_color;
 
 		public override EStoreKind Kind
 		{
@@ -28,7 +32,6 @@ namespace GameCore.Storeable
 
 		#region Порядковый номер тайла
 
-		[X("Order")] private IXValue<int> m_order;
 
 		public int Order
 		{
@@ -41,23 +44,14 @@ namespace GameCore.Storeable
 
 		#region координаты тайла на скомпилированной текстуре
 
-		[X("CX")]
-		private IXValue<int> m_cx;
 
-		[X("CY")]
-		private IXValue<int> m_cy;
-
-
-		[X("Opacity")]
-		private IXValue<float> m_opacity;
-
-		public int CX
+		public int Cx
 		{
 			get { return m_cx.Value; }
 			set { m_cx.Value = value; }
 		}
 
-		public int CY
+		public int Cy
 		{
 			get { return m_cy.Value; }
 			set { m_cy.Value = value; }
@@ -72,12 +66,8 @@ namespace GameCore.Storeable
 
 		public float Opacity
 		{
-			get {
-				return m_opacity.Value;
-			}
-			set {
-				m_opacity.Value = value;
-			}
+			get { return m_opacity.Value; }
+			set { m_opacity.Value = value; }
 		}
 	}
 }

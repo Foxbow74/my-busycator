@@ -229,7 +229,6 @@ namespace RusLanguage
 				{
 					case 1:
 						throw new ApplicationException("не должно сюда попасть");
-						break;
 					case 2:
 						switch (_target)
 						{

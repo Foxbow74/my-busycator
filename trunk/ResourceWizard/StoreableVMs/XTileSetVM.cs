@@ -9,8 +9,10 @@ namespace ResourceWizard.StoreableVMs
 {
 	class XTileSetVM : XAbstractTileSetVM
 	{
-		[X("TILE")]
-		private readonly IXValue<int> m_eTile;
+		
+#pragma warning disable 649
+		[X("TILE")] private readonly IXValue<int> m_eTile;
+#pragma warning restore 649
 
 		public override EStoreKind Kind
 		{

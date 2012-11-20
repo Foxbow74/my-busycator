@@ -6,8 +6,9 @@ namespace GameCore.Storeable
 {
 	abstract class XAbstractTileSet : XObject
 	{
-		[X("LIST")]
-		private ICollection<XTileInfo> m_children;
+#pragma warning disable 649
+		[X("LIST")] private ICollection<XTileInfo> m_children;
+#pragma warning restore 649
 
 		public ICollection<XTileInfo> Children
 		{

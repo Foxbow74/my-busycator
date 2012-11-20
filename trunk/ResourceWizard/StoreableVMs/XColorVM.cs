@@ -29,16 +29,14 @@ namespace ResourceWizard.StoreableVMs
             get { return EStoreKind.COLOR; }
         }
 
-        [X("A")]
-        private IXValue<float> m_a;
-        [X("R")]
-        private IXValue<float> m_r;
-        [X("G")]
-        private IXValue<float> m_g;
-        [X("B")]
-        private IXValue<float> m_b;
+#pragma warning disable 649
+        [X("A")]private IXValue<float> m_a;
+        [X("R")]private IXValue<float> m_r;
+        [X("G")]private IXValue<float> m_g;
+        [X("B")]private IXValue<float> m_b;
+#pragma warning restore 649
 
-        public RelayCommand SelectColorCommand { get; private set; }
+		public RelayCommand SelectColorCommand { get; private set; }
 
         public BitmapSource ColorsImage { get { return Resources.colors.Source(); } }
         public BitmapSource ColorsImageD { get { return Resources.colors.SourceDisabled(); } }
