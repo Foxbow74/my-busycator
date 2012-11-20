@@ -1,4 +1,7 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
+using GameCore.Misc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -7,9 +10,16 @@ namespace Tests
 	public class HelloWorld2 : AbstractGameTest2
 	{
 		[TestMethod]
-		public void Взаимодействие()
+		public void ЗапускайтеКабанчика()
 		{
-			SendKey(ConsoleKey.Y);
+			using (new Profiler())
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					SendKey(ConsoleKey.Y);
+				}
+			}
+			Debug.WriteLine(Avatar[0,0].LiveMapBlock.Creatures.Count());
 		}
 	}
 }

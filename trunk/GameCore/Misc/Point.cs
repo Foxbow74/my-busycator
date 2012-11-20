@@ -141,32 +141,14 @@ namespace GameCore.Misc
 			return new Point(int.Parse(ss[0]), int.Parse(ss[1]));
 		}
 
-
 		public IEnumerable<Point> GetSpiral(int _size)
 		{
-			var dirs = new[] {EDirections.DOWN, EDirections.RIGHT, EDirections.UP, EDirections.LEFT,}.Select(_dir => _dir.GetDelta()).ToArray();
-			var map = new bool[_size,_size];
-
-			var pos = this;
-			var dirIndex = 0;
-			var cnt = _size*_size - 1;
-
-
-			while (true)
+			yield return this;
+			for (int i = 1; i < _size; i++)
 			{
-				map[pos.X, pos.Y] = true;
-				yield return pos;
-				if (--cnt == 0)
+				foreach (var point in new Rct(-i,-i,i*2,i*2).BorderPoints)
 				{
-					yield break;
-				}
-				pos += dirs[dirIndex];
-				var checkIndex = (3 + dirIndex)%4;
-				var checkPos = pos + dirs[checkIndex];
-				if(checkPos.X<0 || checkPos.X>=_size || checkPos.Y<0 || checkPos.Y>=_size) yield break;
-				if (!map[checkPos.X, checkPos.Y])
-				{
-					dirIndex = checkIndex;
+					yield return point;
 				}
 			}
 		}
