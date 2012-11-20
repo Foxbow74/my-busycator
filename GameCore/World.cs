@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using GameCore.Acts;
 using GameCore.Creatures;
-using GameCore.Essences;
-using GameCore.Essences.Mechanisms;
 using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
@@ -12,7 +10,6 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Storage;
 using GameCore.Storeable;
-using UnsafeUtils;
 
 namespace GameCore
 {
@@ -75,11 +72,6 @@ namespace GameCore
 		public Surface Surface { get; private set; }
 
 		public LiveMap LiveMap { get; private set; }
-
-		public static void SaveResources()
-		{
-			XClient.Save(XResourceRoot.Uid);
-		}
 
 		private void BornAvatar()
 		{

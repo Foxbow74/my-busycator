@@ -67,13 +67,18 @@ namespace GameCore.Mapping
 		{
 			if (_essence is StackOfItems)
 			{
-				var stack = Objects.Where(_tuple => _tuple.Item2 == _inBlockCoords && _tuple.Item1.Equals(_essence))
-					.Select(_tuple => _tuple.Item1).OfType<StackOfItems>()
-					.FirstOrDefault();
-				if (stack != null)
+				foreach (var tuple in Objects)
 				{
-					stack.Add((StackOfItems) _essence);
-					return false;
+					if (tuple.Item2 == _inBlockCoords && tuple.Item1.Equals(_essence))
+					{
+						var stack = tuple.Item1 as StackOfItems;
+						if (stack != null)
+						{
+							stack.Add((StackOfItems)_essence);
+							return false;
+						}
+
+					}
 				}
 			}
 			if(_essence is IRemoteActivation)

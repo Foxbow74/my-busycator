@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnsafeUtils;
 
 namespace GameCore.Misc
 {
 	public static class Util
 	{
 		private static EDirections[] m_allDirections;
+		private static Point[] m_allDeltas;
 
 		public static EDirections[] AllDirections
 		{
-			get
-			{
-				if (m_allDirections == null)
-				{
-					m_allDirections = Enum.GetValues(typeof (EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL).ToArray();
-				}
-				return m_allDirections;
-			}
+			get { return m_allDirections ?? (m_allDirections = Enum.GetValues(typeof(EDirections)).Cast<EDirections>().Where(_dir => _dir != EDirections.NONE && _dir != EDirections.ALL).ToArray()); }
+		}
+
+		public static Point[] AllDeltas
+		{
+			get { return m_allDeltas ?? (m_allDeltas = AllDirections.Select(_directions => _directions.GetDelta()).ToArray()); }
 		}
 
 		public static Dictionary<TEnum, TAttribute> Fill<TEnum, TAttribute>() where TAttribute : Attribute

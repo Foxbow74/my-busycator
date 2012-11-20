@@ -214,10 +214,14 @@ namespace GameCore.Essences
 			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
 				var mtpLocal = mtp;
-				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
+				foreach (var material in m_materials)
 				{
-					var thing = (Essence) Activator.CreateInstance(_type, material);
+					if(material.MaterialType != mtpLocal)
+					{
+						continue;
+					}
 
+					var thing = (Essence) Activator.CreateInstance(_type, material);
 					FakedItem value;
 					var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
 					if (!m_fakedItems.TryGetValue(key, out value))
@@ -236,8 +240,13 @@ namespace GameCore.Essences
 			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
 			{
 				var mtpLocal = mtp;
-				foreach (var material in m_materials.Where(_material => _material.MaterialType == mtpLocal))
+				foreach (var material in m_materials)
 				{
+					if (material.MaterialType != mtpLocal)
+					{
+						continue;
+					}
+
 					var thing = (Essence) Activator.CreateInstance(_type, material);
 					var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
 					FakedThing value;
@@ -275,6 +284,10 @@ namespace GameCore.Essences
 
                     foreach (var material in m_materials.Where(_material => am.HasFlag(_material.MaterialType)))
 					{
+						if (am.HasFlag(material.MaterialType))
+						{
+							continue;
+						}
 						yield return (Essence) Activator.CreateInstance(type, material);
 					}
 				}

@@ -90,8 +90,7 @@ namespace GameCore.Acts.Interact
 				{
 					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
 				}
-				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(
-					_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
+				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.LiveCoords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));

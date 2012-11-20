@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnsafeUtils;
 
 namespace GameCore.Misc
 {
@@ -67,14 +66,11 @@ namespace GameCore.Misc
 			}
 		}
 
-		public IEnumerable<Point> CornerPoints
+		public Point[] CornerPoints
 		{
 			get
 			{
-				yield return LeftTop;
-				yield return RightBottom;
-				yield return new Point(Left, Bottom);
-				yield return new Point(Right, Top);
+				return new[] { LeftTop, RightBottom, new Point(Left, Bottom), new Point(Right, Top)};
 			}
 		}
 
@@ -91,6 +87,11 @@ namespace GameCore.Misc
 		public Rct Inflate(int _x, int _y) { return new Rct(LeftTop - new Point(_x, _y), RightBottom + new Point(_x, _y)); }
 
 		public Rct Offset(int _x, int _y) { return new Rct(LeftTop + new Point(_x, _y), RightBottom + new Point(_x, _y)); }
+
+		public int Square
+		{
+			get { return Width*Height; }
+		}
 
 		public bool Contains(Point _point)
 		{
