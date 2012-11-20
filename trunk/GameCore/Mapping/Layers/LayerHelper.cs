@@ -70,13 +70,22 @@ namespace GameCore.Mapping.Layers
 
 		private static Room MakeRoom(Rct _rct, Random _random, ICollection<Point> _objects, Point _blockId)
 		{
-			var contains = _objects.Where(_rct.Contains).ToArray();
+			var contains = new List<Point>();
+
+			foreach (var point in _objects)
+			{
+				if (_rct.Contains(point))
+				{
+					contains.Add(point);
+				}
+			}
+
 			var size = new Point(MIN_ROOM_SIZE + _random.Next(_rct.Width - MIN_ROOM_SIZE), MIN_ROOM_SIZE + _random.Next(_rct.Height - MIN_ROOM_SIZE));
 			for (;;)
 			{
 				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
 				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
-				if (!contains.Any() || contains.All(rect.Contains))
+				if (contains.Count==0 || contains.Count==rect.Square)
 				{
 					foreach (var contain in contains)
 					{

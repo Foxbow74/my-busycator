@@ -25,7 +25,6 @@ namespace Tests
 		[TestMethod]
 		public void ТыКто()
 		{
-			var current = Avatar[0, 0].WorldCoords;
 			SendKey(ConsoleKey.Y);
 		}
 	}

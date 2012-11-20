@@ -99,7 +99,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				points--;
 			}
 
-			var dpoints = Util.AllDirections.Select(_directions => _directions.GetDelta()).ToArray();
+			var dpoints = Util.AllDeltas;
 			while (points > 0)
 			{
 				for (var x = 0; x < Constants.MAP_BLOCK_SIZE; ++x)

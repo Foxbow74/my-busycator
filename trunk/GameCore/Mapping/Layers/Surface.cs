@@ -18,34 +18,46 @@ namespace GameCore.Mapping.Layers
 	public class Surface : WorldLayer
 	{
 
-		private static readonly List<string> m_maleNames;
-		private static readonly List<string> m_femaleNames;
+		private static List<string> m_maleNames;
+		private static List<string> m_femaleNames;
 		private readonly EMapBlockTypes[,] m_worldMap;
 
 		static Surface()
 		{
-            var separator = new[] {','};
+			LoadNicks();
+		}
 
-			if(World.XResourceRoot.NickInfos.Count>0)
+		private static void LoadNicks()
+		{
+			if (false && Constants.WORLD_MAP_SIZE < 4)
 			{
-				foreach (var nicksInfo in World.XResourceRoot.NickInfos)
-				{
-					switch (nicksInfo.Sex)
-					{
-						case ESex.MALE:
-							m_maleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
-							break;
-						case ESex.FEMALE:
-							m_femaleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
-							break;
-						default:
-							throw new ArgumentOutOfRangeException();
-					}
-				}
+				m_femaleNames = new List<string>() {"Female1", "Female2", "Female3"};
+				m_maleNames = new List<string>() {"Male1", "Male2", "Male3"};
 			}
 			else
 			{
-                throw new ApplicationException("База ресурсов не содержит информацию об именах.");
+				if (World.XResourceRoot.NickInfos.Count > 0)
+				{
+					var separator = new[] {','};
+					foreach (var nicksInfo in World.XResourceRoot.NickInfos)
+					{
+						switch (nicksInfo.Sex)
+						{
+							case ESex.MALE:
+								m_maleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+								break;
+							case ESex.FEMALE:
+								m_femaleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+					}
+				}
+				else
+				{
+					throw new ApplicationException("База ресурсов не содержит информацию об именах.");
+				}
 			}
 		}
 
@@ -192,43 +204,44 @@ namespace GameCore.Mapping.Layers
 			return block;
 		}
 
-		private static void GenerateRandomItems(Random rnd, MapBlock block)
+		private static void GenerateRandomItems(Random _rnd, MapBlock _block)
 		{
-			var itmcnt = 20 + rnd.Next(rnd.Next(20));
+			var itmcnt = 20 + _rnd.Next(_rnd.Next(20));
 			for (var i = 0; i < itmcnt; ++i)
 			{
-				var x = rnd.Next(Constants.MAP_BLOCK_SIZE);
-				var y = rnd.Next(Constants.MAP_BLOCK_SIZE);
+				var x = _rnd.Next(Constants.MAP_BLOCK_SIZE);
+				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
-				var attr = TerrainAttribute.GetAttribute(block.Map[x, y]);
-				if (attr.IsPassable > 0)
+				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
+				if (attr.IsPassable <= 0) continue;
+
+
+				var point = new Point(x, y);
+				var thing = World.Rnd.Next(2) == 0 ? EssenceHelper.GetFakedThing(_rnd) : EssenceHelper.GetRandomFakedItem(_rnd);
+
+				if (thing.Is<Stair>())
 				{
-					var point = new Point(x, y);
-					var any = block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-					var thing = World.Rnd.Next(2) == 0 ? EssenceHelper.GetFakedThing(rnd) : EssenceHelper.GetRandomFakedItem(rnd);
-
-					if (thing.Is<Stair>())
-					{
-						if (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1)
-						{
-							continue;
-						}
-					}
-
-					if (thing is Item)
-					{
-						if (any.Any(_thing => !(_thing is Item)))
-						{
-							continue;
-						}
-					}
-					else if (any.Any())
+					if (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1)
 					{
 						continue;
 					}
-
-					block.AddEssence(thing, point);
 				}
+
+				var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
+				
+				if (thing is Item)
+				{
+					if (any.Any(_thing => !(_thing is Item)))
+					{
+						continue;
+					}
+				}
+				else if (any.Any())
+				{
+					continue;
+				}
+
+				_block.AddEssence(thing, point);
 			}
 		}
 	}

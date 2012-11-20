@@ -80,7 +80,12 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 			var result = new EMapBlockTypes[m_size, m_size];
 
-			var zoneTypes = m_infos.Where(_valuePair => _valuePair.Value.Zone!=0).ToDictionary(_pair => _pair.Value.Zone, _pair => _pair.Key);
+			var zoneTypes = new Dictionary<ushort, EMapBlockTypes>();
+			foreach (var pair in m_infos)
+			{
+				if(pair.Value.Zone==0) continue;
+				zoneTypes.Add(pair.Value.Zone, pair.Key);
+			}
 			for (var x = 0; x < m_size; ++x)
 			{
 				for (var y = 0; y < m_size; ++y)
@@ -307,7 +312,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			m_allZones = allZones.ToArray();
 
 			var points = m_size*m_size - m_imax;
-			var dpoints = Util.AllDirections.Select(_directions => _directions.GetDelta()).ToArray();
+			var dpoints = Util.AllDeltas;
 			while (points>0)
 			{
 				for (var x = 0; x < m_size; ++x)
@@ -448,10 +453,32 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var groundZones = new ushort[] { m_infos[EMapBlockTypes.GROUND].Zone, m_infos[EMapBlockTypes.FOREST].Zone, m_infos[EMapBlockTypes.LAKE_COAST].Zone };
 			var lakeZone = m_infos[EMapBlockTypes.FRESH_WATER].Zone;
 			var zones = new List<ushort>();
-			zones.AddRange(m_allZones.Where(_i => groundZones.Contains(m_united[_i]) && m_allZones.Any(_j => m_neighbours[_i, _j] && m_united[_j] == lakeZone)));
-			if (!zones.Any())
+			foreach (var i in m_allZones)
 			{
-				zones.AddRange(m_allZones.Where(_i => m_united[_i] == lakeCoastZone && m_allZones.Any(_j => m_neighbours[_i, _j] && m_united[_j] == lakeZone)));
+				if (groundZones.Contains(m_united[i]) && m_allZones.Any(_j => m_neighbours[i, _j] && m_united[_j] == lakeZone))
+				{
+					zones.Add(i);
+				}
+			}
+			if (zones.Count == 0)
+			{
+				foreach (var i in m_allZones)
+				{
+					if (groundZones.Contains(m_united[i]) && m_allZones.Any(_j => m_neighbours[i, _j] && m_united[_j] == lakeZone))
+					{
+						zones.Add(i);
+					}
+				}
+			}
+			if (zones.Count == 0)
+			{
+				foreach (var i in m_allZones)
+				{
+					if (m_united[i] == lakeCoastZone && m_allZones.Any(_j => m_neighbours[i, _j] && m_united[_j] == lakeZone))
+					{
+						zones.Add(i);
+					}
+				}
 			}
 
 			var center = new Point(m_size/2, m_size/2);
@@ -465,7 +492,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					var need = _cityBlocks - 1;
 					while (need > 0)
 					{
-						foreach (var dlt in Util.AllDirections.Select(_directions => _directions.GetDelta()))
+						foreach (var dlt in Util.AllDeltas)
 						{
 							var toAdd = new List<Point>(result);
 							foreach (var pnt in result)
