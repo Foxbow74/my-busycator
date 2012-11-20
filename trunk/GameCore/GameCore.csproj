@@ -221,6 +221,7 @@
     <Content Include="Documentations\Plan.txt" />
     <Content Include="Documentations\Story\Forge of Gods.txt" />
     <Content Include="Documentations\Story\Zomby.txt" />
+    <Content Include="Documentations\Боевка.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

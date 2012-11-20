@@ -67,6 +67,7 @@
     <Compile Include="Server\Storage\StorageRootObject.cs" />
     <Compile Include="Server\Storage\StorageValue.cs" />
     <Compile Include="Server\Storage\UplodableObject.cs" />
+    <Compile Include="SQLiteStorageLight.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="WCF\XTransportClient.cs" />
     <Compile Include="WCF\IXTransportContract.cs" />
