@@ -101,19 +101,22 @@ namespace GameCore.Misc
 
 		public override string ToString() { return "Rct{" + LeftTop + " - " + RightBottom + "}"; }
 
-		public IEnumerable<KeyValuePair<Point, EDirections>> AllForbidBorders()
+		public IEnumerable<KeyValuePair<Point, EDirections>> ForbidBorders
 		{
-			var rect = Inflate(1, 1);
-			for (var i = rect.Left; i < rect.Right; ++i)
+			get
 			{
-				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
-				yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
-			}
+				var rect = Inflate(1, 1);
+				for (var i = rect.Left; i < rect.Right; ++i)
+				{
+					yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Top), EDirections.DOWN | EDirections.UP);
+					yield return new KeyValuePair<Point, EDirections>(new Point(i, rect.Bottom - 1), EDirections.DOWN | EDirections.UP);
+				}
 
-			for (var j = Top; j < Bottom; ++j)
-			{
-				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
-				yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
+				for (var j = Top; j < Bottom; ++j)
+				{
+					yield return new KeyValuePair<Point, EDirections>(new Point(rect.Left, j), EDirections.UP | EDirections.DOWN);
+					yield return new KeyValuePair<Point, EDirections>(new Point(rect.Right - 1, j), EDirections.UP | EDirections.DOWN);
+				}
 			}
 		}
 

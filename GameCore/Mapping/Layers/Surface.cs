@@ -29,7 +29,7 @@ namespace GameCore.Mapping.Layers
 
 		private static void LoadNicks()
 		{
-			if (false && Constants.WORLD_MAP_SIZE < 4)
+			if (Constants.WORLD_MAP_SIZE < 4)
 			{
 				m_femaleNames = new List<string>() {"Female1", "Female2", "Female3"};
 				m_maleNames = new List<string>() {"Male1", "Male2", "Male3"};

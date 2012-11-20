@@ -7,8 +7,9 @@ namespace GameCore.Storeable
 	{
 		public XTileSet() { }
 
-		[X("TILE")]
-		private readonly IXValue<int> m_tiles;
+#pragma warning disable 649
+		[X("TILE")]private readonly IXValue<int> m_tiles;
+#pragma warning restore 649
 
 		public override EStoreKind Kind
 		{

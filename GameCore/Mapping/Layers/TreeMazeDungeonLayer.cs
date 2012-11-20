@@ -287,7 +287,7 @@ namespace GameCore.Mapping.Layers
 			{
 				foreach (var room in rooms)
 				{
-					foreach (var pair in room.WorldRoomRectangle.AllForbidBorders())
+					foreach (var pair in room.WorldRoomRectangle.ForbidBorders)
 					{
 						EDirections dir;
 						if (!forbid.TryGetValue(pair.Key, out dir))

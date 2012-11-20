@@ -40,7 +40,7 @@ namespace GameUi
 					for (int index = 0; index < array.Length; index++)
 					{
 						var tileInfo = array[index];
-						var atile = Rp.CreateTile(tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor());
+						var atile = Rp.CreateTile(tileInfo.Cx, tileInfo.Cy, tileInfo.Color.GetFColor());
 						TileInfoProvider.SetOpacity(xTileSet.Tileset, index, tileInfo.Opacity);
 						set.AddTile(atile);
 					}
@@ -51,7 +51,7 @@ namespace GameUi
 					AllTerrainTilesets.Add(xTileSet.Terrains, set);
 					foreach (var tileInfo in xTileSet.Children.OrderBy(_info => _info.Order))
 					{
-						set.AddTile(Rp.CreateTile(tileInfo.CX, tileInfo.CY, tileInfo.Color.GetFColor()));
+						set.AddTile(Rp.CreateTile(tileInfo.Cx, tileInfo.Cy, tileInfo.Color.GetFColor()));
 					}
 				}
 			}

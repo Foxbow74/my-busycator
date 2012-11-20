@@ -7,8 +7,9 @@ namespace GameCore.Storeable
 	{
 		public XTerrainSet() { }
 
-		[X("TERRAIN")]
-		private readonly IXValue<int> m_terrains;
+#pragma warning disable 649
+		[X("TERRAIN")]private readonly IXValue<int> m_terrains;
+#pragma warning restore 649
 
 		public override EStoreKind Kind
 		{

@@ -8,10 +8,10 @@ namespace ResourceWizard.StoreableVMs
 	{
 		public XNicksInfoVM() { }
 
-		[X("Sex")]
-		private IXValue<int> m_sex;
-		[X("Nicks")]
-		private IXValue<string> m_nicks;
+#pragma warning disable 649
+		[X("Sex")]private IXValue<int> m_sex;
+		[X("Nicks")]private IXValue<string> m_nicks;
+#pragma warning restore 649
 
 		public override EStoreKind Kind
 		{

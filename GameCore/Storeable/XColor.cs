@@ -12,10 +12,12 @@ namespace GameCore.Storeable
 			get { return EStoreKind.COLOR; }
 		}
 
+#pragma warning disable 649
 		[X("A")]private IXValue<float> m_a;
 		[X("R")]private IXValue<float> m_r;
 		[X("G")]private IXValue<float> m_g;
 		[X("B")]private IXValue<float> m_b;
+#pragma warning restore 649
 
 		public float A { get { return m_a.Value; } set { m_a.Value = value; } }
 		public float R { get { return m_r.Value; } set { m_r.Value = value; } }

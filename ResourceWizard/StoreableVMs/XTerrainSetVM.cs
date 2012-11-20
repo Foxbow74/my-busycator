@@ -8,8 +8,9 @@ namespace ResourceWizard.StoreableVMs
 	{
 		public XTerrainSetVM() { }
 
-		[X("TERRAIN")]
-		private readonly IXValue<int> m_eTerrains;
+#pragma warning disable 649
+		[X("TERRAIN")] private readonly IXValue<int> m_eTerrains;
+#pragma warning restore 649
 
 		public override EStoreKind Kind
 		{
