@@ -223,7 +223,7 @@ namespace XTransport
 					{
 						yield return new StorageChild
 							             {
-								             Kind = (int) kind,
+								             Kind = kind,
 								             Uid = new Guid((string) uid),
 								             Parent = new Guid((string) parent),
 								             Field = (int) rdr[MF_FIELD],
@@ -243,32 +243,15 @@ namespace XTransport
 
 			foreach (var vfield in vfields)
 			{
-				//IEnumerable<Type> tables = m_type2Tables.Keys;
-				//if (vfieldType[vfield.Key] != 0)
-				//{
-				//    tables = new[] { m_typeIndex2Type[vfieldType[vfield.Key]] };
-				//}
-				//else
-				//{
-					
-				//}
-
-				//foreach (var type in tables)
-				{
-					var type = m_typeIndex2Type[vfieldType[vfield.Key]];
-					var obj = CreateCommand(string.Format("select value from {0} where id={1} limit 1", m_type2Tables[type], vfield.Key)).ExecuteScalar();
-					//if (obj != null)
-					{
-						var id = vfield.Key;
-						var val = m_tables2Type[type](obj);
-						val.Id = vfield.Key;
-						val.Field = vfield.Value;
-						val.Owner = vuids[id];
-						val.OldId = id;
-						yield return val;
-						//break;
-					}
-				}
+				var type = m_typeIndex2Type[vfieldType[vfield.Key]];
+				var obj = CreateCommand(string.Format("select value from {0} where id={1} limit 1", m_type2Tables[type], vfield.Key)).ExecuteScalar();
+				var id = vfield.Key;
+				var val = m_tables2Type[type](obj);
+				val.Id = vfield.Key;
+				val.Field = vfield.Value;
+				val.Owner = vuids[id];
+				val.OldId = id;
+				yield return val;
 			}
 		}
 
