@@ -44,7 +44,8 @@ namespace XTransport
             RegisterType(_o => (DateTime)_o, SQL_TYPE_DATETIME, "dates",-8);
             RegisterType(_o => (_o is int)?(int)_o:(double) _o, SQL_TYPE_REAL, "doubles", -9);
             RegisterType(_o => (float)(double)_o, SQL_TYPE_REAL, "floats", -10);
-            RegisterType(_o => (decimal)_o, SQL_TYPE_REAL, "decimals", -11);
+			RegisterType(_o => (decimal)_o, SQL_TYPE_REAL, "decimals", -11);
+			RegisterType(_o => (byte[])_o, SQL_TYPE_BLOB, "blobs", -12);
 		}
 
 		private const string SQL_TYPE_INTEGER = "INTEGER";
@@ -202,12 +203,22 @@ namespace XTransport
 			throw new ApplicationException("Object not found UID=" + _uid);
 		}
 
-		public IEnumerable<IStorageRecord> LoadObject(Guid _uid, DateTime _now)
+		public IEnumerable<IStorageRecord> LoadObject(Guid _uid, DateTime _now=default(DateTime))
 		{
 			var vuids = new Dictionary<int, Guid>();
 			var vfields = new Dictionary<int, int>();
 			var vfieldType = new Dictionary<int, int>();
-			using (var rdr = CreateCommand("select * from main where parent=@parent AND vfrom<=@now AND (vtill IS NULL OR vtill>@now)", new SqliteParameter("@parent", _uid), new SqliteParameter("@now", _now)).ExecuteReader(CommandBehavior.CloseConnection))
+			SqliteCommand cmd;
+			if(_now==default(DateTime))
+			{
+				cmd = CreateCommand("select * from main where parent=@parent AND vtill IS NULL", new SqliteParameter("@parent", _uid), new SqliteParameter("@now", _now));
+			}
+			else
+			{
+				cmd = CreateCommand("select * from main where parent=@parent AND vfrom<=@now AND (vtill IS NULL OR vtill<@now)", new SqliteParameter("@parent", _uid), new SqliteParameter("@now", _now));
+			}
+			
+			using (var rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
 			{
 				while (rdr.Read())
 				{
