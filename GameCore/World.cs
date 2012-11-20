@@ -89,74 +89,71 @@ namespace GameCore
 		public bool GameUpdated(bool _forceTurn = false)
 		{
 			var result = false;
-			using (new Profiler("World.TheWorld.GameUpdated()"))
+			var done = new List<Creature>();
+			while (true)
 			{
-				var done = new List<Creature>();
-				while (true)
+				var creature = LiveMap.FirstActiveCreature;
+
+				#region не давать ходить дважды до перерисовки);
+
+				if (done.Contains(creature)) break;
+				done.Add(creature);
+
+				#endregion
+
+				if (creature == null)
 				{
-					var creature = LiveMap.FirstActiveCreature;
-
-					#region не давать ходить дважды до перерисовки);
-
-					if (done.Contains(creature)) break;
-					done.Add(creature);
-
-					#endregion
-
-					if (creature == null)
-					{
-						throw new ApplicationException();
-					}
-
-					if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS &&
-					    creature.NextAct == null)
-					{
-						var thinkingResult = creature.Thinking();
-						switch (thinkingResult)
-						{
-							case EThinkingResult.NORMAL:
-								break;
-							case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
-								creature.LiveCoords = null;
-								continue;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
-					}
-
-					if (creature.NextAct == null)
-					{
-						break;
-					}
-
-					WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
-
-					EActResults actResult;
-
-					if (creature.IsAvatar)
-					{
-						MessageManager.SendMessage(this, WorldMessage.AvatarBeginsTurn);
-					}
-					do
-					{
-						actResult = creature.DoAct();
-
-						switch (actResult)
-						{
-							case EActResults.NEED_ADDITIONAL_PARAMETERS:
-								return true;
-							case EActResults.ACT_REPLACED:
-								break;
-							case EActResults.DONE:
-							case EActResults.FAIL:
-							case EActResults.QUICK_FAIL:
-								result = true;
-								break;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
-					} while (actResult == EActResults.ACT_REPLACED);
+					throw new ApplicationException();
 				}
+
+				if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS &&
+				    creature.NextAct == null)
+				{
+					var thinkingResult = creature.Thinking();
+					switch (thinkingResult)
+					{
+						case EThinkingResult.NORMAL:
+							break;
+						case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
+							creature.LiveCoords = null;
+							continue;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+				}
+
+				if (creature.NextAct == null)
+				{
+					break;
+				}
+
+				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
+
+				EActResults actResult;
+
+				if (creature.IsAvatar)
+				{
+					MessageManager.SendMessage(this, WorldMessage.AvatarBeginsTurn);
+				}
+				do
+				{
+					actResult = creature.DoAct();
+
+					switch (actResult)
+					{
+						case EActResults.NEED_ADDITIONAL_PARAMETERS:
+							return true;
+						case EActResults.ACT_REPLACED:
+							break;
+						case EActResults.DONE:
+						case EActResults.FAIL:
+						case EActResults.QUICK_FAIL:
+							result = true;
+							break;
+						default:
+							throw new ArgumentOutOfRangeException();
+					}
+				} while (actResult == EActResults.ACT_REPLACED);
 			}
 			if (result || _forceTurn)
 			{

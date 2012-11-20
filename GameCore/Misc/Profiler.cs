@@ -12,32 +12,43 @@ namespace GameCore.Misc
 		public static readonly DateTime Start = DateTime.Now;
 		private readonly Info m_info;
 		private readonly string m_name;
+		private readonly string m_key;
 		private readonly DateTime m_time = DateTime.Now;
+
+		readonly static List<Profiler> m_profilers = new List<Profiler>();
 
 		public Profiler()
 		{
 			var line = Environment.StackTrace.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries)[3];
 			m_name = line.Substring(0, line.IndexOf(')') + 1);
+			m_key = string.Join(".", m_profilers.Select(_profiler => _profiler.m_name))  + "." + m_name;
 
-			if (!m_infos.TryGetValue(m_name, out m_info))
+			if (!m_infos.TryGetValue(m_key, out m_info))
 			{
-				m_infos[m_name] = m_info = new Info {Span = TimeSpan.Zero};
+				m_infos[m_key] = m_info = new Info { Span = TimeSpan.Zero, In = m_profilers.Count == 0 ? null : m_profilers.Last().m_name, Name = m_name.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries).Last(), Key = m_name };
 			}
+			m_profilers.Add(this);
 		}
 
 		public Profiler(string _name)
 		{
 			m_name = _name;
-			if (!m_infos.TryGetValue(m_name, out m_info))
+			m_key = string.Join(".", m_profilers.Select(_profiler => _profiler.m_name)) + "." + m_name;
+
+			if (!m_infos.TryGetValue(m_key, out m_info))
 			{
-				m_infos[m_name] = m_info = new Info {Span = TimeSpan.Zero};
+				m_infos[m_key] = m_info = new Info { Span = TimeSpan.Zero, In = m_profilers.Count == 0 ? null : m_profilers.Last().m_name, Name = m_name, Key = m_name };
 			}
+
+			m_profilers.Add(this);
 		}
 
 		#region IDisposable Members
 
 		public void Dispose()
 		{
+			m_profilers.Remove(this);
+
 			float prev = 0;
 			if (m_info.Count > 1000)
 			{
@@ -46,7 +57,7 @@ namespace GameCore.Misc
 			m_info.Span += DateTime.Now - m_time;
 			m_info.Count++;
 
-			if (prev != 0)
+			if (prev > 0)
 			{
 				var now = m_info.Span.Ticks/m_info.Count;
 				if (now/prev > 1.1)
@@ -58,15 +69,21 @@ namespace GameCore.Misc
 
 		#endregion
 
+		private static void ReportIt(string _name, long _total, int _indent = 0)
+		{
+			var _spanSum = m_infos.Values.Where(_info => _info.In == _name).Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Span).Ticks;
+			var mains = m_infos.Values.Where(_info => _info.In == _name).OrderByDescending(_info => _info.Span);
+			foreach (var info in mains)
+			{
+				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Span.Ticks / _spanSum, info.Span.TotalSeconds, info.Count, 100 * info.Span.Ticks / _total));
+				ReportIt(info.Key, _total, _indent + 1);
+			}
+		}
+
 		public static void Report()
 		{
-			var ordered = m_infos.OrderByDescending(_pair => _pair.Value.Span);
-			var spanSum = m_infos.Values.Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Span).Ticks;
 			var total = (DateTime.Now - Start).Ticks;
-			foreach (var pair in ordered)
-			{
-				Debug.WriteLine(string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", pair.Key, 100*pair.Value.Span.Ticks/spanSum, pair.Value.Span.TotalSeconds, pair.Value.Count, 100*pair.Value.Span.Ticks/total));
-			}
+			ReportIt(null, total);
 		}
 
 		#region Nested type: Info
@@ -75,6 +92,10 @@ namespace GameCore.Misc
 		{
 			public int Count;
 			public TimeSpan Span;
+			public String In;
+
+			public String Name;
+			public String Key;
 		}
 
 		#endregion

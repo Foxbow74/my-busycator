@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using GameCore;
 using GameCore.Creatures;
+using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +15,11 @@ namespace Tests
 		public void SendKey(ConsoleKey _key, EKeyModifiers _modifiers = EKeyModifiers.NONE)
 		{
 			World.TheWorld.KeyPressed(_key, _modifiers);
-			World.TheWorld.GameUpdated();
+
+			do
+			{
+				World.TheWorld.GameUpdated();
+			} while (World.TheWorld.LiveMap.FirstActiveCreature != Avatar);
 		}
 
 		public Avatar Avatar
@@ -35,12 +40,9 @@ namespace Tests
 		[TestInitialize]
 		public void Initialize()
 		{
-			using (new Profiler())
+			if (World.TheWorld == null)
 			{
-				if (World.TheWorld == null)
-				{
-					World.LetItBeeee();
-				}
+				World.LetItBeeee();
 			}
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;

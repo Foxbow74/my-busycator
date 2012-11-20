@@ -42,6 +42,7 @@ namespace GameCore.Essences.Mechanisms
 			switch (Effect)
 			{
 				case EMagicPlateEffect.RANDOM_MONSTER_APPEAR:
+
 					if (myCell.Creature==null)
 					{
 						var monster = (Monster)EssenceHelper.GetRandomFakedCreature<Monster>(World.Rnd).ResolveFake(_creature);
@@ -49,6 +50,10 @@ namespace GameCore.Essences.Mechanisms
 						myCell.AddCreature(monster);
 
 						MessageManager.SendMessage(this, new SoundTextMessage("послышался всплеск"));
+					}
+					else
+					{
+						MessageManager.SendMessage(this, new SoundTextMessage("послышался треск"));
 					}
 					break;
 				default:
