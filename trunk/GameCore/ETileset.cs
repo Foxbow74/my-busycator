@@ -9,6 +9,7 @@ namespace GameCore
 		FOG,
 		TARGETING,
 		SPLATTERS,
+		ZZ50,
 		LIGHT_SOURCES,
 		ZZ52,
 

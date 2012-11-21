@@ -325,6 +325,63 @@
   <ItemGroup>
     <None Include="Resources\dg_monster632.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_potions32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_misc32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_uniques32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_undead32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_weapons32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\townactions.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_wands32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_classm32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_dragon32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_dungeon32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_edging132.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_edging232.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_edging332.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_effects32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_extra132.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_food32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_grounds32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_humans32.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\dg_people32.gif" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

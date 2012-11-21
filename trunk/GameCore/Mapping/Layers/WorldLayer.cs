@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using GameCore.Misc;
 using GameCore.Essences.Things;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {

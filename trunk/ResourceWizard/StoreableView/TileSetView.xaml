@@ -25,6 +25,8 @@
 						<Border Background="White">
 							<Image Source="{Binding Image}" Margin="2"/>
 						</Border>
+						<Border BorderBrush="Black" Background="{Binding Brush}" Margin="4" Height="6" Width="6" BorderThickness="1">
+						</Border>
 					</StackPanel>
 				</DataTemplate>
 			</ListBox.Resources>

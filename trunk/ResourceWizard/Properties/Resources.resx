@@ -244,4 +244,61 @@
   <data name="dg_monster732" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dg_monster732.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="dg_misc32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_misc32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_potions32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_potions32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_undead32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_undead32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_uniques32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_uniques32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_wands32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_wands32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_weapons32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_weapons32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="townactions" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\townactions.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_classm32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_classm32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_dragon32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_dragon32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_dungeon32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_dungeon32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_edging132" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_edging132.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_edging232" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_edging232.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_edging332" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_edging332.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_effects32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_effects32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_extra132" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_extra132.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_food32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_food32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_grounds32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_grounds32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_humans32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_humans32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dg_people32" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dg_people32.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
