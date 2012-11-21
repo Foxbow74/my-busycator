@@ -6,9 +6,9 @@
         public const string RESOURCES_DB_FILE = @"..\resources\resources.dat";
         public const string RESOURCES_FONT_FILE = @"..\resources\monof55.ttf";
 
-        /// <summary>
-        /// Размер мира в блоках, если 1 - строит тестовую карту, в зависимости от <see cref="WORLD_SEED"/>
-        /// </summary>
+		/// <summary>
+		/// Размер мира в блоках, если 1 - строит тестовую карту, в зависимости от <see cref="WORLD_SEED"/>
+		/// </summary>
 		public static int WORLD_MAP_SIZE = 1;
 
         /// <summary>

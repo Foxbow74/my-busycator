@@ -82,7 +82,7 @@ namespace GameUi.UIBlocks
 			{
                 ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
 
-				var lighted = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
+				var lighted = liveCell.FinalLighted;// = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
 
 				var list = new List<string>();
 				var s = "";

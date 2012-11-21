@@ -32,6 +32,8 @@ namespace GameCore.Creatures
 		{
 			switch (Behaviour)
 			{
+				case EMonsterBehaviour.IDLE:
+					return Idle();
 				case EMonsterBehaviour.FOLLOW_AVATAR_INDUNGEON:
 					return FollowAvatarIndungeon();
 				case EMonsterBehaviour.ATACK_AVATAR:
@@ -39,6 +41,16 @@ namespace GameCore.Creatures
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		private EThinkingResult Idle()
+		{
+			if(this[0,0].IsVisibleNow)
+			{
+				Behaviour=EMonsterBehaviour.ATACK_AVATAR;
+			}
+			AddActToPool(new WaitAct());
+			return EThinkingResult.NORMAL;
 		}
 
 		private EThinkingResult AtackAvatar()
@@ -117,6 +129,7 @@ namespace GameCore.Creatures
 
 	public enum EMonsterBehaviour
 	{
+		IDLE,
 		FOLLOW_AVATAR_INDUNGEON,
 		ATACK_AVATAR,
 	}

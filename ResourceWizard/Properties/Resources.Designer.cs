@@ -123,6 +123,126 @@ namespace ResourceWizard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dg_classm32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_classm32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_dragon32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_dragon32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_dungeon32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_dungeon32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_edging132 {
+            get {
+                object obj = ResourceManager.GetObject("dg_edging132", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_edging232 {
+            get {
+                object obj = ResourceManager.GetObject("dg_edging232", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_edging332 {
+            get {
+                object obj = ResourceManager.GetObject("dg_edging332", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_effects32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_effects32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_extra132 {
+            get {
+                object obj = ResourceManager.GetObject("dg_extra132", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_food32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_food32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_grounds32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_grounds32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_humans32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_humans32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_misc32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_misc32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dg_monster132 {
             get {
                 object obj = ResourceManager.GetObject("dg_monster132", resourceCulture);
@@ -186,6 +306,66 @@ namespace ResourceWizard.Properties {
         internal static System.Drawing.Bitmap dg_monster732 {
             get {
                 object obj = ResourceManager.GetObject("dg_monster732", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_people32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_people32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_potions32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_potions32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_undead32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_undead32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_uniques32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_uniques32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_wands32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_wands32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dg_weapons32 {
+            get {
+                object obj = ResourceManager.GetObject("dg_weapons32", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -364,6 +544,16 @@ namespace ResourceWizard.Properties {
         internal static System.Drawing.Bitmap summerwater {
             get {
                 object obj = ResourceManager.GetObject("summerwater", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap townactions {
+            get {
+                object obj = ResourceManager.GetObject("townactions", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -56,7 +56,7 @@ namespace GameCore.Mapping.Layers
 			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(3, 2));
                     break;
                 case 2:
-                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(14, 14));
+                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(10, 10));
 					_block.AddEssence(new Button(EssenceHelper.GetMaterial<BrassMaterial>(), 0), new Point(1, 1));
                     break;
             }

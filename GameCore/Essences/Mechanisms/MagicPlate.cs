@@ -46,7 +46,7 @@ namespace GameCore.Essences.Mechanisms
 					if (myCell.Creature==null)
 					{
 						var monster = (Monster)EssenceHelper.GetRandomFakedCreature<Monster>(World.Rnd).ResolveFake(_creature);
-						monster.Behaviour=EMonsterBehaviour.ATACK_AVATAR;
+						monster.Behaviour=EMonsterBehaviour.IDLE;
 						myCell.AddCreature(monster);
 
 						MessageManager.SendMessage(this, new SoundTextMessage("послышался всплеск"));

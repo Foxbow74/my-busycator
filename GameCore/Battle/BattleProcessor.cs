@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using GameCore.Creatures;
 using GameCore.Essences;
 
@@ -79,8 +80,17 @@ namespace GameCore.Battle
 
 		public override string ToString()
 		{
-			//return string.Format("{0}d{1}{2}", Count, Size, (Modifier == 0 ? "" : (Modifier > 0 ? ("+" + Modifier) : Modifier.ToString(CultureInfo.InvariantCulture))));
-			return string.Format(Math.Max(0, Count + Modifier) + " - " + Math.Max(0, Count*Size + Modifier));
+			return string.Format("{0}d{1}{2}", Count, Size,(Modifier == 0? "": (Modifier > 0 ? ("+" + Modifier) : Modifier.ToString(CultureInfo.InvariantCulture))));
+		}
+
+		public int Calc()
+		{
+			var result = Modifier;
+			for (var i = 0; i < Count; i++)
+			{
+				result += World.Rnd.Next(Size);
+			}
+			return result;
 		}
 	}
 }

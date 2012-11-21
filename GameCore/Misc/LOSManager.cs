@@ -102,6 +102,11 @@ namespace GameCore.Misc
 
 		public void SetVisibleCelss(LiveMap _liveMap, Point _dPoint, FColor _startFrom)
 		{
+			var layer = World.TheWorld.Avatar.Layer;
+			var ambient = layer.Ambient;
+			var fogLightness = layer.FogLightness;
+			var avatarLiveCell = World.TheWorld.Avatar[0, 0];
+
 			var cvisibles = new FColor[m_inOrder.Length];
 			var visibles = new float[m_inOrder.Length];
 
@@ -142,7 +147,7 @@ namespace GameCore.Misc
 				var myPnt = LiveMap.WrapCellCoords(losCell.Point + _dPoint);
 
 				var liveCell = _liveMap.Cells[myPnt.X, myPnt.Y];
-				liveCell.Visibility = new FColor(Math.Min(1f, visibilityCoeff), color);
+				liveCell.SetVisibility(new FColor(Math.Min(1f, visibilityCoeff), color), fogLightness, ambient, avatarLiveCell);
 			}
 		}
 

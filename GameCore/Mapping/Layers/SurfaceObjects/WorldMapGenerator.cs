@@ -484,6 +484,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var center = new Point(m_size/2, m_size/2);
 			foreach (var point in center.GetSpiral(m_size))
 			{
+				if (point.X < 0 || point.Y < 0) continue;
+				if (point.X >= m_size || point.Y >= m_size) continue;
+
 				var i = m_map[point.X, point.Y];
 				if (zones.Contains(i))
 				{

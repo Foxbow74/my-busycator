@@ -3,7 +3,6 @@ using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameUi.UIBlocks
 {
@@ -54,7 +53,6 @@ namespace GameUi.UIBlocks
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 
 			var worldLayer = World.TheWorld.Avatar.Layer;
-			var ambient = worldLayer.Ambient;
 
 			var width = ContentRct.Width;
 			var height = ContentRct.Height;
@@ -68,29 +66,20 @@ namespace GameUi.UIBlocks
 					var liveCellCoords = LiveMap.WrapCellCoords(xy + m_dPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
 					var screenPoint = xy + ContentRct.LeftTop;
-
-
 					var visibility = liveCell.Visibility;
+					var finalLighted = liveCell.FinalLighted;
 
-					var lighted = GetLighted(liveCell, visibility, ambient);
-
-
-					//lighted = FColor.White;
-					var lightness = lighted.Lightness();
-
-					if (lightness > worldLayer.FogLightness || avatarScreenPoint == screenPoint)
+					if (liveCell.IsVisibleNow)
 					{
-						liveCell.SetIsSeenBefore();
 						var eTerrains = liveCell.Terrain;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
-						var tcolor = terrainTile.Color.Multiply(lighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
+						var tcolor = terrainTile.Color.Multiply(finalLighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
 						terrainTile.Draw(screenPoint, tcolor);
-						//terrainTile.Draw(screenPoint, candidate);
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
-							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(lighted).Clamp().UpdateAlfa(visibility.A);
+							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(finalLighted).Clamp().UpdateAlfa(visibility.A);
 							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
 						}
 					}
@@ -113,11 +102,6 @@ namespace GameUi.UIBlocks
 				}
 			}
 			World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
-		}
-
-		internal static FColor GetLighted(LiveMapCell _liveCell, FColor _visibility, FColor _ambient)
-		{
-			return _liveCell.Lighted.Screen(_ambient).Multiply(_visibility);
 		}
 
 		public override void DrawFrame() { }

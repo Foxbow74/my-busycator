@@ -33,7 +33,7 @@ namespace ResourceWizard.VMs
 			CursorX = _xTileInfoVM.X * Constants.TILE_SIZE;
 			CursorY = _xTileInfoVM.Y * Constants.TILE_SIZE;
 			m_xTileInfoVM = _xTileInfoVM;
-			Sets = new ObservableCollection<ETextureSet>(Enum.GetValues(typeof(ETextureSet)).Cast<ETextureSet>());
+			Sets = new ObservableCollection<ETextureSet>(Enum.GetValues(typeof(ETextureSet)).Cast<ETextureSet>().OrderBy(_set => _set.ToString()));
 			TextureClick = new RelayCommand(ExecuteTextureClick);
 			SetCommand = new RelayCommand(ExecuteSetCommand, CanSetCommand);
 			AddCommand = new RelayCommand(ExecuteAddCommand, CanAddCommand);

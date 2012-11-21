@@ -25,23 +25,12 @@ namespace GameUi
 
 		private MainUiBlock m_mainUiBlock;
 		private DateTime m_moveKeyHoldedSince;
-		private int m_needRedraws = 2;
 
 		public TheGame(IGameProvider _gameProvider)
 		{
 			m_gameProvider = _gameProvider;
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
-		}
-
-		public bool IsNeedDraw
-		{
-			get
-			{
-				var result = m_needRedraws > 0;
-				m_needRedraws--;
-				return result;
-			}
 		}
 
 		public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
@@ -54,7 +43,7 @@ namespace GameUi
 					uiBlock.Resize(newRct);
 				}
 			}
-			World.TheWorld.GameUpdated(true);
+			World.TheWorld.GameUpdated();
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message) { }
@@ -105,7 +94,6 @@ namespace GameUi
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
 				m_uiBlocks.Push(uiBlock);
 				MouseMove(m_lastMousePos);
-				m_needRedraws = 4;
 			}
 			else if (_message is SystemMessage)
 			{
@@ -199,7 +187,6 @@ namespace GameUi
 			foreach (var pressedKey in pressedKeys)
 			{
 				m_pressed.Enqueue(new Tuple<ConsoleKey, EKeyModifiers>(pressedKey, m_keyModifiers));
-				m_needRedraws = 2;
 			}
 
 			if (m_pressed.Count > 0)
@@ -211,9 +198,9 @@ namespace GameUi
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock) // && m_needRedraws==0)
+			if (m_uiBlocks.Peek() == m_mainUiBlock)
 			{
-				m_needRedraws = World.TheWorld.GameUpdated() ? 4 : m_needRedraws;
+				World.TheWorld.GameUpdated();
 			}
 		}
 
@@ -225,7 +212,6 @@ namespace GameUi
 				uiBlock.DrawContent();
 				uiBlock.DrawFrame();
 			}
-			m_needRedraws = 0;
 		}
 
 		public void MouseMove(Point _pnt)

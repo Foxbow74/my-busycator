@@ -7,7 +7,6 @@ using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
-using UnsafeUtils;
 
 namespace GameCore.Mapping
 {
@@ -210,19 +209,12 @@ namespace GameCore.Mapping
 
 		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*Constants.MAP_BLOCK_SIZE + InBlockCoords; }
 
-		public void SetIsSeenBefore()
-		{
-			if (!IsSeenBefore)
-			{
-				IsSeenBefore = true;
-				m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
-			}
-		}
-
 		public void ClearTemp()
 		{
 			Visibility = FColor.Empty;
 			Lighted = FColor.Black;
+			FinalLighted = FColor.Black;
+			IsVisibleNow = false;
 		}
 
 		public override string ToString()
@@ -347,5 +339,24 @@ namespace GameCore.Mapping
 		{
 			m_splatters.Add(_splatter);
 		}
+
+		public void SetVisibility(FColor _visibility, float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
+		{
+			Visibility = _visibility;
+			FinalLighted = Lighted.Screen(_ambient).Multiply(_visibility);
+			if (FinalLighted.Lightness() > _fogLightness || this == _avatarLiveCell)
+			{
+				IsVisibleNow = true;
+				if (!IsSeenBefore)
+				{
+					IsSeenBefore = true;
+					m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
+				}
+			}
+		}
+
+		public bool IsVisibleNow { get; private set; }
+
+		public FColor FinalLighted { get; private set; }
 	}
 }

@@ -83,12 +83,8 @@ namespace GameCore
 			
 		}
 
-		/// <summary>
-		/// </summary>
-		/// <returns>true, if something changed</returns>
-		public bool GameUpdated(bool _forceTurn = false)
+		public void GameUpdated()
 		{
-			var result = false;
 			var done = new List<Creature>();
 			while (true)
 			{
@@ -142,24 +138,19 @@ namespace GameCore
 					switch (actResult)
 					{
 						case EActResults.NEED_ADDITIONAL_PARAMETERS:
-							return true;
+							return;
 						case EActResults.ACT_REPLACED:
 							break;
 						case EActResults.DONE:
 						case EActResults.FAIL:
 						case EActResults.QUICK_FAIL:
-							result = true;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException();
 					}
 				} while (actResult == EActResults.ACT_REPLACED);
 			}
-			if (result || _forceTurn)
-			{
-				MessageManager.SendMessage(this, WorldMessage.Turn);
-			}
-			return result;
+			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 
 		public static void LetItBeeee()

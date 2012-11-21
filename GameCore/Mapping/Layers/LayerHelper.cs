@@ -85,7 +85,7 @@ namespace GameCore.Mapping.Layers
 			{
 				var xy = new Point(_random.Next(_rct.Width - size.X + 1), _random.Next(_rct.Height - size.Y + 1));
 				var rect = new Rct(_rct.LeftTop + xy, size.X, size.Y);
-				if (contains.Count==0 || contains.Count==rect.Square)
+				if (contains.Count == 0 || contains.All(rect.Contains))
 				{
 					foreach (var contain in contains)
 					{

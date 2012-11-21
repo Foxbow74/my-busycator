@@ -63,13 +63,9 @@ namespace Busycator
 				base.OnRenderFrame(_e);
 	
 				m_game.Update(KeyState);
-				
-				//if (m_game.IsNeedDraw)
-				{
-					Clear(FColor.Empty);
-					m_game.Draw();
-					OnRenderFinished();
-				}
+				Clear(FColor.Empty);
+				m_game.Draw();
+				OnRenderFinished();
 			}
 			var ts = DateTime.Now - now;
 			if (ts.Milliseconds < 100 / 6)
