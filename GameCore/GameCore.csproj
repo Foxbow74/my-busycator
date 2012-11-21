@@ -62,6 +62,7 @@
     <Compile Include="Acts\System\QuitAct.cs" />
     <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="Acts\WaitAct.cs" />
+    <Compile Include="Battle\BattleProcessor.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />
     <Compile Include="Creatures\Avatar.cs" />
