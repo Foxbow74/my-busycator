@@ -14,6 +14,7 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
+			Tactic = ETactics.NORMAL;
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<Sword>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<CrossBow>());
@@ -30,5 +31,14 @@ namespace GameCore.Creatures
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
+
+		public ETactics Tactic { get; set; }
+	}
+
+	public enum ETactics
+	{
+		NORMAL,
+		BERSERK,
+		COWARD,
 	}
 }

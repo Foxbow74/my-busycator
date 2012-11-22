@@ -6,10 +6,10 @@ using GameCore.Essences;
 
 namespace GameCore.Battle
 {
-	class BattleProcessor
+	public class BattleProcessor
 	{
-		Dictionary<Creature, CreatureInfo> m_creatures = new Dictionary<Creature, CreatureInfo>();
-		Dictionary<Item, ItemInfo> m_items = new Dictionary<Item, ItemInfo>();
+		readonly Dictionary<Creature, CreatureInfo> m_creatures = new Dictionary<Creature, CreatureInfo>();
+		readonly Dictionary<Item, ItemInfo> m_items = new Dictionary<Item, ItemInfo>();
 
 		public CreatureInfo this[Creature _creature]
 		{
@@ -18,7 +18,7 @@ namespace GameCore.Battle
 				CreatureInfo info;
 				if (!m_creatures.TryGetValue(_creature, out info))
 				{
-					info = Resolve(_creature);
+					info = _creature.CreateBattleInfo();
 					m_creatures[_creature] = info;
 				}
 				return info;
@@ -32,25 +32,15 @@ namespace GameCore.Battle
 				ItemInfo info;
 				if (!m_items.TryGetValue(_item, out info))
 				{
-					info = Resolve(_creature, _item);
+					info = _item.CreateItemInfo(_creature);
 					m_items[_item] = info;
 				}
 				return info;
 			}
 		}
-
-		private ItemInfo Resolve(Creature _creature, Item _item)
-		{
-			throw new NotImplementedException();
-		}
-
-		private CreatureInfo Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
 	}
 
-	class ItemInfo
+	public class ItemInfo
 	{
 		public int DV { get; set; }
 		public int PV { get; set; }
@@ -60,19 +50,33 @@ namespace GameCore.Battle
 		public Dice Dmg { get; set; }
 	}
 
-	class CreatureInfo
+	public class CreatureInfo
 	{
-		public int DV { get; set; }
-		public int PV { get; set; }
+		public CreatureInfo(int _dv, int _pv, int _toHit, Dice _dmg)
+		{
+			Agro = new Dictionary<Creature, int>();
+		}
 
-		public int ToHit { get; set; }
-		public Dice Dmg { get; set; }
+		public int DV { get; private set; }
+		public int PV { get; private set; }
+
+		public int ToHit { get; private set; }
+		public Dice Dmg { get; private set; }
+
+		public Dictionary<Creature, int> Agro { get; private set; }
+	}
+
+	public enum EFraction
+	{
+		DUMMY,
+		AVATAR,
+		MONSTERS,
 	}
 
 	/// <summary>
 	/// 2d8+1
 	/// </summary>
-	class Dice
+	public class Dice
 	{
 		public int Count { get; set; }
 		public int Size { get; set; }

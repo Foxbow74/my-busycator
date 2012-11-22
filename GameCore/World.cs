@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using GameCore.Acts;
+using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences.Things;
 using GameCore.Mapping;
@@ -40,11 +41,13 @@ namespace GameCore
 
 		public World()
 		{
+			BattleProcessor = new BattleProcessor();
 			LiveMap = new LiveMap();
 			m_layers.Add(Surface = new Surface());
-
 			WorldTick = 0;
 		}
+
+		public BattleProcessor BattleProcessor { get; private set; }
 
 		private static XResourceClient XClient
         {get

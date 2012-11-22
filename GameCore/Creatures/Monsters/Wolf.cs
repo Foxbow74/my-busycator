@@ -8,7 +8,7 @@ namespace GameCore.Creatures.Monsters
 			: base(_layer, 80 + World.Rnd.Next(20))
 		{
 			var lcd = 0.5f + (Nn % 10 - 5) / 10f;
-			m_lerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble() / 2f);
+			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble() / 2f);
 
 			Behaviour = EMonsterBehaviour.ATACK_AVATAR;
 		}
@@ -37,7 +37,7 @@ namespace GameCore.Creatures.Monsters
 			: base(_layer, 120 + World.Rnd.Next(20))
 		{
 			var lcd = 0.5f + (Nn % 3 - 1) / 10f;
-			m_lerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble());
+			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble());
 
 			Behaviour = EMonsterBehaviour.ATACK_AVATAR;
 		}
@@ -66,7 +66,7 @@ namespace GameCore.Creatures.Monsters
 			: base(_layer, 120 + World.Rnd.Next(20))
 		{
 			var lcd = 0.5f + (Nn % 20 - 10) / 10f;
-			m_lerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble()/2, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble()/2);
+			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble()/2, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble()/2);
 
 			Behaviour = EMonsterBehaviour.ATACK_AVATAR;
 		}
