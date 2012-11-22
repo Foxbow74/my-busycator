@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Acts\Act.cs" />
     <Compile Include="Acts\Combat\AtackAct.cs" />
+    <Compile Include="Acts\Combat\CowardTactic.cs" />
     <Compile Include="Acts\Combat\ShootAct.cs" />
     <Compile Include="Acts\Info\LookAtAct.cs" />
     <Compile Include="Acts\Info\LookAtWorldMapAct.cs" />

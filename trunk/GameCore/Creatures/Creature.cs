@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts;
+using GameCore.Battle;
 using GameCore.CreatureRoles;
 using GameCore.Essences;
 using GameCore.Mapping;
@@ -276,5 +277,9 @@ namespace GameCore.Creatures
 		public long Turn { get; private set; }
 
 		#endregion
+
+		internal abstract CreatureInfo CreateBattleInfo();
+
+		public abstract EFraction Fraction { get; }
 	}
 }

@@ -4,7 +4,6 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Creatures
 {
@@ -12,17 +11,11 @@ namespace GameCore.Creatures
 	{
 		private int m_skip;
 
-		public Monster(WorldLayer _layer, int _speed)
-			: base(_layer, _speed)
+		protected Monster(WorldLayer _layer, int _speed): base(_layer, _speed)
 		{
 		}
 
-		protected FColor m_lerpColor;
-
-		public override FColor LerpColor
-		{
-			get { return m_lerpColor; }
-		}
+		public override FColor LerpColor { get; protected set; }
 
 		public override ETileset Tileset { get { return ETileset.MONSTERS; } }
 
@@ -48,6 +41,8 @@ namespace GameCore.Creatures
 			if(this[0,0].IsVisibleNow)
 			{
 				Behaviour=EMonsterBehaviour.ATACK_AVATAR;
+				var info = World.TheWorld.BattleProcessor[this];
+				info.Agro[World.TheWorld.Avatar] = 1;
 			}
 			AddActToPool(new WaitAct());
 			return EThinkingResult.NORMAL;

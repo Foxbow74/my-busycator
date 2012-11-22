@@ -34,7 +34,7 @@ namespace GameCore.Essences
 
 		public abstract ETileset Tileset { get; }
 
-		public virtual FColor LerpColor { get { return Material.LerpColor; } }
+		public virtual FColor LerpColor { get { return Material.LerpColor; } protected  set{} }
 
 		public virtual EDirections Direction { get { return EDirections.DOWN; } }
 
