@@ -1,5 +1,6 @@
 using System;
 using GameCore.Creatures;
+using GameCore.Creatures.Monsters;
 using GameCore.Messages;
 using GameCore.Misc;
 using UnsafeUtils;
@@ -45,7 +46,7 @@ namespace GameCore.Essences.Mechanisms
 
 					if (myCell.Creature==null)
 					{
-						var monster = (Monster)EssenceHelper.GetRandomFakedCreature<Monster>(World.Rnd).ResolveFake(_creature);
+						var monster = (AbstractMonster)EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd).ResolveFake(_creature);
 						monster.Behaviour=EMonsterBehaviour.IDLE;
 						myCell.AddCreature(monster);
 

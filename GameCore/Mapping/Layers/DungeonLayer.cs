@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Creatures.Monsters;
 using GameCore.Materials;
 using GameCore.Misc;
 using GameCore.Essences;
@@ -69,7 +70,7 @@ namespace GameCore.Mapping.Layers
 			{
 				var x = rnd.Next(Constants.MAP_BLOCK_SIZE);
 				var y = rnd.Next(Constants.MAP_BLOCK_SIZE);
-				block.AddCreature(EssenceHelper.GetFirstFoundedCreature<Monster>(), new Point(x, y));
+				block.AddCreature(EssenceHelper.GetFirstFoundedCreature<AbstractMonster>(), new Point(x, y));
 			}
 
 			block.Map[9, 9] = ETerrains.RED_BRICK_WALL;

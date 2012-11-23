@@ -1,3 +1,4 @@
+using GameCore.Battle;
 using GameCore.Creatures;
 
 namespace GameCore.Essences.Rings
@@ -19,5 +20,10 @@ namespace GameCore.Essences.Rings
 		public override string Name { get { return "кольцо"; } }
 
 		public override void Resolve(Creature _creature) { }
+
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			return ItemBattleInfo.Empty;
+		}
 	}
 }

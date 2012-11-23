@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.Battle;
 using GameCore.CreatureRoles;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
@@ -31,6 +32,16 @@ namespace GameCore.Creatures
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
+		
+		internal override CreatureBattleInfo CreateBattleInfo()
+		{
+			return new IntelligentBattleInfo(this);
+		}
+
+		public override EFraction Fraction
+		{
+			get { return EFraction.AVATAR; }
+		}
 
 		public ETactics Tactic { get; set; }
 	}

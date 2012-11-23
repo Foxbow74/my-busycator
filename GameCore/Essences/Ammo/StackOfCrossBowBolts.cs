@@ -1,3 +1,6 @@
+using GameCore.Battle;
+using GameCore.Creatures;
+
 namespace GameCore.Essences.Ammo
 {
 	internal class StackOfCrossBowBolts : StackOfAmmo
@@ -11,6 +14,11 @@ namespace GameCore.Essences.Ammo
                 return 0;
             }
         }
+		
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			return ItemBattleInfo.Empty;
+		}
 
 		protected override string NameOfSingle { get { return "болт"; } }
 	}
