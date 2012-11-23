@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Battle;
 using GameCore.Creatures;
 
 namespace GameCore.Essences
@@ -37,6 +38,16 @@ namespace GameCore.Essences
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
+
+		internal override CreatureBattleInfo CreateBattleInfo()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override EFraction Fraction
+		{
+			get { throw new NotImplementedException(); }
+		}
 
 		public override bool Is<T>()
 		{

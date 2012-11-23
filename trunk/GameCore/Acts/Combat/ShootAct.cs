@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Creatures.Dummies;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;

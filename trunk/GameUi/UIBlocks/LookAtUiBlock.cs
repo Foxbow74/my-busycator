@@ -6,7 +6,6 @@ using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;
 using RusLanguage;
-using UnsafeUtils;
 
 namespace GameUi.UIBlocks
 {
@@ -82,13 +81,13 @@ namespace GameUi.UIBlocks
 			{
                 ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Gold);
 
-				var lighted = liveCell.FinalLighted;// = MapUiBlock.GetLighted(liveCell, liveCell.Visibility, World.TheWorld.Avatar.Layer.Ambient);
+				var lighted = liveCell.FinalLighted;
 
 				var list = new List<string>();
-				var s = "";
+				string thereIsWas;
 				if (lighted.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
 				{
-					s = "там ";
+					thereIsWas = "там ";
                     ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 
 					if (liveCell.Creature != null)
@@ -110,10 +109,10 @@ namespace GameUi.UIBlocks
 				}
 				else
 				{
-					s = Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
+					thereIsWas = Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
 				}
 				list.Add(liveCell.TerrainAttribute.DisplayName);
-				m_messages.DrawLine(s + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);
+				m_messages.DrawLine(thereIsWas + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);
 			}
 			else
 			{

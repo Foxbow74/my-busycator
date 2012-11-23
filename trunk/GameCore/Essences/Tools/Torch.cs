@@ -1,4 +1,5 @@
 ﻿using GameCore.Acts;
+using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -29,6 +30,11 @@ namespace GameCore.Essences.Tools
 		public override string Name { get { return "факел"; } }
 
 		public override EItemCategory Category { get { return EItemCategory.TOOLS; } }
+
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			return ItemBattleInfo.Empty;
+		}
 
 		public override FColor LerpColor { get { return IsOn ? new FColor(1f, m_lightSource.Color) : base.LerpColor; } }
 

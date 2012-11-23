@@ -2,6 +2,7 @@
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
+using GameCore.Battle;
 using GameCore.Mapping.Layers;
 using GameCore.Essences;
 using GameCore.Misc;
@@ -78,6 +79,16 @@ namespace GameCore.Creatures
 			AddActToPool(new WaitAct());
 
 			return EThinkingResult.NORMAL;
+		}
+
+		internal override CreatureBattleInfo CreateBattleInfo()
+		{
+			return new IntelligentBattleInfo(this);
+		}
+
+		public override EFraction Fraction
+		{
+			get { return EFraction.AVATAR; }
 		}
 
 		public override string ToString()

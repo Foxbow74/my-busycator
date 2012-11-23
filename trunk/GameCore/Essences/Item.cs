@@ -18,6 +18,6 @@ namespace GameCore.Essences
 		public override EMaterial AllowedMaterials { get { return EMaterial.METAL | EMaterial.MINERAL | EMaterial.WOOD; } }
 
 		public abstract EItemCategory Category { get; }
-		public abstract ItemInfo CreateItemInfo(Creature _creature);
+		public abstract ItemBattleInfo CreateItemInfo(Creature _creature);
 	}
 }

@@ -278,7 +278,7 @@ namespace GameCore.Creatures
 
 		#endregion
 
-		internal abstract CreatureInfo CreateBattleInfo();
+		internal abstract CreatureBattleInfo CreateBattleInfo();
 
 		public abstract EFraction Fraction { get; }
 	}

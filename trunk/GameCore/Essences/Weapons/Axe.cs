@@ -1,3 +1,6 @@
+using GameCore.Battle;
+using GameCore.Creatures;
+
 namespace GameCore.Essences.Weapons
 {
 	public class Axe : Weapon
@@ -13,5 +16,10 @@ namespace GameCore.Essences.Weapons
         }
 
 		public override string Name { get { return "топор"; } }
+
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			return new ItemBattleInfo(0,0,0,0,new Dice(2,2,0));
+		}
 	}
 }

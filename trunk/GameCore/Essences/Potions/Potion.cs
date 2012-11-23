@@ -1,4 +1,5 @@
-﻿using GameCore.Creatures;
+﻿using GameCore.Battle;
+using GameCore.Creatures;
 using RusLanguage;
 
 namespace GameCore.Essences.Potions
@@ -18,6 +19,11 @@ namespace GameCore.Essences.Potions
 		public override string Name { get { return "булька"; } }
 
 		public override EItemCategory Category { get { return EItemCategory.POTION; } }
+
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			return ItemBattleInfo.Empty;
+		}
 
 		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 
