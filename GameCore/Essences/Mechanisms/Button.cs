@@ -24,15 +24,19 @@ namespace GameCore.Essences.Mechanisms
 			}
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-		}
+		#region IInteractiveThing Members
 
 		public EActResults Interract(Creature _creature, LiveMapCell _liveMapCell)
 		{
 			var tuple = World.TheWorld.GetRemoteActivation(MechanismId);
 			tuple.Item1.RemoteActivation(_creature, tuple.Item2);
 			return EActResults.DONE;
+		}
+
+		#endregion
+
+		public override void Resolve(Creature _creature)
+		{
 		}
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Misc;
 using GameCore.Essences;
+using GameCore.Misc;
 
 namespace GameCore.Creatures
 {

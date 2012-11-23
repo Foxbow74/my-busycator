@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
+using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences;
 
 namespace GameCore.Acts.Combat
 {
@@ -64,8 +63,8 @@ namespace GameCore.Acts.Combat
 			{
 				return EActResults.QUICK_FAIL;
 			}
-			//new Missile(_creature.Layer, _creature.LiveCoords, 2, item, _creature.LiveCoords + dPoint);
-			new SplatterDropper(_creature.Layer, _creature.LiveCoords, 1f, FColor.Crimson, _creature.LiveCoords + dPoint);
+			new Missile(_creature.Layer, _creature.LiveCoords, 2, item, _creature.LiveCoords + dPoint);
+			//new SplatterDropper(_creature.Layer, _creature.LiveCoords, 1f, FColor.Crimson, _creature.LiveCoords + dPoint);
 			return EActResults.DONE;
 		}
 	}

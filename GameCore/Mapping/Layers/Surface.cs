@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GameCore.Mapping.Layers.SurfaceObjects;
-using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
+using GameCore.Mapping.Layers.SurfaceObjects;
+using GameCore.Misc;
 using GameCore.Plants;
 using RusLanguage;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {
@@ -25,40 +24,6 @@ namespace GameCore.Mapping.Layers
 		static Surface()
 		{
 			LoadNicks();
-		}
-
-		private static void LoadNicks()
-		{
-			if (Constants.WORLD_MAP_SIZE < 4)
-			{
-				m_femaleNames = new List<string>() {"Female1", "Female2", "Female3"};
-				m_maleNames = new List<string>() {"Male1", "Male2", "Male3"};
-			}
-			else
-			{
-				if (World.XResourceRoot.NickInfos.Count > 0)
-				{
-					var separator = new[] {','};
-					foreach (var nicksInfo in World.XResourceRoot.NickInfos)
-					{
-						switch (nicksInfo.Sex)
-						{
-							case ESex.MALE:
-								m_maleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
-								break;
-							case ESex.FEMALE:
-								m_femaleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
-								break;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
-					}
-				}
-				else
-				{
-					throw new ApplicationException("База ресурсов не содержит информацию об именах.");
-				}
-			}
 		}
 
 		/// <summary>
@@ -94,6 +59,40 @@ namespace GameCore.Mapping.Layers
 		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.GRASS; } }
 
 		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.RED_BRICK_WALL; } }
+
+		private static void LoadNicks()
+		{
+			if (Constants.WORLD_MAP_SIZE < 4)
+			{
+				m_femaleNames = new List<string> {"Female1", "Female2", "Female3"};
+				m_maleNames = new List<string> {"Male1", "Male2", "Male3"};
+			}
+			else
+			{
+				if (World.XResourceRoot.NickInfos.Count > 0)
+				{
+					var separator = new[] {','};
+					foreach (var nicksInfo in World.XResourceRoot.NickInfos)
+					{
+						switch (nicksInfo.Sex)
+						{
+							case ESex.MALE:
+								m_maleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+								break;
+							case ESex.FEMALE:
+								m_femaleNames = nicksInfo.Nicks.Split(separator, StringSplitOptions.RemoveEmptyEntries).ToList();
+								break;
+							default:
+								throw new ArgumentOutOfRangeException();
+						}
+					}
+				}
+				else
+				{
+					throw new ApplicationException("База ресурсов не содержит информацию об именах.");
+				}
+			}
+		}
 
 		public string GetNextCitizenName(ESex _sex)
 		{

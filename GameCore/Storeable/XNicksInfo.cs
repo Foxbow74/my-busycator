@@ -6,8 +6,6 @@ namespace GameCore.Storeable
 {
 	class XNicksInfo : XObject
 	{
-		public XNicksInfo() { }
-
 #pragma warning disable 649
 		[X("Sex")]private IXValue<int> m_sex;
 		[X("Nicks")]private IXValue<string> m_nicks;

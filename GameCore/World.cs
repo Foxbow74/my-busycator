@@ -22,12 +22,12 @@ namespace GameCore
 
 		static XResourceClient m_resourceCli;
 
-		private readonly Dictionary<uint, Tuple<IRemoteActivation, Point>> m_remoteActivation = new Dictionary<uint, Tuple<IRemoteActivation, Point>>();
-
 		/// <summary>
 		/// содержит список активных в данный момент существ
 		/// </summary>
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
+
+		private readonly Dictionary<uint, Tuple<IRemoteActivation, Point>> m_remoteActivation = new Dictionary<uint, Tuple<IRemoteActivation, Point>>();
 
 		static World() 
 		{

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
+using GameCore.Essences;
+using GameCore.Essences.Things;
 using GameCore.Mapping.Layers;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
-using GameCore.Essences;
-using GameCore.Essences.Things;
 
 namespace GameCore.Mapping
 {
@@ -15,8 +15,12 @@ namespace GameCore.Mapping
 	{
 		private readonly List<Item> m_items = new List<Item>();
 		private readonly Point m_liveCoords;
+		private readonly List<Splatter> m_splatters = new List<Splatter>();
+		private float? m_isPassable;
 		private MapBlock m_mapBlock;
 		private uint m_seenMask;
+		private Thing m_thing;
+		private FColor? m_transparentColor;
 
 		public LiveMapCell(LiveMapBlock _liveMapBlock, Point _liveCoords)
 		{
@@ -101,10 +105,7 @@ namespace GameCore.Mapping
 
 		public Point LiveCoords { get { return m_liveCoords; } }
 
-        private FColor? m_transparentColor;
-	    private Thing m_thing;
-
-	    public FColor TransparentColor
+		public FColor TransparentColor
 		{
 			get
 			{
@@ -184,6 +185,10 @@ namespace GameCore.Mapping
 				return TerrainAttribute.IsPassable == 0 ? 0.8f : 1f;
 			}
 		}
+
+		public bool IsVisibleNow { get; private set; }
+
+		public FColor FinalLighted { get; private set; }
 
 		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
@@ -283,9 +288,6 @@ namespace GameCore.Mapping
 			}
 		}
 
-		private float? m_isPassable = null;
-		private List<Splatter> m_splatters = new List<Splatter>();
-
 		public float GetIsPassableBy(Creature _creature, bool _pathFinding = false)
 		{
 			if(m_isPassable.HasValue) return m_isPassable.Value;
@@ -355,9 +357,5 @@ namespace GameCore.Mapping
 				}
 			}
 		}
-
-		public bool IsVisibleNow { get; private set; }
-
-		public FColor FinalLighted { get; private set; }
 	}
 }

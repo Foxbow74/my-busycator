@@ -5,8 +5,6 @@ namespace GameCore.Storeable
 {
 	class XTileInfo : XChildObject<XAbstractTileSet>
 	{
-		public XTileInfo(){}
-
 #pragma warning disable 649
 		[X("TEXTURE")]
 		private readonly IXValue<int> m_eTexture;

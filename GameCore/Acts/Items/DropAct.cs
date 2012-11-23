@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Messages;
 using GameCore.Essences;
+using GameCore.Messages;
 using RusLanguage;
 
 namespace GameCore.Acts.Items

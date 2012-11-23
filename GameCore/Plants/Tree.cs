@@ -1,6 +1,6 @@
 ﻿using GameCore.Creatures;
-using GameCore.Materials;
 using GameCore.Essences;
+using GameCore.Materials;
 
 namespace GameCore.Plants
 {

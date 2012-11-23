@@ -3,27 +3,22 @@ using GameCore.Creatures;
 using GameCore.Creatures.Monsters;
 using GameCore.Messages;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Essences.Mechanisms
 {
 	public class MagicPlate : Mechanism, IRemoteActivation
 	{
-		public EMagicPlateEffect Effect { get; private set; }
-
 		public MagicPlate(Material _material, uint _mechanismId, EMagicPlateEffect _effect)
 			: base(_material, _mechanismId)
 		{
 			Effect = _effect;
 		}
 
+		public EMagicPlateEffect Effect { get; private set; }
+
 		public override string Name
 		{
 			get { return "пластина"; }
-		}
-
-		public override void Resolve(Creature _creature)
-		{
 		}
 
 		public override int TileIndex
@@ -33,6 +28,8 @@ namespace GameCore.Essences.Mechanisms
 				return 2;
 			}
 		}
+
+		#region IRemoteActivation Members
 
 		public void RemoteActivation(Creature _creature, Point _worldCoords)
 		{
@@ -60,6 +57,12 @@ namespace GameCore.Essences.Mechanisms
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
+		}
+
+		#endregion
+
+		public override void Resolve(Creature _creature)
+		{
 		}
 	}
 }

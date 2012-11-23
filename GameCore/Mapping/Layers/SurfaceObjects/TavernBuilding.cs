@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using GameCore.Essences;
-using RusLanguage;
+﻿using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

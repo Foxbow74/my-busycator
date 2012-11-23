@@ -17,6 +17,11 @@ namespace GameCore.Essences.Things
 
 		protected Stair(Material _material) : base(_material) { }
 
+		public override EMaterial AllowedMaterials
+		{
+			get { return EMaterial.MINERAL; }
+		}
+
 		public EActResults MoveToLayer(Creature _creature)
 		{
 			if (m_leadToLayer == null)
@@ -29,10 +34,5 @@ namespace GameCore.Essences.Things
 		}
 
 		public override void Resolve(Creature _creature) { }
-
-		public override EMaterial AllowedMaterials
-		{
-			get { return EMaterial.MINERAL; }
-		}
 	}
 }

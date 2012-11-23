@@ -14,12 +14,12 @@ namespace GameCore.Essences.Ammo
                 return 0;
             }
         }
-		
+
+		protected override string NameOfSingle { get { return "болт"; } }
+
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
 			return ItemBattleInfo.Empty;
 		}
-
-		protected override string NameOfSingle { get { return "болт"; } }
 	}
 }

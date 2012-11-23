@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using GameCore.Misc;
-using GameCore.Essences;
-using UnsafeUtils;
+﻿using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

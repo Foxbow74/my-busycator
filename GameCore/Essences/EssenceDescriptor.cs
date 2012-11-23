@@ -1,7 +1,6 @@
 ﻿using GameCore.Creatures;
 using GameCore.Essences.Things;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Essences
 {

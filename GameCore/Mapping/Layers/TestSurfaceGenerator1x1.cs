@@ -1,19 +1,19 @@
 ﻿using System;
+using GameCore.Essences;
 using GameCore.Essences.Mechanisms;
+using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
+using GameCore.Essences.Weapons;
 using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Essences;
-using GameCore.Essences.Things;
-using GameCore.Essences.Weapons;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers
 {
 	class TestSurfaceGenerator1x1
 	{
+		private readonly EMapBlockTypes[,] m_blocks = new EMapBlockTypes[1,1];
 		private readonly Random m_rnd;
-		private EMapBlockTypes[,] m_blocks = new EMapBlockTypes[1,1];
+
 		public TestSurfaceGenerator1x1(Random _rnd)
 		{
 			m_rnd = _rnd;

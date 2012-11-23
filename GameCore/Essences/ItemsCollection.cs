@@ -92,12 +92,12 @@ namespace GameCore.Essences
 			public int Count { get; set; }
 
 			public override EItemCategory Category { get { throw new NotImplementedException(); } }
-			public override ItemBattleInfo CreateItemInfo(Creature _creature){ throw new NotImplementedException(); }
 			public override ETileset Tileset { get { throw new NotImplementedException(); } }
 			public override string Name { get { throw new NotImplementedException(); } }
-			public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 			public Item Item { get; private set; }
+			public override ItemBattleInfo CreateItemInfo(Creature _creature){ throw new NotImplementedException(); }
+			public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 			public override int GetHashCode() { return Item.GetHashCode(); }
 			public override string ToString() { return "stack of " + Item.GetName(World.TheWorld.Avatar) + " (" + Count + ")"; }
 		}

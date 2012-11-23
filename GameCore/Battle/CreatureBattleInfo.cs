@@ -7,14 +7,22 @@ namespace GameCore.Battle
 	{
 		private readonly Creature m_creature;
 
-		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, int _toHit, Dice _dmg, Dice _hp):this()
+		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, int _toHit, int _dmg, Dice _hp):this()
 		{
 			m_creature = _creature;
 			DV = _dv;
 			PV = _pv;
-			ToHit = _toHit;
-			Dmg = _dmg;
+			HP = _hp.Calc();
+			ToHitModifier = _toHit;
+			DmgModifier = _dmg;
+		}
 
+		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, Dice _hp)
+			: this()
+		{
+			m_creature = _creature;
+			DV = _dv;
+			PV = _pv;
 			HP = _hp.Calc();
 		}
 
@@ -28,8 +36,8 @@ namespace GameCore.Battle
 		public int DV { get; private set; }
 		public int PV { get; private set; }
 
-		public int ToHit { get; private set; }
-		public Dice Dmg { get; private set; }
+		public int ToHitModifier { get; private set; }
+		public int DmgModifier { get; private set; }
 
 		public Dictionary<Creature, int> Agro { get; private set; }
 	}

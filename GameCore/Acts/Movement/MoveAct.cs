@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
-using GameCore.Messages;
-using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
-using UnsafeUtils;
+using GameCore.Messages;
+using GameCore.Misc;
 
 namespace GameCore.Acts.Movement
 {
@@ -82,6 +81,12 @@ namespace GameCore.Acts.Movement
 					var creature = cell.Creature;
 					if (creature != null)
 					{
+						bool isMoveToAct;
+						if(!TryGetParameter(out isMoveToAct) || !isMoveToAct)
+						{
+							//Если это не перемещение на дальнее расстояние
+							return World.TheWorld.BattleProcessor.Atack(_creature, creature);
+						}
 						mess = creature.GetName(_creature);
 					}
 					else
@@ -89,14 +94,10 @@ namespace GameCore.Acts.Movement
 						var thing = cell.Thing;
 						if (thing != null && thing.Is<ClosedDoor>() && thing.IsLockedFor(cell, _creature))
 						{
-							//_creature.InsertActToPool(this);
 							_creature.InsertActToPool(new OpenAct(), delta);
 							return EActResults.ACT_REPLACED;
 						}
-						else
-						{
-							mess = cell.TerrainAttribute.DisplayName;
-						}
+						mess = cell.TerrainAttribute.DisplayName;
 					}
 					MessageManager.SendMessage(this, "неа, тут " + mess);
 				}

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameCore.Creatures;
 using GameCore.Creatures.Monsters;
-using GameCore.Materials;
-using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
-using UnsafeUtils;
+using GameCore.Materials;
+using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers
 {

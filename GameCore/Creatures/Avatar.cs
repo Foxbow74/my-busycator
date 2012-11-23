@@ -1,12 +1,12 @@
 ﻿using System;
 using GameCore.Battle;
 using GameCore.CreatureRoles;
-using GameCore.Mapping.Layers;
-using GameCore.Materials;
 using GameCore.Essences;
 using GameCore.Essences.Ammo;
 using GameCore.Essences.Tools;
 using GameCore.Essences.Weapons;
+using GameCore.Mapping.Layers;
+using GameCore.Materials;
 
 namespace GameCore.Creatures
 {
@@ -29,6 +29,13 @@ namespace GameCore.Creatures
 
 		public override string IntelligentName { get { return "Дима"; } }
 
+		public override EFraction Fraction
+		{
+			get { return EFraction.AVATAR; }
+		}
+
+		public ETactics Tactic { get; set; }
+
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
@@ -37,13 +44,6 @@ namespace GameCore.Creatures
 		{
 			return new IntelligentBattleInfo(this);
 		}
-
-		public override EFraction Fraction
-		{
-			get { return EFraction.AVATAR; }
-		}
-
-		public ETactics Tactic { get; set; }
 	}
 
 	public enum ETactics

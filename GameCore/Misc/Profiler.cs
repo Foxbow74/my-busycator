@@ -10,12 +10,11 @@ namespace GameCore.Misc
 		private static readonly Dictionary<string, Info> m_infos = new Dictionary<string, Info>();
 
 		public static readonly DateTime Start = DateTime.Now;
-		private readonly Info m_info;
-		private readonly string m_name;
-		private readonly string m_key;
-		private readonly DateTime m_time = DateTime.Now;
-
 		readonly static List<Profiler> m_profilers = new List<Profiler>();
+		private readonly Info m_info;
+		private readonly string m_key;
+		private readonly string m_name;
+		private readonly DateTime m_time = DateTime.Now;
 
 		public Profiler()
 		{
@@ -25,7 +24,7 @@ namespace GameCore.Misc
 
 			if (!m_infos.TryGetValue(m_key, out m_info))
 			{
-				m_infos[m_key] = m_info = new Info { Span = TimeSpan.Zero, In = m_profilers.Count == 0 ? null : m_profilers.Last().m_name, Name = m_name.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries).Last(), Key = m_name };
+				m_infos[m_key] = m_info = new Info { Span = TimeSpan.Zero, In = m_profilers.Count == 0 ? null : m_profilers.Last().m_name, Name = m_name.Split(new[] { "." }, StringSplitOptions.RemoveEmptyEntries).Last(), Key = m_name };
 			}
 			m_profilers.Add(this);
 		}
@@ -91,11 +90,11 @@ namespace GameCore.Misc
 		private class Info
 		{
 			public int Count;
-			public TimeSpan Span;
 			public String In;
 
-			public String Name;
 			public String Key;
+			public String Name;
+			public TimeSpan Span;
 		}
 
 		#endregion

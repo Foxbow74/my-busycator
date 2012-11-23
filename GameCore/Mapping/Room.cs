@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Mapping
 {

@@ -5,7 +5,6 @@ using System.Linq;
 using GameCore.CreatureRoles;
 using GameCore.Creatures;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

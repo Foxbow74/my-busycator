@@ -5,11 +5,11 @@ using GameCore.Acts;
 using GameCore.Battle;
 using GameCore.CreatureRoles;
 using GameCore.Essences;
+using GameCore.Essences.Weapons;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Creatures
 {
@@ -17,13 +17,13 @@ namespace GameCore.Creatures
 	{
 		#region Fields
 
-		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
 		private static int m_n;
+		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
 
 		private WorldLayer m_layer;
 		private Point m_liveCoords;
 
-		private Point m_pathMapCoords = null;
+		private Point m_pathMapCoords;
 
 		#endregion
 
@@ -45,11 +45,6 @@ namespace GameCore.Creatures
 		public void AddRole(AbstractCreatureRole _role)
 		{
 			m_roles.Add(_role);
-		}
-
-		public virtual EActResults Atack(Creature _victim)
-		{
-			return EActResults.ACT_REPLACED;
 		}
 
 		public void Born(Point _liveCoords)
@@ -119,6 +114,25 @@ namespace GameCore.Creatures
 
 		private readonly List<Act> m_actPool = new List<Act>();
 
+		public EActResults ActResult { get; protected set; }
+
+		public bool IsAvatar
+		{
+			get { return World.TheWorld.Avatar == this; }
+		}
+
+		public Act NextAct
+		{
+			get
+			{
+				while (m_actPool.Count > 0 && m_actPool[0].IsCancelled)
+				{
+					m_actPool.RemoveAt(0);
+				}
+				return m_actPool.Count == 0 ? null : m_actPool[0];
+			}
+		}
+
 		public void AddActToPool(Act _act, params object[] _params)
 		{
 			m_actPool.Add(_act);
@@ -175,25 +189,6 @@ namespace GameCore.Creatures
 			foreach (var o in _params)
 			{
 				_act.AddParameter(o.GetType(), o);
-			}
-		}
-
-		public EActResults ActResult { get; protected set; }
-
-		public bool IsAvatar
-		{
-			get { return World.TheWorld.Avatar == this; }
-		}
-
-		public Act NextAct
-		{
-			get
-			{
-				while (m_actPool.Count > 0 && m_actPool[0].IsCancelled)
-				{
-					m_actPool.RemoveAt(0);
-				}
-				return m_actPool.Count == 0 ? null : m_actPool[0];
 			}
 		}
 
@@ -278,8 +273,14 @@ namespace GameCore.Creatures
 
 		#endregion
 
+		public abstract EFraction Fraction { get; }
 		internal abstract CreatureBattleInfo CreateBattleInfo();
 
-		public abstract EFraction Fraction { get; }
+		/// <summary>
+		/// Получить список оружия против определенного противника
+		/// </summary>
+		/// <param name="_against"></param>
+		/// <returns></returns>
+		public abstract IEnumerable<IWeapon> GetWeapons(Creature _against);
 	}
 }

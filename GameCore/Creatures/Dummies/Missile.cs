@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
+using GameCore.Essences;
+using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences;
 
 namespace GameCore.Creatures.Dummies
 {
@@ -63,7 +63,6 @@ namespace GameCore.Creatures.Dummies
 			if (!canMove)
 			{
 				nextCell.AddItem(Ammo);
-				LiveCoords = null;
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
@@ -71,19 +70,18 @@ namespace GameCore.Creatures.Dummies
 			return EThinkingResult.NORMAL;
 		}
 
-		public override EActResults Atack(Creature _victim)
+		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
 		{
-			MessageManager.SendMessage(this, "попал!");
-			LiveCoords = null;
-			return EActResults.DONE;
+			var weapon = Ammo as IWeapon;
+			yield return weapon;
 		}
 	}
 
 	public class Splatter:ITileInfoProvider
 	{
 		private readonly FColor m_color;
-		private readonly int m_tileIndex;
 		private readonly EDirections m_direction;
+		private readonly int m_tileIndex;
 
 		public Splatter(FColor _color, int _tileIndex)
 		{
@@ -91,6 +89,8 @@ namespace GameCore.Creatures.Dummies
 			m_tileIndex = _tileIndex;
 			m_direction = World.Rnd.GetRandomDirection();
 		}
+
+		#region ITileInfoProvider Members
 
 		public ETileset Tileset
 		{
@@ -111,5 +111,7 @@ namespace GameCore.Creatures.Dummies
 		{
 			get { return m_tileIndex; }
 		}
+
+		#endregion
 	}
 }

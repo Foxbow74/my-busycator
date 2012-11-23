@@ -5,8 +5,6 @@ namespace GameCore.Storeable
 {
 	class XTerrainSet : XAbstractTileSet
 	{
-		public XTerrainSet() { }
-
 #pragma warning disable 649
 		[X("TERRAIN")]private readonly IXValue<int> m_terrains;
 #pragma warning restore 649

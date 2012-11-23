@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Essences;
+using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using GameCore.Essences;
 using RusLanguage;
 
 namespace GameCore.Creatures
@@ -13,9 +14,9 @@ namespace GameCore.Creatures
     /// </summary>
 	public abstract class Intelligent : Creature
 	{
-		#region EIntellectGrades enum
+    	#region EIntellectGrades enum
 
-		public enum EIntellectGrades
+    	public enum EIntellectGrades
 		{
 			//Может использовать орудия труда и оружие в лапах
 			SEMI_INT,
@@ -23,9 +24,9 @@ namespace GameCore.Creatures
 			INT,
 		}
 
-		#endregion
+    	#endregion
 
-		private readonly BackPack m_backPack;
+    	private readonly BackPack m_backPack;
 
 		private readonly Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
 		private readonly EIntellectGrades m_intellectGrades;
@@ -134,5 +135,18 @@ namespace GameCore.Creatures
 		}
 
 		public void RemoveFromBackpack(Item _item) { m_backPack.GetItems(this).Remove(_item); }
+
+		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
+		{
+			Item item;
+			if (m_equipment.TryGetValue(EEquipmentPlaces.RIGHT_HAND, out item) && item is IWeapon)
+			{
+				yield return (IWeapon)item;
+			}
+			if (m_equipment.TryGetValue(EEquipmentPlaces.LEFT_HAND, out item) && item is IWeapon)
+			{
+				yield return (IWeapon)item;
+			}
+		}
 	}
 }

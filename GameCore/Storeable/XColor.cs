@@ -5,8 +5,6 @@ namespace GameCore.Storeable
 {
 	class XColor : XObject
 	{
-		public XColor(){}
-
 		public override EStoreKind Kind
 		{
 			get { return EStoreKind.COLOR; }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Misc;
 using GameCore.Essences;
-using UnsafeUtils;
+using GameCore.Misc;
 
 namespace GameCore.Mapping
 {

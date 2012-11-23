@@ -1,3 +1,4 @@
+using System;
 using GameCore.Battle;
 using GameCore.Essences;
 using GameCore.Mapping.Layers;
@@ -10,15 +11,14 @@ namespace GameCore.Creatures.Dummies
 		{
 		}
 
-		internal override CreatureBattleInfo CreateBattleInfo()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public override EFraction Fraction
 		{
 			get { return EFraction.DUMMY; }
 		}
 
+		internal override CreatureBattleInfo CreateBattleInfo()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

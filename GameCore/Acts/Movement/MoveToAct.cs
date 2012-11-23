@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
+using GameCore.Essences.Things;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences.Things;
-using UnsafeUtils;
 
 namespace GameCore.Acts.Movement
 {
@@ -40,12 +39,13 @@ namespace GameCore.Acts.Movement
 			{
 				var result = EActResults.DONE;
 				var pnt = way.First();
+				var longWay = way.Count() > 1;
 				foreach (var point in way)
 				{
 					var dpoint = point - pnt;
 					if (dpoint != Point.Zero)
 					{
-						_creature.AddActToPool(new MoveAct(), dpoint);
+						_creature.AddActToPool(new MoveAct(), dpoint, longWay);
 						result = EActResults.ACT_REPLACED;
 					}
 					pnt = point;
@@ -73,7 +73,7 @@ namespace GameCore.Acts.Movement
 				_creature.AddActToPool(new MoveAct(), delta);
 				return EActResults.ACT_REPLACED;
 			}
-			else if (nextCell.Thing != null && nextCell.Thing.Is<ClosedDoor>())
+			if (nextCell.Thing != null && nextCell.Thing.Is<ClosedDoor>())
 			{
 				_creature.AddActToPool(new OpenAct(), delta);
 				return EActResults.ACT_REPLACED;

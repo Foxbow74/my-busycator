@@ -1,6 +1,5 @@
 ﻿using GameCore.Mapping;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Essences.Things.LightSources
 {
@@ -8,15 +7,15 @@ namespace GameCore.Essences.Things.LightSources
 	{
 		private readonly LightSource m_lightSource;
 
-        public override ETileset Tileset
-        {
-            get
-            {
-                return ETileset.LIGHT_SOURCES;
-            }
-        }
-
 		protected LightSourceThing(LightSource _lightSource, Material _material) : base(_material) { m_lightSource = _lightSource; }
+
+		public override ETileset Tileset
+		{
+			get
+			{
+				return ETileset.LIGHT_SOURCES;
+			}
+		}
 
 		#region ILightSource Members
 

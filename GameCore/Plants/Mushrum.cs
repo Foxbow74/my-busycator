@@ -20,15 +20,14 @@ namespace GameCore.Plants
             }
         }
 
-        public override void Resolve(Creature _creature) { }
-
-        public override FColor LerpColor { get { return FColor.Empty; } }
+    	public override FColor LerpColor { get { return FColor.Empty; } }
 
         public override string Name { get { return m_material.MushrumName; } }
 
         public override EMaterial AllowedMaterials { get { return EMaterial.MUSHRUM; } }
+    	public override void Resolve(Creature _creature) { }
 
-        public override string GetFullName()
+    	public override string GetFullName()
         {
             return Name;
         }

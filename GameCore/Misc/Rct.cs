@@ -78,28 +78,10 @@ namespace GameCore.Misc
 
 		public Point Center { get { return LeftTop + new Point(Width, Height)/2; } }
 
-		#region overrides
-
-		public static Rct operator *(Rct _a, int _c) { return new Rct(_a.LeftTop*_c, _a.RightBottom*_c); }
-
-		#endregion
-
-		public Rct Inflate(int _x, int _y) { return new Rct(LeftTop - new Point(_x, _y), RightBottom + new Point(_x, _y)); }
-
-		public Rct Offset(int _x, int _y) { return new Rct(LeftTop + new Point(_x, _y), RightBottom + new Point(_x, _y)); }
-
 		public int Square
 		{
 			get { return Width*Height; }
 		}
-
-		public bool Contains(Point _point)
-		{
-			var result = Left <= _point.X && Top <= _point.Y && Bottom >= _point.Y && Right >= _point.X;
-			return result;
-		}
-
-		public override string ToString() { return "Rct{" + LeftTop + " - " + RightBottom + "}"; }
 
 		public IEnumerable<KeyValuePair<Point, EDirections>> ForbidBorders
 		{
@@ -119,6 +101,24 @@ namespace GameCore.Misc
 				}
 			}
 		}
+
+		#region overrides
+
+		public static Rct operator *(Rct _a, int _c) { return new Rct(_a.LeftTop*_c, _a.RightBottom*_c); }
+
+		#endregion
+
+		public Rct Inflate(int _x, int _y) { return new Rct(LeftTop - new Point(_x, _y), RightBottom + new Point(_x, _y)); }
+
+		public Rct Offset(int _x, int _y) { return new Rct(LeftTop + new Point(_x, _y), RightBottom + new Point(_x, _y)); }
+
+		public bool Contains(Point _point)
+		{
+			var result = Left <= _point.X && Top <= _point.Y && Bottom >= _point.Y && Right >= _point.X;
+			return result;
+		}
+
+		public override string ToString() { return "Rct{" + LeftTop + " - " + RightBottom + "}"; }
 
 		public IEnumerable<Point> AllPointsExceptCorners()
 		{
