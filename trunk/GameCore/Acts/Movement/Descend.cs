@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Messages;
 using GameCore.Essences.Things;
+using GameCore.Messages;
 
 namespace GameCore.Acts.Movement
 {

@@ -3,10 +3,9 @@ using System.Linq;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Battle;
-using GameCore.Mapping.Layers;
 using GameCore.Essences;
+using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Creatures
 {
@@ -37,6 +36,11 @@ namespace GameCore.Creatures
 		}
 
 		public override string IntelligentName { get { return m_name; } }
+
+		public override EFraction Fraction
+		{
+			get { return EFraction.AVATAR; }
+		}
 
 		public override void Resolve(Creature _creature) { }
 
@@ -84,11 +88,6 @@ namespace GameCore.Creatures
 		internal override CreatureBattleInfo CreateBattleInfo()
 		{
 			return new IntelligentBattleInfo(this);
-		}
-
-		public override EFraction Fraction
-		{
-			get { return EFraction.AVATAR; }
 		}
 
 		public override string ToString()

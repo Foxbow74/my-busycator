@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
+using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -11,8 +11,8 @@ namespace GameCore.Creatures.Dummies
 {
 	public class SplatterDropper : AbstractDummyCreature
 	{
-		private readonly List<Point> m_path;
 		private readonly FColor m_color;
+		private readonly List<Point> m_path;
 		private int m_step = 1;
 
 		private int m_tileindex;
@@ -72,11 +72,9 @@ namespace GameCore.Creatures.Dummies
 			return EThinkingResult.NORMAL;
 		}
 
-		public override EActResults Atack(Creature _victim)
+		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
 		{
-			//MessageManager.SendMessage(this, "попал!");
-			LiveCoords = null;
-			return EActResults.DONE;
+			return null;
 		}
 	}
 }

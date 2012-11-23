@@ -20,12 +20,13 @@ namespace GameCore.Creatures.Monsters
 
 		public override ETileset Tileset { get { return ETileset.MONSTERS; } }
 
-		public override void Resolve(Creature _creature) { }
-
-		public override Battle.EFraction Fraction
+		public override EFraction Fraction
 		{
 			get { return EFraction.MONSTERS; }
 		}
+
+		public EMonsterBehaviour Behaviour { get; set; }
+		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
 		{
@@ -124,8 +125,6 @@ namespace GameCore.Creatures.Monsters
 			AddActToPool(new MoveAct(), new Point(World.Rnd.Next(3) - 1, World.Rnd.Next(3) - 1));
 			return EThinkingResult.NORMAL;
 		}
-
-		public EMonsterBehaviour Behaviour { get; set; }
 	}
 
 	public enum EMonsterBehaviour

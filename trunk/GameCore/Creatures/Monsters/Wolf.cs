@@ -1,10 +1,14 @@
-﻿using GameCore.Battle;
+﻿using System.Collections.Generic;
+using GameCore.Battle;
+using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 
 namespace GameCore.Creatures.Monsters
 {
 	class Wolf:AbstractMonster
 	{
+		private static IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
+
 		public Wolf(WorldLayer _layer)
 			: base(_layer, 80 + World.Rnd.Next(20))
 		{
@@ -33,7 +37,13 @@ namespace GameCore.Creatures.Monsters
 
 		internal override CreatureBattleInfo CreateBattleInfo()
 		{
-			return new CreatureBattleInfo(this, 4, 2, 5, new Dice(2, 3, 0), new Dice(2,8,4));
+			return new CreatureBattleInfo(this, 4, 2, new Dice(2,8,4));
 		}
+		
+		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
+		{
+			yield return m_jaws;
+		}
+
 	}
 }

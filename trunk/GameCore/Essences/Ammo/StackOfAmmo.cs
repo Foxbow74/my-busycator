@@ -1,8 +1,9 @@
 ﻿using GameCore.Creatures;
+using GameCore.Essences.Weapons;
 
 namespace GameCore.Essences.Ammo
 {
-	internal abstract class StackOfAmmo : StackOfItems
+	internal abstract class StackOfAmmo : StackOfItems, IWeapon
 	{
 		protected StackOfAmmo(Material _material) : base(_material) { }
 

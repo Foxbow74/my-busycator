@@ -247,6 +247,11 @@ namespace OpenTKUi
 				_consoleKey = (ConsoleKey) (_key - (Key.Keypad0 - (int) ConsoleKey.NumPad0));
 				return true;
 			}
+			if (_key >= Key.F1 && _key <= Key.F12)
+			{
+				_consoleKey = (ConsoleKey)(_key - (Key.F1 - (int)ConsoleKey.F1));
+				return true;
+			}
 			switch (_key)
 			{
 				case Key.Clear:

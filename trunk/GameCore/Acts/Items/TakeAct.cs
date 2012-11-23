@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences;
 using RusLanguage;
-using UnsafeUtils;
 
 namespace GameCore.Acts.Items
 {

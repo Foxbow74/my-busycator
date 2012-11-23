@@ -89,12 +89,12 @@ namespace GameCore
 
 	public static class TileInfoProvider
 	{
+		public static Dictionary<ETileset, List<float>> m_opacities = new Dictionary<ETileset, List<float>>();
+
 		static TileInfoProvider()
 		{
-			m_opacities.Add(ETileset.NONE, new List<float>(){0f});
+			m_opacities.Add(ETileset.NONE, new List<float> {0f});
 		}
-
-		public static Dictionary<ETileset, List<float>> m_opacities = new Dictionary<ETileset, List<float>>();
 
 		public static void SetOpacity(ETileset _tileset, int _index, float _opacity)
 		{

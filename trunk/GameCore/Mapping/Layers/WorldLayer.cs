@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameCore.Misc;
 using GameCore.Essences.Things;
+using GameCore.Misc;
 
 namespace GameCore.Mapping.Layers
 {

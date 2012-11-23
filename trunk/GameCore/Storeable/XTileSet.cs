@@ -5,8 +5,6 @@ namespace GameCore.Storeable
 {
 	class XTileSet : XAbstractTileSet
 	{
-		public XTileSet() { }
-
 #pragma warning disable 649
 		[X("TILE")]private readonly IXValue<int> m_tiles;
 #pragma warning restore 649

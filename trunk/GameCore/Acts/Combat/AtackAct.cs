@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using GameCore.Acts.Movement;
 using GameCore.Creatures;
-using GameCore.Misc;
+using GameCore.Mapping;
+using GameCore.Messages;
 
 namespace GameCore.Acts.Combat
 {
@@ -21,18 +20,29 @@ namespace GameCore.Acts.Combat
 
 		public override EActResults Do(Creature _creature)
 		{
-			Point delta;
-			if (!TryGetParameter(out delta))
+			LiveMapCell liveMapCell;
+
+			var find = FindCreature(_creature, (_crt, _cell) => _crt!=_creature, out liveMapCell);
+			switch (find)
 			{
-				throw new NotImplementedException();
+				case EActResults.QUICK_FAIL:
+					if (_creature.IsAvatar)
+					{
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "направление атаки?"));
+					}
+					else
+					{
+						throw new ApplicationException("Только аватар может не указывать направление при атаке.");
+					}
+					return find;
+				case EActResults.NONE:
+					break;
+				default:
+					return find;
+
 			}
-			var victim = _creature[delta].Creature;
-			if (victim == null)
-			{
-				_creature.AddActToPool(new MoveAct(), delta);
-				return EActResults.ACT_REPLACED;
-			}
-			return _creature.Atack(victim);
+
+			return World.TheWorld.BattleProcessor.Atack(_creature, liveMapCell.Creature);
 		}
 	}
 }

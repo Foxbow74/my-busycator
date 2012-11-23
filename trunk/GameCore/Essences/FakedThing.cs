@@ -12,26 +12,26 @@ namespace GameCore.Essences
 			m_essence = _essence;
 		}
 
-        public override int TileIndex
-        {
-            get
-            {
-                return m_essence.TileIndex;
-            }
-        }
-
 		public override FColor LerpColor{ get{ return m_essence.LerpColor; } }
-
-		public override ETileset Tileset
-		{
-			get { return m_essence.Tileset; }
-		}
 
 		public override string Name { get { return m_essence.Name; } }
 
 		public override EMaterial AllowedMaterials { get { return m_essence.AllowedMaterials; } }
 
 		#region IFaked Members
+
+		public override int TileIndex
+		{
+			get
+			{
+				return m_essence.TileIndex;
+			}
+		}
+
+		public override ETileset Tileset
+		{
+			get { return m_essence.Tileset; }
+		}
 
 		public Essence ResolveFake(Creature _creature)
 		{

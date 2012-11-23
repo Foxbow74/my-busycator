@@ -1,4 +1,3 @@
-using System;
 using GameCore.Creatures;
 
 namespace GameCore.Battle

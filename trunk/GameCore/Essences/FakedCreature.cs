@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore.Battle;
 using GameCore.Creatures;
+using GameCore.Essences.Weapons;
 
 namespace GameCore.Essences
 {
@@ -14,11 +15,16 @@ namespace GameCore.Essences
 		public FakedCreature(ETileset _tileset)
 			: base(null, int.MinValue) { m_tileset = _tileset; }
 
-		public override ETileset Tileset { get { return m_tileset; } }
-
 		public override string Name { get { throw new NotImplementedException(); } }
 
+		public override EFraction Fraction
+		{
+			get { throw new NotImplementedException(); }
+		}
+
 		#region IFaked Members
+
+		public override ETileset Tileset { get { return m_tileset; } }
 
 		public Essence ResolveFake(Creature _creature)
 		{
@@ -44,9 +50,9 @@ namespace GameCore.Essences
 			throw new NotImplementedException();
 		}
 
-		public override EFraction Fraction
+		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
 		{
-			get { throw new NotImplementedException(); }
+			throw new NotImplementedException();
 		}
 
 		public override bool Is<T>()

@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using GameCore.Essences;
-
-namespace GameCore.Mapping.Layers.SurfaceObjects
+﻿namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	internal class ShopBuilding : Building
 	{

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
@@ -14,20 +13,20 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		const float MOUNT_PART = 0.01f;
 		const float LAKE_COAST_PART = 0.1f;
 		const float SWAMP_PART = 0.03f;
+		private readonly bool[] m_forbidToUnite;
+		private readonly int m_imax;
+		private readonly Dictionary<EMapBlockTypes, MapTypeInfo> m_infos = new Dictionary<EMapBlockTypes, MapTypeInfo>();
 
+		private readonly ushort[,] m_map;
+		private readonly bool[,] m_neighbours;
+		private readonly Rct m_rct;
 		private readonly Random m_rnd;
 		private readonly int m_size;
-		private readonly int m_sqr;
-		private readonly ushort[,] m_map;
-		private readonly Rct m_rct;
-		private readonly int m_imax;
-		private int m_zones;
-		private readonly bool[] m_forbidToUnite;
 		private readonly int[] m_sizes;
-		private readonly bool[,] m_neighbours;
+		private readonly int m_sqr;
 		private readonly ushort[] m_united;
 		private ushort[] m_allZones;
-		private readonly Dictionary<EMapBlockTypes, MapTypeInfo> m_infos = new Dictionary<EMapBlockTypes, MapTypeInfo>();
+		private int m_zones;
 
 		public WorldMapGenerator(int _size, Random _rnd)
 		{
@@ -61,17 +60,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public EMapBlockTypes[,] Generate()
 		{
 			return CreatePatchMap();
-		}
-
-		internal class MapTypeInfo
-		{
-			public float Part { get; private set; }
-			public ushort Zone { get; set; }
-
-			public MapTypeInfo(float _part)
-			{
-				Part = _part;
-			}
 		}
 
 		public EMapBlockTypes[,] CreatePatchMap()
@@ -450,7 +438,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			var result = new List<Point>();
 			var lakeCoastZone = m_infos[EMapBlockTypes.LAKE_COAST].Zone;
-			var groundZones = new ushort[] { m_infos[EMapBlockTypes.GROUND].Zone, m_infos[EMapBlockTypes.FOREST].Zone, m_infos[EMapBlockTypes.LAKE_COAST].Zone };
+			var groundZones = new[] { m_infos[EMapBlockTypes.GROUND].Zone, m_infos[EMapBlockTypes.FOREST].Zone, m_infos[EMapBlockTypes.LAKE_COAST].Zone };
 			var lakeZone = m_infos[EMapBlockTypes.FRESH_WATER].Zone;
 			var zones = new List<ushort>();
 			foreach (var i in m_allZones)
@@ -523,5 +511,20 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			}
 			throw new ApplicationException("Нет места для города");
 		}
+
+		#region Nested type: MapTypeInfo
+
+		internal class MapTypeInfo
+		{
+			public MapTypeInfo(float _part)
+			{
+				Part = _part;
+			}
+
+			public float Part { get; private set; }
+			public ushort Zone { get; set; }
+		}
+
+		#endregion
 	}
 }

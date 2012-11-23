@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Essences;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.Misc;
-using GameCore.Essences;
-using GameCore.Essences.Things;
 
 namespace GameCore.Acts.Interact
 {

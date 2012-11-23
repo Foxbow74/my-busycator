@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
-using GameCore.Materials;
-using GameCore.Misc;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
+using GameCore.Materials;
+using GameCore.Misc;
 using RusLanguage;
-using UnsafeUtils;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

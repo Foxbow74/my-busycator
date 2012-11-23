@@ -6,7 +6,6 @@ using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Materials;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameCore.Essences
 {
@@ -260,7 +259,7 @@ namespace GameCore.Essences
 		}
 
 		#endregion
-		
+
 		#endregion
 
 		#region Properties
@@ -282,7 +281,7 @@ namespace GameCore.Essences
 						continue;
 					}
 
-                    foreach (var material in m_materials.Where(_material => am.HasFlag(_material.MaterialType)))
+					foreach (var material in m_materials.Where(_material => am.HasFlag(_material.MaterialType)))
 					{
 						if (am.HasFlag(material.MaterialType))
 						{

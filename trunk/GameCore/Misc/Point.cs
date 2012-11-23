@@ -6,6 +6,9 @@ namespace GameCore.Misc
 {
 	public class Point
 	{
+		private static Point[] m_nearestDPoints;
+		public int X;
+		public int Y;
 		static Point() { Zero = new Point(0,0); }
 
 		public Point(int _x, int _y)
@@ -15,9 +18,6 @@ namespace GameCore.Misc
 		}
 
 		public static Point Zero { get; private set; }
-
-		public int X;
-		public int Y;
 
 		public float Lenght { get { return (float) Math.Sqrt((float) X*X + (float) Y*Y); } }
 
@@ -31,8 +31,6 @@ namespace GameCore.Misc
 			}
 		}
 
-
-		private static Point[] m_nearestDPoints = null;
 
 		public static Point[] NearestDPoints
 		{
@@ -144,7 +142,7 @@ namespace GameCore.Misc
 		public IEnumerable<Point> GetSpiral(int _size)
 		{
 			yield return this;
-			for (int i = 1; i < _size; i++)
+			for (var i = 1; i < _size; i++)
 			{
 				foreach (var point in new Rct(-i,-i,i*2,i*2).BorderPoints)
 				{
@@ -152,7 +150,6 @@ namespace GameCore.Misc
 				}
 			}
 		}
-
 
 		#region overrides
 

@@ -20,12 +20,12 @@ namespace GameCore.Essences.Potions
 
 		public override EItemCategory Category { get { return EItemCategory.POTION; } }
 
+		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
+
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
 			return ItemBattleInfo.Empty;
 		}
-
-		public override EMaterial AllowedMaterials { get { return EMaterial.MINERAL; } }
 
 		public override void Resolve(Creature _creature) { }
 
