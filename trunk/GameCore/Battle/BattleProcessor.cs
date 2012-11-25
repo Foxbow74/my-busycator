@@ -66,25 +66,73 @@ namespace GameCore.Battle
 
 			var toHit = creatureBattleInfo.ToHitModifier + itemBattleInfo.ToHit + 1;
 			var dv = targetBattleInfo.DV + 1;
-			if(World.Rnd.Next(toHit + dv)<toHit)
+
+			var dvVsToHit = World.Rnd.Next(toHit + dv) - dv;
+
+			var isLuck = false;
+			if (dvVsToHit <= 0 && _creature is Avatar)
 			{
+				dvVsToHit += World.Rnd.Next(World.TheWorld.Avatar.LuckModifier + 1);
+				isLuck = true;
+			}
+
+			if (dvVsToHit > 0)
+			{
+				if (_creature.IsAvatar)
+				{
+					if (isLuck)
+					{
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Чудом вы попали по " + _target[EPadej.DAT]));
+					}
+					else
+					{
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Вы попали по " + _target[EPadej.DAT]));
+					}
+				}
+				else if(_target is Avatar)
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature[EPadej.IMEN] + " дотянулся до вас"));
+				}
+
 				var pv = targetBattleInfo.PV;
-				var damage = creatureBattleInfo.DmgModifier + itemBattleInfo.Dmg.Calc();
+				var damage = itemBattleInfo.Dmg.Calc();
+				var isCritical = itemBattleInfo.Dmg.Max == damage;
+				damage += creatureBattleInfo.DmgModifier;
+
+				if (isCritical && _creature.IsAvatar)
+				{
+					MessageManager.SendMessage(this, "отличный удар");
+					damage *= 2;
+				}
 
 				damage -= pv;
 
 				if(damage>0)
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _target[EPadej.IMEN] + " огреб " + damage +" пунктов урона"));
+					targetBattleInfo.ApplyDamage(damage, weapon);
 				}
 				else
 				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Урон был поглощен броней " + _target[EPadej.ROD]));
+					if (_creature.IsAvatar)
+					{
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "но силы удара оказалось недостаточно"));
+					}
+					else
+					{
+						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "но лишь оцарапал броню"));
+					}
 				}
 			}
 			else
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Удар не попал по " + _target[EPadej.DAT]));
+				if (_creature.IsAvatar)
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Удар не попал по " + _target[EPadej.DAT]));
+				}
+				else
+				{
+					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature[EPadej.IMEN] + " промахнулся"));
+				}
 			}
 			return EActResults.DONE;
 			

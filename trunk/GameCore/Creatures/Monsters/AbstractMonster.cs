@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GameCore.Acts;
+using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
 using GameCore.Battle;
 using GameCore.Mapping.Layers;
@@ -63,7 +64,7 @@ namespace GameCore.Creatures.Monsters
 			var d = myLiveCell.LiveCoords.GetDistTill(destLiveCell.LiveCoords);
 			if (d < 2)
 			{
-				AddActToPool(new WaitAct());
+				AddActToPool(new AtackAct(), destLiveCell.LiveCoords - myLiveCell.LiveCoords);
 				return EThinkingResult.NORMAL;
 			}
 			{
@@ -71,7 +72,7 @@ namespace GameCore.Creatures.Monsters
 				var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords.AllNeighbours.ToArray().RandomItem(World.Rnd));
 				if (path != null)
 				{
-					AddActToPool(new MoveToAct(this, path));
+					AddActToPool(new MoveToAct(this, path), 3);
 					return EThinkingResult.NORMAL;
 				}
 			}
@@ -85,7 +86,7 @@ namespace GameCore.Creatures.Monsters
 				var path = World.TheWorld.LiveMap.PathFinder.FindPath(this, destLiveCell.PathMapCoords + new Point(dx,dy));
 				if (path != null)
 				{
-					AddActToPool(new MoveToAct(this, path));
+					AddActToPool(new MoveToAct(this, path), 3);
 					return EThinkingResult.NORMAL;
 				}
 			}

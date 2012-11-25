@@ -21,7 +21,7 @@ namespace GameUi
 		public Point SrcPoint { get; protected set; }
 		public bool IsFogTile { get; set; }
 
-		public abstract void Draw(Point _point, FColor _color, EDirections _direction);
+		public abstract void Draw(Point _point, FColor _color, EDirections _direction, bool _isCorpse);
 		public abstract void Draw(Point _point, FColor _color);
 		public abstract void Draw(Point _point);
 		public abstract void FogIt(Point _point);

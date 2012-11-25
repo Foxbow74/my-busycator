@@ -80,7 +80,7 @@ namespace GameUi.UIBlocks
 						{
 							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
 							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(finalLighted).Clamp().UpdateAlfa(visibility.A);
-							tile.Draw(screenPoint, color, tileInfoProvider.Direction);
+							tile.Draw(screenPoint, color, tileInfoProvider.Direction, tileInfoProvider.IsCorpse);
 						}
 					}
 					else if (liveCell.IsSeenBefore)
@@ -95,13 +95,13 @@ namespace GameUi.UIBlocks
 						foreach (var tileInfoProvider in liveCell.FoggedTileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
-							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).ToGrayScale(), tileInfoProvider.Direction);
+							tile.Draw(screenPoint, tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).ToGrayScale(), tileInfoProvider.Direction, tileInfoProvider.IsCorpse);
 						}
 						DrawHelper.FogTile(screenPoint);
 					}
 				}
 			}
-			World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
+			//World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
 		}
 
 		public override void DrawFrame() { }

@@ -41,7 +41,7 @@ namespace GameUi
 					{
 						var tileInfo = array[index];
 						var atile = Rp.CreateTile(tileInfo.Cx, tileInfo.Cy, tileInfo.Color.GetFColor());
-						TileInfoProvider.SetOpacity(xTileSet.Tileset, index, tileInfo.Opacity);
+						TileSetInfoProvider.SetOpacity(xTileSet.Tileset, index, tileInfo.Opacity);
 						set.AddTile(atile);
 					}
 				}

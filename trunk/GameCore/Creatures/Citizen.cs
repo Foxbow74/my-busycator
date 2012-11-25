@@ -87,7 +87,7 @@ namespace GameCore.Creatures
 
 		internal override CreatureBattleInfo CreateBattleInfo()
 		{
-			return new IntelligentBattleInfo(this);
+			return new IntelligentBattleInfo(this, 0, 0, new Dice(5, 8));
 		}
 
 		public override string ToString()

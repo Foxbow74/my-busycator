@@ -16,121 +16,86 @@ namespace RusLanguage
 
 	public static class Sklonenia
 	{
+		static Sklonenia()
+		{
+			m_padejDict = new Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>>();
+
+			for (var i = 1; i <= 3; ++i)
+			{
+				m_padejDict.Add(i, new Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>());
+				foreach (ESex sex in Enum.GetValues(typeof(ESex)))
+				{
+					m_padejDict[i].Add(sex, new Dictionary<EPadej, Dictionary<bool, string>>());
+					foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
+					{
+						m_padejDict[i][sex].Add(padej, new Dictionary<bool, string>());
+					}
+				}
+			}
+
+			m_padejDict[1][ESex.FEMALE][EPadej.ROD][true] = "и";
+			m_padejDict[1][ESex.FEMALE][EPadej.ROD][false] = "и";
+
+			m_padejDict[1][ESex.FEMALE][EPadej.VIN][true] = "у";
+			m_padejDict[1][ESex.FEMALE][EPadej.VIN][false] = "у";
+
+			m_padejDict[1][ESex.FEMALE][EPadej.DAT][true] = "е";
+			m_padejDict[1][ESex.FEMALE][EPadej.DAT][false] = "е";
+
+			m_padejDict[1][ESex.FEMALE][EPadej.TVOR][true] = "ой";
+			m_padejDict[1][ESex.FEMALE][EPadej.TVOR][false] = "ой";
+
+			m_padejDict[1][ESex.FEMALE][EPadej.PREDL][true] = "е";
+			m_padejDict[1][ESex.FEMALE][EPadej.PREDL][false] = "е";
+
+			m_padejDict[1][ESex.MALE][EPadej.ROD][true] = "ы";
+			m_padejDict[1][ESex.MALE][EPadej.ROD][false] = "и";
+
+			m_padejDict[1][ESex.MALE][EPadej.VIN][true] = "у";
+			m_padejDict[1][ESex.MALE][EPadej.VIN][false] = "ю";
+
+			m_padejDict[1][ESex.MALE][EPadej.DAT][true] = "е";
+			m_padejDict[1][ESex.MALE][EPadej.DAT][false] = "е";
+
+			m_padejDict[1][ESex.MALE][EPadej.TVOR][true] = "ой";
+			m_padejDict[1][ESex.MALE][EPadej.TVOR][false] = "ей";
+
+			m_padejDict[1][ESex.MALE][EPadej.PREDL][true] = "е";
+			m_padejDict[1][ESex.MALE][EPadej.PREDL][false] = "е";
+		}
+
+		private static Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>> m_padejDict;
+
 		public static string ToPadej(EPadej _target, string _noun, bool _isCreature, ESex _sex)
 		{
 			if(_target==EPadej.IMEN) return _noun;
 
-			var words = _noun.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-			if(words.Length==0) return string.Empty;
 
-			var noun = words[0];
-			var lastChar = noun[noun.Length - 1];
-			var vow = lastChar;
-			if(!"йуеыаоэяию".Contains(lastChar)) vow = ' ';
-			var lastTwoChars = noun.Substring(noun.Length - 2);
-			var sklon = 0;
-
-			if (_isCreature)
+			var sklon = GetSklon(_noun, _isCreature, _sex);
+			if(sklon<0)
 			{
-				switch (_sex)
-				{
-					case ESex.MALE:
-						if ("но,фи,чи".Contains(lastTwoChars))
-						{
-							return _noun;
-						}
-						break;
-					case ESex.FEMALE:
-						if ("ли,".Contains(lastTwoChars))
-						{
-							return _noun;
-						}
-						break;
-				}
-
-				if ("ки,ко,ди,ги".Contains(lastTwoChars))
-				{
-					return _noun;
-				}
+				return _noun;
 			}
-			switch (vow)
-			{
-				case 'а':
-				case 'я':
-					sklon = 1;
-					noun = noun.Substring(0, noun.Length - 1);
-					break;
-				case 'о':
-				case 'е':
-					sklon = 2;
-					noun = noun.Substring(0, noun.Length - 1);
-					break;
-				case ' ':
-					switch (lastChar)
-					{
-						case 'ь':
-							sklon = _sex == ESex.MALE ? 2 : 3;
-							if (_sex == ESex.MALE && noun.EndsWith("ень"))
-							{
-								noun = noun.Substring(0, noun.Length - 3) + "н";
-							}
-							else
-							{
-								noun = noun.Substring(0, noun.Length - 1);
-							}
-							break;
-						default:
-							sklon = _sex == ESex.MALE ? 2 : 3;
-							break;
-					}
-					break;
-				case 'й':
-					if (_sex == ESex.MALE)
-					{
-						sklon = 2;
-						noun = noun.Substring(0, noun.Length - 1);
-					}
-					break;
-			}
-
-			if (sklon == 0)
-			{
-				switch (lastChar)
-				{
-					case 'ь':
-						sklon = _sex == ESex.MALE ? 2 : 3;
-						if (_sex == ESex.MALE) noun = noun.Substring(0, noun.Length - 1);
-						break;
-				}
-			}
-			if (sklon == 0)
-			{
-				if(_isCreature)
-				{
-					return _noun;
-				}
-				throw new ApplicationException();
-			}
-
-			var isMyagk = "".Contains(vow);
-
+			
 			var isGluh = false;
+			var lastChar = _noun[_noun.Length - 1];
+
 			switch (sklon)
 			{
 				case 1:
 					switch (_sex)
 					{
 						case ESex.MALE:
-							isGluh = "гбнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "гбнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.FEMALE:
-							isGluh = "квцзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "квцзнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.IT:
-							isGluh = "кнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "кнстплфхчшщрд".Contains(lastChar);
 							break;
 					}
-					if (isGluh && sklon == 1 && noun.EndsWith("чк"))
+					if (isGluh && sklon == 1 && _noun.EndsWith("чк"))
 					{
 						isGluh = false;
 					}
@@ -139,13 +104,13 @@ namespace RusLanguage
 					switch (_sex)
 					{
 						case ESex.MALE:
-							isGluh = "мкгбнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "мкгбнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.FEMALE:
-							isGluh = "кзнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "кзнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.IT:
-							isGluh = "щкнстплфхчшрд".Contains(noun[noun.Length - 1]);
+							isGluh = "щкнстплфхчшрд".Contains(lastChar);
 							break;
 					}
 					break;
@@ -153,13 +118,13 @@ namespace RusLanguage
 					switch (_sex)
 					{
 						case ESex.MALE:
-							isGluh = "гбнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "гбнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.FEMALE:
-							isGluh = "знстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "знстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.IT:
-							isGluh = "кнстплфхчшщрд".Contains(noun[noun.Length - 1]);
+							isGluh = "кнстплфхчшщрд".Contains(lastChar);
 							break;
 					}
 					break;
@@ -171,56 +136,22 @@ namespace RusLanguage
 				isGluh = false;
 			}
 
-			
-			var rr = new Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>>();
-
-			for (var i = 1; i <= 3; ++i)
+			switch (sklon)
 			{
-				rr.Add(i, new Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>());
-				foreach (ESex sex in Enum.GetValues(typeof(ESex)))
-				{
-					rr[i].Add(sex, new Dictionary<EPadej, Dictionary<bool, string>>());
-					foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
-					{
-						rr[i][sex].Add(padej, new Dictionary<bool, string>());
-					}
-				}
+				case 1:
+					_noun = _noun.Substring(0, _noun.Length - 1);
+					break;
+				case 2:
+					break;
+				case 3:
+					_noun = _noun.Substring(0, _noun.Length - 1);
+					break;
 			}
 
-			rr[1][ESex.FEMALE][EPadej.ROD][true] = "и";
-			rr[1][ESex.FEMALE][EPadej.ROD][false] = "и";
-
-            rr[1][ESex.FEMALE][EPadej.VIN][true] = "у";
-            rr[1][ESex.FEMALE][EPadej.VIN][false] = "у";
-
-            rr[1][ESex.FEMALE][EPadej.DAT][true] = "е";
-            rr[1][ESex.FEMALE][EPadej.DAT][false] = "е";
-
-            rr[1][ESex.FEMALE][EPadej.TVOR][true] = "ой";
-			rr[1][ESex.FEMALE][EPadej.TVOR][false] = "ой";
-
-			rr[1][ESex.FEMALE][EPadej.PREDL][true] = "е";
-			rr[1][ESex.FEMALE][EPadej.PREDL][false] = "е";
-
-			rr[1][ESex.MALE][EPadej.ROD][true] = "ы";
-			rr[1][ESex.MALE][EPadej.ROD][false] = "и";
-
-			rr[1][ESex.MALE][EPadej.VIN][true] = "у";
-			rr[1][ESex.MALE][EPadej.VIN][false] = "ю";
-
-            rr[1][ESex.MALE][EPadej.DAT][true] = "е";
-            rr[1][ESex.MALE][EPadej.DAT][false] = "е";
-
-            rr[1][ESex.MALE][EPadej.TVOR][true] = "ой";
-			rr[1][ESex.MALE][EPadej.TVOR][false] = "ей";
-
-			rr[1][ESex.MALE][EPadej.PREDL][true] = "е";
-			rr[1][ESex.MALE][EPadej.PREDL][false] = "е";
-
 			string value;
-			if (rr[sklon][_sex][_target].TryGetValue(isGluh, out value))
+			if (m_padejDict[sklon][_sex][_target].TryGetValue(isGluh, out value))
 			{
-				noun += value;
+				_noun += value;
 			}
 			else
 			{
@@ -233,10 +164,10 @@ namespace RusLanguage
 						switch (_target)
 						{
 							case EPadej.ROD:
-								noun += isGluh ? "а" : "я";
+								_noun += isGluh ? "а" : "я";
 								break;
 							case EPadej.DAT:
-								noun += isGluh ? "у" : "ю";
+								_noun += isGluh ? "у" : "ю";
 								break;
 							case EPadej.VIN:
 								if (_sex == ESex.MALE)
@@ -245,14 +176,14 @@ namespace RusLanguage
 								}
 								else
 								{
-									noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "о" : "е");
+									_noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "о" : "е");
 								}
 								break;
 							case EPadej.TVOR:
-								noun += isGluh ? "ом" : "ем";
+								_noun += isGluh ? "ом" : "ем";
 								break;
 							case EPadej.PREDL:
-								noun += "е";
+								_noun += "е";
 								break;
 							default:
 								throw new ArgumentOutOfRangeException("_target");
@@ -262,19 +193,19 @@ namespace RusLanguage
 						switch (_target)
 						{
 							case EPadej.ROD:
-								noun += "и";
+								_noun += "и";
 								break;
 							case EPadej.DAT:
-								noun += "и";
+								_noun += "и";
 								break;
 							case EPadej.VIN:
-								noun += "ь";
+								_noun += "ь";
 								break;
 							case EPadej.TVOR:
-								noun += "ью";
+								_noun += "ью";
 								break;
 							case EPadej.PREDL:
-								noun += "и";
+								_noun += "и";
 								break;
 							default:
 								throw new ArgumentOutOfRangeException("_target");
@@ -282,8 +213,119 @@ namespace RusLanguage
 						break;
 				}
 			}
-			words[0] = noun;
-			return string.Join(" ", words);
+			
+			return _noun;
+		}
+
+		private static int GetSklon(string _noun, bool _isCreature, ESex _sex)
+		{
+			var lastChar = _noun[_noun.Length - 1];
+			var vow = lastChar;
+			if (!"йуеыаоэяию".Contains(lastChar)) vow = ' ';
+			var lastTwoChars = _noun.Substring(_noun.Length - 2);
+			var sklon = 0;
+
+			if (_isCreature)
+			{
+				switch (_sex)
+				{
+					case ESex.MALE:
+						if ("но,фи,чи".Contains(lastTwoChars))
+						{
+							return -1;
+						}
+						break;
+					case ESex.FEMALE:
+						if ("ли,".Contains(lastTwoChars))
+						{
+							return -1;
+						}
+						break;
+				}
+
+				if ("ки,ко,ди,ги".Contains(lastTwoChars))
+				{
+					return -1;
+				}
+			}
+			switch (vow)
+			{
+				case 'а':
+				case 'я':
+					sklon = 1;
+					_noun = _noun.Substring(0, _noun.Length - 1);
+					break;
+				case 'о':
+				case 'е':
+					sklon = 2;
+					_noun = _noun.Substring(0, _noun.Length - 1);
+					break;
+				case ' ':
+					switch (lastChar)
+					{
+						case 'ь':
+							sklon = _sex == ESex.MALE ? 2 : 3;
+							if (_sex == ESex.MALE && _noun.EndsWith("ень"))
+							{
+								_noun = _noun.Substring(0, _noun.Length - 3) + "н";
+							}
+							else
+							{
+								_noun = _noun.Substring(0, _noun.Length - 1);
+							}
+							break;
+						default:
+							sklon = _sex == ESex.MALE ? 2 : 3;
+							break;
+					}
+					break;
+				case 'й':
+					if (_sex == ESex.MALE)
+					{
+						sklon = 2;
+						_noun = _noun.Substring(0, _noun.Length - 1);
+					}
+					break;
+			}
+
+			if (sklon == 0)
+			{
+				switch (lastChar)
+				{
+					case 'ь':
+						sklon = _sex == ESex.MALE ? 2 : 3;
+						if (_sex == ESex.MALE) _noun = _noun.Substring(0, _noun.Length - 1);
+						break;
+				}
+			}
+			if (sklon == 0)
+			{
+				if (_isCreature)
+				{
+					return -1;
+				}
+				throw new ApplicationException();
+			}
+			return sklon;
+		}
+
+		public static string Пунктов(this int _cnt)
+		{
+			var last = _cnt%10;
+			string result;
+			if(last==1)
+			{
+				result =  "пункт";
+			}
+			else if(last>1 && last<5)
+			{
+				result = "пункта";
+			}
+			else
+			{
+				result = "пунктов";
+			}
+			return string.Format("{0} {1}", _cnt, result);
 		}
 
 		public static string ToSex(string _sentence, ESex _sex)

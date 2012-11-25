@@ -66,6 +66,7 @@
     <Compile Include="Acts\Items\TakeAct.cs" />
     <Compile Include="Acts\WaitAct.cs" />
     <Compile Include="Battle\BattleProcessor.cs" />
+    <Compile Include="Battle\Corpse.cs" />
     <Compile Include="Battle\CreatureBattleInfo.cs" />
     <Compile Include="Battle\Dice.cs" />
     <Compile Include="Battle\EFraction.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Storeable\XTerrainSet.cs" />
     <Compile Include="Storeable\XTileInfo.cs" />
     <Compile Include="Storeable\XTileSet.cs" />
+    <Compile Include="TileSetInfoProvider.cs" />
     <Compile Include="World.cs" />
   </ItemGroup>
   <ItemGroup>

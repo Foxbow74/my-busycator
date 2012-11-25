@@ -4,11 +4,9 @@ namespace GameCore.Battle
 {
 	public class IntelligentBattleInfo:CreatureBattleInfo
 	{
-		private readonly Intelligent m_intelligent;
-
-		public IntelligentBattleInfo(Intelligent _intelligent)
+		public IntelligentBattleInfo(Intelligent _intelligent, int _dv, int _pv, Dice _hp):base(_intelligent, _dv, _pv, _hp)
 		{
-			m_intelligent = _intelligent;
+			ToHitModifier = 5;
 		}
 	}
 }

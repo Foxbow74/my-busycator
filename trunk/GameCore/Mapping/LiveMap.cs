@@ -192,6 +192,16 @@ namespace GameCore.Mapping
 					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
 				}
 
+				var layer = World.TheWorld.Avatar.Layer;
+				var ambient = layer.Ambient;
+				var fogLightness = layer.FogLightness;
+
+
+				foreach (var blockId in lighted)
+				{
+					Blocks[blockId.X, blockId.Y].UpdateVisibility(fogLightness, ambient, World.TheWorld.Avatar[0,0]);
+				}
+
 				var zeroLiveCell = centerLiveCell - m_vieportSize/2;
 				return zeroLiveCell;
 			}
