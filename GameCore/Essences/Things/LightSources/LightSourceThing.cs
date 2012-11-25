@@ -17,6 +17,14 @@ namespace GameCore.Essences.Things.LightSources
 			}
 		}
 
+		public override FColor LerpColor
+		{
+			get
+			{
+				return m_lightSource.Color;
+			}
+		}
+
 		#region ILightSource Members
 
 		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
