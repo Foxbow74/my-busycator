@@ -152,6 +152,14 @@ namespace GameCore.Essences
 					_essence = liveMapCell.ResolveFakeThing(_creature);
 				}
 			}
+			if(_essence is Creature)
+			{
+				if(_essence is Intelligent)
+				{
+					return _essence.GetFullName();
+				}
+				return _essence.Name;
+			}
 			return _essence.GetFullName();
 		}
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GameCore.Battle;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
+using RusLanguage;
 
 namespace GameCore.Creatures.Monsters
 {
@@ -12,6 +13,8 @@ namespace GameCore.Creatures.Monsters
 		public Rat(WorldLayer _layer)
 			: base(_layer, 120 + World.Rnd.Next(20))
 		{
+			Sex = ESex.FEMALE;
+
 			var lcd = 0.5f + (Nn % 3 - 1) / 10f;
 			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble());
 

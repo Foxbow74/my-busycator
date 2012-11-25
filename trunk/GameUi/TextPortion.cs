@@ -51,7 +51,7 @@ namespace GameUi
 			FromPart = 0;
 		}
 
-		public void SplitByLines(float _width, EFonts _font, float _newLineIndent)
+		public void SplitByLines(float _width, EFonts _font, float _newLineIndent, IDrawHelper _drawHelper)
 		{
 			var textLines = new List<TextLine>();
 
@@ -76,9 +76,9 @@ namespace GameUi
 					          	? ""
 					          	: paragraph[processedChars].ToString(CultureInfo.InvariantCulture);
 					processedChars++;
-					var size = MeasureString(_font, addStr);
+					var size = _drawHelper.MeasureString(_font, addStr);
 
-					if (size.X > (_width - x))
+					if (size.Width > (_width - x))
 					{
 						tl.Text = sb.ToString();
 						sb.Clear();
@@ -87,7 +87,7 @@ namespace GameUi
 						textLines.Add(tl);
 					}
 					sb.Append(addStr);
-					x += size.X;
+					x += size.Width;
 				}
 
 				if (sb.Length > 0)
@@ -97,9 +97,6 @@ namespace GameUi
 			}
 			m_textLines = textLines.ToArray();
 		}
-
-
-		public Point MeasureString(EFonts _font, string _s) { return new Point(15, 15); }
 
 		#region Nested type: TextLine
 

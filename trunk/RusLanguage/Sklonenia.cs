@@ -33,7 +33,7 @@ namespace RusLanguage
 				}
 			}
 
-			m_padejDict[1][ESex.FEMALE][EPadej.ROD][true] = "и";
+			m_padejDict[1][ESex.FEMALE][EPadej.ROD][true] = "ы";
 			m_padejDict[1][ESex.FEMALE][EPadej.ROD][false] = "и";
 
 			m_padejDict[1][ESex.FEMALE][EPadej.VIN][true] = "у";
@@ -71,7 +71,7 @@ namespace RusLanguage
 			if(_target==EPadej.IMEN) return _noun;
 
 
-			var sklon = GetSklon(_noun, _isCreature, _sex);
+			var sklon = GetSklon(ref _noun, _isCreature, _sex);
 			if(sklon<0)
 			{
 				return _noun;
@@ -89,7 +89,7 @@ namespace RusLanguage
 							isGluh = "гбнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.FEMALE:
-							isGluh = "квцзнстплфхчшщрд".Contains(lastChar);
+							isGluh = "вцзнстплфхчшщрд".Contains(lastChar);
 							break;
 						case ESex.IT:
 							isGluh = "кнстплфхчшщрд".Contains(lastChar);
@@ -136,17 +136,17 @@ namespace RusLanguage
 				isGluh = false;
 			}
 
-			switch (sklon)
-			{
-				case 1:
-					_noun = _noun.Substring(0, _noun.Length - 1);
-					break;
-				case 2:
-					break;
-				case 3:
-					_noun = _noun.Substring(0, _noun.Length - 1);
-					break;
-			}
+			//switch (sklon)
+			//{
+			//    case 1:
+			//        _noun = _noun.Substring(0, _noun.Length - 1);
+			//        break;
+			//    case 2:
+			//        break;
+			//    case 3:
+			//        _noun = _noun.Substring(0, _noun.Length - 1);
+			//        break;
+			//}
 
 			string value;
 			if (m_padejDict[sklon][_sex][_target].TryGetValue(isGluh, out value))
@@ -217,7 +217,7 @@ namespace RusLanguage
 			return _noun;
 		}
 
-		private static int GetSklon(string _noun, bool _isCreature, ESex _sex)
+		private static int GetSklon(ref string _noun, bool _isCreature, ESex _sex)
 		{
 			var lastChar = _noun[_noun.Length - 1];
 			var vow = lastChar;

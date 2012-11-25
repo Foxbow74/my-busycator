@@ -11,6 +11,12 @@ namespace Tests
 		{
 			Assert.AreEqual("меди", Sklonenia.ToPadej(EPadej.ROD, "медь", false, ESex.FEMALE));
 		}
+
+		[TestMethod]
+		public void Крысы()
+		{
+			Assert.AreEqual("крысы", Sklonenia.ToPadej(EPadej.ROD, "крыса", false, ESex.FEMALE));
+		}
 		[TestMethod]
 		public void Табуретки()
 		{

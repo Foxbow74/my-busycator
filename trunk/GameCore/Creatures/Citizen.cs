@@ -17,6 +17,14 @@ namespace GameCore.Creatures
 		public Citizen(Surface _layer, Random _rnd)
 			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT) { m_name = _layer.GetNextCitizenName(Sex); }
 
+		public override bool IsUnique
+		{
+			get
+			{
+				return true;
+			}
+		}
+
 		public override FColor LerpColor { get { return m_lerpColor; } }
 
 		public override ETileset Tileset

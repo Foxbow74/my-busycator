@@ -73,6 +73,10 @@
       <Project>{BCAD98EB-0C52-4186-B8B0-92AB47947796}</Project>
       <Name>OpenTKUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
+      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
+      <Name>RusLanguage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
       <Name>UnsafeUtils</Name>

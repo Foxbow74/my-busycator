@@ -68,7 +68,6 @@
     <Compile Include="UIBlocks\LookAtUiBlock.cs" />
     <Compile Include="UIBlocks\MainUiBlock.cs" />
     <Compile Include="UIBlocks\MapUiBlock.cs" />
-    <Compile Include="UIBlocks\MessageBlock.cs" />
     <Compile Include="UIBlocks\MiniMapUiBlock.cs" />
     <Compile Include="UIBlocks\SelectDestinationUiBlock.cs" />
     <Compile Include="UIBlocks\SelectTargetUiBlock.cs" />

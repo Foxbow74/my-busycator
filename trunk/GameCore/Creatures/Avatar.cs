@@ -50,6 +50,7 @@ namespace GameCore.Creatures
 		{
 			return new IntelligentBattleInfo(this,3,1,new Dice(5,8,20));
 		}
+
 	}
 
 	public enum ETactics

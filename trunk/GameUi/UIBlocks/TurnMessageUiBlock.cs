@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -39,7 +40,11 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		private void MessageManagerNewMessage(object _sender, Message _message) { m_turnMessages.Add(_message); }
+		private void MessageManagerNewMessage(object _sender, Message _message)
+		{
+			Debug.WriteLine(_message.ToString());
+			m_turnMessages.Add(_message);
+		}
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers) { throw new NotImplementedException(); }
 
@@ -62,7 +67,7 @@ namespace GameUi.UIBlocks
 
 			var str = string.Join(", ", strings);
 			var tp = new TextPortion(str, null);
-			tp.SplitByLines((ContentRct.Width - 1)*Constants.TILE_SIZE, Font, 0);
+			tp.SplitByLines((ContentRct.Width - 2)*Constants.TILE_SIZE, Font, 0, DrawHelper);
 
 			var lines = tp.TextLines.ToArray();
 			if (lines.Length == 0) return;

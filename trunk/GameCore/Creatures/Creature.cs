@@ -15,6 +15,14 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Essence
 	{
+		public override bool IsCreature
+		{
+			get
+			{
+				return true;
+			}
+		}
+
 		#region Fields
 
 		private static int m_n;

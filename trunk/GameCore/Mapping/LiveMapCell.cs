@@ -338,12 +338,15 @@ namespace GameCore.Mapping
 			m_isPassable = null;
 		}
 
-		public void AddSplatter(Splatter _splatter)
+		public int AddSplatter(int _max, FColor _color)
 		{
 			if(Terrain!=ETerrains.NONE)
 			{
-				m_splatters.Add(_splatter);		
+				var result = World.Rnd.Next(_max+1)%Splatter.COUNT;
+				m_splatters.Add(new Splatter(_color, result));
+				return result;
 			}
+			return 0;
 		}
 
 		public void UpdateVisibility(float _fogLightness, FColor _ambient)

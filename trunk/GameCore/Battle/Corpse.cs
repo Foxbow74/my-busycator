@@ -73,7 +73,7 @@ namespace GameCore.Battle
 		{
 			get
 			{
-				return FColor.Crimson;
+				return m_creature.LerpColor.Lerp(FColor.Crimson, 0.2f);
 			}
 			protected set
 			{

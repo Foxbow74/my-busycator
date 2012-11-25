@@ -4,13 +4,9 @@ using RusLanguage;
 
 namespace GameCore.Essences
 {
-	public abstract class Essence : ITileInfoProvider
+	public abstract class Essence : ITileInfoProvider, INameProvider
 	{
 		protected Essence(Material _material) { Material = _material; }
-
-		public ESex Sex { get; protected set; }
-
-		public abstract string Name { get; }
 
 		/// <summary>
 		/// Непрозрачность объекта, используется для рассчета области видимости игрока
@@ -29,6 +25,24 @@ namespace GameCore.Essences
 		public string this[EPadej _padej] { get { return this[_padej, World.TheWorld.Avatar]; } }
 
 		public string this[EPadej _padej, Creature _creature] { get { return Sklonenia.ToPadej(_padej, this.GetName(_creature), this is Creature, Sex); } }
+
+		#region INameProvider Members
+
+		public ESex Sex { get; protected set; }
+
+		public abstract string Name { get; }
+
+		public virtual bool IsCreature
+		{
+			get { return false; }
+		}
+
+		public virtual bool IsUnique
+		{
+			get { return false; }
+		}
+
+		#endregion
 
 		#region ITileInfoProvider Members
 
