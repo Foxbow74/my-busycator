@@ -2,8 +2,10 @@
 using System.Linq;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
+using GameCore.Battle;
 using GameCore.Essences;
 using GameCore.Essences.Weapons;
+using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -14,20 +16,18 @@ namespace GameCore.Creatures.Dummies
 	{
 		private readonly LightSource m_light;
 		private readonly List<Point> m_path;
-		private Point m_from;
 		private int m_step = 1;
 
-		private Point m_target;
+		private readonly Point m_target;
 
-		public Missile(WorldLayer _layer, Point _liveCoords, int _speed, Item _ammo, Point _target)
-			: base(_layer, _speed)
+		public Missile(WorldLayer _layer, LiveMapCell _from, int _speed, Item _ammo, LiveMapCell _to): base(_layer, _speed)
 		{
-			m_target = _target;
-			m_from = _liveCoords;
-			m_light = new LightSource(4, new FColor(4f, 1f, 0.8f, 0.4f));
 			Ammo = _ammo;
-			m_path = _liveCoords.GetLineToPoints(_target).ToList();
-			LiveCoords = _liveCoords;
+			var d = _to.PathMapCoords - _from.PathMapCoords;
+			LiveCoords = _from.LiveCoords;
+			m_target = LiveCoords + d*10;
+			m_path = LiveCoords.GetLineToPoints(m_target).ToList();
+			m_light = new LightSource(10, new FColor(2f, 1f, 0.8f, 0.4f));
 		}
 
 		public override Material Material { get { return Ammo.Material; } }
@@ -72,53 +72,13 @@ namespace GameCore.Creatures.Dummies
 
 		public override IEnumerable<IWeapon> GetWeapons(Creature _against)
 		{
-			var weapon = Ammo as IWeapon;
-			yield return weapon;
+			yield return Ammo as IWeapon;
 		}
-	}
 
-	public class Splatter:ITileInfoProvider
-	{
-		private readonly FColor m_color;
-		private readonly EDirections m_direction;
-		private readonly int m_tileIndex;
-
-		public const int COUNT=13;
-
-		public Splatter(FColor _color, int _tileIndex)
+		internal override CreatureBattleInfo CreateBattleInfo()
 		{
-			m_color = _color;
-			m_tileIndex = _tileIndex;
-			m_direction = World.Rnd.GetRandomDirection();
+			var info = Ammo.CreateItemInfo(this);
+			return new CreatureBattleInfo(this, 0, 0, 0, info.ToHit, info.Dmg);
 		}
-
-		#region ITileInfoProvider Members
-
-		public ETileset Tileset
-		{
-			get { return ETileset.SPLATTERS; }
-		}
-
-		public FColor LerpColor
-		{
-			get { return m_color; }
-		}
-
-		public EDirections Direction
-		{
-			get { return m_direction; }
-		}
-
-		public bool IsCorpse
-		{
-			get { return false; }
-		}
-
-		public int TileIndex
-		{
-			get { return m_tileIndex; }
-		}
-
-		#endregion
 	}
 }

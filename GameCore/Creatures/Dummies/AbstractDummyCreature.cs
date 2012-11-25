@@ -11,6 +11,14 @@ namespace GameCore.Creatures.Dummies
 		{
 		}
 
+		public override bool IsCreature
+		{
+			get
+			{
+				return false;
+			}
+		}
+
 		public override EFraction Fraction
 		{
 			get { return EFraction.DUMMY; }

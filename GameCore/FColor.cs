@@ -1591,17 +1591,6 @@ namespace GameCore
 
 		public FColor Screen(FColor _color)
 		{
-			//var sum = A + _color.A;
-			//if(sum==0f) return Empty;
-			//var a = this.Multiply(A/sum);
-			//var b = _color.Multiply(_color.A/sum);
-			//return new FColor((A+_color.A)/2, a.R+b.R, a.G+b.G,a.B+b.B);
-			//return (Inverse().Multiply(_color.Inverse())).Inverse();
-
-			//Func<float, float, float> func = (_i, _i1) => 1f - ((1f - _i) * (1f - _i1));
-			//return new FColor(A + _color.A, func(R, _color.R), func(G, _color.G), func(B, _color.B));
-
-	
 			var f = Math.Max(A, Math.Max(R, Math.Max(G, B)));
 			f = Math.Max(f, Math.Max(_color.A, Math.Max(_color.R, Math.Max(_color.G, _color.B))));
 			return new FColor(Screen(A, _color.A, f), Screen(R, _color.R, f), Screen(G, _color.G, f), Screen(B, _color.B, f));

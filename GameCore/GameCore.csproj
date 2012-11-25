@@ -77,6 +77,7 @@
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Citizen.cs" />
     <Compile Include="Creatures\Dummies\AbstractDummyCreature.cs" />
+    <Compile Include="Creatures\Dummies\Splatter.cs" />
     <Compile Include="Creatures\Dummies\SplatterDropper.cs" />
     <Compile Include="Creatures\ECreatureSize.cs" />
     <Compile Include="Creatures\EEquipmentPlaces.cs" />

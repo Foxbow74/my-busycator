@@ -19,7 +19,7 @@ namespace GameCore.Essences.Ammo
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
-			return ItemBattleInfo.Empty;
+			return new ItemBattleInfo(0,0,0,10,new Dice(2,2));
 		}
 	}
 }

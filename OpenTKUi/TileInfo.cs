@@ -74,31 +74,34 @@ namespace OpenTKUi
 
 			if(layer.IsCorpse)
 			{
+				var d1 = 2f / 16f;
+				var d2 = d1*3f;
+
 				switch (layer.Direction)
 				{
 					case EDirections.UP:
-						GL.TexCoord2(texcoords[2].U, texcoords[2].V); GL.Vertex2(m_x, m_y + m_height * 2f/5f);
-						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x + m_width, m_y + m_height * 2f/5f);
-						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x + m_width * 4f/5f, m_y + m_height);
-						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x, m_y + m_height * 4f/5f);
+						GL.TexCoord2(texcoords[2].U, texcoords[2].V); GL.Vertex2(m_x + m_width * d1, m_y + m_height*d2);
+						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x + m_width * (1 - d1), m_y + m_height*d2);
+						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x + m_width, m_y + m_height);
+						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x, m_y + m_height);
 						break;
 					case EDirections.DOWN:
-						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x, m_y + m_height * 2f/5f);
-						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x + m_width* 4f/5f, m_y + m_height* 2f/5f);
+						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x + m_width * d1, m_y + m_height*d2);
+						GL.TexCoord2(texcoords[1].U, texcoords[1].V);  GL.Vertex2(m_x + m_width * (1 - d1), m_y + m_height*d2);
 						GL.TexCoord2(texcoords[2].U, texcoords[2].V); GL.Vertex2(m_x + m_width, m_y + m_height);
-						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x, m_y + m_height * 4f/5f);
+						GL.TexCoord2(texcoords[3].U, texcoords[3].V);  GL.Vertex2(m_x, m_y + m_height);
 						break;
 					case EDirections.RIGHT:
-						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x, m_y + m_height* 2f/5f);
-						GL.TexCoord2(texcoords[2].U, texcoords[2].V); GL.Vertex2(m_x + m_width, m_y + m_height*2f/5f);
-						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x + m_width*4f/5f, m_y + m_height);
-						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x, m_y + m_height* 4f/5f);
+						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x + m_width * d1, m_y + m_height*d2);
+						GL.TexCoord2(texcoords[2].U, texcoords[2].V);  GL.Vertex2(m_x + m_width * (1 - d1), m_y + m_height*d2);
+						GL.TexCoord2(texcoords[3].U, texcoords[3].V);GL.Vertex2(m_x + m_width, m_y + m_height);
+						GL.TexCoord2(texcoords[0].U, texcoords[0].V);  GL.Vertex2(m_x, m_y + m_height);
 						break;
 					case EDirections.LEFT:
-						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x + m_width*1f/5f, m_y + m_height* 2f/5f);
-						GL.TexCoord2(texcoords[0].U, texcoords[0].V); GL.Vertex2(m_x + m_width * 4f/5f, m_y + m_height* 2f/5f);
-						GL.TexCoord2(texcoords[1].U, texcoords[1].V); GL.Vertex2(m_x + m_width, m_y + m_height);
-						GL.TexCoord2(texcoords[2].U, texcoords[2].V); GL.Vertex2(m_x, m_y + m_height * 4f/5f);
+						GL.TexCoord2(texcoords[3].U, texcoords[3].V); GL.Vertex2(m_x + m_width * d1, m_y + m_height*d2);
+						GL.TexCoord2(texcoords[0].U, texcoords[0].V);  GL.Vertex2(m_x + m_width * (1 - d1), m_y + m_height*d2);
+						GL.TexCoord2(texcoords[1].U, texcoords[1].V);GL.Vertex2(m_x + m_width, m_y + m_height);
+						GL.TexCoord2(texcoords[2].U, texcoords[2].V);  GL.Vertex2(m_x, m_y + m_height);
 						break;
 					default:
 						throw new ArgumentOutOfRangeException();

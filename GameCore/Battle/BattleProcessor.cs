@@ -46,12 +46,14 @@ namespace GameCore.Battle
 		public EActResults Atack(Creature _creature, Creature _target)
 		{
 			var weapons = _creature.GetWeapons(_target).ToArray();
-			if (_creature is Missile)
-			{
-				MessageManager.SendMessage(this, "попал!");
-				_creature.LiveCoords = null;
-				return EActResults.DONE;
-			}
+			//if (_creature is Missile)
+			//{
+			//    var missile = (Missile) _creature;
+			//    MessageManager.SendMessage(this, missile[EPadej.IMEN] + " угодил прямо в " + _target[EPadej.ROD]);
+				
+			//    _creature.LiveCoords = null;
+			//    return EActResults.DONE;
+			//}
 			if(_creature is SplatterDropper)
 			{
 				_creature.LiveCoords = null;
@@ -133,6 +135,11 @@ namespace GameCore.Battle
 				{
 					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature[EPadej.IMEN] + " промахнулся"));
 				}
+			}
+
+			if (_creature is Missile)
+			{
+				_creature.LiveCoords = null;
 			}
 			return EActResults.DONE;
 			

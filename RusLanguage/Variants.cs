@@ -18,5 +18,57 @@ namespace RusLanguage
 					throw new ArgumentOutOfRangeException("_sex");
 			}
 		}
+
+		public static string HaveGotDamage(INameProvider _nameProvider, int _damage)
+		{
+			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			switch (_nameProvider.Sex)
+			{
+				case ESex.MALE:
+					return name + " получил " + _damage.Пунктов() + " урона";
+					break;
+				case ESex.FEMALE:
+					return name + " получила " + _damage.Пунктов() + " урона";
+					break;
+				case ESex.IT:
+					return name + " получило " + _damage.Пунктов() + " урона";
+					break;
+				case ESex.PLURAL:
+					return name + " получили " + _damage.Пунктов() + " урона";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public static string Died(INameProvider _nameProvider)
+		{
+			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			switch (_nameProvider.Sex)
+			{
+				case ESex.MALE:
+					return name + " мертв";
+					break;
+				case ESex.FEMALE:
+					return name + " издохла";
+					break;
+				case ESex.IT:
+					return name + " скончалось";
+					break;
+				case ESex.PLURAL:
+					return name + " отдали концы";
+					break;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+	}
+
+	public interface INameProvider
+	{
+		ESex Sex { get; }
+		string Name { get; }
+		bool IsCreature { get; }
+		bool IsUnique { get; }
 	}
 }

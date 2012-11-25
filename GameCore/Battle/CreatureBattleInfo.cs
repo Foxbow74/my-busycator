@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Weapons;
 using GameCore.Messages;
-using GameCore.Misc;
 using RusLanguage;
 
 namespace GameCore.Battle
@@ -58,33 +56,31 @@ namespace GameCore.Battle
 			{
 				HP -= _damage;
 			}
-			if(HP<=0)
+
+			if (m_creature.IsAvatar)
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, m_creature[EPadej.IMEN] + " погиб"));
-				m_creature[0, 0].AddItem(new Corpse(m_creature));
-				m_creature[0, 0].AddSplatter(new Splatter(FColor.Crimson, Splatter.COUNT - World.Rnd.Next(fact % Splatter.COUNT)));
-				m_creature.LiveCoords = null;
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "получено " + fact.Пунктов() + " урона"));
 			}
 			else
 			{
-				if (m_creature.IsAvatar)
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "получено " + _damage.Пунктов() + " урона"));
-				}
-				else
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, m_creature[EPadej.IMEN] + " получил " + _damage.Пунктов() + " урона"));
-				}
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, Variants.HaveGotDamage(m_creature, fact)));
+			}
 
-				var ro = World.Rnd.NextDouble()*Math.PI*2;
+			fact -= m_creature[0, 0].AddSplatter(fact, FColor.Crimson);
+			if (fact > 0)
+			{
+				var ro = World.Rnd.NextDouble() * Math.PI * 2;
 				var x = (int)(Math.Sin(ro) * 20f);
 				var y = (int)(Math.Cos(ro) * 20f);
 
-				new SplatterDropper(m_creature.Layer, m_creature.LiveCoords, fact, FColor.Crimson, m_creature[x, y].LiveCoords);
-				///m_creature[0,0].AddCreature();
+				new SplatterDropper(m_creature.Layer, m_creature[0, 0], fact, FColor.Crimson, m_creature[x, y]);
+			}
 
-				//var pnt = Point.Zero.NearestPoints.ToArray().RandomItem(World.Rnd);
-				//m_creature[pnt.X, pnt.Y].AddSplatter(new Splatter(FColor.Crimson, World.Rnd.Next(Math.Abs(10 - _damage))));
+			if (HP <= 0)
+			{
+				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, Variants.Died(m_creature)));
+				m_creature[0, 0].AddItem(new Corpse(m_creature));
+				m_creature.LiveCoords = null;
 			}
 		}
 	}
