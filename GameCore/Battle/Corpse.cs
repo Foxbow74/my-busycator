@@ -1,0 +1,84 @@
+using GameCore.Creatures;
+using GameCore.Essences;
+using GameCore.Misc;
+using RusLanguage;
+
+namespace GameCore.Battle
+{
+	public class Corpse:Item, ISpecial
+	{
+		readonly EDirections m_direction;
+		private readonly Creature m_creature;
+
+		public Corpse(Creature _creature)
+			: base(_creature.Material)
+		{
+			m_direction = Util.AllDirections.RandomItem(World.Rnd);
+			m_creature = _creature;
+		}
+
+		public override string Name
+		{
+			get { return "труп " + m_creature[EPadej.ROD]; }
+		}
+
+		public override EDirections Direction
+		{
+			get
+			{
+				return m_direction;
+			}
+		}
+
+		public override ETileset Tileset
+		{
+			get
+			{
+				return m_creature.Tileset;
+			}
+		}
+
+		public override EItemCategory Category
+		{
+			get { return EItemCategory.FOOD; }
+		}
+
+		public override ItemBattleInfo CreateItemInfo(Creature _creature)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override int TileIndex
+		{
+			get
+			{
+				return m_creature.TileIndex;
+			}
+		}
+
+		public override void Resolve(Creature _creature)
+		{
+			throw new System.NotImplementedException();
+		}
+
+		public override bool IsCorpse
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return FColor.Crimson;
+			}
+			protected set
+			{
+				base.LerpColor = value;
+			}
+		}
+	}
+}

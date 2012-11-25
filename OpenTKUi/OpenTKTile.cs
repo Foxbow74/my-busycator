@@ -1,7 +1,6 @@
 ﻿using GameCore;
 using GameCore.Misc;
 using GameUi;
-using UnsafeUtils;
 
 namespace OpenTKUi
 {
@@ -43,19 +42,19 @@ namespace OpenTKUi
 
 		public TexCoord[] Texcoords { get; private set; }
 
-		public override void Draw(Point _point, FColor _color, EDirections _direction)
+		public override void Draw(Point _point, FColor _color, EDirections _direction, bool _isCorpse)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _direction);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, _direction, _isCorpse);
 		}
 
 		public override void Draw(Point _point, FColor _color)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, EDirections.DOWN);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, _color, EDirections.DOWN, false);
 		}
 
 		public override void Draw(Point _point)
 		{
-			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, Color, EDirections.DOWN);
+			GameProvider.TileMapRenderer.DrawTile(this, _point.X, _point.Y, Color, EDirections.DOWN, false);
 		}
 
 		public override void FogIt(Point _point)

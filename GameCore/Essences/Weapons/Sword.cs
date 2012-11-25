@@ -19,7 +19,7 @@ namespace GameCore.Essences.Weapons
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
-			return new ItemBattleInfo(0,0,1,0,new Dice(1,4,0));
+			return new ItemBattleInfo(0,0,1,4,new Dice(1,4,0));
 		}
 	}
 }

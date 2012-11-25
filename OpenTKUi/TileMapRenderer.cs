@@ -101,12 +101,12 @@ namespace OpenTKUi
 		{
 		}
 
-		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, EDirections _direction)
+		public void DrawTile(OpenTKTile _tile, int _x, int _y, FColor _color, EDirections _direction, bool _isCorpse)
 		{
 			if(_x<0 || _y<0 || _x>=m_tilesInRow || _y>=m_tilesInColumn) return;
 			var info = m_tiles[_x, _y];
 			info.IsFogged = false;
-			info.AddLayer(_tile, _color, _direction);
+			info.AddLayer(_tile, _color, _direction, _isCorpse);
 		}
 
 		public void FogTile(Point _point)

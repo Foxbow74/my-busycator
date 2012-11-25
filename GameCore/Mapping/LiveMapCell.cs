@@ -56,7 +56,7 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple => _tuple.Item2 == LiveCoords);
+                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple =>!(_tuple.Item1 is AbstractDummyCreature) && _tuple.Item2 == LiveCoords);
                 return tuple==null?null:tuple.Item1;
 			}
 		}
@@ -340,13 +340,15 @@ namespace GameCore.Mapping
 
 		public void AddSplatter(Splatter _splatter)
 		{
-			m_splatters.Add(_splatter);
+			if(Terrain!=ETerrains.NONE)
+			{
+				m_splatters.Add(_splatter);		
+			}
 		}
 
-		public void SetVisibility(FColor _visibility, float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
+		public void UpdateVisibility(float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
 		{
-			Visibility = _visibility;
-			FinalLighted = Lighted.Screen(_ambient).Multiply(_visibility);
+			FinalLighted = Lighted.Screen(_ambient).Multiply(Visibility);
 			if (FinalLighted.Lightness() > _fogLightness || this == _avatarLiveCell)
 			{
 				IsVisibleNow = true;

@@ -83,6 +83,8 @@ namespace GameCore.Creatures.Dummies
 		private readonly EDirections m_direction;
 		private readonly int m_tileIndex;
 
+		public const int COUNT=13;
+
 		public Splatter(FColor _color, int _tileIndex)
 		{
 			m_color = _color;
@@ -105,6 +107,11 @@ namespace GameCore.Creatures.Dummies
 		public EDirections Direction
 		{
 			get { return m_direction; }
+		}
+
+		public bool IsCorpse
+		{
+			get { return false; }
 		}
 
 		public int TileIndex

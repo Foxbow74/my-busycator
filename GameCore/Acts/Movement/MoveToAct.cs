@@ -9,6 +9,10 @@ using GameCore.Misc;
 
 namespace GameCore.Acts.Movement
 {
+	/// <summary>
+	/// Point - точки смещения от начала маршрута
+	/// int - максимальная длина пути
+	/// </summary>
 	public class MoveToAct : Act
 	{
 		public MoveToAct() { }
@@ -35,6 +39,9 @@ namespace GameCore.Acts.Movement
 		{
 			IEnumerable<Point> way;
 
+			var max = int.MaxValue;
+			TryGetParameter(out max);
+
 			if (TryGetParameter(out way))
 			{
 				var result = EActResults.DONE;
@@ -47,6 +54,11 @@ namespace GameCore.Acts.Movement
 					{
 						_creature.AddActToPool(new MoveAct(), dpoint, longWay);
 						result = EActResults.ACT_REPLACED;
+						max--;
+						if (max <= 0)
+						{
+							break;
+						}
 					}
 					pnt = point;
 				}

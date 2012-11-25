@@ -17,7 +17,7 @@ namespace GameCore.Essences
 		/// </summary>
 		public virtual float Opacity
 		{
-			get { return TileInfoProvider.GetOpacity(Tileset, TileIndex); }
+			get { return TileSetInfoProvider.GetOpacity(Tileset, TileIndex); }
 		}
 
 		public virtual ILightSource Light { get { return null; } }
@@ -37,6 +37,11 @@ namespace GameCore.Essences
 		public virtual FColor LerpColor { get { return Material.LerpColor; } protected  set{} }
 
 		public virtual EDirections Direction { get { return EDirections.DOWN; } }
+
+		public virtual bool IsCorpse
+		{
+			get { return false; }
+		}
 
 		public virtual int TileIndex
 		{

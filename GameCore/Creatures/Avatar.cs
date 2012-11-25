@@ -16,6 +16,7 @@ namespace GameCore.Creatures
 			: base(_surface, 100, EIntellectGrades.INT)
 		{
 			Tactic = ETactics.NORMAL;
+			Luck = 6;
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<Sword>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<CrossBow>());
@@ -36,13 +37,18 @@ namespace GameCore.Creatures
 
 		public ETactics Tactic { get; set; }
 
+		public int LuckModifier
+		{
+			get { return Luck/3; }
+		}
+
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
 		
 		internal override CreatureBattleInfo CreateBattleInfo()
 		{
-			return new IntelligentBattleInfo(this);
+			return new IntelligentBattleInfo(this,3,1,new Dice(5,8,20));
 		}
 	}
 

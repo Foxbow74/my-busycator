@@ -128,5 +128,16 @@ namespace GameCore.Mapping
 				MapBlock.Creatures.Add(tuple);
 			}
 		}
+
+		public void UpdateVisibility(float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
+		{
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			{
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
+				{
+					this[i, j].UpdateVisibility(_fogLightness, _ambient, _avatarLiveCell);
+				}
+			}
+		}
 	}
 }

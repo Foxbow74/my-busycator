@@ -24,6 +24,7 @@ namespace GameCore.Battle
 		public int Count { get; set; }
 		public int Size { get; set; }
 		public int Modifier { get; set; }
+		public int Max { get { return Count*Size + Modifier; } }
 
 		public override string ToString()
 		{
@@ -35,7 +36,7 @@ namespace GameCore.Battle
 			var result = Modifier;
 			for (var i = 0; i < Count; i++)
 			{
-				result += World.Rnd.Next(Size);
+				result += World.Rnd.Next(Size+1);
 			}
 			return result;
 		}
