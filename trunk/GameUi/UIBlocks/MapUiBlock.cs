@@ -101,7 +101,7 @@ namespace GameUi.UIBlocks
 					}
 				}
 			}
-			//World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
+			World.TheWorld.Avatar.Tileset.GetTile(World.TheWorld.Avatar.TileIndex).Draw(avatarScreenPoint, FColor.White);
 		}
 
 		public override void DrawFrame() { }

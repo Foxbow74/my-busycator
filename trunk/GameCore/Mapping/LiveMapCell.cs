@@ -121,10 +121,10 @@ namespace GameCore.Mapping
                     {
                         opacity += Creature.Opacity;
                     }
-                    if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
-                    {
-                        opacity += World.TheWorld.Avatar.Opacity;
-                    }
+					//if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
+					//{
+					//    opacity += World.TheWorld.Avatar.Opacity;
+					//}
                     if (opacity < 1)
                     {
                         opacity += Items.Sum(_item => _item.Opacity);
@@ -346,11 +346,26 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public void UpdateVisibility(float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
+		public void UpdateVisibility(float _fogLightness, FColor _ambient)
 		{
 			FinalLighted = Lighted.Screen(_ambient).Multiply(Visibility);
-			if (FinalLighted.Lightness() > _fogLightness || this == _avatarLiveCell)
+			if (FinalLighted.Lightness() > _fogLightness)
 			{
+				IsVisibleNow = true;
+				if (!IsSeenBefore)
+				{
+					IsSeenBefore = true;
+					m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
+				}
+			}
+		}
+
+		public void UpdateAvatarCellVisibility()
+		{
+			//FinalLighted = FinalLighted.Screen(FColor.White.Multiply(0.5f));
+			if (!IsVisibleNow)
+			{
+				
 				IsVisibleNow = true;
 				if (!IsSeenBefore)
 				{

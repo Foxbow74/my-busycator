@@ -199,8 +199,10 @@ namespace GameCore.Mapping
 
 				foreach (var blockId in lighted)
 				{
-					Blocks[blockId.X, blockId.Y].UpdateVisibility(fogLightness, ambient, World.TheWorld.Avatar[0,0]);
+					Blocks[blockId.X, blockId.Y].UpdateVisibility(fogLightness, ambient);
 				}
+
+				World.TheWorld.Avatar[0,0].UpdateAvatarCellVisibility();
 
 				var zeroLiveCell = centerLiveCell - m_vieportSize/2;
 				return zeroLiveCell;

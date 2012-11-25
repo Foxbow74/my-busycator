@@ -129,13 +129,13 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public void UpdateVisibility(float _fogLightness, FColor _ambient, LiveMapCell _avatarLiveCell)
+		public void UpdateVisibility(float _fogLightness, FColor _ambient)
 		{
 			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
 			{
 				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
 				{
-					this[i, j].UpdateVisibility(_fogLightness, _ambient, _avatarLiveCell);
+					this[i, j].UpdateVisibility(_fogLightness, _ambient);
 				}
 			}
 		}
