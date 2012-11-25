@@ -87,12 +87,12 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					break;
 				case ConsoleKey.OemPlus:
-					if (_modifiers != EKeyModifiers.SHIFT) return;
+					if (_modifiers != EKeyModifiers.NONE) return;
 					m_currentTarget++;
 					SelectTargetFromList();
 					break;
 				case ConsoleKey.OemMinus:
-					if (_modifiers != EKeyModifiers.SHIFT) return;
+					if (_modifiers != EKeyModifiers.NONE) return;
 					m_currentTarget--;
 					SelectTargetFromList();
 					break;
