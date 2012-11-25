@@ -4,7 +4,7 @@ using XTransport.Client;
 
 namespace GameCore.Storage
 {
-	class XResourceClient: AbstractXClient<EStoreKind>
+	internal class XResourceClient : AbstractXClient<EStoreKind>
 	{
 		public override Guid UserUid
 		{
@@ -18,12 +18,12 @@ namespace GameCore.Storage
 
 		protected override int KindToInt(EStoreKind _kind)
 		{
-			return (int)_kind;
+			return (int) _kind;
 		}
 
 		protected override EStoreKind IntToKind(int _kind)
 		{
-			return (EStoreKind)_kind;
+			return (EStoreKind) _kind;
 		}
 
 		protected override void ObjectReleased(Guid _uid, EStoreKind _kind)

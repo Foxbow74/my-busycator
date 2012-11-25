@@ -4,14 +4,14 @@ using XTransport;
 
 namespace GameCore.Storeable
 {
-	class XResourceRoot : XObject
+	internal class XResourceRoot : XObject
 	{
 #pragma warning disable 649
-		[X((int)EStoreKind.MONSTER_INFO)]private ICollection<XMonsterInfo> m_monsterInfos;
-		[X((int)EStoreKind.TERRAIN_SET)]private ICollection<XTerrainSet> m_terrainSets;
-		[X((int)EStoreKind.TILE_SET)]private ICollection<XTileSet> m_tileSets;
-		[X((int)EStoreKind.NICKS_INFO)]private ICollection<XNicksInfo> m_nicksInfos;
-		[X((int)EStoreKind.COLOR)]private ICollection<XColor> m_colors;
+		[X((int) EStoreKind.MONSTER_INFO)] private ICollection<XMonsterInfo> m_monsterInfos;
+		[X((int) EStoreKind.TERRAIN_SET)] private ICollection<XTerrainSet> m_terrainSets;
+		[X((int) EStoreKind.TILE_SET)] private ICollection<XTileSet> m_tileSets;
+		[X((int) EStoreKind.NICKS_INFO)] private ICollection<XNicksInfo> m_nicksInfos;
+		[X((int) EStoreKind.COLOR)] private ICollection<XColor> m_colors;
 #pragma warning restore 649
 
 		public override EStoreKind Kind
@@ -39,6 +39,9 @@ namespace GameCore.Storeable
 			get { return m_colors; }
 		}
 
-		public ICollection<XNicksInfo> NickInfos { get { return m_nicksInfos; } }
+		public ICollection<XNicksInfo> NickInfos
+		{
+			get { return m_nicksInfos; }
+		}
 	}
 }
