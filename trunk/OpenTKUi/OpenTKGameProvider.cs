@@ -299,6 +299,14 @@ namespace OpenTKUi
 				case Key.Escape:
 					_consoleKey = ConsoleKey.Escape;
 					break;
+				case Key.KeypadMinus:
+				case Key.Minus:
+					_consoleKey = ConsoleKey.OemMinus;
+					break;
+				case Key.KeypadPlus:
+				case Key.Plus:
+					_consoleKey = ConsoleKey.OemPlus;
+					break;
 				default:
 					var keyName = Enum.GetName(typeof (Key), _key);
 

@@ -23,5 +23,10 @@ namespace GameCore.Battle
 
 		public int ToHit { get; set; }
 		public Dice Dmg { get; set; }
+
+		public override string ToString()
+		{
+			return string.Format("[{0},{1}/{2}]{{{3},{4}}}", DV, PVI, PV, ToHit, Dmg);
+		}
 	}
 }
