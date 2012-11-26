@@ -17,13 +17,13 @@ namespace GameCore.Creatures
 			Tactic = ETactics.NORMAL;
 			Luck = 6;
 			AddRole(new AvatarRole());
-			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractWeapon>());
+			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractMeleeWeapon>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
 			Equip(EEquipmentPlaces.MISSILES, EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd));
 			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<AbstractTorch>());
 		}
 
-        public override ETileset Tileset { get { return ETileset.AVATAR; } }
+		public override ETileset Tileset { get { return ETileset.AVATAR; } }
 
         public override int TileIndex { get { return 2; } }
 

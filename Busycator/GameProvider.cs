@@ -54,7 +54,7 @@ namespace Busycator
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			DateTime now = DateTime.Now;
+			var now = DateTime.Now;
 			if (IsActive)
 			{
 

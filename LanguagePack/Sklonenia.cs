@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.Creatures;
+using GameCore.Essences;
+using GameCore.Misc;
 
 namespace LanguagePack
 {
-	public enum EPadej
-	{
-		IMEN,
-		ROD,
-		DAT,
-		VIN,
-		TVOR,
-		PREDL,
-	}
-
 	public static class Sklonenia
 	{
+		private static readonly Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>> m_padejDict;
+
+		private static readonly Dictionary<string, Dictionary<EPadej, string>> m_iskluchenia = new Dictionary<string, Dictionary<EPadej, string>>();
+
+		private static readonly Random m_rnd = new Random();
+
 		static Sklonenia()
 		{
 			m_padejDict = new Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>>();
@@ -63,14 +62,43 @@ namespace LanguagePack
 
 			m_padejDict[1][ESex.MALE][EPadej.PREDL][true] = "е";
 			m_padejDict[1][ESex.MALE][EPadej.PREDL][false] = "е";
+
+
+			AddIskl("зубы", "зубов", "зубам", "зубов", "зубами", "зубах");
 		}
 
-		private static Dictionary<int, Dictionary<ESex, Dictionary<EPadej, Dictionary<bool, string>>>> m_padejDict;
+		public static string To(this Essence _essence, EPadej _padej)
+		{
+			var noun = _essence.Name;
+			if(_essence.Is<Intelligent>() && m_rnd.Next(2)==1)
+			{
+				noun = ((Intelligent)_essence).Roles.ToArray().RandomItem(m_rnd).Name;
+			}
+			return ToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
+		}
+
+		private static void AddIskl(string _imen, string _rod,string _dat, string _vin, string _tvor, string _predl)
+		{
+			var dictionary = new Dictionary<EPadej, string>
+			                 	{
+			                 		{EPadej.ROD, _rod},
+			                 		{EPadej.DAT, _dat},
+			                 		{EPadej.PREDL, _predl},
+			                 		{EPadej.TVOR, _tvor},
+			                 		{EPadej.VIN, _vin}
+			                 	};
+			m_iskluchenia.Add(_imen, dictionary);
+		}
 
 		public static string ToPadej(EPadej _target, string _noun, bool _isCreature, ESex _sex)
 		{
 			if(_target==EPadej.IMEN) return _noun;
 
+			Dictionary<EPadej, string> dictionary;
+			if(m_iskluchenia.TryGetValue(_noun, out dictionary))
+			{
+				return dictionary[_target];
+			}
 
 			var sklon = GetSklon(ref _noun, _isCreature, _sex);
 			if(sklon<0)

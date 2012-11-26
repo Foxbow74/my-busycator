@@ -85,22 +85,29 @@ namespace GameCore.Battle
 				var damage = itemBattleInfo.Dmg.Calc();
 				var isCritical = itemBattleInfo.Dmg.Max == damage;
 				damage += creatureBattleInfo.DmgModifier;
-
-				if (isCritical && _creature.IsAvatar)
+				if (damage == 0)
 				{
-					MessageManager.SendMessage(this, "отличный удар");
-					damage *= 2;
-				}
-
-				damage -= pv;
-
-				if(damage>0)
-				{
-					targetBattleInfo.ApplyDamage(damage, weapon);
+					MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, _creature, _target, weapon));
 				}
 				else
 				{
-					MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, _creature, _target, weapon));
+					if (isCritical && _creature.IsAvatar)
+					{
+						MessageManager.SendMessage(this, "отличный удар");
+						damage *= 2;
+					}
+
+
+					damage -= pv;
+
+					if (damage > 0)
+					{
+						targetBattleInfo.ApplyDamage(damage, weapon, _creature);
+					}
+					else
+					{
+						MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, _creature, _target, weapon));
+					}
 				}
 			}
 			else

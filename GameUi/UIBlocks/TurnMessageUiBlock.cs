@@ -5,6 +5,7 @@ using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
+using LanguagePack;
 
 namespace GameUi.UIBlocks
 {
@@ -14,6 +15,7 @@ namespace GameUi.UIBlocks
 		private readonly List<Message> m_turnMessages = new List<Message>();
 		private int m_linesShown;
 		private int m_visibleTill;
+		private TextPortion m_tp;
 
 		public TurnMessageUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Yellow)
@@ -37,6 +39,7 @@ namespace GameUi.UIBlocks
 				m_lines.Clear();
 				m_linesShown = 0;
 				m_visibleTill = 0;
+				m_tp = null;
 			}
 		}
 
@@ -50,26 +53,48 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string>();
-			foreach (var message in m_turnMessages)
+			if(World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar && m_tp==null)
 			{
-				if (message is SimpleTextMessage)
+				var strings = new List<string>();
+				var xlist = new List<XLangMessage>();
+				foreach (var message in m_turnMessages)
 				{
-					var tm = (SimpleTextMessage) message;
-					strings.Add(tm.Text);
+					if (message is XLangMessage)
+					{
+						xlist.Add((XLangMessage)message);
+					}
+					else
+					{
+						strings.AddRange(CompileXLangMessages(xlist));
+						xlist.Clear();
+					}
+
+					if (message is SimpleTextMessage)
+					{
+						var tm = (SimpleTextMessage)message;
+						strings.Add(tm.Text);
+					}
+					else if (message is SoundTextMessage)
+					{
+						var tm = (SoundTextMessage)message;
+						strings.Add("где-то " + tm.Text);
+					}
 				}
-				else if (message is SoundTextMessage)
-				{
-					var tm = (SoundTextMessage)message;
-					strings.Add("где-то " + tm.Text);
-				}
+
+				strings.AddRange(CompileXLangMessages(xlist));
+				xlist.Clear();
+
+				var str = string.Join(", ", strings);
+				m_tp = new TextPortion(str, null);
+			}
+			if (m_tp==null)
+			{
+				return;
 			}
 
-			var str = string.Join(", ", strings);
-			var tp = new TextPortion(str, null);
-			tp.SplitByLines((ContentRct.Width - 2)*Constants.TILE_SIZE, Font, 0, DrawHelper);
+			m_tp.SplitByLines((ContentRct.Width - 2) * Constants.TILE_SIZE, Font, 0, DrawHelper);
 
-			var lines = tp.TextLines.ToArray();
+			var lines = m_tp.TextLines.ToArray();
 			if (lines.Length == 0) return;
 
 			var lineNumber = 0;
@@ -82,6 +107,15 @@ namespace GameUi.UIBlocks
 				DrawLine(textLine, ForeColor, lineNumber++, 0, EAlignment.JUSTIFY);
 			}
 			m_visibleTill = max;
+		}
+
+		private IEnumerable<string> CompileXLangMessages(List<XLangMessage> _xlist)
+		{
+			if (_xlist.Count != 0)
+			{
+				return XMessageCompiler.Compile(_xlist);
+			}
+			return Enumerable.Empty<string>();
 		}
 	}
 }
