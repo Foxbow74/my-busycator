@@ -6,7 +6,6 @@ using GameCore.Essences.Faked;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Creatures
 {
@@ -71,7 +70,7 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public override string Name { get { return IntelligentName + ", " + Roles.First()[Sex]; } }
+		public override string Name { get { return IntelligentName + ", " + Roles.First().Name; } }
 
 		public abstract string IntelligentName { get; }
 

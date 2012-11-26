@@ -1,6 +1,4 @@
-﻿using RusLanguage;
-
-namespace GameCore.Materials
+﻿namespace GameCore.Materials
 {
 	internal class BodyMaterial : Material
 	{

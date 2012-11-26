@@ -2,7 +2,7 @@
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Essences.Things
 {
@@ -24,7 +24,10 @@ namespace GameCore.Essences.Things
 			door.SetLockType(m_eLockType);
 			_liveMapCell.Thing = door;
 
-			if (_creature.IsAvatar) MessageManager.SendMessage(this, this[EPadej.IMEN] + " открыта.");
+			if (_creature.IsAvatar)
+			{
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_OPENS_IT, _creature, this));
+			}
 			return EActResults.DONE;
 		}
 

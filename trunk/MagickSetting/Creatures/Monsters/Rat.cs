@@ -6,7 +6,6 @@ using GameCore.Creatures.Monsters;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using MagickSetting.Items.Weapons.NaturalWeapon;
-using RusLanguage;
 
 namespace MagickSetting.Creatures.Monsters
 {

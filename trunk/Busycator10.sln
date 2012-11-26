@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeUtils", "UnsafeUtils\UnsafeUtils.csproj", "{8DA672AD-628D-45BC-A1FB-5AD9541397A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguage", "RusLanguage\RusLanguage.csproj", "{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceWizard", "ResourceWizard\ResourceWizard.csproj", "{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickFont", "QuickFont\QuickFont.csproj", "{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF}"
@@ -37,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication2", "Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicSetting", "MagickSetting\MagicSetting.csproj", "{89A625BC-7450-4C83-BD35-6057A40255FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguagePack", "LanguagePack\RusLanguagePack.csproj", "{5F7A0E59-CC3B-498E-A61C-877B2AC31601}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,16 +57,6 @@ Global
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1}.Release|x86.ActiveCfg = Release|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}.Release|x86.ActiveCfg = Release|Any CPU
 		{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -206,12 +196,21 @@ Global
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{5F7A0E59-CC3B-498E-A61C-877B2AC31601}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{BBECE6FC-EF63-40F8-A734-A500D1DFC1AF} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{BCAD98EB-0C52-4186-B8B0-92AB47947796} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{674FDA29-11EB-43E2-B1AD-47A86585A9A8} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}

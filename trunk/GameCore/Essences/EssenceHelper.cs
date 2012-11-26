@@ -167,11 +167,11 @@ namespace GameCore.Essences
 			{
 				if(_essence is Intelligent)
 				{
-					return _essence.GetFullName();
+					return _essence.Name;
 				}
 				return _essence.Name;
 			}
-			return _essence.GetFullName();
+			return _essence.Name;
 		}
 
 		public static string GetName(this EssenceDescriptor _essenceDescriptor, Creature _creature)
@@ -181,7 +181,7 @@ namespace GameCore.Essences
 			{
 				thing = _essenceDescriptor.ResolveEssence(_creature);
 			}
-			return thing.GetFullName();
+			return thing.Name;
 		}
 
 		public static bool Is<T>(this Essence _essence)

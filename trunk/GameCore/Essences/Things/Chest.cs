@@ -5,7 +5,7 @@ using GameCore.Acts.Items;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Essences.Things
 {
@@ -25,7 +25,7 @@ namespace GameCore.Essences.Things
 		{
 			if (ELockType != ELockType.OPEN)
 			{
-				if (_creature.IsAvatar) MessageManager.SendMessage(this, this[EPadej.IMEN] + " открыт.");
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_OPENS_IT, _creature, this));
 				ELockType = ELockType.OPEN;
 
 				var collection = GetItems(_creature);
@@ -36,7 +36,7 @@ namespace GameCore.Essences.Things
 				}
 				else
 				{
-					if (_creature.IsAvatar) MessageManager.SendMessage(this, "Увы, пусто.");
+					MessageManager.SendXMessage(this, new XMessage(EXMType.CONTAINER_IS_EMPTY, _creature, this));
 				}
 
 				return EActResults.DONE;

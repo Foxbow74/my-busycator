@@ -7,7 +7,6 @@ using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
 using GameCore.Materials;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {
@@ -62,7 +61,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 		public Intelligent Owner { get; private set; }
 
-		public string this[EPadej _padej, bool _withOwner] { get { return Sklonenia.ToPadej(_padej, BuildingName, false, Sex) + (_withOwner ? (" " + Sklonenia.ToPadej(EPadej.ROD, Owner.IntelligentName, true, Owner.Sex)) : ""); } }
+		//public string this[EPadej _padej, bool _withOwner] { get { return Sklonenia.ToPadej(_padej, BuildingName, false, Sex) + (_withOwner ? (" " + Sklonenia.ToPadej(EPadej.ROD, Owner.IntelligentName, true, Owner.Sex)) : ""); } }
 
 		protected abstract string BuildingName { get; }
 
@@ -135,6 +134,5 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public void SetRoom(Room _room) { Room = _room; }
 
 		public void SetOwner(Intelligent _intelligent) { Owner = _intelligent; }
-		public override string ToString() { return this[EPadej.IMEN, true]; }
 	}
 }

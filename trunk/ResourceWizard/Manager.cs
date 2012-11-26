@@ -12,7 +12,6 @@ using GameCore.Misc;
 using GameCore.Storage;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
-using RusLanguage;
 using Image = OpenTKUi.Image;
 
 namespace ResourceWizard

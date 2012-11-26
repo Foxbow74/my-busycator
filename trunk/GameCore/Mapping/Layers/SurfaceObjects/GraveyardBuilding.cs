@@ -3,7 +3,6 @@ using System.Linq;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Mapping.Layers.SurfaceObjects
 {

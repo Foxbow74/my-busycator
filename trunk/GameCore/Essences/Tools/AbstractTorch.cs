@@ -4,17 +4,23 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Essences.Tools
 {
 	public abstract class AbstractTorch : Item, ITool
 	{
+		private readonly int m_radius;
+		private readonly FColor m_color;
 		private LightSource m_lightSource;
 
-		protected AbstractTorch(Material _material, int _radius, FColor _color) : base(_material) { }
+		protected AbstractTorch(Material _material, int _radius, FColor _color) : base(_material)
+		{
+			m_radius = _radius;
+			m_color = _color;
+		}
 
-        public override int TileIndex
+		public override int TileIndex
         {
             get
             {
@@ -36,25 +42,11 @@ namespace GameCore.Essences.Tools
 		{
 			if (IsOn)
 			{
-				if (_intelligent.IsAvatar)
-				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, this[EPadej.IMEN] + " потушен"));
-				}
-				else
-				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent[EPadej.IMEN] + " потушил " + this[EPadej.VIN]));
-				}
+				MessageManager.SendXMessage(_intelligent, new XMessage(EXMType.CREATURE_LIGHT_OFF_IT, _intelligent, this));
 			}
 			else
 			{
-				if (_intelligent.IsAvatar)
-				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, this[EPadej.IMEN] + " зажжен"));
-				}
-				else
-				{
-					MessageManager.SendMessage(_intelligent, new SimpleTextMessage(EMessageType.INFO, _intelligent[EPadej.IMEN] + " зажег " + this[EPadej.VIN]));
-				}
+				MessageManager.SendXMessage(_intelligent, new XMessage(EXMType.CREATURE_LIGHT_ON_IT, _intelligent, this));
 			}
 			IsOn = !IsOn;
 			return EActResults.DONE;
@@ -69,6 +61,6 @@ namespace GameCore.Essences.Tools
 
 		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
 
-        public override void Resolve(Creature _creature) { m_lightSource = new LightSource(10, new FColor(2f, 1f, 0.9f, 0.5f)); }
+		public override void Resolve(Creature _creature) { m_lightSource = new LightSource(m_radius, m_color); }
     }
 }

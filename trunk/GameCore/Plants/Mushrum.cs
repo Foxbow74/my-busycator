@@ -26,10 +26,5 @@ namespace GameCore.Plants
 
         public override EMaterial AllowedMaterials { get { return EMaterial.MUSHRUM; } }
     	public override void Resolve(Creature _creature) { }
-
-    	public override string GetFullName()
-        {
-            return Name;
-        }
     }
 }

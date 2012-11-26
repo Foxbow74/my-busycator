@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore;
 
-namespace RusLanguage
+namespace LanguagePack
 {
 	public enum EPadej
 	{

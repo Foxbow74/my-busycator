@@ -5,7 +5,7 @@ using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Essences.Potions;
 using GameCore.Messages;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -50,14 +50,7 @@ namespace GameCore.Acts.Items
 			intelligent.RemoveFromBackpack(item);
 			item.Drinked(_creature);
 
-			if (intelligent.IsAvatar)
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, item.Name + " выпит"));
-			}
-			else
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выпил " + item[EPadej.VIN]));
-			}
+			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DRINKS_IT, _creature, item));
 			return EActResults.DONE;
 		}
 	}

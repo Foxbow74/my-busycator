@@ -1,6 +1,5 @@
 using GameCore;
 using GameCore.Materials;
-using RusLanguage;
 
 namespace MagicSetting.Materials
 {

@@ -80,10 +80,6 @@
       <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
       <Name>GameCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
-      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
-      <Name>RusLanguage</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

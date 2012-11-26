@@ -1,7 +1,6 @@
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping.Layers;
-using RusLanguage;
 
 namespace GameCore.Essences.Things
 {

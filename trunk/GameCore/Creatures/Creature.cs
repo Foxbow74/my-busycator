@@ -75,11 +75,6 @@ namespace GameCore.Creatures
 			yield break;
 		}
 
-		public override string GetFullName()
-		{
-			return Name;
-		}
-
 		public EssenceDescriptor[] GetNotTakenAvailableItems(Point[] _intersect = null)
 		{
 			var points = Point.NearestDPoints.AsEnumerable();

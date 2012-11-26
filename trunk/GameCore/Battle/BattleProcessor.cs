@@ -6,7 +6,7 @@ using GameCore.Creatures.Dummies;
 using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Battle
 {
@@ -46,14 +46,6 @@ namespace GameCore.Battle
 		public EActResults Atack(Creature _creature, Creature _target)
 		{
 			var weapons = _creature.GetWeapons(_target).ToArray();
-			//if (_creature is Missile)
-			//{
-			//    var missile = (Missile) _creature;
-			//    MessageManager.SendMessage(this, missile[EPadej.IMEN] + " угодил прямо в " + _target[EPadej.ROD]);
-				
-			//    _creature.LiveCoords = null;
-			//    return EActResults.DONE;
-			//}
 			if(_creature is SplatterDropper)
 			{
 				_creature.LiveCoords = null;
@@ -84,17 +76,10 @@ namespace GameCore.Battle
 				{
 					if (isLuck)
 					{
-						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Чудом вы попали по " + _target[EPadej.DAT]));
-					}
-					else
-					{
-						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Вы попали по " + _target[EPadej.DAT]));
+						MessageManager.SendXMessage(this, new XMessage(EXMType.AVATAR_IS_LUCK, _creature));
 					}
 				}
-				else if(_target is Avatar)
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature[EPadej.IMEN] + " дотянулся до вас"));
-				}
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, _creature, _target, weapon));
 
 				var pv = targetBattleInfo.PV;
 				var damage = itemBattleInfo.Dmg.Calc();
@@ -115,26 +100,12 @@ namespace GameCore.Battle
 				}
 				else
 				{
-					if (_creature.IsAvatar)
-					{
-						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "но силы удара оказалось недостаточно"));
-					}
-					else
-					{
-						MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "но лишь оцарапал броню"));
-					}
+					MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, _creature, _target, weapon));
 				}
 			}
 			else
 			{
-				if (_creature.IsAvatar)
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "Удар не попал по " + _target[EPadej.DAT]));
-				}
-				else
-				{
-					MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature[EPadej.IMEN] + " промахнулся"));
-				}
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, _creature, _target, weapon));
 			}
 
 			if (_creature is Missile)

@@ -1,7 +1,6 @@
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Battle
 {
@@ -19,7 +18,7 @@ namespace GameCore.Battle
 
 		public override string Name
 		{
-			get { return "труп " + m_creature[EPadej.ROD]; }
+			get { return "труп " + m_creature.Name; }
 		}
 
 		public override EDirections Direction
