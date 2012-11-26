@@ -4,7 +4,7 @@ using GameCore.Essences.Ammo;
 
 namespace GameCore.Essences
 {
-	internal abstract class StackOfItems : Item
+	public abstract class StackOfItems : Item
 	{
 		protected StackOfItems(Material _material) : base(_material) { }
 

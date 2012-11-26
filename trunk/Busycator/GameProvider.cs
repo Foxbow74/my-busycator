@@ -6,6 +6,7 @@ using System.Threading;
 using GameCore;
 using GameCore.Misc;
 using GameUi;
+using MagickSetting;
 using OpenTK;
 using OpenTKUi;
 
@@ -78,6 +79,7 @@ namespace Busycator
 		[STAThread] private static void Main()
 		{
 			{
+				MagicSettingProvider.Init();
 				try
 				{
 					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})

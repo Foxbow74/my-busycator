@@ -81,12 +81,10 @@
     <Compile Include="Creatures\Dummies\SplatterDropper.cs" />
     <Compile Include="Creatures\ECreatureSize.cs" />
     <Compile Include="Creatures\EEquipmentPlaces.cs" />
+    <Compile Include="Creatures\ETactics.cs" />
     <Compile Include="Creatures\EThinkingResult.cs" />
     <Compile Include="Creatures\Intelligent.cs" />
     <Compile Include="Creatures\Dummies\Missile.cs" />
-    <Compile Include="Creatures\Monsters\Rat.cs" />
-    <Compile Include="Creatures\Monsters\Spider.cs" />
-    <Compile Include="Creatures\Monsters\Wolf.cs" />
     <Compile Include="EDirections.cs" />
     <Compile Include="EEffect.cs" />
     <Compile Include="Effect.cs" />
@@ -95,8 +93,9 @@
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="EMaterial.cs" />
     <Compile Include="Essences\Mechanisms\Button.cs" />
+    <Compile Include="Essences\Tools\ITool.cs" />
     <Compile Include="Essences\Weapons\IWeapon.cs" />
-    <Compile Include="Essences\Weapons\NaturalWeapon\NaturalWeapon.cs" />
+    <Compile Include="Essences\Weapons\AbstractNaturalWeapon.cs" />
     <Compile Include="IRemoteActivation.cs" />
     <Compile Include="Essences\Mechanisms\Lever.cs" />
     <Compile Include="Essences\Mechanisms\MagicPlate.cs" />
@@ -125,7 +124,7 @@
     <Compile Include="Mapping\Room.cs" />
     <Compile Include="Mapping\Layers\SurfaceObjects\Building.cs" />
     <Compile Include="Material.cs" />
-    <Compile Include="Materials\FlashMaterial.cs" />
+    <Compile Include="Materials\BodyMaterial.cs" />
     <Compile Include="Materials\MetalMaterial.cs" />
     <Compile Include="Materials\MineralMaterial.cs" />
     <Compile Include="Materials\MushrumMaterial.cs" />
@@ -142,12 +141,11 @@
     <Compile Include="Misc\Profiler.cs" />
     <Compile Include="Misc\Rct.cs" />
     <Compile Include="Misc\Vector2.cs" />
-    <Compile Include="Essences\Ammo\StackOfAmmo.cs" />
-    <Compile Include="Essences\Ammo\StackOfCrossBowBolts.cs" />
+    <Compile Include="Essences\StackOfAmmo.cs" />
     <Compile Include="Essences\BackPack.cs" />
     <Compile Include="Essences\EItemCategory.cs" />
-    <Compile Include="Essences\FakedCreature.cs" />
-    <Compile Include="Essences\FakedItem.cs" />
+    <Compile Include="Essences\Faked\FakedCreature.cs" />
+    <Compile Include="Essences\Faked\FakedItem.cs" />
     <Compile Include="Essences\Thing.cs" />
     <Compile Include="Essences\Things\Bed.cs" />
     <Compile Include="Essences\Things\Chair.cs" />
@@ -161,15 +159,15 @@
     <Compile Include="Essences\Things\StairUp.cs" />
     <Compile Include="Essences\Things\Table.cs" />
     <Compile Include="Essences\ICanbeOpened.cs" />
-    <Compile Include="Essences\IFaked.cs" />
+    <Compile Include="Essences\Faked\IFaked.cs" />
     <Compile Include="Essences\ISpecial.cs" />
     <Compile Include="Essences\ITileInfoProvider.cs" />
-    <Compile Include="Essences\Rings\Ring.cs" />
-    <Compile Include="Essences\Potions\Potion.cs" />
+    <Compile Include="Essences\Ring.cs" />
+    <Compile Include="Essences\Potion.cs" />
     <Compile Include="Essences\StackOfItems.cs" />
     <Compile Include="Essences\EssenceDescriptor.cs" />
     <Compile Include="Essences\ItemsCollection.cs" />
-    <Compile Include="Creatures\Monsters\AbstractMonster.cs" />
+    <Compile Include="Creatures\AbstractMonster.cs" />
     <Compile Include="Creatures\Creature.cs" />
     <Compile Include="KeyTranslator.cs" />
     <Compile Include="Mapping\MapBlock.cs" />
@@ -181,15 +179,12 @@
     <Compile Include="Essences\Things\Chest.cs" />
     <Compile Include="Essences\Things\Container.cs" />
     <Compile Include="Essences\Things\ClosedDoor.cs" />
-    <Compile Include="Essences\FakedThing.cs" />
+    <Compile Include="Essences\Faked\FakedThing.cs" />
     <Compile Include="Essences\Item.cs" />
     <Compile Include="Essences\EssenceHelper.cs" />
-    <Compile Include="Essences\Tools\Torch.cs" />
-    <Compile Include="Essences\Weapons\Axe.cs" />
-    <Compile Include="Essences\Weapons\CrossBow.cs" />
-    <Compile Include="Essences\Weapons\RangedWeapon.cs" />
-    <Compile Include="Essences\Weapons\Sword.cs" />
-    <Compile Include="Essences\Weapons\Weapon.cs" />
+    <Compile Include="Essences\Tools\AbstractTorch.cs" />
+    <Compile Include="Essences\Weapons\AbstractRangedWeapon.cs" />
+    <Compile Include="Essences\Weapons\AbstractWeapon.cs" />
     <Compile Include="Misc\Point.cs" />
     <Compile Include="PathFinding\PathFinder.cs" />
     <Compile Include="PathFinding\PathFinderNode.cs" />
@@ -231,15 +226,6 @@
       <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
       <Name>XTransport</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Documentations\development.txt" />
-    <Content Include="Documentations\Ideas.txt" />
-    <Content Include="Documentations\MainPoints.txt" />
-    <Content Include="Documentations\Plan.txt" />
-    <Content Include="Documentations\Story\Forge of Gods.txt" />
-    <Content Include="Documentations\Story\Zomby.txt" />
-    <Content Include="Documentations\Боевка.txt" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

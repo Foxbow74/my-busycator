@@ -1,4 +1,5 @@
 ﻿using GameCore.Creatures;
+using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
 using GameCore.Misc;
 

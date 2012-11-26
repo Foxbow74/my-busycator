@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Creatures;
+using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Materials;
@@ -82,6 +83,11 @@ namespace GameCore.Essences
 			return m_fakedItems.Values.ToArray().RandomItem(_rnd);
 		}
 
+		public static FakedItem GetRandomFakedItem<T>(Random _rnd) where T : Item
+		{
+			return m_fakedItems.Values.Where(_item=>_item.Is<T>()).ToArray().RandomItem(_rnd);
+		}
+
 		public static FakedCreature GetRandomFakedCreature<T>(Random _rnd) where T:Creature
 		{
 			return m_fakedCreatures.Values.Where(_creature => _creature.Is<T>()).ToArray().RandomItem(_rnd);
@@ -105,6 +111,11 @@ namespace GameCore.Essences
 		public static FakedCreature GetFirstFoundedCreature<T>() where T : Creature
 		{
 			return m_fakedCreatures.Values.First(_item => _item.Is<T>());
+		}
+
+		public static Material GetFirstFoundedMaterial<T>() where T : Material
+		{
+			return m_materials.First(_item => _item is T);
 		}
 
 		public static IEnumerable<FakedThing> GetAllThings<T>() where T : Thing
@@ -206,7 +217,7 @@ namespace GameCore.Essences
 		{
 			var thing = (Essence) Activator.CreateInstance(_type, new object[] {null});
 			FakedCreature value;
-			var key = new Tuple<ETileset, Material, int>(thing.Tileset, GetMaterial<FlashMaterial>(), thing.TileIndex);
+			var key = new Tuple<ETileset, Material, int>(thing.Tileset, GetMaterial<BodyMaterial>(), thing.TileIndex);
 			if (!m_fakedCreatures.TryGetValue(key, out value))
 			{
 				value = new FakedCreature(thing.Tileset);
@@ -283,7 +294,7 @@ namespace GameCore.Essences
 					var athing = (Essence) Activator.CreateInstance(type, new object[] {null});
 					var am = athing.AllowedMaterials;
 
-					if (am == EMaterial.FLASH)
+					if (am == EMaterial.BODY)
 					{
 						yield return athing;
 						continue;

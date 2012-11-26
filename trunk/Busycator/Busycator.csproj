@@ -69,6 +69,10 @@
       <Project>{1CC48A01-EBE0-4C46-890E-24465EEBBC7D}</Project>
       <Name>GameUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MagickSetting\MagicSetting.csproj">
+      <Project>{89A625BC-7450-4C83-BD35-6057A40255FF}</Project>
+      <Name>MagicSetting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenTKUi\OpenTKUi.csproj">
       <Project>{BCAD98EB-0C52-4186-B8B0-92AB47947796}</Project>
       <Name>OpenTKUi</Name>
@@ -124,6 +128,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Documentations\development.txt" />
+    <Content Include="Documentations\Ideas.txt" />
+    <Content Include="Documentations\MainPoints.txt" />
+    <Content Include="Documentations\Plan.txt" />
+    <Content Include="Documentations\Story\Forge of Gods.txt" />
+    <Content Include="Documentations\Story\Zomby.txt" />
+    <Content Include="Documentations\Боевка.txt" />
     <Content Include="icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

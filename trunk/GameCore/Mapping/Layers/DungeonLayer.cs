@@ -34,11 +34,11 @@ namespace GameCore.Mapping.Layers
 
 			if (_stair is StairUp)
 			{
-				block.AddEssence(new StairDown(_enterFromLayer, EssenceHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
+				block.AddEssence(new StairDown(_enterFromLayer, EssenceHelper.GetFirstFoundedMaterial<MineralMaterial>()), inBlockCoords);
 			}
 			else
 			{
-				block.AddEssence(new StairUp(_enterFromLayer, EssenceHelper.GetMaterial<StoneMaterial>()), inBlockCoords);
+				block.AddEssence(new StairUp(_enterFromLayer, EssenceHelper.GetFirstFoundedMaterial<MineralMaterial>()), inBlockCoords);
 			}
 		}
 
@@ -60,10 +60,10 @@ namespace GameCore.Mapping.Layers
 				block.Map[0, Constants.MAP_BLOCK_SIZE - 1 - i] = ETerrains.STONE_WALL;
 			}
 
-			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, EssenceHelper.GetMaterial<OakMaterial>()), new Point(1, 1));
-			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, EssenceHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1));
-			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, EssenceHelper.GetMaterial<OakMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, 1));
-			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, EssenceHelper.GetMaterial<OakMaterial>()), new Point(1, Constants.MAP_BLOCK_SIZE - 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(5f, 1f, 0, 0)), EDirections.DOWN, EssenceHelper.GetFirstFoundedMaterial<WoodMaterial>()), new Point(1, 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 1f, 0f)), EDirections.UP, EssenceHelper.GetFirstFoundedMaterial<WoodMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, Constants.MAP_BLOCK_SIZE - 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 0f, 0f, 1f)), EDirections.RIGHT, EssenceHelper.GetFirstFoundedMaterial<WoodMaterial>()), new Point(Constants.MAP_BLOCK_SIZE - 1, 1));
+			block.AddEssence(new OnWallTorch(new LightSource(8, new FColor(1f, 1f, 0f, 1f)), EDirections.LEFT, EssenceHelper.GetFirstFoundedMaterial<WoodMaterial>()), new Point(1, Constants.MAP_BLOCK_SIZE - 1));
 
 			{
 				var x = rnd.Next(Constants.MAP_BLOCK_SIZE);

@@ -44,20 +44,20 @@ namespace GameCore.Mapping.Layers
                 case 0:
                     World.TheWorld.Avatar.Layer.Ambient = FColor.Empty;
                     _block.Map[16,16]=ETerrains.GRAY_BRICK_WALL;
-					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 1f, 0f, 0f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(10, 17));
-					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 0f, 1f, 0f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(22, 22));
-					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 0f, 0f, 1f)), EssenceHelper.GetMaterial<CopperMaterial>()), new Point(22, 10));
+					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 1f, 0f, 0f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(10, 17));
+					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 0f, 1f, 0f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(22, 22));
+					_block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 0f, 0f, 1f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(22, 10));
                     break;
                 case 1:
                     _block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(2, 1));
 			        _block.AddEssence(EssenceHelper.GetFirstFoundedThing<ClosedDoor>(), new Point(1, 2));
 
-			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(4, 1));
-			        _block.AddEssence(EssenceHelper.GetFirstFoundedItem<Axe>(), new Point(3, 2));
+					_block.AddEssence(EssenceHelper.GetRandomFakedItem<AbstractWeapon>(World.Rnd), new Point(4, 1));
+					_block.AddEssence(EssenceHelper.GetRandomFakedItem<AbstractWeapon>(World.Rnd), new Point(3, 2));
                     break;
                 case 2:
-                    _block.AddEssence(new MagicPlate(EssenceHelper.GetMaterial<CopperMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(10, 10));
-					_block.AddEssence(new Button(EssenceHelper.GetMaterial<BrassMaterial>(), 0), new Point(1, 1));
+					_block.AddEssence(new MagicPlate(EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(10, 10));
+					_block.AddEssence(new Button(EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>(), 0), new Point(1, 1));
                     break;
             }
 		}

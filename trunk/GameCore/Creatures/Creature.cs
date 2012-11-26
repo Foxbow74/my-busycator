@@ -38,7 +38,7 @@ namespace GameCore.Creatures
 		#region .ctor
 
 		protected Creature(WorldLayer _layer, int _speed)
-			: base(EssenceHelper.GetMaterial<FlashMaterial>())
+			: base(EssenceHelper.GetMaterial<BodyMaterial>())
 		{
 			Speed = _speed;
 			Luck = 25;
@@ -103,7 +103,7 @@ namespace GameCore.Creatures
 
 		public override EMaterial AllowedMaterials
 		{
-			get { return EMaterial.FLASH; }
+			get { return EMaterial.BODY; }
 		}
 
 		/// <summary>
@@ -282,7 +282,7 @@ namespace GameCore.Creatures
 		#endregion
 
 		public abstract EFraction Fraction { get; }
-		internal abstract CreatureBattleInfo CreateBattleInfo();
+		public abstract CreatureBattleInfo CreateBattleInfo();
 
 		/// <summary>
 		/// Получить список оружия против определенного противника

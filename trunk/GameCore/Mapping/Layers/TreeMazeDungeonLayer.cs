@@ -87,7 +87,7 @@ namespace GameCore.Mapping.Layers
 							}
 							if (dir == EDirections.NONE) continue;
 							var fColor = new FColor(3f, (float) _rnd.NextDouble(), (float) _rnd.NextDouble(), (float) _rnd.NextDouble());
-							mapBlock.AddEssence(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, EssenceHelper.GetMaterial<OakMaterial>()), point);
+							mapBlock.AddEssence(new OnWallTorch(new LightSource(_rnd.Next(4) + 3, fColor), dir, EssenceHelper.GetFirstFoundedMaterial<WoodMaterial>()), point);
 							break;
 						}
 					}

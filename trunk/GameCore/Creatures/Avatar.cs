@@ -18,9 +18,9 @@ namespace GameCore.Creatures
 			Tactic = ETactics.NORMAL;
 			Luck = 6;
 			AddRole(new AvatarRole());
-			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<Sword>());
-			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<CrossBow>());
-			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(EssenceHelper.GetMaterial<BrassMaterial>()) {Count = 100});
+			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractWeapon>());
+			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
+			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()) { Count = 100 });
 			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<Torch>());
 		}
 
@@ -45,18 +45,11 @@ namespace GameCore.Creatures
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
-		
-		internal override CreatureBattleInfo CreateBattleInfo()
+
+		public override CreatureBattleInfo CreateBattleInfo()
 		{
 			return new IntelligentBattleInfo(this,3,1,new Dice(5,8,20));
 		}
 
-	}
-
-	public enum ETactics
-	{
-		NORMAL,
-		BERSERK,
-		COWARD,
 	}
 }

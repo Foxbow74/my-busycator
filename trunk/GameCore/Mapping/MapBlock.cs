@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Essences;
+using GameCore.Essences.Faked;
 using GameCore.Misc;
 
 namespace GameCore.Mapping
