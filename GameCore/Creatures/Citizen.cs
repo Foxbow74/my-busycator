@@ -93,7 +93,7 @@ namespace GameCore.Creatures
 			return EThinkingResult.NORMAL;
 		}
 
-		internal override CreatureBattleInfo CreateBattleInfo()
+		public override CreatureBattleInfo CreateBattleInfo()
 		{
 			return new IntelligentBattleInfo(this, 0, 0, new Dice(5, 8));
 		}

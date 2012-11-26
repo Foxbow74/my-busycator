@@ -75,7 +75,7 @@ namespace GameCore.Creatures.Dummies
 			yield return Ammo as IWeapon;
 		}
 
-		internal override CreatureBattleInfo CreateBattleInfo()
+		public override CreatureBattleInfo CreateBattleInfo()
 		{
 			var info = Ammo.CreateItemInfo(this);
 			return new CreatureBattleInfo(this, 0, 0, 0, info.ToHit, info.Dmg);

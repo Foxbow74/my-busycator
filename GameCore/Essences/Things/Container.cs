@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameCore.Creatures;
+using GameCore.Essences.Faked;
 
 namespace GameCore.Essences.Things
 {

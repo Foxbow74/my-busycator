@@ -24,7 +24,7 @@ namespace GameCore.Creatures.Dummies
 			get { return EFraction.DUMMY; }
 		}
 
-		internal override CreatureBattleInfo CreateBattleInfo()
+		public override CreatureBattleInfo CreateBattleInfo()
 		{
 			throw new NotImplementedException();
 		}

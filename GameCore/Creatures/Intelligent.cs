@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Essences;
+using GameCore.Essences.Faked;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;

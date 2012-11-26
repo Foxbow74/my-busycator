@@ -4,6 +4,7 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences;
+using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
 using GameCore.Mapping.Layers;
 using GameCore.Mapping.Layers.SurfaceObjects;

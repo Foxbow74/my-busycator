@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{89A625BC-7450-4C83-BD35-6057A40255FF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MagickSetting</RootNamespace>
+    <AssemblyName>MagickSetting</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Creatures\Monsters\Rat.cs" />
+    <Compile Include="Creatures\Monsters\Spider.cs" />
+    <Compile Include="Creatures\Monsters\Wolf.cs" />
+    <Compile Include="Items\Ammo\StackOfCrossBowBolts.cs" />
+    <Compile Include="Items\Tools\Torch.cs" />
+    <Compile Include="Items\Weapons\Axe.cs" />
+    <Compile Include="Items\Weapons\CrossBow.cs" />
+    <Compile Include="Items\Weapons\NaturalWeapon\Jaws.cs" />
+    <Compile Include="Items\Weapons\Sword.cs" />
+    <Compile Include="MagicSettingProvider.cs" />
+    <Compile Include="Materials\AshMaterial.cs" />
+    <Compile Include="Materials\BrassMaterial.cs" />
+    <Compile Include="Materials\BronzeMaterial.cs" />
+    <Compile Include="Materials\CopperMaterial.cs" />
+    <Compile Include="Materials\MapleMaterial.cs" />
+    <Compile Include="Materials\MushrumMaterial0.cs" />
+    <Compile Include="Materials\MushrumMaterial1.cs" />
+    <Compile Include="Materials\MushrumMaterial2.cs" />
+    <Compile Include="Materials\MushrumMaterial3.cs" />
+    <Compile Include="Materials\MushrumMaterial4.cs" />
+    <Compile Include="Materials\MushrumMaterial5.cs" />
+    <Compile Include="Materials\OakMaterial.cs" />
+    <Compile Include="Materials\PineMaterial.cs" />
+    <Compile Include="Materials\ShrubMaterial0.cs" />
+    <Compile Include="Materials\ShrubMaterial1.cs" />
+    <Compile Include="Materials\ShrubMaterial2.cs" />
+    <Compile Include="Materials\ShrubMaterial3.cs" />
+    <Compile Include="Materials\ShrubMaterial4.cs" />
+    <Compile Include="Materials\ShrubMaterial5.cs" />
+    <Compile Include="Materials\SpruceMaterial.cs" />
+    <Compile Include="Materials\StoneMaterial.cs" />
+    <Compile Include="Materials\WalnutMaterial.cs" />
+    <Compile Include="Materials\WillowMaterial.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GameCore\GameCore.csproj">
+      <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
+      <Name>GameCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
+      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
+      <Name>RusLanguage</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
