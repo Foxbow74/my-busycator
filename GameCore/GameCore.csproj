@@ -92,6 +92,7 @@
     <Compile Include="ELevel.cs" />
     <Compile Include="EMapBlockTypes.cs" />
     <Compile Include="EMaterial.cs" />
+    <Compile Include="ESex.cs" />
     <Compile Include="Essences\Mechanisms\Button.cs" />
     <Compile Include="Essences\Tools\ITool.cs" />
     <Compile Include="Essences\Weapons\IWeapon.cs" />
@@ -212,12 +213,9 @@
     <Compile Include="Storeable\XTileSet.cs" />
     <Compile Include="TileSetInfoProvider.cs" />
     <Compile Include="World.cs" />
+    <Compile Include="XLanguage\XMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
-      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
-      <Name>RusLanguage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
       <Name>UnsafeUtils</Name>

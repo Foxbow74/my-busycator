@@ -1,4 +1,6 @@
-﻿namespace GameCore.Messages
+﻿using GameCore.XLanguage;
+
+namespace GameCore.Messages
 {
 	public static class MessageManager
 	{
@@ -26,6 +28,13 @@
 			var mess = NewMessage;
 			if (mess != null) mess(_sender, new SimpleTextMessage(EMessageType.INFO, _message));
 		}
+
+		public static void SendXMessage(object _sender, XMessage _message)
+		{
+			var mess = NewMessage;
+			if (mess != null) mess(_sender, new XLangMessage(_message));
+		}
+
 
 		public static void SendMessage(object _sender, WorldMessage _message)
 		{

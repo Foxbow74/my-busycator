@@ -7,7 +7,6 @@ using GameCore.Essences.Things;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 using GameCore.Plants;
-using RusLanguage;
 
 namespace GameCore.Mapping.Layers
 {

@@ -1,6 +1,4 @@
-﻿using RusLanguage;
-
-namespace GameCore
+﻿namespace GameCore
 {
 	public abstract class Material
 	{
@@ -21,8 +19,6 @@ namespace GameCore
 		/// чем дальше от стартовой точки, тем чаще встречаются редкие и реже частые
 		/// </summary>
 		public virtual float Frequency { get { return 100; } }
-
-		public string this[EPadej _padej] { get { return Sklonenia.ToPadej(_padej, Name, false, Sex); } }
 
 		public override string ToString()
 		{

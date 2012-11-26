@@ -82,10 +82,6 @@
       <Project>{7ED7D31C-AD6B-4DF5-8756-4CA130D451C2}</Project>
       <Name>GameCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\RusLanguage\RusLanguage.csproj">
-      <Project>{CAAC76E7-0DC3-4D27-ACC5-2FEBEC5CCB9D}</Project>
-      <Name>RusLanguage</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
       <Name>UnsafeUtils</Name>

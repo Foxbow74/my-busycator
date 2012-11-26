@@ -1,10 +1,9 @@
 ﻿using GameCore.Creatures;
 using GameCore.Misc;
-using RusLanguage;
 
 namespace GameCore.Essences
 {
-	public abstract class Essence : ITileInfoProvider, INameProvider
+	public abstract class Essence : ITileInfoProvider
 	{
 		protected Essence(Material _material) { Material = _material; }
 
@@ -21,10 +20,6 @@ namespace GameCore.Essences
 		public abstract EMaterial AllowedMaterials { get; }
 
 		public virtual Material Material { get; private set; }
-
-		public string this[EPadej _padej] { get { return this[_padej, World.TheWorld.Avatar]; } }
-
-		public string this[EPadej _padej, Creature _creature] { get { return Sklonenia.ToPadej(_padej, this.GetName(_creature), this is Creature, Sex); } }
 
 		#region INameProvider Members
 
@@ -84,7 +79,5 @@ namespace GameCore.Essences
 		public override int GetHashCode() { return CalcHashCode(); }
 
 		protected virtual int CalcHashCode() { return GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode()); }
-		
-		public virtual string GetFullName() { return Name + " из " + Material[EPadej.ROD]; }
 	}
 }

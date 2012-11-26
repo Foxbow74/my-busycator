@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Mapping.Layers.SurfaceObjects;
-using RusLanguage;
 
 namespace GameCore.CreatureRoles
 {
@@ -10,8 +9,6 @@ namespace GameCore.CreatureRoles
 	{
 		public abstract string Name { get; }
 		public abstract IEnumerable<FColor> Colors { get; }
-
-		public virtual string this[ESex _sex] { get { return Sklonenia.ToSex(Name, _sex); } }
 	}
 
 	public abstract class AbstractCitizenRole : AbstractCreatureRole
@@ -19,15 +16,6 @@ namespace GameCore.CreatureRoles
 		public Building Building { get; private set; }
 
 		public abstract EBuilding BuildingType { get; }
-
-		public override string this[ESex _sex]
-		{
-			get
-			{
-				var result = base[_sex] + " " + Building[EPadej.ROD, false];
-				return result;
-			}
-		}
 
 		public void SetBuilding(Intelligent _intelligent, Building _building)
 		{

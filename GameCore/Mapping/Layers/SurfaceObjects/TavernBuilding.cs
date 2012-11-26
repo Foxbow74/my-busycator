@@ -1,6 +1,4 @@
-﻿using RusLanguage;
-
-namespace GameCore.Mapping.Layers.SurfaceObjects
+﻿namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	internal class TavernBuilding : Building
 	{

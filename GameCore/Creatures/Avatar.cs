@@ -6,7 +6,6 @@ using GameCore.Essences.Ammo;
 using GameCore.Essences.Tools;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
-using GameCore.Materials;
 
 namespace GameCore.Creatures
 {
@@ -20,8 +19,8 @@ namespace GameCore.Creatures
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractWeapon>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
-			Equip(EEquipmentPlaces.MISSILES, new StackOfCrossBowBolts(EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()) { Count = 100 });
-			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<Torch>());
+			Equip(EEquipmentPlaces.MISSILES, EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd));
+			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<AbstractTorch>());
 		}
 
         public override ETileset Tileset { get { return ETileset.AVATAR; } }

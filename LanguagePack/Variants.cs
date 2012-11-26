@@ -1,10 +1,14 @@
 ﻿using System;
+using GameCore;
+using GameCore.Creatures;
 
-namespace RusLanguage
+namespace LanguagePack
 {
 	public static class Variants
 	{
-		public static string ThereIsWas(ESex _sex, Random _rnd) 
+		private static readonly Random m_rnd = new Random();
+
+		public static string ThereIsWas(ESex _sex) 
 		{
 			switch (_sex)
 			{
@@ -19,7 +23,7 @@ namespace RusLanguage
 			}
 		}
 
-		public static string HaveGotDamage(INameProvider _nameProvider, int _damage)
+		public static string HaveGotDamage(Creature _nameProvider, int _damage)
 		{
 			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
@@ -41,34 +45,39 @@ namespace RusLanguage
 			}
 		}
 
-		public static string Died(INameProvider _nameProvider)
+		public static string Died(Creature _nameProvider)
 		{
 			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
 			{
 				case ESex.MALE:
 					return name + " мертв";
-					break;
 				case ESex.FEMALE:
 					return name + " издохла";
-					break;
 				case ESex.IT:
 					return name + " скончалось";
-					break;
 				case ESex.PLURAL:
 					return name + " отдали концы";
-					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
 		}
-	}
 
-	public interface INameProvider
-	{
-		ESex Sex { get; }
-		string Name { get; }
-		bool IsCreature { get; }
-		bool IsUnique { get; }
+		public static string ByLuck()
+		{
+			switch (m_rnd.Next(4))
+			{
+				case 0:
+					return "чудом";
+				case 1:
+					return "случайно";
+				case 2:
+					return "подскользнувшись";
+				case 3:
+					return "закашлявшись";
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
 	}
 }

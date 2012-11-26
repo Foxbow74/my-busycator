@@ -104,7 +104,7 @@ namespace GameCore.Creatures
 			for (var index = 1; index < Roles.ToArray().Length; index++)
 			{
 				var role = Roles.ToArray()[index];
-				result += "/" + role[Sex];
+				result += "/" + role.Name;
 			}
 			return result;
 		}

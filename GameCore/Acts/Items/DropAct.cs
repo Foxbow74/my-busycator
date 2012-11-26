@@ -4,7 +4,7 @@ using System.Linq;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Messages;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -74,15 +74,8 @@ namespace GameCore.Acts.Items
 				intelligent.RemoveFromBackpack(item);
 				_creature[0, 0].AddItem(item);
 			}
-			var suffix = Count > 1 ? (", " + Count + " штук.") : ".";
-			if (intelligent.IsAvatar)
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, item[EPadej.IMEN] + " выброшен" + suffix));
-			}
-			else
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, _creature + " выбросил " + item[EPadej.VIN] + suffix));
-			}
+
+			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DROPS_IT, _creature, item, Count));
 			return EActResults.DONE;
 		}
 	}

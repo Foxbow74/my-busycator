@@ -1,6 +1,5 @@
 ﻿using GameCore.Battle;
 using GameCore.Creatures;
-using RusLanguage;
 
 namespace GameCore.Essences.Potions
 {

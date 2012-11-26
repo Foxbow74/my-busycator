@@ -1,5 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using RusLanguage;
+﻿using GameCore;
+using LanguagePack;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
 {

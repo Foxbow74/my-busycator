@@ -5,7 +5,6 @@ using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Essences;
-using RusLanguage;
 
 namespace GameUi.UIBlocks
 {
@@ -109,7 +108,7 @@ namespace GameUi.UIBlocks
 				}
 				else
 				{
-					thereIsWas = Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
+					thereIsWas = "там был ";// Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
 				}
 				list.Add(liveCell.TerrainAttribute.DisplayName);
 				m_messages.DrawLine(thereIsWas + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);

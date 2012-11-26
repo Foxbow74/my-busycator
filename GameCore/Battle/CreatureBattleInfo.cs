@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Weapons;
 using GameCore.Messages;
-using RusLanguage;
+using GameCore.XLanguage;
 
 namespace GameCore.Battle
 {
@@ -51,20 +50,12 @@ namespace GameCore.Battle
 		{
 			var fact = Math.Min(_damage, HP);
 
-			Debug.WriteLine(m_creature[EPadej.IMEN] + " hp=" + HP + " dmg=" + _damage);
 			if (!(m_creature is Avatar))
 			{
 				HP -= _damage;
 			}
 
-			if (m_creature.IsAvatar)
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "получено " + fact.Пунктов() + " урона"));
-			}
-			else
-			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, Variants.HaveGotDamage(m_creature, fact)));
-			}
+			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_DAMAGE, m_creature, fact, _weapon));
 
 			fact -= m_creature[0, 0].AddSplatter(fact, FColor.Crimson);
 			if (fact > 0)
@@ -78,7 +69,7 @@ namespace GameCore.Battle
 
 			if (HP <= 0)
 			{
-				MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, Variants.Died(m_creature)));
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DIE, m_creature));
 				m_creature[0, 0].AddItem(new Corpse(m_creature));
 				m_creature.LiveCoords = null;
 			}

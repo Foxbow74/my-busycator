@@ -1,5 +1,4 @@
 ﻿using GameCore.Creatures;
-using RusLanguage;
 
 namespace GameCore.Essences.Things
 {
