@@ -4,9 +4,7 @@ using GameCore;
 using GameCore.Misc;
 using GameUi;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Input;
-using UnsafeUtils;
 
 namespace OpenTKUi
 {

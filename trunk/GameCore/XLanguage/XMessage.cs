@@ -1,5 +1,5 @@
-﻿using GameCore.Creatures;
-using GameCore.Essences;
+﻿using System.Linq;
+using GameCore.Creatures;
 
 namespace GameCore.XLanguage
 {
@@ -15,6 +15,11 @@ namespace GameCore.XLanguage
 			Actor = _actor;
 			Params = _params;
 		}
+
+		public T First<T>()
+		{
+			return Params.OfType<T>().First();
+		}
 	}
 
 	public enum EXMType
@@ -27,12 +32,13 @@ namespace GameCore.XLanguage
 		CREATURE_DRINKS_IT,
 		CREATURE_LIGHT_OFF_IT,
 		CREATURE_LIGHT_ON_IT,
-		CREATURE_DIE,
+		CREATURE_KILLED,
 		CREATURE_TAKES_DAMAGE,
 		AVATAR_IS_LUCK,
 		CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK,
 		CREATURES_ATTACK_DAMAGE_IS_ZERO,
-		CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK
+		CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK,
+		CREATURES_ATTACK_DAMAGE_ADSORBED
 	}
 
 	public class XName

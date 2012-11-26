@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Acts.Combat;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Essences;
@@ -84,8 +85,11 @@ namespace GameCore.Acts.Movement
 						bool isMoveToAct;
 						if(!TryGetParameter(out isMoveToAct) || !isMoveToAct)
 						{
-							//Если это не перемещение на дальнее расстояние
-							return World.TheWorld.BattleProcessor.Atack(_creature, creature);
+							_creature.AddActToPool(new AtackAct(), delta);
+							return EActResults.ACT_REPLACED;
+
+							////Если это не перемещение на дальнее расстояние
+							//return World.TheWorld.BattleProcessor.Atack(_creature, creature);
 						}
 						mess = creature.GetName(_creature);
 					}

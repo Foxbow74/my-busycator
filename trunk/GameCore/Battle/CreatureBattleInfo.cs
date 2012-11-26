@@ -46,7 +46,7 @@ namespace GameCore.Battle
 
 		public Dictionary<Creature, int> Agro { get; private set; }
 
-		public void ApplyDamage(int _damage, IWeapon _weapon)
+		public void ApplyDamage(int _damage, IWeapon _weapon, Creature _source)
 		{
 			var fact = Math.Min(_damage, HP);
 
@@ -55,7 +55,7 @@ namespace GameCore.Battle
 				HP -= _damage;
 			}
 
-			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_DAMAGE, m_creature, fact, _weapon));
+			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_DAMAGE, _source, m_creature, fact, _weapon));
 
 			fact -= m_creature[0, 0].AddSplatter(fact, FColor.Crimson);
 			if (fact > 0)
@@ -69,7 +69,7 @@ namespace GameCore.Battle
 
 			if (HP <= 0)
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DIE, m_creature));
+				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_KILLED, _source, m_creature));
 				m_creature[0, 0].AddItem(new Corpse(m_creature));
 				m_creature.LiveCoords = null;
 			}

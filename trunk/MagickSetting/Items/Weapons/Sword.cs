@@ -5,7 +5,7 @@ using GameCore.Essences.Weapons;
 
 namespace MagickSetting.Items.Weapons
 {
-	public class Sword : AbstractWeapon
+	public class Sword : AbstractMeleeWeapon
 	{
 		public Sword(Material _material) : base(_material) { }
 

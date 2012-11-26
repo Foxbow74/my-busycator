@@ -70,7 +70,10 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public override string Name { get { return IntelligentName + ", " + Roles.First().Name; } }
+		public override string Name
+		{
+			get { return IntelligentName; }
+		}
 
 		public abstract string IntelligentName { get; }
 

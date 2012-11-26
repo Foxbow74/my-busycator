@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EPadej.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sklonenia.cs" />
     <Compile Include="Variants.cs" />
+    <Compile Include="XMessageCompiler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GameCore\GameCore.csproj">

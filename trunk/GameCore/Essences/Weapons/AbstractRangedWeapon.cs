@@ -14,4 +14,17 @@
 
 		public override EItemCategory Category { get { return EItemCategory.MISSILE_WEAPON; } }
 	}
+
+	public abstract class AbstractMeleeWeapon : AbstractWeapon
+	{
+		protected AbstractMeleeWeapon(Material _material) : base(_material) { }
+
+		public override ETileset Tileset
+		{
+			get
+			{
+				return ETileset.WEAPONS;
+			}
+		}
+	}
 }
