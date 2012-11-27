@@ -15,7 +15,6 @@ namespace GameCore.Creatures.Dummies
 		public Splatter(FColor _color, int _tileIndex)
 		{
 			m_color = _color;
-			Debug.WriteLine(_tileIndex);
 			m_tileIndex = _tileIndex;
 			m_direction = World.Rnd.GetRandomDirection();
 		}

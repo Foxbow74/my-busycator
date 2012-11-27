@@ -150,7 +150,6 @@ namespace GameCore.PathFinding
 							m_newLocationX = (ushort) (m_locationX + m_direction[i, 0]);
 							m_newLocationY = (ushort) (m_locationY + m_direction[i, 1]);
 							m_newLocation = (m_newLocationY << m_gridYLog2) + m_newLocationX;
-							//Debug.WriteLine(m_newLocation);
 							if (m_newLocationX >= m_gridX || m_newLocationY >= m_gridY)
 								continue;
 

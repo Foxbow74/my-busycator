@@ -8,8 +8,6 @@ namespace GameUi.UIBlocks
 {
 	internal class MapUiBlock : UIBlock
 	{
-		private Point m_dPoint;
-
 		public MapUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Black)
 		{
@@ -22,7 +20,7 @@ namespace GameUi.UIBlocks
 			base.Resize(_newRct);
 			World.TheWorld.LiveMap.SetViewPortSize(new Point(ContentRct.Width, ContentRct.Height));
 			World.TheWorld.LiveMap.Reset();
-			m_dPoint = World.TheWorld.LiveMap.GetData();
+			World.TheWorld.UpdateDPoint();
 		}
 
 		public override void Dispose()
@@ -36,7 +34,7 @@ namespace GameUi.UIBlocks
 			switch (_message.Type)
 			{
 				case WorldMessage.EType.TURN:
-					m_dPoint = World.TheWorld.LiveMap.GetData();
+					World.TheWorld.UpdateDPoint();
 					Redraw();
 					break;
 				case WorldMessage.EType.JUST_REDRAW:
@@ -63,7 +61,7 @@ namespace GameUi.UIBlocks
 				{
 					var xy = new Point(x, y);
 
-					var liveCellCoords = LiveMap.WrapCellCoords(xy + m_dPoint);
+					var liveCellCoords = LiveMap.WrapCellCoords(xy + World.TheWorld.DPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
 					var screenPoint = xy + ContentRct.LeftTop;
 					var visibility = liveCell.Visibility;

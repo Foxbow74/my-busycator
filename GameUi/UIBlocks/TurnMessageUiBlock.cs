@@ -45,7 +45,6 @@ namespace GameUi.UIBlocks
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
-			Debug.WriteLine(_message.ToString());
 			m_turnMessages.Add(_message);
 		}
 

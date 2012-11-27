@@ -152,7 +152,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					{
 						throw new ApplicationException();
 					}
-					Debug.WriteLine(citizen);
 					m_already.Add(citizen);
 
 					Tuple<ETileset, FColor> tuple = null;

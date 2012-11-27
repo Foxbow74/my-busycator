@@ -357,6 +357,25 @@ namespace LanguagePack
 			return string.Format("{0} {1}", _cnt, result);
 		}
 
+		public static string Атак(this int _cnt)
+		{
+			var last = _cnt % 10;
+			string result;
+			if (last == 1)
+			{
+				result = "атака";
+			}
+			else if (last > 1 && last < 5)
+			{
+				result = "атаки";
+			}
+			else
+			{
+				result = "атак";
+			}
+			return string.Format("{0} {1}", _cnt, result);
+		}
+
 		public static string ToSex(string _sentence, ESex _sex)
 		{
 			if(_sex==ESex.MALE) return _sentence;

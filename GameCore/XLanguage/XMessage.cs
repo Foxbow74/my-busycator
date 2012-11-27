@@ -20,6 +20,11 @@ namespace GameCore.XLanguage
 		{
 			return Params.OfType<T>().First();
 		}
+
+		public override string ToString()
+		{
+			return string.Format("{0} {1} [{2}]", Actor.Name, Type, string.Join(", ", Params.Select(e => e.ToString())));
+		}
 	}
 
 	public enum EXMType
