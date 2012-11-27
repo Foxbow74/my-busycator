@@ -44,12 +44,20 @@ namespace GameUi.UIBlocks
 			base.Dispose();
 		}
 
+		public bool NeedWait { get { return m_messages.NeedWait; } }
+
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{
 			var tuple = new Tuple<ConsoleKey, EKeyModifiers>(_key, _modifiers);
 			if (new QuitAct().ConsoleKeys.Contains(tuple))
 			{
 				MessageManager.SendMessage(this, new OpenUIBlockMessage(new ConfirmQuitBlock()));
+				return;
+			}
+
+			if(m_messages.NeedWait)
+			{
+				m_messages.KeysPressed(_key, _modifiers);
 				return;
 			}
 

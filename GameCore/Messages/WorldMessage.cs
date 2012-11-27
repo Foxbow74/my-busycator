@@ -10,7 +10,8 @@
 			AVATAR_BEGINS_TURN,
 			AVATAR_MOVE,
 			AVATAR_CHANGE_LAYER,
-			JUST_REDRAW
+			JUST_REDRAW,
+			MICRO_TURN
 		}
 
 		#endregion
@@ -18,6 +19,7 @@
 		static WorldMessage()
 		{
 			Turn = new WorldMessage(EType.TURN);
+			MicroTurn = new WorldMessage(EType.MICRO_TURN);
 			JustRedraw = new WorldMessage(EType.JUST_REDRAW);
 			AvatarBeginsTurn = new WorldMessage(EType.AVATAR_BEGINS_TURN);
 			AvatarMove = new WorldMessage(EType.AVATAR_MOVE);
@@ -27,6 +29,7 @@
 		public WorldMessage(EType _type) { Type = _type; }
 
 		public static WorldMessage Turn { get; private set; }
+		public static WorldMessage MicroTurn { get; private set; }
 		public static WorldMessage JustRedraw { get; private set; }
 		public static WorldMessage AvatarBeginsTurn { get; private set; }
 		public static WorldMessage AvatarMove { get; private set; }

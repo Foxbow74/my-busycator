@@ -48,7 +48,7 @@ namespace GameCore.Acts.Movement
 
 			if (cell.GetIsPassableBy(_creature) > 0)
 			{
-				var mess = cell.TerrainAttribute.DisplayName;
+				var mess = "";// cell.TerrainAttribute.DisplayName;
 
 				if (_creature.IsAvatar)
 				{

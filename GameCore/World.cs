@@ -83,11 +83,11 @@ namespace GameCore
 			AvatarBlockId = Surface.City.CityBlockIds[0];// -new Point(Surface.WORLD_MAP_SIZE / 2, Surface.WORLD_MAP_SIZE / 2);
 			LiveMap.Actualize();
 			Avatar.LiveCoords = Point.Zero;
-			
 		}
 
 		public void GameUpdated()
 		{
+			var anyHappens = false;
 			var done = new List<Creature>();
 			while (true)
 			{
@@ -96,7 +96,8 @@ namespace GameCore
 				#region не давать ходить дважды до перерисовки);
 
 				if (done.Contains(creature)) break;
-				done.Add(creature);
+				
+				if(creature.Speed>0)done.Add(creature);
 
 				#endregion
 
@@ -126,6 +127,8 @@ namespace GameCore
 					break;
 				}
 
+				anyHappens = true;
+
 				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 
 				EActResults actResult;
@@ -152,8 +155,12 @@ namespace GameCore
 							throw new ArgumentOutOfRangeException();
 					}
 				} while (actResult == EActResults.ACT_REPLACED);
+				MessageManager.SendMessage(this, WorldMessage.MicroTurn);
 			}
-			MessageManager.SendMessage(this, WorldMessage.Turn);
+			//if(anyHappens)
+			{
+				MessageManager.SendMessage(this, WorldMessage.Turn);
+			}
 		}
 
 		public void UpdateDPoint() { DPoint = World.TheWorld.LiveMap.GetData(); }

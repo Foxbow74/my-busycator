@@ -8,7 +8,7 @@ namespace GameCore.Acts.Combat
 {
 	internal class AtackAct : Act
 	{
-		protected override int TakeTicksOnSingleAction { get { return 50; } }
+		protected override int TakeTicksOnSingleAction { get { return 80; } }
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.A, EKeyModifiers.NONE); } }
 

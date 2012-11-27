@@ -200,7 +200,10 @@ namespace GameUi
 
 			if (m_uiBlocks.Peek() == m_mainUiBlock)
 			{
-				World.TheWorld.GameUpdated();
+				if (!m_mainUiBlock.NeedWait)
+				{
+					World.TheWorld.GameUpdated();
+				}
 			}
 		}
 
