@@ -156,6 +156,10 @@ namespace GameCore
 			MessageManager.SendMessage(this, WorldMessage.Turn);
 		}
 
+		public void UpdateDPoint() { DPoint = World.TheWorld.LiveMap.GetData(); }
+
+		public Point DPoint { get; private set; }
+
 		public static void LetItBeeee()
 		{
 			TheWorld = new World();

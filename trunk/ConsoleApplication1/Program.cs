@@ -24,144 +24,180 @@ namespace ConsoleApplication1
 		}
 	}
 
-	//class Client:AbstractXClient<EKind>
-	//{
-	//    public override Guid UserUid
-	//    {
-	//        get { return Guid.Empty; }
-	//    }
+	class Client : AbstractXClient<EKind>
+	{
+		public override Guid UserUid
+		{
+			get { return Guid.Empty; }
+		}
 
-	//    protected override IEnumerable<KeyValuePair<EKind, EKind>> GetAbstractRootKindMap()
-	//    {
-	//        yield break;
-	//    }
+		protected override IEnumerable<KeyValuePair<EKind, EKind>> GetAbstractRootKindMap()
+		{
 
-	//    protected override int KindToInt(EKind _kind)
-	//    {
-	//        return (int)_kind;
-	//    }
+			yield return new KeyValuePair<EKind, EKind>(EKind.A, EKind.AB);
+			yield return new KeyValuePair<EKind, EKind>(EKind.B, EKind.AB);
+		}
 
-	//    protected override EKind IntToKind(int _kind)
-	//    {
-	//        return (EKind)_kind;
-	//    }
+		protected override int KindToInt(EKind _kind)
+		{
+			return (int)_kind;
+		}
 
-	//    protected override void ObjectReleased(Guid _uid, EKind _kind)
-	//    {
-			
-	//    }
-	//}
+		protected override EKind IntToKind(int _kind)
+		{
+			return (EKind)_kind;
+		}
 
-	//class Server : AbstractXServer
-	//{
-	//    protected override IStorage CreateStorage()
-	//    {
-	//        return new SQLiteStorage("db");
-	//    }
-	//}
+		protected override void ObjectReleased(Guid _uid, EKind _kind)
+		{
 
-	//abstract class XObject:ClientXObject<EKind>
-	//{
-	//}
+		}
+	}
 
-	//class A : XObject
-	//{
-	//    [X("Int")]
-	//    private IXValue<int> m_int;
+	class Server : AbstractXServer
+	{
+		protected override IStorage CreateStorage()
+		{
+			return new SQLiteStorage("db");
+		}
+	}
 
-	//    [X("Int2")]
-	//    private IXValue<int> m_int2;
+	abstract class XObject : ClientXObject<EKind>
+	{
+	}
 
-	//    public override EKind Kind
-	//    {
-	//        get { return EKind.A; }
-	//    }
+	class A : XObject
+	{
+	    [X("Int")]
+	    private IXValue<int> m_int;
 
-	//    public int V
-	//    {
-	//        get { return m_int.Value; }
-	//        set { m_int.Value = value; }
-	//    }
+	    [X("Int2")]
+	    private IXValue<int> m_int2;
+
+	    public override EKind Kind
+	    {
+	        get { return EKind.A; }
+	    }
+
+	    public int V
+	    {
+	        get { return m_int.Value; }
+	        set { m_int.Value = value; }
+	    }
+
+		public int V2
+		{
+			get { return m_int2.Value; }
+			set { m_int2.Value = value; }
+		}
+	}
 
 
-	//    public int V2
-	//    {
-	//        get { return m_int2.Value; }
-	//        set { m_int2.Value = value; }
-	//    }
-	//}
+	class ACopy : XObject
+	{
+		[X("Int")]
+		private IXValue<int> m_int;
 
-	//class B : XObject
-	//{
-	//    [X("Str")]
-	//    private IXValue<string> m_str;
+		[X("SS")]
+		private IXValue<double> m_ss;
 
-	//    public override EKind Kind
-	//    {
-	//        get { return EKind.B; }
-	//    }
+		public override EKind Kind
+		{
+			get { return EKind.A; }
+		}
 
-	//    public string V
-	//    {
-	//        get { return m_str.Value; }
-	//        set { m_str.Value = value; }
-	//    }
-	//}
+		public int V
+		{
+			get { return m_int.Value; }
+			set { m_int.Value = value; }
+		}
 
-	//class C : XObject
-	//{
-	//    [X("Dbl")]
-	//    private IXValue<double> m_double;
+		public double SS
+		{
+			get { return m_ss.Value; }
+			set { m_ss.Value = value; }
+		}
+	}
 
-	//    public override EKind Kind
-	//    {
-	//        get { return EKind.C; }
-	//    }
+	class B : XObject
+	{
+		[X("Str")]
+		private IXValue<string> m_str;
 
-	//    public double V
-	//    {
-	//        get { return m_double.Value; }
-	//        set { m_double.Value = value; }
-	//    }
-	//}
+		public override EKind Kind
+		{
+			get { return EKind.B; }
+		}
 
-	//class Root:XObject
-	//{
-	//    public override EKind Kind
-	//    {
-	//        get { return EKind.ROOT;}
-	//    }
+		public string V
+		{
+			get { return m_str.Value; }
+			set { m_str.Value = value; }
+		}
+	}
 
-	//    public ICollection<A> As
-	//    {
-	//        get { return m_as; }
-	//    }
+	class C : XObject
+	{
+		[X("Dbl")]
+		private IXValue<double> m_double;
 
-	//    public ICollection<B> Bs
-	//    {
-	//        get { return m_bs; }
-	//    }
+		[X((int) EKind.A)] private IXValue<A> m_a;
 
-	//    public ICollection<C> Cs
-	//    {
-	//        get { return m_cs; }
-	//    }
+		public override EKind Kind
+		{
+			get { return EKind.C; }
+		}
 
-	//    [X((int)EKind.A)]
-	//    private ICollection<A> m_as;
+		public double V
+		{
+			get { return m_double.Value; }
+			set { m_double.Value = value; }
+		}
+	}
 
-	//    [X((int)EKind.B)]
-	//    private ICollection<B> m_bs;
+	class Root : XObject
+	{
+		public override EKind Kind
+		{
+			get { return EKind.ROOT; }
+		}
 
-	//    [X((int)EKind.C)]
-	//    private ICollection<C> m_cs;
-	//}
 
-	//enum EKind
-	//{
-	//    A,
-	//    B,
-	//    C,
-	//    ROOT,
-	//}
+		public ICollection<A> As
+		{
+			get { return m_as; }
+		}
+
+		public ICollection<B> Bs
+		{
+			get { return m_bs; }
+		}
+
+		public ICollection<C> Cs
+		{
+			get { return m_cs; }
+		}
+
+		[X((int)EKind.A)]
+		private ICollection<A> m_as;
+
+
+		[X((int)EKind.AB)]
+		private ICollection<XObject> m_abs;
+
+		[X((int)EKind.B)]
+		private ICollection<B> m_bs;
+
+		[X((int)EKind.C)]
+		private ICollection<C> m_cs;
+	}
+
+	enum EKind
+	{
+		A,
+		B,
+		C,
+		AB,
+		ROOT,
+	}
 }

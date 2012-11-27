@@ -19,7 +19,10 @@ namespace GameCore.Creatures
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractMeleeWeapon>());
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
-			Equip(EEquipmentPlaces.MISSILES, EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd));
+
+			var ammo = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd).ResolveFake(this) as StackOfAmmo;
+			ammo.Count = 100;
+			Equip(EEquipmentPlaces.MISSILES, ammo);
 			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<AbstractTorch>());
 		}
 
@@ -27,7 +30,7 @@ namespace GameCore.Creatures
 
         public override int TileIndex { get { return 2; } }
 
-		public override string IntelligentName { get { return "Дима"; } }
+		public override string IntelligentName { get { return "Герой"; } }
 
 		public override EFraction Fraction
 		{

@@ -9,6 +9,7 @@ using GameCore.Essences.Weapons;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
+using GameCore.Messages;
 using GameCore.Misc;
 
 namespace GameCore.Creatures
@@ -180,6 +181,9 @@ namespace GameCore.Creatures
 					AddActToPool(act);
 					return ActResult;
 			}
+
+			//MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.DEBUG, string.Format("{0}({3}) {1} takes {2}", Name, act.Name, price, GetHashCode())));
+
 			BusyTill = World.TheWorld.WorldTick + price;
 			Turn += price > 0 ? 1 : 0;
 

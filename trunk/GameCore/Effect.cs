@@ -8,7 +8,6 @@ namespace GameCore
 		protected Effect(string _name)
 		{
 			Name = _name;
-			Debug.WriteLine(_name + " " + GetHashCode());
 		}
 
 		public string Name { get; private set; }

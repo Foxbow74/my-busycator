@@ -14,7 +14,7 @@ namespace MagickSetting.Creatures.Monsters
 		static readonly IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
 
 		public Rat(WorldLayer _layer)
-			: base(_layer, 120 + World.Rnd.Next(20))
+			: base(_layer, 100 + World.Rnd.Next(20))
 		{
 			Sex = ESex.FEMALE;
 

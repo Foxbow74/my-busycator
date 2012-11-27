@@ -81,7 +81,6 @@ namespace GameCore.Battle
 				}
 				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, _creature, _target, weapon));
 
-				var pv = targetBattleInfo.PV;
 				var damage = itemBattleInfo.Dmg.Calc();
 				var isCritical = itemBattleInfo.Dmg.Max == damage;
 				damage += creatureBattleInfo.DmgModifier;
@@ -98,6 +97,7 @@ namespace GameCore.Battle
 					}
 
 
+					var pv = targetBattleInfo.PV;
 					damage -= pv;
 
 					if (damage > 0)

@@ -46,7 +46,6 @@ namespace ConsoleTests
 						faPoints.Add(new Point(tuple.Item1, tuple.Item2));
 					}
 
-					Debug.WriteLine(k);
 					using (new Profiler("Point"))
 					{
 						int ee = 0;
