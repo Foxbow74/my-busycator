@@ -96,11 +96,11 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return weapon.To(EPadej.IMEN) + " " + actor.To(EPadej.ROD) + " ранили  " + target.To(EPadej.ROD) + " на " + damage.Пунктов();
+					return string.Format("{0} {1} ранили  {2} на {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 				case 2:
-					return "оба удара " + actor.To(EPadej.ROD) + " достигли цели, с " + target.To(EPadej.ROD) + " снято " + damage.Пунктов();
+					return string.Format("оба удара {0} достигли цели, с {1} снято {2}", actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 				default:
-					return "раз за разом "  + weapon.To(EPadej.IMEN) + " " + actor.To(EPadej.ROD) + " нещадно кромсали " + target.To(EPadej.ROD) + ", сняв за " + success.Атак() + " " + damage.Пунктов();
+					return string.Format("раз за разом {0} {1} нещадно кромсали {2}, сняв за {3} {4}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), success.Атак(), damage.Пунктов());
 			}
 		}
 
@@ -114,11 +114,11 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return weapon.To(EPadej.IMEN) + " " + actor.To(EPadej.ROD) + " не смог добраться до плоти  " + target.To(EPadej.ROD);
+					return string.Format("{0} {1} не смог добраться до плоти  {2}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD));
 				case 2:
-					return "пару раз " + actor.To(EPadej.DAT) + " удавалось пробить защиту " + target.To(EPadej.ROD) + ", но ни одна из не пробили броню";
+					return string.Format("пару раз {0} удавалось пробить защиту {1}, но ни одна из не пробили броню", actor.To(EPadej.DAT), target.To(EPadej.ROD));
 				default:
-					return "ни одна из " + success.Атак() + " " + actor.To(EPadej.ROD) + " не смогли пробить броню " + target.To(EPadej.ROD);
+					return string.Format("ни одна из {0} {1} не смогли пробить броню {2}", success.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD));
 			}
 		}
 
@@ -134,9 +134,9 @@ namespace LanguagePack
 				case 1:
 					return weapon.To(EPadej.IMEN) + " " + actor.To(EPadej.ROD) + " едва не задел  " + target.To(EPadej.ROD);
 				case 2:
-					return "пару раз " + actor.To(EPadej.DAT) + " удавалось пробить защиту " + target.To(EPadej.ROD) + ", но обе атаки не были проведены до конца";
+					return string.Format("пару раз {0} удавалось пробить защиту {1}, но обе атаки не были проведены до конца", actor.To(EPadej.DAT), target.To(EPadej.ROD));
 				default:
-					return "атаки " + actor.To(EPadej.ROD) + " слишком слабы, чтобы нанести вред " + target.To(EPadej.ROD);
+					return string.Format("атаки {0} слишком слабы, чтобы нанести вред {1}", actor.To(EPadej.ROD), target.To(EPadej.ROD));
 			}
 		}
 
@@ -149,11 +149,11 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return "Атака " + actor.To(EPadej.ROD) + " успешно парирована " + target.To(EPadej.TVOR);
+					return string.Format("Атака {0} успешно парирована {1}", actor.To(EPadej.ROD), target.To(EPadej.TVOR));
 				case 2:
-					return target.To(EPadej.IMEN) + " парировал обе атаки " + actor.To(EPadej.ROD);
+					return string.Format("{0} парировал обе атаки {1}", target.To(EPadej.IMEN), actor.To(EPadej.ROD));
 				default:
-					return actor.To(EPadej.IMEN) + " провел " + success + " атак, но все они были отбиты";
+					return string.Format("{0} провел {1} атак, но все они были отбиты", actor.To(EPadej.IMEN), success);
 			}
 		}
 
@@ -161,7 +161,7 @@ namespace LanguagePack
 		{
 			var s = ИзНесколькихАтакНекоторыеОказалисьРезультативны(_arg);
 			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED);
-			return s + " , а " + success.Атак() + " не смогли пробить броню";
+			return string.Format("{0} , а {1} не смогли пробить броню", s, success.Атак());
 		}
 
 		private static string ИзНесколькихАтакНекоторыеОказалисьРезультативны(XMessage[] _arg)
@@ -173,7 +173,7 @@ namespace LanguagePack
 			var countOfSuccess = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
 			var damage = _arg.Where(_a => _a.Type == EXMType.CREATURE_TAKES_DAMAGE).All<int>().Sum();
 
-			return "из " + (countOfFails + countOfSuccess) + " лишь " + countOfSuccess.Атак() + "  " + actor.To(EPadej.ROD) + " оказались результативны, с " + target.To(EPadej.ROD) + " снято " + damage.Пунктов();
+			return string.Format("из {0} лишь {1}  {2} оказались результативны, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 		}
 
 		private static string РанениеНеСПервогоРаза(XMessage[] _arg)
@@ -188,7 +188,7 @@ namespace LanguagePack
 			}
 			else
 			{
-				return "со второго раза  " + actor.To(EPadej.DAT) + " удается ранить " + target.To(EPadej.ROD) + " " + weapon.To(EPadej.TVOR) + " на " + _arg.First<int>().Пунктов();
+				return string.Format("со второго раза  {0} удается ранить {1} {2} на {3}", actor.To(EPadej.DAT), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 		}
 
@@ -198,13 +198,13 @@ namespace LanguagePack
 			var actor = xMessage.Actor;
 			var weapon = (Item)_arg.First<IWeapon>();
 			var target = _arg.First<Creature>();
-			if (actor.Is<AbstractDummyCreature>())
+			if (actor.Is<Missile>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} попадает в незащищенный участок и снимает {1} {3}", actor.Name, target.To(EPadej.DAT), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 			else
 			{
-				return "особо метким ударом " + actor.Name + " ранил " + target.To(EPadej.ROD) + " " + weapon.To(EPadej.TVOR) + " на " + _arg.First<int>().Пунктов();
+				return string.Format("особо метким ударом {0} ранил {1} {2} на {3}", actor.Name, target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 		}
 
@@ -214,13 +214,13 @@ namespace LanguagePack
 			var actor = xMessage.Actor;
 			var weapon = (Item)_arg.First<IWeapon>();
 			var target = _arg.First<Creature>();
-			if (actor.Is<AbstractDummyCreature>())
+			if (actor.Is<Missile>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} на меcте убивает {1}", actor.Name, target.To(EPadej.VIN));
 			}
 			else
 			{
-				return "нанеся чудовищную рану " + weapon.To(EPadej.TVOR) + " " + actor.Name + " убил " + target.To(EPadej.VIN);
+				return string.Format("нанеся чудовищную рану {0} {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name, target.To(EPadej.VIN));
 			}
 		}
 
@@ -240,13 +240,13 @@ namespace LanguagePack
 			var actor = xMessage.Actor;
 			var weapon = (Item)xMessage.First<IWeapon>();
 			var target = xMessage.First<Creature>();
-			if (actor.Is<AbstractDummyCreature>())
+			if (actor.Is<Missile>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} попал в {1} и ранил на {2}", actor.Name, target.To(EPadej.ROD), _arg.First<int>().Пунктов());
 			}
 			else
 			{
-				return actor.Name + " ранил " + target.To(EPadej.ROD) + " " + weapon.To(EPadej.TVOR) + " на " + _arg.First<int>().Пунктов();
+				return string.Format("{0} ранил {1} {2} на {3}", actor.Name, target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 		}
 
@@ -254,15 +254,14 @@ namespace LanguagePack
 		{
 			var xMessage = _arg[0];
 			var actor = xMessage.Actor;
-			var weapon = (Item)xMessage.First<IWeapon>();
 			var target = xMessage.First<Creature>();
-			if (actor.Is<AbstractDummyCreature>())
+			if (actor.Is<Missile>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} пролетел мимо {1}", actor.To(EPadej.IMEN), target.To(EPadej.ROD));
 			}
 			else
 			{
-				return actor.To(EPadej.IMEN) + " промахнулся и не попал по " + target.To(EPadej.DAT);
+				return string.Format("{0} промахнулся и не попал по {1}", actor.To(EPadej.IMEN), target.To(EPadej.DAT));
 			}
 		}
 
@@ -274,11 +273,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<AbstractDummyCreature>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} отскакивает от {1}", actor.Name, target.To(EPadej.ROD));
 			}
 			else
 			{
-				return actor.Name + " ударил " + weapon.To(EPadej.TVOR) + " по " + target.To(EPadej.DAT) + ", но не пробил броню";
+				return string.Format("{0} ударил {1} по {2}, но не пробил броню", actor.Name, weapon.To(EPadej.TVOR), target.To(EPadej.DAT));
 			}
 		}
 
@@ -318,11 +317,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<AbstractDummyCreature>())
 			{
-				throw new NotImplementedException();
+				return string.Format("{0} добивает {1}", actor.Name, target.To(EPadej.VIN));
 			}
 			else
 			{
-				return "нанеся смертельную рану " + weapon.To(EPadej.TVOR)  + " " + actor.Name + " убил " + target.To(EPadej.ROD);
+				return string.Format("нанеся {0} смертельную рану {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name, target.To(EPadej.VIN));
 			}
 		}
 

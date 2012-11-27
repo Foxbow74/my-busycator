@@ -11,7 +11,7 @@ namespace MagickSetting.Creatures.Monsters
 {
 	class Wolf:AbstractMonster
 	{
-		private static IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
+		private static readonly IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
 
 		public Wolf(WorldLayer _layer)
 			: base(_layer, 80 + World.Rnd.Next(20))

@@ -18,7 +18,7 @@ namespace GameUi.UIBlocks
 
 		public EFonts Font { get; private set; }
 
-		public int TextLinesMax { get { return (int) Math.Round((double) ContentRct.Height*Constants.TILE_SIZE/LineHeight); } }
+		public int TextLinesMax { get { return (int)((double) (ContentRct.Height*Constants.TILE_SIZE)/LineHeight) - 1; } }
 
 		protected static string JoinCommandCaptions(IEnumerable<string> _s) { return string.Join("   -   ", _s); }
 

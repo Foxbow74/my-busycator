@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore;
 using GameCore.Messages;
@@ -14,14 +13,18 @@ namespace GameUi.UIBlocks
 		private readonly List<TextPortion.TextLine> m_lines = new List<TextPortion.TextLine>();
 		private readonly List<Message> m_turnMessages = new List<Message>();
 		private int m_linesShown;
-		private int m_visibleTill;
 		private TextPortion m_tp;
 
 		public TurnMessageUiBlock(Rct _rct)
-			: base(_rct, null, FColor.Yellow)
+			: base(_rct, null, FColor.White)
 		{
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
+		}
+
+		public bool NeedWait
+		{
+			get { return m_diff && m_tp != null && m_turnMessages.Count > 0; }//&& !World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar
 		}
 
 		public override void Dispose()
@@ -31,6 +34,8 @@ namespace GameUi.UIBlocks
 			base.Dispose();
 		}
 
+		private bool m_diff;
+
 		private void MessageManagerNewWorldMessage(object _sender, WorldMessage _message)
 		{
 			if (_message.Type == WorldMessage.EType.AVATAR_BEGINS_TURN)
@@ -38,53 +43,36 @@ namespace GameUi.UIBlocks
 				m_turnMessages.Clear();
 				m_lines.Clear();
 				m_linesShown = 0;
-				m_visibleTill = 0;
 				m_tp = null;
+			}
+			if (_message.Type == WorldMessage.EType.MICRO_TURN)
+			{
+				m_diff = true;
+			}
+		}
+
+		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
+		{
+			if (m_turnMessages.Count > 0)
+			{
+				PrepareText();
 			}
 		}
 
 		private void MessageManagerNewMessage(object _sender, Message _message)
 		{
+			if(m_diff)
+			{
+				PrepareText();
+			}
 			m_turnMessages.Add(_message);
 		}
-
-		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers) { throw new NotImplementedException(); }
 
 		public override void DrawContent()
 		{
 			if(World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar && m_tp==null)
 			{
-				var strings = new List<string>();
-				var xlist = new List<XLangMessage>();
-				foreach (var message in m_turnMessages)
-				{
-					if (message is XLangMessage)
-					{
-						xlist.Add((XLangMessage)message);
-					}
-					else
-					{
-						strings.AddRange(CompileXLangMessages(xlist));
-						xlist.Clear();
-					}
-
-					if (message is SimpleTextMessage)
-					{
-						var tm = (SimpleTextMessage)message;
-						strings.Add(tm.Text);
-					}
-					else if (message is SoundTextMessage)
-					{
-						var tm = (SoundTextMessage)message;
-						strings.Add("где-то " + tm.Text);
-					}
-				}
-
-				strings.AddRange(CompileXLangMessages(xlist));
-				xlist.Clear();
-
-				var str = string.Join(", ", strings);
-				m_tp = new TextPortion(str, null);
+				PrepareText();
 			}
 			if (m_tp==null)
 			{
@@ -105,7 +93,54 @@ namespace GameUi.UIBlocks
 				if (lineNumber > TextLinesMax) break;
 				DrawLine(textLine, ForeColor, lineNumber++, 0, EAlignment.JUSTIFY);
 			}
-			m_visibleTill = max;
+
+			if(NeedWait)
+			{
+				DrawLine("[еще]", FColor.Yellow, TextLinesMax, TextLinesMax, EAlignment.RIGHT);
+			}
+		}
+
+		private void PrepareText()
+		{
+			var strings = new List<string>();
+			var xlist = new List<XLangMessage>();
+			foreach (var message in m_turnMessages)
+			{
+				if (message is XLangMessage)
+				{
+					xlist.Add((XLangMessage) message);
+				}
+				else
+				{
+					strings.AddRange(CompileXLangMessages(xlist));
+					xlist.Clear();
+				}
+
+				if (message is SimpleTextMessage)
+				{
+					var tm = (SimpleTextMessage) message;
+					strings.Add(tm.Text);
+				}
+				else if (message is SoundTextMessage)
+				{
+					var tm = (SoundTextMessage) message;
+					strings.Add("где-то " + tm.Text);
+				}
+			}
+
+			strings.AddRange(CompileXLangMessages(xlist));
+			xlist.Clear();
+
+			var str = string.Join(", ", strings).Trim();
+
+			if (!string.IsNullOrEmpty(str))
+			{
+				str = char.ToUpper(str[0]) + str.Substring(1);
+				m_tp = new TextPortion(str, null);
+			}
+
+			m_turnMessages.Clear();
+			m_diff = false;
 		}
 
 		private IEnumerable<string> CompileXLangMessages(List<XLangMessage> _xlist)

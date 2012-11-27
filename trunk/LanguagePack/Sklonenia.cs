@@ -201,7 +201,7 @@ namespace LanguagePack
 							case EPadej.VIN:
 								if (_sex == ESex.MALE)
 								{
-
+									_noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "" : "");
 								}
 								else
 								{
