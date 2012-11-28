@@ -7,6 +7,7 @@ using GameCore.Essences.Things;
 using GameCore.Mapping;
 using GameCore.Materials;
 using GameCore.Misc;
+using GameCore.Storage;
 
 namespace GameCore.Essences
 {

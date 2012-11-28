@@ -18,6 +18,11 @@ namespace XTransport.Server
 	    {
             if (!ValidTill.HasValue)
             {
+				if(Kind==7)
+				{
+					
+				}
+
                 var report = GetReport(_sessionId);
 
                 //m_changes.Clear();
@@ -105,6 +110,11 @@ namespace XTransport.Server
 
 		internal bool Save(SessionId _sessionId, IStorage _storage, DateTime _now, AbstractXServer _abstractXServer)
 		{
+			if(Kind==7)
+			{
+				
+			}
+
 			List<XReport> reports;
 			if (m_changes.TryGetValue(_sessionId, out reports) && m_currentVersion[_sessionId] >= 0)
 			{
@@ -326,6 +336,10 @@ namespace XTransport.Server
 
 		internal void AddChanges(SessionId _sessionId, XReport _report)
 		{
+			if(Kind==7)
+			{
+				
+			}
 			List<XReport> list;
 			if (!m_changes.TryGetValue(_sessionId, out list))
 			{

@@ -40,6 +40,8 @@ namespace Tests
 					break;
 				case WorldMessage.EType.JUST_REDRAW:
 					break;
+				case WorldMessage.EType.MICRO_TURN:
+					break;
 				default:
 					throw new ArgumentOutOfRangeException();
 			}

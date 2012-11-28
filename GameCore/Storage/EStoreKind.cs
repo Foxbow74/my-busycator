@@ -1,6 +1,6 @@
 namespace GameCore.Storage
 {
-	enum EStoreKind
+	public enum EStoreKind
 	{
 		ALL = 0,
 		MONSTER_INFO = 1,
@@ -9,6 +9,6 @@ namespace GameCore.Storage
 		NICKS_INFO = 4,
 		TERRAIN_SET = 5,
 		COLOR = 6,
-		THING_INFO = 7
+		ESSENCE_INFO = 7
 	}
 }

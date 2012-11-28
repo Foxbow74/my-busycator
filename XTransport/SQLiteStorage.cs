@@ -128,6 +128,10 @@ namespace XTransport
 		public int InsertMain(Guid _uid, int _kind, DateTime _now, Guid _parent = default(Guid),
 		                      int? _field = null)
 		{
+			if(_kind==7)
+			{
+				
+			}
 			if (_parent.Equals(default(Guid)))
 			{
 				return ExecuteInsertOrUpdate("INSERT INTO main (uid, kind, vfrom) VALUES (@uid, @kind, @from)",
@@ -178,6 +182,11 @@ namespace XTransport
 
 		public AbstractXServer.ObjectDescriptor LoadObjectCharacteristics(Guid _uid, DateTime _now = default(DateTime))
 		{
+			if (_uid.Equals(new Guid("0f3fd9dc-9b1b-4651-9746-ac0a5bf7832d")))
+			{
+				
+			}
+
 			if(_now==default(DateTime))
 			{
 				using (var rdr = CreateCommand("select kind, vfrom, vtill from main where uid=@uid and vtill IS NULL", new SqliteParameter("@uid", _uid)).ExecuteReader(CommandBehavior.CloseConnection))

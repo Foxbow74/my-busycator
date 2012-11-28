@@ -2,7 +2,7 @@
 
 namespace GameCore.Storeable
 {
-	class XMonsterInfo : XObject
+	public class XMonsterInfo : XObject
 	{
 		public override EStoreKind Kind
 		{
