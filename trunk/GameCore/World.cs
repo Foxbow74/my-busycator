@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using GameCore.Acts;
 using GameCore.Battle;
@@ -16,9 +17,7 @@ namespace GameCore
 {
 	public class World
 	{
-// ReSharper disable NotAccessedField.Local
 		static XResourceServer m_resourceSrv;
-// ReSharper restore NotAccessedField.Local
 
 		static XResourceClient m_resourceCli;
 
@@ -50,17 +49,37 @@ namespace GameCore
 		public BattleProcessor BattleProcessor { get; private set; }
 
 		private static XResourceClient XClient
-        {get
-        {
-            if(m_resourceCli==null)
-            {
-                m_resourceSrv = new XResourceServer();
-                m_resourceCli = new XResourceClient();
-            }
-            return m_resourceCli;
-        }}
+		{
+			get
+			{
+				if (m_resourceCli == null)
+				{
+					m_resourceSrv = new XResourceServer();
+					m_resourceCli = new XResourceClient();
+					EssenceProviderHelper.Client = m_resourceCli;
+				}
 
-        internal static XResourceRoot XResourceRoot { get { return XClient.GetRoot<XResourceRoot>(); } }
+				return m_resourceCli;
+			}
+		}
+
+		internal static XResourceRoot XResourceRoot
+		{
+			get
+			{
+
+				{
+					foreach (var essenceProviderHelper in XClient.GetRoot<XResourceRoot>().EssenceProviders)
+					{
+						var t = essenceProviderHelper.GetSpecificProvider();
+						Debug.WriteLine(t);
+					}
+				}
+
+
+				return XClient.GetRoot<XResourceRoot>();
+			}
+		}
 
 		public static World TheWorld { get; private set; }
 

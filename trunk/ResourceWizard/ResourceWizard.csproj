@@ -182,6 +182,10 @@
       <Project>{1cc48a01-ebe0-4c46-890e-24465eebbc7d}</Project>
       <Name>GameUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MagickSetting\MagicSetting.csproj">
+      <Project>{89A625BC-7450-4C83-BD35-6057A40255FF}</Project>
+      <Name>MagicSetting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\OpenTKUi\OpenTKUi.csproj">
       <Project>{bcad98eb-0c52-4186-b8b0-92ab47947796}</Project>
       <Name>OpenTKUi</Name>

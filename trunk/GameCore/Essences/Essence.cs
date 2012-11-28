@@ -52,10 +52,7 @@ namespace GameCore.Essences
 			get { return false; }
 		}
 
-		public virtual int TileIndex
-		{
-			get { return 0; }
-		}
+		public virtual int TileIndex { get; protected set; }
 
 		#endregion
 

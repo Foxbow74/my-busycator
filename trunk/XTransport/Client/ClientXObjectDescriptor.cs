@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using XTransport.Server;
 
@@ -231,7 +232,12 @@ namespace XTransport.Client
 			var xObject = ((ClientXObject<TKind>) _xObject);
 			var changes = xObject.GetChanges().ToArray();
 
-			var xReport = new XReport(_xObject.Uid, changes, Kind, EState.UNDO_ABLE|EState.REVERT_ABLE);
+			var xReport = new XReport(_xObject.Uid, changes, Kind, EState.UNDO_ABLE | EState.REVERT_ABLE);
+
+			if (Kind == 7)
+			{
+				throw new ApplicationException("START SEARCH HERE");
+			}
 
 			Report.MergeChanges(xReport);
 			

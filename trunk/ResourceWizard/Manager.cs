@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -10,8 +11,10 @@ using GameCore;
 using GameCore.Essences;
 using GameCore.Misc;
 using GameCore.Storage;
+using MagickSetting;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
+using XTransport.Client;
 using Image = OpenTKUi.Image;
 
 namespace ResourceWizard
@@ -101,6 +104,11 @@ namespace ResourceWizard
 	    }
 
 		public App Application { get; set; }
+
+		public XClient XClient
+		{
+			get { return m_resourceCli; }
+		}
 
 
 		public Bitmap this[ETextureSet _set, bool _isTerrain]
@@ -322,6 +330,9 @@ namespace ResourceWizard
 
 		public void Shrink()
 		{
+			XRoot.EssenceProviders.Clear();
+			var essences = EssenceGenerator.Generate(XRoot).ToArray();
+			m_resourceCli.Save(XRoot);
 			m_resourceSrv.Shrink();
 			Application.MainWindow.Close();
 		}
