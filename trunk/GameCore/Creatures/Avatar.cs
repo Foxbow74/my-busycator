@@ -20,7 +20,7 @@ namespace GameCore.Creatures
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetRandomFakedItem<AbstractMeleeWeapon>(World.Rnd));
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
 
-			var ammo = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd).ResolveFake(this) as StackOfAmmo;
+			var ammo = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd).Essence.Clone(this) as StackOfAmmo;
 			ammo.Count = 100;
 			Equip(EEquipmentPlaces.MISSILES, ammo);
 			Equip(EEquipmentPlaces.TOOL, EssenceHelper.GetFirstFoundedItem<AbstractTorch>());
@@ -43,8 +43,6 @@ namespace GameCore.Creatures
 		{
 			get { return Luck/3; }
 		}
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
 

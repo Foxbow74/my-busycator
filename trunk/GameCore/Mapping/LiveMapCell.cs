@@ -256,7 +256,7 @@ namespace GameCore.Mapping
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
 			RemoveItem(_fakeItem);
-			var item = (Item) _fakeItem.ResolveFake(_creature);
+			var item = (Item)_fakeItem.Essence.Clone(_creature);
 			AddItem(item);
 			return item;
 		}
@@ -265,7 +265,7 @@ namespace GameCore.Mapping
 		{
 			var fakedThing = (FakedThing) Thing;
 			m_mapBlock.RemoveEssence(fakedThing, InBlockCoords);
-			Thing = (Thing) fakedThing.ResolveFake(_creature);
+			Thing = (Thing) fakedThing.Essence.Clone(_creature);
 			m_mapBlock.AddEssence(Thing, InBlockCoords);
 			return Thing;
 		}

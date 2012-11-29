@@ -55,11 +55,6 @@ namespace GameCore.Battle
 			}
 		}
 
-		public override void Resolve(Creature _creature)
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public override bool IsCorpse
 		{
 			get

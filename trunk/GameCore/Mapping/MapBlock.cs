@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore.Creatures;
-using GameCore.Essences;
 using GameCore.Essences.Faked;
 using GameCore.Misc;
 
@@ -61,7 +60,7 @@ namespace GameCore.Mapping
 		{
 			if (_creature is FakedCreature)
 			{
-				_creature = (Creature) ((FakedCreature) _creature).ResolveFake(World.TheWorld.Avatar);
+				_creature = (Creature)((FakedCreature)_creature).Essence.Clone(World.TheWorld.Avatar);
 			}
 			Creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
 		}

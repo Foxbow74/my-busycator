@@ -1,5 +1,4 @@
 ﻿using System;
-using GameCore.Creatures;
 using GameCore.Essences.Things;
 
 namespace GameCore.Essences
@@ -14,7 +13,5 @@ namespace GameCore.Essences
 		public override ETileset Tileset { get { throw new NotImplementedException(); } }
 
 		public override string Name { get { return "рюкзак"; } }
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 	}
 }

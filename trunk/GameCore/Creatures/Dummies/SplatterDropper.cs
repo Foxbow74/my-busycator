@@ -30,8 +30,6 @@ namespace GameCore.Creatures.Dummies
 
 		public override string Name { get { return ""; } }
 
-		public override void Resolve(Creature _creature) { }
-
 		public override EThinkingResult Thinking()
 		{
 			if (m_step > 1)

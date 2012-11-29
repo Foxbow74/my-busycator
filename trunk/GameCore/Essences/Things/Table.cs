@@ -9,7 +9,5 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 12; } }
 
 		public override string Name { get { return "стол"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 }

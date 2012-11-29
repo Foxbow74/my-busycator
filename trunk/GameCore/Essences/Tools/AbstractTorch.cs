@@ -61,6 +61,11 @@ namespace GameCore.Essences.Tools
 
 		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
 
-		public override void Resolve(Creature _creature) { m_lightSource = new LightSource(m_radius, m_color); }
+		internal override Essence Clone(Creature _resolver)
+		{
+			var clone = (AbstractTorch)base.Clone(_resolver);
+			clone.m_lightSource = new LightSource(m_radius, m_color);
+			return clone;
+		}
     }
 }

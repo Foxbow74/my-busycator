@@ -1,22 +1,17 @@
-using System;
-using GameCore.Creatures;
-
 namespace GameCore.Essences.Faked
 {
 	public class FakedThing : Thing, IFaked
 	{
-		private readonly Essence m_essence;
-
 		public FakedThing(Essence _essence) : base(_essence.Material)
 		{
-			m_essence = _essence;
+			Essence = _essence;
 		}
 
-		public override FColor LerpColor{ get{ return m_essence.LerpColor; } }
+		public override FColor LerpColor{ get{ return Essence.LerpColor; } }
 
-		public override string Name { get { return m_essence.Name; } }
+		public override string Name { get { return Essence.Name; } }
 
-		public override EMaterialType AllowedMaterialsType { get { return m_essence.AllowedMaterialsType; } }
+		public override EMaterialType AllowedMaterialsType { get { return Essence.AllowedMaterialsType; } }
 
 		#region IFaked Members
 
@@ -24,27 +19,21 @@ namespace GameCore.Essences.Faked
 		{
 			get
 			{
-				return m_essence.TileIndex;
+				return Essence.TileIndex;
 			}
 		}
 
+		public Essence Essence { get; private set; }
+
 		public override ETileset Tileset
 		{
-			get { return m_essence.Tileset; }
-		}
-
-		public Essence ResolveFake(Creature _creature)
-		{
-			var type = m_essence.GetType();
-			return EssenceHelper.ResolveEssence(type, Material, _creature);
+			get { return Essence.Tileset; }
 		}
 
 		#endregion
 
-		public override bool Is<T>() { return m_essence is T; }
+		public override bool Is<T>() { return Essence is T; }
 
-		protected override int CalcHashCode() { return m_essence.GetHashCode(); }
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
+		protected override int CalcHashCode() { return Essence.GetHashCode(); }
 	}
 }

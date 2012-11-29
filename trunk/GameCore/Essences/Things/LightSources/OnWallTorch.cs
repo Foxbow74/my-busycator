@@ -22,7 +22,5 @@ namespace GameCore.Essences.Things.LightSources
 		public override string Name { get { return "факел"; } }
 
 		public override EDirections Direction { get { return m_direction; } }
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 	}
 }

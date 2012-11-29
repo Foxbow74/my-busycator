@@ -9,7 +9,6 @@ using System.Windows.Threading;
 using GameCore;
 using GameCore.Essences;
 using GameCore.Misc;
-using GameCore.Storage;
 using MagickSetting;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
@@ -22,8 +21,7 @@ namespace ResourceWizard
 		private static Manager m_instance;
 		public readonly ColorDialog COLOR_DIALOG = new ColorDialog { FullOpen = true };
 
-		readonly XResourceServer m_resourceSrv = new XResourceServer();
-		readonly XClient m_resourceCli = new XClient();
+		XClient m_resourceCli;
 		
 		readonly Dictionary<ETextureSet, Image> m_textures = new Dictionary<ETextureSet, Image>();
 		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
@@ -32,6 +30,7 @@ namespace ResourceWizard
 
 		private Manager()
 		{
+			World.LetItBeeee();
 			MagicSettingProvider.Init();
 
 			m_ttextures.Add(ETextureSet.GP, new Image(Resources.gold_plated_16x16, false, false));
@@ -81,7 +80,7 @@ namespace ResourceWizard
 		{
 			get
 			{
-				return m_resourceCli.GetRoot<XResourceRootVM>();
+				return XClient.GetRoot<XResourceRootVM>();
 			}
 		}
 
@@ -107,7 +106,14 @@ namespace ResourceWizard
 
 		public XClient XClient
 		{
-			get { return m_resourceCli; }
+			get
+			{
+				if(m_resourceCli==null)
+				{
+					m_resourceCli = new XClient();
+				}
+				return m_resourceCli;
+			}
 		}
 
 
@@ -324,7 +330,7 @@ namespace ResourceWizard
 				females.Sex = ESex.FEMALE;
 				females.Nicks = Resources.femalenicks;
 			}
-			m_resourceCli.Save(XRoot);
+			XClient.Save(XRoot);
 		}
 
 
@@ -337,8 +343,8 @@ namespace ResourceWizard
 			{
 				throw new ApplicationException("Хде они?");
 			}
-			m_resourceCli.Save(XRoot);
-			m_resourceSrv.Shrink();
+			XClient.Save(XRoot);
+			World.TheWorld.XServer.Shrink();
 			Application.MainWindow.Close();
 		}
 

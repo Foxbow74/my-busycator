@@ -97,7 +97,6 @@ namespace GameCore.Essences
 
 			public Item Item { get; private set; }
 			public override ItemBattleInfo CreateItemInfo(Creature _creature){ throw new NotImplementedException(); }
-			public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 			public override int GetHashCode() { return Item.GetHashCode(); }
 			public override string ToString() { return "stack of " + Item.GetName(World.TheWorld.Avatar) + " (" + Count + ")"; }
 		}

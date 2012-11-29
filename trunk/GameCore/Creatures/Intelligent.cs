@@ -86,7 +86,7 @@ namespace GameCore.Creatures
 		{
 			if (_item is FakedItem)
 			{
-				_item = (Item) ((FakedItem) _item).ResolveFake(this);
+				_item = (Item)((FakedItem)_item).Essence.Clone(this);
 			}
 			//_item.Resolve(this);
 			ObjectTaken(_item);

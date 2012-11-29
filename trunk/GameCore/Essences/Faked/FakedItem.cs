@@ -6,14 +6,12 @@ namespace GameCore.Essences.Faked
 {
 	public class FakedItem : Item, IFaked
 	{
-		private readonly Essence m_essence;
-
 		#region .ctor
 
 		public FakedItem(Essence _essence)
 			: base(_essence.Material)
 		{
-			m_essence = _essence;
+			Essence = _essence;
 		}
 
 		#endregion
@@ -27,14 +25,8 @@ namespace GameCore.Essences.Faked
 
 		public override bool Is<T>()
 		{
-			return m_essence is T;
+			return Essence is T;
 		}
-
-		public override void Resolve(Creature _creature)
-		{
-			throw new NotImplementedException();
-		}
-
 
 		protected override int CalcHashCode()
 		{
@@ -61,17 +53,14 @@ namespace GameCore.Essences.Faked
 
 		public override int TileIndex
 		{
-			get { return m_essence.TileIndex; }
+			get { return Essence.TileIndex; }
 		}
+
+		public Essence Essence { get; private set; }
 
 		public override ETileset Tileset
 		{
-			get { return m_essence.Tileset; }
-		}
-
-		public Essence ResolveFake(Creature _creature)
-		{
-			return EssenceHelper.ResolveEssence(m_essence.GetType(), Material, _creature);
+			get { return Essence.Tileset; }
 		}
 
 		#endregion
