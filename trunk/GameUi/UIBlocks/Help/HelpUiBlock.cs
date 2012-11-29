@@ -28,7 +28,7 @@ namespace GameUi.UIBlocks.Help
 		{
 			const int indent = 20;
 			var line = 1;
-			DrawLine("a. Привязка клавишь", ForeColor, line++, indent, EAlignment.LEFT);
+			DrawLine("a. Привязка клавиш", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("b. Предметы", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("с. Классы", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("d. Рассы", ForeColor, line++, indent, EAlignment.LEFT);
