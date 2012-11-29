@@ -43,7 +43,7 @@ namespace GameCore.Essences.Mechanisms
 
 					if (myCell.Creature==null)
 					{
-						var monster = (AbstractMonster)EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd).ResolveFake(_creature);
+						var monster = (AbstractMonster)EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd).Essence.Clone(_creature);
 						monster.Behaviour=EMonsterBehaviour.IDLE;
 						myCell.AddCreature(monster);
 
@@ -60,9 +60,5 @@ namespace GameCore.Essences.Mechanisms
 		}
 
 		#endregion
-
-		public override void Resolve(Creature _creature)
-		{
-		}
 	}
 }

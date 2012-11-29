@@ -27,7 +27,6 @@ namespace GameCore.Creatures.Monsters
 		}
 
 		public EMonsterBehaviour Behaviour { get; set; }
-		public override void Resolve(Creature _creature) { }
 
 		public override EThinkingResult Thinking()
 		{

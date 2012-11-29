@@ -40,8 +40,6 @@ namespace GameCore.Creatures.Dummies
 
 		public override string Name { get { return Ammo.GetName(World.TheWorld.Avatar); } }
 
-		public override void Resolve(Creature _creature) { }
-
 		public override EThinkingResult Thinking()
 		{
 			var nextPoint = m_path[m_step] - m_path[m_step - 1];

@@ -36,9 +36,5 @@ namespace GameCore.Essences.Mechanisms
 		}
 
 		#endregion
-
-		public override void Resolve(Creature _creature)
-		{
-		}
 	}
 }

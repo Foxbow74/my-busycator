@@ -1,15 +1,21 @@
 using GameCore;
 using GameCore.Battle;
 using GameCore.Creatures;
+using GameCore.Essences;
 using GameCore.Essences.Weapons;
 
 namespace MagickSetting.Items.Weapons
 {
-	public class Axe : AbstractMeleeWeapon
+	public class Axe : AbstractMeleeWeapon, ISpecial
 	{
-		public Axe(Material _material) : base(_material) { }
+		private readonly string m_name;
 
-        public override int TileIndex
+		public Axe(Material _material, string _name) : base(_material)
+		{
+			m_name = _name;
+		}
+
+		public override int TileIndex
         {
             get
             {
@@ -17,7 +23,7 @@ namespace MagickSetting.Items.Weapons
             }
         }
 
-		public override string Name { get { return "топор"; } }
+		public override string Name { get { return m_name; } }
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{

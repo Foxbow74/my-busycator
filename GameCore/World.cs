@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using GameCore.Acts;
 using GameCore.Battle;
@@ -13,12 +12,13 @@ using GameCore.Misc;
 using GameCore.Storage;
 using GameCore.Storage.XResourceEssences;
 using GameCore.Storeable;
+using XTransport.Server;
 
 namespace GameCore
 {
 	public class World
 	{
-		static XResourceServer m_resourceSrv = new XResourceServer();
+		static readonly XResourceServer m_xServer = new XResourceServer();
 
 		static XResourceClient m_resourceCli;
 
@@ -96,7 +96,6 @@ namespace GameCore
 
 		public void GameUpdated()
 		{
-			var anyHappens = false;
 			var done = new List<Creature>();
 			while (true)
 			{
@@ -109,11 +108,6 @@ namespace GameCore
 				if(creature.Speed>0)done.Add(creature);
 
 				#endregion
-
-				if (creature == null)
-				{
-					throw new ApplicationException();
-				}
 
 				if ((!creature.IsAvatar) && creature.ActResult != EActResults.NEED_ADDITIONAL_PARAMETERS &&
 				    creature.NextAct == null)
@@ -135,8 +129,6 @@ namespace GameCore
 				{
 					break;
 				}
-
-				anyHappens = true;
 
 				WorldTick = WorldTick < creature.BusyTill ? creature.BusyTill : WorldTick;
 
@@ -172,9 +164,14 @@ namespace GameCore
 			}
 		}
 
-		public void UpdateDPoint() { DPoint = World.TheWorld.LiveMap.GetData(); }
+		public void UpdateDPoint() { DPoint = TheWorld.LiveMap.GetData(); }
 
 		public Point DPoint { get; private set; }
+
+		public AbstractXServer XServer
+		{
+			get { return m_xServer; }
+		}
 
 		public static void LetItBeeee()
 		{

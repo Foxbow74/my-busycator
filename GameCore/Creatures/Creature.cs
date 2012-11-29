@@ -9,7 +9,6 @@ using GameCore.Essences.Weapons;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
-using GameCore.Messages;
 using GameCore.Misc;
 
 namespace GameCore.Creatures
@@ -66,7 +65,7 @@ namespace GameCore.Creatures
 			m_actPool.Clear();
 		}
 
-		public IEnumerable<EssenceDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect = null)
+		public IEnumerable<EssenceDescriptor> GetAllAvailableItems(IEnumerable<Point> _intersect)
 		{
 			return GetBackPackItems().Concat(GetNotTakenAvailableItems(_intersect.ToArray()));
 		}
@@ -253,14 +252,7 @@ namespace GameCore.Creatures
 
 		public Point PathMapCoords
 		{
-			get
-			{
-				if(m_pathMapCoords==null)
-				{
-					m_pathMapCoords = this[0, 0].PathMapCoords;
-				}
-				return m_pathMapCoords;
-			}
+			get { return m_pathMapCoords ?? (m_pathMapCoords = this[0, 0].PathMapCoords); }
 		}
 
 		public IEnumerable<AbstractCreatureRole> Roles

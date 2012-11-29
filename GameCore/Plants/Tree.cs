@@ -34,7 +34,5 @@ namespace GameCore.Plants
 		public override string Name { get { return m_material.Name; } }
 
 		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.WOOD; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 }

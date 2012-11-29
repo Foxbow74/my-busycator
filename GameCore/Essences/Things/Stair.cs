@@ -31,7 +31,5 @@ namespace GameCore.Essences.Things
 
 			return EActResults.DONE;
 		}
-
-		public override void Resolve(Creature _creature) { }
 	}
 }

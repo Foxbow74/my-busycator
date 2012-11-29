@@ -46,8 +46,6 @@ namespace GameCore.Essences.Things
 
 		#endregion
 
-		public override void Resolve(Creature _creature) { }
-
 		protected override IEnumerable<Item> GenerateItems(Creature _creature)
 		{
 			var cnt = _creature.GetLuckRandom*5.0;

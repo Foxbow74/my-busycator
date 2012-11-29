@@ -29,7 +29,12 @@ namespace GameCore.Essences
 		protected abstract string NameOfSingle { get; }
 		protected abstract int GetStartCount(Creature _creature);
 
-		public override void Resolve(Creature _creature) { if (Count == 0) Count = GetStartCount(_creature); }
+		internal override Essence Clone(Creature _resolver)
+		{
+			var clone = (StackOfItems)base.Clone(_resolver);
+			if (clone.Count == 0) Count = clone.GetStartCount(_resolver);
+			return clone;
+		}
 
 		public StackOfItems GetOne()
 		{

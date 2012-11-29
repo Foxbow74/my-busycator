@@ -35,8 +35,6 @@ namespace GameCore.Essences.Things
 
 		#endregion
 
-		public override void Resolve(Creature _creature) { }
-
 		internal void SetLockType(ELockType _eLockType) { m_eLockType = _eLockType; }
 	}
 }

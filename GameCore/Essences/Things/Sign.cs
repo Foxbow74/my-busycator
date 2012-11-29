@@ -1,6 +1,4 @@
-﻿using GameCore.Creatures;
-
-namespace GameCore.Essences.Things
+﻿namespace GameCore.Essences.Things
 {
 	/// <summary>
 	/// Табличка на здании, на стене
@@ -19,7 +17,5 @@ namespace GameCore.Essences.Things
 		public override ETileset Tileset { get { return m_tileset; } }
 
 		public override string Name { get { return m_name; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 }

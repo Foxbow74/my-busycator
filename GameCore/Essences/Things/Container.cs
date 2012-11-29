@@ -31,7 +31,7 @@ namespace GameCore.Essences.Things
 				{
 					if (item is IFaked)
 					{
-						m_items.Add((Item) ((IFaked) item).ResolveFake(_creature));
+						m_items.Add((Item) ((IFaked) item).Essence.Clone(_creature));
 					}
 					else
 					{

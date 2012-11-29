@@ -50,8 +50,6 @@ namespace GameCore.Creatures
 			get { return EFraction.AVATAR; }
 		}
 
-		public override void Resolve(Creature _creature) { }
-
 		public override EThinkingResult Thinking()
 		{
 			var currentLiveCell = this[0, 0];

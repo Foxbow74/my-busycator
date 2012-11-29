@@ -218,13 +218,6 @@ namespace GameCore.Essences
 			return _essence is IFaked;
 		}
 
-		public static Essence ResolveEssence(Type _type, Material _material, Creature _creature)
-		{
-			var thing = (Essence) Activator.CreateInstance(_type, _material);
-			thing.Resolve(_creature);
-			return thing;
-		}
-
 		private static void RegisterEssenceType(Type _type)
 		{
 			var athing = (Essence)Activator.CreateInstance(_type, new object[] { null });

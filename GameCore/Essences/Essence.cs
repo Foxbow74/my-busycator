@@ -58,12 +58,6 @@ namespace GameCore.Essences
 
 		public override string ToString() { return this.GetName(World.TheWorld.Avatar); }
 
-		/// <summary>
-		/// Заполнить параметры сущности, происходит один раз для сущности
-		/// </summary>
-		/// <param name = "_creature">Существо, инициатор резолва</param>
-		public abstract void Resolve(Creature _creature);
-
 		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
 
 		public virtual bool Is<T>()
@@ -76,5 +70,10 @@ namespace GameCore.Essences
 		public override int GetHashCode() { return CalcHashCode(); }
 
 		protected virtual int CalcHashCode() { return GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode()); }
+
+		internal virtual Essence Clone(Creature _resolver)
+		{
+			return (Essence)MemberwiseClone();
+		}
 	}
 }

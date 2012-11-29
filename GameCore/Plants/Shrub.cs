@@ -25,6 +25,5 @@ namespace GameCore.Plants
         public override string Name { get { return m_material.ShroobName; } }
 
         public override EMaterialType AllowedMaterialsType { get { return EMaterialType.SHRUB; } }
-    	public override void Resolve(Creature _creature) {  }
     }
 }

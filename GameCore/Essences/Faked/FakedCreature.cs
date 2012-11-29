@@ -28,16 +28,12 @@ namespace GameCore.Essences.Faked
 
 		public override ETileset Tileset { get { return m_essence.Tileset; } }
 
-		public Essence ResolveFake(Creature _creature)
+		public Essence Essence
 		{
-			var thing = (Essence) Activator.CreateInstance(m_essence.GetType(), _creature.Layer);
-			thing.Resolve(_creature);
-			return thing;
+			get { return m_essence; }
 		}
 
 		#endregion
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
 		public override EThinkingResult Thinking() { throw new NotImplementedException(); }
 

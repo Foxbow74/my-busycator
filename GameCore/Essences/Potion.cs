@@ -1,7 +1,7 @@
 ﻿using GameCore.Battle;
 using GameCore.Creatures;
 
-namespace GameCore.Essences.Potions
+namespace GameCore.Essences
 {
 	public class Potion : Item
 	{
@@ -25,8 +25,6 @@ namespace GameCore.Essences.Potions
 		{
 			return ItemBattleInfo.Empty;
 		}
-
-		public override void Resolve(Creature _creature) { }
 
 		public void Drinked(Creature _creature)
 		{

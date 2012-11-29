@@ -18,7 +18,5 @@ namespace GameCore.Essences.Things.LightSources
         }
 
 		public override string Name { get { return "светильник"; } }
-
-		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 	}
 }

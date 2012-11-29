@@ -14,8 +14,6 @@ namespace GameCore.Essences.Things
 		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.MINERAL; } }
 
         public override int TileIndex { get { return 6; } }
-
-		public override void Resolve(Creature _creature) {  }
 	}
 
 	internal class Chair : Thing
@@ -26,8 +24,6 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 2; } }
 
 		public override string Name { get { return "стул"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 
 	internal class Cabinet : Thing
@@ -38,8 +34,6 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 1; } }
 
 		public override string Name { get { return "шкаф"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 
 	internal class ArmorRack : Thing
@@ -50,8 +44,6 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 3; } }
 
 		public override string Name { get { return "стойка для брони"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 
 	internal class WeaponRack : Thing
@@ -62,8 +54,6 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 4; } }
 
 		public override string Name { get { return "стойка для оружия"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 
 	internal class Barrel : Thing
@@ -74,7 +64,5 @@ namespace GameCore.Essences.Things
         public override int TileIndex { get { return 5; } }
 
 		public override string Name { get { return "бочка"; } }
-
-		public override void Resolve(Creature _creature) { }
 	}
 }
