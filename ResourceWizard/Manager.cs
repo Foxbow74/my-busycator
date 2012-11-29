@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -14,7 +13,6 @@ using GameCore.Storage;
 using MagickSetting;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
-using XTransport.Client;
 using Image = OpenTKUi.Image;
 
 namespace ResourceWizard
@@ -34,6 +32,8 @@ namespace ResourceWizard
 
 		private Manager()
 		{
+			MagicSettingProvider.Init();
+
 			m_ttextures.Add(ETextureSet.GP, new Image(Resources.gold_plated_16x16, false, false));
 			m_ttextures.Add(ETextureSet.HM, new Image(Resources.aq, false, false));
 			m_ttextures.Add(ETextureSet.NH, new Image(Resources.nethack, false, false));
@@ -331,7 +331,12 @@ namespace ResourceWizard
 		public void Shrink()
 		{
 			XRoot.EssenceProviders.Clear();
-			var essences = EssenceGenerator.Generate(XRoot).ToArray();
+
+			var resourceEssenceGenerator = new XResourceEssenceGenerator(XRoot);
+			if(resourceEssenceGenerator.Generate().Count()<2)
+			{
+				throw new ApplicationException("Хде они?");
+			}
 			m_resourceCli.Save(XRoot);
 			m_resourceSrv.Shrink();
 			Application.MainWindow.Close();

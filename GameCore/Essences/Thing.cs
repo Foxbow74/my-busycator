@@ -10,7 +10,7 @@
 
         public override ETileset Tileset{ get { return ETileset.THINGS; } }
 
-		public override EMaterial AllowedMaterials { get { return EMaterial.METAL|EMaterial.MINERAL|EMaterial.WOOD; } }
+		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.METAL|EMaterialType.MINERAL|EMaterialType.WOOD; } }
 
 		public void Paint(FColor _lerpColor) { m_lerpColor = _lerpColor; }
 	}

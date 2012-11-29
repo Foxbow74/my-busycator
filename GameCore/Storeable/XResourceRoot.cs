@@ -2,6 +2,7 @@
 using GameCore.Essences;
 using GameCore.Misc;
 using GameCore.Storage;
+using GameCore.Storage.XResourceEssences;
 using XTransport;
 using XTransport.Client;
 
@@ -15,7 +16,7 @@ namespace GameCore.Storeable
 		[X((int) EStoreKind.TILE_SET)] private ICollection<XTileSet> m_tileSets;
 		[X((int) EStoreKind.NICKS_INFO)] private ICollection<XNicksInfo> m_nicksInfos;
 		[X((int) EStoreKind.COLOR)] private ICollection<XColor> m_colors;
-		[X((int)EStoreKind.ESSENCE_INFO)]private ICollection<EssenceProviderHelper> m_essenceProviders;
+		[X((int)EStoreKind.ESSENCE_INFO)]private ICollection<XResourceEssenceDummy> m_essenceProviders;
 #pragma warning restore 649
 
 		public override EStoreKind Kind
@@ -28,7 +29,7 @@ namespace GameCore.Storeable
 			get { return m_monsterInfos; }
 		}
 
-		public ICollection<EssenceProviderHelper> EssenceProviders
+		public ICollection<XResourceEssenceDummy> EssenceProviders
 		{
 			get { return m_essenceProviders; }
 		}

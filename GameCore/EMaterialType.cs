@@ -3,7 +3,7 @@
 namespace GameCore
 {
 	[Flags] 
-	public enum EMaterial
+	public enum EMaterialType
 	{
 		UNIQ = 0,
 		METAL = 0x1 << 0,

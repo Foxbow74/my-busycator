@@ -43,7 +43,7 @@
     <Compile Include="Creatures\Monsters\Rat.cs" />
     <Compile Include="Creatures\Monsters\Spider.cs" />
     <Compile Include="Creatures\Monsters\Wolf.cs" />
-    <Compile Include="EssenceGenerator.cs" />
+    <Compile Include="XResourceEssenceGenerator.cs" />
     <Compile Include="Items\Ammo\StackOfCrossBowBolts.cs" />
     <Compile Include="Items\Tools\Torch.cs" />
     <Compile Include="Items\Weapons\Axe.cs" />

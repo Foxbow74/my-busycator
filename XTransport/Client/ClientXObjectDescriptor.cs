@@ -233,6 +233,21 @@ namespace XTransport.Client
 
 			var xReport = new XReport(_xObject.Uid, changes, Kind, EState.UNDO_ABLE|EState.REVERT_ABLE);
 
+			foreach (var obj in m_instances.Values)
+			{
+				if(obj!=_xObject)
+				{
+					var mirrorChanges = obj.GetChanges();
+					foreach (var item in mirrorChanges)
+					{
+						if(changes.All(_item => _item.FieldId != item.FieldId))
+						{
+							xReport.Items.Add(item);
+						}
+					}
+				}
+			}
+
 			Report.MergeChanges(xReport);
 			
 			ResetState();

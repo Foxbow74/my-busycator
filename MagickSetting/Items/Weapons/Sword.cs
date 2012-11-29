@@ -5,19 +5,25 @@ using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Essences.Weapons;
 using GameCore.Storage;
+using GameCore.Storage.XResourceEssences;
 
 namespace MagickSetting.Items.Weapons
 {
 	public class Sword : AbstractMeleeWeapon, ISpecial
 	{
-		public Sword(Material _material) : base(_material) { }
+		private readonly string m_name;
 
-        public override int TileIndex
+		public Sword(Material _material, string _name) : base(_material)
+		{
+			m_name = _name;
+		}
+
+		public override int TileIndex
         {
             get; protected set;
         }
 
-		public override string Name { get { return "меч"; } }
+		public override string Name { get { return m_name; } }
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
@@ -25,11 +31,11 @@ namespace MagickSetting.Items.Weapons
 		}
 	}
 
-	public class SwordsProvider : WeaponProvider<Sword>
+	public class XResourceSword : XResourceMeleeWeapon<Sword>
 	{
-		protected override Sword CreateT()
+		protected override Sword CreateT(Material _material)
 		{
-			throw new NotImplementedException();
+			return new Sword(_material, Name);
 		}
 
 		public override Guid ProvierTypeId
@@ -38,9 +44,9 @@ namespace MagickSetting.Items.Weapons
 		}
 	}
 
-	public class AxeProvider : WeaponProvider<Axe>
+	public class XResourceAxe : XResourceMeleeWeapon<Axe>
 	{
-		protected override Axe CreateT()
+		protected override Axe CreateT(Material _material)
 		{
 			throw new NotImplementedException();
 		}

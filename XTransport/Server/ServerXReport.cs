@@ -71,23 +71,6 @@ namespace XTransport.Server
 						throw new ArgumentOutOfRangeException();
 				}
 			}
-
-			if (ActualFrom < _report.ActualFrom)
-			{
-				foreach (var reportItem in Items)
-				{
-					switch (reportItem.State)
-					{
-						case XReportItemState.CHANGE:
-							var changeExists = _report.Items.SingleOrDefault(_item => _item.FieldId == reportItem.FieldId); // && _item.State == XReportItemState.CHANGE);
-							if (changeExists == null)
-							{
-								_report.Items.Add(reportItem);
-							}
-							break;
-					}
-				}
-			}
 		}
 	}
 }

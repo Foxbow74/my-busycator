@@ -16,7 +16,7 @@ namespace GameCore.Essences.Faked
 
 		public override string Name { get { return m_essence.Name; } }
 
-		public override EMaterial AllowedMaterials { get { return m_essence.AllowedMaterials; } }
+		public override EMaterialType AllowedMaterialsType { get { return m_essence.AllowedMaterialsType; } }
 
 		#region IFaked Members
 

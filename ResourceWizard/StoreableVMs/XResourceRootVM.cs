@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GameCore.Storage;
+using GameCore.Storage.XResourceEssences;
 using MagickSetting;
 using XTransport;
 
 namespace ResourceWizard.StoreableVMs
 {
-	internal class XResourceRootVM : XObjectVM, IEssenceProviderHelperGenerator
+	internal class XResourceRootVM : XObjectVM, IXResourceEssenceProvider
 	{
 		#region Fields
 
@@ -18,7 +19,7 @@ namespace ResourceWizard.StoreableVMs
 		[X((int) EStoreKind.TERRAIN_SET)] private ICollection<XTerrainSetVM> m_terrainSets;
         [X((int)EStoreKind.TILE_SET)] private ICollection<XTileSetVM> m_tileSets;
         [X((int)EStoreKind.COLOR)] private ICollection<XColorVM> m_colors;
-		[X((int)EStoreKind.ESSENCE_INFO)] private ICollection<EssenceProviderHelper> m_essenceProviders;
+		[X((int)EStoreKind.ESSENCE_INFO)] private ICollection<XResourceEssenceDummy> m_essenceProviders;
 #pragma warning restore 649
 
 		#endregion
@@ -81,16 +82,16 @@ namespace ResourceWizard.StoreableVMs
 
 		public ReadOnlyObservableCollection<XTileSetVM> TileSetsObsCol { get; private set; }
 
-		public ICollection<EssenceProviderHelper> EssenceProviders
+		public ICollection<XResourceEssenceDummy> EssenceProviders
 		{
 			get { return m_essenceProviders; }
 		}
 
 		#endregion
 
-		public TO Create<TO>(Guid _typeId) where TO : XObject
+		public TO CreateXResourceEssence<TO>(Guid _typeId) where TO : XObject
 		{
-			var helper = new EssenceProviderHelper();
+			var helper = new XResourceEssenceDummy();
 			EssenceProviders.Add(helper);
 			helper.ProvierTypeId = _typeId;
 			return Manager.Instance.XClient.Get<TO>(helper.Uid);

@@ -97,9 +97,9 @@ namespace GameCore.Creatures
 
 		#region Properties
 
-		public override EMaterial AllowedMaterials
+		public override EMaterialType AllowedMaterialsType
 		{
-			get { return EMaterial.BODY; }
+			get { return EMaterialType.BODY; }
 		}
 
 		/// <summary>

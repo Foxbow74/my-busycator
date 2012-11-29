@@ -5,6 +5,6 @@
 		protected MineralMaterial(string _name)
 			: base(_name) { }
 
-		public override EMaterial MaterialType { get { return EMaterial.MINERAL; } }
+		public override EMaterialType MaterialType { get { return EMaterialType.MINERAL; } }
 	}
 }

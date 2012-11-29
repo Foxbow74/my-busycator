@@ -6,7 +6,7 @@
 
 		public override FColor LerpColor { get { return FColor.Empty; } }
 
-		public override EMaterial MaterialType { get { return EMaterial.MUSHRUM; } }
+		public override EMaterialType MaterialType { get { return EMaterialType.MUSHRUM; } }
 
 		public abstract int MushrumTileIndex { get; }
 

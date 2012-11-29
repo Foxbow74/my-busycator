@@ -11,13 +11,14 @@ using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Storage;
+using GameCore.Storage.XResourceEssences;
 using GameCore.Storeable;
 
 namespace GameCore
 {
 	public class World
 	{
-		static XResourceServer m_resourceSrv;
+		static XResourceServer m_resourceSrv = new XResourceServer();
 
 		static XResourceClient m_resourceCli;
 
@@ -54,9 +55,8 @@ namespace GameCore
 			{
 				if (m_resourceCli == null)
 				{
-					m_resourceSrv = new XResourceServer();
 					m_resourceCli = new XResourceClient();
-					EssenceProviderHelper.Client = m_resourceCli;
+					XResourceEssenceDummy.Client = m_resourceCli;
 				}
 
 				return m_resourceCli;
@@ -67,16 +67,6 @@ namespace GameCore
 		{
 			get
 			{
-
-				{
-					foreach (var essenceProviderHelper in XClient.GetRoot<XResourceRoot>().EssenceProviders)
-					{
-						var t = essenceProviderHelper.GetSpecificProvider();
-						Debug.WriteLine(t);
-					}
-				}
-
-
 				return XClient.GetRoot<XResourceRoot>();
 			}
 		}

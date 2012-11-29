@@ -6,7 +6,7 @@
 
 		public override FColor LerpColor { get { return FColor.Empty; } }
 
-		public override EMaterial MaterialType { get { return EMaterial.SHRUB; } }
+		public override EMaterialType MaterialType { get { return EMaterialType.SHRUB; } }
 
 		public string ShroobName { get; private set; }
 		
