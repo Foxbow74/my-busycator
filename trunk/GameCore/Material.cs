@@ -12,7 +12,7 @@
 
 		public abstract FColor LerpColor { get; }
 		public string Name { get; private set; }
-		public abstract EMaterial MaterialType { get; }
+		public abstract EMaterialType MaterialType { get; }
 
 		/// <summary>
 		/// Насколько часто встречается, максимум - 100

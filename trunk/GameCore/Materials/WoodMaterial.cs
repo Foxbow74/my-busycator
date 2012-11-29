@@ -5,7 +5,7 @@
 		protected WoodMaterial(string _name)
 			: base(_name) { }
 
-		public override EMaterial MaterialType { get { return EMaterial.WOOD; } }
+		public override EMaterialType MaterialType { get { return EMaterialType.WOOD; } }
 
 		public abstract int TreeTileIndex { get; }
 	}

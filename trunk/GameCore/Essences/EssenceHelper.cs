@@ -5,9 +5,7 @@ using GameCore.Creatures;
 using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
 using GameCore.Mapping;
-using GameCore.Materials;
 using GameCore.Misc;
-using GameCore.Storage;
 
 namespace GameCore.Essences
 {
@@ -15,9 +13,9 @@ namespace GameCore.Essences
 	{
 		#region Fields
 
-		private static readonly Dictionary<Tuple<ETileset, Material, int>, FakedCreature> m_fakedCreatures = new Dictionary<Tuple<ETileset, Material, int>, FakedCreature>();
-		private static readonly Dictionary<Tuple<ETileset, Material, int>, FakedItem> m_fakedItems = new Dictionary<Tuple<ETileset, Material, int>, FakedItem>();
-		private static readonly Dictionary<Tuple<ETileset, Material, int>, FakedThing> m_fakedThings = new Dictionary<Tuple<ETileset, Material, int>, FakedThing>();
+		private static readonly List<FakedCreature> m_fakedCreatures = new List<FakedCreature>();
+		private static readonly List<FakedItem> m_fakedItems = new List<FakedItem>();
+		private static readonly List<FakedThing> m_fakedThings = new List<FakedThing>();
 		private static readonly List<Material> m_materials = new List<Material>();
 
 		#endregion
@@ -37,19 +35,40 @@ namespace GameCore.Essences
 			foreach (var type in Util.GetAllTypesOf<Essence>())
 			{
 				if (typeof (ISpecial).IsAssignableFrom(type)) continue;
+				RegisterEssenceType(type);
+			}
 
-				if (typeof (Creature).IsAssignableFrom(type))
+			foreach (var essenceProviderHelper in World.XResourceRoot.EssenceProviders)
+			{
+				var essenceProvider = essenceProviderHelper.GetResourceEssence();
+				if(essenceProvider.MaterialTypes==EMaterialType.UNIQ)
 				{
-					RegisterCreatureType(type);
-				}
-				else if (typeof (Item).IsAssignableFrom(type))
-				{
-					RegisterItemType(type);
+					Add(essenceProvider.Create(null));
 				}
 				else
 				{
-					RegisterThingType(type);
+					foreach (var material in GetAllowedMaterialTypes(essenceProvider.MaterialTypes).SelectMany(_material => m_materials.Where(_m => _m.MaterialType==_material)))
+					{
+						Add(essenceProvider.Create(material));
+					}
 				}
+			}
+		}
+
+		private static void Add(Essence _essence)
+		{
+			if (_essence is Creature)
+			{
+				m_fakedCreatures.Add(new FakedCreature(_essence));
+			}
+			else 
+			if (_essence is Item)
+			{
+			    m_fakedItems.Add(new FakedItem(_essence));
+			}
+			else 
+			{
+				m_fakedThings.Add(new FakedThing(_essence));
 			}
 		}
 
@@ -67,51 +86,45 @@ namespace GameCore.Essences
 			return _essence is ICanbeClosed && ((ICanbeClosed) _essence).ELockType == ELockType.OPEN;
 		}
 
-		private static IEnumerable<EMaterial> GetAllowedMaterials(EMaterial _materials)
+		private static IEnumerable<EMaterialType> GetAllowedMaterialTypes(EMaterialType _materialsType)
 		{
-			var allowedMaterials = (from EMaterial value in Enum.GetValues(typeof (EMaterial)) where _materials.HasFlag(value) select value).ToArray();
+			var allowedMaterials = (from EMaterialType value in Enum.GetValues(typeof (EMaterialType)) where _materialsType.HasFlag(value) select value).ToArray();
 			return allowedMaterials;
-		}
-
-		public static FakedCreature GetFakedCreature(MapBlock _block)
-		{
-			var keys = new List<Tuple<ETileset, Material, int>>(m_fakedCreatures.Keys);
-			return m_fakedCreatures[keys[World.Rnd.Next(keys.Count)]];
 		}
 
 		public static FakedItem GetRandomFakedItem(Random _rnd)
 		{
-			return m_fakedItems.Values.ToArray().RandomItem(_rnd);
+			return m_fakedItems.ToArray().RandomItem(_rnd);
 		}
 
 		public static FakedItem GetRandomFakedItem<T>(Random _rnd) where T : Item
 		{
-			return m_fakedItems.Values.Where(_item=>_item.Is<T>()).ToArray().RandomItem(_rnd);
+			return m_fakedItems.Where(_item=>_item.Is<T>()).ToArray().RandomItem(_rnd);
 		}
 
 		public static FakedCreature GetRandomFakedCreature<T>(Random _rnd) where T:Creature
 		{
-			return m_fakedCreatures.Values.Where(_creature => _creature.Is<T>()).ToArray().RandomItem(_rnd);
+			return m_fakedCreatures.Where(_creature => _creature.Is<T>()).ToArray().RandomItem(_rnd);
 		}
 
 		public static Essence GetFakedThing(Random _rnd)
 		{
-			return m_fakedThings.Values.ToArray().RandomItem(_rnd);
+			return m_fakedThings.ToArray().RandomItem(_rnd);
 		}
 
 		public static FakedThing GetFirstFoundedThing<T>() where T : Thing
 		{
-			return m_fakedThings.Values.First(_thing => _thing.Is<T>());
+			return m_fakedThings.First(_thing => _thing.Is<T>());
 		}
 
 		public static FakedItem GetFirstFoundedItem<T>() where T : Item
 		{
-			return m_fakedItems.Values.First(_item => _item.Is<T>());
+			return m_fakedItems.First(_item => _item.Is<T>());
 		}
 		
 		public static FakedCreature GetFirstFoundedCreature<T>() where T : Creature
 		{
-			return m_fakedCreatures.Values.First(_item => _item.Is<T>());
+			return m_fakedCreatures.First(_item => _item.Is<T>());
 		}
 
 		public static Material GetFirstFoundedMaterial<T>() where T : Material
@@ -121,17 +134,17 @@ namespace GameCore.Essences
 
 		public static IEnumerable<FakedThing> GetAllThings<T>() where T : Thing
 		{
-			return m_fakedThings.Values.Where(_thing => _thing.Is<T>());
+			return m_fakedThings.Where(_thing => _thing.Is<T>());
 		}
 
 		public static IEnumerable<FakedItem> GetAllItems<T>() where T : Item
 		{
-			return m_fakedItems.Values.Where(_item => _item.Is<T>());
+			return m_fakedItems.Where(_item => _item.Is<T>());
 		}
 
 		public static IEnumerable<FakedCreature> GetAllCreatures<T>() where T : Item
 		{
-			return m_fakedCreatures.Values.Where(_item => _item.Is<T>());
+			return m_fakedCreatures.Where(_item => _item.Is<T>());
 		}
 
 		public static TMaterial GetMaterial<TMaterial>() where TMaterial : Material
@@ -212,73 +225,38 @@ namespace GameCore.Essences
 			return thing;
 		}
 
-		#region Register
-
-		private static void RegisterCreatureType(Type _type)
+		private static void RegisterEssenceType(Type _type)
 		{
-			var thing = (Essence) Activator.CreateInstance(_type, new object[] {null});
-			FakedCreature value;
-			var key = new Tuple<ETileset, Material, int>(thing.Tileset, GetMaterial<BodyMaterial>(), thing.TileIndex);
-			if (!m_fakedCreatures.TryGetValue(key, out value))
+			var athing = (Essence)Activator.CreateInstance(_type, new object[] { null });
+			if (typeof(Creature).IsAssignableFrom(_type))
 			{
-				value = new FakedCreature(thing.Tileset);
-				m_fakedCreatures.Add(key, value);
+				Add(athing);
 			}
-			value.Add(_type);
-		}
-
-		private static void RegisterItemType(Type _type)
-		{
-			var athing = (Essence) Activator.CreateInstance(_type, new object[] {null});
-			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
+			else
 			{
-				var mtpLocal = mtp;
-				foreach (var material in m_materials)
+				foreach (var mtp in GetAllowedMaterialTypes(athing.AllowedMaterialsType))
 				{
-					if(material.MaterialType != mtpLocal)
+					var mtpLocal = mtp;
+					foreach (var material in m_materials)
 					{
-						continue;
-					}
+						if (material.MaterialType != mtpLocal)
+						{
+							continue;
+						}
+						var thing = (Essence) Activator.CreateInstance(_type, material);
+						Add(thing);
+						//var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
 
-					var thing = (Essence) Activator.CreateInstance(_type, material);
-					FakedItem value;
-					var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
-					if (!m_fakedItems.TryGetValue(key, out value))
-					{
-						value = new FakedItem(thing.Tileset, material, thing.TileIndex);
-						m_fakedItems.Add(key, value);
-					}
-					value.Add(_type);
-				}
-			}
-		}
-
-		private static void RegisterThingType(Type _type)
-		{
-			var athing = (Essence) Activator.CreateInstance(_type, new object[] {null});
-			foreach (var mtp in GetAllowedMaterials(athing.AllowedMaterials))
-			{
-				var mtpLocal = mtp;
-				foreach (var material in m_materials)
-				{
-					if (material.MaterialType != mtpLocal)
-					{
-						continue;
-					}
-
-					var thing = (Essence) Activator.CreateInstance(_type, material);
-					var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
-					FakedThing value;
-					if (!m_fakedThings.TryGetValue(key, out value))
-					{
-						value = new FakedThing(thing);
-						m_fakedThings.Add(key, value);
+						//FakedThing value;
+						//if (!m_fakedThings.TryGetValue(key, out value))
+						//{
+						//    value = new FakedThing(thing);
+						//    m_fakedThings.Add(key, value);
+						//}
 					}
 				}
 			}
 		}
-
-		#endregion
 
 		#endregion
 
@@ -293,9 +271,9 @@ namespace GameCore.Essences
 					if (typeof (ISpecial).IsAssignableFrom(type)) continue;
 
 					var athing = (Essence) Activator.CreateInstance(type, new object[] {null});
-					var am = athing.AllowedMaterials;
+					var am = athing.AllowedMaterialsType;
 
-					if (am == EMaterial.BODY)
+					if (am == EMaterialType.BODY)
 					{
 						yield return athing;
 						continue;

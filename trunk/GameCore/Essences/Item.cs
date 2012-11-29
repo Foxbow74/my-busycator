@@ -15,7 +15,7 @@ namespace GameCore.Essences
 			get { return ETileset.ITEMS; }
 		}
 
-		public override EMaterial AllowedMaterials { get { return EMaterial.METAL | EMaterial.MINERAL | EMaterial.WOOD; } }
+		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.METAL | EMaterialType.MINERAL | EMaterialType.WOOD; } }
 
 		public abstract EItemCategory Category { get; }
 		public abstract ItemBattleInfo CreateItemInfo(Creature _creature);

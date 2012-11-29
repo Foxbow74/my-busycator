@@ -17,7 +17,7 @@ namespace GameCore.Essences
 
 		public virtual ILightSource Light { get { return null; } }
 
-		public abstract EMaterial AllowedMaterials { get; }
+		public abstract EMaterialType AllowedMaterialsType { get; }
 
 		public virtual Material Material { get; private set; }
 

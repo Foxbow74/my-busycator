@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Creatures.Monsters;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Essences.Things.LightSources;
@@ -130,7 +131,8 @@ namespace GameCore.Mapping.Layers
 				{
 					var point = new Point(x, y);
 					var any = _block.Creatures.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
-					var creature = EssenceHelper.GetFakedCreature(_block);
+					
+					var creature = EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd);
 
 					if (creature.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{

@@ -9,11 +9,13 @@ namespace GameCore.Essences.Faked
 {
 	public class FakedCreature : Creature, IFaked
 	{
-		private readonly ETileset m_tileset;
-		private readonly List<Type> m_types = new List<Type>();
+		private readonly Essence m_essence;
 
-		public FakedCreature(ETileset _tileset)
-			: base(null, int.MinValue) { m_tileset = _tileset; }
+		public FakedCreature(Essence _essence) : base(null, 0)
+		{
+			TileIndex = _essence.TileIndex;
+			m_essence = _essence;
+		}
 
 		public override string Name { get { throw new NotImplementedException(); } }
 
@@ -24,22 +26,16 @@ namespace GameCore.Essences.Faked
 
 		#region IFaked Members
 
-		public override ETileset Tileset { get { return m_tileset; } }
+		public override ETileset Tileset { get { return m_essence.Tileset; } }
 
 		public Essence ResolveFake(Creature _creature)
 		{
-			var type = m_types[World.Rnd.Next(m_types.Count)];
-			var thing = (Essence) Activator.CreateInstance(type, _creature.Layer);
+			var thing = (Essence) Activator.CreateInstance(m_essence.GetType(), _creature.Layer);
 			thing.Resolve(_creature);
 			return thing;
 		}
 
 		#endregion
-
-		public void Add(Type _type)
-		{
-			m_types.Add(_type);
-		}
 
 		public override void Resolve(Creature _creature) { throw new NotImplementedException(); }
 
@@ -57,7 +53,7 @@ namespace GameCore.Essences.Faked
 
 		public override bool Is<T>()
 		{
-			return m_types.Any(_type => typeof(T).IsAssignableFrom(_type));
+			return m_essence is T;
 		}
 	}
 }

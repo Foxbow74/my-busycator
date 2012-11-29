@@ -7,6 +7,6 @@
 
 		public override FColor LerpColor { get { return FColor.WhiteSmoke; } }
 
-		public override EMaterial MaterialType { get { return EMaterial.BODY; } }
+		public override EMaterialType MaterialType { get { return EMaterialType.BODY; } }
 	}
 }

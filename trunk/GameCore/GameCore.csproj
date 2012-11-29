@@ -91,7 +91,7 @@
     <Compile Include="Effects\HealEffect.cs" />
     <Compile Include="ELevel.cs" />
     <Compile Include="EMapBlockTypes.cs" />
-    <Compile Include="EMaterial.cs" />
+    <Compile Include="EMaterialType.cs" />
     <Compile Include="ESex.cs" />
     <Compile Include="Essences\Mechanisms\Button.cs" />
     <Compile Include="Essences\Tools\ITool.cs" />
@@ -200,6 +200,13 @@
     <Compile Include="Misc\Util.cs" />
     <Compile Include="Storage\EStoreKind.cs" />
     <Compile Include="Storage\XResourceClient.cs" />
+    <Compile Include="Storage\XResourceEssences\IResourceEssence.cs" />
+    <Compile Include="Storage\XResourceEssences\IXResourceEssenceProvider.cs" />
+    <Compile Include="Storage\XResourceEssences\XResourceEssence.cs" />
+    <Compile Include="Storage\XResourceEssences\XResourceEssenceDummy.cs" />
+    <Compile Include="Storage\XResourceEssences\XResourceItem.cs" />
+    <Compile Include="Storage\XResourceEssences\XResourceMeleeWeapon.cs" />
+    <Compile Include="Storage\XResourceEssences\XResourceWeapon.cs" />
     <Compile Include="Storage\XResourceServer.cs" />
     <Compile Include="Storage\XChildObject.cs" />
     <Compile Include="Storage\XObject.cs" />

@@ -17,7 +17,7 @@ namespace GameCore.Creatures
 			Tactic = ETactics.NORMAL;
 			Luck = 6;
 			AddRole(new AvatarRole());
-			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetFirstFoundedItem<AbstractMeleeWeapon>());
+			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetRandomFakedItem<AbstractMeleeWeapon>(World.Rnd));
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
 
 			var ammo = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd).ResolveFake(this) as StackOfAmmo;
