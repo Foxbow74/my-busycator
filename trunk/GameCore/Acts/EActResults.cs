@@ -30,6 +30,8 @@ namespace GameCore.Acts
 		/// <summary>
 		/// ¬ведена дл€ вложенных вызовов, означает что размышлени€ продолжаютс€
 		/// </summary>
-	    NONE
+	    NONE,
+
+		WORLD_STAYS_UNCHANGED,
 	}
 }

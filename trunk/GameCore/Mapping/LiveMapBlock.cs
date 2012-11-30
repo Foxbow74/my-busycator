@@ -37,9 +37,9 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				foreach (var creature in MapBlock.Creatures)
+				foreach (var creaturePosition in MapBlock.Creatures)
 				{
-					yield return creature.Item1;
+					yield return creaturePosition.Creature;
 				}
 			}
 		}
@@ -85,11 +85,9 @@ namespace GameCore.Mapping
 					m_liveMap.Cells[cellId.X, cellId.Y].Thing = (Thing) tuple.Item1;
 				}
 			}
-			foreach (var tuple in m_mapBlock.Creatures)
+			foreach (var creaturePosition in m_mapBlock.Creatures)
 			{
-				var creature = tuple.Item1;
-				var point = tuple.Item2;
-				creature.LiveCoords = m_liveCellZero + point;
+				creaturePosition.Creature.LiveCoords = m_liveCellZero + creaturePosition.Position;
 			}
 		}
 
@@ -118,15 +116,11 @@ namespace GameCore.Mapping
 			MapBlock = null;
 		}
 
-		public void RemoveCreature(Creature _creature, Point _oldLiveCoords) { MapBlock.Creatures.Remove(new Tuple<Creature, Point>(_creature, BaseMapBlock.GetInBlockCoords(_oldLiveCoords))); }
+		public void RemoveCreature(Creature _creature, Point _oldLiveCoords) { MapBlock.RemoveCreature(_creature); }
 
 		public void AddCreature(Creature _creature, Point _newLiveCoords)
 		{
-			var tuple = new Tuple<Creature, Point>(_creature, BaseMapBlock.GetInBlockCoords(_newLiveCoords));
-			if (!MapBlock.Creatures.Contains(tuple))
-			{
-				MapBlock.Creatures.Add(tuple);
-			}
+			MapBlock.AddCreature(_creature, BaseMapBlock.GetInBlockCoords(_newLiveCoords));
 		}
 
 		public void UpdateVisibility(float _fogLightness, FColor _ambient)

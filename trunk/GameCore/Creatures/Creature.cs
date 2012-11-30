@@ -161,6 +161,7 @@ namespace GameCore.Creatures
 				case EActResults.ACT_REPLACED:
 					price = 0;
 					break;
+				case EActResults.WORLD_STAYS_UNCHANGED:
 				case EActResults.DONE:
 					price = act.TakeTicks*Speed;
 					break;
@@ -240,7 +241,6 @@ namespace GameCore.Creatures
 			set
 			{
 				m_pathMapCoords = null;
-
 				var oldValue = m_liveCoords;
 				m_liveCoords = value==null? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
 				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);

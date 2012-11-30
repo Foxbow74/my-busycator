@@ -130,7 +130,7 @@ namespace GameCore.Mapping.Layers
 				if (attr.IsPassable > 0)
 				{
 					var point = new Point(x, y);
-					var any = _block.Creatures.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
+					var any = _block.Creatures.Where(_tuple => _tuple.Position == point).Select(_tuple => _tuple.Creature);
 					
 					var creature = EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd);
 

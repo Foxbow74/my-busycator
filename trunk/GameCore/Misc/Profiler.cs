@@ -74,7 +74,12 @@ namespace GameCore.Misc
 			var mains = m_infos.Values.Where(_info => _info.In == _name).OrderByDescending(_info => _info.Span);
 			foreach (var info in mains)
 			{
-				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Span.Ticks / _spanSum, info.Span.TotalSeconds, info.Count, 100 * info.Span.Ticks / _total));
+				var percents = 100*info.Span.Ticks/_total;
+				if(percents==0)
+				{
+					continue;
+				}
+				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Span.Ticks / _spanSum, info.Span.TotalSeconds, info.Count, percents));
 				ReportIt(info.Key, _total, _indent + 1);
 			}
 		}

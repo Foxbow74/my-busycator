@@ -66,11 +66,11 @@ namespace GameCore.Mapping
                 foreach (var block in Blocks)
 				{
 					if (block.IsBorder) continue;
-					foreach (var tuple in block.MapBlock.Creatures)
+					foreach (var creaturePosition in block.MapBlock.Creatures)
 					{
-                        if (first.BusyTill > tuple.Item1.BusyTill)
+						if (first.BusyTill > creaturePosition.Creature.BusyTill)
 						{
-                            first = tuple.Item1;
+							first = creaturePosition.Creature;
 						}
 					}
 				}
@@ -158,7 +158,6 @@ namespace GameCore.Mapping
 			{
 				var centerLiveCell = GetCenterLiveCell();
 
-
 				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
 
 				lighted.Add(CenterLiveBlock);
@@ -195,7 +194,6 @@ namespace GameCore.Mapping
 				var layer = World.TheWorld.Avatar.Layer;
 				var ambient = layer.Ambient;
 				var fogLightness = layer.FogLightness;
-
 
 				foreach (var blockId in lighted)
 				{
@@ -240,6 +238,17 @@ namespace GameCore.Mapping
 				if (_newLiveCoords==null)
 				{
 					oldBlock.RemoveCreature(_creature, _oldLiveCoords);
+
+					if (GetCell(_oldLiveCoords).Creature != null)
+					{
+						
+					}
+					else
+					{
+						
+					}
+
+
 					return;
 				}
 			}

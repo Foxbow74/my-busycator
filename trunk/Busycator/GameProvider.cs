@@ -62,11 +62,15 @@ namespace Busycator
 				Title = "Busycator lc:" + avatar[0, 0].LiveCoords + " wc:" + avatar[0, 0].WorldCoords + " bld:" + avatar[0, 0].InBuilding + " pmc:" + avatar[0, 0].PathMapCoords + " fps:" + Math.Round(1 / _e.Time);
 
 				base.OnRenderFrame(_e);
-	
+
 				m_game.Update(KeyState);
-				Clear(FColor.Empty);
-				m_game.Draw();
-				OnRenderFinished();
+
+				using (new Profiler("Redraw"))
+				{
+					Clear(FColor.Empty);
+					m_game.Draw();
+					OnRenderFinished();
+				}
 			}
 			var ts = DateTime.Now - now;
 			if (ts.Milliseconds < 100 / 6)
