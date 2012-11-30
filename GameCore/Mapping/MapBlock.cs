@@ -6,11 +6,23 @@ using GameCore.Misc;
 
 namespace GameCore.Mapping
 {
+	public class CreaturePosition
+	{
+		public CreaturePosition(Creature _creature, Point _position)
+		{
+			Creature = _creature;
+			Position = _position;
+		}
+
+		public Creature Creature { get; private set; }
+		public Point Position { get; set; }
+	}
+
 	public class MapBlock : BaseMapBlock
 	{
 		public MapBlock(Point _blockId) : base(_blockId)
 		{
-			Creatures = new List<Tuple<Creature, Point>>();
+			Creatures = new List<CreaturePosition>();
 			SeenCells = new uint[Constants.MAP_BLOCK_SIZE];
 		}
 
@@ -27,7 +39,7 @@ namespace GameCore.Mapping
 			RandomSeed = _baseMapBlock.RandomSeed;
 		}
 
-		public List<Tuple<Creature, Point>> Creatures { get; private set; }
+		public List<CreaturePosition> Creatures { get; private set; }
 
 		public UInt32[] SeenCells { get; private set; }
 
@@ -46,12 +58,12 @@ namespace GameCore.Mapping
 						yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
 					}
 				}
-				foreach (var tuple in Creatures)
+				foreach (var position in Creatures)
 				{
-					if (tuple.Item1.IsAvatar)
+					if (position.Creature.IsAvatar)
 					{
 					}
-					if (tuple.Item1.Light != null) yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
+					if (position.Creature.Light != null) yield return new Tuple<ILightSource, Point>(position.Creature.Light, position.Position);
 				}
 			}
 		}
@@ -62,12 +74,12 @@ namespace GameCore.Mapping
 			{
 				_creature = (Creature)((FakedCreature)_creature).Essence.Clone(World.TheWorld.Avatar);
 			}
-			Creatures.Add(new Tuple<Creature, Point>(_creature, _inBlockCoords));
+			Creatures.Add(new CreaturePosition(_creature, _inBlockCoords));
 		}
 
 		public void RemoveCreature(Creature _creature)
 		{
-			if (Creatures.RemoveAll(_tuple => _tuple.Item1 == _creature) == 0)
+			if (Creatures.RemoveAll(_tuple => _tuple.Creature == _creature) == 0)
 			{
 				throw new ApplicationException();
 			}
@@ -77,7 +89,7 @@ namespace GameCore.Mapping
 		{
 			foreach (var creature in Creatures)
 			{
-				creature.Item1.ClearActPool();
+				creature.Creature.ClearActPool();
 			}
 		}
 	}

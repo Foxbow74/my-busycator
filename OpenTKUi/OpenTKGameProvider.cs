@@ -182,7 +182,10 @@ namespace OpenTKUi
 		protected virtual void OnRenderFinished()
 		{
 			if (!IsActive) return;
-			TileMapRenderer.Draw();
+			using (new Profiler("TileMapRenderer.Draw"))
+			{
+				TileMapRenderer.Draw();
+			}
 			SwapBuffers();
 		}
 

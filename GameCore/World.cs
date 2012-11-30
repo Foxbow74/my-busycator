@@ -96,6 +96,7 @@ namespace GameCore
 
 		public void GameUpdated()
 		{
+			var anyHappens = false;
 			var done = new List<Creature>();
 			while (true)
 			{
@@ -149,6 +150,9 @@ namespace GameCore
 						case EActResults.ACT_REPLACED:
 							break;
 						case EActResults.DONE:
+							anyHappens = true;
+							break;
+						case EActResults.WORLD_STAYS_UNCHANGED:
 						case EActResults.FAIL:
 						case EActResults.QUICK_FAIL:
 							break;
@@ -158,7 +162,7 @@ namespace GameCore
 				} while (actResult == EActResults.ACT_REPLACED);
 				MessageManager.SendMessage(this, WorldMessage.MicroTurn);
 			}
-			//if(anyHappens)
+			if(anyHappens)
 			{
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 			}

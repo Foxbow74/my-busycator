@@ -202,7 +202,13 @@ namespace GameUi
 			{
 				if (!m_mainUiBlock.NeedWait)
 				{
-					World.TheWorld.GameUpdated();
+					if (!World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar || World.TheWorld.Avatar.NextAct != null)
+					{
+						using (new Profiler())
+						{
+							World.TheWorld.GameUpdated();
+						}
+					}
 				}
 			}
 		}

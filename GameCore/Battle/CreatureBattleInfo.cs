@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Weapons;
@@ -53,6 +54,11 @@ namespace GameCore.Battle
 			if (!(m_creature is Avatar))
 			{
 				HP -= _damage;
+
+				if(HP<=0)
+				{
+					Debug.WriteLine(m_creature.GetHashCode());
+				}
 			}
 
 			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_DAMAGE, _source, m_creature, fact, _weapon));

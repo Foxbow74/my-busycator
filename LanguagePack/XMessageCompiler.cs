@@ -25,7 +25,6 @@ namespace LanguagePack
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоНеСнялиНиОдногоПункта);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), УвернулсяОтоВсехАтак);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), ВсеАтакиДостиглиЦели);
-
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоПоглощеныБроней);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
@@ -36,8 +35,7 @@ namespace LanguagePack
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), ToDo);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, EXMType.CREATURE_TAKES_DAMAGE), ToDo);
 			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURE_TAKES_DAMAGE,EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
-
-			
+			m_distinctProcessors.Add(PackDistinct(EXMType.AVATAR_IS_LUCK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ToDo);
 
 
 			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), АтакаПромах);

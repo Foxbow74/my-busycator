@@ -24,6 +24,6 @@ namespace GameCore.Acts
 
 		public override EActionCategory Category { get { return EActionCategory.SYSTEM; } }
 
-		public override EActResults Do(Creature _creature) { return EActResults.DONE; }
+		public override EActResults Do(Creature _creature) { return EActResults.WORLD_STAYS_UNCHANGED; }
 	}
 }

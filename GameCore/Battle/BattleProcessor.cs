@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Creatures;
@@ -102,6 +103,10 @@ namespace GameCore.Battle
 
 					if (damage > 0)
 					{
+						if (targetBattleInfo.HP<=0)
+						{
+							Debug.WriteLine(_target.GetHashCode());
+						}
 						targetBattleInfo.ApplyDamage(damage, weapon, _creature);
 					}
 					else

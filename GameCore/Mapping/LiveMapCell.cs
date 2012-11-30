@@ -57,8 +57,8 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple =>!(_tuple.Item1 is AbstractDummyCreature) && _tuple.Item2 == LiveCoords);
-                return tuple==null?null:tuple.Item1;
+                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple =>!(_tuple.Creature is AbstractDummyCreature) && _tuple.Position == LiveCoords);
+                return tuple==null?null:tuple.Creature;
 			}
 		}
 
