@@ -100,13 +100,8 @@ namespace GameCore.Battle
 
 					var pv = targetBattleInfo.PV;
 					damage -= pv;
-
 					if (damage > 0)
 					{
-						if (targetBattleInfo.HP<=0)
-						{
-							Debug.WriteLine(_target.GetHashCode());
-						}
 						targetBattleInfo.ApplyDamage(damage, weapon, _creature);
 					}
 					else

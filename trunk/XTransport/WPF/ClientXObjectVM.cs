@@ -114,7 +114,6 @@ namespace XTransport.WPF
 
 		#region Debug
 
-#if DEBUG
 
 		protected ClientXObjectVM()
 		{
@@ -130,6 +129,14 @@ namespace XTransport.WPF
 			ThrowOnInvalidPropertyName = true;
 		}
 
+		/// <summary>
+		/// Returns whether an exception is thrown, or if a Debug.Fail() is used
+		/// when an invalid property name is passed to the VerifyPropertyName method.
+		/// The default value is false, but subclasses used by unit tests might 
+		/// override this property's getter to return true.
+		/// </summary>
+		protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
+
 		private static readonly Dictionary<Type, int> m_notifiers = new Dictionary<Type, int>();
 
 		/// <summary>
@@ -144,6 +151,8 @@ namespace XTransport.WPF
 		{
 			Debug.WriteLine("Dispose " + GetHashCode());
 		}
+
+#if DEBUG
 
 		public static void FinalReport()
 		{
@@ -189,14 +198,6 @@ namespace XTransport.WPF
 			throw new Exception(msg);
 		}
 
-
-		/// <summary>
-		/// Returns whether an exception is thrown, or if a Debug.Fail() is used
-		/// when an invalid property name is passed to the VerifyPropertyName method.
-		/// The default value is false, but subclasses used by unit tests might 
-		/// override this property's getter to return true.
-		/// </summary>
-		protected virtual bool ThrowOnInvalidPropertyName { get; private set; }
 
 #endif
 

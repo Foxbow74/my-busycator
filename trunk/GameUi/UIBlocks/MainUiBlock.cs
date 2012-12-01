@@ -44,7 +44,7 @@ namespace GameUi.UIBlocks
 			base.Dispose();
 		}
 
-		public bool NeedWait { get { return m_messages.NeedWait; } }
+		public bool NeedWait { get { return m_messages.NeedWait && World.TheWorld.Avatar.NextAct==null; } }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{

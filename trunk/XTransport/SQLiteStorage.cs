@@ -320,11 +320,11 @@ namespace XTransport
 		private int ExecuteNonQuery(SqliteCommand _cmd)
 		{
 			var affected = _cmd.ExecuteNonQuery();
-			if (_cmd.GetLastErrorCode() != 0)
-			{
-				RollBack();
-				throw new ApplicationException(string.Format("Can't insert:{0}", _cmd.GetLastError()));
-			}
+			//if (_cmd.GetLastErrorCode() != 0)
+			//{
+			//    RollBack();
+			//    throw new ApplicationException(string.Format("Can't insert:{0}", _cmd.GetLastError()));
+			//}
 			return affected;
 		}
 

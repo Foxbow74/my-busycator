@@ -29,6 +29,18 @@ namespace MagickSetting.Items.Weapons
 		{
 			return new ItemBattleInfo(0,0,1,4,new Dice(3,4,0));
 		}
+
+		public override FColor LerpColor
+		{
+			get
+			{
+				return Material==null?FColor.Red:base.LerpColor;
+			}
+			protected set
+			{
+				base.LerpColor = value;
+			}
+		}
 	}
 
 	public class XResourceSword : XResourceMeleeWeapon<Sword>

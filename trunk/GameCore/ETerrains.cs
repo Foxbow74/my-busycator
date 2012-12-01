@@ -119,6 +119,8 @@ namespace GameCore
 					return EMapBlockTypes.SEA;
 				case ETerrains.SHRUBS:
 					return EMapBlockTypes.SHRUBS;
+				case ETerrains.NONE:
+					return EMapBlockTypes.NONE;
 				default:
 					throw new ArgumentOutOfRangeException("_terrains");
 			}

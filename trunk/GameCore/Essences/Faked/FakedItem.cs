@@ -11,6 +11,10 @@ namespace GameCore.Essences.Faked
 		public FakedItem(Essence _essence)
 			: base(_essence.Material)
 		{
+			if (_essence.Material==null)
+			{
+				
+			}
 			Essence = _essence;
 		}
 
@@ -30,8 +34,10 @@ namespace GameCore.Essences.Faked
 
 		protected override int CalcHashCode()
 		{
-			return TileIndex;
+			return ((int)Tileset)<<8|TileIndex;
 		}
+
+		public override FColor LerpColor { get { return Essence.LerpColor; } }
 
 		#endregion
 

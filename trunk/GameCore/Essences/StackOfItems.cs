@@ -6,9 +6,24 @@ namespace GameCore.Essences
 {
 	public abstract class StackOfItems : Item
 	{
-		protected StackOfItems(Material _material) : base(_material) { }
+		protected StackOfItems(Material _material) : base(_material)
+		{
+			
+		}
 
-		public int Count { get; set; }
+		private int m_count;
+		public int Count
+		{
+			get { return m_count; }
+			set
+			{
+				if(value==0)
+				{
+					
+				}
+				m_count = value;
+			}
+		}
 
 		public override string Name
 		{
@@ -32,7 +47,10 @@ namespace GameCore.Essences
 		internal override Essence Clone(Creature _resolver)
 		{
 			var clone = (StackOfItems)base.Clone(_resolver);
-			if (clone.Count == 0) Count = clone.GetStartCount(_resolver);
+			if (clone.Count == 0)
+			{
+				clone.Count = clone.GetStartCount(_resolver);
+			}
 			return clone;
 		}
 

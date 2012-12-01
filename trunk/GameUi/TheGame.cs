@@ -202,9 +202,11 @@ namespace GameUi
 			{
 				if (!m_mainUiBlock.NeedWait)
 				{
-					if (!World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar || World.TheWorld.Avatar.NextAct != null)
+					if (!World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar || World.TheWorld.Avatar.NextAct != null  || World.TheWorld.WorldTick==0)
 					{
+#if DEBUG
 						using (new Profiler())
+#endif
 						{
 							World.TheWorld.GameUpdated();
 						}

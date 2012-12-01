@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.Creatures;
 using GameCore.Creatures.Monsters;
 using GameCore.Essences;
 using GameCore.Essences.Things;
@@ -130,15 +131,14 @@ namespace GameCore.Mapping.Layers
 				if (attr.IsPassable > 0)
 				{
 					var point = new Point(x, y);
-					var any = _block.Creatures.Where(_tuple => _tuple.Position == point).Select(_tuple => _tuple.Creature);
+					if (_block.Creatures.ContainsKey(point))
+					{
+						continue;
+					}
 					
 					var creature = EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd);
 
 					if (creature.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
-					{
-						continue;
-					}
-					if (any.Any())
 					{
 						continue;
 					}

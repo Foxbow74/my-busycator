@@ -69,7 +69,10 @@ namespace GameCore.Essences
 
 		public override int GetHashCode() { return CalcHashCode(); }
 
-		protected virtual int CalcHashCode() { return GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode()); }
+		protected virtual int CalcHashCode()
+		{
+			return base.GetHashCode();// GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode());
+		}
 
 		internal virtual Essence Clone(Creature _resolver)
 		{

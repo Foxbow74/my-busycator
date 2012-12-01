@@ -56,8 +56,6 @@ namespace GameCore.Mapping
 
 		public LiveMapCell[,] Cells { get; private set; }
 
-		
-
 		public Creature FirstActiveCreature
 		{
 			get
@@ -66,11 +64,14 @@ namespace GameCore.Mapping
                 foreach (var block in Blocks)
 				{
 					if (block.IsBorder) continue;
-					foreach (var creaturePosition in block.MapBlock.Creatures)
+					foreach (var pair in block.MapBlock.Creatures)
 					{
-						if (first.BusyTill > creaturePosition.Creature.BusyTill)
+						foreach (var creature in pair.Value)
 						{
-							first = creaturePosition.Creature;
+							if (first.BusyTill > creature.BusyTill)
+							{
+								first = creature;
+							}
 						}
 					}
 				}
@@ -99,7 +100,9 @@ namespace GameCore.Mapping
 
 		public void Actualize()
 		{
+#if DEBUG
 			using (new Profiler())
+#endif
 			{
 				var layer = World.TheWorld.Avatar.Layer;
 				var d = (ActiveQpoint - CenterLiveBlock);
@@ -154,7 +157,9 @@ namespace GameCore.Mapping
 
 		public Point GetData()
 		{
+#if DEBUG
 			using (new Profiler())
+#endif
 			{
 				var centerLiveCell = GetCenterLiveCell();
 
@@ -228,35 +233,24 @@ namespace GameCore.Mapping
 		{
 			if (_oldLiveCoords != null && _newLiveCoords != null && BaseMapBlock.GetInBlockCoords(_oldLiveCoords) == BaseMapBlock.GetInBlockCoords(_newLiveCoords)) return;
 
+			LiveMapCell oldCell = null;
 			LiveMapBlock oldBlock = null;
 			if (_oldLiveCoords != null)
 			{
-				var oldCell = GetCell(_oldLiveCoords);
+				oldCell = GetCell(_oldLiveCoords);
 				oldCell.ResetTempStates();
 
 				oldBlock = oldCell.LiveMapBlock;
 				if (_newLiveCoords==null)
 				{
 					oldBlock.RemoveCreature(_creature, _oldLiveCoords);
-
-					if (GetCell(_oldLiveCoords).Creature != null)
-					{
-						
-					}
-					else
-					{
-						
-					}
-
-
 					return;
 				}
 			}
 
-			var cell = GetCell(_newLiveCoords);
-			cell.ResetTempStates();
-
-			var newBlock = cell.LiveMapBlock;
+			var newCell = GetCell(_newLiveCoords);
+			
+			var newBlock = newCell.LiveMapBlock;
 			if (newBlock != oldBlock)
 			{
 				newBlock.AddCreature(_creature, _newLiveCoords);
@@ -277,6 +271,14 @@ namespace GameCore.Mapping
 				newBlock.RemoveCreature(_creature, _oldLiveCoords);
 				newBlock.AddCreature(_creature, _newLiveCoords);
 			}
+
+			newCell.ResetTempStates();
+
+			if(oldCell!=null)
+			{
+				oldCell.ClearTemp();
+			}
+
 			if (_creature.IsAvatar)
 			{
 				MessageManager.SendMessage(this, WorldMessage.AvatarMove);
