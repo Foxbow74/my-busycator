@@ -89,8 +89,9 @@ namespace GameCore.PathFinding
 
 		public List<Point> FindPath(Creature _creature, Point _end)
 		{
-			//return null;
+#if DEBUG
 			using (new Profiler())
+#endif
 			{
 				lock (this)
 				{

@@ -142,6 +142,13 @@ namespace GameCore.Misc
 			return AllDirections.RandomItem(_rnd);
 		}
 
-		public static T RandomItem<T>(this T[] _array, Random _rnd) { return _array[_rnd.Next(_array.Length)]; }
+		public static T RandomItem<T>(this T[] _array, Random _rnd)
+		{
+			if(_array.Length==0)
+			{
+				return default(T);
+			}
+			return _array[_rnd.Next(_array.Length)];
+		}
 	}
 }

@@ -100,26 +100,24 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			var dpoints = Util.AllDeltas;
 			while (points > 0)
 			{
-				for (var x = 0; x < Constants.MAP_BLOCK_SIZE; ++x)
+				foreach (var point in Point.AllBlockPoints)
 				{
-					for (var y = 0; y < Constants.MAP_BLOCK_SIZE; ++y)
-					{
-						var xy = pm[x, y];
-						if (xy == 0) continue;
+					var xy = pm[point.X, point.Y];
+					if (xy == 0) continue;
 
-						var dpoint = dpoints[rnd.Next(4)];
-						var x1 = x + dpoint.X;
-						if (x1 < 0 || x1 == Constants.MAP_BLOCK_SIZE) continue;
-						var y1 = y + dpoint.Y;
-						if (y1 < 0 || y1 == Constants.MAP_BLOCK_SIZE) continue;
-						var xy1 = pm[x1, y1];
-						if (xy1 == 0)
-						{
-							pm[x1, y1] = xy;
-							points--;
-						}
+					var dpoint = dpoints[rnd.Next(4)];
+					var x1 = point.X + dpoint.X;
+					if (x1 < 0 || x1 == Constants.MAP_BLOCK_SIZE) continue;
+					var y1 = point.Y + dpoint.Y;
+					if (y1 < 0 || y1 == Constants.MAP_BLOCK_SIZE) continue;
+					var xy1 = pm[x1, y1];
+					if (xy1 == 0)
+					{
+						pm[x1, y1] = xy;
+						points--;
 					}
 				}
+
 			}
 
 			#region заполнение карты блока

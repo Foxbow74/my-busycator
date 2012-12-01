@@ -61,11 +61,13 @@ namespace GameCore.Creatures
 				return EThinkingResult.NORMAL;
 			}
 
-			#region выбираем случайное здание отличное от текущего
-
 			var build = ((Surface) Layer).City.Buildings.ToArray().RandomItem(World.Rnd);
+			if (build == null)
+			{
+				AddActToPool(new WaitAct());
+				return EThinkingResult.NORMAL;
+			}
 
-			#endregion
 
 			#region выбираем перву незанятую точку на внутреннем "порожке" здания
 

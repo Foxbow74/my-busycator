@@ -9,7 +9,20 @@ namespace GameCore.Misc
 		private static Point[] m_nearestDPoints;
 		public int X;
 		public int Y;
-		static Point() { Zero = new Point(0,0); }
+		static Point()
+		{
+			Zero = new Point(0,0);
+
+			var blockPoints = new List<Point>();
+			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			{
+				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
+				{
+					blockPoints.Add(new Point(i, j));
+				}
+			}
+			AllBlockPoints = blockPoints.ToArray();
+		}
 
 		public Point(int _x, int _y)
 		{
@@ -28,6 +41,16 @@ namespace GameCore.Misc
 			get
 			{
 				return NearestDPoints.Select(_point => _point + this);
+			}
+		}
+
+		public static Point[] AllBlockPoints { get; private set; }
+
+		public IEnumerable<Point> GetAllBlockPoints()
+		{
+			for (var index = 0; index < AllBlockPoints.Length; index++)
+			{
+				yield return AllBlockPoints[index] + this;
 			}
 		}
 

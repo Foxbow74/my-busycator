@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using UnsafeUtils;
 
 namespace GameCore.Misc
 {
 	public class Profiler : IDisposable
 	{
+		private static readonly HiResTimer m_hrt = new HiResTimer();
 		private static readonly Dictionary<string, Info> m_infos = new Dictionary<string, Info>();
 
-		public static readonly DateTime Start = DateTime.Now;
+		public static readonly Int64 Start = m_hrt.Value;
 		readonly static List<Profiler> m_profilers = new List<Profiler>();
 		private readonly Info m_info;
 		private readonly string m_key;
 		private readonly string m_name;
-		private readonly DateTime m_time = DateTime.Now;
+		private readonly Int64 m_time = m_hrt.Value;
 
 		public Profiler()
 		{
@@ -53,7 +55,7 @@ namespace GameCore.Misc
 			{
 				prev = (float) m_info.Span.Ticks/m_info.Count;
 			}
-			m_info.Span += DateTime.Now - m_time;
+			m_info.Span += new TimeSpan(m_hrt.Value - m_time);
 			m_info.Count++;
 
 			if (prev > 0)
@@ -86,7 +88,7 @@ namespace GameCore.Misc
 
 		public static void Report()
 		{
-			var total = (DateTime.Now - Start).Ticks;
+			var total = m_hrt.Value - Start;
 			ReportIt(null, total);
 		}
 

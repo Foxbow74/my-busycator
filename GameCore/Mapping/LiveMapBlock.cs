@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using GameCore.Creatures;
 using GameCore.Essences;
@@ -20,12 +21,9 @@ namespace GameCore.Mapping
 			m_liveMapBlockIndex = _liveMapBlockIndex;
 			m_liveCellZero = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
 
-			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			foreach (var point in m_liveCellZero.GetAllBlockPoints())
 			{
-				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
-				{
-					m_liveMap.Cells[i + m_liveCellZero.X, j + m_liveCellZero.Y] = new LiveMapCell(this, m_liveCellZero + new Point(i, j));
-				}
+				m_liveMap.Cells[point.X, point.Y] = new LiveMapCell(this, point);
 			}
 		}
 
@@ -37,41 +35,35 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				foreach (var creaturePosition in MapBlock.Creatures)
-				{
-					yield return creaturePosition.Creature;
-				}
+				var arr = MapBlock.Creatures.SelectMany(e => e.Value).ToArray();
+				return arr;
 			}
 		}
 
 		public Point LiveMapBlockId { get; private set; }
 
-		public LiveMapCell this[int _x, int _y] { get { return m_liveMap.Cells[m_liveCellZero.X + _x, m_liveCellZero.Y + _y]; } }
-
 		public void ClearTemp()
 		{
-			var liveCellZero = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
-			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			foreach (var point in m_liveCellZero.GetAllBlockPoints())
 			{
-				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
-				{
-					m_liveMap.Cells[liveCellZero.X + i, liveCellZero.Y + j].ClearTemp();
-				}
+				m_liveMap.Cells[point.X, point.Y].ClearTemp();
 			}
 		}
+
+		/// <summary>
+		/// Мировые координаты левого верхнего угла блока
+		/// </summary>
+		public Point WorldCoords { get; private set; }
 
 		private void Fill()
 		{
 			var rnd = new Random(MapBlock.RandomSeed);
 
-			var mapCellZero = m_mapBlock.BlockId*Constants.MAP_BLOCK_SIZE;
-			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			WorldCoords = m_mapBlock.BlockId*Constants.MAP_BLOCK_SIZE;
+
+			foreach (var point in m_liveCellZero.GetAllBlockPoints())
 			{
-				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
-				{
-					var ij = new Point(i, j);
-					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].SetMapCell(m_mapBlock, ij, mapCellZero + ij, (float) rnd.NextDouble(), m_liveCellZero + ij, m_liveMap);
-				}
+				m_liveMap.Cells[point.X, point.Y].SetMapCell(m_mapBlock, point - m_liveCellZero, (float)rnd.NextDouble(), point, m_liveMap);
 			}
 			foreach (var tuple in m_mapBlock.Objects)
 			{
@@ -85,20 +77,21 @@ namespace GameCore.Mapping
 					m_liveMap.Cells[cellId.X, cellId.Y].Thing = (Thing) tuple.Item1;
 				}
 			}
-			foreach (var creaturePosition in m_mapBlock.Creatures)
+			foreach (var pair in m_mapBlock.Creatures)
 			{
-				creaturePosition.Creature.LiveCoords = m_liveCellZero + creaturePosition.Position;
+				foreach (var creature in Creatures)
+				{
+					creature.LiveCoords = m_liveCellZero + pair.Key;	
+				}
+				
 			}
 		}
 
 		public void UpdatePathFinderMapCoords()
 		{
-			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			foreach (var point in m_liveCellZero.GetAllBlockPoints())
 			{
-				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
-				{
-					m_liveMap.Cells[m_liveCellZero.X + i, m_liveCellZero.Y + j].UpdatePathFinderMapCoord();
-				}
+				m_liveMap.Cells[point.X, point.Y].UpdatePathFinderMapCoord();
 			}
 		}
 
@@ -112,6 +105,9 @@ namespace GameCore.Mapping
 
 		public void Clear()
 		{
+			
+//			m_liveCellZero
+
 			if (MapBlock == null) return;
 			MapBlock = null;
 		}
@@ -125,12 +121,9 @@ namespace GameCore.Mapping
 
 		public void UpdateVisibility(float _fogLightness, FColor _ambient)
 		{
-			for (var i = 0; i < Constants.MAP_BLOCK_SIZE; i++)
+			foreach (var point in m_liveCellZero.GetAllBlockPoints())
 			{
-				for (var j = 0; j < Constants.MAP_BLOCK_SIZE; j++)
-				{
-					this[i, j].UpdateVisibility(_fogLightness, _ambient);
-				}
+				m_liveMap.Cells[point.X, point.Y].UpdateVisibility(_fogLightness, _ambient);
 			}
 		}
 	}

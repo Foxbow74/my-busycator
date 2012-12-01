@@ -57,8 +57,12 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-                var tuple = LiveMapBlock.MapBlock.Creatures.FirstOrDefault(_tuple =>!(_tuple.Creature is AbstractDummyCreature) && _tuple.Position == LiveCoords);
-                return tuple==null?null:tuple.Creature;
+				List<Creature> list;
+				if(LiveMapBlock.MapBlock.Creatures.TryGetValue(InBlockCoords, out list))
+				{
+					return list.FirstOrDefault(_creature => !(_creature is AbstractDummyCreature));
+				}
+				return null;
 			}
 		}
 
@@ -140,7 +144,7 @@ namespace GameCore.Mapping
 
 		public LiveMapBlock LiveMapBlock { get; private set; }
 
-		public Point WorldCoords { get; private set; }
+		public Point WorldCoords { get { return LiveMapBlock.WorldCoords + InBlockCoords; } }
 
 		public Point MapBlockId { get { return m_mapBlock.BlockId; } }
 
@@ -191,7 +195,7 @@ namespace GameCore.Mapping
 
 		public FColor FinalLighted { get; private set; }
 
-		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, Point _worldCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
+		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
 			ResetTempStates();
 
@@ -199,7 +203,6 @@ namespace GameCore.Mapping
 			m_items.Clear();
 			Thing = null;
 
-			WorldCoords = _worldCoords;
 			InBlockCoords = _inBlockCoords;
 			m_mapBlock = _mapBlock;
 			m_seenMask = ((UInt32) 1) << InBlockCoords.X;

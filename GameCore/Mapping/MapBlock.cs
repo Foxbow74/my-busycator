@@ -22,7 +22,8 @@ namespace GameCore.Mapping
 	{
 		public MapBlock(Point _blockId) : base(_blockId)
 		{
-			Creatures = new List<CreaturePosition>();
+			Creatures = new Dictionary<Point, List<Creature>>();
+				//new List<CreaturePosition>();
 			SeenCells = new uint[Constants.MAP_BLOCK_SIZE];
 		}
 
@@ -39,7 +40,9 @@ namespace GameCore.Mapping
 			RandomSeed = _baseMapBlock.RandomSeed;
 		}
 
-		public List<CreaturePosition> Creatures { get; private set; }
+		public Dictionary<Point, List<Creature>> Creatures { get; private set; }
+
+		//public List<CreaturePosition> Creatures { get; private set; }
 
 		public UInt32[] SeenCells { get; private set; }
 
@@ -58,12 +61,12 @@ namespace GameCore.Mapping
 						yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
 					}
 				}
-				foreach (var position in Creatures)
+				foreach (var pair in Creatures)
 				{
-					if (position.Creature.IsAvatar)
+					foreach (var creature in pair.Value)
 					{
+						if (creature.Light != null) yield return new Tuple<ILightSource, Point>(creature.Light, pair.Key);
 					}
-					if (position.Creature.Light != null) yield return new Tuple<ILightSource, Point>(position.Creature.Light, position.Position);
 				}
 			}
 		}
@@ -74,22 +77,36 @@ namespace GameCore.Mapping
 			{
 				_creature = (Creature)((FakedCreature)_creature).Essence.Clone(World.TheWorld.Avatar);
 			}
-			Creatures.Add(new CreaturePosition(_creature, _inBlockCoords));
+			List<Creature> list;
+			if(!Creatures.TryGetValue(_inBlockCoords, out list))
+			{
+				list = new List<Creature>();
+				Creatures.Add(_inBlockCoords, list);
+			}
+			list.Add(_creature);
 		}
 
 		public void RemoveCreature(Creature _creature)
 		{
-			if (Creatures.RemoveAll(_tuple => _tuple.Creature == _creature) == 0)
+			foreach (var creature in Creatures)
 			{
-				throw new ApplicationException();
+				if(creature.Value.Contains(_creature))
+				{
+					creature.Value.Remove(_creature);
+					return;
+				}
 			}
+			throw new ApplicationException();
 		}
 
 		public void AvatarLeftLayer()
 		{
-			foreach (var creature in Creatures)
+			foreach (var pair in Creatures)
 			{
-				creature.Creature.ClearActPool();
+				foreach (var creature in pair.Value)
+				{
+					creature.ClearActPool();
+				}
 			}
 		}
 	}

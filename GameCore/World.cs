@@ -89,13 +89,17 @@ namespace GameCore
 		{
 			
 			Avatar = new Avatar(Surface);
-			AvatarBlockId = Surface.City.CityBlockIds[0];// -new Point(Surface.WORLD_MAP_SIZE / 2, Surface.WORLD_MAP_SIZE / 2);
+			AvatarBlockId = Surface.City.CityBlockIds[0];
 			LiveMap.Actualize();
 			Avatar.LiveCoords = Point.Zero;
 		}
 
 		public void GameUpdated()
 		{
+			if(WorldTick==0)
+			{
+				WorldTick = 1;
+			}
 			var anyHappens = false;
 			var done = new List<Creature>();
 			while (true)
