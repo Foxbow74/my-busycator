@@ -27,7 +27,7 @@ namespace GameCore.Essences.Things
 			{
 				m_leadToLayer = World.TheWorld.GenerateNewLayer(_creature, this);
 			}
-			_creature.Layer = m_leadToLayer;
+			World.TheWorld.CreatureManager.MoveCreature(_creature, _creature.GeoInfo.WorldCoords, m_leadToLayer);
 
 			return EActResults.DONE;
 		}

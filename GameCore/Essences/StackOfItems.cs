@@ -17,10 +17,6 @@ namespace GameCore.Essences
 			get { return m_count; }
 			set
 			{
-				if(value==0)
-				{
-					
-				}
 				m_count = value;
 			}
 		}

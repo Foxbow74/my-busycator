@@ -49,7 +49,7 @@ namespace GameCore.Mapping
 		    set
 		    {
 		        m_thing = value;
-				ResetTempStates();
+				ResetCached();
 		    }
 		}
 
@@ -57,10 +57,10 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				List<Creature> list;
-				if(LiveMapBlock.MapBlock.Creatures.TryGetValue(InBlockCoords, out list))
+				CreatureGeoInfo geoInfo;
+				if(World.TheWorld.CreatureManager.CreatureByPoint.TryGetValue(WorldCoords, out geoInfo))
 				{
-					return list.FirstOrDefault(_creature => !(_creature is AbstractDummyCreature));
+					return geoInfo.Creature;
 				}
 				return null;
 			}
@@ -163,22 +163,22 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				var surface = World.TheWorld.Avatar.Layer as Surface;
-				if (surface == null) return null;
+				var surface = World.TheWorld.Avatar.GeoInfo.Layer as Surface;
+				if (surface == null || surface.City==null) return null;
 				var blockId = MapBlockId;
 				var building = surface.City.Buildings.FirstOrDefault(_building => _building.BlockId == blockId && _building.Room.RoomRectangle.Contains(InBlockCoords));
 				return building;
 			}
 		}
 
-		public Point PathMapCoords { get; private set; }
+		public Point PathMapCoords { get; set; }
 
 		public float FogColorMultiplier
 		{
 			get
 			{
 				if (EssenceHelper.Is<Stair>(Thing)) return 1f;
-				return TerrainAttribute.IsPassable == 0 ? 1f : 0.8f;
+				return TerrainAttribute.IsNotPassable ? 1f : 0.8f;
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace GameCore.Mapping
 			get
 			{
 				if (EssenceHelper.Is<Stair>(Thing)) return 1f;
-				return TerrainAttribute.IsPassable == 0 ? 0.8f : 1f;
+				return TerrainAttribute.IsNotPassable ? 0.8f : 1f;
 			}
 		}
 
@@ -197,7 +197,7 @@ namespace GameCore.Mapping
 
 		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
-			ResetTempStates();
+			ResetCached();
 
 			Rnd = _rnd;
 			m_items.Clear();
@@ -214,10 +214,7 @@ namespace GameCore.Mapping
 			OnLiveMapCoords = _onLiveMapCoords;
 
 			ClearTemp();
-			UpdatePathFinderMapCoord();
 		}
-
-		public void UpdatePathFinderMapCoord() { PathMapCoords = (m_mapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint)*Constants.MAP_BLOCK_SIZE + InBlockCoords; }
 
 		public void ClearTemp()
 		{
@@ -236,7 +233,7 @@ namespace GameCore.Mapping
 		internal void AddItemIntenal(Item _item)
 		{
 		    m_items.Add(_item);
-			ResetTempStates();
+			ResetCached();
 		}
 
 		public void AddItem(Item _item)
@@ -244,15 +241,6 @@ namespace GameCore.Mapping
 			if (m_mapBlock.AddEssence(_item, InBlockCoords))
 			{
 				m_items.Add(_item);
-			}
-		}
-
-		public void AddCreature(Creature _creature)
-		{
-			if (Creature == null)
-			{
-				_creature.LiveCoords = LiveCoords;
-				//m_mapBlock.AddCreature(_creature, InBlockCoords);
 			}
 		}
 
@@ -309,7 +297,7 @@ namespace GameCore.Mapping
 					return _pathFinding?0.99f:0f;
 				}
 			}
-			m_isPassable = TerrainAttribute.IsPassable;
+			m_isPassable = TerrainAttribute.Passability;
 			return m_isPassable.Value;
 		}
 
@@ -332,11 +320,11 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
-			ResetTempStates();
+			ResetCached();
 			m_mapBlock.RemoveEssence(_item, InBlockCoords);
 		}
 
-		public void ResetTempStates()
+		public void ResetCached()
 		{
 			m_transparentColor = null;
 			m_isPassable = null;

@@ -4,7 +4,6 @@ using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Essences.Weapons;
-using GameCore.Storage;
 using GameCore.Storage.XResourceEssences;
 
 namespace MagickSetting.Items.Weapons
@@ -13,8 +12,10 @@ namespace MagickSetting.Items.Weapons
 	{
 		private readonly string m_name;
 
-		public Sword(Material _material, string _name) : base(_material)
+		public Sword(Material _material, string _name, int _tileIndex)
+			: base(_material)
 		{
+			TileIndex = _tileIndex;
 			m_name = _name;
 		}
 
@@ -47,7 +48,7 @@ namespace MagickSetting.Items.Weapons
 	{
 		protected override Sword CreateT(Material _material)
 		{
-			return new Sword(_material, Name);
+			return new Sword(_material, Name, TileIndex);
 		}
 
 		public override Guid ProvierTypeId

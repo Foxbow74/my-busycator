@@ -37,7 +37,7 @@ namespace Tests
 			           	});
 
 			
-			Debug.WriteLine(Avatar[0, 0].LiveMapBlock.Creatures.Count());
+			//Debug.WriteLine(Avatar[0, 0].LiveMapBlock.Creatures.Count());
 		}
 
 		private readonly List<XLangMessage> m_messages = new List<XLangMessage>();

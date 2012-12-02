@@ -32,10 +32,11 @@ namespace MagickSetting
 
 		public IEnumerable<IResourceEssence> Generate()
 		{
-			yield return Add<XResourceSword>("меч-леденец", 1, 1);
-			yield return Add<XResourceSword>("меч-зарубец", 2, 2);
-			yield return Add<XResourceSword>("меч-холодец", 3, 3);
-			yield return Add<XResourceSword>("меч-всем-звиздец", 4, 4, EMaterialType.UNIQ, true);
+			yield return Add<XResourceSword>("меч", 1, 1);
+			yield return Add<XResourceSword>("меч-леденец", 2, 1);
+			yield return Add<XResourceSword>("меч-зарубец", 3, 2);
+			yield return Add<XResourceSword>("меч-холодец", 4, 3);
+			yield return Add<XResourceSword>("меч-всем-звиздец", 5, 4, EMaterialType.UNIQ, true);
 		}
 
 		private T Add<T>(string _name, int _tileIndex, int _level, EMaterialType _materialType = EMaterialType.METAL, bool _isArtifact = false) where T : XObject, IResourceEssence

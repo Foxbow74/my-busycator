@@ -76,6 +76,8 @@
     <Compile Include="CreatureRoles\AbstractCreatureRole.cs" />
     <Compile Include="Creatures\Avatar.cs" />
     <Compile Include="Creatures\Citizen.cs" />
+    <Compile Include="Creatures\CreatureGeoInfo.cs" />
+    <Compile Include="Creatures\CreatureManager.cs" />
     <Compile Include="Creatures\Dummies\AbstractDummyCreature.cs" />
     <Compile Include="Creatures\Dummies\Splatter.cs" />
     <Compile Include="Creatures\Dummies\SplatterDropper.cs" />

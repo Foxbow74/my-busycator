@@ -67,13 +67,6 @@ namespace GameCore.Essences
 
 		public bool Equals(Essence _other) { return GetHashCode() == _other.GetHashCode(); }
 
-		public override int GetHashCode() { return CalcHashCode(); }
-
-		protected virtual int CalcHashCode()
-		{
-			return base.GetHashCode();// GetType().GetHashCode() ^ (Material == null ? 0 : Material.GetHashCode());
-		}
-
 		internal virtual Essence Clone(Creature _resolver)
 		{
 			return (Essence)MemberwiseClone();

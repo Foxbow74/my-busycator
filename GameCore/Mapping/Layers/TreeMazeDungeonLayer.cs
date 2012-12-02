@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.Creatures;
 using GameCore.Creatures.Monsters;
 using GameCore.Essences;
 using GameCore.Essences.Things;
@@ -71,19 +70,19 @@ namespace GameCore.Mapping.Layers
 						if (_rnd.NextDouble() > 0.7)
 						{
 							var dir = EDirections.NONE;
-							if (point.X > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsPassable == 0)
+							if (point.X > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X - 1, point.Y]).IsNotPassable)
 							{
 								dir = EDirections.RIGHT;
 							}
-							else if (point.X < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsPassable == 0)
+							else if (point.X < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X + 1, point.Y]).IsNotPassable)
 							{
 								dir = EDirections.LEFT;
 							}
-							else if (point.Y > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y - 1]).IsPassable == 0)
+							else if (point.Y > 0 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y - 1]).IsNotPassable)
 							{
 								dir = EDirections.DOWN;
 							}
-							else if (point.Y < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsPassable == 0)
+							else if (point.Y < Constants.MAP_BLOCK_SIZE - 1 && TerrainAttribute.GetAttribute(mapBlock.Map[point.X, point.Y + 1]).IsNotPassable)
 							{
 								dir = EDirections.UP;
 							}
@@ -128,15 +127,15 @@ namespace GameCore.Mapping.Layers
 				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
 				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
-				if (attr.IsPassable > 0)
+				if (attr.IsPassable)
 				{
 					var point = new Point(x, y);
-					if (_block.Creatures.ContainsKey(point))
+					if (_block.Creatures.Values.Contains(point))
 					{
 						continue;
 					}
 					
-					var creature = EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd);
+					var creature = (AbstractMonster)EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd).Essence.Clone(World.TheWorld.Avatar);
 
 					if (creature.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
 					{
@@ -148,7 +147,7 @@ namespace GameCore.Mapping.Layers
 						continue;
 					}
 
-					_block.AddCreature(creature, point);
+					_block.Creatures.Add(creature, point);
 				}
 			}
 		}
@@ -162,28 +161,17 @@ namespace GameCore.Mapping.Layers
 				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
 				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
-				if (attr.IsPassable > 0)
+				if (attr.IsPassable)
 				{
 					var point = new Point(x, y);
 					var any = _block.Objects.Where(_tuple => _tuple.Item2 == point).Select(_tuple => _tuple.Item1);
 					var thing = EssenceHelper.GetRandomFakedItem(_rnd);
 
-					if (thing.Is<Stair>() && (x == Constants.MAP_BLOCK_SIZE - 1 || y == Constants.MAP_BLOCK_SIZE - 1))
+					if (any.Any(_thing => !(_thing is Item)))
 					{
 						continue;
 					}
-
-					if (thing is Item)
-					{
-						if (any.Any(_thing => !(_thing is Item)))
-						{
-							continue;
-						}
-					}
-					else if (any.Any())
-					{
-						continue;
-					}
+					
 					_block.AddEssence(thing, point);
 				}
 			}

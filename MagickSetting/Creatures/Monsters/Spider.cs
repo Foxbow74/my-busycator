@@ -19,7 +19,7 @@ namespace MagickSetting.Creatures.Monsters
 			var lcd = 0.5f + (Nn % 20 - 10) / 10f;
 			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble()/2, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble()/2);
 
-			Behaviour = EMonsterBehaviour.ATACK_AVATAR;
+			Behaviour = EMonsterBehaviour.IDLE;
 		}
 
 

@@ -84,7 +84,7 @@ namespace GameUi.UIBlocks
 
 				var list = new List<string>();
 				string thereIsWas;
-				if (lighted.Lightness() > World.TheWorld.Avatar.Layer.FogLightness)
+				if (lighted.Lightness() > World.TheWorld.Avatar.GeoInfo.Layer.FogLightness)
 				{
 					thereIsWas = "там ";
                     ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);

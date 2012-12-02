@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Collections.Generic;
-using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Misc;
 
@@ -9,42 +6,43 @@ namespace GameCore.Mapping
 {
 	public class LiveMapBlock
 	{
-		private readonly Point m_liveCellZero;
 		private readonly LiveMap m_liveMap;
 		private readonly int m_liveMapBlockIndex;
-		private MapBlock m_mapBlock;
 
 		public LiveMapBlock(LiveMap _liveMap, Point _liveMapBlockId, int _liveMapBlockIndex)
 		{
 			m_liveMap = _liveMap;
 			LiveMapBlockId = _liveMapBlockId;
 			m_liveMapBlockIndex = _liveMapBlockIndex;
-			m_liveCellZero = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
+			LiveCoords = LiveMapBlockId*Constants.MAP_BLOCK_SIZE;
 
-			foreach (var point in m_liveCellZero.GetAllBlockPoints())
+			foreach (var point in LiveCoords.GetAllBlockPoints())
 			{
 				m_liveMap.Cells[point.X, point.Y] = new LiveMapCell(this, point);
 			}
 		}
 
-		public MapBlock MapBlock { get { return m_mapBlock; } private set { m_mapBlock = value; } }
+		public MapBlock MapBlock { get; private set; }
 
+		/// <summary>
+		/// Флаг, указывающий, что блок является границей живой карты. Существа, попадающие на него "выводятся из игры" и в активных действиях участия не принимают.
+		/// </summary>
 		public bool IsBorder { get; set; }
 
-		public IEnumerable<Creature> Creatures
-		{
-			get
-			{
-				var arr = MapBlock.Creatures.SelectMany(e => e.Value).ToArray();
-				return arr;
-			}
-		}
+		//public IEnumerable<Creature> Creatures
+		//{
+		//    get
+		//    {
+		//        var arr = MapBlock.Creatures.SelectMany(e => e.Value).ToArray();
+		//        return arr;
+		//    }
+		//}
 
 		public Point LiveMapBlockId { get; private set; }
 
 		public void ClearTemp()
 		{
-			foreach (var point in m_liveCellZero.GetAllBlockPoints())
+			foreach (var point in LiveCoords.GetAllBlockPoints())
 			{
 				m_liveMap.Cells[point.X, point.Y].ClearTemp();
 			}
@@ -55,19 +53,21 @@ namespace GameCore.Mapping
 		/// </summary>
 		public Point WorldCoords { get; private set; }
 
+		public Point LiveCoords { get; private set; }
+
 		private void Fill()
 		{
 			var rnd = new Random(MapBlock.RandomSeed);
 
-			WorldCoords = m_mapBlock.BlockId*Constants.MAP_BLOCK_SIZE;
+			WorldCoords = MapBlock.BlockId*Constants.MAP_BLOCK_SIZE;
 
-			foreach (var point in m_liveCellZero.GetAllBlockPoints())
+			foreach (var point in LiveCoords.GetAllBlockPoints())
 			{
-				m_liveMap.Cells[point.X, point.Y].SetMapCell(m_mapBlock, point - m_liveCellZero, (float)rnd.NextDouble(), point, m_liveMap);
+				m_liveMap.Cells[point.X, point.Y].SetMapCell(MapBlock, point - LiveCoords, (float)rnd.NextDouble(), point, m_liveMap);
 			}
-			foreach (var tuple in m_mapBlock.Objects)
+			foreach (var tuple in MapBlock.Objects)
 			{
-				var cellId = tuple.Item2 + m_liveCellZero;
+				var cellId = tuple.Item2 + LiveCoords;
 				if (tuple.Item1 is Item)
 				{
 					m_liveMap.Cells[cellId.X, cellId.Y].AddItemIntenal((Item) tuple.Item1);
@@ -77,21 +77,20 @@ namespace GameCore.Mapping
 					m_liveMap.Cells[cellId.X, cellId.Y].Thing = (Thing) tuple.Item1;
 				}
 			}
-			foreach (var pair in m_mapBlock.Creatures)
+			foreach (var pair in MapBlock.Creatures)
 			{
-				foreach (var creature in Creatures)
-				{
-					creature.LiveCoords = m_liveCellZero + pair.Key;	
-				}
-				
+				World.TheWorld.CreatureManager.AddCreature(pair.Key, WorldCoords + pair.Value, LiveCoords + pair.Value);
 			}
+			MapBlock.Creatures.Clear();
 		}
 
 		public void UpdatePathFinderMapCoords()
 		{
-			foreach (var point in m_liveCellZero.GetAllBlockPoints())
+			var basePoint = (MapBlock.BlockId - World.TheWorld.AvatarBlockId + LiveMap.ActiveQpoint) * Constants.MAP_BLOCK_SIZE;
+			foreach (var point in LiveCoords.GetAllBlockPoints())
 			{
-				m_liveMap.Cells[point.X, point.Y].UpdatePathFinderMapCoord();
+				var pnt = basePoint + BaseMapBlock.GetInBlockCoords(point);
+				m_liveMap.Cells[point.X, point.Y].PathMapCoords = pnt;
 			}
 		}
 
@@ -101,7 +100,7 @@ namespace GameCore.Mapping
 			Fill();
 		}
 
-		public override string ToString() { return LiveMapBlockId + " MB:" + (m_mapBlock == null ? "<null>" : m_mapBlock.BlockId.ToString()); }
+		public override string ToString() { return LiveMapBlockId + " MB:" + (MapBlock == null ? "<null>" : MapBlock.BlockId.ToString()); }
 
 		public void Clear()
 		{
@@ -112,16 +111,9 @@ namespace GameCore.Mapping
 			MapBlock = null;
 		}
 
-		public void RemoveCreature(Creature _creature, Point _oldLiveCoords) { MapBlock.RemoveCreature(_creature); }
-
-		public void AddCreature(Creature _creature, Point _newLiveCoords)
-		{
-			MapBlock.AddCreature(_creature, BaseMapBlock.GetInBlockCoords(_newLiveCoords));
-		}
-
 		public void UpdateVisibility(float _fogLightness, FColor _ambient)
 		{
-			foreach (var point in m_liveCellZero.GetAllBlockPoints())
+			foreach (var point in LiveCoords.GetAllBlockPoints())
 			{
 				m_liveMap.Cells[point.X, point.Y].UpdateVisibility(_fogLightness, _ambient);
 			}

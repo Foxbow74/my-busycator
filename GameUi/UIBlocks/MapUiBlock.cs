@@ -50,7 +50,7 @@ namespace GameUi.UIBlocks
 
 			TileHelper.DrawHelper.ClearTiles(Rct, BackgroundColor);
 
-			var worldLayer = World.TheWorld.Avatar.Layer;
+			var worldLayer = World.TheWorld.Avatar.GeoInfo.Layer;
 
 			var width = ContentRct.Width;
 			var height = ContentRct.Height;

@@ -18,7 +18,7 @@
 		/// <summary>
 		/// Размер мира в блоках, если 1 - строит тестовую карту, в зависимости от <see cref="WORLD_SEED"/>
 		/// </summary>
-		public static int WORLD_MAP_SIZE = 100;
+		public static int WORLD_MAP_SIZE = 32;
 
 		/// <summary>
 		/// Сид рандомайзера мира

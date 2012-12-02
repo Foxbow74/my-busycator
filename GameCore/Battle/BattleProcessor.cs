@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Acts;
 using GameCore.Creatures;
@@ -49,7 +48,7 @@ namespace GameCore.Battle
 			var weapons = _creature.GetWeapons(_target).ToArray();
 			if(_creature is SplatterDropper)
 			{
-				_creature.LiveCoords = null;
+				World.TheWorld.CreatureManager.CreatureIsDead(_creature);
 				return EActResults.DONE;
 			}
 
@@ -117,7 +116,7 @@ namespace GameCore.Battle
 
 			if (_creature is Missile)
 			{
-				_creature.LiveCoords = null;
+				World.TheWorld.CreatureManager.CreatureIsDead(_creature);
 			}
 			return EActResults.DONE;
 			

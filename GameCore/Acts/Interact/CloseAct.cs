@@ -34,52 +34,7 @@ namespace GameCore.Acts.Interact
 					break;
 				default:
 					return find;
-
 			}
-
-			//LiveMapCell liveMapCell;
-			//{
-			//    var delta = GetParameter<Point>().FirstOrDefault();
-			//    if (delta == null)
-			//    {
-			//        //собираем координаты всех закрытых вещей
-			//        var list = new List<Point>();
-			//        foreach (var dPoint in Point.NearestDPoints)
-			//        {
-			//            var cell = _creature[dPoint];
-			//            var thing = cell.Thing;
-			//            if (thing.CanBeClosed(cell, _creature))
-			//            {
-			//                if (thing.Is<OpenDoor>() && dPoint.Lenght == 0)
-			//                {
-			//                    continue;
-			//                }
-			//                list.Add(dPoint);
-			//            }
-			//            else if (cell.GetAllAvailableItemDescriptors<Thing>(_creature).Any(_descriptor => _descriptor.Essence.CanBeClosed(cell, _creature)))
-			//            {
-			//                list.Add(dPoint);
-			//            }
-			//        }
-			//        if (_creature.GetBackPackItems().Any(_descriptor => _descriptor.Essence.CanBeClosed(null, _creature)))
-			//        {
-			//            list.Add(Point.Zero);
-			//        }
-			//        var variants = list.Distinct().ToArray();
-			//        if (variants.Length == 0)
-			//        {
-			//            if (_creature.IsAvatar) MessageManager.SendMessage(this, new SimpleTextMessage(EMessageType.INFO, "закрыть что?"));
-			//            return EActResults.QUICK_FAIL;
-			//        }
-			//        if (variants.Length > 1)
-			//        {
-			//            MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.ASK_DIRECTION));
-			//            return EActResults.NEED_ADDITIONAL_PARAMETERS;
-			//        }
-			//        delta = variants[0];
-			//    }
-			//    liveMapCell = _creature[delta];
-			//}
 
 			//выясняем, что нужно закрыть
 			{
@@ -89,7 +44,7 @@ namespace GameCore.Acts.Interact
 					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
 				}
 				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
-				if (liveMapCell.LiveCoords == _creature.LiveCoords)
+				if (liveMapCell.LiveCoords == _creature.GeoInfo.LiveCoords)
 				{
 					list.AddRange(_creature.GetBackPackItems().Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
 				}

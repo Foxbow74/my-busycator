@@ -45,7 +45,7 @@ namespace GameCore.Essences.Mechanisms
 					{
 						var monster = (AbstractMonster)EssenceHelper.GetRandomFakedCreature<AbstractMonster>(World.Rnd).Essence.Clone(_creature);
 						monster.Behaviour=EMonsterBehaviour.IDLE;
-						myCell.AddCreature(monster);
+						World.TheWorld.CreatureManager.AddCreature(monster, myCell.WorldCoords, myCell.LiveCoords);
 
 						MessageManager.SendMessage(this, new SoundTextMessage("послышался всплеск"));
 					}

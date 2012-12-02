@@ -34,6 +34,9 @@ namespace GameCore.Essences.Faked
 
 		public override bool Is<T>() { return Essence is T; }
 
-		protected override int CalcHashCode() { return Essence.GetHashCode(); }
+		public override int GetHashCode()
+		{
+			return Essence.GetHashCode();
+		}
 	}
 }

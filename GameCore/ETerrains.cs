@@ -56,7 +56,8 @@ namespace GameCore
 		public TerrainAttribute(string _displayName, float _isPassable, float _transparency, bool _isCanShootThrough, ESex _sex = ESex.MALE)
 		{
 			DisplayName = _displayName;
-			IsPassable = _isPassable;
+			Passability = _isPassable;
+			IsPassable = _isPassable > 0;
 			Opacity = _transparency;
 			IsCanShootThrough = _isCanShootThrough;
 			Sex = _sex;
@@ -65,7 +66,9 @@ namespace GameCore
 		public ESex Sex { get; private set; }
 
 		public string DisplayName { get; private set; }
-		public float IsPassable { get; private set; }
+		public float Passability { get; private set; }
+		public bool IsPassable { get; private set; }
+		public bool IsNotPassable { get { return !IsPassable; } }
 		public float Opacity { get; private set; }
 		public bool IsCanShootThrough { get; private set; }
 
