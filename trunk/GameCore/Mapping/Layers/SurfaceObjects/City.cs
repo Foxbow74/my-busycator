@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.CreatureRoles;
 using GameCore.Creatures;
@@ -20,7 +19,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		{
 			Surface = _surface;
 			CityBlockIds = _cityBlockIds.ToArray();
-            if (Constants.WORLD_MAP_SIZE > 2)
+            if (Constants.WORLD_MAP_SIZE >= 32)
             {
                 AddBuildings();
             }
@@ -29,8 +28,6 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public Surface Surface { get; private set; }
 
 		public IEnumerable<Building> Buildings { get { return m_buildings; } }
-
-		public IEnumerable<Citizen> AllCitizens { get { return m_citizens; } }
 
 		public Point[] CityBlockIds { get; private set; }
 
@@ -127,7 +124,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
                 if (_rnd.Next(2) == 0) roadPoints.Add(new Point(i, 1));
 			}
 
-            if (roadPoints.All(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsPassable>0))
+            if (roadPoints.All(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsPassable))
 		    {
                 foreach (var point in roadPoints)
                 {
@@ -135,7 +132,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
                 }
             }
 
-		    var impossible = m_buildings.Where(building =>building.Room.AreaRectangle.AllPoints.Any(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsPassable == 0)).ToArray();
+		    var impossible = m_buildings.Where(building =>building.Room.AreaRectangle.AllPoints.Any(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsNotPassable)).ToArray();
 		    foreach (var building in impossible)
 		    {
 		        m_buildings.Remove(building);
@@ -170,7 +167,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 					m_conf.Add(tuple);
 					citizen.SetLerpColor(tuple.Item2);
-					_block.AddCreature(citizen, building.Room.RoomRectangle.Center);
+					_block.Creatures.Add(citizen, building.Room.RoomRectangle.Center);
 				}
 			}
 		}

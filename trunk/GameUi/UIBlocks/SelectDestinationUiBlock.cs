@@ -5,7 +5,6 @@ using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Messages;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameUi.UIBlocks
 {
@@ -62,6 +61,7 @@ namespace GameUi.UIBlocks
 					if (m_path != null)
 					{
 						m_act.AddParameter(m_path);
+						m_act.AddParameter(int.MaxValue);
 						CloseTopBlock();
 					}
 					return;

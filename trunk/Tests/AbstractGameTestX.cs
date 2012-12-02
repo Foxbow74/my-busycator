@@ -16,7 +16,7 @@ namespace Tests
 			do
 			{
 				World.TheWorld.GameUpdated();
-			} while (World.TheWorld.LiveMap.FirstActiveCreature != Avatar);
+			} while (World.TheWorld.CreatureManager.FirstActiveCreature != Avatar);
 		}
 
 		public Avatar Avatar

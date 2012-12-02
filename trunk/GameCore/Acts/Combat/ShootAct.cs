@@ -63,7 +63,7 @@ namespace GameCore.Acts.Combat
 			{
 				return EActResults.QUICK_FAIL;
 			}
-			new Missile(_creature.Layer, _creature[0,0], 2, item, _creature[dPoint.X,dPoint.Y]);
+			new Missile(_creature.GeoInfo.Layer, _creature[0, 0], 2, item, _creature[dPoint.X, dPoint.Y]);
 			return EActResults.DONE;
 		}
 	}

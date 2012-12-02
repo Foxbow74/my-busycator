@@ -18,15 +18,16 @@ namespace GameCore.Creatures.Dummies
 		private readonly List<Point> m_path;
 		private int m_step = 1;
 
-		private readonly Point m_target;
-
 		public Missile(WorldLayer _layer, LiveMapCell _from, int _speed, Item _ammo, LiveMapCell _to): base(_layer, _speed)
 		{
 			Ammo = _ammo;
-			var d = _to.PathMapCoords - _from.PathMapCoords;
-			LiveCoords = _from.LiveCoords;
-			m_target = LiveCoords + d*10;
-			m_path = LiveCoords.GetLineToPoints(m_target).ToList();
+			var d = (_to.PathMapCoords - _from.PathMapCoords)*10;
+			if(d.Lenght>32)
+			{
+				d = d*31/(int)d.Lenght;
+			}
+			World.TheWorld.CreatureManager.AddCreature(this, _from.WorldCoords, _from.LiveCoords, _layer);
+			m_path = _from.LiveCoords.GetLineToPoints(_from.LiveCoords + d).ToList();
 			m_light = new LightSource(10, new FColor(2f, 1f, 0.8f, 0.4f));
 		}
 
@@ -55,7 +56,7 @@ namespace GameCore.Creatures.Dummies
 			var canMove = m_step < m_path.Count;
 			if (passable < 1)
 			{
-				nextCell = World.TheWorld.LiveMap.GetCell(LiveCoords);
+				nextCell = World.TheWorld.LiveMap.GetCell(GeoInfo.LiveCoords);
 				canMove = false;
 			}
 			if (!canMove)

@@ -70,7 +70,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			if(World.TheWorld.LiveMap.FirstActiveCreature.IsAvatar && m_tp==null)
+			if(World.TheWorld.CreatureManager.FirstActiveCreature.IsAvatar && m_tp==null)
 			{
 				PrepareText();
 			}

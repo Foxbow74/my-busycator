@@ -61,7 +61,7 @@ namespace GameCore.Creatures
 				return EThinkingResult.NORMAL;
 			}
 
-			var build = ((Surface) Layer).City.Buildings.ToArray().RandomItem(World.Rnd);
+			var build = ((Surface) GeoInfo.Layer).City.Buildings.ToArray().RandomItem(World.Rnd);
 			if (build == null)
 			{
 				AddActToPool(new WaitAct());
@@ -80,7 +80,7 @@ namespace GameCore.Creatures
 					if (path != null)
 					{
 						//если точка достижима
-						AddActToPool(new MoveToAct(this, path));
+						AddActToPool(new MoveToAct(this, path),int.MaxValue);
 						return EThinkingResult.NORMAL;
 					}
 				}

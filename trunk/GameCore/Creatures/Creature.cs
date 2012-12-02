@@ -29,9 +29,6 @@ namespace GameCore.Creatures
 		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
 
 		private WorldLayer m_layer;
-		private Point m_liveCoords;
-
-		private Point m_pathMapCoords;
 
 		#endregion
 
@@ -53,11 +50,6 @@ namespace GameCore.Creatures
 		public void AddRole(AbstractCreatureRole _role)
 		{
 			m_roles.Add(_role);
-		}
-
-		public void Born(Point _liveCoords)
-		{
-			m_liveCoords = _liveCoords;
 		}
 
 		public void ClearActPool()
@@ -86,11 +78,6 @@ namespace GameCore.Creatures
 		}
 
 		public abstract EThinkingResult Thinking();
-
-		protected override int CalcHashCode()
-		{
-			return base.CalcHashCode() ^ Nn;
-		}
 
 		#endregion
 
@@ -205,55 +192,38 @@ namespace GameCore.Creatures
 
 		public LiveMapCell this[Point _point]
 		{
-			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + _point); }
+			get { return GeoInfo[_point]; }
 		}
 
 		public LiveMapCell this[int _x, int _y]
 		{
-			get { return World.TheWorld.LiveMap.GetCell(LiveCoords + new Point(_x, _y)); }
+			get { return GeoInfo[_x, _y]; }
 		}
 
-		public WorldLayer Layer
-		{
-			get { return m_layer; }
-			set
-			{
-				if (m_layer == value)
-				{
-					throw new ApplicationException("Лишнее действие");
-				}
-				m_pathMapCoords = null;
-				var oldLayer = m_layer;
-				m_layer = value;
-				if (oldLayer != null)
-				{
-					World.TheWorld.LiveMap.CreaturesLayerChanged(this, oldLayer, value);
-				}
-			}
-		}
-
-		/// <summary>
-		/// 	Live координаты
-		/// </summary>
-		public Point LiveCoords
-		{
-			get { return m_liveCoords; }
-			set
-			{
-				m_pathMapCoords = null;
-				var oldValue = m_liveCoords;
-				m_liveCoords = value==null? null : World.TheWorld.LiveMap.GetCell(value).LiveCoords;
-				World.TheWorld.LiveMap.CreaturesCellChanged(this, oldValue, m_liveCoords);
-			}
-		}
-
+		//public WorldLayer Layer
+		//{
+		//    get { return m_layer; }
+		//    set
+		//    {
+		//        if (m_layer == value)
+		//        {
+		//            throw new ApplicationException("Лишнее действие");
+		//        }
+		//        var oldLayer = m_layer;
+		//        m_layer = value;
+		//        if (oldLayer != null)
+		//        {
+		//            World.TheWorld.CreatureManager.MoveCreature(this, GeoInfo.WorldCoords, value);
+		//        }
+		//        else
+		//        {
+					
+		//        }
+		//    }
+		//}
+		
 		public int Luck { get; protected set; }
 		public int Nn { get; private set; }
-
-		public Point PathMapCoords
-		{
-			get { return m_pathMapCoords ?? (m_pathMapCoords = this[0, 0].PathMapCoords); }
-		}
 
 		public IEnumerable<AbstractCreatureRole> Roles
 		{
@@ -273,6 +243,9 @@ namespace GameCore.Creatures
 		#endregion
 
 		public abstract EFraction Fraction { get; }
+
+		public CreatureGeoInfo GeoInfo { get; set; }
+
 		public abstract CreatureBattleInfo CreateBattleInfo();
 
 		/// <summary>

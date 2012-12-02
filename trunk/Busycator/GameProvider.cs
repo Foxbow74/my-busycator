@@ -67,7 +67,7 @@ namespace Busycator
 			{
 
 				var avatar = World.TheWorld.Avatar;
-				Title = string.Format("Busycator lc:{0} wc:{1} bld:{2} pmc:{3} fps:{4} per frame, ms:{5}", avatar[0, 0].LiveCoords, avatar[0, 0].WorldCoords, avatar[0, 0].InBuilding, avatar[0, 0].PathMapCoords, Math.Round(1 / _e.Time), (sum/cnt));
+				Title = string.Format("Busycator lc:{0} wc:{1} bld:{2} pmc:{3} fps:{4} per frame, ms:{5}, creatures:{6}", avatar[0, 0].LiveCoords, avatar[0, 0].WorldCoords, avatar[0, 0].InBuilding, avatar[0, 0].PathMapCoords, Math.Round(1 / _e.Time), (sum/cnt), World.TheWorld.CreatureManager.InfoByCreature.Count);
 
 				//base.OnRenderFrame(_e);
 

@@ -65,14 +65,14 @@ namespace GameCore.Battle
 				var x = (int)(Math.Sin(ro) * 20f);
 				var y = (int)(Math.Cos(ro) * 20f);
 
-				new SplatterDropper(Creature.Layer, Creature[0, 0], fact, FColor.Crimson, Creature[x, y]);
+				new SplatterDropper(Creature.GeoInfo.Layer, Creature[0, 0], fact, FColor.Crimson, Creature[x, y]);
 			}
 
 			if (HP <= 0)
 			{
 				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_KILLED, _source, Creature));
 				Creature[0, 0].AddItem(new Corpse(Creature));
-				Creature.LiveCoords = null;
+				World.TheWorld.CreatureManager.CreatureIsDead(Creature);
 			}
 		}
 	}

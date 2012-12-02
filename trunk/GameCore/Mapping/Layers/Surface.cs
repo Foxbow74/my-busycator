@@ -39,16 +39,24 @@ namespace GameCore.Mapping.Layers
                     m_worldMap = r1.Generate();
 					City = new City(this, new Point(0,0));
 					break;
+				case 2:
+					var r2 = new TestSurfaceGenerator2x2(World.Rnd);
+					m_worldMap = r2.Generate();
+					City = new City(this, new Point(0, 0));
+					break;
 				default:
 					var worldMapGenerator = new WorldMapGenerator(Constants.WORLD_MAP_SIZE, World.Rnd);
 					m_worldMap = worldMapGenerator.Generate();
-					var cityBlockIds = worldMapGenerator.FindCityPlace((int)Math.Sqrt(Constants.WORLD_MAP_SIZE) / 2).ToArray();
-					foreach (var id in cityBlockIds)
+					if (Constants.WORLD_MAP_SIZE > 31)
 					{
-						m_worldMap[id.X, id.Y] = EMapBlockTypes.CITY;
-					}
+						var cityBlockIds = worldMapGenerator.FindCityPlace((int) Math.Sqrt(Constants.WORLD_MAP_SIZE)/2).ToArray();
+						foreach (var id in cityBlockIds)
+						{
+							m_worldMap[id.X, id.Y] = EMapBlockTypes.CITY;
+						}
 
-					City = new City(this, cityBlockIds.Select(_point => new Point(_point.X-Constants.WORLD_MAP_SIZE/2,_point.Y-Constants.WORLD_MAP_SIZE/2)).ToArray());
+						City = new City(this, cityBlockIds.Select( _point => new Point(_point.X - Constants.WORLD_MAP_SIZE/2, _point.Y - Constants.WORLD_MAP_SIZE/2)).ToArray());
+					}
 					break;
 			}
 		}
@@ -211,7 +219,7 @@ namespace GameCore.Mapping.Layers
 				var y = _rnd.Next(Constants.MAP_BLOCK_SIZE);
 
 				var attr = TerrainAttribute.GetAttribute(_block.Map[x, y]);
-				if (attr.IsPassable <= 0) continue;
+				if (attr.IsNotPassable) continue;
 
 
 				var point = new Point(x, y);

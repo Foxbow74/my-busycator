@@ -71,7 +71,7 @@ namespace GameCore.Acts.Movement
 					}
 					MessageManager.SendMessage(this, mess);
 				}
-				_creature.LiveCoords += delta;
+				World.TheWorld.CreatureManager.MoveCreatureOnDelta(_creature, delta);
 				return EActResults.DONE;
 			}
 			else

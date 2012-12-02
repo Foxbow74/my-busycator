@@ -22,8 +22,8 @@ namespace GameCore.Creatures.Dummies
 			m_color = _color;
 
 			var d = _to.PathMapCoords - _from.PathMapCoords;
-			LiveCoords = _from.LiveCoords;
-			m_path = LiveCoords.GetLineToPoints(LiveCoords + d * 10).ToList();
+			World.TheWorld.CreatureManager.AddCreature(this, _from.WorldCoords, _from.LiveCoords, _layer);
+			m_path = _from.LiveCoords.GetLineToPoints(_from.LiveCoords + d * 10).ToList();
 		}
 
 		public override ETileset Tileset { get { return ETileset.NONE; } }

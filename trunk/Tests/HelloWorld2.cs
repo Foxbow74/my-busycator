@@ -19,7 +19,6 @@ namespace Tests
 					SendKey(ConsoleKey.Y);
 				}
 			}
-			Debug.WriteLine(Avatar[0,0].LiveMapBlock.Creatures.Count());
 		}
 	}
 }

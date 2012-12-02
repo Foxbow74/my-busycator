@@ -42,12 +42,15 @@ namespace GameCore
 		public World()
 		{
 			BattleProcessor = new BattleProcessor();
+			CreatureManager = new CreatureManager();
+
 			LiveMap = new LiveMap();
 			m_layers.Add(Surface = new Surface());
 			WorldTick = 0;
 		}
 
 		public BattleProcessor BattleProcessor { get; private set; }
+		public CreatureManager CreatureManager { get; private set; }
 
 		private static XResourceClient XClient
 		{
@@ -87,11 +90,10 @@ namespace GameCore
 
 		private void BornAvatar()
 		{
-			
 			Avatar = new Avatar(Surface);
-			AvatarBlockId = Surface.City.CityBlockIds[0];
+			AvatarBlockId = Surface.City==null?new Point(-1,-1): Surface.City.CityBlockIds[0];
+			CreatureManager.AddCreature(Avatar, AvatarBlockId * Constants.MAP_BLOCK_SIZE, Point.Zero, Surface);
 			LiveMap.Actualize();
-			Avatar.LiveCoords = Point.Zero;
 		}
 
 		public void GameUpdated()
@@ -100,11 +102,11 @@ namespace GameCore
 			{
 				WorldTick = 1;
 			}
-			var anyHappens = false;
 			var done = new List<Creature>();
+			Creature creature = null;
 			while (true)
 			{
-				var creature = LiveMap.FirstActiveCreature;
+				creature = CreatureManager.FirstActiveCreature;
 
 				#region не давать ходить дважды до перерисовки);
 
@@ -123,7 +125,7 @@ namespace GameCore
 						case EThinkingResult.NORMAL:
 							break;
 						case EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE:
-							creature.LiveCoords = null;
+							CreatureManager.CreatureIsDead(creature);
 							continue;
 						default:
 							throw new ArgumentOutOfRangeException();
@@ -154,7 +156,6 @@ namespace GameCore
 						case EActResults.ACT_REPLACED:
 							break;
 						case EActResults.DONE:
-							anyHappens = true;
 							break;
 						case EActResults.WORLD_STAYS_UNCHANGED:
 						case EActResults.FAIL:
@@ -166,7 +167,7 @@ namespace GameCore
 				} while (actResult == EActResults.ACT_REPLACED);
 				MessageManager.SendMessage(this, WorldMessage.MicroTurn);
 			}
-			if(anyHappens)
+			if (done.Contains(Avatar) || Avatar.NextAct == null)
 			{
 				MessageManager.SendMessage(this, WorldMessage.Turn);
 			}
@@ -208,7 +209,7 @@ namespace GameCore
 				default:
 					throw new ArgumentOutOfRangeException();
 			}
-			layer.AddStair(_creature.Layer, _creature[0, 0].WorldCoords, _stair);
+			layer.AddStair(_creature.GeoInfo.Layer, _creature[0, 0].WorldCoords, _stair);
 			return layer;
 		}
 
