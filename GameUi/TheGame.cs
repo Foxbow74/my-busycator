@@ -43,7 +43,10 @@ namespace GameUi
 					uiBlock.Resize(newRct);
 				}
 			}
-			World.TheWorld.GameUpdated();
+			if (World.TheWorld != null)
+			{
+				World.TheWorld.GameUpdated();
+			}
 		}
 
 		private static void MessageManagerNewWorldMessage(object _sender, WorldMessage _message) { }
@@ -118,10 +121,18 @@ namespace GameUi
 		{
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
 			UIBlock.Init(m_gameProvider.DrawHelper);
-			World.LetItBeeee();
+			//Run();
+			m_uiBlocks.Push(new StartSelectorUiBlock(new Rct(0, 0, 10, 10), this));
+		}
 
-			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width/Constants.TILE_SIZE, m_gameProvider.Height/Constants.TILE_SIZE);
+		public void Run()
+		{
+			m_uiBlocks.Clear();
+			World.LetItBeeee();
+			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width / Constants.TILE_SIZE, m_gameProvider.Height / Constants.TILE_SIZE);
 			m_uiBlocks.Push(m_mainUiBlock);
+
+			World.TheWorld.UpdateDPoint();
 
 			MessageManager.SendMessage(this, WorldMessage.AvatarMove);
 			MessageManager.SendMessage(this, "[?] - экран помощи");
@@ -195,6 +206,7 @@ namespace GameUi
 				{
 					var tuple = m_pressed.Dequeue();
 					m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
+					MessageManager.SendMessage(this,WorldMessage.JustRedraw);
 				}
 			}
 
