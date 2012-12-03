@@ -15,7 +15,7 @@ namespace GameUi.UIBlocks.Items
 		private readonly List<EquipmentPresenter> m_presenters = new List<EquipmentPresenter>();
 
 		public EquipmentUiBlock(Rct _rct)
-			: base(_rct, Frame.SimpleFrame, FColor.White)
+			: base(_rct, Frame.Frame1, FColor.White)
 		{
 			m_intelligent = World.TheWorld.Avatar;
 			Rebuild();
@@ -87,7 +87,7 @@ namespace GameUi.UIBlocks.Items
 
 	internal class EquipmentPresenter : ILinePresenter
 	{
-		public static float MaxIndent;
+		private  static float m_maxIndent;
 
 		public EquipmentPresenter(EEquipmentPlaces _place, Item _item, ConsoleKey _key, char _c)
 		{
@@ -110,14 +110,15 @@ namespace GameUi.UIBlocks.Items
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine(C.ToString(), FColor.White, _line, 20, EAlignment.LEFT);
-			var indent =
-				_uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName,
-				                  FColor.Gray,
-				                  _line,
-				                  40,
-				                  EAlignment.LEFT) + 2;
-			MaxIndent = Math.Max(MaxIndent, indent);
-			indent = _uiBlock.DrawLine(":", FColor.DarkGray, _line, MaxIndent, EAlignment.LEFT) + 5;
+			var indent = _uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, FColor.Gray, _line, 40, EAlignment.LEFT) + 2;
+
+			if (indent > m_maxIndent)
+			{
+				m_maxIndent = indent;
+				MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+			}
+
+			indent = _uiBlock.DrawLine(":", FColor.DarkGray, _line, m_maxIndent, EAlignment.LEFT) + 5;
 			if (Item == null)
 			{
 				_uiBlock.DrawLine("-", FColor.DarkGray, _line, indent, EAlignment.LEFT);

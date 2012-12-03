@@ -69,7 +69,7 @@ namespace GameUi.UIBlocks
 		}
 
 		public MiniMapUiBlock(Rct _rct)
-			: base(_rct, Frame.GoldFrame, FColor.White) { }
+			: base(_rct, Frame.Frame2, FColor.White) { }
 
 		public override void KeysPressed(ConsoleKey _key, EKeyModifiers _modifiers)
 		{

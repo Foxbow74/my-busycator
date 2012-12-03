@@ -27,7 +27,7 @@ namespace GameUi.UIBlocks.Items
 		                               ESelectItemDialogBehavior _behavior,
 		                               Act _act,
 		                               IEnumerable<EssenceDescriptor> _descriptors)
-			: base(_rct, Frame.GoldFrame, FColor.Green)
+			: base(_rct, Frame.Frame2, FColor.Green)
 		{
 			m_behavior = _behavior;
 			m_act = _act;

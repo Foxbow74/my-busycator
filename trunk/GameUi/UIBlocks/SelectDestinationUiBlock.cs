@@ -66,7 +66,7 @@ namespace GameUi.UIBlocks
 					}
 					return;
 			}
-			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+			//MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
 		public override void DrawBackground() { }
@@ -103,7 +103,10 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		public override void MouseMove(Point _pnt) { SetPoint(_pnt); }
+		public override void MouseMove(Point _pnt)
+		{
+			SetPoint(_pnt);
+		}
 
 		private void SetPoint(Point _pnt)
 		{

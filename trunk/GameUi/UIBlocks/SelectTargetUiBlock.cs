@@ -110,7 +110,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					return;
 			}
-			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+			//MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
 		private void SelectTargetFromList()

@@ -29,7 +29,7 @@ namespace GameUi.UIBlocks
 				if (m_targetPoint != value)
 				{
 					m_targetPoint = value;
-					MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+					//MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 				}
 			}
 		}
@@ -64,7 +64,7 @@ namespace GameUi.UIBlocks
 					CloseTopBlock();
 					break;
 			}
-			MessageManager.SendMessage(this, WorldMessage.JustRedraw);
+			//MessageManager.SendMessage(this, WorldMessage.JustRedraw);
 		}
 
 		public override void DrawBackground() { }

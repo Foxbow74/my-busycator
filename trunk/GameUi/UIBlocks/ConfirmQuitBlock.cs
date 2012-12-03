@@ -12,7 +12,7 @@ namespace GameUi.UIBlocks
 	internal class ConfirmQuitBlock : UiBlockWithText
 	{
 		public ConfirmQuitBlock()
-			: base(new Rct(2, 2, 15, 5), Frame.SimpleFrame, FColor.Black)
+			: base(new Rct(2, 2, 15, 5), Frame.Frame1, FColor.Black)
 		{
 			ContentRct = new Rct(ContentRct.Left + 1,
 			                     ContentRct.Top,

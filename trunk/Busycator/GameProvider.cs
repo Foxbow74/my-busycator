@@ -24,6 +24,7 @@ namespace Busycator
 			: base(1024, 768)
 		{
 			Title = "Busycator";
+
 			m_game = new TheGame(this);
 		}
 
@@ -37,7 +38,16 @@ namespace Busycator
 		{
 			base.OnLoad(_e);
 			m_game.LoadContent(ResourceProvider);
+			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;
 			OnLoadFinished();
+		}
+
+		private void MessageManagerOnNewWorldMessage(object _sender, WorldMessage _message)
+		{
+			if(_message.Type==WorldMessage.EType.TURN || _message.Type==WorldMessage.EType.JUST_REDRAW)
+			{
+				m_needRedraw = true;
+			}
 		}
 
 		protected override void OnResize(EventArgs _e)
@@ -57,32 +67,39 @@ namespace Busycator
 			Profiler.Report();
 		}
 
-		private Int64 sum = 16;
-		private Int64 cnt = 1;
+		private Int64 m_sum = 16;
+		private Int64 m_cnt = 1;
+		private bool m_needRedraw;
 
 		protected override void OnRenderFrame(FrameEventArgs _e)
 		{
 			var now = m_hrs.Value;
 			if (IsActive)
 			{
-
-				var avatar = World.TheWorld.Avatar;
-				Title = string.Format("Busycator lc:{0} wc:{1} bld:{2} pmc:{3} fps:{4} per frame, ms:{5}, creatures:{6}", avatar[0, 0].LiveCoords, avatar[0, 0].WorldCoords, avatar[0, 0].InBuilding, avatar[0, 0].PathMapCoords, Math.Round(1 / _e.Time), (sum/cnt), World.TheWorld.CreatureManager.InfoByCreature.Count);
-
-				//base.OnRenderFrame(_e);
+				if (World.TheWorld != null)
+				{
+					var avatar = World.TheWorld.Avatar;
+					Title = string.Format("Busycator lc:{0} wc:{1} bld:{2} pmc:{3} fps:{4} per frame, ms:{5}, creatures:{6}",
+					                      avatar[0, 0].LiveCoords, avatar[0, 0].WorldCoords, avatar[0, 0].InBuilding,
+					                      avatar[0, 0].PathMapCoords, Math.Round(1/_e.Time), (m_sum/m_cnt),
+					                      World.TheWorld.CreatureManager.InfoByCreature.Count);
+				}
 
 				m_game.Update(KeyState);
-
-				using (new Profiler("Redraw"))
+				if (m_needRedraw)
 				{
-					Clear(FColor.Empty);
-					m_game.Draw();
-					OnRenderFinished();
+					m_needRedraw = false;
+					using (new Profiler("Redraw"))
+					{
+						Clear(FColor.Empty);
+						m_game.Draw();
+						OnRenderFinished();
+					}
 				}
 			}
 			var milliseconds = (int)m_hrs.GetMilliseconds(now);
-			sum += milliseconds;
-			cnt++;
+			m_sum += milliseconds;
+			m_cnt++;
 			if (milliseconds < 1000 / FPS)
 			{
 				Thread.Sleep(1000 / FPS - milliseconds);
@@ -90,7 +107,8 @@ namespace Busycator
 
 		}
 
-		[STAThread] private static void Main()
+		[STAThread] 
+		private static void Main()
 		{
 			{
 				MagicSettingProvider.Init();
