@@ -55,9 +55,9 @@ namespace GameUi.UIBlocks
 			line += 2;
 			DrawLine("a. Карта 1024х1024, полный режим, фиксированный random seed.", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("b. Карта 3200х3200, полный режим.", ForeColor, line++, indent, EAlignment.LEFT);
-			DrawLine("c. 1х1 тест объектов.", ForeColor, line++, indent, EAlignment.LEFT);
-			DrawLine("d. 1х1 тест боя.", ForeColor, line++, indent, EAlignment.LEFT);
-			DrawLine("e. 1х1 тест освещения.", ForeColor, line++, indent, EAlignment.LEFT);
+			DrawLine("c. 32х32 тест объектов.", ForeColor, line++, indent, EAlignment.LEFT);
+			DrawLine("d. 32х32 тест боя.", ForeColor, line++, indent, EAlignment.LEFT);
+			DrawLine("e. 32х32 тест освещения.", ForeColor, line++, indent, EAlignment.LEFT);
 		}
 	}
 }
