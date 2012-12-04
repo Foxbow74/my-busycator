@@ -121,7 +121,6 @@ namespace GameUi
 		{
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
 			UIBlock.Init(m_gameProvider.DrawHelper);
-			//Run();
 			m_uiBlocks.Push(new StartSelectorUiBlock(new Rct(0, 0, 10, 10), this));
 		}
 

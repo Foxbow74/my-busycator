@@ -199,28 +199,6 @@ namespace GameCore.Creatures
 		{
 			get { return GeoInfo[_x, _y]; }
 		}
-
-		//public WorldLayer Layer
-		//{
-		//    get { return m_layer; }
-		//    set
-		//    {
-		//        if (m_layer == value)
-		//        {
-		//            throw new ApplicationException("Лишнее действие");
-		//        }
-		//        var oldLayer = m_layer;
-		//        m_layer = value;
-		//        if (oldLayer != null)
-		//        {
-		//            World.TheWorld.CreatureManager.MoveCreature(this, GeoInfo.WorldCoords, value);
-		//        }
-		//        else
-		//        {
-					
-		//        }
-		//    }
-		//}
 		
 		public int Luck { get; protected set; }
 		public int Nn { get; private set; }

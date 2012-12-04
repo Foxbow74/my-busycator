@@ -104,6 +104,7 @@
     <Compile Include="Essences\Mechanisms\MagicPlate.cs" />
     <Compile Include="Essences\Mechanisms\Mechanism.cs" />
     <Compile Include="FColor.cs" />
+    <Compile Include="AbstractLanguage\Word.cs" />
     <Compile Include="Mapping\BaseMapBlock.cs" />
     <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />

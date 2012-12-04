@@ -4,9 +4,16 @@ namespace GameUi
 {
 	public class Frame
 	{
-		public static Frame Frame1 = new Frame(ETileset.FRAME1);
-		public static Frame Frame2 = new Frame(ETileset.FRAME2);
-		public static Frame Frame3 = new Frame(ETileset.FRAME3);
+		public static Frame Frame1;
+		public static Frame Frame2;
+		public static Frame Frame3;
+
+		static Frame()
+		{
+			Frame1 = new Frame(ETileset.FRAME1);
+			Frame2 = new Frame(ETileset.FRAME2);
+			Frame3 = new Frame(ETileset.FRAME3);
+		}
 
 		public Frame(ETileset _tileset)
 		{

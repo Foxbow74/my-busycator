@@ -78,7 +78,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 				mapBlock.Map[point.X, point.Y] = floor;
 			}
 
-			var borderPoints = roomRectangle.BorderPoints;
+			var borderPoints = roomRectangle.BorderPoints.ToArray();
 			var cornerPoints = roomRectangle.CornerPoints;
 			var i = 0;
 			foreach (var point in borderPoints)
