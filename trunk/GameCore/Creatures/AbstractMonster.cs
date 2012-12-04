@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
@@ -7,13 +8,14 @@ using GameCore.Battle;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 
-namespace GameCore.Creatures.Monsters
+namespace GameCore.Creatures
 {
 	public abstract class AbstractMonster : Creature
 	{
 		private int m_skip;
 
-		protected AbstractMonster(WorldLayer _layer, int _speed): base(_layer, _speed)
+		protected AbstractMonster(Noun _name, WorldLayer _layer, int _speed)
+			: base(_name, _layer, _speed)
 		{
 		}
 

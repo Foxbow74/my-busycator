@@ -1,3 +1,4 @@
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Misc;
@@ -10,15 +11,10 @@ namespace GameCore.Battle
 		private readonly Creature m_creature;
 
 		public Corpse(Creature _creature)
-			: base(_creature.Material)
+			: base("труп".AsNoun(ESex.MALE, false) + _creature.Name.Text.AsOf(), _creature.Material)
 		{
 			m_direction = Util.AllDirections.RandomItem(World.Rnd);
 			m_creature = _creature;
-		}
-
-		public override string Name
-		{
-			get { return "труп " + m_creature.Name; }
 		}
 
 		public override EDirections Direction

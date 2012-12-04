@@ -1,11 +1,18 @@
-﻿using GameCore.Creatures;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Creatures;
 using GameCore.Misc;
 
 namespace GameCore.Essences
 {
 	public abstract class Essence : ITileInfoProvider
 	{
-		protected Essence(Material _material) { Material = _material; }
+		private Noun m_name;
+
+		protected Essence(Noun _name, Material _material)
+		{
+			Material = _material;
+			m_name = _name;
+		}
 
 		/// <summary>
 		/// Непрозрачность объекта, используется для рассчета области видимости игрока
@@ -25,7 +32,11 @@ namespace GameCore.Essences
 
 		public ESex Sex { get; protected set; }
 
-		public abstract string Name { get; }
+		public virtual Noun Name
+		{
+			get { return m_name; }
+			protected set { m_name = value; }
+		}
 
 		public virtual bool IsCreature
 		{
@@ -56,7 +67,7 @@ namespace GameCore.Essences
 
 		#endregion
 
-		public override string ToString() { return this.GetName(World.TheWorld.Avatar); }
+		public override string ToString() { return this.GetName(World.TheWorld.Avatar).Text; }
 
 		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
 

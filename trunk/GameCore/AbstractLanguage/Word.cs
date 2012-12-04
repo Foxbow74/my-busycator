@@ -6,7 +6,8 @@ namespace GameCore.AbstractLanguage
 	{
 		ADV,
 		VERB,
-		TITLE
+		TITLE,
+		IMMUTABLE
 	}
 
 	public class Sentence
@@ -56,25 +57,39 @@ namespace GameCore.AbstractLanguage
 
 		public bool IsCreature { get; private set; }
 
-		public Title Title { get; set; }
-		public Adverb Adverb { get; set; }
+		public Noun AlsoKnownAs { get; private set; }
+		public Adjective Adjective { get; set; }
+		public Immutable Immutable { get; set; }
+		protected OfSomething OfSomething { get; set; }
 
-		public static Noun operator +(Noun _a, Title _b)
+		public static Noun operator +(Noun _a, Noun _b)
 		{
-			_a.Title = _b;
+			_a.AlsoKnownAs = _b;
 			return _a;
 		}
 
-		public static Noun operator +(Noun _a, Adverb _b)
+		public static Noun operator +(Noun _a, Adjective _b)
 		{
-			_a.Adverb = _b;
+			_a.Adjective = _b;
+			return _a;
+		}
+
+		public static Noun operator +(Noun _a, Immutable _b)
+		{
+			_a.Immutable = _b;
+			return _a;
+		}
+
+		public static Noun operator +(Noun _a, OfSomething _b)
+		{
+			_a.OfSomething = _b;
 			return _a;
 		}
 	}
 
-	public class Adverb : Word
+	public class Adjective : Word
 	{
-		public Adverb(string _text)
+		public Adjective(string _text)
 			: base(_text)
 		{
 		}
@@ -85,22 +100,30 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
-	public class Title : Word
+	public class Immutable : Word
 	{
-		public Title(string _text, ESex _sex, bool _isCreature)
+		public Immutable(string _text)
 			: base(_text)
 		{
-			Sex = _sex;
-			IsCreature = _isCreature;
 		}
-		
-		public ESex Sex { get; private set; }
-
-		public bool IsCreature { get; private set; }
 
 		public override EWord Kind
 		{
-			get { return EWord.TITLE; }
+			get { return EWord.IMMUTABLE; }
+		}
+	}
+
+
+	public class OfSomething : Word
+	{
+		public OfSomething(string _text)
+			: base(_text)
+		{
+		}
+
+		public override EWord Kind
+		{
+			get { return EWord.IMMUTABLE; }
 		}
 	}
 
@@ -124,19 +147,24 @@ namespace GameCore.AbstractLanguage
 			return new Noun(_noun, _sex, _isCreature);
 		}
 
-		public static Adverb AsAdv(this string _adv)
+		public static Adjective AsAdj(this string _adv)
 		{
-			return new Adverb(_adv);
+			return new Adjective(_adv);
 		}
 
-		public static Adverb AsVerb(this string _verb)
+		public static Adjective AsVerb(this string _verb)
 		{
-			return new Adverb(_verb);
+			return new Adjective(_verb);
 		}
 
-		public static Title AsTitle(this string _title, ESex _sex, bool _isCreature)
+		public static Immutable AsIm(this string _string)
 		{
-			return new Title(_title, _sex, _isCreature);
+			return new Immutable(_string);
+		}
+
+		public static OfSomething AsOf(this string _string)
+		{
+			return new OfSomething(_string);
 		}
 	}
 }

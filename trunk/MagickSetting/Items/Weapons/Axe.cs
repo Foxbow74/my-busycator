@@ -1,4 +1,5 @@
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences;
@@ -8,11 +9,9 @@ namespace MagickSetting.Items.Weapons
 {
 	public class Axe : AbstractMeleeWeapon, ISpecial
 	{
-		private readonly string m_name;
-
-		public Axe(Material _material, string _name) : base(_material)
+		public Axe(Noun _name, Material _material)
+			: base(_name, _material)
 		{
-			m_name = _name;
 		}
 
 		public override int TileIndex
@@ -22,8 +21,6 @@ namespace MagickSetting.Items.Weapons
                 return 0;
             }
         }
-
-		public override string Name { get { return m_name; } }
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{

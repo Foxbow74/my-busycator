@@ -27,7 +27,7 @@ namespace ResourceWizard.StoreableVMs
                     .GroupBy(_thing => _thing.TileIndex)
                     .OrderBy(_things => _things.Key)
                     .Select(_grouping => _grouping.Key.ToString("00") + " - " + 
-                        string.Join(" & ", _grouping.GroupBy(_thing => _thing.Is<StackOfItems>()?"стек":_thing.Name).Select(_things =>
+                        string.Join(" & ", _grouping.GroupBy(_thing => _thing.Is<StackOfItems>()?"стек":_thing.Name.Text).Select(_things =>
                                                                                                {
                                                                                                    var materials = string.Join(", ",_things.Select(_t =>_t.Material.Name));
                                                                                                    return string.Format("{0} ({1})", _things.Key, materials);

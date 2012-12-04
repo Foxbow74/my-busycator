@@ -1,43 +1,37 @@
 ﻿using System;
+using System.Globalization;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
-using GameCore.Essences.Ammo;
 
 namespace GameCore.Essences
 {
 	public abstract class StackOfItems : Item
 	{
-		protected StackOfItems(Material _material) : base(_material)
+		private readonly Noun m_nameOfItem;
+
+		protected StackOfItems(Noun _nameOfItem, Material _material) : base("кучка".AsNoun(ESex.FEMALE, false) + "чего-то".AsOf(), _material)
 		{
-			
+			m_nameOfItem = _nameOfItem;
 		}
 
-		private int m_count;
-		public int Count
-		{
-			get { return m_count; }
-			set
-			{
-				m_count = value;
-			}
-		}
+		public int Count { get; set; }
 
-		public override string Name
+		public override Noun Name
 		{
 			get
 			{
 				if (Count == 0)
 				{
-					throw new ApplicationException("Стек пуст");
+					return base.Name;
 				}
 				if (Count == 1)
 				{
-					return NameOfSingle;
+					return m_nameOfItem;
 				}
-				return NameOfSingle + " * " + Count;
+				return m_nameOfItem + (" * " + Count.ToString(CultureInfo.InvariantCulture)).AsIm();
 			}
 		}
 
-		protected abstract string NameOfSingle { get; }
 		protected abstract int GetStartCount(Creature _creature);
 
 		internal override Essence Clone(Creature _resolver)

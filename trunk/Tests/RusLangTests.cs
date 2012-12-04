@@ -92,76 +92,76 @@ namespace Tests
 
 			if (World.TheWorld == null)
 			{
-				World.LetItBeeee();
+				World.LetItBeeee(new LanguageProcessor());
 			}
 		}
 
-		[TestMethod]
-		public void Материалы()
-		{
-			var materails = EssenceHelper.AllEssences.Select(e => e.Material).Distinct().ToArray();
-			var strings = new List<string>();
-			foreach (var material in materails)
-			{
-				strings.Clear();
-				strings.Add(material.GetType().Name);
-				if (string.IsNullOrEmpty(material.Name)) continue;
-				try
-				{
-					foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
-					{
-						strings.Add(Sklonenia.NounToPadej(padej, material.Name, false, material.Sex));
-					}
-				}
-				catch (Exception ex)
-				{
-					strings.Add(ex.Message);
-				}
-				Debug.WriteLine(string.Join(", ", strings));
-			}
-		}
+		//[TestMethod]
+		//public void Материалы()
+		//{
+		//    var materails = EssenceHelper.AllEssences.Select(e => e.Material).Distinct().ToArray();
+		//    var strings = new List<string>();
+		//    foreach (var material in materails)
+		//    {
+		//        strings.Clear();
+		//        strings.Add(material.GetType().Name);
+		//        if (string.IsNullOrEmpty(material.Name)) continue;
+		//        try
+		//        {
+		//            foreach (EPadej padej in Enum.GetValues(typeof(EPadej)))
+		//            {
+		//                strings.Add(Sklonenia.NounToPadej(padej, material.Name, false, material.Sex));
+		//            }
+		//        }
+		//        catch (Exception ex)
+		//        {
+		//            strings.Add(ex.Message);
+		//        }
+		//        Debug.WriteLine(string.Join(", ", strings));
+		//    }
+		//}
 
-		[TestMethod]
-		public void Предметы()
-		{
-			var items = EssenceHelper.GetAllItems<Item>().Select(e=>e.Essence).Where(e=>!(e is StackOfItems)).GroupBy(e=>e.Name).Select(g=>g.First()).ToArray();
-			var strings = new List<string>();
-			foreach (var item in items)
-			{
-				strings.Clear();
-				strings.Add(item.GetType().Name);
-				try
-				{
-					strings.AddRange(SklonTest(item.Name, item.Sex));
-				}
-				catch (Exception ex)
-				{
-					strings.Add(ex.Message);
-				}
-				Debug.WriteLine(string.Join(", ", strings));
-			}
-		}
+		//[TestMethod]
+		//public void Предметы()
+		//{
+		//    var items = EssenceHelper.GetAllItems<Item>().Select(e=>e.Essence).Where(e=>!(e is StackOfItems)).GroupBy(e=>e.Name).Select(g=>g.First()).ToArray();
+		//    var strings = new List<string>();
+		//    foreach (var item in items)
+		//    {
+		//        strings.Clear();
+		//        strings.Add(item.GetType().Name);
+		//        try
+		//        {
+		//            strings.AddRange(SklonTest(item.Name, item.Sex));
+		//        }
+		//        catch (Exception ex)
+		//        {
+		//            strings.Add(ex.Message);
+		//        }
+		//        Debug.WriteLine(string.Join(", ", strings));
+		//    }
+		//}
 
 
-		[TestMethod]
-		public void Существа()
-		{
-			var items = EssenceHelper.GetAllCreatures<Creature>().Select(_e => _e.Essence).Where(_e => !(_e is AbstractDummyCreature)).GroupBy(e => e.Name).Select(_g => _g.First()).ToArray();
-			var strings = new List<string>();
-			foreach (var item in items)
-			{
-				strings.Clear();
-				strings.Add(item.GetType().Name);
-				try
-				{
-					strings.AddRange(SklonTest(item.Name, item.Sex, true));
-				}
-				catch (Exception ex)
-				{
-					strings.Add(ex.Message);
-				}
-				Debug.WriteLine(string.Join(", ", strings));
-			}
-		}
+		//[TestMethod]
+		//public void Существа()
+		//{
+		//    var items = EssenceHelper.GetAllCreatures<Creature>().Select(_e => _e.Essence).Where(_e => !(_e is AbstractDummyCreature)).GroupBy(e => e.Name).Select(_g => _g.First()).ToArray();
+		//    var strings = new List<string>();
+		//    foreach (var item in items)
+		//    {
+		//        strings.Clear();
+		//        strings.Add(item.GetType().Name);
+		//        try
+		//        {
+		//            strings.AddRange(SklonTest(item.Name, item.Sex, true));
+		//        }
+		//        catch (Exception ex)
+		//        {
+		//            strings.Add(ex.Message);
+		//        }
+		//        Debug.WriteLine(string.Join(", ", strings));
+		//    }
+		//}
 	}
 }

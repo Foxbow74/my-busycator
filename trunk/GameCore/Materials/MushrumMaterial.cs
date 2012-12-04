@@ -1,8 +1,10 @@
-﻿namespace GameCore.Materials
+﻿using GameCore.AbstractLanguage;
+
+namespace GameCore.Materials
 {
 	public abstract class MushrumMaterial : Material
 	{
-		protected MushrumMaterial(string _name) : base(string.Empty) { MushrumName = _name; }
+		protected MushrumMaterial(Noun _name) : base(string.Empty) { MushrumName = _name; }
 
 		public override FColor LerpColor { get { return FColor.Empty; } }
 
@@ -10,6 +12,6 @@
 
 		public abstract int MushrumTileIndex { get; }
 
-		public string MushrumName { get; private set; }
+		public Noun MushrumName { get; private set; }
 	}
 }

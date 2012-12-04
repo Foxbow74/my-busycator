@@ -1,4 +1,5 @@
-﻿using GameCore.Acts;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Acts;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -14,7 +15,8 @@ namespace GameCore.Essences.Tools
 		private readonly FColor m_color;
 		private LightSource m_lightSource;
 
-		protected AbstractTorch(Material _material, int _radius, FColor _color) : base(_material)
+		protected AbstractTorch(Noun _name, Material _material, int _radius, FColor _color)
+			: base(_name, _material)
 		{
 			m_radius = _radius;
 			m_color = _color;

@@ -25,7 +25,7 @@ namespace GameCore.Essences
 
 		public Essence Essence { get; private set; }
 
-		public string UiOrderIndex { get { return Essence.GetName(World.TheWorld.Avatar); } }
+		public string UiOrderIndex { get { return Essence.GetName(World.TheWorld.Avatar).Text; } }
 
 		public static EssenceDescriptor Empty { get { return m_empty; } }
 

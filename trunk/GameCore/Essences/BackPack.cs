@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.AbstractLanguage;
 using GameCore.Essences.Things;
 
 namespace GameCore.Essences
@@ -8,10 +9,10 @@ namespace GameCore.Essences
 	/// </summary>
 	internal class BackPack : Container, ISpecial
 	{
-		public BackPack() : base(null) { }
+		public BackPack() : base("рюкзак".AsNoun(ESex.MALE, false), null)
+		{
+		}
 
 		public override ETileset Tileset { get { throw new NotImplementedException(); } }
-
-		public override string Name { get { return "рюкзак"; } }
 	}
 }

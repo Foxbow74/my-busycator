@@ -125,7 +125,7 @@ namespace GameUi.UIBlocks.Items
 			}
 			else
 			{
-				_uiBlock.DrawLine(Item.GetName(World.TheWorld.Avatar), FColor.DarkGray, _line, indent, EAlignment.LEFT);
+				_uiBlock.DrawLine(Item.GetName(World.TheWorld.Avatar).Text, FColor.DarkGray, _line, indent, EAlignment.LEFT);
 			}
 		}
 

@@ -62,7 +62,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 					var role = availableRoles.FirstOrDefault(_role => _role.BuildingType == building.BuildingType);
 					if (role != null)
 					{
-						var citizen = new Citizen(Surface, World.Rnd);
+						var citizen = new Citizen(Surface, World.Rnd,  new[] { ESex.MALE, ESex.FEMALE, }.RandomItem(World.Rnd));
 						var citizenRole = (AbstractCitizenRole) Activator.CreateInstance(role.GetType());
 						citizenRole.SetBuilding(citizen, building);
 						citizen.AddRole(citizenRole);
@@ -91,7 +91,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 						}
 						if (citizen == null)
 						{
-							citizen = new Citizen(Surface, World.Rnd);
+							citizen = new Citizen(Surface, World.Rnd, new[] { ESex.MALE, ESex.FEMALE, }.RandomItem(World.Rnd));
 							m_citizens.Add(citizen);
 						}
 						var citizenRole = (AbstractCitizenRole) Activator.CreateInstance(role.GetType());

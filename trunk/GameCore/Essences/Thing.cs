@@ -1,10 +1,12 @@
-﻿namespace GameCore.Essences
+﻿using GameCore.AbstractLanguage;
+
+namespace GameCore.Essences
 {
 	public abstract class Thing : Essence
 	{
 		private FColor m_lerpColor;
 
-		protected Thing(Material _material) : base(_material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
+		protected Thing(Noun _name, Material _material) : base(_name, _material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
 

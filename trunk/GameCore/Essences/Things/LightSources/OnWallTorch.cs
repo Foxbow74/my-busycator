@@ -1,5 +1,4 @@
-﻿using System;
-using GameCore.Creatures;
+﻿using GameCore.AbstractLanguage;
 using GameCore.Misc;
 
 namespace GameCore.Essences.Things.LightSources
@@ -9,7 +8,7 @@ namespace GameCore.Essences.Things.LightSources
 		private readonly EDirections m_direction;
 
 		public OnWallTorch(LightSource _lightSource, EDirections _direction, Material _material)
-			: base(_lightSource, _material) { m_direction = _direction; }
+			: base("факел".AsNoun(ESex.MALE, false), _lightSource, _material) { m_direction = _direction; }
 
         public override int TileIndex
         {
@@ -18,8 +17,6 @@ namespace GameCore.Essences.Things.LightSources
                 return 1;
             }
         }
-
-		public override string Name { get { return "факел"; } }
 
 		public override EDirections Direction { get { return m_direction; } }
 	}

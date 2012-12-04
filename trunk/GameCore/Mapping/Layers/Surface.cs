@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Mapping.Layers.SurfaceObjects;
@@ -101,7 +102,7 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		public string GetNextCitizenName(ESex _sex)
+		public Noun GetNextCitizenName(ESex _sex)
 		{
 			List<string> list;
 			switch (_sex)
@@ -120,7 +121,7 @@ namespace GameCore.Mapping.Layers
 			{
 				list.Remove(result);
 			}
-			return result;
+			return result.AsNoun(_sex, true);
 		}
 
 		private static void PrepareNicks(string _filename, Random _rnd)

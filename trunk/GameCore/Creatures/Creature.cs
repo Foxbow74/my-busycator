@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Battle;
 using GameCore.CreatureRoles;
@@ -34,8 +35,8 @@ namespace GameCore.Creatures
 
 		#region .ctor
 
-		protected Creature(WorldLayer _layer, int _speed)
-			: base(EssenceHelper.GetMaterial<BodyMaterial>())
+		protected Creature(Noun _name, WorldLayer _layer, int _speed)
+			: base(_name, EssenceHelper.GetMaterial<BodyMaterial>())
 		{
 			Speed = _speed;
 			Luck = 25;

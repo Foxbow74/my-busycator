@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
@@ -8,6 +9,7 @@ using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.XLanguage;
 
 namespace GameCore.Acts.Movement
 {
@@ -76,7 +78,7 @@ namespace GameCore.Acts.Movement
 			}
 			else
 			{
-				var mess = String.Empty;
+				XMessage mess;
 				if (_creature.IsAvatar)
 				{
 					var creature = cell.Creature;
@@ -91,7 +93,7 @@ namespace GameCore.Acts.Movement
 							////Если это не перемещение на дальнее расстояние
 							//return World.TheWorld.BattleProcessor.Atack(_creature, creature);
 						}
-						mess = creature.GetName(_creature);
+						mess = new XMessage(EXMType.CELL_IS_OCCUPIED_BY, creature, cell.TerrainAttribute.DisplayName.AsNoun(ESex.MALE, false));
 					}
 					else
 					{
@@ -101,9 +103,9 @@ namespace GameCore.Acts.Movement
 							_creature.InsertActToPool(new OpenAct(), delta);
 							return EActResults.ACT_REPLACED;
 						}
-						mess = cell.TerrainAttribute.DisplayName;
+						mess = new XMessage(EXMType.CREATURE_NOW_STAY_ON, creature, cell.TerrainAttribute.DisplayName.AsNoun(ESex.MALE, false));
 					}
-					MessageManager.SendMessage(this, "неа, тут " + mess);
+					MessageManager.SendXMessage(this, mess);
 				}
 				return EActResults.QUICK_FAIL;
 			}

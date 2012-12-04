@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences.Weapons;
@@ -10,7 +11,8 @@ namespace GameCore.Essences.Faked
 	{
 		private readonly Essence m_essence;
 
-		public FakedCreature(Essence _essence) : base(null, 0)
+		public FakedCreature(Essence _essence)
+			: base(_essence.Name, null, 0)
 		{
 			TileIndex = _essence.TileIndex;
 			m_essence = _essence;
@@ -18,7 +20,7 @@ namespace GameCore.Essences.Faked
 
 		public override FColor LerpColor { get { return Essence.LerpColor; } }
 
-		public override string Name { get { throw new NotImplementedException(); } }
+		public override Noun Name { get { throw new NotImplementedException(); } }
 
 		public override EFraction Fraction
 		{

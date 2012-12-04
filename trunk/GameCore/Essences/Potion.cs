@@ -1,11 +1,12 @@
-﻿using GameCore.Battle;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Battle;
 using GameCore.Creatures;
 
 namespace GameCore.Essences
 {
 	public class Potion : Item
 	{
-		public Potion(Material _material) : base(_material) { Sex = ESex.IT; }
+		public Potion(Material _material) : base("зелье".AsNoun(ESex.IT, false), _material) { Sex = ESex.IT; }
 
         public override int TileIndex
         {
@@ -14,8 +15,6 @@ namespace GameCore.Essences
                 return 0;
             }
         }
-
-		public override string Name { get { return "зелье"; } }
 
 		public override EItemCategory Category { get { return EItemCategory.POTION; } }
 
