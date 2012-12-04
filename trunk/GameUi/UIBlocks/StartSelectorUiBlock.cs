@@ -9,7 +9,7 @@ namespace GameUi.UIBlocks
 		private readonly TheGame m_game;
 
 		public StartSelectorUiBlock(Rct _rct, TheGame _game)
-			: base(_rct, Frame.Frame3, FColor.DarkGray)
+			: base(_rct, Frame.Frame1, FColor.DarkGray)
 		{
 			m_game = _game;
 		}

@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using GameCore;
 using GameCore.Messages;
@@ -14,7 +15,7 @@ using UnsafeUtils;
 
 namespace Busycator
 {
-	internal class GameProvider : OpenTKGameProvider
+	public class GameProvider : OpenTKGameProvider
 	{
 		const int FPS = 60;
 		private readonly TheGame m_game;
@@ -108,7 +109,7 @@ namespace Busycator
 		}
 
 		[STAThread] 
-		private static void Main()
+		public static void Main()
 		{
 			{
 				MagicSettingProvider.Init();
@@ -123,8 +124,8 @@ namespace Busycator
 				{
 					var path = Path.Combine(Environment.CurrentDirectory, "error_file.txt");
 					File.Delete(path);
-					File.AppendAllText(path, exception.Message);
-					File.AppendAllText(path, exception.StackTrace);
+					File.AppendAllText(path, exception.Message, Encoding.Unicode);
+					File.AppendAllText(path, exception.StackTrace, Encoding.Unicode);
 					Process.Start("error_file.txt");
 				}
 			}

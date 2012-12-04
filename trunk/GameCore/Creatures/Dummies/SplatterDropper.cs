@@ -61,11 +61,9 @@ namespace GameCore.Creatures.Dummies
 			{
 				return EThinkingResult.SHOULD_BE_REMOVED_FROM_QUEUE;
 			}
-			else
-			{
-				AddActToPool(new MoveAct(), nextPoint);
-				return EThinkingResult.NORMAL;
-			}
+			
+			AddActToPool(new MoveAct(), nextPoint);
+			return EThinkingResult.NORMAL;
 		}
 
 		public override IEnumerable<IWeapon> GetWeapons(Creature _against)

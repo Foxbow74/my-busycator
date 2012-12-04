@@ -5,7 +5,7 @@ namespace GameCore.Essences
 {
 	public class Potion : Item
 	{
-		public Potion(Material _material) : base(_material) { Sex = ESex.FEMALE; }
+		public Potion(Material _material) : base(_material) { Sex = ESex.IT; }
 
         public override int TileIndex
         {
@@ -15,7 +15,7 @@ namespace GameCore.Essences
             }
         }
 
-		public override string Name { get { return "булька"; } }
+		public override string Name { get { return "зелье"; } }
 
 		public override EItemCategory Category { get { return EItemCategory.POTION; } }
 

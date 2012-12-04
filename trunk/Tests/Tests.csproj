@@ -49,6 +49,7 @@
     <Compile Include="AbstractGameTest1.cs" />
     <Compile Include="AbstractGameTest2.cs" />
     <Compile Include="AbstractGameTestX.cs" />
+    <Compile Include="AbstractLanguageTest.cs" />
     <Compile Include="FColorTests.cs" />
     <Compile Include="HelloWorld2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -142,7 +142,7 @@ namespace GameCore.Essences
 			return m_fakedItems.Where(_item => _item.Is<T>());
 		}
 
-		public static IEnumerable<FakedCreature> GetAllCreatures<T>() where T : Item
+		public static IEnumerable<FakedCreature> GetAllCreatures<T>() where T : Creature
 		{
 			return m_fakedCreatures.Where(_item => _item.Is<T>());
 		}
@@ -274,10 +274,6 @@ namespace GameCore.Essences
 
 					foreach (var material in m_materials.Where(_material => am.HasFlag(_material.MaterialType)))
 					{
-						if (am.HasFlag(material.MaterialType))
-						{
-							continue;
-						}
 						yield return (Essence) Activator.CreateInstance(type, material);
 					}
 				}

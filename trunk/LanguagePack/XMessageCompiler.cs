@@ -151,7 +151,7 @@ namespace LanguagePack
 				case 2:
 					return string.Format("{0} парировал обе атаки {1}", target.To(EPadej.IMEN), actor.To(EPadej.ROD));
 				default:
-					return string.Format("{0} провел {1} атак, но все они были отбиты", actor.To(EPadej.IMEN), success);
+					return string.Format("{0} провел {1}, но все они были отбиты", actor.To(EPadej.IMEN), success.Атак());
 			}
 		}
 
@@ -198,7 +198,7 @@ namespace LanguagePack
 			var target = _arg.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} попадает в незащищенный участок и снимает {1} {3}", actor.Name, target.To(EPadej.DAT), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
+				return string.Format("{0} попадает в незащищенный участок и снимает {1} {2}", actor.Name, target.To(EPadej.DAT), _arg.First<int>().Пунктов());
 			}
 			else
 			{

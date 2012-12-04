@@ -23,9 +23,47 @@ namespace LanguagePack
 			}
 		}
 
+		public static string Пунктов(this int _cnt)
+		{
+			var last = _cnt % 10;
+			string result;
+			if (last == 1)
+			{
+				result = "пункт";
+			}
+			else if (last > 1 && last < 5)
+			{
+				result = "пункта";
+			}
+			else
+			{
+				result = "пунктов";
+			}
+			return string.Format("{0} {1}", _cnt, result);
+		}
+
+		public static string Атак(this int _cnt)
+		{
+			var last = _cnt % 10;
+			string result;
+			if (last == 1)
+			{
+				result = "атака";
+			}
+			else if (last > 1 && last < 5)
+			{
+				result = "атаки";
+			}
+			else
+			{
+				result = "атак";
+			}
+			return string.Format("{0} {1}", _cnt, result);
+		}
+		
 		public static string HaveGotDamage(Creature _nameProvider, int _damage)
 		{
-			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
 			{
 				case ESex.MALE:
@@ -47,7 +85,7 @@ namespace LanguagePack
 
 		public static string Died(Creature _nameProvider)
 		{
-			var name = Sklonenia.ToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
 			{
 				case ESex.MALE:

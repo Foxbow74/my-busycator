@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Misc;
@@ -65,6 +67,10 @@ namespace LanguagePack
 
 
 			AddIskl("зубы", "зубов", "зубам", "зубов", "зубами", "зубах");
+			AddIskl("он", "его", "ему", "его", "им", "нем");
+			AddIskl("она", "ее", "ей", "ее", "ею", "ней");
+			AddIskl("оно", "их", "им", "их", "ими", "них");
+			AddIskl("они", "их", "им", "их", "ими", "них");
 		}
 
 		public static string To(this Essence _essence, EPadej _padej)
@@ -74,7 +80,7 @@ namespace LanguagePack
 			{
 				noun = ((Intelligent)_essence).Roles.ToArray().RandomItem(m_rnd).Name;
 			}
-			return ToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
+			return NounToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
 		}
 
 		private static void AddIskl(string _imen, string _rod,string _dat, string _vin, string _tvor, string _predl)
@@ -90,7 +96,7 @@ namespace LanguagePack
 			m_iskluchenia.Add(_imen, dictionary);
 		}
 
-		public static string ToPadej(EPadej _target, string _noun, bool _isCreature, ESex _sex)
+		public static string NounToPadej(EPadej _target, string _noun, bool _isCreature, ESex _sex)
 		{
 			if(_target==EPadej.IMEN) return _noun;
 
@@ -100,87 +106,29 @@ namespace LanguagePack
 				return dictionary[_target];
 			}
 
-			var sklon = GetSklon(ref _noun, _isCreature, _sex);
+			if (_sex == ESex.PLURAL || _sex == ESex.PLURAL_FEMALE)
+			{
+				return PluralNounToPadej(_target, _noun, _isCreature, _sex);
+			}
+
+			bool мягкий;
+			var noun = _noun;
+			var sklon = GetSklon(ref noun, _isCreature, _sex, out мягкий);
+
 			if(sklon<0)
 			{
 				return _noun;
 			}
-			
-			var isGluh = false;
-			var lastChar = _noun[_noun.Length - 1];
 
-			switch (sklon)
+			if (sklon == 1 && _sex == ESex.FEMALE && _noun.EndsWith("ка"))
 			{
-				case 1:
-					switch (_sex)
-					{
-						case ESex.MALE:
-							isGluh = "гбнстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.FEMALE:
-							isGluh = "вцзнстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.IT:
-							isGluh = "кнстплфхчшщрд".Contains(lastChar);
-							break;
-					}
-					if (isGluh && sklon == 1 && _noun.EndsWith("чк"))
-					{
-						isGluh = false;
-					}
-					break;
-				case 2:
-					switch (_sex)
-					{
-						case ESex.MALE:
-							isGluh = "мкгбнстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.FEMALE:
-							isGluh = "кзнстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.IT:
-							isGluh = "щкнстплфхчшрд".Contains(lastChar);
-							break;
-					}
-					break;
-				case 3:
-					switch (_sex)
-					{
-						case ESex.MALE:
-							isGluh = "гбнстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.FEMALE:
-							isGluh = "знстплфхчшщрд".Contains(lastChar);
-							break;
-						case ESex.IT:
-							isGluh = "кнстплфхчшщрд".Contains(lastChar);
-							break;
-					}
-					break;
+				мягкий = true;
 			}
-
-
-			if(_sex!=ESex.IT && "йеяиью".Contains(lastChar))
-			{
-				isGluh = false;
-			}
-
-			//switch (sklon)
-			//{
-			//    case 1:
-			//        _noun = _noun.Substring(0, _noun.Length - 1);
-			//        break;
-			//    case 2:
-			//        break;
-			//    case 3:
-			//        _noun = _noun.Substring(0, _noun.Length - 1);
-			//        break;
-			//}
-
+			var твердый = !мягкий;
 			string value;
-			if (m_padejDict[sklon][_sex][_target].TryGetValue(isGluh, out value))
+			if (m_padejDict[sklon][_sex][_target].TryGetValue(твердый, out value))
 			{
-				_noun += value;
+				noun += value;
 			}
 			else
 			{
@@ -193,26 +141,33 @@ namespace LanguagePack
 						switch (_target)
 						{
 							case EPadej.ROD:
-								_noun += isGluh ? "а" : "я";
+								noun += твердый ? "а" : "я";
 								break;
 							case EPadej.DAT:
-								_noun += isGluh ? "у" : "ю";
+								noun += твердый ? "у" : "ю";
 								break;
 							case EPadej.VIN:
 								if (_sex == ESex.MALE)
 								{
-									_noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "" : "");
+									if (_isCreature)
+									{
+										noun += твердый ? "а" : "я";
+									}
+									else
+									{
+										noun = _noun;
+									}
 								}
 								else
 								{
-									_noun += _isCreature ? (isGluh ? "а" : "я") : (isGluh ? "о" : "е");
+									noun += _isCreature ? (твердый ? "а" : "я") : (твердый ? "о" : "е");
 								}
 								break;
 							case EPadej.TVOR:
-								_noun += isGluh ? "ом" : "ем";
+								noun += твердый ? "ом" : "ем";
 								break;
 							case EPadej.PREDL:
-								_noun += "е";
+								noun += "е";
 								break;
 							default:
 								throw new ArgumentOutOfRangeException("_target");
@@ -222,19 +177,19 @@ namespace LanguagePack
 						switch (_target)
 						{
 							case EPadej.ROD:
-								_noun += "и";
+								noun += "и";
 								break;
 							case EPadej.DAT:
-								_noun += "и";
+								noun += "и";
 								break;
 							case EPadej.VIN:
-								_noun += "ь";
+								noun += "ь";
 								break;
 							case EPadej.TVOR:
-								_noun += "ью";
+								noun += "ью";
 								break;
 							case EPadej.PREDL:
-								_noun += "и";
+								noun += "и";
 								break;
 							default:
 								throw new ArgumentOutOfRangeException("_target");
@@ -243,11 +198,13 @@ namespace LanguagePack
 				}
 			}
 			
-			return _noun;
+			return noun;
 		}
 
-		private static int GetSklon(ref string _noun, bool _isCreature, ESex _sex)
+		private static int GetSklon(ref string _noun, bool _isCreature, ESex _sex, out bool _мягкий)
 		{
+			_мягкий = false;
+
 			var lastChar = _noun[_noun.Length - 1];
 			var vow = lastChar;
 			if (!"йуеыаоэяию".Contains(lastChar)) vow = ' ';
@@ -277,6 +234,9 @@ namespace LanguagePack
 					return -1;
 				}
 			}
+
+			char смягчитель = vow;
+
 			switch (vow)
 			{
 				case 'а':
@@ -293,6 +253,7 @@ namespace LanguagePack
 					switch (lastChar)
 					{
 						case 'ь':
+							смягчитель = lastChar;
 							sklon = _sex == ESex.MALE ? 2 : 3;
 							if (_sex == ESex.MALE && _noun.EndsWith("ень"))
 							{
@@ -304,6 +265,10 @@ namespace LanguagePack
 							}
 							break;
 						default:
+							if (_sex == ESex.MALE && _noun.EndsWith("ец"))
+							{
+								_noun = _noun.Substring(0, _noun.Length - 2) + "ц";
+							}
 							sklon = _sex == ESex.MALE ? 2 : 3;
 							break;
 					}
@@ -322,6 +287,7 @@ namespace LanguagePack
 				switch (lastChar)
 				{
 					case 'ь':
+						смягчитель = lastChar;
 						sklon = _sex == ESex.MALE ? 2 : 3;
 						if (_sex == ESex.MALE) _noun = _noun.Substring(0, _noun.Length - 1);
 						break;
@@ -335,45 +301,9 @@ namespace LanguagePack
 				}
 				throw new ApplicationException();
 			}
+
+			_мягкий = "йеяью".Contains(смягчитель);
 			return sklon;
-		}
-
-		public static string Пунктов(this int _cnt)
-		{
-			var last = _cnt%10;
-			string result;
-			if(last==1)
-			{
-				result =  "пункт";
-			}
-			else if(last>1 && last<5)
-			{
-				result = "пункта";
-			}
-			else
-			{
-				result = "пунктов";
-			}
-			return string.Format("{0} {1}", _cnt, result);
-		}
-
-		public static string Атак(this int _cnt)
-		{
-			var last = _cnt % 10;
-			string result;
-			if (last == 1)
-			{
-				result = "атака";
-			}
-			else if (last > 1 && last < 5)
-			{
-				result = "атаки";
-			}
-			else
-			{
-				result = "атак";
-			}
-			return string.Format("{0} {1}", _cnt, result);
 		}
 
 		public static string ToSex(string _sentence, ESex _sex)
@@ -405,6 +335,93 @@ namespace LanguagePack
 
 			words[0] = firstWord;
 			return string.Join(" ", words);
+		}
+
+		public static string To(this Noun _noun, EPadej _padej)
+		{
+			return _noun.Adverb.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + _noun.Title.To(_padej);
+		}
+
+		public static string To(this Title _title, EPadej _padej)
+		{
+			if (_title == null) return "";
+			return "-" + NounToPadej(_padej, _title.Text, _title.IsCreature, _title.Sex);
+		}
+
+		public static string To(this Adverb _adv, EPadej _padej, ESex _sex)
+		{
+			if (_adv == null) return "";
+			var text = _adv.Text;
+			if (text.EndsWith("ый"))
+			{
+				text = text.Substring(0, text.Length - 2);
+				switch (_sex)
+				{
+					case ESex.MALE:
+						text += new[] { "ый", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						break;
+					case ESex.FEMALE:
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						break;
+					case ESex.IT:
+						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						break;
+					case ESex.PLURAL:
+						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[(int)_padej];
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("_sex");
+				}
+			}
+			else if (text.EndsWith("ий"))
+			{
+
+			}
+			else
+			{
+				throw new NotImplementedException();
+			}
+
+			return text + " ";
+		}
+
+
+		private static string PluralNounToPadej(EPadej _padej, string _noun, bool _isCreature, ESex _sex)
+		{
+			bool мягкий;
+			var last = _noun[_noun.Length - 1];
+
+			string text;
+			switch (last)
+			{
+				case 'ы':
+					мягкий = false;
+					text = _noun.Substring(0, _noun.Length - 1);
+					break;
+				case 'и':
+					мягкий = true;
+					text = _noun.Substring(0, _noun.Length - 1);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("last");
+			}
+			switch (_sex)
+			{
+				case ESex.PLURAL:
+					if(мягкий)
+					{
+						text += new[] { "и", "ей", "ям", "ей", "ьми", "ях" }[(int)_padej];	
+					}
+					else
+					{
+						text += new[] { "ы", "ов", "ам", "ов", "ами", "ах" }[(int)_padej];	
+					}
+					
+					break;
+				default:
+					throw new ArgumentOutOfRangeException("_sex");
+			}
+			return text;
 		}
 	}
 }
