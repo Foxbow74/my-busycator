@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GameCore;
 using GameCore.AbstractLanguage;
 using GameCore.Creatures;
@@ -75,12 +74,13 @@ namespace LanguagePack
 
 		public static string To(this Essence _essence, EPadej _padej)
 		{
-			var noun = _essence.Name;
-			if(_essence.Is<Intelligent>() && m_rnd.Next(2)==1)
-			{
-				noun = ((Intelligent)_essence).Roles.ToArray().RandomItem(m_rnd).Name;
-			}
-			return NounToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
+			return _essence.Name.To(_padej);
+			//var noun = _essence.Name.Text;
+			//if(_essence.Is<Intelligent>() && m_rnd.Next(2)==1)
+			//{
+			//    noun = ((Intelligent)_essence).Roles.ToArray().RandomItem(m_rnd).Name;
+			//}
+			//return NounToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
 		}
 
 		private static void AddIskl(string _imen, string _rod,string _dat, string _vin, string _tvor, string _predl)
@@ -339,16 +339,25 @@ namespace LanguagePack
 
 		public static string To(this Noun _noun, EPadej _padej)
 		{
-			return _noun.Adverb.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + _noun.Title.To(_padej);
+			if(_noun.AlsoKnownAs!=null && YesNo())
+			{
+				return _noun.Adjective.To(_padej, _noun.Sex) + _noun.AlsoKnownAs.To(_padej);
+			}
+			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex);
 		}
 
-		public static string To(this Title _title, EPadej _padej)
+		public static bool? YesNoAnswer { get; set; }
+
+		private static bool YesNo()
 		{
-			if (_title == null) return "";
-			return "-" + NounToPadej(_padej, _title.Text, _title.IsCreature, _title.Sex);
+			if (YesNoAnswer.HasValue)
+			{
+				return YesNoAnswer.Value;
+			}
+			return m_rnd.Next(2)==0;
 		}
 
-		public static string To(this Adverb _adv, EPadej _padej, ESex _sex)
+		public static string To(this Adjective _adv, EPadej _padej, ESex _sex)
 		{
 			if (_adv == null) return "";
 			var text = _adv.Text;

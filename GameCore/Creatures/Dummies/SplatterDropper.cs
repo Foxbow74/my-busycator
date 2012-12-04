@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts.Movement;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping;
@@ -16,7 +17,7 @@ namespace GameCore.Creatures.Dummies
 
 		private int m_strenght;
 
-		public SplatterDropper(WorldLayer _layer, LiveMapCell _from, int _strength, FColor _color, LiveMapCell _to): base(_layer, 0)
+		public SplatterDropper(WorldLayer _layer, LiveMapCell _from, int _strength, FColor _color, LiveMapCell _to): base(null, _layer, 0)
 		{
 			m_strenght = _strength;
 			m_color = _color;
@@ -27,8 +28,6 @@ namespace GameCore.Creatures.Dummies
 		}
 
 		public override ETileset Tileset { get { return ETileset.NONE; } }
-
-		public override string Name { get { return ""; } }
 
 		public override EThinkingResult Thinking()
 		{

@@ -1,3 +1,4 @@
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 
@@ -8,7 +9,7 @@ namespace GameCore.Essences
 	/// </summary>
 	public abstract class Item : Essence
 	{
-		protected Item(Material _material) : base(_material) { }
+		protected Item(Noun _name, Material _material) : base(_name, _material) { }
 
 		public override ETileset Tileset
 		{

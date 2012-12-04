@@ -1,8 +1,8 @@
 ﻿using System;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.CreatureRoles;
 using GameCore.Essences;
-using GameCore.Essences.Ammo;
 using GameCore.Essences.Tools;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
@@ -12,7 +12,7 @@ namespace GameCore.Creatures
 	public class Avatar : Intelligent, ISpecial
 	{
 		public Avatar(WorldLayer _surface)
-			: base(_surface, 100, EIntellectGrades.INT)
+			: base("Аватар".AsNoun(ESex.MALE, true) + "Герой".AsNoun(ESex.MALE, true), _surface, 100, EIntellectGrades.INT)
 		{
 			Tactic = ETactics.NORMAL;
 			Luck = 6;
@@ -29,8 +29,6 @@ namespace GameCore.Creatures
 		public override ETileset Tileset { get { return ETileset.AVATAR; } }
 
         public override int TileIndex { get { return 2; } }
-
-		public override string IntelligentName { get { return "Герой"; } }
 
 		public override EFraction Fraction
 		{

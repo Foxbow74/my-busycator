@@ -1,4 +1,5 @@
 ﻿using System;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 
@@ -9,7 +10,7 @@ namespace GameCore.Essences.Faked
 		#region .ctor
 
 		public FakedItem(Essence _essence)
-			: base(_essence.Material)
+			: base(_essence.Name,  _essence.Material)
 		{
 			Essence = _essence;
 		}
@@ -44,7 +45,7 @@ namespace GameCore.Essences.Faked
 			get { throw new NotImplementedException(); }
 		}
 
-		public override string Name
+		public override Noun Name
 		{
 			get { throw new NotImplementedException(); }
 		}

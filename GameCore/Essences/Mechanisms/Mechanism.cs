@@ -1,4 +1,5 @@
-﻿using GameCore.Acts;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 
@@ -6,8 +7,8 @@ namespace GameCore.Essences.Mechanisms
 {
     public abstract class Mechanism:Thing, ISpecial
     {
-        protected Mechanism(Material _material, uint _mechanismId)
-            : base(_material)
+        protected Mechanism(Noun _name, Material _material, uint _mechanismId)
+			: base(_name, _material)
         {
             MechanismId = _mechanismId;
         }

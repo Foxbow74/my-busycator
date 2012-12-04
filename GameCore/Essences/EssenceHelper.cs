@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
@@ -159,7 +160,7 @@ namespace GameCore.Essences
 		/// <param name="_creature"> </param>
 		/// <param name="_cell"> Координаты не всегда совпадают с координатами существа </param>
 		/// <returns> </returns>
-		public static string GetName(this Essence _essence, Creature _creature, LiveMapCell _cell = null)
+		public static Noun GetName(this Essence _essence, Creature _creature, LiveMapCell _cell = null)
 		{
 			if (_cell == null)
 			{
@@ -188,7 +189,7 @@ namespace GameCore.Essences
 			return _essence.Name;
 		}
 
-		public static string GetName(this EssenceDescriptor _essenceDescriptor, Creature _creature)
+		public static Noun GetName(this EssenceDescriptor _essenceDescriptor, Creature _creature)
 		{
 			var thing = _essenceDescriptor.Essence;
 			if (thing is IFaked)

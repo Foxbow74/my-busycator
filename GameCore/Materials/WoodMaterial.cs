@@ -1,4 +1,6 @@
-﻿namespace GameCore.Materials
+﻿using GameCore.AbstractLanguage;
+
+namespace GameCore.Materials
 {
 	public abstract class WoodMaterial : Material
 	{
@@ -8,5 +10,7 @@
 		public override EMaterialType MaterialType { get { return EMaterialType.WOOD; } }
 
 		public abstract int TreeTileIndex { get; }
+
+		public abstract Noun TreeName { get; }
 	}
 }

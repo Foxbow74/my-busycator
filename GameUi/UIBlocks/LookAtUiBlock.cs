@@ -91,11 +91,11 @@ namespace GameUi.UIBlocks
 
 					if (liveCell.Creature != null)
 					{
-						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell).Text);
 					}
 					if (liveCell.Thing != null)
 					{
-						list.Add(liveCell.Thing.GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Thing.GetName(World.TheWorld.Avatar, liveCell).Text);
 					}
 					if (liveCell.Items.Count() > 1)
 					{
@@ -103,7 +103,7 @@ namespace GameUi.UIBlocks
 					}
 					else if (liveCell.Items.Count() == 1)
 					{
-						list.Add(liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell));
+						list.Add(liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell).Text);
 					}
 				}
 				else

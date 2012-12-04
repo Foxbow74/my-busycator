@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences.Faked;
 
@@ -13,7 +14,7 @@ namespace GameCore.Essences.Things
 	{
 		private ItemsCollection m_items;
 
-		protected Container(Material _material) : base(_material) { }
+		protected Container(Noun _name, Material _material) : base(_name, _material) { }
 
 		#region IContainer Members
 

@@ -1,3 +1,4 @@
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
@@ -7,13 +8,8 @@ namespace GameCore.Essences.Mechanisms
 	public class Button : Mechanism, IInteractiveThing
 	{
 		public Button(Material _material, uint _mechanismId)
-			: base(_material, _mechanismId)
+			: base("кнопка".AsNoun(ESex.FEMALE, false), _material, _mechanismId)
 		{
-		}
-
-		public override string Name
-		{
-			get { return "кнопка"; }
 		}
 
 		public override int TileIndex

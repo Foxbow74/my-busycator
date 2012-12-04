@@ -1,3 +1,4 @@
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 
@@ -7,7 +8,7 @@ namespace GameCore.Essences.Weapons
 	{
 		private readonly ItemBattleInfo m_info;
 
-		protected AbstractNaturalWeapon(ItemBattleInfo _info) : base(null)
+		protected AbstractNaturalWeapon(Noun _name, ItemBattleInfo _info) : base(_name ,null)
 		{
 			m_info = _info;
 		}

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
-using GameCore.Creatures.Monsters;
 using GameCore.Essences.Weapons;
 using GameCore.Mapping.Layers;
 using MagickSetting.Items.Weapons.NaturalWeapon;
@@ -14,7 +14,7 @@ namespace MagickSetting.Creatures.Monsters
 		static readonly IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
 
 		public Rat(WorldLayer _layer)
-			: base(_layer, 100 + World.Rnd.Next(20))
+			: base("крыса".AsNoun(ESex.FEMALE, true) + "грязный".AsAdj(), _layer, 100 + World.Rnd.Next(20))
 		{
 			Sex = ESex.FEMALE;
 
@@ -30,14 +30,6 @@ namespace MagickSetting.Creatures.Monsters
 			get
 			{
 				return 1;
-			}
-		}
-
-		public override string Name
-		{
-			get
-			{
-				return "крыса";
 			}
 		}
 

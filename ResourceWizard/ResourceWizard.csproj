@@ -182,6 +182,10 @@
       <Project>{1cc48a01-ebe0-4c46-890e-24465eebbc7d}</Project>
       <Name>GameUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LanguagePack\RusLanguagePack.csproj">
+      <Project>{5F7A0E59-CC3B-498E-A61C-877B2AC31601}</Project>
+      <Name>RusLanguagePack</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MagickSetting\MagicSetting.csproj">
       <Project>{89A625BC-7450-4C83-BD35-6057A40255FF}</Project>
       <Name>MagicSetting</Name>

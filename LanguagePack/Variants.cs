@@ -63,7 +63,7 @@ namespace LanguagePack
 		
 		public static string HaveGotDamage(Creature _nameProvider, int _damage)
 		{
-			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name.Text, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
 			{
 				case ESex.MALE:
@@ -85,7 +85,7 @@ namespace LanguagePack
 
 		public static string Died(Creature _nameProvider)
 		{
-			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name, _nameProvider.IsCreature, _nameProvider.Sex);
+			var name = Sklonenia.NounToPadej(EPadej.IMEN, _nameProvider.Name.Text, _nameProvider.IsCreature, _nameProvider.Sex);
 			switch (_nameProvider.Sex)
 			{
 				case ESex.MALE:

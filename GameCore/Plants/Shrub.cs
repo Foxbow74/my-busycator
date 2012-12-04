@@ -1,4 +1,4 @@
-using GameCore.Creatures;
+using GameCore.AbstractLanguage;
 using GameCore.Essences;
 using GameCore.Materials;
 
@@ -8,9 +8,15 @@ namespace GameCore.Plants
     {
         private readonly ShrubMaterial m_material;
 
-        public Shrub(Material _material) : base(_material) { m_material = (ShrubMaterial)_material; }
+		public Shrub(Material _material) : base(ShroobName(_material), _material) { m_material = (ShrubMaterial)_material; }
 
-        public override ETileset Tileset { get { return ETileset.SHRUBS; } }
+    	private static Noun ShroobName(Material _material)
+    	{
+			if (_material == null) return null;
+    		return ((ShrubMaterial)_material).ShroobName;
+    	}
+
+    	public override ETileset Tileset { get { return ETileset.SHRUBS; } }
 
         public override int TileIndex
         {
@@ -21,8 +27,6 @@ namespace GameCore.Plants
         }
 
     	public override FColor LerpColor { get { return FColor.Empty; } }
-
-        public override string Name { get { return m_material.ShroobName; } }
 
         public override EMaterialType AllowedMaterialsType { get { return EMaterialType.SHRUB; } }
     }

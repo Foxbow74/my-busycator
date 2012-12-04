@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Acts.Items;
 using GameCore.Creatures;
@@ -11,11 +12,9 @@ namespace GameCore.Essences.Things
 {
 	internal class Chest : Container, ICanbeOpened
 	{
-		public Chest(Material _material) : base(_material) { ELockType = ELockType.SIMPLE; }
+		public Chest(Material _material) : base("сундук".AsNoun(ESex.MALE, false), _material) { ELockType = ELockType.SIMPLE; }
 
         public override int TileIndex { get { return 7; } }
-
-		public override string Name { get { return "сундук"; } }
 
 		#region ICanbeOpened Members
 

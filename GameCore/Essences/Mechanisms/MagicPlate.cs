@@ -1,6 +1,6 @@
 using System;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
-using GameCore.Creatures.Monsters;
 using GameCore.Messages;
 using GameCore.Misc;
 
@@ -9,17 +9,12 @@ namespace GameCore.Essences.Mechanisms
 	public class MagicPlate : Mechanism, IRemoteActivation
 	{
 		public MagicPlate(Material _material, uint _mechanismId, EMagicPlateEffect _effect)
-			: base(_material, _mechanismId)
+			: base("пластина".AsNoun(ESex.FEMALE, false), _material, _mechanismId)
 		{
 			Effect = _effect;
 		}
 
 		public EMagicPlateEffect Effect { get; private set; }
-
-		public override string Name
-		{
-			get { return "пластина"; }
-		}
 
 		public override int TileIndex
 		{

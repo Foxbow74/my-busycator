@@ -9,6 +9,7 @@ using System.Windows.Threading;
 using GameCore;
 using GameCore.Essences;
 using GameCore.Misc;
+using LanguagePack;
 using MagickSetting;
 using ResourceWizard.Properties;
 using ResourceWizard.StoreableVMs;
@@ -30,7 +31,7 @@ namespace ResourceWizard
 
 		private Manager()
 		{
-			World.LetItBeeee();
+			World.LetItBeeee(new LanguageProcessor());
 			MagicSettingProvider.Init();
 
 			m_ttextures.Add(ETextureSet.GP, new Image(Resources.gold_plated_16x16, false, false));

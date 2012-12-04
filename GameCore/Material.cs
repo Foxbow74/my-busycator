@@ -1,17 +1,19 @@
-﻿namespace GameCore
+﻿using GameCore.AbstractLanguage;
+
+namespace GameCore
 {
 	public abstract class Material
 	{
 		protected Material(string _name)
 		{
-			Name = _name;
+			Name = _name.AsAdj();
 			Sex = ESex.MALE;
 		}
 
 		public ESex Sex { get; protected set; }
 
 		public abstract FColor LerpColor { get; }
-		public string Name { get; private set; }
+		public Adjective Name { get; private set; }
 		public abstract EMaterialType MaterialType { get; }
 
 		/// <summary>

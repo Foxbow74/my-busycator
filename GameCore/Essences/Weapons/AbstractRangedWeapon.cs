@@ -1,8 +1,10 @@
-﻿namespace GameCore.Essences.Weapons
+﻿using GameCore.AbstractLanguage;
+
+namespace GameCore.Essences.Weapons
 {
 	public abstract class AbstractRangedWeapon : AbstractWeapon
 	{
-		protected AbstractRangedWeapon(Material _material) : base(_material) { }
+		protected AbstractRangedWeapon(Noun _name, Material _material) : base(_name, _material) { }
 
         public override ETileset Tileset
         {
@@ -17,7 +19,7 @@
 
 	public abstract class AbstractMeleeWeapon : AbstractWeapon
 	{
-		protected AbstractMeleeWeapon(Material _material) : base(_material) { }
+		protected AbstractMeleeWeapon(Noun _name, Material _material) : base(_name, _material) { }
 
 		public override ETileset Tileset
 		{

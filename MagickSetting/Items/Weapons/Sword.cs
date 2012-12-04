@@ -1,5 +1,6 @@
 using System;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences;
@@ -10,21 +11,16 @@ namespace MagickSetting.Items.Weapons
 {
 	public class Sword : AbstractMeleeWeapon, ISpecial
 	{
-		private readonly string m_name;
-
-		public Sword(Material _material, string _name, int _tileIndex)
-			: base(_material)
+		public Sword(Noun _name, Material _material, int _tileIndex)
+			: base(_name, _material)
 		{
 			TileIndex = _tileIndex;
-			m_name = _name;
 		}
 
 		public override int TileIndex
         {
             get; protected set;
         }
-
-		public override string Name { get { return m_name; } }
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{
@@ -48,7 +44,7 @@ namespace MagickSetting.Items.Weapons
 	{
 		protected override Sword CreateT(Material _material)
 		{
-			return new Sword(_material, Name, TileIndex);
+			return new Sword(Name.AsNoun(ESex.MALE, true), _material, TileIndex);
 		}
 
 		public override Guid ProvierTypeId

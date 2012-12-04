@@ -114,7 +114,7 @@ namespace LanguagePack
 				case 1:
 					return string.Format("{0} {1} не смог добраться до плоти  {2}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD));
 				case 2:
-					return string.Format("пару раз {0} удавалось пробить защиту {1}, но ни одна из не пробили броню", actor.To(EPadej.DAT), target.To(EPadej.ROD));
+					return string.Format("пару раз {0} удавалось пробить защиту {1}, но ни одна из не пробила броню", actor.To(EPadej.DAT), target.To(EPadej.ROD));
 				default:
 					return string.Format("ни одна из {0} {1} не смогли пробить броню {2}", success.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD));
 			}
@@ -198,11 +198,11 @@ namespace LanguagePack
 			var target = _arg.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} попадает в незащищенный участок и снимает {1} {2}", actor.Name, target.To(EPadej.DAT), _arg.First<int>().Пунктов());
+				return string.Format("{0} попадает в незащищенный участок и снимает {1} {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.DAT), _arg.First<int>().Пунктов());
 			}
 			else
 			{
-				return string.Format("особо метким ударом {0} ранил {1} {2} на {3}", actor.Name, target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
+				return string.Format("особо метким ударом {0} ранил {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 		}
 
@@ -214,11 +214,11 @@ namespace LanguagePack
 			var target = _arg.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} на меcте убивает {1}", actor.Name, target.To(EPadej.VIN));
+				return string.Format("{0} на меcте убивает {1}", actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN));
 			}
 			else
 			{
-				return string.Format("нанеся чудовищную рану {0} {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name, target.To(EPadej.VIN));
+				return string.Format("нанеся чудовищную рану {0} {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN));
 			}
 		}
 
@@ -240,11 +240,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} попал в {1} и ранил на {2}", actor.Name, target.To(EPadej.ROD), _arg.First<int>().Пунктов());
+				return string.Format("{0} попал в {1} и ранил на {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), _arg.First<int>().Пунктов());
 			}
 			else
 			{
-				return string.Format("{0} ранил {1} {2} на {3}", actor.Name, target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
+				return string.Format("{0} ранил {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
 			}
 		}
 
@@ -271,11 +271,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<AbstractDummyCreature>())
 			{
-				return string.Format("{0} отскакивает от {1}", actor.Name, target.To(EPadej.ROD));
+				return string.Format("{0} отскакивает от {1}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD));
 			}
 			else
 			{
-				return string.Format("{0} ударил {1} по {2}, но не пробил броню", actor.Name, weapon.To(EPadej.TVOR), target.To(EPadej.DAT));
+				return string.Format("{0} ударил {1} по {2}, но не пробил броню", actor.Name.To(EPadej.IMEN), weapon.To(EPadej.TVOR), target.To(EPadej.DAT));
 			}
 		}
 
@@ -315,11 +315,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<AbstractDummyCreature>())
 			{
-				return string.Format("{0} добивает {1}", actor.Name, target.To(EPadej.VIN));
+				return string.Format("{0} добивает {1}", actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN));
 			}
 			else
 			{
-				return string.Format("нанеся {0} смертельную рану {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name, target.To(EPadej.VIN));
+				return string.Format("нанеся {0} смертельную рану {1} убил {2}", weapon.To(EPadej.TVOR), actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN));
 			}
 		}
 

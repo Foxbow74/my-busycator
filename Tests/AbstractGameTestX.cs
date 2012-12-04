@@ -3,6 +3,7 @@ using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
+using LanguagePack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -69,7 +70,7 @@ namespace Tests
 
 			if (World.TheWorld == null)
 			{
-				World.LetItBeeee();
+				World.LetItBeeee(new LanguageProcessor());
 			}
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;

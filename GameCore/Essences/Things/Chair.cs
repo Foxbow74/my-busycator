@@ -1,15 +1,13 @@
-﻿using GameCore.Creatures;
+﻿using GameCore.AbstractLanguage;
 
 namespace GameCore.Essences.Things
 {
 	internal class Grave : Thing
 	{
-		public Grave(Material _material) : base(_material) 
+		public Grave(Material _material) : base("могила".AsNoun(ESex.FEMALE, false), _material) 
 		{
 			Sex = ESex.FEMALE;
 		}
-
-		public override string Name { get { return "могила"; } }
 
 		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.MINERAL; } }
 
@@ -18,51 +16,41 @@ namespace GameCore.Essences.Things
 
 	internal class Chair : Thing
 	{
-		public Chair(Material _material)
-			: base(_material) { }
+		public Chair(Material _material): base("стул".AsNoun(ESex.MALE, false),_material) { }
 
         public override int TileIndex { get { return 2; } }
-
-		public override string Name { get { return "стул"; } }
 	}
 
 	internal class Cabinet : Thing
 	{
-		public Cabinet(Material _material)
-			: base(_material) { }
+		public Cabinet(Material _material): base("шкаф".AsNoun(ESex.MALE, false), _material) { }
 
         public override int TileIndex { get { return 1; } }
 
-		public override string Name { get { return "шкаф"; } }
+		public override Noun Name { get { return "шкаф".AsNoun(ESex.MALE, false); } }
 	}
 
 	internal class ArmorRack : Thing
 	{
 		public ArmorRack(Material _material)
-			: base(_material) { Sex = ESex.FEMALE; }
+			: base("стойка".AsNoun(ESex.FEMALE, false) + " для брони".AsIm(), _material) { Sex = ESex.FEMALE; }
 
         public override int TileIndex { get { return 3; } }
-
-		public override string Name { get { return "стойка для брони"; } }
 	}
 
 	internal class WeaponRack : Thing
 	{
 		public WeaponRack(Material _material)
-			: base(_material) { Sex = ESex.FEMALE; }
+			: base("стойка".AsNoun(ESex.FEMALE, false) + " для оружия".AsIm(), _material) { Sex = ESex.FEMALE; }
 
         public override int TileIndex { get { return 4; } }
-
-		public override string Name { get { return "стойка для оружия"; } }
 	}
 
 	internal class Barrel : Thing
 	{
 		public Barrel(Material _material)
-			: base(_material) { Sex = ESex.FEMALE; }
+			: base("бочка".AsNoun(ESex.FEMALE, false), _material) { Sex = ESex.FEMALE; }
 
         public override int TileIndex { get { return 5; } }
-
-		public override string Name { get { return "бочка"; } }
 	}
 }

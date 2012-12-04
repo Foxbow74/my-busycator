@@ -1,4 +1,5 @@
-﻿using GameCore.Mapping;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Mapping;
 using GameCore.Misc;
 
 namespace GameCore.Essences.Things.LightSources
@@ -7,7 +8,7 @@ namespace GameCore.Essences.Things.LightSources
 	{
 		private readonly LightSource m_lightSource;
 
-		protected LightSourceThing(LightSource _lightSource, Material _material) : base(_material) { m_lightSource = _lightSource; }
+		protected LightSourceThing(Noun _name, LightSource _lightSource, Material _material) : base(_name, _material) { m_lightSource = _lightSource; }
 
 		public override ETileset Tileset
 		{

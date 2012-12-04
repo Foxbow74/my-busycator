@@ -14,8 +14,8 @@ namespace GameCore.Creatures
 		private readonly string m_name;
 		private FColor m_lerpColor;
 
-		public Citizen(Surface _layer, Random _rnd)
-			: base(_layer, _rnd.Next(10) + 95, EIntellectGrades.INT) { m_name = _layer.GetNextCitizenName(Sex); }
+		public Citizen(Surface _layer, Random _rnd, ESex _sex)
+			: base(_layer.GetNextCitizenName(_sex), _layer, _rnd.Next(10) + 95, EIntellectGrades.INT){}
 
 		public override bool IsUnique
 		{
@@ -42,8 +42,6 @@ namespace GameCore.Creatures
 				return Nn;
 			}
 		}
-
-		public override string IntelligentName { get { return m_name; } }
 
 		public override EFraction Fraction
 		{
@@ -100,7 +98,7 @@ namespace GameCore.Creatures
 
 		public override string ToString()
 		{
-			var result = Name;
+			var result = Name.Text;
 			for (var index = 1; index < Roles.ToArray().Length; index++)
 			{
 				var role = Roles.ToArray()[index];

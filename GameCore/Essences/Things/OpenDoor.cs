@@ -1,4 +1,5 @@
-﻿using GameCore.Acts;
+﻿using GameCore.AbstractLanguage;
+using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -10,11 +11,9 @@ namespace GameCore.Essences.Things
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 
-		public OpenDoor(Material _material) : base(_material) { Sex = ESex.FEMALE; }
+		public OpenDoor(Material _material) : base("дверь".AsNoun(ESex.FEMALE, false), _material) { Sex = ESex.FEMALE; }
 
         public override int TileIndex { get { return 9; } }
-
-		public override string Name { get { return "дверь"; } }
 
 		#region ICanbeClosed Members
 

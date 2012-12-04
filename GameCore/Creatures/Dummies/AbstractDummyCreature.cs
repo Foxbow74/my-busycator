@@ -1,4 +1,5 @@
 using System;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Essences;
 using GameCore.Mapping.Layers;
@@ -7,7 +8,7 @@ namespace GameCore.Creatures.Dummies
 {
 	public abstract class AbstractDummyCreature:Creature,ISpecial
 	{
-		protected AbstractDummyCreature(WorldLayer _layer, int _speed) : base(_layer, _speed)
+		protected AbstractDummyCreature(Noun _name, WorldLayer _layer, int _speed) : base(_name, _layer, _speed)
 		{
 		}
 

@@ -1,4 +1,5 @@
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences.Weapons;
@@ -7,7 +8,7 @@ namespace MagickSetting.Items.Weapons
 {
 	public class CrossBow : AbstractRangedWeapon
 	{
-		public CrossBow(Material _material) : base(_material) { }
+		public CrossBow(Material _material) : base("арбалет".AsNoun(ESex.MALE, false), _material) { }
 
         public override int TileIndex
         {
@@ -16,8 +17,6 @@ namespace MagickSetting.Items.Weapons
                 return 0;
             }
         }
-
-		public override string Name { get { return "арбалет"; } }
 
 		public override ItemBattleInfo CreateItemInfo(Creature _creature)
 		{

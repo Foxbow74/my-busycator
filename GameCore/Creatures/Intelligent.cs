@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Essences;
 using GameCore.Essences.Faked;
 using GameCore.Essences.Weapons;
@@ -31,8 +32,8 @@ namespace GameCore.Creatures
 		private readonly Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
 		private readonly EIntellectGrades m_intellectGrades;
 
-		protected Intelligent(WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
-			: base(_layer, _speed)
+		protected Intelligent(Noun _name, WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
+			: base(_name, _layer, _speed)
 		{
 			Sex = World.Rnd.Next(2) == 0 ? ESex.MALE : ESex.FEMALE;
 			m_intellectGrades = _intellectGrades;
@@ -69,13 +70,6 @@ namespace GameCore.Creatures
 				return base.Light;
 			}
 		}
-
-		public override string Name
-		{
-			get { return IntelligentName; }
-		}
-
-		public abstract string IntelligentName { get; }
 
 		/// <summary>
 		/// 	Добавить в рюкзак и затем экипироваться
