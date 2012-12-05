@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences;
@@ -14,7 +15,7 @@ namespace GameCore.Acts.Combat
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.T, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "выстрелить/метнуть"; } }
+		public override EALConst Name { get { return EALConst.AN_SHOOT; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

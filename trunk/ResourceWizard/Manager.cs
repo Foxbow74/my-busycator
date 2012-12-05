@@ -31,7 +31,7 @@ namespace ResourceWizard
 
 		private Manager()
 		{
-			World.LetItBeeee(new LanguageProcessor());
+			World.LetItBeeee(new RusLanguageProcessor());
 			MagicSettingProvider.Init();
 
 			m_ttextures.Add(ETextureSet.GP, new Image(Resources.gold_plated_16x16, false, false));

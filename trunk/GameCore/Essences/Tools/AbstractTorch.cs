@@ -5,7 +5,6 @@ using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.XLanguage;
 
 namespace GameCore.Essences.Tools
 {
@@ -44,11 +43,11 @@ namespace GameCore.Essences.Tools
 		{
 			if (IsOn)
 			{
-				MessageManager.SendXMessage(_intelligent, new XMessage(EXMType.CREATURE_LIGHT_OFF_IT, _intelligent, this));
+				MessageManager.SendXMessage(_intelligent, new XMessage(EALTurnMessage.CREATURE_LIGHT_OFF_IT, _intelligent, this));
 			}
 			else
 			{
-				MessageManager.SendXMessage(_intelligent, new XMessage(EXMType.CREATURE_LIGHT_ON_IT, _intelligent, this));
+				MessageManager.SendXMessage(_intelligent, new XMessage(EALTurnMessage.CREATURE_LIGHT_ON_IT, _intelligent, this));
 			}
 			IsOn = !IsOn;
 			return EActResults.DONE;

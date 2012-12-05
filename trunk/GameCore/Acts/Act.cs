@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Management.Instrumentation;
 using System.Text;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Mapping;
@@ -275,7 +276,7 @@ namespace GameCore.Acts
 
 		public bool IsCancelled { get; set; }
 
-		public abstract string Name { get; }
+		public abstract EALConst Name { get; }
 
 		public int TakeTicks
 		{

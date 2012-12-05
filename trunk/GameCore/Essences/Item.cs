@@ -9,7 +9,7 @@ namespace GameCore.Essences
 	/// </summary>
 	public abstract class Item : Essence
 	{
-		protected Item(Noun _name, Material _material) : base(_name, _material) { }
+		protected Item(EALNouns _name, Material _material) : base(_name, _material) { }
 
 		public override ETileset Tileset
 		{

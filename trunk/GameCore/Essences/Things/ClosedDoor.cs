@@ -3,7 +3,6 @@ using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Essences.Things
 {
@@ -25,7 +24,7 @@ namespace GameCore.Essences.Things
 
 			if (_creature.IsAvatar)
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_OPENS_IT, _creature, this));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_OPENS_IT, _creature, this));
 			}
 			return EActResults.DONE;
 		}

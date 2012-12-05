@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences.Mechanisms;
 using GameCore.Mapping;
@@ -19,9 +20,9 @@ namespace GameCore.Acts.Interact
 			get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Y, EKeyModifiers.NONE); }
 		}
 
-		public override string Name
+		public override EALConst Name
 		{
-			get { return "Взаимодействовать с объектом"; }
+			get { return EALConst.AN_INTERRACT_WITH_ESSENCE; }
 		}
 
 		public override string HelpText

@@ -9,7 +9,6 @@ using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.XLanguage;
 
 namespace GameCore.Acts.Movement
 {
@@ -19,11 +18,11 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { return KeyTranslator.MoveKeys.Select(_key => new Tuple<ConsoleKey, EKeyModifiers>(_key, EKeyModifiers.NONE)); } }
 
-		public override string Name { get { return "движение (стороны света)"; } }
+		public override EALConst Name { get { return EALConst.AN_MOVE; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override string HelpKeys { get { return "стрелки"; } }
+		public override string HelpKeys { get { return EALConst.AN_MOVE_1.GetString(); } }
 
 		public override EActionCategory Category { get { return EActionCategory.MOVEMENT; } }
 
@@ -93,7 +92,7 @@ namespace GameCore.Acts.Movement
 							////Если это не перемещение на дальнее расстояние
 							//return World.TheWorld.BattleProcessor.Atack(_creature, creature);
 						}
-						mess = new XMessage(EXMType.CELL_IS_OCCUPIED_BY, creature, cell.TerrainAttribute.DisplayName.AsNoun(ESex.MALE, false));
+						mess = new XMessage(EALTurnMessage.CELL_IS_OCCUPIED_BY, _creature, creature);
 					}
 					else
 					{
@@ -103,7 +102,7 @@ namespace GameCore.Acts.Movement
 							_creature.InsertActToPool(new OpenAct(), delta);
 							return EActResults.ACT_REPLACED;
 						}
-						mess = new XMessage(EXMType.CREATURE_NOW_STAY_ON, creature, cell.TerrainAttribute.DisplayName.AsNoun(ESex.MALE, false));
+						mess = new XMessage(EALTurnMessage.CREATURE_NOW_STAY_ON, _creature, cell.Terrain.AsNoun());
 					}
 					MessageManager.SendXMessage(this, mess);
 				}

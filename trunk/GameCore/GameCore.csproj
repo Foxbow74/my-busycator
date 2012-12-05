@@ -99,12 +99,13 @@
     <Compile Include="Essences\Tools\ITool.cs" />
     <Compile Include="Essences\Weapons\IWeapon.cs" />
     <Compile Include="Essences\Weapons\AbstractNaturalWeapon.cs" />
+    <Compile Include="IAbstractLanguageProcessor.cs" />
     <Compile Include="IRemoteActivation.cs" />
     <Compile Include="Essences\Mechanisms\Lever.cs" />
     <Compile Include="Essences\Mechanisms\MagicPlate.cs" />
     <Compile Include="Essences\Mechanisms\Mechanism.cs" />
     <Compile Include="FColor.cs" />
-    <Compile Include="AbstractLanguage\Word.cs" />
+    <Compile Include="AbstractLanguage\AbstractWord.cs" />
     <Compile Include="Mapping\BaseMapBlock.cs" />
     <Compile Include="Mapping\Layers\ConnectionPoint.cs" />
     <Compile Include="Mapping\Layers\DungeonLayer.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Messages\EAskMessageType.cs" />
     <Compile Include="Messages\EMessageType.cs" />
     <Compile Include="Messages\ESelectItemDialogBehavior.cs" />
+    <Compile Include="AbstractLanguage\EALTurnMessage.cs" />
     <Compile Include="Misc\LightSource.cs" />
     <Compile Include="Misc\LosManager.cs" />
     <Compile Include="Misc\MathHelper.cs" />
@@ -200,7 +202,7 @@
     <Compile Include="Essences\Essence.cs" />
     <Compile Include="ETerrains.cs" />
     <Compile Include="ETileset.cs" />
-    <Compile Include="Misc\Util.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="Storage\EStoreKind.cs" />
     <Compile Include="Storage\XResourceClient.cs" />
     <Compile Include="Storage\XResourceEssences\IResourceEssence.cs" />
@@ -223,7 +225,7 @@
     <Compile Include="Storeable\XTileSet.cs" />
     <Compile Include="TileSetInfoProvider.cs" />
     <Compile Include="World.cs" />
-    <Compile Include="XLanguage\XMessage.cs" />
+    <Compile Include="Messages\XMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">

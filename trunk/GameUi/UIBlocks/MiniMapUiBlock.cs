@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Misc;
 using Point = GameCore.Misc.Point;
 
@@ -112,7 +113,7 @@ namespace GameUi.UIBlocks
 					DrawHelper.DrawRect(new RectangleF(halfContentRect.X + pnt.X * rectSize.X, halfContentRect.Y + pnt.Y * rectSize.Y, rectSize.X, rectSize.Y), color);
 				}
 			}
-			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, 21, EAlignment.RIGHT);
+			DrawLine("[z|Esc] - " + EALConst.EXIT.GetString(), ForeColor, TextLinesMax - 2, 21, EAlignment.RIGHT);
 		}
 
 

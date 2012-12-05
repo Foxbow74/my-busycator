@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GameCore;
-using GameCore.Acts;
+using GameCore.AbstractLanguage;
 using GameCore.Misc;
 
 namespace GameUi.UIBlocks.Help
@@ -29,7 +29,7 @@ namespace GameUi.UIBlocks.Help
 			var currentCategory = string.Empty;
 			foreach (var act in acts)
 			{
-				var category = ActionCategoryAttribute.GetAttribute(act.Category).DisplayName;
+				var category = EALSentence.NONE.GetString(act.Category.AsNoun());
 				if (category != currentCategory)
 				{
 					currentCategory = category;
@@ -37,9 +37,9 @@ namespace GameUi.UIBlocks.Help
 					DrawLine(currentCategory, FColor.Yellow, line++, 20, EAlignment.LEFT);
 				}
 				DrawLine(act.HelpKeys, FColor.LightBlue, line, 30, EAlignment.LEFT);
-				DrawLine(act.Name, ForeColor, line++, 100, EAlignment.LEFT);
+				DrawLine(act.Name.GetString(), ForeColor, line++, 100, EAlignment.LEFT);
 			}
-			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, 20, EAlignment.RIGHT);
+			DrawLine("[z|Esc] - " + EALConst.EXIT.GetString(), ForeColor, TextLinesMax - 2, 20, EAlignment.RIGHT);
 		}
 	}
 }

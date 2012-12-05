@@ -92,7 +92,7 @@ namespace Tests
 
 			if (World.TheWorld == null)
 			{
-				World.LetItBeeee(new LanguageProcessor());
+				World.LetItBeeee(new RusLanguageProcessor());
 			}
 		}
 

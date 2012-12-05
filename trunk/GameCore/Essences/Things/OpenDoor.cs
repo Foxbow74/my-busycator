@@ -3,7 +3,6 @@ using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Essences.Things
 {
@@ -24,7 +23,7 @@ namespace GameCore.Essences.Things
 			_liveMapCell.Thing = door;
 			if (_creature.IsAvatar)
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_CLOSES_IT, _creature, this));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_CLOSES_IT, _creature, this));
 				//MessageManager.SendMessage(this, this[EPadej.IMEN] + " закрыта.");
 			}
 			return EActResults.DONE;

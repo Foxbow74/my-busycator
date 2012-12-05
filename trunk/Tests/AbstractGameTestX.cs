@@ -70,7 +70,7 @@ namespace Tests
 
 			if (World.TheWorld == null)
 			{
-				World.LetItBeeee(new LanguageProcessor());
+				World.LetItBeeee(new RusLanguageProcessor());
 			}
 			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;

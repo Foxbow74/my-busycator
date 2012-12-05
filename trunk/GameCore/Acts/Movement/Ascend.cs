@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences.Things;
 using GameCore.Messages;
@@ -12,7 +13,7 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.OemComma, EKeyModifiers.SHIFT); } }
 
-		public override string Name { get { return "подняться по лестнице"; } }
+		public override EALConst Name { get { return EALConst.AN_ASCEND; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

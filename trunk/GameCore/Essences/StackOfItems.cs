@@ -7,9 +7,10 @@ namespace GameCore.Essences
 {
 	public abstract class StackOfItems : Item
 	{
-		private readonly Noun m_nameOfItem;
+		private readonly EALNouns m_nameOfItem;
 
-		protected StackOfItems(Noun _nameOfItem, Material _material) : base("кучка".AsNoun(ESex.FEMALE, false) + "чего-то".AsOf(), _material)
+		protected StackOfItems(EALNouns _nameOfItem, Material _material)
+			: base(EALNouns.StackOf, _material)
 		{
 			m_nameOfItem = _nameOfItem;
 		}
@@ -26,9 +27,9 @@ namespace GameCore.Essences
 				}
 				if (Count == 1)
 				{
-					return m_nameOfItem;
+					return m_nameOfItem.AsNoun();
 				}
-				return m_nameOfItem + (" * " + Count.ToString(CultureInfo.InvariantCulture)).AsIm();
+				return m_nameOfItem.AsNoun() + (" * " + Count.ToString(CultureInfo.InvariantCulture)).AsIm();
 			}
 		}
 

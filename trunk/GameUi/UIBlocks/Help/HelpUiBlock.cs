@@ -1,5 +1,6 @@
 ﻿using System;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Messages;
 using GameCore.Misc;
 
@@ -32,7 +33,7 @@ namespace GameUi.UIBlocks.Help
 			DrawLine("b. Предметы", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("с. Классы", ForeColor, line++, indent, EAlignment.LEFT);
 			DrawLine("d. Рассы", ForeColor, line++, indent, EAlignment.LEFT);
-			DrawLine("[z|Esc] - выход", ForeColor, TextLinesMax - 2, indent, EAlignment.RIGHT);
+			DrawLine("[z|Esc] - " + EALConst.EXIT.GetString(), ForeColor, TextLinesMax - 2, indent, EAlignment.RIGHT);
 		}
 	}
 }

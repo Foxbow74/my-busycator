@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 
@@ -95,7 +94,6 @@ namespace GameCore.Essences
 
 			public override EItemCategory Category { get { throw new NotImplementedException(); } }
 			public override ETileset Tileset { get { throw new NotImplementedException(); } }
-			public override Noun Name { get { throw new NotImplementedException(); } }
 
 			public Item Item { get; private set; }
 			public override ItemBattleInfo CreateItemInfo(Creature _creature){ throw new NotImplementedException(); }

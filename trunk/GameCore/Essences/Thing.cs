@@ -6,7 +6,7 @@ namespace GameCore.Essences
 	{
 		private FColor m_lerpColor;
 
-		protected Thing(Noun _name, Material _material) : base(_name, _material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
+		protected Thing(EALNouns _name, Material _material) : base(_name, _material) { m_lerpColor = _material == null ? FColor.Empty : _material.LerpColor; }
 
 		public override FColor LerpColor { get { return m_lerpColor; } }
 

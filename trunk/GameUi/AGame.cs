@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameCore;
 
 namespace GameUi
@@ -14,5 +15,6 @@ namespace GameUi
 		KeyState KeyState { get; }
 		void Clear(FColor _color);
 		void Exit();
+		IEnumerable<IAbstractLanguageProcessor> GetLanguageProcessors();
 	}
 }

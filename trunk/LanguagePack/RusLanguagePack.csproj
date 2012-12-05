@@ -41,8 +41,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EPadej.cs" />
-    <Compile Include="LanguageProcessor.cs" />
+    <Compile Include="RusLanguageProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RusLanguageProcessorConstants.cs">
+      <DependentUpon>RusLanguageProcessor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RusLanguageProcessorCoreEnums.cs">
+      <DependentUpon>RusLanguageProcessor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Sklonenia.cs" />
     <Compile Include="Variants.cs" />
     <Compile Include="XMessageCompiler.cs" />

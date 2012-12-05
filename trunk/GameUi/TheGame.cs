@@ -7,7 +7,6 @@ using GameCore.Misc;
 using GameUi.UIBlocks;
 using GameUi.UIBlocks.Help;
 using GameUi.UIBlocks.Items;
-using LanguagePack;
 
 namespace GameUi
 {
@@ -127,7 +126,7 @@ namespace GameUi
 		public void Run()
 		{
 			m_uiBlocks.Clear();
-			World.LetItBeeee(new LanguageProcessor());
+			World.LetItBeeee(m_gameProvider.GetLanguageProcessors().First());
 			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width / Constants.TILE_SIZE, m_gameProvider.Height / Constants.TILE_SIZE);
 			m_uiBlocks.Push(m_mainUiBlock);
 

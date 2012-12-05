@@ -20,8 +20,6 @@ namespace GameCore.Essences.Faked
 
 		public override FColor LerpColor { get { return Essence.LerpColor; } }
 
-		public override Noun Name { get { throw new NotImplementedException(); } }
-
 		public override EFraction Fraction
 		{
 			get { throw new NotImplementedException(); }

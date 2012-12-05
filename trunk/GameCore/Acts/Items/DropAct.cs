@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -14,7 +14,7 @@ namespace GameCore.Acts.Items
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.D, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "выбросить предмет"; } }
+		public override EALConst Name { get { return EALConst.AN_DROP; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
@@ -75,7 +75,7 @@ namespace GameCore.Acts.Items
 				_creature[0, 0].AddItem(item);
 			}
 
-			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DROPS_IT, _creature, item, Count));
+			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_DROPS_IT, _creature, item, Count));
 			return EActResults.DONE;
 		}
 	}

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.Essences;
 
 namespace GameUi.UIBlocks
 {
@@ -71,7 +70,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> {"[z|Esc] - выход"};
+			var strings = new List<string> { "[z|Esc] - " + EALConst.EXIT.GetString() };
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 
@@ -82,36 +81,29 @@ namespace GameUi.UIBlocks
 
 				var lighted = liveCell.FinalLighted;
 
-				var list = new List<string>();
-				string thereIsWas;
+				var list = new List<Noun>();
 				if (lighted.Lightness() > World.TheWorld.Avatar.GeoInfo.Layer.FogLightness)
 				{
-					thereIsWas = "там ";
                     ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
 
 					if (liveCell.Creature != null)
 					{
-						list.Add(liveCell.Creature.GetName(World.TheWorld.Avatar, liveCell).Text);
+						list.Add(liveCell.Creature.Name);
 					}
 					if (liveCell.Thing != null)
 					{
-						list.Add(liveCell.Thing.GetName(World.TheWorld.Avatar, liveCell).Text);
+						list.Add(liveCell.Thing.Name);
 					}
-					if (liveCell.Items.Count() > 1)
+					foreach (var item in liveCell.Items)
 					{
-						list.Add("вещи");
+						list.Add(item.Name);
 					}
-					else if (liveCell.Items.Count() == 1)
-					{
-						list.Add(liveCell.Items.First().GetName(World.TheWorld.Avatar, liveCell).Text);
-					}
+					m_messages.DrawLine(EALSentence.THERE_ARE.GetString(list.ToArray()), FColor.Gray, 1, 0, EAlignment.LEFT);
 				}
 				else
 				{
-					thereIsWas = "там был ";// Variants.ThereIsWas(liveCell.TerrainAttribute.Sex, World.Rnd);
+					m_messages.DrawLine(EALSentence.THERE_ARE_WERE.GetString(list.ToArray()), FColor.Gray, 1, 0, EAlignment.LEFT);
 				}
-				list.Add(liveCell.TerrainAttribute.DisplayName);
-				m_messages.DrawLine(thereIsWas + string.Join(", ", list), FColor.Gray, 1, 0, EAlignment.LEFT);
 			}
 			else
 			{

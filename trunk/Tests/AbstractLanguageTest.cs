@@ -1,4 +1,9 @@
+using System;
+using System.Diagnostics;
 using GameCore;
+using GameCore.Acts;
+using GameCore.Creatures;
+using GameCore.Essences;
 using LanguagePack;
 using GameCore.AbstractLanguage;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -164,6 +169,61 @@ namespace Tests
 
 			noun = noun + "брадобреи".AsNoun(ESex.PLURAL, true);
 			Assert.AreEqual("лысым комарам", noun.To(EPadej.DAT));
+		}
+	}
+
+	[TestClass]
+	public class AbstractLanguageTestEnums
+	{
+		[TestMethod]
+		public void EEquipmentPlacesTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (EEquipmentPlaces places in Enum.GetValues(typeof(EEquipmentPlaces)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.NONE, lp.AsNoun(places)));
+			}
+		}
+
+		[TestMethod]
+		public void ETacticsTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (ETactics places in Enum.GetValues(typeof(ETactics)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.TACTICK_CHANGED, lp.AsNoun(places)));
+			}
+		}
+
+		[TestMethod]
+		public void EActionCategoryTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (EActionCategory places in Enum.GetValues(typeof(EActionCategory)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.NONE, lp.AsNoun(places)));
+			}
+		}
+
+		
+		[TestMethod]
+		public void ETerrainsTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (ETerrains places in Enum.GetValues(typeof(ETerrains)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(places)));
+			}
+		}
+
+		[TestMethod]
+		public void EItemCategoryTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (EItemCategory places in Enum.GetValues(typeof(EItemCategory)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(places)));
+			}
 		}
 	}
 }

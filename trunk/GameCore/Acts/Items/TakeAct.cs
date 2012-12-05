@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.XLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -15,7 +15,7 @@ namespace GameCore.Acts.Items
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.OemComma, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "подобрать предмет"; } }
+		public override EALConst Name { get { return EALConst.AN_TAKE; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
@@ -125,7 +125,7 @@ namespace GameCore.Acts.Items
 				intelligent.ObjectTaken((Item) thing);
 			}
 
-			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_IT, _creature, thing, Count));
+			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_TAKES_IT, _creature, thing, Count));
 
 			return EActResults.DONE;
 		}

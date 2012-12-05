@@ -2,27 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore.Essences;
-using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
 	public enum EEquipmentPlaces
 	{
-		[EquipmentPlaces("Голова", EItemCategory.HELMETS)] HEAD,
-		[EquipmentPlaces("Шея", EItemCategory.NECKLACES)] NECK,
-		[EquipmentPlaces("Тело", EItemCategory.WEAR, EItemCategory.ARMOR)] BODY,
-		[EquipmentPlaces("Пояс", EItemCategory.GIRGLE)] GIRGLE,
-		[EquipmentPlaces("Накидка", EItemCategory.CLOACK)] CLOACK,
-		[EquipmentPlaces("Правая рука")] RIGHT_HAND,
-		[EquipmentPlaces("Левая рука")] LEFT_HAND,
-		[EquipmentPlaces("Кольцо на правой руке", EItemCategory.RINGS)] RIGHT_RING,
-		[EquipmentPlaces("Кольцо на левой руке", EItemCategory.RINGS)] LEFT_RING,
-		[EquipmentPlaces("Наручи", EItemCategory.BRACERS)] BRACERS,
-		[EquipmentPlaces("Перчатки", EItemCategory.GAUNTLETS)] GAUNTLETS,
-		[EquipmentPlaces("Обувь", EItemCategory.BOOTS)] BOOTS,
-		[EquipmentPlaces("Метательное оружие", EItemCategory.MISSILE_WEAPON)] MISSILE_WEAPON,
-		[EquipmentPlaces("Снаряды")] MISSILES,
-		[EquipmentPlaces("Инструмент", EItemCategory.TOOLS)] TOOL,
+		[EquipmentPlaces(EItemCategory.HELMETS)] HEAD,
+		[EquipmentPlaces(EItemCategory.NECKLACES)] NECK,
+		[EquipmentPlaces(EItemCategory.WEAR, EItemCategory.ARMOR)] BODY,
+		[EquipmentPlaces(EItemCategory.GIRGLE)] GIRGLE,
+		[EquipmentPlaces(EItemCategory.CLOACK)] CLOACK,
+		[EquipmentPlaces] RIGHT_HAND,
+		[EquipmentPlaces] LEFT_HAND,
+		[EquipmentPlaces(EItemCategory.RINGS)] RIGHT_RING,
+		[EquipmentPlaces(EItemCategory.RINGS)] LEFT_RING,
+		[EquipmentPlaces(EItemCategory.BRACERS)] BRACERS,
+		[EquipmentPlaces(EItemCategory.GAUNTLETS)] GAUNTLETS,
+		[EquipmentPlaces(EItemCategory.BOOTS)] BOOTS,
+		[EquipmentPlaces(EItemCategory.MISSILE_WEAPON)] MISSILE_WEAPON,
+		[EquipmentPlaces] MISSILES,
+		[EquipmentPlaces(EItemCategory.TOOLS)] TOOL,
 	}
 
 
@@ -30,13 +29,10 @@ namespace GameCore.Creatures
 	{
 		private static Dictionary<EEquipmentPlaces, EquipmentPlacesAttribute> m_attrs;
 
-		public EquipmentPlacesAttribute(string _displayName, params EItemCategory[] _ableToEquip)
+		public EquipmentPlacesAttribute(params EItemCategory[] _ableToEquip)
 		{
-			DisplayName = _displayName;
 			AbleToEquip = _ableToEquip;
 		}
-
-		public string DisplayName { get; private set; }
 
 		public EItemCategory[] AbleToEquip { get; set; }
 

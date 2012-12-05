@@ -6,7 +6,6 @@ using GameCore.Acts.Items;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Essences.Things
 {
@@ -24,7 +23,7 @@ namespace GameCore.Essences.Things
 		{
 			if (ELockType != ELockType.OPEN)
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_OPENS_IT, _creature, this));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_OPENS_IT, _creature, this));
 				ELockType = ELockType.OPEN;
 
 				var collection = GetItems(_creature);
@@ -35,7 +34,7 @@ namespace GameCore.Essences.Things
 				}
 				else
 				{
-					MessageManager.SendXMessage(this, new XMessage(EXMType.CONTAINER_IS_EMPTY, _creature, this));
+					MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CONTAINER_IS_EMPTY, _creature, this));
 				}
 
 				return EActResults.DONE;

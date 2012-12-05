@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using GameCore;
 using GameCore.Misc;
@@ -8,7 +9,7 @@ using OpenTK.Input;
 
 namespace OpenTKUi
 {
-	public class OpenTKGameProvider : GameWindow, IGameProvider
+	public abstract class OpenTKGameProvider : GameWindow, IGameProvider
 	{
 		private readonly Core m_core = new Core();
 		private readonly KeyState m_keyState = new KeyState();
@@ -106,6 +107,8 @@ namespace OpenTKUi
 			m_core.SetClearColor(_color.R, _color.G, _color.B);
 			m_core.Clear();
 		}
+
+		public abstract IEnumerable<IAbstractLanguageProcessor> GetLanguageProcessors();
 
 		public IDrawHelper DrawHelper
 		{
