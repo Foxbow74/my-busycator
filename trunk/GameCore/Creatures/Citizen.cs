@@ -1,27 +1,38 @@
 ﻿using System;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Battle;
 using GameCore.Essences;
 using GameCore.Mapping.Layers;
-using GameCore.Misc;
 
 namespace GameCore.Creatures
 {
 	public class Citizen : Intelligent, ISpecial
 	{
-		private readonly string m_name;
+		private readonly Noun m_name;
 		private FColor m_lerpColor;
 
 		public Citizen(Surface _layer, Random _rnd, ESex _sex)
-			: base(_layer.GetNextCitizenName(_sex), _layer, _rnd.Next(10) + 95, EIntellectGrades.INT){}
+			: base(EALNouns.Ctitzen, _layer, _rnd.Next(10) + 95, EIntellectGrades.INT)
+		{
+			m_name = _layer.GetNextCitizenName(_sex);
+		}
 
 		public override bool IsUnique
 		{
 			get
 			{
 				return true;
+			}
+		}
+
+		public override Noun Name
+		{
+			get
+			{
+				return base.Name + m_name.AlsoKnownAs;
 			}
 		}
 

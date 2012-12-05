@@ -7,7 +7,7 @@ namespace GameCore.Essences.Mechanisms
 {
     public abstract class Mechanism:Thing, ISpecial
     {
-        protected Mechanism(Noun _name, Material _material, uint _mechanismId)
+        protected Mechanism(EALNouns _name, Material _material, uint _mechanismId)
 			: base(_name, _material)
         {
             MechanismId = _mechanismId;

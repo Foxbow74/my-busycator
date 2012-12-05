@@ -8,7 +8,7 @@ namespace MagickSetting.Items.Weapons
 {
 	public class CrossBow : AbstractRangedWeapon
 	{
-		public CrossBow(Material _material) : base("арбалет".AsNoun(ESex.MALE, false), _material) { }
+		public CrossBow(Material _material) : base(EALNouns.Crossbow, _material) { }
 
         public override int TileIndex
         {

@@ -1,12 +1,11 @@
-using GameCore;
 using GameCore.AbstractLanguage;
 using GameCore.Materials;
 
-namespace MagicSetting.Materials
+namespace MagickSetting.Materials
 {
 	class ShrubMaterial0 : ShrubMaterial
 	{
-		public ShrubMaterial0() : base("куст0".AsNoun(ESex.MALE, false)) { }
+		public ShrubMaterial0() : base(EALNouns.Shrub0) { }
 
 		public override int ShroobTileIndex
 		{

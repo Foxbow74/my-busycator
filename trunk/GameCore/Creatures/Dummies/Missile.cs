@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameCore.AbstractLanguage;
 using GameCore.Acts.Combat;
 using GameCore.Acts.Movement;
 using GameCore.Battle;
@@ -20,7 +19,7 @@ namespace GameCore.Creatures.Dummies
 		private int m_step = 1;
 
 		public Missile(WorldLayer _layer, LiveMapCell _from, int _speed, Item _ammo, LiveMapCell _to)
-			: base(_ammo.Name, _layer, _speed)
+			: base(_ammo.ENoun, _layer, _speed)
 		{
 			Ammo = _ammo;
 			var d = (_to.PathMapCoords - _from.PathMapCoords)*10;

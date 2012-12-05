@@ -11,7 +11,7 @@ namespace GameCore.Battle
 		private readonly Creature m_creature;
 
 		public Corpse(Creature _creature)
-			: base("труп".AsNoun(ESex.MALE, false) + _creature.Name.Text.AsOf(), _creature.Material)
+			: base(EALNouns.Corpse, _creature.Material)
 		{
 			m_direction = Util.AllDirections.RandomItem(World.Rnd);
 			m_creature = _creature;

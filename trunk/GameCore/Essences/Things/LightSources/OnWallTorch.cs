@@ -8,7 +8,7 @@ namespace GameCore.Essences.Things.LightSources
 		private readonly EDirections m_direction;
 
 		public OnWallTorch(LightSource _lightSource, EDirections _direction, Material _material)
-			: base("факел".AsNoun(ESex.MALE, false), _lightSource, _material) { m_direction = _direction; }
+			: base(EALNouns.Torch, _lightSource, _material) { m_direction = _direction; }
 
         public override int TileIndex
         {

@@ -9,7 +9,7 @@ namespace GameCore.Essences.Mechanisms
 	public class Lever : Mechanism, IInteractiveThing
 	{
 		public Lever(Material _material, uint _mechanismId, bool _state)
-			: base("рычаг".AsNoun(ESex.MALE, false), _material, _mechanismId)
+			: base(EALNouns.Lever, _material, _mechanismId)
 		{
 			State = _state;
 		}

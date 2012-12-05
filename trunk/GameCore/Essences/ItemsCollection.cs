@@ -84,7 +84,7 @@ namespace GameCore.Essences
 		private class Stacked : Item, ISpecial
 		{
 			public Stacked(Item _item, int _count)
-				: base(_item.Name, _item.Material)
+				: base(_item.ENoun, _item.Material)
 			{
 				Item = _item;
 				Count = _count;

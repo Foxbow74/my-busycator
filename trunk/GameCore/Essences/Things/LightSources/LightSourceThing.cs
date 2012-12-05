@@ -8,7 +8,7 @@ namespace GameCore.Essences.Things.LightSources
 	{
 		private readonly LightSource m_lightSource;
 
-		protected LightSourceThing(Noun _name, LightSource _lightSource, Material _material) : base(_name, _material) { m_lightSource = _lightSource; }
+		protected LightSourceThing(EALNouns _name, LightSource _lightSource, Material _material) : base(_name, _material) { m_lightSource = _lightSource; }
 
 		public override ETileset Tileset
 		{

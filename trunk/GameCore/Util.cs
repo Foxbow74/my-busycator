@@ -166,6 +166,12 @@ namespace GameCore
 			return World.AL.GetString(_sentence, _nouns);
 		}
 
+
+		public static string GetString(this EALVerbs _verb, Noun _noun)
+		{
+			return World.AL.GetString(_verb, _noun);
+		}
+
 		public static Noun AsNoun(this ETerrains _terrain)
 		{
 			return World.AL.AsNoun(_terrain);

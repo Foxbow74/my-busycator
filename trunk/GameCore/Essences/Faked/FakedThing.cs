@@ -5,7 +5,7 @@ namespace GameCore.Essences.Faked
 	public class FakedThing : Thing, IFaked
 	{
 		public FakedThing(Essence _essence)
-			: base(_essence.Name, _essence.Material)
+			: base(_essence.ENoun, _essence.Material)
 		{
 			Essence = _essence;
 		}

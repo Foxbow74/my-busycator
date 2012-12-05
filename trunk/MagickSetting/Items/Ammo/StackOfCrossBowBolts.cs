@@ -6,7 +6,7 @@ namespace GameCore.Essences.Ammo
 {
 	internal class StackOfCrossBowBolts : StackOfAmmo
 	{
-		public StackOfCrossBowBolts(Material _material) : base("болт".AsNoun(ESex.MALE, false), _material) { }
+		public StackOfCrossBowBolts(Material _material) : base(EALNouns.Bolt, _material) { }
 
         public override int TileIndex
         {

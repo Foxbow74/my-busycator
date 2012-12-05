@@ -9,6 +9,7 @@ using GameCore.Creatures.Dummies;
 using GameCore.Essences;
 using GameCore.Essences.Weapons;
 using GameCore.Messages;
+using GameCore;
 
 namespace LanguagePack
 {
@@ -94,11 +95,11 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return string.Format("{0} {1} ранили  {2} на {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
+					return string.Format("{0} {1} {4}  {2} на {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов(), EALVerbs.HURT.GetString(weapon.Name));
 				case 2:
 					return string.Format("оба удара {0} достигли цели, с {1} снято {2}", actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 				default:
-					return string.Format("раз за разом {0} {1} нещадно кромсали {2}, сняв за {3} {4}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), success.Атак(), damage.Пунктов());
+					return string.Format("раз за разом {0} {1} нещадно {5} {2}, сняв за {3} {4}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), success.Атак(), damage.Пунктов(), EALVerbs.HACK.GetString(weapon.Name));
 			}
 		}
 

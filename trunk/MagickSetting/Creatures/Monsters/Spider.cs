@@ -14,14 +14,14 @@ namespace MagickSetting.Creatures.Monsters
 		private static readonly IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
 
 		public Spider(WorldLayer _layer)
-			: base("паук".AsNoun(ESex.MALE, true), _layer, 120 + World.Rnd.Next(20))
+			: base(EALNouns.Spider, _layer, 120 + World.Rnd.Next(20))
 		{
 			var lcd = 0.5f + (Nn % 20 - 10) / 10f;
 			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble()/2, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble()/2);
 
 			Behaviour = EMonsterBehaviour.IDLE;
 		}
-
+		
 
 		public override int TileIndex
 		{

@@ -9,7 +9,7 @@ namespace GameCore.Essences
 	/// </summary>
 	internal class BackPack : Container, ISpecial
 	{
-		public BackPack() : base("рюкзак".AsNoun(ESex.MALE, false), null)
+		public BackPack() : base(EALNouns.BackPack, null)
 		{
 		}
 

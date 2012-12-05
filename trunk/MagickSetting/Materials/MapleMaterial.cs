@@ -2,7 +2,7 @@ using GameCore;
 using GameCore.AbstractLanguage;
 using GameCore.Materials;
 
-namespace MagicSetting.Materials
+namespace MagickSetting.Materials
 {
 	internal class MapleMaterial : WoodMaterial
 	{
@@ -15,9 +15,9 @@ namespace MagicSetting.Materials
 			get { return 2; }
 		}
 
-		public override Noun TreeName
+		public override EALNouns TreeName
 		{
-			get { return "клен".AsNoun(ESex.MALE, false); }
+			get { return EALNouns.Maple; }
 		}
 	}
 }

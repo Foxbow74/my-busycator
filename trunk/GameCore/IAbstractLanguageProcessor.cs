@@ -18,5 +18,6 @@ namespace GameCore
 		Noun AsNoun(EALNouns _enoun);
 		string GetString(EALSentence _sentence, params Noun[] _nouns);
 		string GetString(EALConst _const);
+		string GetString(EALVerbs _verb, Noun _noun);
 	}
 }

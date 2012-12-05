@@ -6,9 +6,13 @@ namespace GameCore.Essences
 {
 	public abstract class Essence : ITileInfoProvider
 	{
+		private readonly Noun m_name;
+		private readonly EALNouns m_eNoun;
+
 		protected Essence(EALNouns _name, Material _material)
 		{
 			Material = _material;
+			m_eNoun = _name;
 			m_name = _name.AsNoun();
 		}
 
@@ -29,8 +33,6 @@ namespace GameCore.Essences
 		#region INameProvider Members
 
 		public ESex Sex { get; protected set; }
-
-		private Noun m_name;
 
 		public virtual Noun Name
 		{
@@ -63,6 +65,11 @@ namespace GameCore.Essences
 		}
 
 		public virtual int TileIndex { get; protected set; }
+
+		public EALNouns ENoun
+		{
+			get { return m_eNoun; }
+		}
 
 		#endregion
 

@@ -14,7 +14,7 @@ namespace MagickSetting.Creatures.Monsters
 		private static readonly IWeapon m_jaws = new Jaws(new ItemBattleInfo(0, 0, 0, 5, new Dice(2, 3, 0)));
 
 		public Wolf(WorldLayer _layer)
-			: base("волк".AsNoun(ESex.MALE, true), _layer, 80 + World.Rnd.Next(20))
+			: base(EALNouns.Wolf, _layer, 80 + World.Rnd.Next(20))
 		{
 			var lcd = 0.5f + (Nn % 10 - 5) / 10f;
 			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble() / 2f);

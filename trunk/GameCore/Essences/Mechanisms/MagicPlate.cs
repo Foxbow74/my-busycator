@@ -9,7 +9,7 @@ namespace GameCore.Essences.Mechanisms
 	public class MagicPlate : Mechanism, IRemoteActivation
 	{
 		public MagicPlate(Material _material, uint _mechanismId, EMagicPlateEffect _effect)
-			: base("пластина".AsNoun(ESex.FEMALE, false), _material, _mechanismId)
+			: base(EALNouns.MagicPlate, _material, _mechanismId)
 		{
 			Effect = _effect;
 		}

@@ -10,9 +10,9 @@ namespace GameCore.Plants
 
 		public Shrub(Material _material) : base(ShroobName(_material), _material) { m_material = (ShrubMaterial)_material; }
 
-    	private static Noun ShroobName(Material _material)
+    	private static EALNouns ShroobName(Material _material)
     	{
-			if (_material == null) return null;
+			if (_material == null) return EALNouns.Shrub;
     		return ((ShrubMaterial)_material).ShroobName;
     	}
 

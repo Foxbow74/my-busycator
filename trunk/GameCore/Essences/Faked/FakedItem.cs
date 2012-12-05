@@ -10,7 +10,7 @@ namespace GameCore.Essences.Faked
 		#region .ctor
 
 		public FakedItem(Essence _essence)
-			: base(_essence.Name,  _essence.Material)
+			: base(_essence.ENoun,  _essence.Material)
 		{
 			Essence = _essence;
 		}

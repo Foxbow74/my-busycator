@@ -10,7 +10,7 @@ namespace GameCore.Essences.Things
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 
-		public ClosedDoor(Material _material) : base("дверь".AsNoun(ESex.FEMALE, false), _material) { Sex = ESex.FEMALE; }
+		public ClosedDoor(Material _material) : base(EALNouns.ClosedDoor, _material) { Sex = ESex.FEMALE; }
 
         public override int TileIndex { get { return 8; } }
 

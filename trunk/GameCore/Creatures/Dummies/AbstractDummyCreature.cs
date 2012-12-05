@@ -8,7 +8,7 @@ namespace GameCore.Creatures.Dummies
 {
 	public abstract class AbstractDummyCreature:Creature,ISpecial
 	{
-		protected AbstractDummyCreature(Noun _name, WorldLayer _layer, int _speed) : base(_name, _layer, _speed)
+		protected AbstractDummyCreature(EALNouns _name, WorldLayer _layer, int _speed) : base(_name, _layer, _speed)
 		{
 		}
 

@@ -9,6 +9,7 @@ using GameCore.Essences;
 using GameCore.Essences.Things;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore;
 
 namespace GameCore.Acts.Movement
 {
@@ -22,7 +23,7 @@ namespace GameCore.Acts.Movement
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
-		public override string HelpKeys { get { return EALConst.AN_MOVE_1.GetString(); } }
+		public override string HelpKeys { get { return EALConst.AN_MOVE_ARROWS.GetString(); } }
 
 		public override EActionCategory Category { get { return EActionCategory.MOVEMENT; } }
 
@@ -56,14 +57,14 @@ namespace GameCore.Acts.Movement
 					var thing = cell.Thing;
 					if (thing != null)
 					{
-						mess += ", " + thing.GetName(_creature, cell);
+						mess += ", " + EALSentence.NONE.GetString(thing.GetName(_creature, cell));
 					}
 					var items = cell.Items.ToArray();
 					if (items.Length > 0)
 					{
 						if (items.Length == 1)
 						{
-							mess += ", " + items[0].GetName(_creature, cell);
+							mess += ", " + EALSentence.NONE.GetString(items[0].GetName(_creature));
 						}
 						else
 						{

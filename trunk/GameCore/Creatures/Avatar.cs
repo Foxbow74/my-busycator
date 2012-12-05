@@ -12,7 +12,7 @@ namespace GameCore.Creatures
 	public class Avatar : Intelligent, ISpecial
 	{
 		public Avatar(WorldLayer _surface)
-			: base("Аватар".AsNoun(ESex.MALE, true) + "Герой".AsNoun(ESex.MALE, true), _surface, 100, EIntellectGrades.INT)
+			: base(EALNouns.Avatar, _surface, 100, EIntellectGrades.INT)
 		{
 			Tactic = ETactics.NORMAL;
 			Luck = 6;

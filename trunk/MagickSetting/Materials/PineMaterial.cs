@@ -16,9 +16,9 @@ namespace MagickSetting.Materials
 			get { return 5; }
 		}
 
-		public override Noun TreeName
+		public override EALNouns TreeName
 		{
-			get { return "сосна".AsNoun(ESex.FEMALE, false); }
+			get { return EALNouns.Pine; }
 		}
 	}
 }

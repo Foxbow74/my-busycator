@@ -11,7 +11,7 @@ namespace GameCore.Essences.Things
 {
 	internal class Chest : Container, ICanbeOpened
 	{
-		public Chest(Material _material) : base("сундук".AsNoun(ESex.MALE, false), _material) { ELockType = ELockType.SIMPLE; }
+		public Chest(Material _material) : base(EALNouns.Chest, _material) { ELockType = ELockType.SIMPLE; }
 
         public override int TileIndex { get { return 7; } }
 

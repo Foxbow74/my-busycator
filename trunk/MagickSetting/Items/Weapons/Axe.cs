@@ -9,7 +9,7 @@ namespace MagickSetting.Items.Weapons
 {
 	public class Axe : AbstractMeleeWeapon, ISpecial
 	{
-		public Axe(Noun _name, Material _material)
+		public Axe(EALNouns _name, Material _material)
 			: base(_name, _material)
 		{
 		}

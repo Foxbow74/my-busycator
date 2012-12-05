@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GameCore.AbstractLanguage
 {
@@ -7,7 +8,9 @@ namespace GameCore.AbstractLanguage
 		ADV,
 		VERB,
 		TITLE,
-		IMMUTABLE
+		IMMUTABLE,
+		CONAME,
+		OF_SOMETHING
 	}
 
 	public class Sentence
@@ -54,13 +57,13 @@ namespace GameCore.AbstractLanguage
 		public string Text { get; private set; }
 
 		public ESex Sex { get; private set; }
-
 		public bool IsCreature { get; private set; }
 
 		public Noun AlsoKnownAs { get; private set; }
 		public Adjective Adjective { get; set; }
 		public Immutable Immutable { get; set; }
 		protected OfSomething OfSomething { get; set; }
+		public CoName CoName { get; private set; }
 
 		public static Noun operator +(Noun _a, Noun _b)
 		{
@@ -97,8 +100,35 @@ namespace GameCore.AbstractLanguage
 			_a.OfSomething = _b;
 			return _a;
 		}
+
+		public static Noun operator +(Noun _a, CoName _b)
+		{
+			_a.CoName = _b;
+			return _a + new Noun(_b.Text, _a.Sex, _a.IsCreature);
+		}
+
+		public override string ToString()
+		{
+			throw new NotImplementedException();
+		}
 	}
 
+	public class CoName: AbstractWord
+	{
+		public CoName(string _text):base(_text)
+		{
+		}
+
+		public override EWord Kind
+		{
+			get { return EWord.CONAME; }
+		}
+	}
+
+
+	/// <summary>
+	/// исходня форма - какой?
+	/// </summary>
 	public class Adjective : AbstractWord
 	{
 		public Adjective(string _text)
@@ -112,6 +142,10 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
+
+	/// <summary>
+	/// неизменное при склонении слово или сочетание
+	/// </summary>
 	public class Immutable : AbstractWord
 	{
 		public Immutable(string _text)
@@ -125,7 +159,9 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
-
+	/// <summary>
+	/// XX чего либо, например, король "воров"
+	/// </summary>
 	public class OfSomething : AbstractWord
 	{
 		public OfSomething(string _text)
@@ -135,20 +171,38 @@ namespace GameCore.AbstractLanguage
 
 		public override EWord Kind
 		{
-			get { return EWord.IMMUTABLE; }
+			get { return EWord.OF_SOMETHING; }
 		}
 	}
 
+
+	/// <summary>
+	/// исходная форма - что сделал
+	/// </summary>
 	public class Verb : AbstractWord
 	{
 		public Verb(string _text)
 			: base(_text)
 		{
+			SameAs = new List<Verb> {this};
 		}
+
+		public List<Verb> SameAs { get; private set; }
 
 		public override EWord Kind
 		{
 			get { return EWord.VERB; }
+		}
+
+		public static Verb operator +(Verb _a, Verb _b)
+		{
+			_a.SameAs.Add(_b);
+			return _a;
+		}
+
+		public static Verb operator +(Verb _a, string _b)
+		{
+			return _a + _b.AsVerb();
 		}
 	}
 
@@ -164,9 +218,9 @@ namespace GameCore.AbstractLanguage
 			return new Adjective(_adv);
 		}
 
-		public static Adjective AsVerb(this string _verb)
+		public static Verb AsVerb(this string _verb)
 		{
-			return new Adjective(_verb);
+			return new Verb(_verb);
 		}
 
 		public static Immutable AsIm(this string _string)
@@ -177,6 +231,12 @@ namespace GameCore.AbstractLanguage
 		public static OfSomething AsOf(this string _string)
 		{
 			return new OfSomething(_string);
+		}
+
+		public static CoName AsCo(this string _coname)
+		{
+			if (_coname == null) return null;
+			return new CoName(_coname);
 		}
 	}
 }

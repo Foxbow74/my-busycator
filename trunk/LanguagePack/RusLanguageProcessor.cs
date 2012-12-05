@@ -10,8 +10,9 @@ namespace LanguagePack
 	{
 		#region Fields
 
-		internal static Dictionary<EALConst, string> Consts = new Dictionary<EALConst, string>();
-		internal static Dictionary<EALNouns, Noun> Nouns = new Dictionary<EALNouns, Noun>();
+		private static readonly Dictionary<EALConst, string> m_consts = new Dictionary<EALConst, string>();
+		private static readonly Dictionary<EALNouns, Noun> m_nouns = new Dictionary<EALNouns, Noun>();
+		private static readonly Dictionary<EALVerbs, Verb> m_verbs = new Dictionary<EALVerbs, Verb>();
 
 		#endregion
 
@@ -20,22 +21,18 @@ namespace LanguagePack
 		static RusLanguageProcessor()
 		{
 			FillConstants();
-
-			Nouns.Add(EALNouns.StackOf, "кучка".AsNoun(ESex.FEMALE, false));
-			Nouns.Add(EALNouns.Grave, "могила".AsNoun(ESex.FEMALE, false));
-			Nouns.Add(EALNouns.Chair, "стул".AsNoun(ESex.MALE, false));
-			Nouns.Add(EALNouns.Cabinet, "шкаф".AsNoun(ESex.MALE, false));
-			Nouns.Add(EALNouns.ArmorRack, "стойка".AsNoun(ESex.FEMALE, false) + " для брони".AsIm());
-			Nouns.Add(EALNouns.WeaponRack, "стойка".AsNoun(ESex.FEMALE, false) + " для оружия".AsIm());
-			Nouns.Add(EALNouns.Barrel, "бочка".AsNoun(ESex.FEMALE, false));
-			Nouns.Add(EALNouns.Stair, "лестница".AsNoun(ESex.FEMALE, false));
-			Nouns.Add(EALNouns.StairUp, "лестница".AsNoun(ESex.FEMALE, false) + "вверх".AsIm());
-			Nouns.Add(EALNouns.StairDown, "лестница".AsNoun(ESex.FEMALE, false) + "вниз".AsIm());
-			Nouns.Add(EALNouns., );
-			Nouns.Add(EALNouns., );
+			FillNouns();
+			FillVerbs();
 		}
 
 		#endregion
+
+		private static void FillVerbs()
+		{
+			m_verbs.Add(EALVerbs.HURT, "ранил".AsVerb());
+			m_verbs.Add(EALVerbs.MANGLE, "покалечил".AsVerb() + "искромсал" + "разодрал");
+			m_verbs.Add(EALVerbs.HACK, "разрубил".AsVerb());
+		}
 
 		#region Methods
 
@@ -56,7 +53,7 @@ namespace LanguagePack
 
 		public Noun AsNoun(EALNouns _enoun)
 		{
-			return Nouns[_enoun];
+			return m_nouns[_enoun];
 		}
 
 		public string GetString(EALSentence _sentence, params Noun[] _nouns)
@@ -76,7 +73,12 @@ namespace LanguagePack
 
 		public string GetString(EALConst _const)
 		{
-			return Consts[_const];
+			return m_consts[_const];
+		}
+
+		public string GetString(EALVerbs _verb, Noun _noun)
+		{
+			return m_verbs[_verb].To(_noun.Sex);
 		}
 
 		#endregion
