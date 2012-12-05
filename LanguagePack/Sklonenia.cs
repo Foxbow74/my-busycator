@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameCore;
 using GameCore.AbstractLanguage;
-using GameCore.Creatures;
 using GameCore.Essences;
-using GameCore.Misc;
 
 namespace LanguagePack
 {
@@ -75,12 +73,6 @@ namespace LanguagePack
 		public static string To(this Essence _essence, EPadej _padej)
 		{
 			return _essence.Name.To(_padej);
-			//var noun = _essence.Name.Text;
-			//if(_essence.Is<Intelligent>() && m_rnd.Next(2)==1)
-			//{
-			//    noun = ((Intelligent)_essence).Roles.ToArray().RandomItem(m_rnd).Name;
-			//}
-			//return NounToPadej(_padej, noun, _essence.IsCreature, _essence.Sex);
 		}
 
 		private static void AddIskl(string _imen, string _rod,string _dat, string _vin, string _tvor, string _predl)
@@ -343,7 +335,47 @@ namespace LanguagePack
 			{
 				return _noun.AlsoKnownAs.To(_padej);
 			}
-			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
+			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
+		}
+
+		public static string To(this Verb _verb, ESex _sex)
+		{
+			var text = _verb.SameAs[m_rnd.Next(_verb.SameAs.Count)].Text;
+			if(text.EndsWith("ил"))
+			{
+				string verb;
+				switch (_sex)
+				{
+					case ESex.MALE:
+						verb = text;
+						break;
+					case ESex.FEMALE:
+						verb = text + "а";
+						break;
+					case ESex.IT:
+						verb = text + "о";
+						break;
+					case ESex.PLURAL:
+						verb = text + "и";
+						break;
+					case ESex.PLURAL_FEMALE:
+						verb = text + "и";
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("_sex");
+				}
+				return verb;
+			}
+			throw new ApplicationException();
+		}
+
+		private static string CoNameToPadej(EPadej _padej, CoName _coName, bool _isCreature, ESex _sex)
+		{
+			if (_coName==null)
+			{
+				return "";
+			}
+			return "-" + NounToPadej(_padej, _coName.Text, _isCreature, _sex);
 		}
 
 		public static bool? YesNoAnswer { get; set; }

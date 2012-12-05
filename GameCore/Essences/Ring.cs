@@ -6,7 +6,7 @@ namespace GameCore.Essences
 {
 	internal class Ring : Item
 	{
-		public Ring(Material _material) : base("кольцо".AsNoun(ESex.IT, false), _material) { }
+		public Ring(Material _material) : base(EALNouns.Ring, _material) { }
 
         public override int TileIndex
         {

@@ -11,6 +11,6 @@ namespace GameCore.Materials
 
 		public abstract int TreeTileIndex { get; }
 
-		public abstract Noun TreeName { get; }
+		public abstract EALNouns TreeName { get; }
 	}
 }

@@ -4,7 +4,7 @@ namespace GameCore.Essences.Weapons
 {
 	public abstract class AbstractRangedWeapon : AbstractWeapon
 	{
-		protected AbstractRangedWeapon(Noun _name, Material _material) : base(_name, _material) { }
+		protected AbstractRangedWeapon(EALNouns _name, Material _material) : base(_name, _material) { }
 
         public override ETileset Tileset
         {
@@ -15,18 +15,5 @@ namespace GameCore.Essences.Weapons
         }
 
 		public override EItemCategory Category { get { return EItemCategory.MISSILE_WEAPON; } }
-	}
-
-	public abstract class AbstractMeleeWeapon : AbstractWeapon
-	{
-		protected AbstractMeleeWeapon(Noun _name, Material _material) : base(_name, _material) { }
-
-		public override ETileset Tileset
-		{
-			get
-			{
-				return ETileset.WEAPONS;
-			}
-		}
 	}
 }

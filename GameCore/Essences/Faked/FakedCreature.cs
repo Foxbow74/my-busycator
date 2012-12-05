@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameCore.AbstractLanguage;
 using GameCore.Battle;
 using GameCore.Creatures;
 using GameCore.Essences.Weapons;
@@ -12,7 +11,7 @@ namespace GameCore.Essences.Faked
 		private readonly Essence m_essence;
 
 		public FakedCreature(Essence _essence)
-			: base(_essence.Name, null, 0)
+			: base(_essence.ENoun, null, 0)
 		{
 			TileIndex = _essence.TileIndex;
 			m_essence = _essence;

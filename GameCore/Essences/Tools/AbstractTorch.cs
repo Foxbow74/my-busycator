@@ -14,7 +14,7 @@ namespace GameCore.Essences.Tools
 		private readonly FColor m_color;
 		private LightSource m_lightSource;
 
-		protected AbstractTorch(Noun _name, Material _material, int _radius, FColor _color)
+		protected AbstractTorch(EALNouns _name, Material _material, int _radius, FColor _color)
 			: base(_name, _material)
 		{
 			m_radius = _radius;

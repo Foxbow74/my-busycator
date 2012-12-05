@@ -32,7 +32,7 @@ namespace GameCore.Creatures
 		private readonly Dictionary<EEquipmentPlaces, Item> m_equipment = new Dictionary<EEquipmentPlaces, Item>();
 		private readonly EIntellectGrades m_intellectGrades;
 
-		protected Intelligent(Noun _name, WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
+		protected Intelligent(EALNouns _name, WorldLayer _layer, int _speed, EIntellectGrades _intellectGrades)
 			: base(_name, _layer, _speed)
 		{
 			Sex = World.Rnd.Next(2) == 0 ? ESex.MALE : ESex.FEMALE;

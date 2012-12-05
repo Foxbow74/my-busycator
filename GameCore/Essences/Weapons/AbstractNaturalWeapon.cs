@@ -8,7 +8,7 @@ namespace GameCore.Essences.Weapons
 	{
 		private readonly ItemBattleInfo m_info;
 
-		protected AbstractNaturalWeapon(Noun _name, ItemBattleInfo _info) : base(_name ,null)
+		protected AbstractNaturalWeapon(EALNouns _name, ItemBattleInfo _info) : base(_name ,null)
 		{
 			m_info = _info;
 		}

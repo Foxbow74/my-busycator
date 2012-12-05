@@ -316,10 +316,10 @@ namespace GameCore.Mapping
 
 		public void RemoveItem(Item _item)
 		{
-			if (!m_items.Remove(_item))
-			{
-				throw new ApplicationException();
-			}
+			//if (!m_items.Remove(_item))
+			//{
+			//    throw new ApplicationException();
+			//}
 			ResetCached();
 			m_mapBlock.RemoveEssence(_item, InBlockCoords);
 		}

@@ -97,6 +97,7 @@
     <Compile Include="ESex.cs" />
     <Compile Include="Essences\Mechanisms\Button.cs" />
     <Compile Include="Essences\Tools\ITool.cs" />
+    <Compile Include="Essences\Weapons\AbstractMeleeWeapon.cs" />
     <Compile Include="Essences\Weapons\IWeapon.cs" />
     <Compile Include="Essences\Weapons\AbstractNaturalWeapon.cs" />
     <Compile Include="IAbstractLanguageProcessor.cs" />

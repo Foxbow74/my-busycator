@@ -11,10 +11,21 @@ namespace MagickSetting.Items.Weapons
 {
 	public class Sword : AbstractMeleeWeapon, ISpecial
 	{
-		public Sword(Noun _name, Material _material, int _tileIndex)
+		private readonly CoName m_nam;
+
+		public Sword(EALNouns _name, Material _material, int _tileIndex, CoName _nam)
 			: base(_name, _material)
 		{
+			m_nam = _nam;
 			TileIndex = _tileIndex;
+		}
+
+		public override Noun Name
+		{
+			get
+			{
+				return base.Name + m_nam;
+			}
 		}
 
 		public override int TileIndex
@@ -44,7 +55,7 @@ namespace MagickSetting.Items.Weapons
 	{
 		protected override Sword CreateT(Material _material)
 		{
-			return new Sword(Name.AsNoun(ESex.MALE, true), _material, TileIndex);
+			return new Sword(EALNouns.Sword, _material, TileIndex, Name.AsCo()); 
 		}
 
 		public override Guid ProvierTypeId

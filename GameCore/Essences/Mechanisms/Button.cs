@@ -8,7 +8,7 @@ namespace GameCore.Essences.Mechanisms
 	public class Button : Mechanism, IInteractiveThing
 	{
 		public Button(Material _material, uint _mechanismId)
-			: base("кнопка".AsNoun(ESex.FEMALE, false), _material, _mechanismId)
+			: base(EALNouns.Button, _material, _mechanismId)
 		{
 		}
 

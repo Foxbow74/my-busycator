@@ -14,7 +14,7 @@ namespace GameCore.Creatures
 	{
 		private int m_skip;
 
-		protected AbstractMonster(Noun _name, WorldLayer _layer, int _speed)
+		protected AbstractMonster(EALNouns _name, WorldLayer _layer, int _speed)
 			: base(_name, _layer, _speed)
 		{
 		}

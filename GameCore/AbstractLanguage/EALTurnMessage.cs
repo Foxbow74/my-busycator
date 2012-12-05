@@ -21,6 +21,13 @@ namespace GameCore.AbstractLanguage
 		CELL_IS_OCCUPIED_BY
 	}
 
+	public enum EALVerbs
+	{
+		HURT,
+		HACK,
+		MANGLE
+	}
+
 	public enum EALSentence
 	{
 		NONE,
@@ -57,7 +64,6 @@ namespace GameCore.AbstractLanguage
 		AN_DROP,
 		AN_DRINK,
 		AN_MOVE,
-		AN_MOVE_1,
 		AN_MOVE_ARROWS
 	}
 
@@ -72,6 +78,43 @@ namespace GameCore.AbstractLanguage
 		Barrel,
 		Stair,
 		StairUp,
-		StairDown
+		StairDown,
+		Table,
+		Bed,
+		Door,
+		ClosedDoor,
+		BackPack,
+		Chest,
+		Button,
+		Lever,
+		Ring,
+		Potion,
+		Corpse,
+		IndoorLight,
+		Torch,
+		Shrub,
+		Mushrum,
+		MagicPlate,
+		Avatar,
+		Ctitzen,
+		NONE,
+		Tree,
+		Sign,
+		Maple,
+		Willow,
+		Walnut,
+		Spruce,
+		Pine,
+		Oak,
+		Ash,
+		Mushrum0,
+		Shrub0,
+		Crossbow,
+		Jaws,
+		Bolt,
+		Rat,
+		Spider,
+		Wolf,
+		Sword
 	}
 }

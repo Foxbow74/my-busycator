@@ -14,7 +14,7 @@ namespace GameCore.Essences.Things
 	{
 		private ItemsCollection m_items;
 
-		protected Container(Noun _name, Material _material) : base(_name, _material) { }
+		protected Container(EALNouns _name, Material _material) : base(_name, _material) { }
 
 		#region IContainer Members
 

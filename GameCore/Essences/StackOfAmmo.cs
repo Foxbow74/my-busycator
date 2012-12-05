@@ -6,7 +6,7 @@ namespace GameCore.Essences
 {
 	public abstract class StackOfAmmo : StackOfItems, IWeapon
 	{
-		protected StackOfAmmo(Noun _nameOfItem, Material _material) : base(_nameOfItem, _material) { }
+		protected StackOfAmmo(EALNouns _nameOfItem, Material _material) : base(_nameOfItem, _material) { }
 
         public override ETileset Tileset
         {

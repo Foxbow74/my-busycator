@@ -15,14 +15,12 @@ namespace GameCore.Plants
 
 			m_material = (WoodMaterial)_material;
 
-			m_noun = ((WoodMaterial)_material).TreeName;
-
 			Sex = m_material.Sex;
 		}
 
-		private static Noun TreeName(Material _material)
+		private static EALNouns TreeName(Material _material)
 		{
-			if (_material == null) return null;
+			if (_material == null) return EALNouns.Tree;
 			return ((WoodMaterial)_material).TreeName;
 		}
 

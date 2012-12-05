@@ -11,10 +11,18 @@ namespace GameCore.Essences.Things
 		private readonly ETileset m_tileset;
 
 		public Sign(ETileset _tileset, Material _material, string _name)
-			: base("знак".AsNoun(ESex.MALE, false) + _name.AsIm(), _material)
+			: base(EALNouns.Sign, _material)
 		{
 			m_tileset = _tileset;
 			m_name = _name;
+		}
+
+		public override Noun Name
+		{
+			get
+			{
+				return base.Name + m_name.AsIm();
+			}
 		}
 
 		public override ETileset Tileset { get { return m_tileset; } }

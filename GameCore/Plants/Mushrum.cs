@@ -10,9 +10,9 @@ namespace GameCore.Plants
 
 		public Mushrum(Material _material) : base(MushrumName(_material), _material) { m_material = (MushrumMaterial)_material; }
 
-    	private static Noun MushrumName(Material _material)
+    	private static EALNouns MushrumName(Material _material)
     	{
-			if (_material == null) return null;
+			if (_material == null) return EALNouns.Mushrum;
     		return ((MushrumMaterial)_material).MushrumName;
     	}
 
@@ -28,7 +28,7 @@ namespace GameCore.Plants
 
     	public override FColor LerpColor { get { return FColor.Empty; } }
 
-        public override Noun Name { get { return m_material.MushrumName; } }
+        public override Noun Name { get { return m_material.MushrumName.AsNoun(); } }
 
         public override EMaterialType AllowedMaterialsType { get { return EMaterialType.MUSHRUM; } }
     }

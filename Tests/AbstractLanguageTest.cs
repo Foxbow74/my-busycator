@@ -64,8 +64,8 @@ namespace Tests
 			noun = noun + "лысый".AsAdj();
 			Assert.AreEqual("лысой козе", noun.To(EPadej.DAT));
 
-			noun = noun + "брадобрей".AsNoun(ESex.MALE, true);
-			Assert.AreEqual("лысой брадобрею", noun.To(EPadej.DAT));
+			noun = noun + "брадобрея".AsNoun(ESex.FEMALE, true);
+			Assert.AreEqual("лысой брадобрее", noun.To(EPadej.DAT));
 		}
 
 		[TestMethod]
@@ -221,6 +221,37 @@ namespace Tests
 		{
 			var lp = new RusLanguageProcessor();
 			foreach (EItemCategory places in Enum.GetValues(typeof(EItemCategory)))
+			{
+				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(places)));
+			}
+		}
+
+	}
+
+	[TestClass]
+	public class AbstractLanguageNounsTestEnums
+	{
+		[TestInitialize]
+		public void Initialize()
+		{
+			MagickSetting.MagicSettingProvider.Init();
+
+			foreach (ETileset tileset in Enum.GetValues(typeof(ETileset)))
+			{
+				TileSetInfoProvider.SetOpacity(tileset, 0, 0f);
+			}
+
+			if (World.TheWorld == null)
+			{
+				World.LetItBeeee(new RusLanguageProcessor());
+			}
+		}
+
+		[TestMethod]
+		public void EALNounsTest()
+		{
+			var lp = new RusLanguageProcessor();
+			foreach (EALNouns places in Enum.GetValues(typeof(EALNouns)))
 			{
 				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(places)));
 			}

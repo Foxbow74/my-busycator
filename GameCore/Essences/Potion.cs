@@ -6,7 +6,7 @@ namespace GameCore.Essences
 {
 	public class Potion : Item
 	{
-		public Potion(Material _material) : base("зелье".AsNoun(ESex.IT, false), _material) { Sex = ESex.IT; }
+		public Potion(Material _material) : base(EALNouns.Potion, _material) { Sex = ESex.IT; }
 
         public override int TileIndex
         {

@@ -17,7 +17,7 @@ namespace GameCore.Creatures.Dummies
 
 		private int m_strenght;
 
-		public SplatterDropper(WorldLayer _layer, LiveMapCell _from, int _strength, FColor _color, LiveMapCell _to): base(null, _layer, 0)
+		public SplatterDropper(WorldLayer _layer, LiveMapCell _from, int _strength, FColor _color, LiveMapCell _to): base(EALNouns.NONE, _layer, 0)
 		{
 			m_strenght = _strength;
 			m_color = _color;
