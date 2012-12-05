@@ -1,4 +1,5 @@
 ﻿using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Essences;
 
 namespace GameUi.UIBlocks.Items
@@ -19,7 +20,7 @@ namespace GameUi.UIBlocks.Items
 
 		public virtual void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
-			_uiBlock.DrawLine(m_attribute.DisplayName + "('" + m_attribute.C + "')",
+			_uiBlock.DrawLine(EALSentence.GENERAL.GetString(Category.AsNoun()) + "('" + m_attribute.C + "')",
 			                  FColor.Yellow,
 			                  _line,
 			                  0,

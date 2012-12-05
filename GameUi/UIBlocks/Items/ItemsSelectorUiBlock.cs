@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -82,10 +83,11 @@ namespace GameUi.UIBlocks.Items
 						currentCategory = "";
 						key = ConsoleKey.A;
 					}
-					if (attribute.DisplayName != currentCategory)
+					var name = EALSentence.GENERAL.GetString(cat.AsNoun());
+					if (name != currentCategory)
 					{
 						page.Add(new EssenceCategoryPresenter(cat));
-						currentCategory = attribute.DisplayName;
+						currentCategory = name;
 					}
 					page.Add(new EssencePresenter(key, descriptor, m_descriptors));
 					key++;
@@ -111,7 +113,7 @@ namespace GameUi.UIBlocks.Items
 
 			var line = HeaderTakesLine;
 
-			var bottomString = new List<string> {"[PgUp/PgDown] листать", "[z|Esc] - выход"};
+			var bottomString = new List<string> { "[PgUp/PgDown] листать", "[z|Esc] - " + EALConst.EXIT.GetString() };
 
 			if ((m_behavior & ESelectItemDialogBehavior.SELECT_MULTIPLE) == ESelectItemDialogBehavior.SELECT_MULTIPLE)
 			{

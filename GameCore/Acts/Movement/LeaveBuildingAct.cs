@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
-using GameCore.Misc;
 
 namespace GameCore.Acts.Movement
 {
@@ -12,7 +12,7 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { throw new NotImplementedException(); } }
 
-		public override string Name { get { return "покинуть помещение"; } }
+		public override EALConst Name { get { return EALConst.AN_LEAVE_BUILDING; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

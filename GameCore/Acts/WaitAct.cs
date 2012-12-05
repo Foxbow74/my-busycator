@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 
@@ -18,7 +19,7 @@ namespace GameCore.Acts
 			}
 		}
 
-		public override string Name { get { return "ждать"; } }
+		public override EALConst Name { get { return EALConst.AN_WAIT; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

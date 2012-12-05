@@ -341,9 +341,9 @@ namespace LanguagePack
 		{
 			if(_noun.AlsoKnownAs!=null && YesNo())
 			{
-				return _noun.Adjective.To(_padej, _noun.Sex) + _noun.AlsoKnownAs.To(_padej);
+				return _noun.AlsoKnownAs.To(_padej);
 			}
-			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex);
+			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
 		}
 
 		public static bool? YesNoAnswer { get; set; }
@@ -356,6 +356,13 @@ namespace LanguagePack
 			}
 			return m_rnd.Next(2)==0;
 		}
+
+		public static string ToText(this Immutable _imm)
+		{
+			if (_imm == null) return "";
+			return " " + _imm.Text;
+		}
+		
 
 		public static string To(this Adjective _adv, EPadej _padej, ESex _sex)
 		{
@@ -384,7 +391,45 @@ namespace LanguagePack
 			}
 			else if (text.EndsWith("ий"))
 			{
-
+				text = text.Substring(0, text.Length - 2);
+				switch (_sex)
+				{
+					case ESex.MALE:
+						text += new[] { "ий", "ого", "ому", "ого", "им", "ом" }[(int)_padej];
+						break;
+					case ESex.FEMALE:
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						break;
+					case ESex.IT:
+						text += new[] { "ое", "ого", "ому", "ого", "им", "ом" }[(int)_padej];
+						break;
+					case ESex.PLURAL:
+						text += new[] { "ие", "их", "им", "их", "ими", "их" }[(int)_padej];
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("_sex");
+				}
+			}
+			else if (text.EndsWith("ой"))
+			{
+				text = text.Substring(0, text.Length - 2);
+				switch (_sex)
+				{
+					case ESex.MALE:
+						text += new[] { "ой", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						break;
+					case ESex.FEMALE:
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						break;
+					case ESex.IT:
+						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						break;
+					case ESex.PLURAL:
+						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[(int)_padej];
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("_sex");
+				}
 			}
 			else
 			{
@@ -419,7 +464,7 @@ namespace LanguagePack
 				case ESex.PLURAL:
 					if(мягкий)
 					{
-						text += new[] { "и", "ей", "ям", "ей", "ьми", "ях" }[(int)_padej];	
+						text += new[] { "и", "ей", "ям", "ей", "ами", "ях" }[(int)_padej];	
 					}
 					else
 					{

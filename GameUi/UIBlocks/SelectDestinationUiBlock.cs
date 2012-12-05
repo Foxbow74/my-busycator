@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Acts.Movement;
 using GameCore.Messages;
@@ -73,7 +74,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> {"[Enter|M] идти", "[z|Esc] - выход"};
+			var strings = new List<string> { "[Enter|M] идти", "[z|Esc] - " + EALConst.EXIT.GetString() };
 
 			m_messages.DrawLine(JoinCommandCaptions(strings), FColor.White, 0, 0, EAlignment.LEFT);
 

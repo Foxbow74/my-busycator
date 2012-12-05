@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using GameCore.AbstractLanguage;
+using GameCore.Acts;
+using GameCore.Creatures;
+using GameCore.Essences;
+using GameCore.Misc;
 
-namespace GameCore.Misc
+namespace GameCore
 {
 	public static class Util
 	{
@@ -149,6 +154,41 @@ namespace GameCore.Misc
 				return default(T);
 			}
 			return _array[_rnd.Next(_array.Length)];
+		}
+
+		public static string GetString(this EALConst _const)
+		{
+			return World.AL.GetString(_const);
+		}
+
+		public static string GetString(this EALSentence _sentence, params Noun[] _nouns)
+		{
+			return World.AL.GetString(_sentence, _nouns);
+		}
+
+		public static Noun AsNoun(this ETerrains _terrain)
+		{
+			return World.AL.AsNoun(_terrain);
+		}
+
+		public static Noun AsNoun(this EItemCategory _category)
+		{
+			return World.AL.AsNoun(_category);
+		}
+
+		public static Noun AsNoun(this EActionCategory _category)
+		{
+			return World.AL.AsNoun(_category);
+		}
+
+		public static Noun AsNoun(this EEquipmentPlaces _place)
+		{
+			return World.AL.AsNoun(_place);
+		}
+
+		public static Noun AsNoun(this EALNouns _enoun)
+		{
+			return World.AL.AsNoun(_enoun);
 		}
 	}
 }

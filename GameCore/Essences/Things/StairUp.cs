@@ -6,7 +6,10 @@ namespace GameCore.Essences.Things
 	internal class StairUp : Stair
 	{
 		public StairUp(WorldLayer _leadToLayer, Material _material)
-			: base("лестница".AsNoun(ESex.FEMALE, false) + "вверх".AsIm(), _leadToLayer, _material) { }
+			: base(EALNouns.StairUp, _leadToLayer, _material)
+		{
+			
+		}
 
 		public StairUp(Material _material) : base(_material) { }
 

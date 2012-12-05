@@ -14,25 +14,25 @@ namespace GameCore.AbstractLanguage
 	{
 		public Sentence()
 		{
-			Words = new List<Word>();
+			Words = new List<AbstractWord>();
 		}
 
-		public Sentence(params Word[] _words)
+		public Sentence(params AbstractWord[] _abstractWords)
 		{
-			Words = new List<Word>(_words);
+			Words = new List<AbstractWord>(_abstractWords);
 		}
 
-		public List<Word> Words { get; private set; }
+		public List<AbstractWord> Words { get; private set; }
 	}
 
-	public abstract class Word
+	public abstract class AbstractWord
 	{
 		private readonly string m_text;
 
-		protected Word()
+		protected AbstractWord()
 		{ }
 
-		protected Word(string _text)
+		protected AbstractWord(string _text)
 		{
 			m_text = _text;
 		}
@@ -65,6 +65,18 @@ namespace GameCore.AbstractLanguage
 		public static Noun operator +(Noun _a, Noun _b)
 		{
 			_a.AlsoKnownAs = _b;
+			if (_b.Adjective == null)
+			{
+				_b.Adjective = _a.Adjective;
+			}
+			if (_b.Immutable == null)
+			{
+				_b.Immutable = _a.Immutable;
+			}
+			if (_b.OfSomething == null)
+			{
+				_b.OfSomething = _a.OfSomething;
+			}
 			return _a;
 		}
 
@@ -87,7 +99,7 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
-	public class Adjective : Word
+	public class Adjective : AbstractWord
 	{
 		public Adjective(string _text)
 			: base(_text)
@@ -100,7 +112,7 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
-	public class Immutable : Word
+	public class Immutable : AbstractWord
 	{
 		public Immutable(string _text)
 			: base(_text)
@@ -114,7 +126,7 @@ namespace GameCore.AbstractLanguage
 	}
 
 
-	public class OfSomething : Word
+	public class OfSomething : AbstractWord
 	{
 		public OfSomething(string _text)
 			: base(_text)
@@ -127,7 +139,7 @@ namespace GameCore.AbstractLanguage
 		}
 	}
 
-	public class Verb : Word
+	public class Verb : AbstractWord
 	{
 		public Verb(string _text)
 			: base(_text)

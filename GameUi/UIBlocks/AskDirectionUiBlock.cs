@@ -1,5 +1,6 @@
 ﻿using System;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Messages;
 using GameCore.Misc;
 
@@ -29,6 +30,6 @@ namespace GameUi.UIBlocks
 			}
 		}
 
-		public override void DrawContent() { DrawLine("Выбери направление:", ForeColor, 0, 0, EAlignment.LEFT); }
+		public override void DrawContent() { DrawLine(EALConst.PLEASE_CHOOSE_DIRECTION.GetString(), ForeColor, 0, 0, EAlignment.LEFT); }
 	}
 }

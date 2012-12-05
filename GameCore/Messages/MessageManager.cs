@@ -1,6 +1,4 @@
-﻿using GameCore.XLanguage;
-
-namespace GameCore.Messages
+﻿namespace GameCore.Messages
 {
 	public static class MessageManager
 	{

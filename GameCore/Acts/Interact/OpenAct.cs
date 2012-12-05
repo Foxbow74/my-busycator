@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Essences.Things;
@@ -15,7 +16,7 @@ namespace GameCore.Acts.Interact
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.O, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "Открыть сундук/дверь"; } }
+		public override EALConst Name { get { return EALConst.AN_OPEN; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

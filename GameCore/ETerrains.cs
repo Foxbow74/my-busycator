@@ -6,66 +6,61 @@ namespace GameCore
 {
 	public enum ETerrains
 	{
-		[Terrain("ничто", ESex.IT, 0)]NONE,
-		[Terrain("почва", ESex.FEMALE)]GROUND,
-		[Terrain("вода", ESex.FEMALE, 0f)] FRESH_WATER,
-		[Terrain("трава", ESex.FEMALE)] GRASS,
-		[Terrain("болото", ESex.IT)] SWAMP,
-		[Terrain("лава", ESex.FEMALE)] LAVA,
-		[Terrain("дорога", ESex.FEMALE)] ROAD,
-		[Terrain("стена", 0, 1, false, ESex.FEMALE)] RED_BRICK_WALL,
-		[Terrain("стена", 0, 1, false, ESex.FEMALE)] YELLOW_BRICK_WALL,
-		[Terrain("стена", 0, 1, false, ESex.FEMALE)] GRAY_BRICK_WALL,
-		[Terrain("статуя", 0.7f, 0.8f, true, ESex.FEMALE)] STATUE,
+		[Terrain(0)]NONE,
+		[Terrain]GROUND,
+		[Terrain(0f)] FRESH_WATER,
+		[Terrain] GRASS,
+		[Terrain] SWAMP,
+		[Terrain] LAVA,
+		[Terrain] ROAD,
+		[Terrain(0, 1, false)] RED_BRICK_WALL,
+		[Terrain(0, 1, false)] YELLOW_BRICK_WALL,
+		[Terrain(0, 1, false)] GRAY_BRICK_WALL,
+		[Terrain(0.7f, 0.8f, true)] STATUE,
 
-		[Terrain("дубовый пол")] WOOD_FLOOR_OAK,
-		[Terrain("кленовый пол")] WOOD_FLOOR_MAPPLE,
-		[Terrain("каменный пол")] STONE_FLOOR,
-		[Terrain("стена", 0, 1, false, ESex.FEMALE)] STONE_WALL,
+		[Terrain] WOOD_FLOOR_OAK,
+		[Terrain] WOOD_FLOOR_MAPPLE,
+		[Terrain] STONE_FLOOR,
+		[Terrain(0, 1, false)] STONE_WALL,
 
-		[Terrain("лес")] FOREST,
-        [Terrain("море", ESex.IT, 0f)] SEA,
-        [Terrain("океан", ESex.MALE, 0f)] DEEP_SEA,
-        [Terrain("вода", ESex.FEMALE, 0f)] DEEP_FRESH_WATER,
-		[Terrain("песок")] COAST,
-		[Terrain("песок")] LAKE_COAST,
-		[Terrain("скала",0.1f,0.5f,false,ESex.FEMALE)] MOUNT,
-		[Terrain("ледник")] ETERNAL_SNOW,
-		[Terrain("кустарник",0.5f,0.7f,true)] SHRUBS,
+		[Terrain] FOREST,
+        [Terrain(0f)] SEA,
+        [Terrain(0f)] DEEP_SEA,
+        [Terrain(0f)] DEEP_FRESH_WATER,
+		[Terrain] COAST,
+		[Terrain] LAKE_COAST,
+		[Terrain(0.1f,0.5f,false)] MOUNT,
+		[Terrain] ETERNAL_SNOW,
+		[Terrain(0.5f,0.7f,true)] SHRUBS,
 
 
-		[Terrain("up", ESex.IT)] UP,
-		[Terrain("down", ESex.IT)] DOWN,
-		[Terrain("left", ESex.IT)] LEFT,
-		[Terrain("right", ESex.IT)] RIGHT,
-		[Terrain("окно", 0, 0.1f, true, ESex.IT)] RED_BRICK_WINDOW,
-		[Terrain("окно", 0, 0.1f, true, ESex.IT)] GRAY_BRICK_WINDOW,
-		[Terrain("окно", 0, 0.1f, true, ESex.IT)] YELLOW_BRICK_WINDOW,
+		[Terrain] UP,
+		[Terrain] DOWN,
+		[Terrain] LEFT,
+		[Terrain] RIGHT,
+		[Terrain(0, 0.1f, true)] RED_BRICK_WINDOW,
+		[Terrain(0, 0.1f, true)] GRAY_BRICK_WINDOW,
+		[Terrain(0, 0.1f, true)] YELLOW_BRICK_WINDOW,
 	}
 
 	public class TerrainAttribute : Attribute
 	{
 		private static Dictionary<ETerrains, TerrainAttribute> m_attrs;
 
-		public TerrainAttribute(string _displayName, ESex _sex = ESex.MALE)
-			: this(_displayName, 1.0f, 0.0f, true, _sex) { }
+		public TerrainAttribute()
+			: this(1.0f, 0.0f, true) { }
 
-        public TerrainAttribute(string _displayName, ESex _sex, float _isPassable)
-            : this(_displayName, _isPassable, 0.0f, true, _sex) { }
+        public TerrainAttribute(float _isPassable)
+            : this(_isPassable, 0.0f, true) { }
 
-		public TerrainAttribute(string _displayName, float _isPassable, float _transparency, bool _isCanShootThrough, ESex _sex = ESex.MALE)
+		public TerrainAttribute(float _isPassable, float _transparency, bool _isCanShootThrough)
 		{
-			DisplayName = _displayName;
 			Passability = _isPassable;
 			IsPassable = _isPassable > 0;
 			Opacity = _transparency;
 			IsCanShootThrough = _isCanShootThrough;
-			Sex = _sex;
 		}
 
-		public ESex Sex { get; private set; }
-
-		public string DisplayName { get; private set; }
 		public float Passability { get; private set; }
 		public bool IsPassable { get; private set; }
 		public bool IsNotPassable { get { return !IsPassable; } }

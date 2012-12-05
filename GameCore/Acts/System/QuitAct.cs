@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 
 namespace GameCore.Acts.System
@@ -10,7 +11,7 @@ namespace GameCore.Acts.System
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Q, EKeyModifiers.CTRL); } }
 
-		public override string Name { get { return "выйти из игры"; } }
+		public override EALConst Name { get { return EALConst.AN_QUIT; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

@@ -35,7 +35,7 @@ namespace GameCore.Creatures
 
 		#region .ctor
 
-		protected Creature(Noun _name, WorldLayer _layer, int _speed)
+		protected Creature(EALNouns _name, WorldLayer _layer, int _speed)
 			: base(_name, EssenceHelper.GetMaterial<BodyMaterial>())
 		{
 			Speed = _speed;
@@ -138,7 +138,7 @@ namespace GameCore.Creatures
 			var act = m_actPool[0];
 			m_actPool.RemoveAt(0);
 
-			using (new Profiler(act.Name))
+			using (new Profiler(act.Name.GetString()))
 			{
 				ActResult = act.Do(this);
 			}

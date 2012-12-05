@@ -6,12 +6,10 @@ namespace GameCore.Essences
 {
 	public abstract class Essence : ITileInfoProvider
 	{
-		private Noun m_name;
-
-		protected Essence(Noun _name, Material _material)
+		protected Essence(EALNouns _name, Material _material)
 		{
 			Material = _material;
-			m_name = _name;
+			m_name = _name.AsNoun();
 		}
 
 		/// <summary>
@@ -32,10 +30,11 @@ namespace GameCore.Essences
 
 		public ESex Sex { get; protected set; }
 
+		private Noun m_name;
+
 		public virtual Noun Name
 		{
 			get { return m_name; }
-			protected set { m_name = value; }
 		}
 
 		public virtual bool IsCreature

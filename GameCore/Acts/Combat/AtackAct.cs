@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Mapping;
 using GameCore.Messages;
@@ -12,7 +13,7 @@ namespace GameCore.Acts.Combat
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.A, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "атаковать"; } }
+		public override EALConst Name { get { return EALConst.AN_ATACK; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

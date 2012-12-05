@@ -4,7 +4,6 @@ using System.Linq;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
-using LanguagePack;
 
 namespace GameUi.UIBlocks
 {
@@ -147,7 +146,7 @@ namespace GameUi.UIBlocks
 		{
 			if (_xlist.Count != 0)
 			{
-				return XMessageCompiler.Compile(_xlist);
+				return World.AL.Compile(_xlist);
 			}
 			return Enumerable.Empty<string>();
 		}

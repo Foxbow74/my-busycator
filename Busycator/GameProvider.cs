@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
@@ -8,6 +9,7 @@ using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameUi;
+using LanguagePack;
 using MagickSetting;
 using OpenTK;
 using OpenTKUi;
@@ -34,6 +36,11 @@ namespace Busycator
 		protected override void MouseButtonUp(Point _pnt, EMouseButton _button) { m_game.MouseButtonUp(_pnt, _button); }
 
 		protected override void MouseMove(Point _pnt) { m_game.MouseMove(_pnt); }
+		
+		public override IEnumerable<IAbstractLanguageProcessor> GetLanguageProcessors()
+		{
+			yield return new RusLanguageProcessor();
+		}
 
 		protected override void OnLoad(EventArgs _e)
 		{

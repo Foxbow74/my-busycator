@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts.Interact;
 using GameCore.Creatures;
 using GameCore.Essences.Things;
@@ -23,7 +24,7 @@ namespace GameCore.Acts.Movement
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.M, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "движение к точке"; } }
+		public override EALConst Name { get { return EALConst.AN_MOVE_TO; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 

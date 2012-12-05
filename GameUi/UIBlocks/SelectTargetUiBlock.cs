@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -124,7 +125,7 @@ namespace GameUi.UIBlocks
 
 		public override void DrawContent()
 		{
-			var strings = new List<string> {"[Enter|T] цель", "[z|Esc] - выход"};
+			var strings = new List<string> { "[Enter|T] цель", "[z|Esc] - " + EALConst.EXIT.GetString() };
 			if (m_targets.Count > 0)
 			{
 				strings.Insert(1, "[-] - предыдущая цель");

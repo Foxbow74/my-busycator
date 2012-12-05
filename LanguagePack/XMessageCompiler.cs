@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences;
 using GameCore.Essences.Weapons;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace LanguagePack
 {
@@ -19,36 +19,36 @@ namespace LanguagePack
 
 		static XMessageCompiler()
 		{
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ИзНесколькихАтакНекоторыеОказалисьРезультативныНекоторыеПоглощеныБроней);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоНеСнялиНиОдногоПункта);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), УвернулсяОтоВсехАтак);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), ВсеАтакиДостиглиЦели);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоПоглощеныБроней);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED), ИзНесколькихАтакНекоторыеОказалисьРезультативныНекоторыеПоглощеныБроней);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоНеСнялиНиОдногоПункта);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), УвернулсяОтоВсехАтак);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), ВсеАтакиДостиглиЦели);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO), ВсеАтакиПрошлиНоПоглощеныБроней);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED), ВсеАтакиПрошлиНоПоглощеныБроней);
 
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURE_TAKES_DAMAGE), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, EXMType.CREATURE_TAKES_DAMAGE), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURE_TAKES_DAMAGE,EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
-			m_distinctProcessors.Add(PackDistinct(EXMType.AVATAR_IS_LUCK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURE_TAKES_DAMAGE), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO, EALTurnMessage.CREATURE_TAKES_DAMAGE), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURE_TAKES_DAMAGE,EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO), ToDo);
+			m_distinctProcessors.Add(PackDistinct(EALTurnMessage.AVATAR_IS_LUCK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED), ToDo);
 
 
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), АтакаПромах);
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), АтакаРанение);
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURE_KILLED), АтакаСмерть);
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED), АтакаПоглощенаБроней);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK), АтакаПромах);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), АтакаРанение);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURE_KILLED), АтакаСмерть);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED), АтакаПоглощенаБроней);
 
-			m_processors.Add(Pack(EXMType.AVATAR_IS_LUCK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURE_KILLED), КритСмерть);
-			m_processors.Add(Pack(EXMType.AVATAR_IS_LUCK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), КритРанение);
+			m_processors.Add(Pack(EALTurnMessage.AVATAR_IS_LUCK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURE_KILLED), КритСмерть);
+			m_processors.Add(Pack(EALTurnMessage.AVATAR_IS_LUCK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), КритРанение);
 
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), РанениеНеСПервогоРаза);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), РанениеНеСПервогоРаза);
 
-			m_processors.Add(Pack(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE, EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EXMType.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
+			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
 
 
 			
@@ -88,8 +88,8 @@ namespace LanguagePack
 			var weapon = (Item)xMessage.First<IWeapon>();
 			var actor = xMessage.Actor;
 			var target = _arg.All<Creature>().Distinct().Single();
-			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
-			var damage = _arg.Where(_a => _a.Type == EXMType.CREATURE_TAKES_DAMAGE).All<int>().Sum();
+			var success = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
+			var damage = _arg.Where(_a => _a.Type == EALTurnMessage.CREATURE_TAKES_DAMAGE).All<int>().Sum();
 
 			switch (success)
 			{
@@ -108,7 +108,7 @@ namespace LanguagePack
 			var weapon = (Item)xMessage.First<IWeapon>();
 			var actor = xMessage.Actor;
 			var target = _arg.All<Creature>().Distinct().Single();
-			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
+			var success = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
 			switch (success)
 			{
 				case 1:
@@ -126,7 +126,7 @@ namespace LanguagePack
 			var weapon = (Item)xMessage.First<IWeapon>();
 			var actor = xMessage.Actor;
 			var target = _arg.All<Creature>().Distinct().Single();
-			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
+			var success = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
 			switch (success)
 			{
 				case 1:
@@ -143,7 +143,7 @@ namespace LanguagePack
 			var xMessage = _arg[0];
 			var actor = xMessage.Actor;
 			var target = _arg.All<Creature>().Distinct().Single();
-			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK);
+			var success = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK);
 			switch (success)
 			{
 				case 1:
@@ -158,7 +158,7 @@ namespace LanguagePack
 		private static string ИзНесколькихАтакНекоторыеОказалисьРезультативныНекоторыеПоглощеныБроней(XMessage[] _arg)
 		{
 			var s = ИзНесколькихАтакНекоторыеОказалисьРезультативны(_arg);
-			var success = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED);
+			var success = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED);
 			return string.Format("{0} , а {1} не смогли пробить броню", s, success.Атак());
 		}
 
@@ -167,9 +167,9 @@ namespace LanguagePack
 			var xMessage = _arg[0];
 			var actor = xMessage.Actor;
 			var target = _arg.All<Creature>().Distinct().Single();
-			var countOfFails = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK);
-			var countOfSuccess = _arg.Count(_a => _a.Type == EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
-			var damage = _arg.Where(_a => _a.Type == EXMType.CREATURE_TAKES_DAMAGE).All<int>().Sum();
+			var countOfFails = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK);
+			var countOfSuccess = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
+			var damage = _arg.Where(_a => _a.Type == EALTurnMessage.CREATURE_TAKES_DAMAGE).All<int>().Sum();
 
 			return string.Format("из {0} лишь {1}  {2} оказались результативны, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 		}
@@ -279,17 +279,17 @@ namespace LanguagePack
 			}
 		}
 
-		private static string PackDistinct(params EXMType[] _types)
+		private static string PackDistinct(params EALTurnMessage[] _types)
 		{
 			return _types.Distinct().OrderBy(_e => _e).Select(_t => new string((char)('A' + (char)(int)_t), 1)).Aggregate((_s, _s1) => _s + _s1);
 		}
 
-		private static string Pack(params EXMType[] _types)
+		private static string Pack(params EALTurnMessage[] _types)
 		{
 			return _types.Pack();
 		}
 
-		private static string Pack(this IEnumerable<EXMType> _types)
+		private static string Pack(this IEnumerable<EALTurnMessage> _types)
 		{
 			var array = _types.ToArray();
 			var s = array.Select(_t => new string((char) ('A' + (char) (int) _t), 1)).Aggregate((_s, _s1) => _s + _s1);

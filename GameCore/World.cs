@@ -52,7 +52,7 @@ namespace GameCore
 		public BattleProcessor BattleProcessor { get; private set; }
 		public CreatureManager CreatureManager { get; private set; }
 
-		public static ILanguageProcessor LanguageProcessor { get; private set; } 
+		public static IAbstractLanguageProcessor AL { get; private set; } 
 
 		private static XResourceClient XClient
 		{
@@ -184,9 +184,9 @@ namespace GameCore
 			get { return m_xServer; }
 		}
 
-		public static void LetItBeeee(ILanguageProcessor _languageProcessor)
+		public static void LetItBeeee(IAbstractLanguageProcessor _abstractLanguageProcessor)
 		{
-			LanguageProcessor = _languageProcessor;
+			AL = _abstractLanguageProcessor;
 
 			TheWorld = new World();
 			TheWorld.BornAvatar();
@@ -228,9 +228,5 @@ namespace GameCore
 		{
 			return m_remoteActivation[_mechanismId];
 		}
-	}
-
-	public interface ILanguageProcessor
-	{
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Messages;
 using GameCore.Misc;
@@ -110,7 +111,7 @@ namespace GameUi.UIBlocks.Items
 		public void DrawLine(int _line, UiBlockWithText _uiBlock)
 		{
 			_uiBlock.DrawLine(C.ToString(), FColor.White, _line, 20, EAlignment.LEFT);
-			var indent = _uiBlock.DrawLine(EquipmentPlacesAttribute.GetAttribute(Place).DisplayName, FColor.Gray, _line, 40, EAlignment.LEFT) + 2;
+			var indent = _uiBlock.DrawLine(EALSentence.NONE.GetString(Place.AsNoun()), FColor.Gray, _line, 40, EAlignment.LEFT) + 2;
 
 			if (indent > m_maxIndent)
 			{

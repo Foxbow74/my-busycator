@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Acts.Items
 {
@@ -14,7 +14,7 @@ namespace GameCore.Acts.Items
 
 		public override IEnumerable<Tuple<ConsoleKey, EKeyModifiers>> ConsoleKeys { get { yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.Q, EKeyModifiers.NONE); } }
 
-		public override string Name { get { return "выпить"; } }
+		public override EALConst Name { get { return EALConst.AN_DRINK; } }
 
 		public override string HelpText { get { throw new NotImplementedException(); } }
 
@@ -49,7 +49,7 @@ namespace GameCore.Acts.Items
 			intelligent.RemoveFromBackpack(item);
 			item.Drinked(_creature);
 
-			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_DRINKS_IT, _creature, item));
+			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_DRINKS_IT, _creature, item));
 			return EActResults.DONE;
 		}
 	}

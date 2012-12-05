@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Messages;
 
@@ -22,9 +23,9 @@ namespace GameCore.Acts.Combat
 			get { throw new NotImplementedException(); }
 		}
 
-		public override string Name
+		public override EALConst Name
 		{
-			get { return "приоритет в бою - атака"; }
+			get { return EALConst.AN_TACTIC_BERSERK; }
 		}
 
 		protected override int TakeTicksOnSingleAction

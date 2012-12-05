@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameCore.AbstractLanguage;
 using GameCore.Acts;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
-using GameCore.XLanguage;
 
 namespace GameCore.Battle
 {
@@ -76,17 +76,17 @@ namespace GameCore.Battle
 				{
 					if (isLuck)
 					{
-						MessageManager.SendXMessage(this, new XMessage(EXMType.AVATAR_IS_LUCK, _creature));
+						MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.AVATAR_IS_LUCK, _creature));
 					}
 				}
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, _creature, _target, weapon));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, _creature, _target, weapon));
 
 				var damage = itemBattleInfo.Dmg.Calc();
 				var isCritical = itemBattleInfo.Dmg.Max == damage;
 				damage += creatureBattleInfo.DmgModifier;
 				if (damage == 0)
 				{
-					MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_IS_ZERO, _creature, _target, weapon));
+					MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURES_ATTACK_DAMAGE_IS_ZERO, _creature, _target, weapon));
 				}
 				else
 				{
@@ -105,13 +105,13 @@ namespace GameCore.Battle
 					}
 					else
 					{
-						MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_DAMAGE_ADSORBED, _creature, _target, weapon));
+						MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, _creature, _target, weapon));
 					}
 				}
 			}
 			else
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, _creature, _target, weapon));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, _creature, _target, weapon));
 			}
 
 			if (_creature is Missile)

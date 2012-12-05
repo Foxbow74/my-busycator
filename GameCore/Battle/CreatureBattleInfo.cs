@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Weapons;
 using GameCore.Messages;
-using GameCore.XLanguage;
 
 namespace GameCore.Battle
 {
@@ -56,7 +56,7 @@ namespace GameCore.Battle
 				HP -= _damage;
 			}
 
-			MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_TAKES_DAMAGE, _source, Creature, fact, _weapon));
+			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_TAKES_DAMAGE, _source, Creature, fact, _weapon));
 
 			fact -= Creature[0, 0].AddSplatter(fact, FColor.Crimson);
 			if (fact > 0)
@@ -70,7 +70,7 @@ namespace GameCore.Battle
 
 			if (HP <= 0)
 			{
-				MessageManager.SendXMessage(this, new XMessage(EXMType.CREATURE_KILLED, _source, Creature));
+				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_KILLED, _source, Creature));
 				Creature[0, 0].AddItem(new Corpse(Creature));
 				World.TheWorld.CreatureManager.CreatureIsDead(Creature);
 			}
