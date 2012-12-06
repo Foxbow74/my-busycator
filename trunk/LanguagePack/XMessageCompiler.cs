@@ -95,11 +95,11 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return string.Format("{0} {1} {4}  {2} на {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов(), EALVerbs.HURT.GetString(weapon.Name));
+					return string.Format("{0} {1} {4}  {2} на {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов(), EALVerbs.HURT.GetString(weapon.Name, EVerbType.DONE));
 				case 2:
 					return string.Format("оба удара {0} достигли цели, с {1} снято {2}", actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 				default:
-					return string.Format("раз за разом {0} {1} нещадно {5} {2}, сняв за {3} {4}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), success.Атак(), damage.Пунктов(), EALVerbs.HACK.GetString(weapon.Name));
+					return string.Format("раз за разом {0} {1} нещадно {5} {2}, сняв за {3} {4}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), target.To(EPadej.ROD), success.Атак(), damage.Пунктов(), EALVerbs.HACK.GetString(weapon.Name,EVerbType.IN_PROCESS));
 			}
 		}
 
@@ -199,11 +199,11 @@ namespace LanguagePack
 			var target = _arg.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} попадает в незащищенный участок и снимает {1} {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.DAT), _arg.First<int>().Пунктов());
+				return string.Format("{0} {3} в незащищенный участок и снимает {1} {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.DAT), _arg.First<int>().Пунктов(), EALVerbs.HIT.GetString(actor.Name, EVerbType.IN_PROCESS));
 			}
 			else
 			{
-				return string.Format("особо метким ударом {0} ранил {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
+				return string.Format("особо метким ударом {0} {4} {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов(), EALVerbs.HURT.GetString(actor.Name, EVerbType.DONE));
 			}
 		}
 
@@ -241,11 +241,11 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<Missile>())
 			{
-				return string.Format("{0} попал в {1} и ранил на {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), _arg.First<int>().Пунктов());
+				return string.Format("{0} {3} в {1} и {4} на {2}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), _arg.First<int>().Пунктов(), EALVerbs.HIT.GetString(actor.Name, EVerbType.DONE), EALVerbs.HURT.GetString(actor.Name, EVerbType.DONE));
 			}
 			else
 			{
-				return string.Format("{0} ранил {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов());
+				return string.Format("{0} {4} {1} {2} на {3}", actor.Name.To(EPadej.IMEN), target.To(EPadej.ROD), weapon.To(EPadej.TVOR), _arg.First<int>().Пунктов(), EALVerbs.HURT.GetString(actor.Name, EVerbType.DONE));
 			}
 		}
 
@@ -260,7 +260,7 @@ namespace LanguagePack
 			}
 			else
 			{
-				return string.Format("{0} промахнулся и не попал по {1}", actor.To(EPadej.IMEN), target.To(EPadej.DAT));
+				return string.Format("{0} {2} и {3} по {1}", actor.To(EPadej.IMEN), target.To(EPadej.DAT), EALVerbs.MISS.GetString(actor.Name, EVerbType.DONE), EALVerbs.DONT_HIT.GetString(actor.Name, EVerbType.DONE));
 			}
 		}
 
@@ -276,7 +276,7 @@ namespace LanguagePack
 			}
 			else
 			{
-				return string.Format("{0} ударил {1} по {2}, но не пробил броню", actor.Name.To(EPadej.IMEN), weapon.To(EPadej.TVOR), target.To(EPadej.DAT));
+				return string.Format("{0} {3} {1} по {2}, но не пробил броню", actor.Name.To(EPadej.IMEN), weapon.To(EPadej.TVOR), target.To(EPadej.DAT), EALVerbs.STIKE.GetString(actor.Name, EVerbType.DONE));
 			}
 		}
 
@@ -316,7 +316,7 @@ namespace LanguagePack
 			var target = xMessage.First<Creature>();
 			if (actor.Is<AbstractDummyCreature>())
 			{
-				return string.Format("{0} добивает {1}", actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN));
+				return string.Format("{0} {2} {1}", actor.Name.To(EPadej.IMEN), target.To(EPadej.VIN), EALVerbs.FINISH.GetString(actor.Name, EVerbType.DONE));
 			}
 			else
 			{

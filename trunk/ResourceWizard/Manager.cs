@@ -331,6 +331,13 @@ namespace ResourceWizard
 				females.Sex = ESex.FEMALE;
 				females.Nicks = Resources.femalenicks;
 			}
+			XRoot.EssenceProviders.Clear();
+
+			var resourceEssenceGenerator = new XResourceEssenceGenerator(XRoot);
+			if (resourceEssenceGenerator.Generate().Count() < 2)
+			{
+				throw new ApplicationException("Хде они?");
+			}
 			XClient.Save(XRoot);
 		}
 

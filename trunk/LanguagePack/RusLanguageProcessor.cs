@@ -29,9 +29,23 @@ namespace LanguagePack
 
 		private static void FillVerbs()
 		{
-			m_verbs.Add(EALVerbs.HURT, "ранил".AsVerb());
-			m_verbs.Add(EALVerbs.MANGLE, "покалечил".AsVerb() + "искромсал" + "разодрал");
-			m_verbs.Add(EALVerbs.HACK, "разрубил".AsVerb());
+			m_verbs.Add(EALVerbs.HURT, new Verb("ранит", "ранил"));
+			m_verbs.Add(EALVerbs.MANGLE, new Verb("калечит","покалечил") + new Verb("кромсает","искромсал") + new Verb("раздирает","разодрал"));
+			m_verbs.Add(EALVerbs.HACK, new Verb("рубит","разрубил"));
+			m_verbs.Add(EALVerbs.MISS, new Verb("промахивается", "промахнулся"));
+			m_verbs.Add(EALVerbs.HIT, new Verb("попадает", "попал"));
+			m_verbs.Add(EALVerbs.DONT_HIT, new Verb("не попадает", "не попал"));
+			m_verbs.Add(EALVerbs.FINISH, new Verb("добивает", "добил") + new Verb("приканчивает", "прикончил"));
+			m_verbs.Add(EALVerbs.STIKE, new Verb("бьет", "ударил"));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+
+			
 		}
 
 		#region Methods
@@ -76,9 +90,9 @@ namespace LanguagePack
 			return m_consts[_const];
 		}
 
-		public string GetString(EALVerbs _verb, Noun _noun)
+		public string GetString(EALVerbs _verb, Noun _noun, EVerbType _type)
 		{
-			return m_verbs[_verb].To(_noun.Sex);
+			return m_verbs[_verb].To(_noun.Sex, _type);
 		}
 
 		#endregion

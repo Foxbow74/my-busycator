@@ -25,7 +25,12 @@ namespace GameCore.AbstractLanguage
 	{
 		HURT,
 		HACK,
-		MANGLE
+		MANGLE,
+		MISS,
+		HIT,
+		DONT_HIT,
+		FINISH,
+		STIKE
 	}
 
 	public enum EALSentence
