@@ -186,6 +186,10 @@ namespace GameCore.Essences
 				}
 				return _essence.Name;
 			}
+			if(_essence.Name==null)
+			{
+				
+			}
 			return _essence.Name;
 		}
 

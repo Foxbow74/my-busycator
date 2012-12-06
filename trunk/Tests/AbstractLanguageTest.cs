@@ -251,9 +251,21 @@ namespace Tests
 		public void EALNounsTest()
 		{
 			var lp = new RusLanguageProcessor();
-			foreach (EALNouns places in Enum.GetValues(typeof(EALNouns)))
+			foreach (EALNouns nouns in Enum.GetValues(typeof(EALNouns)))
 			{
-				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(places)));
+				Debug.WriteLine(lp.GetString(EALSentence.GENERAL, lp.AsNoun(nouns)));
+			}
+		}
+
+		[TestMethod]
+		public void EALVerbsTest()
+		{
+			foreach (EALVerbs verbs in Enum.GetValues(typeof(EALVerbs)))
+			{
+				Debug.WriteLine(verbs.GetString("".AsNoun(ESex.MALE, true), EVerbType.DONE) + "-" + verbs.GetString("".AsNoun(ESex.MALE, true), EVerbType.IN_PROCESS));
+				Debug.WriteLine(verbs.GetString("".AsNoun(ESex.FEMALE, true), EVerbType.DONE) + "-" + verbs.GetString("".AsNoun(ESex.FEMALE, true), EVerbType.IN_PROCESS));
+				Debug.WriteLine(verbs.GetString("".AsNoun(ESex.IT, true), EVerbType.DONE) + "-" + verbs.GetString("".AsNoun(ESex.IT, true), EVerbType.IN_PROCESS));
+				Debug.WriteLine(verbs.GetString("".AsNoun(ESex.PLURAL, true), EVerbType.DONE) + "-" + verbs.GetString("".AsNoun(ESex.PLURAL, true), EVerbType.IN_PROCESS));
 			}
 		}
 	}

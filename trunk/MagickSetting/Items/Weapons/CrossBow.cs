@@ -22,5 +22,10 @@ namespace MagickSetting.Items.Weapons
 		{
 			return new ItemBattleInfo(0,0,0,0,new Dice(1,3,0));
 		}
+
+		public override EALVerbs Verb
+		{
+			get { return EALVerbs.CLUB_WEAPON_VERB;}
+		}
 	}
 }

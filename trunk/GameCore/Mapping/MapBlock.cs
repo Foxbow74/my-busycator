@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
 
@@ -89,5 +90,15 @@ namespace GameCore.Mapping
 		//        }
 		//    }
 		//}
+		public void CreaturesAdd(Creature _creature, Point _inBlockCoords)
+		{
+#if DEBUG
+			if (Creatures.Any(_pair=>_pair.Value==_inBlockCoords))
+			{
+				throw new ApplicationException();
+			}
+#endif
+			Creatures.Add(_creature, _inBlockCoords);
+		}
 	}
 }

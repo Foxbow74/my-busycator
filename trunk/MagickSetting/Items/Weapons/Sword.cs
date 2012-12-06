@@ -24,6 +24,7 @@ namespace MagickSetting.Items.Weapons
 		{
 			get
 			{
+				if (m_nam==null) return base.Name;
 				return base.Name + m_nam;
 			}
 		}
@@ -48,6 +49,11 @@ namespace MagickSetting.Items.Weapons
 			{
 				base.LerpColor = value;
 			}
+		}
+
+		public override EALVerbs Verb
+		{
+			get { return EALVerbs.SWORD_WEAPON_VERB; }
 		}
 	}
 

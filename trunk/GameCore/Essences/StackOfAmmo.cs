@@ -16,5 +16,10 @@ namespace GameCore.Essences
 		public override EItemCategory Category { get { return EItemCategory.MISSILES; } }
 
 		protected override int GetStartCount(Creature _creature) { return (int) (_creature.GetLuckRandom*25) + 1; }
+
+		public virtual EALVerbs Verb
+		{
+			get { return EALVerbs.AMMO_WEAPON_VERB; }
+		}
 	}
 }

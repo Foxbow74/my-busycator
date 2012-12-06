@@ -8,5 +8,6 @@ namespace GameCore.Essences.Weapons
         public override ETileset Tileset { get { return ETileset.WEAPONS; } }
 		public override EItemCategory Category { get { return EItemCategory.WEAPON; } }
 		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.METAL | EMaterialType.WOOD | EMaterialType.MINERAL; } }
+		public abstract EALVerbs Verb { get; }
 	}
 }

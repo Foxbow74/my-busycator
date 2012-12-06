@@ -7,7 +7,6 @@ namespace GameCore.Plants
 	public class Tree : Thing
 	{
 		private readonly WoodMaterial m_material;
-		private readonly Noun m_noun;
 
 		public Tree(Material _material) : base(TreeName(_material), _material)
 		{
@@ -38,8 +37,6 @@ namespace GameCore.Plants
 		{
 			get { return FColor.Empty; }
 		}
-
-		public override Noun Name { get{return m_noun;}}
 
 		public override EMaterialType AllowedMaterialsType { get { return EMaterialType.WOOD; } }
 	}

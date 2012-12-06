@@ -11,5 +11,10 @@ namespace MagickSetting.Items.Weapons.NaturalWeapon
 		{
 			Sex = ESex.PLURAL;
 		}
+
+		public override EALVerbs Verb
+		{
+			get { return EALVerbs.JAWS_WEAPON_VERB; }
+		}
 	}
 }
