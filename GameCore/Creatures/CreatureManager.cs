@@ -139,7 +139,7 @@ namespace GameCore.Creatures
 				}
 
 				var blockId = BaseMapBlock.GetBlockId(info.WorldCoords);
-				info.Layer[blockId].Creatures.Add(_creature, BaseMapBlock.GetInBlockCoords(info.WorldCoords));
+				info.Layer[blockId].CreaturesAdd(_creature, BaseMapBlock.GetInBlockCoords(info.WorldCoords));
 			}
 			
 			info[0, 0].ResetCached();

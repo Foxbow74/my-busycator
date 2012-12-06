@@ -30,7 +30,12 @@ namespace GameCore.AbstractLanguage
 		HIT,
 		DONT_HIT,
 		FINISH,
-		STIKE
+		STIKE,
+		AMMO_WEAPON_VERB,
+		SWORD_WEAPON_VERB,
+		JAWS_WEAPON_VERB,
+		CLUB_WEAPON_VERB,
+		AXE_WEAPON_VERB
 	}
 
 	public enum EALSentence

@@ -167,7 +167,7 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 
 					m_conf.Add(tuple);
 					citizen.SetLerpColor(tuple.Item2);
-					_block.Creatures.Add(citizen, building.Room.RoomRectangle.Center);
+					_block.CreaturesAdd(citizen, building.Room.RoomRectangle.Center);
 				}
 			}
 		}

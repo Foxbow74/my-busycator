@@ -382,16 +382,33 @@ namespace LanguagePack
 			}
 			else
 			{
-				if(_sex==ESex.PLURAL)
+				switch (_sex)
 				{
-					if (text.EndsWith("ит"))
-					{
-						return text.Substring(0, text.Length - 2) + "ят";
-					}
-					if (text.EndsWith("ит"))
-					{
-						return text.Substring(0, text.Length - 2) + "ют";
-					}
+					case ESex.MALE:
+					case ESex.FEMALE:
+					case ESex.IT:
+						return text;
+					case ESex.PLURAL:
+					case ESex.PLURAL_FEMALE:
+						if (text.EndsWith("ит"))
+						{
+							return text.Substring(0, text.Length - 2) + "ят";
+						}
+						if (text.EndsWith("ет"))
+						{
+							return text.Substring(0, text.Length - 2) + "ют";
+						}
+						if (text.EndsWith("ется"))
+						{
+							return text.Substring(0, text.Length - 4) + "ются";
+						}
+						if (text.EndsWith("ится"))
+						{
+							return text.Substring(0, text.Length - 4) + "атся";
+						}
+						break;
+					default:
+						throw new ArgumentOutOfRangeException("_sex");
 				}
 			}
 			throw new NotImplementedException(text + " " + _sex + " " + _type);

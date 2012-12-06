@@ -68,7 +68,7 @@ namespace GameCore.Mapping.Layers
 			{
 				var x = rnd.Next(Constants.MAP_BLOCK_SIZE);
 				var y = rnd.Next(Constants.MAP_BLOCK_SIZE);
-				block.Creatures.Add(EssenceHelper.GetFirstFoundedCreature<AbstractMonster>(), new Point(x, y));
+				block.CreaturesAdd(EssenceHelper.GetFirstFoundedCreature<AbstractMonster>(), new Point(x, y));
 			}
 
 			block.Map[9, 9] = ETerrains.RED_BRICK_WALL;

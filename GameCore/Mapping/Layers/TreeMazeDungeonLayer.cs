@@ -147,7 +147,7 @@ namespace GameCore.Mapping.Layers
 						continue;
 					}
 
-					_block.Creatures.Add(creature, point);
+					_block.CreaturesAdd(creature, point);
 				}
 			}
 		}

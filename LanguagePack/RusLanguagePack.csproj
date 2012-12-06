@@ -50,6 +50,7 @@
       <DependentUpon>RusLanguageProcessor.cs</DependentUpon>
     </Compile>
     <Compile Include="RusLanguageProcessorNoons.cs" />
+    <Compile Include="RusLanguageProcessorVerbs.cs" />
     <Compile Include="Sklonenia.cs" />
     <Compile Include="Variants.cs" />
     <Compile Include="XMessageCompiler.cs" />
