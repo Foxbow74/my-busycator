@@ -335,38 +335,66 @@ namespace LanguagePack
 			{
 				return _noun.AlsoKnownAs.To(_padej);
 			}
+			if (_noun.CoName!=null)
+			{
+				
+			}
 			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
 		}
 
-		public static string To(this Verb _verb, ESex _sex)
+		public static string To(this Verb _verb, ESex _sex, EVerbType _type)
 		{
-			var text = _verb.SameAs[m_rnd.Next(_verb.SameAs.Count)].Text;
-			if(text.EndsWith("ил"))
+			var v = _verb.SameAs[m_rnd.Next(_verb.SameAs.Count)];
+			var text = _type==EVerbType.IN_PROCESS?v.InProcess : v.Done;
+			if(_sex==ESex.MALE) return text;
+			if (_type == EVerbType.DONE)
 			{
-				string verb;
-				switch (_sex)
+				if (text.EndsWith("ил") || text.EndsWith("ал"))
 				{
-					case ESex.MALE:
-						verb = text;
-						break;
-					case ESex.FEMALE:
-						verb = text + "а";
-						break;
-					case ESex.IT:
-						verb = text + "о";
-						break;
-					case ESex.PLURAL:
-						verb = text + "и";
-						break;
-					case ESex.PLURAL_FEMALE:
-						verb = text + "и";
-						break;
-					default:
-						throw new ArgumentOutOfRangeException("_sex");
+					switch (_sex)
+					{
+						case ESex.FEMALE:
+							return text + "а";
+						case ESex.IT:
+							return text + "о";
+						case ESex.PLURAL:
+						case ESex.PLURAL_FEMALE:
+							return text + "и";
+						default:
+							throw new ArgumentOutOfRangeException("_sex");
+					}
 				}
-				return verb;
+				else if (text.EndsWith("ся"))
+				{
+					switch (_sex)
+					{
+						case ESex.FEMALE:
+							return text.Substring(0, text.Length - 2) + "ась";
+						case ESex.IT:
+							return text.Substring(0, text.Length - 2) + "ось";
+						case ESex.PLURAL:
+						case ESex.PLURAL_FEMALE:
+							return text.Substring(0, text.Length - 2) + "ись";
+						default:
+							throw new ArgumentOutOfRangeException("_sex");
+					}
+				}
 			}
-			throw new ApplicationException();
+			else
+			{
+				if(_sex==ESex.PLURAL)
+				{
+					if (text.EndsWith("ит"))
+					{
+						return text.Substring(0, text.Length - 2) + "ят";
+					}
+					if (text.EndsWith("ит"))
+					{
+						return text.Substring(0, text.Length - 2) + "ют";
+					}
+				}
+			}
+			throw new NotImplementedException(text + " " + _sex + " " + _type);
 		}
 
 		private static string CoNameToPadej(EPadej _padej, CoName _coName, bool _isCreature, ESex _sex)

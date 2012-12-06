@@ -3,16 +3,6 @@ using System.Collections.Generic;
 
 namespace GameCore.AbstractLanguage
 {
-	public enum EWord
-	{
-		ADV,
-		VERB,
-		TITLE,
-		IMMUTABLE,
-		CONAME,
-		OF_SOMETHING
-	}
-
 	public class Sentence
 	{
 		public Sentence()
@@ -41,8 +31,6 @@ namespace GameCore.AbstractLanguage
 		}
 
 		public string Text { get { return m_text; } }
-
-		public abstract EWord Kind { get; }
 	}
 
 	public class Noun
@@ -109,7 +97,7 @@ namespace GameCore.AbstractLanguage
 
 		public override string ToString()
 		{
-			throw new NotImplementedException();
+			return Text;
 		}
 	}
 
@@ -117,11 +105,6 @@ namespace GameCore.AbstractLanguage
 	{
 		public CoName(string _text):base(_text)
 		{
-		}
-
-		public override EWord Kind
-		{
-			get { return EWord.CONAME; }
 		}
 	}
 
@@ -135,11 +118,6 @@ namespace GameCore.AbstractLanguage
 			: base(_text)
 		{
 		}
-
-		public override EWord Kind
-		{
-			get { return EWord.ADV; }
-		}
 	}
 
 
@@ -152,11 +130,6 @@ namespace GameCore.AbstractLanguage
 			: base(_text)
 		{
 		}
-
-		public override EWord Kind
-		{
-			get { return EWord.IMMUTABLE; }
-		}
 	}
 
 	/// <summary>
@@ -168,31 +141,30 @@ namespace GameCore.AbstractLanguage
 			: base(_text)
 		{
 		}
-
-		public override EWord Kind
-		{
-			get { return EWord.OF_SOMETHING; }
-		}
 	}
 
+	public enum EVerbType
+	{
+		IN_PROCESS,
+		DONE,
+	}
 
 	/// <summary>
 	/// исходная форма - что сделал
 	/// </summary>
-	public class Verb : AbstractWord
+	public class Verb
 	{
-		public Verb(string _text)
-			: base(_text)
+		public string InProcess { get; private set; }
+		public string Done { get; private set; }
+
+		public Verb(string _inProcess, string _done)
 		{
+			InProcess = _inProcess;
+			Done = _done;
 			SameAs = new List<Verb> {this};
 		}
 
 		public List<Verb> SameAs { get; private set; }
-
-		public override EWord Kind
-		{
-			get { return EWord.VERB; }
-		}
 
 		public static Verb operator +(Verb _a, Verb _b)
 		{
@@ -200,10 +172,6 @@ namespace GameCore.AbstractLanguage
 			return _a;
 		}
 
-		public static Verb operator +(Verb _a, string _b)
-		{
-			return _a + _b.AsVerb();
-		}
 	}
 
 	public static class WordUtils
@@ -216,11 +184,6 @@ namespace GameCore.AbstractLanguage
 		public static Adjective AsAdj(this string _adv)
 		{
 			return new Adjective(_adv);
-		}
-
-		public static Verb AsVerb(this string _verb)
-		{
-			return new Verb(_verb);
 		}
 
 		public static Immutable AsIm(this string _string)
