@@ -50,8 +50,17 @@ namespace GameCore.Acts.Movement
 
 			if (cell.GetIsPassableBy(_creature) > 0)
 			{
-				var mess = "";// cell.TerrainAttribute.DisplayName;
+				if (World.TheWorld.CreatureManager.InfoByCreature[_creature].WorldCoords != World.TheWorld.CreatureManager.PointByCreature[World.TheWorld.CreatureManager.InfoByCreature[_creature]])
+				{
+					
+				}
+				if (World.TheWorld.CreatureManager.InfoByCreature[_creature].WorldCoords != _creature[0, 0].WorldCoords)
+				{
+					
+				}
+				World.TheWorld.CreatureManager.MoveCreatureOnDelta(_creature, delta);
 
+				var mess = "";
 				if (_creature.IsAvatar)
 				{
 					var thing = cell.Thing;
@@ -73,7 +82,6 @@ namespace GameCore.Acts.Movement
 					}
 					MessageManager.SendMessage(this, mess);
 				}
-				World.TheWorld.CreatureManager.MoveCreatureOnDelta(_creature, delta);
 				return EActResults.DONE;
 			}
 			else

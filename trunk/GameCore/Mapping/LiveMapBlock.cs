@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using GameCore.Essences;
 using GameCore.Misc;
 
@@ -104,8 +105,12 @@ namespace GameCore.Mapping
 
 		public void Clear()
 		{
-			
-//			m_liveCellZero
+			var rct = new Rct(WorldCoords, Constants.MAP_BLOCK_SIZE, Constants.MAP_BLOCK_SIZE);
+			var arr = World.TheWorld.CreatureManager.InfoByCreature.Values.Where(_info => rct.Contains(_info.WorldCoords)).ToArray();
+			foreach (var info in arr)
+			{
+				World.TheWorld.CreatureManager.ExcludeCreature(info.Creature);
+			}
 
 			if (MapBlock == null) return;
 			MapBlock = null;

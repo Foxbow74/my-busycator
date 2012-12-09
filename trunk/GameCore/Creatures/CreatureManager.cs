@@ -240,8 +240,8 @@ namespace GameCore.Creatures
 						}
 						CreatureByPoint.Add(_worldCoord, info);
 					}
-					info.WorldCoords = _worldCoord;
 					info.LiveCoords += delta;
+					info.WorldCoords = _worldCoord;
 
 					PointByCreature.Add(info, _worldCoord);
 				}
