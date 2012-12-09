@@ -94,6 +94,11 @@ namespace GameCore.Mapping
 				}
 				PathFinder.Clear();
 			}
+
+			foreach (var geoInfo in World.TheWorld.CreatureManager.PointByCreature.Keys)
+			{
+				geoInfo.Check();
+			}
 		}
 
 		public byte GetPfIsPassable(Point _pathMapCoords, Creature _creature)
@@ -251,7 +256,10 @@ namespace GameCore.Mapping
 			}
 		}
 
-		private void ClearBlock(Point _blockId) { Blocks[_blockId.X, _blockId.Y].Clear(); }
+		private void ClearBlock(Point _blockId)
+		{
+			Blocks[_blockId.X, _blockId.Y].Clear();
+		}
 
 		#endregion
 	}

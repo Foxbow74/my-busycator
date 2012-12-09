@@ -58,7 +58,13 @@ namespace GameCore.Mapping
 
 		public Point ToWorldCoords(Point _point) { return WorldCoords + _point; }
 
-		public void RemoveEssence(Essence _item, Point _inBlockCoords) { Objects.Remove(new Tuple<Essence, Point>(_item, _inBlockCoords)); }
+		public void RemoveEssence(Essence _item, Point _inBlockCoords)
+		{
+			if (!Objects.Remove(new Tuple<Essence, Point>(_item, _inBlockCoords)))
+			{
+				throw new ApplicationException();
+			}
+		}
 
 		public bool AddEssence(Essence _essence, Point _inBlockCoords)
 		{
