@@ -50,14 +50,6 @@ namespace GameCore.Acts.Movement
 
 			if (cell.GetIsPassableBy(_creature) > 0)
 			{
-				if (World.TheWorld.CreatureManager.InfoByCreature[_creature].WorldCoords != World.TheWorld.CreatureManager.PointByCreature[World.TheWorld.CreatureManager.InfoByCreature[_creature]])
-				{
-					
-				}
-				if (World.TheWorld.CreatureManager.InfoByCreature[_creature].WorldCoords != _creature[0, 0].WorldCoords)
-				{
-					
-				}
 				World.TheWorld.CreatureManager.MoveCreatureOnDelta(_creature, delta);
 
 				var mess = "";
@@ -86,10 +78,17 @@ namespace GameCore.Acts.Movement
 			}
 			else
 			{
-				XMessage mess;
+				var thing = cell.Thing;
+				if (thing != null && thing.Is<ClosedDoor>() && thing.IsLockedFor(cell, _creature))
+				{
+					_creature.InsertActToPool(new OpenAct(), delta);
+					return EActResults.ACT_REPLACED;
+				}
+
 				if (_creature.IsAvatar)
 				{
 					var creature = cell.Creature;
+					XMessage mess;
 					if (creature != null)
 					{
 						bool isMoveToAct;
@@ -105,12 +104,6 @@ namespace GameCore.Acts.Movement
 					}
 					else
 					{
-						var thing = cell.Thing;
-						if (thing != null && thing.Is<ClosedDoor>() && thing.IsLockedFor(cell, _creature))
-						{
-							_creature.InsertActToPool(new OpenAct(), delta);
-							return EActResults.ACT_REPLACED;
-						}
 						mess = new XMessage(EALTurnMessage.CREATURE_NOW_STAY_ON, _creature, cell.Terrain.AsNoun());
 					}
 					MessageManager.SendXMessage(this, mess);

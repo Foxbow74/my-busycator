@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.AbstractLanguage;
 using GameCore.Acts;
@@ -32,7 +33,7 @@ namespace GameCore.Creatures
 		{
 			get
 			{
-				return base.Name + m_name.AlsoKnownAs;
+				return base.Name + m_name;
 			}
 		}
 
@@ -66,6 +67,7 @@ namespace GameCore.Creatures
 
 			if (currBuilding != null)
 			{
+				Debug.WriteLine(m_name.Text + " в доме, хочет выйти");
 				AddActToPool(new LeaveBuildingAct());
 				return EThinkingResult.NORMAL;
 			}
@@ -89,6 +91,7 @@ namespace GameCore.Creatures
 					if (path != null)
 					{
 						//если точка достижима
+						Debug.WriteLine(m_name.Text + " идет в другой дом");
 						AddActToPool(new MoveToAct(this, path),int.MaxValue);
 						return EThinkingResult.NORMAL;
 					}
