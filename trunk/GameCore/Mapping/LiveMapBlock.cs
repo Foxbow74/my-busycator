@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Essences;
 using GameCore.Misc;
@@ -44,7 +45,7 @@ namespace GameCore.Mapping
 		public void ClearTemp()
 		{
 			foreach (var point in LiveCoords.GetAllBlockPoints())
-			{
+			{ 
 				m_liveMap.Cells[point.X, point.Y].ClearTemp();
 			}
 		}
@@ -83,6 +84,7 @@ namespace GameCore.Mapping
 				World.TheWorld.CreatureManager.AddCreature(pair.Key, WorldCoords + pair.Value, LiveCoords + pair.Value);
 			}
 			MapBlock.Creatures.Clear();
+			Debug.WriteLine(MapBlock.BlockId + " CLEARED " + MapBlock.Creatures.Count);
 		}
 
 		public void UpdatePathFinderMapCoords()

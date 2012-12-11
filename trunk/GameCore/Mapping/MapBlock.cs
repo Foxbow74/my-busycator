@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Misc;
@@ -52,53 +53,30 @@ namespace GameCore.Mapping
 			}
 		}
 
-		//public void AddCreature(Creature _creature, Point _inBlockCoords)
-		//{
-		//    if (_creature is FakedCreature)
-		//    {
-		//        _creature = (Creature)((FakedCreature)_creature).Essence.Clone(World.TheWorld.Avatar);
-		//    }
-		//    List<Creature> list;
-		//    if(!Creatures.TryGetValue(_inBlockCoords, out list))
-		//    {
-		//        list = new List<Creature>();
-		//        Creatures.Add(_inBlockCoords, list);
-		//    }
-		//    list.Add(_creature);
-		//}
-
-		//public void RemoveCreature(Creature _creature)
-		//{
-		//    foreach (var creature in Creatures)
-		//    {
-		//        if(creature.Value.Contains(_creature))
-		//        {
-		//            creature.Value.Remove(_creature);
-		//            return;
-		//        }
-		//    }
-		//    throw new ApplicationException();
-		//}
-
-		//public void AvatarLeftLayer()
-		//{
-		//    foreach (var pair in Creatures)
-		//    {
-		//        foreach (var creature in pair.Value)
-		//        {
-		//            creature.ClearActPool();
-		//        }
-		//    }
-		//}
 		public void CreaturesAdd(Creature _creature, Point _inBlockCoords)
 		{
-#if DEBUG
-			if (Creatures.Any(_pair=>_pair.Value==_inBlockCoords))
+			var busy = new List<Point>();
+			while (Creatures.Any(_pair => _pair.Value == _inBlockCoords))
 			{
-				throw new ApplicationException();
+				busy.Add(_inBlockCoords);
+				var lt = _creature[0, 0].InBlockCoords;
+
+				foreach (var point in new Point(Constants.MAP_BLOCK_SIZE / 2, Constants.MAP_BLOCK_SIZE / 2).GetSpiral(Constants.MAP_BLOCK_SIZE / 2 - 1))
+				{
+
+					if (_creature[point - lt].GetIsPassableBy(_creature) > 0 && !busy.Contains(point))
+					{
+						_inBlockCoords = point;
+						break;
+					}
+				}
 			}
-#endif
+
 			Creatures.Add(_creature, _inBlockCoords);
+			if (_creature.GeoInfo != null)
+			{
+				_creature.GeoInfo.WorldCoords = WorldCoords + _inBlockCoords;
+			}
 		}
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Faked;
@@ -118,7 +119,8 @@ namespace GameCore.Creatures
 		public void ExcludeCreature(Creature _creature)
 		{
 			_creature.ClearActPool();
-			_creature[0,0].ResetCached();
+			var liveMapCell = _creature[0, 0];
+			liveMapCell.ResetCached();
 			var info = InfoByCreature[_creature];
 			OutOfScope.Add(_creature, info);
 			InfoByCreature.Remove(_creature);
@@ -138,8 +140,7 @@ namespace GameCore.Creatures
 					throw new ApplicationException();
 				}
 
-				var blockId = BaseMapBlock.GetBlockId(info.WorldCoords);
-				info.Layer[blockId].CreaturesAdd(_creature, BaseMapBlock.GetInBlockCoords(info.WorldCoords));
+				info.Layer[liveMapCell.MapBlockId].CreaturesAdd(_creature, liveMapCell.InBlockCoords);
 			}
 			
 			info[0, 0].ResetCached();
