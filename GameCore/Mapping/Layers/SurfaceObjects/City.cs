@@ -132,10 +132,13 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
                 }
             }
 
-		    var impossible = m_buildings.Where(building =>building.Room.AreaRectangle.AllPoints.Any(point => TerrainAttribute.GetAttribute(_block.Map[point.X, point.Y]).IsNotPassable)).ToArray();
-		    foreach (var building in impossible)
+			var terrains = m_buildings.Where(_building=>_building.BlockId==_block.BlockId).ToDictionary(_b=>_b, _building =>_building.Room.AreaRectangle.AllPoints.Select(_point => _block.Map[_point.X, _point.Y]).Distinct().ToArray());
+			foreach (var pair in terrains)
 		    {
-		        m_buildings.Remove(building);
+				if (pair.Value.Any(_terrains =>TerrainAttribute.GetAttribute(_terrains ).IsNotPassable))
+			    {
+				    m_buildings.Remove(pair.Key);
+			    }
 		    }
 
 			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
