@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures.Dummies;
 using GameCore.Essences.Faked;
@@ -167,7 +166,7 @@ namespace GameCore.Creatures
 			{
 				if (_creature.IsAvatar)
 				{
-					
+					//Если аватар ушел на другой уровень
 					var allCreatures = InfoByCreature.Keys.ToArray();
 					foreach (var creature in allCreatures)
 					{
@@ -208,10 +207,6 @@ namespace GameCore.Creatures
 				if (oldBlockId != newBlockId)
 				{
 					var newCell = info[delta];
-					if (newCell.LiveMapBlock.IsBorder)
-					{
-						ExcludeCreature(_creature);
-					}
 					if (_creature.IsAvatar)
 					{
 						World.TheWorld.LiveMap.AvatarChangesBlock(oldBlockId, newBlockId, newCell.LiveMapBlock.LiveMapBlockId);
@@ -266,7 +261,10 @@ namespace GameCore.Creatures
 				{
 					if (first.BusyTill > creature.BusyTill)
 					{
-						first = creature;
+						if (!creature[0,0].LiveMapBlock.IsBorder)
+						{
+							first = creature;
+						}
 					}
 				}
 				return first;
