@@ -31,8 +31,6 @@ namespace GameCore
 
 		static World() 
 		{
-			Rnd = new Random(Constants.WORLD_SEED);
-
             if (!File.Exists(Constants.RESOURCES_DB_FILE))
             {
                 throw new ApplicationException("Не найдена база ресурсов " + Path.GetFullPath(Constants.RESOURCES_DB_FILE));
@@ -41,6 +39,8 @@ namespace GameCore
 
 		public World()
 		{
+			Rnd = new Random(Constants.WORLD_SEED);
+
 			BattleProcessor = new BattleProcessor();
 			CreatureManager = new CreatureManager();
 
