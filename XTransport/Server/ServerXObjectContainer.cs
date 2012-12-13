@@ -19,8 +19,6 @@ namespace XTransport.Server
             if (!ValidTill.HasValue)
             {
                 var report = GetReport(_sessionId);
-
-                //m_changes.Clear();
                 m_currentVersion.Clear();
 
                 m_currentVersion[_sessionId] = 0;

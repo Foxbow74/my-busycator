@@ -30,5 +30,6 @@
 		/// </summary>
 		public static int TILE_SIZE = 16;
 
+		public static bool GAME_MODE = true;
 	}
 }

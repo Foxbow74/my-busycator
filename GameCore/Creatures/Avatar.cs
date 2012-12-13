@@ -14,6 +14,8 @@ namespace GameCore.Creatures
 		public Avatar(WorldLayer _surface)
 			: base(EALNouns.Avatar, _surface, 100, EIntellectGrades.INT)
 		{
+			if (!Constants.GAME_MODE) return;
+
 			Tactic = ETactics.NORMAL;
 			Luck = 6;
 			AddRole(new AvatarRole());
