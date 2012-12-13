@@ -39,18 +39,24 @@ namespace GameCore.Essences
 				RegisterEssenceType(type);
 			}
 
-			foreach (var essenceProviderHelper in World.XResourceRoot.EssenceProviders)
+			if (Constants.GAME_MODE)
 			{
-				var essenceProvider = essenceProviderHelper.GetResourceEssence();
-				if(essenceProvider.MaterialTypes==EMaterialType.UNIQ)
+				foreach (var essenceProviderHelper in World.XResourceRoot.EssenceProviders)
 				{
-					Add(essenceProvider.Create(null));
-				}
-				else
-				{
-					foreach (var material in GetAllowedMaterialTypes(essenceProvider.MaterialTypes).SelectMany(_material => m_materials.Where(_m => _m.MaterialType==_material)))
+					var essenceProvider = essenceProviderHelper.GetResourceEssence();
+					if (essenceProvider.MaterialTypes == EMaterialType.UNIQ)
 					{
-						Add(essenceProvider.Create(material));
+						Add(essenceProvider.Create(null));
+					}
+					else
+					{
+						foreach (
+							var material in
+								GetAllowedMaterialTypes(essenceProvider.MaterialTypes)
+									.SelectMany(_material => m_materials.Where(_m => _m.MaterialType == _material)))
+						{
+							Add(essenceProvider.Create(material));
+						}
 					}
 				}
 			}

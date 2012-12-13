@@ -356,6 +356,10 @@ namespace XTransport.Server
 
         public void Shrink()
         {
+			if (m_sessions.Count > 1)
+			{
+				throw new ApplicationException("More than one client sessions exists");
+			}
             IsShrinking = true;
             var root = Root;
             foreach (var o in m_objects)

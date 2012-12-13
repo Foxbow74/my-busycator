@@ -30,7 +30,7 @@ namespace GameUi
 
             AllTiles.Add(ETileset.NONE, new TileSet(Rp.CreateTile(0,0,FColor.Empty)));
 
-			if (_drawHelper!=null && World.XResourceRoot.TileSets.Count > 0)
+			if (Constants.GAME_MODE && World.XResourceRoot.TileSets.Count > 0)
 			{
 				foreach (var xTileSet in World.XResourceRoot.TileSets)
 				{
