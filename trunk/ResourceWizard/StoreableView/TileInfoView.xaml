@@ -32,6 +32,8 @@
 				<ToggleButton ToolTip="Убрать полупрозрачность рисунка" IsChecked="{Binding RemoveTransparency}" >
 					<Image Width="24" Source="{Binding RemoveTransparencyImage}"/>
 				</ToggleButton>
+				<Button ToolTip="Выровнять цвет" Command="{Binding AlignColorsCommand}" Content="A"/>
+				<Button ToolTip="Зашумить цвет" Command="{Binding NoiseColorsCommand}" Content="N"/>
 				<Separator/>
 				<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
 				<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
