@@ -333,11 +333,11 @@ namespace ResourceWizard
 			}
 			XRoot.EssenceProviders.Clear();
 
-			var resourceEssenceGenerator = new XResourceEssenceGenerator(XRoot);
-			if (resourceEssenceGenerator.Generate().Count() < 2)
-			{
-				throw new ApplicationException("Хде они?");
-			}
+			//var resourceEssenceGenerator = new XResourceEssenceGenerator(XRoot);
+			//if (resourceEssenceGenerator.Generate().Count() < 2)
+			//{
+			//    throw new ApplicationException("Хде они?");
+			//}
 			XClient.Save(XRoot);
 		}
 
