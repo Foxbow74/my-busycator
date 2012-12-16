@@ -35,7 +35,8 @@ namespace GameCore.AbstractLanguage
 		SWORD_WEAPON_VERB,
 		JAWS_WEAPON_VERB,
 		CLUB_WEAPON_VERB,
-		AXE_WEAPON_VERB
+		AXE_WEAPON_VERB,
+		THERE_IS
 	}
 
 	public enum EALSentence
@@ -74,7 +75,8 @@ namespace GameCore.AbstractLanguage
 		AN_DROP,
 		AN_DRINK,
 		AN_MOVE,
-		AN_MOVE_ARROWS
+		AN_MOVE_ARROWS,
+		AN_TACTIC_PEACEFULL
 	}
 
 	public enum EALNouns

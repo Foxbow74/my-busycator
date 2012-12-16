@@ -25,7 +25,7 @@ namespace GameUi.UIBlocks.Help
 		public override void DrawContent()
 		{
 			var line = 0;
-			var acts = KeyTranslator.RegisteredActs.OrderBy(_act => _act.Category).ThenBy(_act => _act.Name);
+			var acts = KeyTranslator.RegisteredActs.OrderBy(_act => _act.Category).ThenBy(_act => _act.ConsoleKeys.FirstOrDefault());
 			var currentCategory = string.Empty;
 			foreach (var act in acts)
 			{

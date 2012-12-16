@@ -263,9 +263,17 @@ namespace GameCore.Mapping
 
 		public IEnumerable<EssenceDescriptor> GetAllAvailableItemDescriptors<TEssence>(Creature _creature) where TEssence : Essence
 		{
-			foreach (var item in Items.OfType<TEssence>())
+			var items = Items.OfType<TEssence>().ToArray();
+			foreach (var item in items)
 			{
-				yield return new EssenceDescriptor(item, LiveCoords, null);
+				if (item is FakedItem)
+				{
+					yield return new EssenceDescriptor(ResolveFakeItem(_creature, item as FakedItem), LiveCoords, null);
+				}
+				else
+				{
+					yield return new EssenceDescriptor(item, LiveCoords, null);
+				}
 			}
 			if (typeof (TEssence).IsAssignableFrom(typeof (Item)))
 			{

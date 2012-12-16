@@ -51,7 +51,7 @@ namespace LanguagePack
 
 			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
 
-
+			m_processors.Add(Pack(EALTurnMessage.CELL_IS_OCCUPIED_BY), КлеткаЗанята);
 			
 
 
@@ -307,6 +307,22 @@ namespace LanguagePack
 #endif
 			return s;
 		}
+
+		private static string КлеткаЗанята(XMessage[] _arg)
+		{
+			var xMessage = _arg[0];
+			var essence = xMessage.FirstOrDefault<Essence>();
+			if (essence != null)
+			{
+				if (essence is Creature)
+				{
+					return "из-за " + essence.To(EPadej.ROD) + " сюда никак не пройти.";
+				}
+				return "Вы уперлись в " + essence.To(EPadej.VIN);
+			}
+			return "Не пройти, здесь " + ((Noun)_arg[0].Params[0]).To(EPadej.IMEN);
+		}
+
 
 		private static string АтакаСмерть(XMessage[] _arg)
 		{

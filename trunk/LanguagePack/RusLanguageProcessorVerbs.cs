@@ -6,6 +6,7 @@ namespace LanguagePack
 	{
 		private static void FillVerbs()
 		{
+			m_verbs.Add(EALVerbs.THERE_IS, new Verb("", "Здесь был"));
 			m_verbs.Add(EALVerbs.HURT, new Verb("ранит", "ранил"));
 			m_verbs.Add(EALVerbs.MANGLE, new Verb("калечит", "покалечил") + new Verb("кромсает", "искромсал") + new Verb("раздирает", "разодрал"));
 			m_verbs.Add(EALVerbs.HACK, new Verb("рубит", "разрубил"));

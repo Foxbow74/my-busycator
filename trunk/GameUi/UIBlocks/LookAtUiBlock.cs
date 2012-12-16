@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore;
 using GameCore.AbstractLanguage;
+using GameCore.Essences;
 using GameCore.Messages;
 using GameCore.Misc;
 
@@ -81,11 +83,11 @@ namespace GameUi.UIBlocks
 
 				var lighted = liveCell.FinalLighted;
 
-				var list = new List<Noun>();
+				var list = new List<Noun> {liveCell.Terrain.AsNoun()};
+
 				if (lighted.Lightness() > World.TheWorld.Avatar.GeoInfo.Layer.FogLightness)
 				{
                     ETileset.TARGETING.GetTile(0).Draw(TargetPoint + m_avatarScreenPoint, FColor.Green);
-
 					if (liveCell.Creature != null)
 					{
 						list.Add(liveCell.Creature.Name);
@@ -94,9 +96,10 @@ namespace GameUi.UIBlocks
 					{
 						list.Add(liveCell.Thing.Name);
 					}
-					foreach (var item in liveCell.Items)
+					var items = liveCell.Items.ToArray();
+					foreach (var item in items)
 					{
-						list.Add(item.Name);
+						list.Add(EssenceHelper.GetName(item, World.TheWorld.Avatar, liveCell));
 					}
 					m_messages.DrawLine(EALSentence.THERE_ARE.GetString(list.ToArray()), FColor.Gray, 1, 0, EAlignment.LEFT);
 				}

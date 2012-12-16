@@ -89,7 +89,7 @@ namespace GameCore.Acts.Movement
 				{
 					var creature = cell.Creature;
 					XMessage mess;
-					if (creature != null)
+					if (creature != null && World.TheWorld.Avatar.Tactic != ETactics.PEACEFULL)
 					{
 						bool isMoveToAct;
 						if(!TryGetParameter(out isMoveToAct) || !isMoveToAct)
@@ -100,13 +100,23 @@ namespace GameCore.Acts.Movement
 							////Если это не перемещение на дальнее расстояние
 							//return World.TheWorld.BattleProcessor.Atack(_creature, creature);
 						}
-						mess = new XMessage(EALTurnMessage.CELL_IS_OCCUPIED_BY, _creature, creature);
 					}
 					else
 					{
-						mess = new XMessage(EALTurnMessage.CREATURE_NOW_STAY_ON, _creature, cell.Terrain.AsNoun());
+						if (creature != null)
+						{
+							mess = new XMessage(EALTurnMessage.CELL_IS_OCCUPIED_BY, _creature, creature);
+						}
+						else if (thing != null)
+						{
+							mess = new XMessage(EALTurnMessage.CELL_IS_OCCUPIED_BY, _creature, thing);
+						}
+						else
+						{
+							mess = new XMessage(EALTurnMessage.CELL_IS_OCCUPIED_BY, _creature, cell.Terrain.AsNoun());
+						}
+						MessageManager.SendXMessage(this, mess);
 					}
-					MessageManager.SendXMessage(this, mess);
 				}
 				return EActResults.QUICK_FAIL;
 			}

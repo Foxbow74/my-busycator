@@ -22,6 +22,11 @@ namespace GameCore.Messages
 			return Params.OfType<T>().First();
 		}
 
+		public T FirstOrDefault<T>()
+		{
+			return Params.OfType<T>().FirstOrDefault();
+		}
+
 		public override string ToString()
 		{
 			return string.Format("{0} {1} [{2}]", Actor.Name, Type, string.Join(", ", Params.Select(e => e.ToString())));
