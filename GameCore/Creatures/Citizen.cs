@@ -67,7 +67,6 @@ namespace GameCore.Creatures
 
 			if (currBuilding != null)
 			{
-				Debug.WriteLine(m_name.Text + " в доме, хочет выйти");
 				AddActToPool(new LeaveBuildingAct());
 				return EThinkingResult.NORMAL;
 			}
@@ -91,7 +90,6 @@ namespace GameCore.Creatures
 					if (path != null)
 					{
 						//если точка достижима
-						Debug.WriteLine(m_name.Text + " идет в другой дом");
 						AddActToPool(new MoveToAct(this, path),int.MaxValue);
 						return EThinkingResult.NORMAL;
 					}

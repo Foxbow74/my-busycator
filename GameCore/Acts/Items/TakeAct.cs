@@ -46,12 +46,17 @@ namespace GameCore.Acts.Items
 			if (toTake.Count == 0)
 			{
 				// Если в параметрах нет уточнений
+				var ask = new AskMessageNg(this, EAskMessageType.SELECT_THINGS, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER);
+				foreach (var essenceDescriptor in notTaken)
+				{
+					ask.AddParameter(essenceDescriptor);
+				}
 				if (notTaken.Count() == 1)
 				{
 					var needToShow = GetParameter<bool>().ToArray();
 					if (needToShow.Length>0 && needToShow[0])
 					{
-						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this, ask);
 						return EActResults.NEED_ADDITIONAL_PARAMETERS;
 					}
 
@@ -67,7 +72,7 @@ namespace GameCore.Acts.Items
 					}
 					else
 					{
-						MessageManager.SendMessage(this, new AskMessageNg(this, EAskMessageType.SELECT_THINGS, notTaken, ESelectItemDialogBehavior.SELECT_MULTIPLE | ESelectItemDialogBehavior.ALLOW_CHANGE_FILTER));
+						MessageManager.SendMessage(this, ask);
 					}
 					return EActResults.NEED_ADDITIONAL_PARAMETERS;
 				}

@@ -13,6 +13,7 @@ namespace LanguagePack
 			m_consts.Add(EALConst.AN_HELP, "показать экран помощи");
 			m_consts.Add(EALConst.AN_INTERRACT_WITH_ESSENCE, "взаимодействовать с объектом");
 			m_consts.Add(EALConst.AN_TACTIC_NORMAL, "соблюдать разумный баланс атаки и защиты");
+			m_consts.Add(EALConst.AN_TACTIC_PEACEFULL, "мирный режим, нельзя атаковать мирные существа");
 			m_consts.Add(EALConst.AN_TACTIC_COWARD, "приоритет в бою - защита");
 			m_consts.Add(EALConst.AN_TACTIC_BERSERK, "приоритет в бою - атака");
 			m_consts.Add(EALConst.AN_DESCEND, "спуститься по лестнице");

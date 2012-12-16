@@ -84,7 +84,6 @@ namespace GameCore.Mapping
 				World.TheWorld.CreatureManager.AddCreature(pair.Key, WorldCoords + pair.Value, LiveCoords + pair.Value);
 			}
 			MapBlock.Creatures.Clear();
-			Debug.WriteLine(MapBlock.BlockId + " CLEARED " + MapBlock.Creatures.Count);
 		}
 
 		public void UpdatePathFinderMapCoords()

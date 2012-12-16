@@ -21,7 +21,8 @@ namespace GameCore.Creatures
 			AddRole(new AvatarRole());
 			Equip(EEquipmentPlaces.RIGHT_HAND, EssenceHelper.GetRandomFakedItem<AbstractMeleeWeapon>(World.Rnd));
 			Equip(EEquipmentPlaces.MISSILE_WEAPON, EssenceHelper.GetFirstFoundedItem<AbstractRangedWeapon>());
-
+			Tactic = ETactics.PEACEFULL;
+			
 			var ammo = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd).Essence.Clone(this) as StackOfAmmo;
 			ammo.Count = 100;
 			Equip(EEquipmentPlaces.MISSILES, ammo);

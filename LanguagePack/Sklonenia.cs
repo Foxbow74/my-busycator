@@ -379,6 +379,21 @@ namespace LanguagePack
 							throw new ArgumentOutOfRangeException("_sex");
 					}
 				}
+				else if (text.EndsWith("ыл"))
+				{
+					switch (_sex)
+					{
+						case ESex.FEMALE:
+							return text + "а";
+						case ESex.IT:
+							return text + "о";
+						case ESex.PLURAL:
+						case ESex.PLURAL_FEMALE:
+							return text + "и";
+						default:
+							throw new ArgumentOutOfRangeException("_sex");
+					}
+				}
 			}
 			else
 			{

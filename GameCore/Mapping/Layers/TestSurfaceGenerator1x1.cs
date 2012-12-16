@@ -53,6 +53,9 @@ namespace GameCore.Mapping.Layers
 
 					_block.AddEssence(EssenceHelper.GetRandomFakedItem<AbstractWeapon>(World.Rnd), new Point(4, 1));
 					_block.AddEssence(EssenceHelper.GetRandomFakedItem<AbstractWeapon>(World.Rnd), new Point(3, 2));
+
+					_block.AddEssence(EssenceHelper.GetRandomFakedItem<Ring>(World.Rnd), new Point(5, 5));
+					_block.AddEssence(EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd), new Point(5, 5));
                     break;
                 case 2:
 					_block.AddEssence(new MagicPlate(EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>(), 0, EMagicPlateEffect.RANDOM_MONSTER_APPEAR), new Point(10, 10));

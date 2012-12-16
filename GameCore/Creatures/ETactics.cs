@@ -5,5 +5,6 @@ namespace GameCore.Creatures
 		NORMAL,
 		BERSERK,
 		COWARD,
+		PEACEFULL
 	}
 }

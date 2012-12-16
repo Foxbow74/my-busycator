@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameCore;
 using GameCore.AbstractLanguage;
 using GameCore.Messages;
@@ -54,11 +55,15 @@ namespace LanguagePack
 			switch (_sentence)
 			{
 				case EALSentence.NONE:
-					return _nouns[0].To(EPadej.IMEN);
+					return GetString(EPadej.IMEN, _nouns);
 				case EALSentence.GENERAL:
-					return ToGeneral(_nouns[0].To(EPadej.IMEN));
+					return ToGeneral(GetString(EPadej.IMEN, _nouns));
 				case EALSentence.TACTICK_CHANGED:
 					return "Тактика изменена на " + _nouns[0].To(EPadej.VIN);
+				case EALSentence.THERE_ARE:
+					return GetString(EPadej.IMEN, _nouns);
+				case EALSentence.THERE_ARE_WERE:
+					return GetString(EALVerbs.THERE_IS, EVerbType.DONE, _nouns) + " " + GetString(EPadej.IMEN, _nouns);
 				default:
 					throw new ArgumentOutOfRangeException("_sentence");
 			}
@@ -69,9 +74,14 @@ namespace LanguagePack
 			return m_consts[_const];
 		}
 
-		public string GetString(EALVerbs _verb, Noun _noun, EVerbType _type)
+		public string GetString(EALVerbs _verb, EVerbType _type, params Noun[] _nouns)
 		{
-			return m_verbs[_verb].To(_noun.Sex, _type);
+			return m_verbs[_verb].To(_nouns.Length == 1 ? _nouns[0].Sex : ESex.PLURAL, _type);
+		}
+
+		public string GetString(EPadej _padej, params Noun[] _nouns)
+		{
+			return string.Join(", ", _nouns.Select(e => e.To(_padej)));
 		}
 
 		#endregion
