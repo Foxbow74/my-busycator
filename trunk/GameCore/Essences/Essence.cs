@@ -1,4 +1,5 @@
-﻿using GameCore.AbstractLanguage;
+﻿using System;
+using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Misc;
 
@@ -11,9 +12,13 @@ namespace GameCore.Essences
 
 		protected Essence(EALNouns _name, Material _material)
 		{
-			Material = _material;
 			m_eNoun = _name;
 			m_name = _name.AsNoun();
+			Material = _material;
+			if (_material != null)
+			{
+				m_name.Adjective = _material.Name;
+			}
 		}
 
 		/// <summary>
@@ -36,7 +41,10 @@ namespace GameCore.Essences
 
 		public virtual Noun Name
 		{
-			get { return m_name; }
+			get
+			{
+				return m_name;
+			}
 		}
 
 		public virtual bool IsCreature
@@ -73,7 +81,10 @@ namespace GameCore.Essences
 
 		#endregion
 
-		public override string ToString() { return this.GetName(World.TheWorld.Avatar).Text; }
+		public override string ToString()
+		{
+			return Name.Text;
+		}
 
 		public override bool Equals(object _obj) { return GetHashCode() == _obj.GetHashCode(); }
 
@@ -87,6 +98,15 @@ namespace GameCore.Essences
 		internal virtual Essence Clone(Creature _resolver)
 		{
 			return (Essence)MemberwiseClone();
+		}
+
+		public override int GetHashCode()
+		{
+			if (Material != null)
+			{
+				return GetType().GetHashCode() ^ Material.GetType().GetHashCode();
+			}
+			return GetType().GetHashCode();
 		}
 	}
 }

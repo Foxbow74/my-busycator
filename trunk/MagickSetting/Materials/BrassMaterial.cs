@@ -6,7 +6,7 @@ namespace MagicSetting.Materials
 	internal class BrassMaterial : MetalMaterial
 	{
 		public BrassMaterial()
-			: base("латунь") { Sex = ESex.FEMALE; }
+			: base("латунный") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.Brass; } }
 	}
