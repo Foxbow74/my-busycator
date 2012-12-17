@@ -64,6 +64,10 @@ namespace GameCore.Mapping
 			{
 				throw new ApplicationException();
 			}
+			else
+			{
+				
+			}
 		}
 
 		public bool AddEssence(Essence _essence, Point _inBlockCoords)

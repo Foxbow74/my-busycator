@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
@@ -246,6 +247,7 @@ namespace GameCore.Mapping
 
 		public Item ResolveFakeItem(Creature _creature, FakedItem _fakeItem)
 		{
+			Debug.WriteLine("RESOLVE " + _fakeItem);
 			RemoveItem(_fakeItem);
 			var item = (Item)_fakeItem.Essence.Clone(_creature);
 			AddItem(item);
@@ -324,10 +326,10 @@ namespace GameCore.Mapping
 
 		public void RemoveItem(Item _item)
 		{
-			//if (!m_items.Remove(_item))
-			//{
-			//    throw new ApplicationException();
-			//}
+			if (!m_items.Remove(_item))
+			{
+			    throw new ApplicationException();
+			}
 			ResetCached();
 			m_mapBlock.RemoveEssence(_item, InBlockCoords);
 		}

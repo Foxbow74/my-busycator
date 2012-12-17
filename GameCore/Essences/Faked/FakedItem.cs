@@ -47,7 +47,7 @@ namespace GameCore.Essences.Faked
 
 		public override Noun Name
 		{
-			get { throw new NotImplementedException(); }
+			get { return Essence.Name; }
 		}
 
 		#endregion
