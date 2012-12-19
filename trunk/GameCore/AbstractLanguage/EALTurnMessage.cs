@@ -36,7 +36,9 @@ namespace GameCore.AbstractLanguage
 		JAWS_WEAPON_VERB,
 		CLUB_WEAPON_VERB,
 		AXE_WEAPON_VERB,
-		THERE_IS
+		THERE_IS,
+		TAKES,
+		DROPS,
 	}
 
 	public enum EALSentence
@@ -127,6 +129,7 @@ namespace GameCore.AbstractLanguage
 		Rat,
 		Spider,
 		Wolf,
-		Sword
+		Sword,
+		YOU
 	}
 }

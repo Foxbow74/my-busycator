@@ -329,9 +329,9 @@ namespace LanguagePack
 			return string.Join(" ", words);
 		}
 
-		public static string To(this Noun _noun, EPadej _padej)
+		public static string To(this Noun _noun, EPadej _padej, bool _withRandom = false)
 		{
-			if(_noun.AlsoKnownAs!=null && YesNo())
+			if(_withRandom && _noun.AlsoKnownAs!=null && YesNo())
 			{
 				return _noun.AlsoKnownAs.To(_padej);
 			}
@@ -339,7 +339,7 @@ namespace LanguagePack
 			{
 				
 			}
-			return _noun.Adjective.To(_padej, _noun.Sex) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
+			return _noun.Adjective.To(_padej, _noun.Sex, _noun.IsCreature) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
 		}
 
 		public static string To(this Verb _verb, ESex _sex, EVerbType _type)
@@ -456,26 +456,33 @@ namespace LanguagePack
 		}
 		
 
-		public static string To(this Adjective _adv, EPadej _padej, ESex _sex)
+		public static string To(this Adjective _adv, EPadej _padej, ESex _sex, bool _isCreature)
 		{
 			if (_adv == null) return "";
 			var text = _adv.Text;
+
+			if (_padej == EPadej.VIN && !_isCreature)
+			{
+				_padej = EPadej.IMEN;
+			}
+			var padej = (int)_padej;
+
 			if (text.EndsWith("ый"))
 			{
 				text = text.Substring(0, text.Length - 2);
 				switch (_sex)
 				{
 					case ESex.MALE:
-						text += new[] { "ый", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						text += new[] { "ый", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
-						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.PLURAL:
-						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[(int)_padej];
+						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[padej];
 						break;
 					default:
 						throw new ArgumentOutOfRangeException("_sex");
@@ -487,16 +494,16 @@ namespace LanguagePack
 				switch (_sex)
 				{
 					case ESex.MALE:
-						text += new[] { "ий", "ого", "ому", "ого", "им", "ом" }[(int)_padej];
+						text += new[] { "ий", "ого", "ому", "ого", "им", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
-						text += new[] { "ое", "ого", "ому", "ого", "им", "ом" }[(int)_padej];
+						text += new[] { "ое", "ого", "ому", "ого", "им", "ом" }[padej];
 						break;
 					case ESex.PLURAL:
-						text += new[] { "ие", "их", "им", "их", "ими", "их" }[(int)_padej];
+						text += new[] { "ие", "их", "им", "их", "ими", "их" }[padej];
 						break;
 					default:
 						throw new ArgumentOutOfRangeException("_sex");
@@ -508,16 +515,16 @@ namespace LanguagePack
 				switch (_sex)
 				{
 					case ESex.MALE:
-						text += new[] { "ой", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						text += new[] { "ой", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[(int)_padej];
+						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
-						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[(int)_padej];
+						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.PLURAL:
-						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[(int)_padej];
+						text += new[] { "ые", "ых", "ым", "ых", "ыми", "ых" }[padej];
 						break;
 					default:
 						throw new ArgumentOutOfRangeException("_sex");

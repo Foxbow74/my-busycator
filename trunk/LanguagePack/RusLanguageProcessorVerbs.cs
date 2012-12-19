@@ -20,6 +20,12 @@ namespace LanguagePack
 			m_verbs.Add(EALVerbs.CLUB_WEAPON_VERB, m_verbs[EALVerbs.STIKE]);
 			m_verbs.Add(EALVerbs.JAWS_WEAPON_VERB, new Verb("кусает", "укуcил"));
 			m_verbs.Add(EALVerbs.SWORD_WEAPON_VERB, m_verbs[EALVerbs.HACK]);
+			m_verbs.Add(EALVerbs.TAKES, new Verb("берет", "взял") + new Verb("поднимает", "поднял") + new Verb("хватает", "схватил"));
+			m_verbs.Add(EALVerbs.DROPS, new Verb("выбрасывает", "выбросил"));
+			//m_verbs.Add(EALVerbs.d, new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			//m_verbs.Add(EALVerbs., new Verb("", ""));
 			//m_verbs.Add(EALVerbs., new Verb("", ""));
 			//m_verbs.Add(EALVerbs., new Verb("", ""));
 

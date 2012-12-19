@@ -270,11 +270,11 @@ namespace GameCore.Mapping
 			{
 				if (item is FakedItem)
 				{
-					yield return new EssenceDescriptor(ResolveFakeItem(_creature, item as FakedItem), LiveCoords, null);
+					yield return new EssenceDescriptor(ResolveFakeItem(_creature, item as FakedItem), this, null, _creature);
 				}
 				else
 				{
-					yield return new EssenceDescriptor(item, LiveCoords, null);
+					yield return new EssenceDescriptor(item, this, null, _creature);
 				}
 			}
 			if (typeof (TEssence).IsAssignableFrom(typeof (Item)))
@@ -284,7 +284,7 @@ namespace GameCore.Mapping
 				{
 					foreach (var item in thing.GetItems(_creature).Items.OfType<TEssence>())
 					{
-						yield return new EssenceDescriptor(item, LiveCoords, thing);
+						yield return new EssenceDescriptor(item, this, thing, _creature);
 					}
 				}
 			}

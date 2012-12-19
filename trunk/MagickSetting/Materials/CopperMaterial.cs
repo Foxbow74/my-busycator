@@ -1,11 +1,11 @@
 using GameCore;
 using GameCore.Materials;
 
-namespace MagicSetting.Materials
+namespace MagickSetting.Materials
 {
 	internal class CopperMaterial : MetalMaterial
 	{
-		public CopperMaterial() : base("медь") { Sex = ESex.FEMALE; }
+		public CopperMaterial() : base("медный") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.CoolCopper; } }
 	}

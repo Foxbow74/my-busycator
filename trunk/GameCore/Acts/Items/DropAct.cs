@@ -46,7 +46,7 @@ namespace GameCore.Acts.Items
 				return EActResults.QUICK_FAIL;
 			}
 
-			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.GetName(_creature) == descriptor.GetName(_creature)).Count();
+			var total = intelligent.GetBackPackItems().Where(_thingDescriptor => _thingDescriptor.Essence.GetName(_creature) == descriptor.Essence.GetName(_creature)).Count();
 			if (total == 0)
 			{
 				throw new ApplicationException("в рюкзаке нет такого предмета");

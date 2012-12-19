@@ -59,6 +59,8 @@ namespace LanguagePack
 			m_nouns.Add(EALNouns.Rat, "крыса".AsNoun(ESex.FEMALE, true) + "грязный".AsAdj());
 			m_nouns.Add(EALNouns.Spider, "паук".AsNoun(ESex.MALE, true));
 			m_nouns.Add(EALNouns.Wolf, "волк".AsNoun(ESex.MALE, true));
+
+			m_nouns.Add(EALNouns.YOU, "ты".AsNoun(ESex.MALE, true));
 		}
 	}
 }

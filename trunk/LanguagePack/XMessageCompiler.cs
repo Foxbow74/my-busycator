@@ -52,6 +52,9 @@ namespace LanguagePack
 			m_processors.Add(Pack(EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE, EALTurnMessage.CREATURES_ATTACK_FAILS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURES_ATTACK_DAMAGE_ADSORBED, EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, EALTurnMessage.CREATURE_TAKES_DAMAGE), ИзНесколькихАтакНекоторыеОказалисьРезультативны);
 
 			m_processors.Add(Pack(EALTurnMessage.CELL_IS_OCCUPIED_BY), КлеткаЗанята);
+
+			m_processors.Add(Pack(EALTurnMessage.CREATURE_TAKES_IT), СуществоВзяло);
+			m_processors.Add(Pack(EALTurnMessage.CREATURE_DROPS_IT), СуществоБросило);
 			
 
 
@@ -81,6 +84,38 @@ namespace LanguagePack
 		private static string ToDo(XMessage[] _arg)
 		{
 			return "TODO:";
+		}
+
+		private static string СуществоВзяло(XMessage[] _arg)
+		{
+			var xMessage = _arg[0];
+			var item = xMessage.First<Item>();
+			var actor = xMessage.Actor;
+
+			if (actor.IsAvatar)
+			{
+				return EALNouns.YOU.AsNoun() + " " + EALVerbs.TAKES.GetString(EALNouns.YOU.AsNoun(), EVerbType.DONE) + " " + item.GetName(actor).To(EPadej.VIN, true);
+			}
+			else
+			{
+				return actor.GetName(World.TheWorld.Avatar).To(EPadej.IMEN) + EALVerbs.TAKES.GetString(actor.Name, EVerbType.DONE) + " " + item.GetName(World.TheWorld.Avatar).To(EPadej.VIN, true);
+			}
+		}
+
+		private static string СуществоБросило(XMessage[] _arg)
+		{
+			var xMessage = _arg[0];
+			var item = xMessage.First<Item>();
+			var actor = xMessage.Actor;
+
+			if (actor.IsAvatar)
+			{
+				return item.GetName(actor).To(EPadej.VIN, true) + " выброшен";
+			}
+			else
+			{
+				return actor.GetName(World.TheWorld.Avatar).To(EPadej.IMEN) + EALVerbs.DROPS.GetString(actor.Name, EVerbType.DONE) + " " + item.GetName(World.TheWorld.Avatar).To(EPadej.VIN, true);
+			}
 		}
 
 		private static string ВсеАтакиДостиглиЦели(XMessage[] _arg)
