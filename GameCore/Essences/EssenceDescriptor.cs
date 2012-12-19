@@ -1,18 +1,53 @@
-﻿using GameCore.Creatures;
+﻿using System;
+using GameCore.Creatures;
 using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
+using GameCore.Mapping;
 using GameCore.Misc;
 
 namespace GameCore.Essences
 {
 	public class EssenceDescriptor
 	{
-		private static readonly EssenceDescriptor m_empty = new EssenceDescriptor(null, null, null);
+		private readonly Creature m_creature;
+		private static readonly EssenceDescriptor m_empty = new EssenceDescriptor(null, null, null, null);
 
-		public EssenceDescriptor(Essence _essence, Point _liveCoords, IContainer _container)
+		public EssenceDescriptor(Essence _essence, LiveMapCell _cell, IContainer _container, Creature _creature)
 		{
+			m_creature = _creature;
+			if (_essence is IFaked)
+			{
+				if (_container != null)
+				{
+					if (_essence is Item)
+					{
+						_essence = _container.ResolveFakeItem(_creature, (FakedItem)_essence);
+					}
+					else
+					{
+						throw new NotImplementedException("Как так?");
+					}
+				}
+				else if(_cell!=null)
+				{
+					if (_essence is Item)
+					{
+						_essence = _cell.ResolveFakeItem(_creature, (FakedItem)_essence);
+					}
+					else if (_essence is Thing)
+					{
+						_essence = _cell.ResolveFakeThing(_creature);
+					}
+					
+				}
+				else
+				{
+					throw new NotImplementedException("Как так?");
+				}
+				
+			}
 			Essence = _essence;
-			LiveCoords = _liveCoords;
+			LiveCoords = _cell!=null?_cell.LiveCoords:null;
 			Container = _container;
 		}
 
@@ -30,22 +65,5 @@ namespace GameCore.Essences
 		public static EssenceDescriptor Empty { get { return m_empty; } }
 
 		public override int GetHashCode() { return Essence.GetHashCode(); }
-
-		public Essence ResolveEssence(Creature _creature)
-		{
-			if (Essence is IFaked)
-			{
-				var liveMapCell = World.TheWorld.LiveMap.GetCell(LiveCoords);
-				if (Essence is Item)
-				{
-					Essence = liveMapCell.ResolveFakeItem(_creature, (FakedItem) Essence);
-				}
-				else if (Essence is Thing)
-				{
-					Essence = liveMapCell.ResolveFakeThing(_creature);
-				}
-			}
-			return Essence;
-		}
 	}
 }

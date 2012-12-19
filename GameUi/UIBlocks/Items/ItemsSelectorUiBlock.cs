@@ -50,7 +50,7 @@ namespace GameUi.UIBlocks.Items
 			var linesPerPage = TextLinesMax - HeaderTakesLine;
 			var currentCategory = "";
 
-			var done = new List<int>();
+			var done = new List<Noun>();
 			List<ILinePresenter> page = null;
 
 			m_pages.Clear();
@@ -67,14 +67,17 @@ namespace GameUi.UIBlocks.Items
 			{
 				var attribute = EssenceCategoryAttribute.GetAttribute(cat);
 				if (m_currentFilter != '*' && attribute.C != m_currentFilter) continue;
-				foreach (var descriptor in m_descriptors)
+				foreach (EssenceDescriptor descriptor in m_descriptors)
 				{
 					var item = descriptor.Essence as Item;
-
+					var nm = descriptor.Essence.GetName(World.TheWorld.Avatar);
 					if(item==null) continue;
 
-					if (done.Contains(item.GetHashCode())) continue;
-					done.Add(item.GetHashCode());
+					if (done.Contains(nm))
+					{
+						continue;
+					}
+					done.Add(nm);
 
 					if (page == null)
 					{

@@ -1,12 +1,12 @@
 using GameCore;
 using GameCore.Materials;
 
-namespace MagicSetting.Materials
+namespace MagickSetting.Materials
 {
 	internal class BronzeMaterial : MetalMaterial
 	{
 		public BronzeMaterial()
-			: base("бронза") { Sex = ESex.FEMALE; }
+			: base("бронзовый") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.Bronze; } }
 	}

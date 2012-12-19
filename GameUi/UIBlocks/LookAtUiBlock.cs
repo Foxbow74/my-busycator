@@ -99,7 +99,7 @@ namespace GameUi.UIBlocks
 					var items = liveCell.Items.ToArray();
 					foreach (var item in items)
 					{
-						list.Add(EssenceHelper.GetName(item, World.TheWorld.Avatar, liveCell));
+						list.Add(EssenceHelper.GetName(item, World.TheWorld.Avatar));
 					}
 					m_messages.DrawLine(EALSentence.THERE_ARE.GetString(list.ToArray()), FColor.Gray, 1, 0, EAlignment.LEFT);
 				}

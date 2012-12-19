@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences.Faked;
@@ -8,6 +9,7 @@ namespace GameCore.Essences.Things
 	public interface IContainer
 	{
 		ItemsCollection GetItems(Creature _creature);
+		Essence ResolveFakeItem(Creature _creature, FakedItem _fakedItem);
 	}
 
 	internal abstract class Container : Thing, IContainer
@@ -41,6 +43,15 @@ namespace GameCore.Essences.Things
 				}
 			}
 			return m_items;
+		}
+
+		public Essence ResolveFakeItem(Creature _creature, FakedItem _fakedItem)
+		{
+			Debug.WriteLine("RESOLVE " + _fakedItem);
+			GetItems(_creature).Remove(_fakedItem);
+			var item = (Item)_fakedItem.Essence.Clone(_creature);
+			GetItems(_creature).Add(item);
+			return item;
 		}
 
 		#endregion

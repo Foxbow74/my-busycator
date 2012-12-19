@@ -42,7 +42,7 @@ namespace GameCore.Acts.Interact
 				var list = new List<EssenceDescriptor>();
 				if (liveMapCell.Thing.Is<ICanbeClosed>())
 				{
-					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell.LiveCoords, null));
+					list.Add(new EssenceDescriptor(liveMapCell.Thing, liveMapCell, null, _creature));
 				}
 				list.AddRange(liveMapCell.GetAllAvailableItemDescriptors<Thing>(_creature).Where(_descriptor => _descriptor.Essence.CanBeClosed(liveMapCell, _creature)));
 				if (liveMapCell.LiveCoords == _creature.GeoInfo.LiveCoords)

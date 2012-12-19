@@ -88,7 +88,7 @@ namespace GameCore.Acts.Items
 			}
 
 			var descriptor = toTake[0];
-			var thing = descriptor.ResolveEssence(_creature);
+			var thing = descriptor.Essence;
 			Item[] get;
 			if (descriptor.Container == null)
 			{

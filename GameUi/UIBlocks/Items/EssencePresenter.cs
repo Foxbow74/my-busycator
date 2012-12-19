@@ -26,14 +26,14 @@ namespace GameUi.UIBlocks.Items
 
 		public EssenceDescriptor EssenceDescriptor { get { return m_essenceDescriptor; } }
 
-		public int Count { get { return m_descriptors.Count(_descriptor => _descriptor.GetName(World.TheWorld.Avatar) == m_essenceDescriptor.GetName(World.TheWorld.Avatar)); } }
+		public int Count { get { return m_descriptors.Count(_descriptor => _descriptor.Essence.GetName(World.TheWorld.Avatar) == m_essenceDescriptor.Essence.GetName(World.TheWorld.Avatar)); } }
 
 		public string Text
 		{
 			get
 			{
 				var count = Count;
-				return (count > 1 ? count.ToString(CultureInfo.InvariantCulture) : "") + " " + m_essenceDescriptor.GetName(World.TheWorld.Avatar);
+				return (count > 1 ? count.ToString(CultureInfo.InvariantCulture) : "") + " " + m_essenceDescriptor.Essence.GetName(World.TheWorld.Avatar);
 			}
 		}
 

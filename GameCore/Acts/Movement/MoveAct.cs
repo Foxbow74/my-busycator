@@ -58,7 +58,7 @@ namespace GameCore.Acts.Movement
 					var thing = cell.Thing;
 					if (thing != null)
 					{
-						mess += ", " + EALSentence.NONE.GetString(thing.GetName(_creature, cell));
+						mess += ", " + EALSentence.NONE.GetString(thing.GetName(_creature));
 					}
 					var items = cell.Items.ToArray();
 					if (items.Length > 0)

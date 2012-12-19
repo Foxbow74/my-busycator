@@ -6,7 +6,7 @@ namespace MagicSetting.Materials
 	internal class StoneMaterial : MineralMaterial
 	{
 		public StoneMaterial()
-			: base("камень") { }
+			: base("каменный") { }
 
 		public override FColor LerpColor { get { return FColor.DarkGray; } }
 	}

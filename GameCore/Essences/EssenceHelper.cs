@@ -160,29 +160,16 @@ namespace GameCore.Essences
 		}
 
 		/// <summary>
-		/// 	Возвращает имя объекта Если надо - резолвит
+		/// Возвращает имя объекта
 		/// </summary>
 		/// <param name="_essence"> </param>
 		/// <param name="_creature"> </param>
-		/// <param name="_cell"> Координаты не всегда совпадают с координатами существа </param>
 		/// <returns> </returns>
-		public static Noun GetName(this Essence _essence, Creature _creature, LiveMapCell _cell = null)
+		public static Noun GetName(this Essence _essence, Creature _creature)
 		{
-			if (_cell == null)
-			{
-				_cell = _creature[Point.Zero];
-			}
 			if (_essence is IFaked)
 			{
-				var liveMapCell = _cell;
-				if (_essence is FakedItem)
-				{
-					_essence = liveMapCell.ResolveFakeItem(World.TheWorld.Avatar, (FakedItem) _essence);
-				}
-				else if (_essence is FakedThing)
-				{
-					_essence = liveMapCell.ResolveFakeThing(_creature);
-				}
+				_essence = ((IFaked)_essence).Essence;
 			}
 			if(_essence is Creature)
 			{
@@ -197,16 +184,6 @@ namespace GameCore.Essences
 				
 			}
 			return _essence.Name;
-		}
-
-		public static Noun GetName(this EssenceDescriptor _essenceDescriptor, Creature _creature)
-		{
-			var thing = _essenceDescriptor.Essence;
-			if (thing is IFaked)
-			{
-				thing = _essenceDescriptor.ResolveEssence(_creature);
-			}
-			return thing.Name;
 		}
 
 		public static bool Is<T>(this Essence _essence)
