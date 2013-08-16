@@ -3,7 +3,7 @@
 	internal class BodyMaterial : Material
 	{
 		public BodyMaterial()
-			: base("плоть") { Sex = ESex.FEMALE; }
+			: base("хуевый") { Sex = ESex.FEMALE; }
 
 		public override FColor LerpColor { get { return FColor.WhiteSmoke; } }
 

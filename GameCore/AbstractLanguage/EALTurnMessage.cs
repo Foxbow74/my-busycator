@@ -39,6 +39,7 @@ namespace GameCore.AbstractLanguage
 		THERE_IS,
 		TAKES,
 		DROPS,
+		CAN,
 	}
 
 	public enum EALSentence
@@ -130,6 +131,6 @@ namespace GameCore.AbstractLanguage
 		Spider,
 		Wolf,
 		Sword,
-		YOU
+		YOU,
 	}
 }

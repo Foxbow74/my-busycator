@@ -50,7 +50,7 @@ namespace Tests
 			}
 			else
 			{
-				//Debug.WriteLine(_message.ToString());
+				Debug.WriteLine(_message.ToString());
 			}
 		}
 

@@ -141,7 +141,8 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 			    }
 		    }
 
-			foreach (var building in m_buildings.Where(_pair => _pair.BlockId == _block.BlockId))
+			var buildings = m_buildings.Where(_pair => _pair.BlockId == _block.BlockId).ToArray();
+			foreach (var building in buildings)
 			{
 				_block.AddRoom(building.Room);
 				building.Fill(_block, _layer);

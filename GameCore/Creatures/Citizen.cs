@@ -110,13 +110,13 @@ namespace GameCore.Creatures
 
 		public override string ToString()
 		{
-			var result = Name.Text;
+			var result = "";
 			for (var index = 1; index < Roles.ToArray().Length; index++)
 			{
 				var role = Roles.ToArray()[index];
-				result += "/" + role.Name;
+				result += (string.IsNullOrEmpty(result)?", ":"/") + role.Name;
 			}
-			return result;
+			return Name.AlsoKnownAs.Text + result;
 		}
 
 		public void SetLerpColor(FColor _fColor) { m_lerpColor = _fColor; }

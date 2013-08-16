@@ -72,8 +72,13 @@ namespace GameCore.Mapping.Layers
 		{
 			if (Constants.GAME_MODE == false || Constants.WORLD_MAP_SIZE < 4)
 			{
-				m_femaleNames = new List<string> {"Female1", "Female2", "Female3"};
-				m_maleNames = new List<string> {"Male1", "Male2", "Male3"};
+				m_femaleNames = new List<string>();
+				m_maleNames = new List<string>();
+				for (int i = 1; i < 300; ++i)
+				{
+					m_femaleNames.Add("Female" + i);
+					m_maleNames.Add("Male" + i);
+				}
 			}
 			else
 			{

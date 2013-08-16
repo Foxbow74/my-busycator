@@ -12,6 +12,9 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 {
 	public abstract class Building
 	{
+		private static int m_identifierCounter = 0;
+		private readonly int m_identifier = ++m_identifierCounter;
+
 		private readonly City m_city;
 
 		protected Building(City _city) { m_city = _city; }
@@ -134,5 +137,10 @@ namespace GameCore.Mapping.Layers.SurfaceObjects
 		public void SetRoom(Room _room) { Room = _room; }
 
 		public void SetOwner(Intelligent _intelligent) { Owner = _intelligent; }
+
+		public override string ToString()
+		{
+			return GetType().Name + " " + m_identifier;
+		}
 	}
 }

@@ -47,7 +47,8 @@ namespace LanguagePack
 
 		public Noun AsNoun(EALNouns _enoun)
 		{
-			return m_nouns[_enoun];
+			var t = m_nouns[_enoun].Clone();
+			return t;
 		}
 
 		public string GetString(EALSentence _sentence, params Noun[] _nouns)

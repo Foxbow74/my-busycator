@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GameCore.AbstractLanguage
 {
@@ -72,6 +73,10 @@ namespace GameCore.AbstractLanguage
 
 		public static Noun operator +(Noun _a, Adjective _b)
 		{
+			if (_a.Adjective != null)
+			{
+				throw new NotImplementedException("А че делать?");
+			}
 			_a.Adjective = _b;
 			return _a;
 		}
@@ -97,6 +102,11 @@ namespace GameCore.AbstractLanguage
 		public override string ToString()
 		{
 			return Text;
+		}
+
+		public Noun Clone()
+		{
+			return (Noun)MemberwiseClone();
 		}
 	}
 

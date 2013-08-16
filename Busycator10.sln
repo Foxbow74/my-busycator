@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeUtils", "UnsafeUtils\UnsafeUtils.csproj", "{8DA672AD-628D-45BC-A1FB-5AD9541397A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceWizard", "ResourceWizard\ResourceWizard.csproj", "{5BF30CF7-BEBD-468F-9957-501FC5FE8BD8}"
@@ -23,10 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{A760
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7FACEC52-9776-4719-A492-7E8A65C55B9E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTransport", "XTransport\XTransport.csproj", "{171F736D-E4BB-438A-9D56-6F8E238814C0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTransportTest", "XTransportTest\XTransportTest.csproj", "{6039F323-FF4A-4375-BD0D-AB48F693897C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagicSetting", "MagickSetting\MagicSetting.csproj", "{89A625BC-7450-4C83-BD35-6057A40255FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RusLanguagePack", "LanguagePack\RusLanguagePack.csproj", "{5F7A0E59-CC3B-498E-A61C-877B2AC31601}"
@@ -34,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Community.CsharpSqlite", "Community.CsharpSqlite\Community.CsharpSqlite.csproj", "{F1653F20-D47D-4F29-8C55-3C835542AF5F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Community.CsharpSqlite.SQLiteClient", "Community.CsharpSqlite.SQLiteClient\Community.CsharpSqlite.SQLiteClient.csproj", "{7BC68E61-C64C-488C-975F-1E2248383B80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTransport", "..\x-transport\XTransport\XTransport.csproj", "{171F736D-E4BB-438A-9D56-6F8E238814C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -135,26 +133,6 @@ Global
 		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{24D27A79-E736-4935-8C43-EBCC195FAFD9}.Release|x86.ActiveCfg = Release|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|x86.ActiveCfg = Release|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{6039F323-FF4A-4375-BD0D-AB48F693897C}.Release|x86.ActiveCfg = Release|Any CPU
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89A625BC-7450-4C83-BD35-6057A40255FF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -199,6 +177,16 @@ Global
 		{7BC68E61-C64C-488C-975F-1E2248383B80}.Release|Mixed Platforms.Build.0 = Release|x86
 		{7BC68E61-C64C-488C-975F-1E2248383B80}.Release|x86.ActiveCfg = Release|x86
 		{7BC68E61-C64C-488C-975F-1E2248383B80}.Release|x86.Build.0 = Release|x86
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -208,10 +196,9 @@ Global
 		{BCAD98EB-0C52-4186-B8B0-92AB47947796} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{674FDA29-11EB-43E2-B1AD-47A86585A9A8} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{8DA672AD-628D-45BC-A1FB-5AD9541397A1} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
-		{171F736D-E4BB-438A-9D56-6F8E238814C0} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{F1653F20-D47D-4F29-8C55-3C835542AF5F} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{7BC68E61-C64C-488C-975F-1E2248383B80} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
+		{171F736D-E4BB-438A-9D56-6F8E238814C0} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{24D27A79-E736-4935-8C43-EBCC195FAFD9} = {A7600899-6FC5-4C64-AB39-AA928AA31F9D}
-		{6039F323-FF4A-4375-BD0D-AB48F693897C} = {A7600899-6FC5-4C64-AB39-AA928AA31F9D}
 	EndGlobalSection
 EndGlobal
