@@ -166,7 +166,7 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return weapon.To(EPadej.IMEN) + " " + actor.To(EPadej.ROD) + " едва не задел  " + target.To(EPadej.ROD);
+					return string.Format("{0} {1} едва не {2} {3}", weapon.To(EPadej.IMEN), actor.To(EPadej.ROD), ERLVerbs.ЗАДЕЛ.GetString(weapon.Name, EVerbType.DONE), target.To(EPadej.ROD));
 				case 2:
 					return string.Format("пару раз {0} удавалось пробить защиту {1}, но обе атаки не были проведены до конца", actor.To(EPadej.DAT), target.To(EPadej.ROD));
 				default:
@@ -183,7 +183,7 @@ namespace LanguagePack
 			switch (success)
 			{
 				case 1:
-					return string.Format("Атака {0} успешно парирована {1}", actor.To(EPadej.ROD), target.To(EPadej.TVOR));
+					return string.Format("Атака {0} успешно парирована {1}", actor.To(EPadej.ROD, true), target.To(EPadej.TVOR, true));
 				case 2:
 					return string.Format("{0} парировал обе атаки {1}", target.To(EPadej.IMEN), actor.To(EPadej.ROD));
 				default:
@@ -207,7 +207,13 @@ namespace LanguagePack
 			var countOfSuccess = _arg.Count(_a => _a.Type == EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK);
 			var damage = _arg.Where(_a => _a.Type == EALTurnMessage.CREATURE_TAKES_DAMAGE).All<int>().Sum();
 
-			return string.Format("из {0} лишь {1}  {2} оказались результативны, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
+			var l = target.To(EPadej.ROD, true);
+
+			if (countOfSuccess > 1)
+			{
+				return string.Format("из {0} прошла лишь {1} {2}, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
+			}
+			return string.Format("из {0} лишь {1} {2} оказались результативны, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD, true), damage.Пунктов());
 		}
 
 		private static string РанениеНеСПервогоРаза(XMessage[] _arg)

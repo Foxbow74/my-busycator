@@ -17,7 +17,7 @@ namespace GameCore.Essences
 			Material = _material;
 			if (_material != null)
 			{
-				m_name.Adjective = _material.Name;
+				m_name = m_name+_material.Name;//.Adjective = _material.Name;
 			}
 		}
 
@@ -107,6 +107,11 @@ namespace GameCore.Essences
 				return GetType().GetHashCode() ^ Material.GetType().GetHashCode();
 			}
 			return GetType().GetHashCode();
+		}
+
+		protected int GetNativeHashCode()
+		{
+			return base.GetHashCode();
 		}
 	}
 }

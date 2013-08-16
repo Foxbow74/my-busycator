@@ -11,10 +11,5 @@ namespace ResourceWizard.StoreableVMs
 		{
 			get { return EStoreKind.MONSTER_INFO; }
 		}
-
-		protected override void InstantiationFinished()
-		{
-			base.InstantiationFinished();
-		}
 	}
 }

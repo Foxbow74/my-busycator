@@ -229,13 +229,13 @@
     <Compile Include="Messages\XMessage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\x-transport\XTransport\XTransport.csproj">
+      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8DA672AD-628D-45BC-A1FB-5AD9541397A1}</Project>
       <Name>UnsafeUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XTransport\XTransport.csproj">
-      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
-      <Name>XTransport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

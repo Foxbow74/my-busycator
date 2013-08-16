@@ -34,7 +34,9 @@ namespace LanguagePack
 			m_nouns.Add(EALNouns.Shrub, "куст".AsNoun(ESex.MALE, false));
 			m_nouns.Add(EALNouns.Mushrum, "гриб".AsNoun(ESex.MALE, false));
 			m_nouns.Add(EALNouns.MagicPlate, "пластина".AsNoun(ESex.FEMALE, false));
-			m_nouns.Add(EALNouns.Avatar, "Аватар".AsNoun(ESex.MALE, true) + "Герой".AsNoun(ESex.MALE, true));
+			
+			m_nouns.Add(EALNouns.Avatar, "Аватар".AsNoun(ESex.MALE, true) + "Герой".AsNoun(ESex.MALE, true) + new Adjective("отважный"));
+
 			m_nouns.Add(EALNouns.Ctitzen, "горожанин".AsNoun(ESex.MALE, false));
 			m_nouns.Add(EALNouns.NONE, "".AsNoun(ESex.IT, false));
 			m_nouns.Add(EALNouns.Tree, "дерево".AsNoun(ESex.IT, false));

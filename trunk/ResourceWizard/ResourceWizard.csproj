@@ -169,6 +169,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\x-transport\XTransport\XTransport.csproj">
+      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
+      <Name>XTransport</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommonWpf\ClientCommonWpf.csproj">
       <Project>{674fda29-11eb-43e2-b1ad-47a86585a9a8}</Project>
       <Name>ClientCommonWpf</Name>
@@ -196,10 +200,6 @@
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8da672ad-628d-45bc-a1fb-5ad9541397a1}</Project>
       <Name>UnsafeUtils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\XTransport\XTransport.csproj">
-      <Project>{171f736d-e4bb-438a-9d56-6f8e238814c0}</Project>
-      <Name>XTransport</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

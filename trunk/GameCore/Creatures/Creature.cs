@@ -16,6 +16,9 @@ namespace GameCore.Creatures
 {
 	public abstract class Creature : Essence
 	{
+		private static int m_identifierCounter = 0;
+		private int m_identifier;
+
 		public override bool IsCreature
 		{
 			get
@@ -26,7 +29,6 @@ namespace GameCore.Creatures
 
 		#region Fields
 
-		private static int m_n;
 		private readonly List<AbstractCreatureRole> m_roles = new List<AbstractCreatureRole>();
 
 		private WorldLayer m_layer;
@@ -40,8 +42,9 @@ namespace GameCore.Creatures
 		{
 			Speed = _speed;
 			Luck = 25;
-			Nn = m_n++;
 			m_layer = _layer;
+			//m_hc = base.GetHashCode();// GetType().GetHashCode() ^ m_identifier;
+			UpdateIdentifier();
 		}
 
 		#endregion
@@ -104,6 +107,7 @@ namespace GameCore.Creatures
 		#region Act functionality
 
 		private readonly List<Act> m_actPool = new List<Act>();
+		private readonly int m_hc;
 
 		public EActResults ActResult { get; protected set; }
 
@@ -202,7 +206,7 @@ namespace GameCore.Creatures
 		}
 		
 		public int Luck { get; protected set; }
-		public int Nn { get; private set; }
+		public int Nn { get { return m_identifier; } }
 
 		public IEnumerable<AbstractCreatureRole> Roles
 		{
@@ -233,5 +237,22 @@ namespace GameCore.Creatures
 		/// <param name="_against"></param>
 		/// <returns></returns>
 		public abstract IEnumerable<IWeapon> GetWeapons(Creature _against);
+
+		public override int GetHashCode()
+		{
+			return GetNativeHashCode();
+		}
+
+		internal override Essence Clone(Creature _resolver)
+		{
+			var result = base.Clone(_resolver);
+			((Creature)result).UpdateIdentifier();
+			return result;
+		}
+
+		private void UpdateIdentifier()
+		{
+			m_identifier = ++m_identifierCounter;
+		}
 	}
 }

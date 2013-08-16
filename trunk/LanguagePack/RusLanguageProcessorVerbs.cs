@@ -1,9 +1,13 @@
+using System.Collections.Generic;
+using GameCore;
 using GameCore.AbstractLanguage;
 
 namespace LanguagePack
 {
 	public partial class RusLanguageProcessor
 	{
+		private static readonly Dictionary<ERLVerbs, Verb> m_rverbs = new Dictionary<ERLVerbs, Verb>();
+
 		private static void FillVerbs()
 		{
 			m_verbs.Add(EALVerbs.THERE_IS, new Verb("", "Здесь был"));
@@ -22,14 +26,39 @@ namespace LanguagePack
 			m_verbs.Add(EALVerbs.SWORD_WEAPON_VERB, m_verbs[EALVerbs.HACK]);
 			m_verbs.Add(EALVerbs.TAKES, new Verb("берет", "взял") + new Verb("поднимает", "поднял") + new Verb("хватает", "схватил"));
 			m_verbs.Add(EALVerbs.DROPS, new Verb("выбрасывает", "выбросил"));
-			//m_verbs.Add(EALVerbs.d, new Verb("", ""));
-			//m_verbs.Add(EALVerbs., new Verb("", ""));
-			//m_verbs.Add(EALVerbs., new Verb("", ""));
-			//m_verbs.Add(EALVerbs., new Verb("", ""));
-			//m_verbs.Add(EALVerbs., new Verb("", ""));
-			//m_verbs.Add(EALVerbs., new Verb("", ""));
+			m_verbs.Add(EALVerbs.CAN, new Verb("может", "смог") + new Verb("может", "сумел"));
+
+			m_rverbs.Add(ERLVerbs.ЗАДЕЛ, new Verb("задевает", "задел"));
+		}
 
 
+		public static string GetString(ERLVerbs _verb, EVerbType _type, params Noun[] _nouns)
+		{
+			return m_rverbs[_verb].To(_nouns.Length == 1 ? _nouns[0].Sex : ESex.PLURAL, _type);
+		}
+
+		public static string GetString(ERLVerbs _verb, EVerbType _type, ESex _sex)
+		{
+			return m_rverbs[_verb].To(_sex, _type);
+		}
+	}
+
+	public enum ERLVerbs
+	{
+		ЗАДЕЛ,
+	}
+
+	public static class RUtil
+	{
+
+		public static string GetString(this ERLVerbs _verb, Noun _noun, EVerbType _type)
+		{
+			return RusLanguageProcessor.GetString(_verb, _type, _noun);
+		}
+
+		public static string GetString(this ERLVerbs _verb, ESex _sex, EVerbType _type)
+		{
+			return RusLanguageProcessor.GetString(_verb, _type, _sex);
 		}
 	}
 }

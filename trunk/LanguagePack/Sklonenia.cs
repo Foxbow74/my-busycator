@@ -70,9 +70,9 @@ namespace LanguagePack
 			AddIskl("они", "их", "им", "их", "ими", "них");
 		}
 
-		public static string To(this Essence _essence, EPadej _padej)
+		public static string To(this Essence _essence, EPadej _padej, bool _withRandom = false)
 		{
-			return _essence.Name.To(_padej);
+			return _essence.Name.To(_padej, _withRandom);
 		}
 
 		private static void AddIskl(string _imen, string _rod,string _dat, string _vin, string _tvor, string _predl)
@@ -349,7 +349,7 @@ namespace LanguagePack
 			if(_sex==ESex.MALE) return text;
 			if (_type == EVerbType.DONE)
 			{
-				if (text.EndsWith("ил") || text.EndsWith("ал"))
+				if (text.EndsWith("ил") || text.EndsWith("ал") || text.EndsWith("ел"))
 				{
 					switch (_sex)
 					{
@@ -460,6 +460,11 @@ namespace LanguagePack
 		{
 			if (_adv == null) return "";
 			var text = _adv.Text;
+
+			if (text == null)
+			{
+				return "";
+			}
 
 			if (_padej == EPadej.VIN && !_isCreature)
 			{
