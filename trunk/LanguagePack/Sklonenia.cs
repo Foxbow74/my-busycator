@@ -70,7 +70,7 @@ namespace LanguagePack
 			AddIskl("они", "их", "им", "их", "ими", "них");
 		}
 
-		public static string To(this Essence _essence, EPadej _padej, bool _withRandom = false)
+		public static string To(this Essence _essence, EPadej _padej, bool _withRandom = true)
 		{
 			return _essence.Name.To(_padej, _withRandom);
 		}
@@ -329,7 +329,7 @@ namespace LanguagePack
 			return string.Join(" ", words);
 		}
 
-		public static string To(this Noun _noun, EPadej _padej, bool _withRandom = false)
+		public static string To(this Noun _noun, EPadej _padej, bool _withRandom = true)
 		{
 			if(_withRandom && _noun.AlsoKnownAs!=null && YesNo())
 			{

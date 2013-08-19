@@ -209,7 +209,7 @@ namespace LanguagePack
 
 			var l = target.To(EPadej.ROD, true);
 
-			if (countOfSuccess > 1)
+			if (countOfSuccess == 1)
 			{
 				return string.Format("из {0} прошла лишь {1} {2}, с {3} снято {4}", (countOfFails + countOfSuccess), countOfSuccess.Атак(), actor.To(EPadej.ROD), target.To(EPadej.ROD), damage.Пунктов());
 			}
@@ -357,7 +357,7 @@ namespace LanguagePack
 			{
 				if (essence is Creature)
 				{
-					return "из-за " + essence.To(EPadej.ROD) + " сюда никак не пройти.";
+					return "из-за " + essence.To(EPadej.ROD) + " сюда никак не пройти";
 				}
 				return "Вы уперлись в " + essence.To(EPadej.VIN);
 			}

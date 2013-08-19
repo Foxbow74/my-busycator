@@ -39,6 +39,15 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractLanguage\Adjective.cs" />
+    <Compile Include="AbstractLanguage\CoName.cs" />
+    <Compile Include="AbstractLanguage\EVerbType.cs" />
+    <Compile Include="AbstractLanguage\Immutable.cs" />
+    <Compile Include="AbstractLanguage\Noun.cs" />
+    <Compile Include="AbstractLanguage\OfSomething.cs" />
+    <Compile Include="AbstractLanguage\Sentence.cs" />
+    <Compile Include="AbstractLanguage\Verb.cs" />
+    <Compile Include="AbstractLanguage\WordUtils.cs" />
     <Compile Include="Acts\Act.cs" />
     <Compile Include="Acts\Combat\AtackAct.cs" />
     <Compile Include="Acts\Combat\TacticCoward.cs" />
