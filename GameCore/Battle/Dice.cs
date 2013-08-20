@@ -31,7 +31,7 @@ namespace GameCore.Battle
 			return string.Format("{0}d{1}{2}", Count, Size,(Modifier == 0? "": (Modifier > 0 ? ("+" + Modifier) : Modifier.ToString(CultureInfo.InvariantCulture))));
 		}
 
-		public int Calc()
+		public int Roll()
 		{
 			var result = Modifier;
 			for (var i = 0; i < Count; i++)

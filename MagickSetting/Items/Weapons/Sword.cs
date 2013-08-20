@@ -11,22 +11,22 @@ namespace MagickSetting.Items.Weapons
 {
 	public class Sword : AbstractMeleeWeapon, ISpecial
 	{
-		private readonly CoName m_nam;
+		private readonly CoName m_coNam;
 
-		public Sword(EALNouns _name, Material _material, int _tileIndex, CoName _nam)
+		public Sword(EALNouns _name, Material _material, int _tileIndex, CoName _coNam)
 			: base(_name, _material)
 		{
-			m_nam = _nam;
+			m_coNam = _coNam;
 			TileIndex = _tileIndex;
 		}
 
-		public override Noun Name
+		protected override Noun GetUpdatedName(Noun _noun)
 		{
-			get
+			if (m_coNam != null)
 			{
-				if (m_nam==null) return base.Name;
-				return base.Name + m_nam;
+				_noun += m_coNam;
 			}
+			return _noun;
 		}
 
 		public override int TileIndex

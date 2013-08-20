@@ -10,6 +10,7 @@ using GameCore.Essences.Weapons;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Materials;
+using GameCore.Messages;
 using GameCore.Misc;
 
 namespace GameCore.Creatures
@@ -17,7 +18,7 @@ namespace GameCore.Creatures
 	public abstract class Creature : Essence
 	{
 		private static int m_identifierCounter = 0;
-		private int m_identifier;
+		private int m_identifier = ++m_identifierCounter;
 
 		public override bool IsCreature
 		{
@@ -43,8 +44,6 @@ namespace GameCore.Creatures
 			Speed = _speed;
 			Luck = 25;
 			m_layer = _layer;
-			//m_hc = base.GetHashCode();// GetType().GetHashCode() ^ m_identifier;
-			UpdateIdentifier();
 		}
 
 		#endregion
@@ -245,14 +244,20 @@ namespace GameCore.Creatures
 
 		internal override Essence Clone(Creature _resolver)
 		{
-			var result = base.Clone(_resolver);
-			((Creature)result).UpdateIdentifier();
+			var result = (Creature)base.Clone(_resolver);
+			result.UpdateIdentifier();
+			result.UpdateName();
 			return result;
 		}
 
 		private void UpdateIdentifier()
 		{
 			m_identifier = ++m_identifierCounter;
+		}
+
+		public virtual void DamageTaken(int _damage, Creature _source, IWeapon _weapon, CreatureBattleInfo _creatureBattleInfo)
+		{
+			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_TAKES_DAMAGE, _source, this, _damage, _weapon));
 		}
 	}
 }

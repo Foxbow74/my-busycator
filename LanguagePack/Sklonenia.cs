@@ -481,7 +481,7 @@ namespace LanguagePack
 						text += new[] { "ый", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
+						text += new[] { "ая", "ой", "ой", "ую", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
 						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[padej];
@@ -502,7 +502,7 @@ namespace LanguagePack
 						text += new[] { "ий", "ого", "ому", "ого", "им", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
+						text += new[] { "ая", "ой", "ой", "юю", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
 						text += new[] { "ое", "ого", "ому", "ого", "им", "ом" }[padej];
@@ -523,7 +523,7 @@ namespace LanguagePack
 						text += new[] { "ой", "ого", "ому", "ого", "ым", "ом" }[padej];
 						break;
 					case ESex.FEMALE:
-						text += new[] { "ая", "ой", "ой", "ой", "ой", "ой" }[padej];
+						text += new[] { "ая", "ой", "ой", "ую", "ой", "ой" }[padej];
 						break;
 					case ESex.IT:
 						text += new[] { "ое", "ого", "ому", "ого", "ым", "ом" }[padej];

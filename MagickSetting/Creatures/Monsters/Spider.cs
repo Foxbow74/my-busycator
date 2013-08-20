@@ -18,11 +18,22 @@ namespace MagickSetting.Creatures.Monsters
 		{
 			var lcd = 0.5f + (Nn % 20 - 10) / 10f;
 			LerpColor = new FColor(0.3f, lcd * (float)World.Rnd.NextDouble()/2, lcd * (float)World.Rnd.NextDouble(), lcd * (float)World.Rnd.NextDouble()/2);
-
 			Behaviour = EMonsterBehaviour.IDLE;
 		}
-		
 
+		protected override Noun GetUpdatedName(Noun _noun)
+		{
+			switch (Nn%3)
+			{
+				case 0:
+					return _noun + "огромный".AsAdj();
+				case 1:
+					return _noun + "страшный".AsAdj();
+				default:
+					return _noun + "ужасный".AsAdj();
+			}
+		}
+		
 		public override int TileIndex
 		{
 			get
