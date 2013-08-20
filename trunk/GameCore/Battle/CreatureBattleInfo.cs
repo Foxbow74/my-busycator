@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Creatures.Dummies;
@@ -11,31 +10,25 @@ namespace GameCore.Battle
 {
 	public class CreatureBattleInfo
 	{
-		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, int _toHit, int _dmg, Dice _hp):this()
+		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, Dice _hitDice, int _toHit, int _dmg)
+			: this(_creature, _dv, _pv, _hitDice)
 		{
-			Creature = _creature;
-			DV = _dv;
-			PV = _pv;
-			HP = _hp.Calc();
 			ToHitModifier = _toHit;
 			DmgModifier = _dmg;
 		}
 
-		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, Dice _hp)
-			: this()
+		public CreatureBattleInfo(Creature _creature, int _dv, int _pv, Dice _hitDice)
 		{
-			Creature = _creature;
 			DV = _dv;
 			PV = _pv;
-			HP = _hp.Calc();
-		}
-
-		protected CreatureBattleInfo()
-		{
+			Creature = _creature;
+			HP = _hitDice.Roll();
+			HPMax = _hitDice.Max;
 			Agro = new Dictionary<Creature, int>();
 		}
 
 		public int HP { get; protected set; }
+		public int HPMax { get; protected set; }
 
 		public int DV { get; private set; }
 		public int PV { get; private set; }
@@ -55,8 +48,7 @@ namespace GameCore.Battle
 			{
 				HP -= _damage;
 			}
-
-			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_TAKES_DAMAGE, _source, Creature, fact, _weapon));
+			Creature.DamageTaken(_damage, _source, _weapon, this);
 
 			fact -= Creature[0, 0].AddSplatter(fact, FColor.Crimson);
 			if (fact > 0)

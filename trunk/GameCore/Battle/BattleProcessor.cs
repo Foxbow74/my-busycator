@@ -81,7 +81,7 @@ namespace GameCore.Battle
 				}
 				MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURES_ATTACK_SUCCESS_DV_TOHIT_CHECK, _creature, _target, weapon));
 
-				var damage = itemBattleInfo.Dmg.Calc();
+				var damage = itemBattleInfo.Dmg.Roll();
 				var isCritical = itemBattleInfo.Dmg.Max == damage;
 				damage += creatureBattleInfo.DmgModifier;
 				if (damage == 0)

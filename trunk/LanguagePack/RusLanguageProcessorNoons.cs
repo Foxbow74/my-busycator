@@ -58,9 +58,9 @@ namespace LanguagePack
 			m_nouns.Add(EALNouns.Bolt, "болт".AsNoun(ESex.MALE, false));
 			m_nouns.Add(EALNouns.Sword, "меч".AsNoun(ESex.MALE, false));
 
-			m_nouns.Add(EALNouns.Rat, "крыса".AsNoun(ESex.FEMALE, true) + "грязный".AsAdj() + "отвратительный".AsAdj());
-			m_nouns.Add(EALNouns.Spider, "паук".AsNoun(ESex.MALE, true) + "огромный".AsAdj() + "страшный".AsAdj());
-			m_nouns.Add(EALNouns.Wolf, "волк".AsNoun(ESex.MALE, true) + "лохматый".AsAdj() + "свирепый".AsAdj());
+			m_nouns.Add(EALNouns.Rat, "крыса".AsNoun(ESex.FEMALE, true));
+			m_nouns.Add(EALNouns.Spider, "паук".AsNoun(ESex.MALE, true));
+			m_nouns.Add(EALNouns.Wolf, "волк".AsNoun(ESex.MALE, true));
 
 			m_nouns.Add(EALNouns.YOU, "ты".AsNoun(ESex.MALE, true));
 		}

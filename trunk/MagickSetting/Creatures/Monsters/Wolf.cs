@@ -21,6 +21,18 @@ namespace MagickSetting.Creatures.Monsters
 			Behaviour = EMonsterBehaviour.IDLE;
 		}
 
+		protected override Noun GetUpdatedName(Noun _noun)
+		{
+			switch (Nn%3)
+			{
+				case 0:
+					return _noun + "свирепый".AsAdj();
+				case 1:
+					return _noun + "жирный".AsAdj();
+				default:
+					return _noun + "лохматый".AsAdj();
+			}
+		}
 
 		public override int TileIndex
 		{
@@ -33,6 +45,12 @@ namespace MagickSetting.Creatures.Monsters
 		public override CreatureBattleInfo CreateBattleInfo()
 		{
 			return new CreatureBattleInfo(this, 4, 2, new Dice(2,8,4));
+		}
+
+		public override void DamageTaken(int _damage, Creature _source, IWeapon _weapon, CreatureBattleInfo _creatureBattleInfo)
+		{
+			base.DamageTaken(_damage, _source, _weapon, _creatureBattleInfo);
+			//_creatureBattleInfo.HP;
 		}
 		
 		public override IEnumerable<IWeapon> GetWeapons(Creature _against)

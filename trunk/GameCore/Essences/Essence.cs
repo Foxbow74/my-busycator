@@ -1,5 +1,4 @@
-﻿using System;
-using GameCore.AbstractLanguage;
+﻿using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Misc;
 
@@ -7,18 +6,29 @@ namespace GameCore.Essences
 {
 	public abstract class Essence : ITileInfoProvider
 	{
-		private readonly Noun m_name;
 		private readonly EALNouns m_eNoun;
+		private Noun m_name;
 
 		protected Essence(EALNouns _name, Material _material)
 		{
 			m_eNoun = _name;
-			m_name = _name.AsNoun();
+			m_eNoun = _name;
 			Material = _material;
-			if (_material != null)
+			UpdateName();
+		}
+
+		protected void UpdateName()
+		{
+			m_name = GetUpdatedName(m_eNoun.AsNoun());
+		}
+
+		protected virtual Noun GetUpdatedName(Noun _noun)
+		{
+			if (Material != null)
 			{
-				m_name = m_name+_material.Name;//.Adjective = _material.Name;
+				_noun = _noun + Material.Name;
 			}
+			return _noun;
 		}
 
 		/// <summary>
@@ -97,7 +107,9 @@ namespace GameCore.Essences
 
 		internal virtual Essence Clone(Creature _resolver)
 		{
-			return (Essence)MemberwiseClone();
+			var clone = (Essence)MemberwiseClone();
+			clone.UpdateName();
+			return clone;
 		}
 
 		public override int GetHashCode()

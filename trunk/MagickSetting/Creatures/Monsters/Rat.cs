@@ -24,6 +24,21 @@ namespace MagickSetting.Creatures.Monsters
 			Behaviour = EMonsterBehaviour.IDLE;
 		}
 
+		protected override Noun GetUpdatedName(Noun _noun)
+		{
+			switch (Nn%4)
+			{
+				case 0:
+					return _noun + "грязный".AsAdj();
+				case 1:
+					return _noun + "отвратительный".AsAdj();
+				case 2:
+					return _noun + "канализационный".AsAdj();
+				default:
+					return _noun + "вонючий".AsAdj();
+			}
+		}
+
 
 		public override int TileIndex
 		{
