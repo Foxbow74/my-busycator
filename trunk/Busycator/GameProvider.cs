@@ -24,7 +24,7 @@ namespace Busycator
 		private readonly HiResTimer m_hrs = new HiResTimer();
 
 		public GameProvider()
-			: base(1024, 768)
+			: base(200, 200)
 		{
 			Title = "Busycator";
 

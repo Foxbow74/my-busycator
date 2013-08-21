@@ -339,7 +339,20 @@ namespace LanguagePack
 			{
 				
 			}
-			return _noun.Adjective.To(_padej, _noun.Sex, _noun.IsCreature) + NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex) + CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex) + _noun.Immutable.ToText();
+			return _noun.Adjective.To(_padej, _noun.Sex, _noun.IsCreature) 
+				+ NounToPadej(_padej, _noun.Text, _noun.IsCreature, _noun.Sex)
+				+ CoNameToPadej(_padej, _noun.CoName, _noun.IsCreature, _noun.Sex)
+				+ OfSomethingToPadej(_noun.OfSomething)
+				+ _noun.Immutable.ToText();
+		}
+
+		private static string OfSomethingToPadej(OfSomething _ofSomething)
+		{
+			if (_ofSomething == null)
+			{
+				return "";
+			}
+			return " " + _ofSomething.To(EPadej.ROD);
 		}
 
 		public static string To(this Verb _verb, ESex _sex, EVerbType _type)

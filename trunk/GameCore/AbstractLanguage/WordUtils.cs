@@ -17,9 +17,9 @@
 			return new Immutable(_string);
 		}
 
-		public static OfSomething AsOf(this string _string)
+		public static OfSomething AsOf(this Noun _noun)
 		{
-			return new OfSomething(_string);
+			return new OfSomething(_noun);
 		}
 
 		public static CoName AsCo(this string _coname)

@@ -14,11 +14,11 @@
 		public ESex Sex { get; private set; }
 		public bool IsCreature { get; private set; }
 
-		public Noun AlsoKnownAs { get; private set; }
+		public Noun AlsoKnownAs { get; protected set; }
 		public Adjective Adjective { get; set; }
 		public Immutable Immutable { get; set; }
-		protected OfSomething OfSomething { get; set; }
-		public CoName CoName { get; private set; }
+		public OfSomething OfSomething { get; set; }
+		public CoName CoName { get; protected set; }
 
 		public static Noun operator +(Noun _a, Noun _b)
 		{

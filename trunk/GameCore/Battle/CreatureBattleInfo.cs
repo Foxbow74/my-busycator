@@ -48,7 +48,7 @@ namespace GameCore.Battle
 			{
 				HP -= _damage;
 			}
-			Creature.DamageTaken(_damage, _source, _weapon, this);
+			Creature.DamageTaken(this, _source, _weapon, _damage);
 
 			fact -= Creature[0, 0].AddSplatter(fact, FColor.Crimson);
 			if (fact > 0)

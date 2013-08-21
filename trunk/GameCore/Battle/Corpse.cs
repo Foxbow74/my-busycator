@@ -1,7 +1,6 @@
 using GameCore.AbstractLanguage;
 using GameCore.Creatures;
 using GameCore.Essences;
-using GameCore.Misc;
 
 namespace GameCore.Battle
 {
@@ -15,6 +14,15 @@ namespace GameCore.Battle
 		{
 			m_direction = Util.AllDirections.RandomItem(World.Rnd);
 			m_creature = _creature;
+		}
+
+		protected override Noun GetUpdatedName(Noun _noun)
+		{
+			if (m_creature == null)
+			{
+				return _noun;
+			}
+			return _noun + m_creature.Name.AsOf();
 		}
 
 		public override EDirections Direction
