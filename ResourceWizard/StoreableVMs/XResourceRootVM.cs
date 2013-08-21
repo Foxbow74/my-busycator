@@ -94,6 +94,7 @@ namespace ResourceWizard.StoreableVMs
 			var helper = new XResourceEssenceDummy();
 			EssenceProviders.Add(helper);
 			helper.ProvierTypeId = _typeId;
+			Manager.Instance.XClient.Save(helper.Uid);
 			return Manager.Instance.XClient.Get<TO>(helper.Uid);
 		}
 	}

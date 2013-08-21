@@ -21,7 +21,8 @@ namespace GameUi.UIBlocks
 			{
 				case ConsoleKey.A:
 					Constants.WORLD_MAP_SIZE = 32;
-					Constants.WORLD_SEED = 2;
+					Constants.WORLD_SEED = new Random().Next(10000);
+					//Constants.WORLD_SEED = 2;
 					m_game.Run();
 					break;
 				case ConsoleKey.B:
