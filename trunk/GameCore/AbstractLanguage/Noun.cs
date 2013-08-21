@@ -28,6 +28,11 @@
 
 		private void Add(Noun _noun)
 		{
+			if (_noun == this)
+			{
+				return;
+			}
+
 			if (AlsoKnownAs != null)
 			{
 				AlsoKnownAs.Add(_noun);

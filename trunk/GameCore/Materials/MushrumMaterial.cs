@@ -4,7 +4,7 @@ namespace GameCore.Materials
 {
 	public abstract class MushrumMaterial : Material
 	{
-		protected MushrumMaterial(EALNouns _name) : base(string.Empty) { MushrumName = _name; }
+		protected MushrumMaterial(EALNouns _name) : base(null) { MushrumName = _name; }
 
 		public override FColor LerpColor { get { return FColor.Empty; } }
 

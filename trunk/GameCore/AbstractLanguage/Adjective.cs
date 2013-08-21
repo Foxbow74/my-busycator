@@ -8,6 +8,10 @@
 		public Adjective(string _text)
 			: base(_text)
 		{
+			if (_text == "")
+			{
+				
+			}
 		}
 	}
 }

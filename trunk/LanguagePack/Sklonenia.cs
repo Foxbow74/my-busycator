@@ -469,10 +469,10 @@ namespace LanguagePack
 		}
 		
 
-		public static string To(this Adjective _adv, EPadej _padej, ESex _sex, bool _isCreature)
+		public static string To(this Adjective _adj, EPadej _padej, ESex _sex, bool _isCreature)
 		{
-			if (_adv == null) return "";
-			var text = _adv.Text;
+			if (_adj == null) return "";
+			var text = _adj.Text;
 
 			if (text == null)
 			{
