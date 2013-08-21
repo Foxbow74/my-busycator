@@ -12,4 +12,14 @@ namespace Tests
 			Constants.WORLD_SEED = 2;
 		}
 	}
+
+	[TestClass]
+	public abstract class AbstractGameTest100 : AbstractGameTestX
+	{
+		static AbstractGameTest100()
+		{
+			Constants.WORLD_MAP_SIZE = 100;
+			Constants.WORLD_SEED = 3;
+		}
+	}
 }

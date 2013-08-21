@@ -4,7 +4,7 @@ namespace GameCore.Materials
 {
 	public abstract class ShrubMaterial: Material
 	{
-		protected ShrubMaterial(EALNouns _name) : base(string.Empty) { ShroobName = _name; }
+		protected ShrubMaterial(EALNouns _name) : base(null) { ShroobName = _name; }
 
 		public override FColor LerpColor { get { return FColor.Empty; } }
 

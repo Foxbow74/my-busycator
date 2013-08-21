@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using GameCore.AbstractLanguage;
 using GameCore.Acts;
@@ -21,19 +20,16 @@ namespace GameCore.Creatures
 			m_name = _layer.GetNextCitizenName(_sex);
 		}
 
+		protected override Noun GetUpdatedName(Noun _noun)
+		{
+			return _noun + m_name;
+		}
+
 		public override bool IsUnique
 		{
 			get
 			{
 				return true;
-			}
-		}
-
-		public override Noun Name
-		{
-			get
-			{
-				return base.Name + m_name;
 			}
 		}
 

@@ -72,7 +72,10 @@ namespace GameCore.Acts.Movement
 							mess += ", вещи";
 						}
 					}
-					MessageManager.SendMessage(this, mess);
+					if (mess != "")
+					{
+						MessageManager.SendMessage(this, mess);
+					}
 				}
 				return EActResults.DONE;
 			}
