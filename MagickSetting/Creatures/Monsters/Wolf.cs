@@ -47,9 +47,9 @@ namespace MagickSetting.Creatures.Monsters
 			return new CreatureBattleInfo(this, 4, 2, new Dice(2,8,4));
 		}
 
-		public override void DamageTaken(int _damage, Creature _source, IWeapon _weapon, CreatureBattleInfo _creatureBattleInfo)
+		public override void DamageTaken(CreatureBattleInfo _creatureBattleInfo, Creature _source, IWeapon _weapon, int _damage)
 		{
-			base.DamageTaken(_damage, _source, _weapon, _creatureBattleInfo);
+			base.DamageTaken(_creatureBattleInfo, _source, _weapon, _damage);
 			//_creatureBattleInfo.HP;
 		}
 		

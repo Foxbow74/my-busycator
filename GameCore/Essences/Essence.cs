@@ -7,19 +7,17 @@ namespace GameCore.Essences
 	public abstract class Essence : ITileInfoProvider
 	{
 		private readonly EALNouns m_eNoun;
-		private Noun m_name;
+		private Noun m_name = null;
 
 		protected Essence(EALNouns _name, Material _material)
 		{
 			m_eNoun = _name;
-			m_eNoun = _name;
 			Material = _material;
-			UpdateName();
 		}
 
 		protected void UpdateName()
 		{
-			m_name = GetUpdatedName(m_eNoun.AsNoun());
+			m_name = null;
 		}
 
 		protected virtual Noun GetUpdatedName(Noun _noun)
@@ -51,10 +49,7 @@ namespace GameCore.Essences
 
 		public virtual Noun Name
 		{
-			get
-			{
-				return m_name;
-			}
+			get { return m_name ?? (m_name = GetUpdatedName(m_eNoun.AsNoun())); }
 		}
 
 		public virtual bool IsCreature

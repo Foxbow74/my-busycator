@@ -54,6 +54,17 @@ namespace GameCore.Mapping
 		    }
 		}
 
+		public Thing GetResolvedThing(Creature _creature)
+		{
+			if (m_thing == null) return null;
+			var ft = m_thing as FakedThing;
+			if (ft == null)
+			{
+				return m_thing;
+			}
+			return (Thing)ResolveFakeThing(_creature);
+		}
+
 	    public Creature Creature
 		{
 			get
@@ -254,7 +265,7 @@ namespace GameCore.Mapping
 			return item;
 		}
 
-		public Essence ResolveFakeThing(Creature _creature)
+		public Thing ResolveFakeThing(Creature _creature)
 		{
 			var fakedThing = (FakedThing) Thing;
 			m_mapBlock.RemoveEssence(fakedThing, InBlockCoords);

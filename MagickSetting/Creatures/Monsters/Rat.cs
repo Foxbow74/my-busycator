@@ -26,10 +26,11 @@ namespace MagickSetting.Creatures.Monsters
 
 		protected override Noun GetUpdatedName(Noun _noun)
 		{
+			return _noun + "грязный".AsAdj() + ("канализация".AsNoun(ESex.FEMALE, false) + "городской".AsAdj()).AsOf();
 			switch (Nn%4)
 			{
 				case 0:
-					return _noun + "грязный".AsAdj();
+					return _noun + "грязный".AsAdj() + ("канализация".AsNoun(ESex.FEMALE, false) + "городской".AsAdj()).AsOf();
 				case 1:
 					return _noun + "отвратительный".AsAdj();
 				case 2:

@@ -255,7 +255,7 @@ namespace GameCore.Creatures
 			m_identifier = ++m_identifierCounter;
 		}
 
-		public virtual void DamageTaken(int _damage, Creature _source, IWeapon _weapon, CreatureBattleInfo _creatureBattleInfo)
+		public virtual void DamageTaken(CreatureBattleInfo _creatureBattleInfo, Creature _source, IWeapon _weapon, int _damage)
 		{
 			MessageManager.SendXMessage(this, new XMessage(EALTurnMessage.CREATURE_TAKES_DAMAGE, _source, this, _damage, _weapon));
 		}
