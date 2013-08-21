@@ -21,7 +21,7 @@ namespace GameCore.Acts.Movement
 
 		public override EActResults Do(Creature _creature)
 		{
-			var thing = _creature[0, 0].Thing;
+			var thing = _creature[0, 0].GetResolvedThing(_creature);
 			if (!(thing is StairDown))
 			{
 				if (_creature.IsAvatar)
