@@ -359,6 +359,7 @@ namespace LanguagePack
 		{
 			var v = _verb.SameAs[m_rnd.Next(_verb.SameAs.Count)];
 			var text = _type==EVerbType.IN_PROCESS?v.InProcess : v.Done;
+			if (string.IsNullOrEmpty(text)) return text;
 			if(_sex==ESex.MALE) return text;
 			if (_type == EVerbType.DONE)
 			{
@@ -392,7 +393,7 @@ namespace LanguagePack
 							throw new ArgumentOutOfRangeException("_sex");
 					}
 				}
-				else if (text.EndsWith("ыл"))
+				else if (text.EndsWith("ыл") || text.EndsWith("ял"))
 				{
 					switch (_sex)
 					{
@@ -403,6 +404,21 @@ namespace LanguagePack
 						case ESex.PLURAL:
 						case ESex.PLURAL_FEMALE:
 							return text + "и";
+						default:
+							throw new ArgumentOutOfRangeException("_sex");
+					}
+				}
+				else if (text.EndsWith("ог"))
+				{
+					switch (_sex)
+					{
+						case ESex.FEMALE:
+							return text + "ла";
+						case ESex.IT:
+							return text + "ло";
+						case ESex.PLURAL:
+						case ESex.PLURAL_FEMALE:
+							return text + "ли";
 						default:
 							throw new ArgumentOutOfRangeException("_sex");
 					}

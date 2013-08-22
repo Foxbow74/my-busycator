@@ -193,6 +193,8 @@ namespace LanguagePack
 		{
 			switch (_e)
 			{
+				case ETactics.PEACEFULL:
+					return "пацифизм".AsNoun(ESex.MALE, false);
 				case ETactics.NORMAL:
 					return "баланс".AsNoun(ESex.MALE, false);
 				case ETactics.BERSERK:
