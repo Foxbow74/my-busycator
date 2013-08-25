@@ -41,6 +41,7 @@ namespace ResourceWizard
 		dg_dungeon32,
 		dg_edging132,
 		dg_dragon32,
-		dg_classm32
+		dg_classm32,
+		traps_64,
 	}
 }

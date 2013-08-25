@@ -72,8 +72,8 @@ namespace ResourceWizard.VMs
 
 		private void ExecuteTextureClick(object _o)
 		{
-			CursorX = (int)(MousePoint.X / 16) * 16;
-			CursorY = (int)(MousePoint.Y / 16) * 16;
+			CursorX = (int)(MousePoint.X / TileSize) * TileSize;
+			CursorY = (int)(MousePoint.Y / TileSize) * TileSize;
 			OnPropertyChanged(() => CursorX);
 			OnPropertyChanged(() => CursorY);
 		}
@@ -88,6 +88,11 @@ namespace ResourceWizard.VMs
 		public RelayCommand TextureClick { get; private set; }
 
 		public Point MousePoint { get; set; }
+
+		public int TileSize
+		{
+			get { return Constants.TILE_SIZE; }
+		}
 
 		public int CursorX
 		{

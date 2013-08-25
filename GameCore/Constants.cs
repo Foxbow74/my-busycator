@@ -28,7 +28,7 @@
 		/// <summary>
 		/// Размер тайла в пикселях
 		/// </summary>
-		public static int TILE_SIZE = 16;
+		public static int TILE_SIZE = 32;
 
 		public static bool GAME_MODE = true;
 	}
