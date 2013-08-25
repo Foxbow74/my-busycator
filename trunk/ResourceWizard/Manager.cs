@@ -34,20 +34,20 @@ namespace ResourceWizard
 			World.LetItBeeee(new RusLanguageProcessor());
 			MagicSettingProvider.Init();
 
-			m_ttextures.Add(ETextureSet.GP, new Image(Resources.gold_plated_16x16, false, false));
-			m_ttextures.Add(ETextureSet.HM, new Image(Resources.aq, false, false));
-			m_ttextures.Add(ETextureSet.NH, new Image(Resources.nethack, false, false));
-			m_ttextures.Add(ETextureSet.PH, new Image(Resources.Phoebus_16x16, false, false));
-			m_ttextures.Add(ETextureSet.RB1, new Image(Resources.RantingRodent_Brick_01, false, false));
-			m_ttextures.Add(ETextureSet.RB2, new Image(Resources.RantingRodent_Brick_02, false, false));
-			m_ttextures.Add(ETextureSet.RN1, new Image(Resources.RantingRodent_Natural_01, false, false));
-			m_ttextures.Add(ETextureSet.RN2, new Image(Resources.RantingRodent_Natural_02, false, false));
-			m_ttextures.Add(ETextureSet.RJ, new Image(Resources.redjack15v, false, false));
-			m_ttextures.Add(ETextureSet.U4, new Image(Resources.Ultima4, false, false));
-			m_ttextures.Add(ETextureSet.U5, new Image(Resources.Ultima5, false, false));
-			m_ttextures.Add(ETextureSet.WC_SG, new Image(Resources.summergrass, false, false));
-			m_ttextures.Add(ETextureSet.WC_SW, new Image(Resources.summerwater, false, false));
-			m_ttextures.Add(ETextureSet.WC_WS, new Image(Resources.wintersnow, false, false));
+			m_ttextures.Add(ETextureSet.GP, new Image(Scale(Resources.gold_plated_16x16,16), false, false));
+			m_ttextures.Add(ETextureSet.HM, new Image(Scale(Resources.aq,16), false, false));
+			m_ttextures.Add(ETextureSet.NH, new Image(Scale(Resources.nethack,16), false, false));
+			m_ttextures.Add(ETextureSet.PH, new Image(Scale(Resources.Phoebus_16x16,16), false, false));
+			m_ttextures.Add(ETextureSet.RB1, new Image(Scale(Resources.RantingRodent_Brick_01,16), false, false));
+			m_ttextures.Add(ETextureSet.RB2, new Image(Scale(Resources.RantingRodent_Brick_02,16), false, false));
+			m_ttextures.Add(ETextureSet.RN1, new Image(Scale(Resources.RantingRodent_Natural_01,16), false, false));
+			m_ttextures.Add(ETextureSet.RN2, new Image(Scale(Resources.RantingRodent_Natural_02,16), false, false));
+			m_ttextures.Add(ETextureSet.RJ, new Image(Scale(Resources.redjack15v,16), false, false));
+			m_ttextures.Add(ETextureSet.U4, new Image(Scale(Resources.Ultima4,16), false, false));
+			m_ttextures.Add(ETextureSet.U5, new Image(Scale(Resources.Ultima5,16), false, false));
+			m_ttextures.Add(ETextureSet.WC_SG, new Image(Scale(Resources.summergrass,16), false, false));
+			m_ttextures.Add(ETextureSet.WC_SW, new Image(Scale(Resources.summerwater,16), false, false));
+			m_ttextures.Add(ETextureSet.WC_WS, new Image(Scale(Resources.wintersnow, 16), false, false));
 			m_ttextures.Add(ETextureSet.dg_armor32, new Image(Scale(Resources.dg_armor32), false, false));
 			m_ttextures.Add(ETextureSet.dg_monster1, new Image(Scale(Resources.dg_monster132), false, false));
 			m_ttextures.Add(ETextureSet.dg_monster2, new Image(Scale(Resources.dg_monster232), false, false));
@@ -75,6 +75,7 @@ namespace ResourceWizard
 			m_ttextures.Add(ETextureSet.dg_humans32, new Image(Scale(Resources.dg_humans32), false, false));
 			m_ttextures.Add(ETextureSet.townactions, new Image(Scale(Resources.townactions), false, false));
 			m_ttextures.Add(ETextureSet.dg_people32, new Image(Scale(Resources.dg_people32), false, false));
+			m_ttextures.Add(ETextureSet.traps_64, new Image(Scale(Resources.traps_64, 64), false, false));
 		}
 
 		public XResourceRootVM XRoot
@@ -232,17 +233,49 @@ namespace ResourceWizard
 			}
 		}
 
-		private static Bitmap Scale(Bitmap _bmp)
+		private static Bitmap Scale(Bitmap _bmp, byte _tileSize = 32)
 		{
-			var value2 = new Image(_bmp, true, false);
-			var bmp2 = new Bitmap(_bmp.Width/2, _bmp.Height/2, PixelFormat.Format32bppPArgb);
-			using (var gr = Graphics.FromImage(bmp2))
+			if (Constants.TILE_SIZE == _tileSize) return _bmp;
+			if (_tileSize >> 1 == Constants.TILE_SIZE)
 			{
-				gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-				gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height), new Rectangle(0, 0, _bmp.Width, _bmp.Height),
-				             GraphicsUnit.Pixel);
+				var value2 = new Image(_bmp, true, false);
+				var bmp2 = new Bitmap(_bmp.Width / 2, _bmp.Height / 2, PixelFormat.Format32bppPArgb);
+				using (var gr = Graphics.FromImage(bmp2))
+				{
+					gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
+						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
+						GraphicsUnit.Pixel);
+				}
+				return bmp2;
 			}
-			return bmp2;
+			else if (_tileSize << 1 == Constants.TILE_SIZE)
+			{
+				var value2 = new Image(_bmp, true, false);
+				var bmp2 = new Bitmap(_bmp.Width * 2, _bmp.Height * 2, PixelFormat.Format32bppPArgb);
+				using (var gr = Graphics.FromImage(bmp2))
+				{
+					gr.InterpolationMode = InterpolationMode.High;
+					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
+						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
+						GraphicsUnit.Pixel);
+				}
+				return bmp2;
+			}
+			else if (_tileSize >> 2 == Constants.TILE_SIZE)
+			{
+				var value2 = new Image(_bmp, true, false);
+				var bmp2 = new Bitmap(_bmp.Width / 4, _bmp.Height / 4, PixelFormat.Format32bppPArgb);
+				using (var gr = Graphics.FromImage(bmp2))
+				{
+					gr.InterpolationMode = InterpolationMode.High;
+					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
+						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
+						GraphicsUnit.Pixel);
+				}
+				return bmp2;
+			}
+			throw new NotImplementedException();
 		}
 
 		public Bitmap this[XTileInfoVM _tile, FColor _fColor, bool _removeTransparency, bool _grayScale]
@@ -363,7 +396,7 @@ namespace ResourceWizard
 			var size = (int)Math.Sqrt(tileInfos.Count) + 1;
 			var sizeInPixels = size * Constants.TILE_SIZE;
 
-			var begin = 16;
+			var begin = Constants.TILE_SIZE;
 			for (var i = 1; ; ++i)
 			{
 				if (sizeInPixels <= begin)
@@ -378,7 +411,7 @@ namespace ResourceWizard
 			var srcRect = new Rectangle(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
 			using (var gr = Graphics.FromImage(bmp))
 			{
-				var perRow = sizeInPixels / 16;
+				var perRow = sizeInPixels / Constants.TILE_SIZE;
 				for (var index = 0; index < tileInfos.Count; index++)
 				{
 					var grouping = tileInfos[index];

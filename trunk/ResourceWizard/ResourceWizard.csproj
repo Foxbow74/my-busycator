@@ -385,6 +385,9 @@
   <ItemGroup>
     <None Include="Resources\dg_people32.gif" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\traps_preview_01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
