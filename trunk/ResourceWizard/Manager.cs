@@ -233,49 +233,51 @@ namespace ResourceWizard
 			}
 		}
 
+		private static int m_uu = 0;
+
 		private static Bitmap Scale(Bitmap _bmp, byte _tileSize = 32)
 		{
 			if (Constants.TILE_SIZE == _tileSize) return _bmp;
-			if (_tileSize >> 1 == Constants.TILE_SIZE)
+			var k = ((double) Constants.TILE_SIZE)/_tileSize;
+			var srcImage = new Image(_bmp, true, false);
+			var result = new Bitmap((int)(_bmp.Width * k), (int)(_bmp.Height * k), PixelFormat.Format32bppPArgb);
+
+			using (var gr = Graphics.FromImage(result))
 			{
-				var value2 = new Image(_bmp, true, false);
-				var bmp2 = new Bitmap(_bmp.Width / 2, _bmp.Height / 2, PixelFormat.Format32bppPArgb);
-				using (var gr = Graphics.FromImage(bmp2))
+				if (true)
 				{
 					gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
-						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
-						GraphicsUnit.Pixel);
+					var tile = new Bitmap(_tileSize + 2, _tileSize + 2, PixelFormat.Format32bppPArgb);
+					using (var grTile = Graphics.FromImage(tile))
+					{
+						grTile.InterpolationMode = InterpolationMode.Default;
+						for (var i = 0; i < _bmp.Width / _tileSize; i++)
+						{
+							for (var j = 0; j < _bmp.Height/_tileSize; j++)
+							{
+								grTile.Clear(Color.Empty);
+								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 1, _tileSize, _tileSize), (float) i*_tileSize, (float) j*_tileSize, _tileSize, _tileSize, GraphicsUnit.Pixel);
+
+
+								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 0, _tileSize, 1), (float) i*_tileSize, (float) j*_tileSize, _tileSize, 1, GraphicsUnit.Pixel); //top
+								grTile.DrawImage(srcImage.Bitmap, new Rectangle(0, 1, 1, _tileSize), (float) i*_tileSize, (float) j*_tileSize, 1, _tileSize, GraphicsUnit.Pixel); //left
+
+								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, _tileSize + 1, _tileSize, 1), (float)i * _tileSize, (float)j * _tileSize + _tileSize - 1, _tileSize, 1, GraphicsUnit.Pixel); //bottom
+								grTile.DrawImage(srcImage.Bitmap, new Rectangle(_tileSize + 1, 1, 1, _tileSize), (float)i * _tileSize + _tileSize - 1, (float)j * _tileSize, 1, _tileSize, GraphicsUnit.Pixel); //right
+
+								gr.DrawImage(tile, new Rectangle(i * Constants.TILE_SIZE, j * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE), new Rectangle(1, 1, _tileSize, _tileSize), GraphicsUnit.Pixel);
+							}
+						}
+						//result.Save(@"d:\\bmp" + m_uu++ + ".png", ImageFormat.Png);
+					}
 				}
-				return bmp2;
-			}
-			else if (_tileSize << 1 == Constants.TILE_SIZE)
-			{
-				var value2 = new Image(_bmp, true, false);
-				var bmp2 = new Bitmap(_bmp.Width * 2, _bmp.Height * 2, PixelFormat.Format32bppPArgb);
-				using (var gr = Graphics.FromImage(bmp2))
+				else
 				{
 					gr.InterpolationMode = InterpolationMode.High;
-					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
-						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
-						GraphicsUnit.Pixel);
+					gr.DrawImage(srcImage.Bitmap, new Rectangle(0, 0, result.Width, result.Height), new Rectangle(0, 0, _bmp.Width, _bmp.Height), GraphicsUnit.Pixel);
 				}
-				return bmp2;
 			}
-			else if (_tileSize >> 2 == Constants.TILE_SIZE)
-			{
-				var value2 = new Image(_bmp, true, false);
-				var bmp2 = new Bitmap(_bmp.Width / 4, _bmp.Height / 4, PixelFormat.Format32bppPArgb);
-				using (var gr = Graphics.FromImage(bmp2))
-				{
-					gr.InterpolationMode = InterpolationMode.High;
-					gr.DrawImage(value2.Bitmap, new Rectangle(0, 0, bmp2.Width, bmp2.Height),
-						new Rectangle(0, 0, _bmp.Width, _bmp.Height),
-						GraphicsUnit.Pixel);
-				}
-				return bmp2;
-			}
-			throw new NotImplementedException();
+			return result;
 		}
 
 		public Bitmap this[XTileInfoVM _tile, FColor _fColor, bool _removeTransparency, bool _grayScale]

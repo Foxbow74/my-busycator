@@ -33,6 +33,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Community.CsharpSqlite.SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTransport", "..\x-transport\XTransport\XTransport.csproj", "{171F736D-E4BB-438A-9D56-6F8E238814C0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{E05B5A4D-166D-4901-82EF-FCB60FD586CB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AngbandTileThief", "AngbandTileThief\AngbandTileThief.csproj", "{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -187,6 +191,16 @@ Global
 		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{171F736D-E4BB-438A-9D56-6F8E238814C0}.Release|x86.ActiveCfg = Release|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,5 +214,6 @@ Global
 		{7BC68E61-C64C-488C-975F-1E2248383B80} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{171F736D-E4BB-438A-9D56-6F8E238814C0} = {7FACEC52-9776-4719-A492-7E8A65C55B9E}
 		{24D27A79-E736-4935-8C43-EBCC195FAFD9} = {A7600899-6FC5-4C64-AB39-AA928AA31F9D}
+		{C77C53AA-5FCE-4FF7-9372-E90B389BC5C6} = {E05B5A4D-166D-4901-82EF-FCB60FD586CB}
 	EndGlobalSection
 EndGlobal
