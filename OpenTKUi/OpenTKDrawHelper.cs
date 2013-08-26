@@ -14,9 +14,6 @@ namespace OpenTKUi
 	{
 		private readonly OpenTKResourceProvider m_resourceProvider;
 		private readonly OpenTKGameProvider m_gameProvider;
-		//private bool m_isTextBitmapChanged;
-
-		//private Image m_textImage;
 
 		public OpenTKDrawHelper(OpenTKResourceProvider _resourceProvider, OpenTKGameProvider _gameProvider)
 		{
@@ -95,51 +92,6 @@ namespace OpenTKUi
 			GL.End();
 		}
 
-
-        public void DrawRect(RectangleF _rct, IImageContainer _imageContainer)
-        {
-            GL.BindTexture(TextureTarget.Texture2D, ((Image)_imageContainer).Texture);
-
-            GL.Color4(1f, 1f, 1f, 1f);
-
-            GL.Begin(BeginMode.Quads);
-            GL.TexCoord2(0, 0);
-            GL.Vertex2(_rct.Left, _rct.Top);
-            GL.TexCoord2(1f, 0);
-            GL.Vertex2(_rct.Right + 1, _rct.Top);
-            GL.TexCoord2(1f, 1f);
-            GL.Vertex2(_rct.Right + 1, _rct.Bottom + 1);
-            GL.TexCoord2(0, 1f);
-            GL.Vertex2(_rct.Left, _rct.Bottom + 1);
-            GL.End();
-        }
-
 		#endregion
-
-		public static void DrawTexture(Image _image)
-		{
-			GL.BindTexture(TextureTarget.Texture2D, _image.Texture);
-
-			GL.Color4(1f, 1f, 1f, 1f);
-
-			GL.Begin(BeginMode.Quads);
-			GL.TexCoord2(0, 0);
-			GL.Vertex2(0, 0);
-            GL.TexCoord2(1f, 0);
-			GL.Vertex2(_image.Width, 0);
-			GL.TexCoord2(1f, 1f);
-			GL.Vertex2(_image.Width, _image.Height);
-			GL.TexCoord2(0, 1f);
-			GL.Vertex2(0, _image.Height);
-			GL.End();
-		}
-
-		public void Resize(int _width, int _height)
-		{
-			QFont.RefreshViewport();
-			//if (m_textImage != null) m_textImage.Dispose();
-			//var bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppPArgb);
-			//m_textImage = new Image(bitmap, false);
-		}
 	}
 }

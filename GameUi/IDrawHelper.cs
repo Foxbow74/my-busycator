@@ -10,7 +10,6 @@ namespace GameUi
 	{
 		void DrawRect(Rct _rct, FColor _toFColor);
 		void DrawRect(RectangleF _rct, FColor _toFColor);
-        void DrawRect(RectangleF _rct, IImageContainer _imageContainer);
         void ClearTiles(Rct _rct, FColor _backgroundColor);
 		SizeF MeasureString(EFonts _font, string _string);
 		void DrawString(EFonts _font, string _string, float _x, float _y, FColor _color);

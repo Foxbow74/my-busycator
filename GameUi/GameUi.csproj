@@ -76,7 +76,6 @@
     <Compile Include="UIBlocks\TurnMessageUiBlock.cs" />
     <Compile Include="UIBlocks\UIBlock.cs" />
     <Compile Include="UIBlocks\UiBlockWithText.cs" />
-    <Compile Include="VectorHelpers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\x-transport\XTransport\XTransport.csproj">
