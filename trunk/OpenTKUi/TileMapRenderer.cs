@@ -79,7 +79,7 @@ namespace OpenTKUi
 
 		private bool DrawQuads(bool _colored, bool _drawFog, int _layer)
 		{
-			bool flag = false;
+			var flag = false;
 			GL.Begin(BeginMode.Quads);
 			for (var i = 0; i < m_tilesInRow; i++)
 			{

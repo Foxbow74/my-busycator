@@ -6,6 +6,7 @@ using GameCore.Misc;
 using GameUi;
 using OpenTK;
 using OpenTK.Input;
+using QuickFont;
 
 namespace OpenTKUi
 {
@@ -167,7 +168,7 @@ namespace OpenTKUi
 		{
 			if (!IsActive) return;
 			m_core.Resize(Width, Height);
-			m_drawHelper.Resize(Width, Height);
+			QFont.RefreshViewport();
 			if (m_tileMapRenderer != null)
 			{
 				m_tileMapRenderer.Dispose();

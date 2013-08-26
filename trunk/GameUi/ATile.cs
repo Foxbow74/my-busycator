@@ -1,6 +1,5 @@
 ﻿using GameCore;
 using GameCore.Misc;
-using UnsafeUtils;
 
 namespace GameUi
 {
@@ -8,7 +7,6 @@ namespace GameUi
 	{
 		protected ATile(int _x, int _y, FColor _color)
 		{
-
 			Color = _color;
 			Point = new Point(_x, _y);
 			SrcPoint = new Point(_x, _y);
