@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using GameCore;
-using GameCore.Creatures;
-using GameCore.Creatures.Dummies;
-using GameCore.Essences;
 using LanguagePack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
