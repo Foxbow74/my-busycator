@@ -7,8 +7,8 @@ namespace GameCore.Misc
 	public class Point
 	{
 		private static Point[] m_nearestDPoints;
-		public int X;
-		public int Y;
+		public readonly int X;
+		public readonly int Y;
 		static Point()
 		{
 			Zero = new Point(0,0);
@@ -48,9 +48,9 @@ namespace GameCore.Misc
 
 		public IEnumerable<Point> GetAllBlockPoints()
 		{
-			for (var index = 0; index < AllBlockPoints.Length; index++)
+			foreach (var t in AllBlockPoints)
 			{
-				yield return AllBlockPoints[index] + this;
+				yield return t + this;
 			}
 		}
 
@@ -108,8 +108,7 @@ namespace GameCore.Misc
 
 			double dx = Math.Sign(_point.X - X);
 			double dy = Math.Sign(_point.Y - Y);
-			;
-
+			
 			double x = X;
 			double y = Y;
 
@@ -193,10 +192,10 @@ namespace GameCore.Misc
 				return true;
 			}
 
-			if (((object) _a == null) && ((object) _b == null))
-			{
-				return true;
-			}
+			//if (((object) _a == null) && ((object) _b == null))
+			//{
+			//	return true;
+			//}
 
 			if (((object) _a == null) || ((object) _b == null))
 			{
@@ -213,10 +212,10 @@ namespace GameCore.Misc
 				return false;
 			}
 
-			if (((object) _a == null) && ((object) _b == null))
-			{
-				return false;
-			}
+			//if (((object) _a == null) && ((object) _b == null))
+			//{
+			//	return false;
+			//}
 
 			if (((object) _a == null) || ((object) _b == null))
 			{

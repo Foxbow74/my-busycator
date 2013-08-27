@@ -58,18 +58,18 @@ namespace GameCore.Acts.Movement
 					var thing = cell.Thing;
 					if (thing != null)
 					{
-						mess += ", " + EALSentence.NONE.GetString(thing.GetName(_creature));
+						mess += EALSentence.NONE.GetString(thing.GetName(_creature));
 					}
 					var items = cell.Items.ToArray();
 					if (items.Length > 0)
 					{
 						if (items.Length == 1)
 						{
-							mess += ", " + EALSentence.NONE.GetString(items[0].GetName(_creature));
+							mess += (mess == "" ? "" : ", ") + EALSentence.NONE.GetString(items[0].GetName(_creature));
 						}
 						else
 						{
-							mess += ", вещи";
+							mess += (mess == "" ? "" : ", ") + "вещи";
 						}
 					}
 					if (mess != "")
@@ -79,7 +79,6 @@ namespace GameCore.Acts.Movement
 				}
 				return EActResults.DONE;
 			}
-			else
 			{
 				var thing = cell.Thing;
 				if (thing != null && thing.Is<ClosedDoor>() && thing.IsLockedFor(cell, _creature))

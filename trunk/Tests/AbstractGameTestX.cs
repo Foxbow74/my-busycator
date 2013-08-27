@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using GameCore;
 using GameCore.Creatures;
 using GameCore.Messages;
@@ -50,15 +52,31 @@ namespace Tests
 			//Debug.WriteLine("WorldMessage : " + _message.Type);
 		}
 
+
+		private readonly List<XLangMessage> m_messages = new List<XLangMessage>();
+
+		private void MessageManagerOnNewMessage(object _sender, Message _message)
+		{
+			if (_message is XLangMessage)
+			{
+				m_messages.Add((XLangMessage)_message);
+			}
+			else
+			{
+				Debug.WriteLine(_message.ToString());
+			}
+		}
+
 		protected virtual void AvatarBeginsTurn()
 		{
+			if (m_messages.Count > 0)
+			{
+				var enumerable = XMessageCompiler.Compile(m_messages).ToArray();
+				Debug.WriteLine(string.Join(", ", enumerable));
+				m_messages.Clear();
+			}
 		}
-
-		static void MessageManagerNewMessage(object _sender, Message _message)
-		{
-			//Debug.WriteLine("Message : " + _message.GetType() + " / " + _message);
-		}
-
+	
 		[TestInitialize]
 		public void Initialize()
 		{
@@ -73,17 +91,18 @@ namespace Tests
 			{
 				World.LetItBeeee(new RusLanguageProcessor());
 			}
-			MessageManager.NewMessage += MessageManagerNewMessage;
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;
 
 			World.TheWorld.LiveMap.SetViewPortSize(new Point(100, 100));
+
+			MessageManager.NewMessage += MessageManagerOnNewMessage;
 		}
 
 		[TestCleanup]
 		public void Cleanup()
 		{
 			Profiler.Report();
-			MessageManager.NewMessage -= MessageManagerNewMessage;
+			MessageManager.NewMessage -= MessageManagerOnNewMessage;
 			MessageManager.NewWorldMessage -= MessageManagerOnNewWorldMessage;
 		}
 	}

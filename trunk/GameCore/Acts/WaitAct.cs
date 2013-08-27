@@ -14,8 +14,8 @@ namespace GameCore.Acts
 		{
 			get
 			{
-				yield break;
-				//yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.NumPad5, EKeyModifiers.NONE);
+				//yield break;
+				yield return new Tuple<ConsoleKey, EKeyModifiers>(ConsoleKey.NumPad5, EKeyModifiers.NONE);
 			}
 		}
 

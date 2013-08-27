@@ -1,9 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using GameCore.Messages;
-using LanguagePack;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -14,8 +9,6 @@ namespace Tests
 		[TestMethod]
 		public void Битвище()
 		{
-			MessageManager.NewMessage += MessageManagerOnNewMessage;
-
 			2.Repeat(() => SendKey(ConsoleKey.NumPad3));
 			40.Repeat(() => SendKey(ConsoleKey.Y));
 			10.Repeat(() => SendKey(ConsoleKey.NumPad3));
@@ -38,31 +31,6 @@ namespace Tests
 
 			
 			//Debug.WriteLine(Avatar[0, 0].LiveMapBlock.Creatures.Count());
-		}
-
-		private readonly List<XLangMessage> m_messages = new List<XLangMessage>();
-
-		private void MessageManagerOnNewMessage(object _sender, Message _message)
-		{
-			if (_message is XLangMessage)
-			{
-				m_messages.Add((XLangMessage)_message);
-			}
-			else
-			{
-				Debug.WriteLine(_message.ToString());
-			}
-		}
-
-		protected override void AvatarBeginsTurn()
-		{
-			base.AvatarBeginsTurn();
-
-			if (m_messages.Count > 0)
-			{
-				Debug.WriteLine(string.Join(", ", XMessageCompiler.Compile(m_messages)));
-				m_messages.Clear();
-			}
 		}
 	}
 }

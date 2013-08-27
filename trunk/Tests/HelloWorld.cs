@@ -1,5 +1,6 @@
 ﻿using System;
 using GameCore;
+using GameCore.Essences;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Tests
@@ -26,6 +27,18 @@ namespace Tests
 		public void ТыКто()
 		{
 			SendKey(ConsoleKey.Y);
+		}
+
+		[TestMethod]
+		public void Шмотки()
+		{
+			var stack = EssenceHelper.GetRandomFakedItem<StackOfAmmo>(World.Rnd);
+			Avatar[1, 0].AddItem(stack);
+			var s = (StackOfAmmo)Avatar[1, 0].ResolveFakeItem(Avatar, stack);
+			s.Count = 10;
+			SendKey(ConsoleKey.NumPad6);
+			SendKey(ConsoleKey.OemComma);
+			SendKey(ConsoleKey.NumPad5);
 		}
 	}
 }

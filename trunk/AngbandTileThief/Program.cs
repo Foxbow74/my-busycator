@@ -1,22 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using GameCore;
+using GameCore.PathFinding;
 using Image = OpenTKUi.Image;
 
 namespace AngbandTileThief
 {
 	class Program
 	{
-		private static int TILE_SIZE = 64;
-		private static decimal uu= 0;
+		private const int TILE_SIZE = 64;
+		private static decimal m_uu;
 		static readonly Color m_transp = Color.FromArgb(1, 0, 0, 0);
 
 		static void Main(string[] args)
@@ -156,58 +152,107 @@ namespace AngbandTileThief
 			}
 
 			var ideal = bmps.Where(x => x.Width == TILE_SIZE && x.Height == TILE_SIZE).ToArray();
-			var texture = new Bitmap(TILE_SIZE, TILE_SIZE, PixelFormat.Format32bppPArgb);
+			var texture = new Bitmap(TILE_SIZE*2, TILE_SIZE*2, PixelFormat.Format32bppPArgb);
 			for (var x = 0; x < TILE_SIZE; x++)
 			{
 				for (var y = 0; y < TILE_SIZE; y++)
 				{
 					var pixels = ideal.Select(b=>b.GetPixel(x,y)).Where(c=>c!=m_transp).ToArray();
-
+					if (pixels.Length == 0) continue;
 					var average = Average(pixels);
 					var ordered = pixels.GroupBy(c => Distance(c, average)).OrderByDescending(g => g.Count());
 					var first = ordered.First();
-					if (first.Count() > 5)
+					if (first.Count() > 3)
 					{
-						texture.SetPixel(x, y, Average(first));
+						texture.SetPixel(x + TILE_SIZE / 2, y + TILE_SIZE / 2, Average(first));
 					}
 				}
 			}
 			texture.Save(@"d:\\text.png", ImageFormat.Png);
 
+
+			var arr = GameCore.Misc.Point.Zero.GetSpiral(7).ToArray();
+
 			foreach (var bitmap in ideal)
 			{
 				var b = new Bitmap(TILE_SIZE, TILE_SIZE, PixelFormat.Format32bppPArgb);
+				using (var gr = Graphics.FromImage(b))
+				{
+					gr.Clear(Color.Empty);
+				}
+				var fill = new bool[TILE_SIZE+2, TILE_SIZE+2];
+				fill[1, 1] = true;
+				fill[TILE_SIZE, 1] = true;
+				fill[1, TILE_SIZE] = true;
+				fill[TILE_SIZE, TILE_SIZE] = true;
+				var aa = arr.OrderBy(a => Distance(texture, bitmap, a.X, a.Y)).First();
+				var flag = false;
+				do
+				{
+					flag = false;
+					for (var x = 0; x < TILE_SIZE; x++)
+					{
+						for (var y = 0; y < TILE_SIZE; y++)
+						{
+							if (fill[x + 1, y + 1]) continue;
+							if (!new GameCore.Misc.Point(x + 1, y + 1).AllNeighbours.Any(p => fill[p.X, p.Y])) continue;
+							if (Distance(bitmap.GetPixel(x, y), texture.GetPixel(x + TILE_SIZE/2 + aa.X, y + TILE_SIZE/2 + aa.Y)) < 10)
+							{
+								fill[x + 1, y + 1] = true;
+								flag = true;
+							}
+							else
+							{
+								b.SetPixel(x, y, bitmap.GetPixel(x, y));
+							}
+						}
+					}
+				} while (flag);
+
 				for (var x = 0; x < TILE_SIZE; x++)
 				{
 					for (var y = 0; y < TILE_SIZE; y++)
 					{
-						if (Distance(bitmap.GetPixel(x, y), texture.GetPixel(x, y)) <2)
-						{
-							b.SetPixel(x, y, Color.Empty);
-						}
-						else
-						{
-							b.SetPixel(x, y, bitmap.GetPixel(x, y));
-						}
+						if (fill[x + 1, y + 1]) continue;
+						if (new GameCore.Misc.Point(x + 1, y + 1).AllNeighbours.All(p => fill[p.X, p.Y])) continue;
+						b.SetPixel(x, y, bitmap.GetPixel(x, y));
 					}
 				}
-				b.Save(@"d:\\u" + uu++ + ".png", ImageFormat.Png);
+
+				
+				b.Save(@"d:\\u" + m_uu++ + ".png", ImageFormat.Png);
 			}
 		}
 
-		private static Color Average(IEnumerable<Color> pixels)
+		private static double Distance(Bitmap texture, Bitmap bmp, int _dx, int _dy)
 		{
-			var count = pixels.Count();
-			var averageR = pixels.Sum(c => c.R) / count;
-			var averageG = pixels.Sum(c => c.G) / count;
-			var averageB = pixels.Sum(c => c.B) / count;
-			var average = Color.FromArgb(255, averageR, averageG, averageB);
+			var result = 0.0;
+			for (var x = 0; x < bmp.Width; x++)
+			{
+				for (var y = 0; y < bmp.Height; y++)
+				{
+					var tc = texture.GetPixel(x + TILE_SIZE/2 + _dx, y + TILE_SIZE/2 + _dy);
+					if (tc.A == 0) continue;
+					var bc = bmp.GetPixel(x, y);
+					result += Distance(tc, bc);
+				}
+			}
+			return result;
+		}
+
+		private static Color Average(IEnumerable<Color> _pixels)
+		{
+			var count = _pixels.Count();
+			var averageR = _pixels.Sum(c => (double)c.R) / count;
+			var averageG = _pixels.Sum(c => (double)c.G) / count;
+			var averageB = _pixels.Sum(c => (double)c.B) / count;
+			var average = Color.FromArgb(255, (int)Math.Round(averageR), (int)Math.Round(averageG), (int)Math.Round(averageB));
 			return average;
 		}
 
 		public static double Distance(Color a, Color b)
 		{
-			var pow = Math.Pow((a.R - b.R)*(a.R - b.R) + (a.G - b.G)*(a.G - b.G) + (a.B - b.B)*(a.B - b.B), 1.0/3);
+			var pow = Math.Sqrt((a.R - b.R)*(a.R - b.R) + (a.G - b.G)*(a.G - b.G) + (a.B - b.B)*(a.B - b.B));
 			return (int)(pow/2);
 		}
 

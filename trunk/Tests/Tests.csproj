@@ -50,6 +50,7 @@
     <Compile Include="AbstractGameTestX.cs" />
     <Compile Include="AbstractLanguageTest.cs" />
     <Compile Include="FColorTests.cs" />
+    <Compile Include="HelloWorld100.cs" />
     <Compile Include="HelloWorld2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RusLangTests.cs" />
