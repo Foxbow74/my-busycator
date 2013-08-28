@@ -382,6 +382,16 @@ namespace ResourceWizard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap global4 {
+            get {
+                object obj = ResourceManager.GetObject("global4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap gold_plated_16x16 {
             get {
                 object obj = ResourceManager.GetObject("gold_plated_16x16", resourceCulture);
@@ -395,6 +405,26 @@ namespace ResourceWizard.Properties {
         internal static string malenicks {
             get {
                 return ResourceManager.GetString("malenicks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap minecraft_tiles_big {
+            get {
+                object obj = ResourceManager.GetObject("minecraft_tiles_big", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap mountain_landscape_23 {
+            get {
+                object obj = ResourceManager.GetObject("mountain_landscape_23", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

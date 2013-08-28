@@ -51,8 +51,9 @@ namespace ResourceWizard.VMs
 
 		private void ExecuteAddCommand(object _obj)
 		{
-			var d = new XTileInfoVM();;
+			var d = new XTileInfoVM();
 			m_xTileInfoVM.Parent.Children.Add(d);
+			d = Manager.Instance.XClient.Get<XTileInfoVM>(d.Uid);
 			d.Texture = Texture;
             d.Opacity = 1;
 			d.X = CursorX/Constants.TILE_SIZE;

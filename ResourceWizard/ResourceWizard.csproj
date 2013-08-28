@@ -388,6 +388,18 @@
   <ItemGroup>
     <None Include="Resources\traps_preview_01.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TileSetVX___Global_4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ac776c9ccb4fdc82243068f16262f8c4_500_500.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\minecraft_tiles_big.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\mountain_landscape_23.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

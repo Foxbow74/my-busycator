@@ -304,4 +304,13 @@
   <data name="traps_64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\traps_preview_01.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="global4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\TileSetVX___Global_4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="minecraft_tiles_big" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\minecraft_tiles_big.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mountain_landscape_23" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\mountain_landscape_23.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
