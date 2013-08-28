@@ -14,6 +14,11 @@ namespace Tests
 	[TestClass]
 	public abstract class AbstractGameTestX
 	{
+		static AbstractGameTestX()
+		{
+			Constants.GAME_MODE = false;
+		}
+
 		public virtual void SendKey(ConsoleKey _key, EKeyModifiers _modifiers = EKeyModifiers.NONE)
 		{
 			World.TheWorld.KeyPressed(_key, _modifiers);

@@ -161,7 +161,7 @@ namespace OpenTKUi
 		{
 			m_resourceProvider.Dispose();
 			m_drawHelper.Dispose();
-			m_tileMapRenderer.Dispose();
+			if(m_tileMapRenderer!=null)m_tileMapRenderer.Dispose();
 		}
 
 		protected override void OnResize(EventArgs _e)

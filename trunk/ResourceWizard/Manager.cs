@@ -79,6 +79,7 @@ namespace ResourceWizard
 			m_ttextures.Add(ETextureSet.global4, new Image(Scale(Resources.global4, 32), false, false));
 			m_ttextures.Add(ETextureSet.minecraft_tiles_big, new Image(Scale(Resources.minecraft_tiles_big, 32), false, false));
 			m_ttextures.Add(ETextureSet.mountain_landscape_23, new Image(Scale(Resources.mountain_landscape_23, 32), false, false));
+			m_ttextures.Add(ETextureSet.my32x32, new Image(Scale(Resources.my32x32, 32), false, false));
 		}
 
 		public XResourceRootVM XRoot

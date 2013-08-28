@@ -226,14 +226,6 @@ namespace GameCore.Essences
 						}
 						var thing = (Essence) Activator.CreateInstance(_type, material);
 						Add(thing);
-						//var key = new Tuple<ETileset, Material, int>(thing.Tileset, material, thing.TileIndex);
-
-						//FakedThing value;
-						//if (!m_fakedThings.TryGetValue(key, out value))
-						//{
-						//    value = new FakedThing(thing);
-						//    m_fakedThings.Add(key, value);
-						//}
 					}
 				}
 			}

@@ -37,7 +37,7 @@ namespace GameUi
 					var set = new TileSet();
 					AllTiles.Add(xTileSet.Tileset, set);
 					var array = xTileSet.Children.OrderBy(_info => _info.Order).ToArray();
-					for (int index = 0; index < array.Length; index++)
+					for (var index = 0; index < array.Length; index++)
 					{
 						var tileInfo = array[index];
 						var atile = Rp.CreateTile(tileInfo.Cx, tileInfo.Cy, tileInfo.Color.GetFColor());

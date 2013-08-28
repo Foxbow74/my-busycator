@@ -1,10 +1,7 @@
 ﻿using System.Collections.Generic;
-using GameCore.Essences;
-using GameCore.Misc;
 using GameCore.Storage;
 using GameCore.Storage.XResourceEssences;
 using XTransport;
-using XTransport.Client;
 
 namespace GameCore.Storeable
 {

@@ -45,6 +45,7 @@ namespace ResourceWizard
 		traps_64,
 		global4,
 		minecraft_tiles_big,
-		mountain_landscape_23
+		mountain_landscape_23,
+		my32x32
 	}
 }

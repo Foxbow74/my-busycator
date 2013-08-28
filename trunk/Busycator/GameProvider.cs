@@ -46,6 +46,7 @@ namespace Busycator
 		{
 			base.OnLoad(_e);
 			m_game.LoadContent(ResourceProvider);
+
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;
 			OnLoadFinished();
 		}

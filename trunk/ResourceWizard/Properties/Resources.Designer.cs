@@ -431,6 +431,16 @@ namespace ResourceWizard.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap my32x32 {
+            get {
+                object obj = ResourceManager.GetObject("my32x32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap navigate_left {
             get {
                 object obj = ResourceManager.GetObject("navigate_left", resourceCulture);
