@@ -25,7 +25,7 @@ namespace ResourceWizard
 		XClient m_resourceCli;
 		
 		readonly Dictionary<ETextureSet, Image> m_textures = new Dictionary<ETextureSet, Image>();
-		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>>();
+		readonly Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool, bool, bool>, Bitmap>> m_tiles = new Dictionary<ETextureSet, Dictionary<Tuple<int, int, FColor, bool, bool, bool, bool>, Bitmap>>();
 		readonly Dictionary<ETextureSet, Image> m_ttextures = new Dictionary<ETextureSet, Image>();
 		private IEnumerable<Essence> m_allEssences;
 
@@ -131,95 +131,96 @@ namespace ResourceWizard
 				{
 					if (!m_ttextures.TryGetValue(_set, out value))
 					{
-						var scale = 1;
-						Bitmap bmp;
-						switch (_set)
-						{
-							case ETextureSet.RJ:
-								bmp = Resources.redjack15v;
-								break;
-							case ETextureSet.RB1:
-								bmp = Resources.RantingRodent_Brick_01;
-								break;
-							case ETextureSet.RB2:
-								bmp = Resources.RantingRodent_Brick_02;
-								break;
-							case ETextureSet.RN1:
-								bmp = Resources.RantingRodent_Natural_01;
-								break;
-							case ETextureSet.RN2:
-								bmp = Resources.RantingRodent_Natural_02;
-								break;
-							case ETextureSet.GP:
-								bmp = Resources.gold_plated_16x16;
-								break;
-							case ETextureSet.NH:
-								bmp = Resources.nethack;
-								break;
-							case ETextureSet.HM:
-								bmp = Resources.aq;
-								break;
-							case ETextureSet.PH:
-								bmp = Resources.Phoebus_16x16;
-								break;
-							case ETextureSet.U4:
-								bmp = Resources.Ultima4;
-								break;
-							case ETextureSet.U5:
-								bmp = Resources.Ultima5;
-								break;
-							case ETextureSet.WC_WS:
-								bmp = Resources.wintersnow;
-								break;
-							case ETextureSet.WC_SG:
-								bmp = Resources.summergrass;
-								break;
-							case ETextureSet.WC_SW:
-								bmp = Resources.summerwater;
-								break;
-							case ETextureSet.dg_armor32:
-								bmp = Resources.dg_armor32;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster1:
-								bmp = Resources.dg_monster132;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster2:
-								bmp = Resources.dg_monster232;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster3:
-								bmp = Resources.dg_monster332;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster4:
-								bmp = Resources.dg_monster432;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster5:
-								bmp = Resources.dg_monster532;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster6:
-								bmp = Resources.dg_monster632;
-								scale = 2;
-								break;
-							case ETextureSet.dg_monster7:
-								bmp = Resources.dg_monster732;
-								scale = 2;
-								break;
-							default:
-								throw new ArgumentOutOfRangeException();
-						}
-						if(scale==2)
-						{
-							bmp = Scale(bmp);
-						}
+						throw new NotImplementedException("А на хуа?");
+						//var scale = 1;
+						//Bitmap bmp;
+						//switch (_set)
+						//{
+						//	case ETextureSet.RJ:
+						//		bmp = Resources.redjack15v;
+						//		break;
+						//	case ETextureSet.RB1:
+						//		bmp = Resources.RantingRodent_Brick_01;
+						//		break;
+						//	case ETextureSet.RB2:
+						//		bmp = Resources.RantingRodent_Brick_02;
+						//		break;
+						//	case ETextureSet.RN1:
+						//		bmp = Resources.RantingRodent_Natural_01;
+						//		break;
+						//	case ETextureSet.RN2:
+						//		bmp = Resources.RantingRodent_Natural_02;
+						//		break;
+						//	case ETextureSet.GP:
+						//		bmp = Resources.gold_plated_16x16;
+						//		break;
+						//	case ETextureSet.NH:
+						//		bmp = Resources.nethack;
+						//		break;
+						//	case ETextureSet.HM:
+						//		bmp = Resources.aq;
+						//		break;
+						//	case ETextureSet.PH:
+						//		bmp = Resources.Phoebus_16x16;
+						//		break;
+						//	case ETextureSet.U4:
+						//		bmp = Resources.Ultima4;
+						//		break;
+						//	case ETextureSet.U5:
+						//		bmp = Resources.Ultima5;
+						//		break;
+						//	case ETextureSet.WC_WS:
+						//		bmp = Resources.wintersnow;
+						//		break;
+						//	case ETextureSet.WC_SG:
+						//		bmp = Resources.summergrass;
+						//		break;
+						//	case ETextureSet.WC_SW:
+						//		bmp = Resources.summerwater;
+						//		break;
+						//	case ETextureSet.dg_armor32:
+						//		bmp = Resources.dg_armor32;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster1:
+						//		bmp = Resources.dg_monster132;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster2:
+						//		bmp = Resources.dg_monster232;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster3:
+						//		bmp = Resources.dg_monster332;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster4:
+						//		bmp = Resources.dg_monster432;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster5:
+						//		bmp = Resources.dg_monster532;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster6:
+						//		bmp = Resources.dg_monster632;
+						//		scale = 2;
+						//		break;
+						//	case ETextureSet.dg_monster7:
+						//		bmp = Resources.dg_monster732;
+						//		scale = 2;
+						//		break;
+						//	default:
+						//		throw new ArgumentOutOfRangeException();
+						//}
+						//if(scale==2)
+						//{
+						//	bmp = Scale(bmp);
+						//}
 
-						value = new Image(bmp, false, false);
+						//value = new Image(bmp, false, false);
 
-						m_ttextures[_set] = value;
+						//m_ttextures[_set] = value;
 					}
 				}
 				else
@@ -247,37 +248,28 @@ namespace ResourceWizard
 
 			using (var gr = Graphics.FromImage(result))
 			{
-				if (true)
+				gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				var tile = new Bitmap(_tileSize + 2, _tileSize + 2, PixelFormat.Format32bppPArgb);
+				using (var grTile = Graphics.FromImage(tile))
 				{
-					gr.InterpolationMode = InterpolationMode.HighQualityBicubic;
-					var tile = new Bitmap(_tileSize + 2, _tileSize + 2, PixelFormat.Format32bppPArgb);
-					using (var grTile = Graphics.FromImage(tile))
+					grTile.InterpolationMode = InterpolationMode.Default;
+					for (var i = 0; i < _bmp.Width/_tileSize; i++)
 					{
-						grTile.InterpolationMode = InterpolationMode.Default;
-						for (var i = 0; i < _bmp.Width / _tileSize; i++)
+						for (var j = 0; j < _bmp.Height/_tileSize; j++)
 						{
-							for (var j = 0; j < _bmp.Height/_tileSize; j++)
-							{
-								grTile.Clear(Color.Empty);
-								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 1, _tileSize, _tileSize), (float) i*_tileSize, (float) j*_tileSize, _tileSize, _tileSize, GraphicsUnit.Pixel);
+							grTile.Clear(Color.Empty);
+							grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 1, _tileSize, _tileSize), (float) i*_tileSize, (float) j*_tileSize, _tileSize, _tileSize, GraphicsUnit.Pixel);
 
 
-								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 0, _tileSize, 1), (float) i*_tileSize, (float) j*_tileSize, _tileSize, 1, GraphicsUnit.Pixel); //top
-								grTile.DrawImage(srcImage.Bitmap, new Rectangle(0, 1, 1, _tileSize), (float) i*_tileSize, (float) j*_tileSize, 1, _tileSize, GraphicsUnit.Pixel); //left
+							grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, 0, _tileSize, 1), (float) i*_tileSize, (float) j*_tileSize, _tileSize, 1, GraphicsUnit.Pixel); //top
+							grTile.DrawImage(srcImage.Bitmap, new Rectangle(0, 1, 1, _tileSize), (float) i*_tileSize, (float) j*_tileSize, 1, _tileSize, GraphicsUnit.Pixel); //left
 
-								grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, _tileSize + 1, _tileSize, 1), (float)i * _tileSize, (float)j * _tileSize + _tileSize - 1, _tileSize, 1, GraphicsUnit.Pixel); //bottom
-								grTile.DrawImage(srcImage.Bitmap, new Rectangle(_tileSize + 1, 1, 1, _tileSize), (float)i * _tileSize + _tileSize - 1, (float)j * _tileSize, 1, _tileSize, GraphicsUnit.Pixel); //right
+							grTile.DrawImage(srcImage.Bitmap, new Rectangle(1, _tileSize + 1, _tileSize, 1), (float) i*_tileSize, (float) j*_tileSize + _tileSize - 1, _tileSize, 1, GraphicsUnit.Pixel); //bottom
+							grTile.DrawImage(srcImage.Bitmap, new Rectangle(_tileSize + 1, 1, 1, _tileSize), (float) i*_tileSize + _tileSize - 1, (float) j*_tileSize, 1, _tileSize, GraphicsUnit.Pixel); //right
 
-								gr.DrawImage(tile, new Rectangle(i * Constants.TILE_SIZE, j * Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE), new Rectangle(1, 1, _tileSize, _tileSize), GraphicsUnit.Pixel);
-							}
+							gr.DrawImage(tile, new Rectangle(i*Constants.TILE_SIZE, j*Constants.TILE_SIZE, Constants.TILE_SIZE, Constants.TILE_SIZE), new Rectangle(1, 1, _tileSize, _tileSize), GraphicsUnit.Pixel);
 						}
-						//result.Save(@"d:\\bmp" + m_uu++ + ".png", ImageFormat.Png);
 					}
-				}
-				else
-				{
-					gr.InterpolationMode = InterpolationMode.High;
-					gr.DrawImage(srcImage.Bitmap, new Rectangle(0, 0, result.Width, result.Height), new Rectangle(0, 0, _bmp.Width, _bmp.Height), GraphicsUnit.Pixel);
 				}
 			}
 			return result;
@@ -288,29 +280,32 @@ namespace ResourceWizard
 	        get
 	        {
                 if (_tile == null) return null;
-	            return this[_tile.Texture, _tile.X, _tile.Y, _fColor, _removeTransparency, _grayScale, _tile.Parent is XTerrainSetVM];
+	            return this[_tile.Texture, _tile.X, _tile.Y, _fColor, _removeTransparency, _grayScale, _tile.Parent is XTerrainSetVM, _tile.PlusHalfX, _tile.PlusHalfY];
 	        }
 	    }
 
-		public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale, bool _isTerrain]
+		public Bitmap this[ETextureSet _texture, int _x, int _y, FColor _fColor, bool _removeTransparency, bool _grayScale, bool _isTerrain, bool _plusHalfX, bool _plusHalfY]
 		{
 			get
 			{
-                Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap> dictionary;
+				Dictionary<Tuple<int, int, FColor, bool, bool, bool, bool>, Bitmap> dictionary;
 				if (!m_tiles.TryGetValue(_texture, out dictionary))
 				{
-                    dictionary = new Dictionary<Tuple<int, int, FColor, bool, bool>, Bitmap>();
+					dictionary = new Dictionary<Tuple<int, int, FColor, bool, bool, bool, bool>, Bitmap>();
 					m_tiles[_texture] = dictionary;
 				}
 				Bitmap bitmap;
-                var key = new Tuple<int, int, FColor, bool, bool>(_x, _y, _fColor, _removeTransparency,_grayScale);
+				var key = new Tuple<int, int, FColor, bool, bool, bool, bool>(_x, _y, _fColor, _removeTransparency, _grayScale, _plusHalfX, _plusHalfY);
 				if (!dictionary.TryGetValue(key, out bitmap))
 				{
 					var txtr = this[_texture, _isTerrain];
 					bitmap = new Bitmap(Constants.TILE_SIZE, Constants.TILE_SIZE);
 					using(var gr = Graphics.FromImage(bitmap))
 					{
-						gr.DrawImage(txtr, 0, 0, new Rectangle(Constants.TILE_SIZE * _x, Constants.TILE_SIZE * _y, Constants.TILE_SIZE, Constants.TILE_SIZE), GraphicsUnit.Pixel);
+						gr.DrawImage(txtr, 0, 0, new Rectangle(
+							Constants.TILE_SIZE * _x + (_plusHalfX ? (Constants.TILE_SIZE / 2) : 0), 
+							Constants.TILE_SIZE * _y + (_plusHalfY ? (Constants.TILE_SIZE / 2) : 0), 
+							Constants.TILE_SIZE, Constants.TILE_SIZE), GraphicsUnit.Pixel);
 					}
 					var transparent = txtr.GetPixel(0, 0);
 					var rct = new Rct(0, 0, Constants.TILE_SIZE, Constants.TILE_SIZE);
@@ -397,7 +392,7 @@ namespace ResourceWizard
 
 		private void PackTiles()
 		{
-			var tileInfos = XRoot.TerrainSets.Cast<XAbstractTileSetVM>().Union(XRoot.TileSets).SelectMany(_vm => _vm.Children).GroupBy(_vm => Tuple.Create(_vm.Texture, _vm.X, _vm.Y, _vm.RemoveTransparency, _vm.GrayScale)).ToList();
+			var tileInfos = XRoot.TerrainSets.Cast<XAbstractTileSetVM>().Union(XRoot.TileSets).SelectMany(_vm => _vm.Children).GroupBy(_vm => Tuple.Create(_vm.Texture, _vm.X, _vm.Y, _vm.RemoveTransparency, _vm.GrayScale, _vm.PlusHalfX, _vm.PlusHalfY)).ToList();
 			var size = (int)Math.Sqrt(tileInfos.Count) + 1;
 			var sizeInPixels = size * Constants.TILE_SIZE;
 
@@ -453,7 +448,7 @@ namespace ResourceWizard
                     
 					var key = grouping.Key;
 
-					gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White.UpdateAlfa(xTileInfoVM.Color.A), key.Item4, key.Item5, xTileInfoVM.Parent is XTerrainSetVM], dstRect, srcRect, GraphicsUnit.Pixel);
+					gr.DrawImage(this[key.Item1, key.Item2, key.Item3, FColor.White.UpdateAlfa(xTileInfoVM.Color.A), key.Item4, key.Item5, xTileInfoVM.Parent is XTerrainSetVM, key.Item6, key.Item7], dstRect, srcRect, GraphicsUnit.Pixel);
 				}
 			}
 			bmp.Save(Constants.RESOURCES_PNG_FILE, ImageFormat.Png);

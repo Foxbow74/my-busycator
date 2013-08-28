@@ -39,7 +39,7 @@
                         <MouseBinding MouseAction="RightClick" Command="{Binding TextureClick}"/>
                     </Image.InputBindings>
                 </Image>
-                <Border Canvas.Left="{Binding CursorX}" Canvas.Top="{Binding CursorY}" Width="{Binding TileSize}" Height="{Binding TileSize}" BorderThickness="2" BorderBrush="Yellow"/>
+				<Border Canvas.Left="{Binding ScreenCursorX}" Canvas.Top="{Binding ScreenCursorY}" Width="{Binding TileSize}" Height="{Binding TileSize}" BorderThickness="2" BorderBrush="Yellow"/>
             </Canvas>
             <StackPanel Grid.Column="2"  Orientation="Vertical">
                 <Slider Minimum="1" Maximum="3" x:Name="sl" Value="1" Margin="10,0,0,0" Width="200"/>

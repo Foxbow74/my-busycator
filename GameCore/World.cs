@@ -22,9 +22,6 @@ namespace GameCore
 
 		static XResourceClient m_resourceCli;
 
-		/// <summary>
-		/// содержит список активных в данный момент существ
-		/// </summary>
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
 		private readonly Dictionary<uint, Tuple<IRemoteActivation, Point>> m_remoteActivation = new Dictionary<uint, Tuple<IRemoteActivation, Point>>();
@@ -105,10 +102,9 @@ namespace GameCore
 				WorldTick = 1;
 			}
 			var done = new List<Creature>();
-			Creature creature = null;
 			while (true)
 			{
-				creature = CreatureManager.FirstActiveCreature;
+				var creature = CreatureManager.FirstActiveCreature;
 
 				#region не давать ходить дважды до перерисовки);
 

@@ -27,6 +27,9 @@ namespace ResourceWizard.StoreableVMs
 		[X("X")] private IXValue<int> m_x;
 		[X("Y")] private IXValue<int> m_y;
 		[X("Opacity")] private IXValue<float> m_opacity;
+
+		[X("PlusHalfX")]private IXValue<bool> m_plusHalfX;
+		[X("PlusHalfY")]private IXValue<bool> m_plusHalfY;
 #pragma warning restore 649
 
 		private TextureVM m_textureVM;
@@ -206,6 +209,28 @@ namespace ResourceWizard.StoreableVMs
 			}
 		}
 
+		public bool PlusHalfX
+		{
+			get { return m_plusHalfX.Value; }
+			set
+			{
+				m_plusHalfX.Value = value;
+				OnPropertyChanged(() => PlusHalfX);
+				RefreshImage();
+			}
+		}
+
+		public bool PlusHalfY
+		{
+			get { return m_plusHalfY.Value; }
+			set
+			{
+				m_plusHalfY.Value = value;
+				OnPropertyChanged(() => PlusHalfY); 
+				RefreshImage();
+			}
+		}
+
 		public bool GrayScale
 		{
 			get { return m_grayScale.Value; }
@@ -223,7 +248,7 @@ namespace ResourceWizard.StoreableVMs
 
 		public Bitmap Bitmap
 		{
-			get { return Manager.Instance[Texture, X, Y, Color.GetFColor(), RemoveTransparency, GrayScale, Parent is XTerrainSetVM]; }
+			get { return Manager.Instance[Texture, X, Y, Color.GetFColor(), RemoveTransparency, GrayScale, Parent is XTerrainSetVM, PlusHalfX, PlusHalfY]; }
 		}
 
 		private void ExecutePasteCommand(object _obj)

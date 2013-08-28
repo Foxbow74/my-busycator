@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using ClientCommonWpf;
 using GameCore;
-using GameUi;
 using ResourceWizard.StoreableVMs;
+using XTransport.Server.Storage;
 
 namespace ResourceWizard.VMs
 {
@@ -29,15 +29,20 @@ namespace ResourceWizard.VMs
 
 		public TextureVM(XTileInfoVM _xTileInfoVM)
 		{
-			Texture = _xTileInfoVM.Texture;
-			CursorX = _xTileInfoVM.X * Constants.TILE_SIZE;
-			CursorY = _xTileInfoVM.Y * Constants.TILE_SIZE;
 			m_xTileInfoVM = _xTileInfoVM;
+			Texture = _xTileInfoVM.Texture;
+			CursorX = _xTileInfoVM.X;
+			CursorY = _xTileInfoVM.Y;
 			Sets = new ObservableCollection<ETextureSet>(Enum.GetValues(typeof(ETextureSet)).Cast<ETextureSet>().OrderBy(_set => _set.ToString()));
 			TextureClick = new RelayCommand(ExecuteTextureClick);
 			SetCommand = new RelayCommand(ExecuteSetCommand, CanSetCommand);
 			AddCommand = new RelayCommand(ExecuteAddCommand, CanAddCommand);
+			Subscribe(m_xTileInfoVM, info => info.PlusHalfX, _changed => OnPropertyChanged(() => ScreenCursorX));
+			Subscribe(m_xTileInfoVM, info => info.PlusHalfY, _changed => OnPropertyChanged(() => ScreenCursorY));
 		}
+
+		public int ScreenCursorX { get { return CursorX * Constants.TILE_SIZE + (m_xTileInfoVM.PlusHalfX ? (Constants.TILE_SIZE / 2) : 0); } }
+		public int ScreenCursorY { get { return CursorY * Constants.TILE_SIZE + (m_xTileInfoVM.PlusHalfY ? (Constants.TILE_SIZE / 2) : 0); } }
 
 		private bool CanAddCommand(object _obj)
 		{
@@ -56,8 +61,8 @@ namespace ResourceWizard.VMs
 			d = Manager.Instance.XClient.Get<XTileInfoVM>(d.Uid);
 			d.Texture = Texture;
             d.Opacity = 1;
-			d.X = CursorX/Constants.TILE_SIZE;
-			d.Y = CursorY/Constants.TILE_SIZE;
+			d.X = CursorX;
+			d.Y = CursorY;
 			d.Order = m_xTileInfoVM.Parent.Children.Max(_vm => _vm.Order) + 1;
 			m_xTileInfoVM.Parent.SelectedItem = d;
             m_xTileInfoVM.Parent.RefreshChildren();
@@ -66,17 +71,15 @@ namespace ResourceWizard.VMs
 		private void ExecuteSetCommand(object _obj)
 		{
 			m_xTileInfoVM.Texture = Texture;
-			m_xTileInfoVM.X = CursorX / Constants.TILE_SIZE;
-			m_xTileInfoVM.Y = CursorY / Constants.TILE_SIZE;
+			m_xTileInfoVM.X = CursorX;
+			m_xTileInfoVM.Y = CursorY;
 			m_xTileInfoVM.RefreshImage();
 		}
 
 		private void ExecuteTextureClick(object _o)
 		{
-			CursorX = (int)(MousePoint.X / TileSize) * TileSize;
-			CursorY = (int)(MousePoint.Y / TileSize) * TileSize;
-			OnPropertyChanged(() => CursorX);
-			OnPropertyChanged(() => CursorY);
+			CursorX = (int)(MousePoint.X / TileSize);
+			CursorY = (int)(MousePoint.Y / TileSize);
 		}
 
 		public ObservableCollection<ETextureSet> Sets { get; private set; }
@@ -102,6 +105,7 @@ namespace ResourceWizard.VMs
 			{
 				m_cursorX = value;
 				OnPropertyChanged(() => CursorX);
+				OnPropertyChanged(() => ScreenCursorX);
 			}
 		}
 
@@ -112,6 +116,7 @@ namespace ResourceWizard.VMs
 			{
 				m_cursorY = value;
 				OnPropertyChanged(() => CursorY);
+				OnPropertyChanged(() => ScreenCursorY);
 			}
 		}
 

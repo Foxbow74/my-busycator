@@ -113,7 +113,7 @@ namespace ClientCommonWpf
 		private readonly Dictionary<INotifyPropertyChanged, List<Tuple<string, Action<INotifyPropertyChanged>>>> m_subscribers = new Dictionary<INotifyPropertyChanged, List<Tuple<string, Action<INotifyPropertyChanged>>>>();
 
 
-		protected void Subscribe<TNotifier, T>(TNotifier _notifier, Expression<Func<T>> _property,
+		protected void Subscribe<TNotifier, T>(TNotifier _notifier, Expression<Func<TNotifier, T>> _property,
 		                                       Action<INotifyPropertyChanged> _handler)
 			where TNotifier : INotifyPropertyChanged
 		{
