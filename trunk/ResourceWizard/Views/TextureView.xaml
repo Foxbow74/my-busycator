@@ -19,8 +19,13 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Canvas>
+                <Canvas.RenderTransform>
+                    <TranslateTransform Y="{Binding ElementName=kk, Path=Value}"/>
+                </Canvas.RenderTransform>
                 <Canvas.LayoutTransform>
-                    <ScaleTransform ScaleX="{Binding ElementName=sl, Path=Value}" ScaleY="{Binding ElementName=sl, Path=Value}"/>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="{Binding ElementName=sl, Path=Value}" ScaleY="{Binding ElementName=sl, Path=Value}"/>
+                    </TransformGroup>
                 </Canvas.LayoutTransform>
                 <Image Source="{Binding TextureSource}" SnapsToDevicePixels="True" Stretch="None" Canvas.Top="0" ccw:PointHandler.HandleMouse="True" ccw:PointHandler.LastPoint="{Binding MousePoint, Mode=OneWayToSource}">
                     <Image.ContextMenu>
@@ -36,7 +41,10 @@
                 </Image>
                 <Border Canvas.Left="{Binding CursorX}" Canvas.Top="{Binding CursorY}" Width="{Binding TileSize}" Height="{Binding TileSize}" BorderThickness="2" BorderBrush="Yellow"/>
             </Canvas>
-            <Slider Grid.Column="2" Minimum="1" Maximum="3" x:Name="sl" Value="1" Margin="10,0,0,0" Width="200"/>
+            <StackPanel Grid.Column="2"  Orientation="Vertical">
+                <Slider Minimum="1" Maximum="3" x:Name="sl" Value="1" Margin="10,0,0,0" Width="200"/>
+                <Slider Minimum="-2000" Maximum="0" x:Name="kk" Value="0" Margin="10,0,0,0" Width="200"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </UserControl>

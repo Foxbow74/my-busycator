@@ -43,5 +43,8 @@ namespace ResourceWizard
 		dg_dragon32,
 		dg_classm32,
 		traps_64,
+		global4,
+		minecraft_tiles_big,
+		mountain_landscape_23
 	}
 }
