@@ -129,19 +129,19 @@ namespace GameCore.Mapping.Layers
 			return result.AsNoun(_sex, true);
 		}
 
-		private static void PrepareNicks(string _filename, Random _rnd)
-		{
-			var txt = File.ReadAllText(_filename);
-			while (txt.IndexOf('(') > 0)
-			{
-				txt = txt.Replace(txt.Substring(txt.IndexOf('('), 3), "");
-			}
+		//private static void PrepareNicks(string _filename, Random _rnd)
+		//{
+		//	var txt = File.ReadAllText(_filename);
+		//	while (txt.IndexOf('(') > 0)
+		//	{
+		//		txt = txt.Replace(txt.Substring(txt.IndexOf('('), 3), "");
+		//	}
 
-			var names = txt.Split(new[] {",", " ", "\t", Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
-			var randomized = names.Distinct().OrderBy(_s => _rnd.Next());
-			var result = String.Join(",", randomized);
-			File.WriteAllText(_filename, result);
-		}
+		//	var names = txt.Split(new[] {",", " ", "\t", Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+		//	var randomized = names.Distinct().OrderBy(_s => _rnd.Next());
+		//	var result = String.Join(",", randomized);
+		//	File.WriteAllText(_filename, result);
+		//}
 
 		public EMapBlockTypes GetBlockType(Point _blockId)
 		{
