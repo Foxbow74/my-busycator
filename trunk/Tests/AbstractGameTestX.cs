@@ -104,6 +104,9 @@ namespace Tests
 			Profiler.Report();
 			MessageManager.NewMessage -= MessageManagerOnNewMessage;
 			MessageManager.NewWorldMessage -= MessageManagerOnNewWorldMessage;
+			GC.Collect();
+			GC.Collect();
+			GC.WaitForFullGCComplete();
 		}
 	}
 }

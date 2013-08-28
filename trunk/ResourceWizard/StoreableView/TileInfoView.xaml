@@ -35,6 +35,9 @@
 				<Button ToolTip="Выровнять цвет" Command="{Binding AlignColorsCommand}" Content="A"/>
 				<Button ToolTip="Зашумить цвет" Command="{Binding NoiseColorsCommand}" Content="N"/>
 				<Separator/>
+				<ToggleButton ToolTip="Смещение по горизонтали на пол тайла" IsChecked="{Binding PlusHalfX}" Content="X+0.5"/>
+				<ToggleButton ToolTip="Смещение по вертикали на пол тайла" IsChecked="{Binding PlusHalfY}" Content="Y+0.5"/>
+				<Separator/>
 				<Button ToolTip="Копировать" Command="{Binding CopyCommand}" cc:ButtonProperties.Image="{Binding CopyImage}" cc:ButtonProperties.DisabledImage="{Binding CopyImageD}" Style="{StaticResource ib}"/>
 				<Button ToolTip="Вставить" Command="{Binding PasteCommand}" cc:ButtonProperties.Image="{Binding PasteImage}" cc:ButtonProperties.DisabledImage="{Binding PasteImageD}" Style="{StaticResource ib}"/>
 				<Separator/>
