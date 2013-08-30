@@ -6,7 +6,7 @@ using GameCore.Essences;
 
 namespace GameCore.Acts.Movement
 {
-	internal class LeaveBuildingAct : Act, ISpecial
+	public class LeaveBuildingAct : Act, ISpecial
 	{
 		protected override int TakeTicksOnSingleAction { get { return 100; } }
 

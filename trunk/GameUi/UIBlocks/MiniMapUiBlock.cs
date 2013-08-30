@@ -99,9 +99,9 @@ namespace GameUi.UIBlocks
 				for (var j = 0; j < size.Y; ++j)
 				{
 					var pnt = new Point(i, j) - halfSize;
-					var type = World.TheWorld.Surface.GetBlockType(pnt);
+					var type = World.TheWorld.CurrentLayer.GetBlockType(pnt);
                     
-                    //if(World.TheWorld.Surface[pnt].SeenCells.All(_u => _u==0)) continue;
+                    //if(World.TheWorld.CurrentLayer[pnt].SeenCells.All(_u => _u==0)) continue;
 					
                     var color = GetColor(type);
 

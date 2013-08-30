@@ -4,7 +4,7 @@ using GameCore.Materials;
 
 namespace GameCore.Plants
 {
-    class Shrub: Thing
+    public class Shrub: Thing
     {
         private readonly ShrubMaterial m_material;
 

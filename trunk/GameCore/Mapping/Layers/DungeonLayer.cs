@@ -19,10 +19,10 @@ namespace GameCore.Mapping.Layers
 			FogLightness = FogColor.Lightness();
 		}
 
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
+        public override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
 
 
-		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
+        public override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
 
 		public Point EnterCoords { get; private set; }
 
@@ -42,7 +42,17 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		public override float GetFogColorMultiplier(LiveMapCell _liveCell) { return _liveCell.DungeonFogColorMultiplier; }
+	    public override EMapBlockTypes GetBlockType(Point _blockId)
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public override Point GetAvatarStartingBlockId()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public override float GetFogColorMultiplier(LiveMapCell _liveCell) { return _liveCell.DungeonFogColorMultiplier; }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{

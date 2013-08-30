@@ -96,9 +96,9 @@ namespace GameCore.Mapping.Layers
 			}
 		}
 
-		internal override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
+        public override IEnumerable<ETerrains> DefaultWalls { get { yield return ETerrains.STONE_WALL; } }
 
-		internal override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
+        public override IEnumerable<ETerrains> DefaultEmptySpaces { get { yield return ETerrains.STONE_FLOOR; } }
 
 		protected override MapBlock GenerateBlock(Point _blockId)
 		{

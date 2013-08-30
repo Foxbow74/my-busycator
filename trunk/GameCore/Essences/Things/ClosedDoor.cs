@@ -6,7 +6,7 @@ using GameCore.Messages;
 
 namespace GameCore.Essences.Things
 {
-	internal class ClosedDoor : Thing, ICanbeOpened
+	public class ClosedDoor : Thing, ICanbeOpened
 	{
 		private ELockType m_eLockType = ELockType.SIMPLE;
 

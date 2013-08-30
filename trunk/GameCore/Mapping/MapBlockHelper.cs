@@ -6,7 +6,7 @@ using GameCore.Misc;
 
 namespace GameCore.Mapping
 {
-	internal static class MapBlockHelper
+	public static class MapBlockHelper
 	{
 		public static void Clear(BaseMapBlock _block, Random _rnd, WorldLayer _layer, IEnumerable<ETerrains> _defaultTerrains) { Fill(_block, _rnd, _layer, _defaultTerrains, BaseMapBlock.Rect); }
 

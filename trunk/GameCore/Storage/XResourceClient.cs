@@ -4,7 +4,7 @@ using XTransport.Client;
 
 namespace GameCore.Storage
 {
-	internal class XResourceClient : AbstractXClient<EStoreKind>
+	public class XResourceClient : AbstractXClient<EStoreKind>
 	{
 		public override Guid UserUid
 		{
