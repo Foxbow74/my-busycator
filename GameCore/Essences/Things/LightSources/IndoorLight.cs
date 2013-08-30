@@ -3,7 +3,7 @@ using GameCore.Misc;
 
 namespace GameCore.Essences.Things.LightSources
 {
-	internal class IndoorLight : LightSourceThing, ISpecial
+	public class IndoorLight : LightSourceThing, ISpecial
 	{
 		public IndoorLight(LightSource _lightSource, Material _material)
 			: base(EALNouns.IndoorLight, _lightSource, _material) { }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameCore;
+using GameCore.Mapping.Layers;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameUi.UIBlocks;
@@ -32,12 +33,17 @@ namespace GameUi
 			MessageManager.NewWorldMessage += MessageManagerNewWorldMessage;
 		}
 
-		public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
+	    public Stack<UIBlock> UiBlocks
+	    {
+	        get { return m_uiBlocks; }
+	    }
+
+	    public void WindowClientSizeChanged(int _newWidthInCells, int _newHeightInCells)
 		{
 			var newRct = new Rct(0, 0, _newWidthInCells, _newHeightInCells);
-			if (m_uiBlocks.Any(_block => _block.Rct != newRct))
+			if (UiBlocks.Any(_block => _block.Rct != newRct))
 			{
-				foreach (var uiBlock in m_uiBlocks)
+				foreach (var uiBlock in UiBlocks)
 				{
 					uiBlock.Resize(newRct);
 				}
@@ -94,7 +100,7 @@ namespace GameUi
 			else if (_message is OpenUIBlockMessage)
 			{
 				var uiBlock = ((OpenUIBlockMessage) _message).UIBlock;
-				m_uiBlocks.Push(uiBlock);
+				UiBlocks.Push(uiBlock);
 				MouseMove(m_lastMousePos);
 			}
 			else if (_message is SystemMessage)
@@ -105,7 +111,7 @@ namespace GameUi
 						m_gameProvider.Exit();
 						break;
 					case SystemMessage.ESystemMessage.CLOSE_TOP_UI_BLOCK:
-						m_uiBlocks.Pop().Dispose();
+						UiBlocks.Pop().Dispose();
 						m_pressed.Clear();
 						m_downKeys.Clear();
 						MessageManager.SendMessage(this, WorldMessage.Turn);
@@ -120,15 +126,16 @@ namespace GameUi
 		{
 			TileHelper.Init(_resourceProvider, m_gameProvider.DrawHelper);
 			UIBlock.Init(m_gameProvider.DrawHelper);
-			m_uiBlocks.Push(new StartSelectorUiBlock(new Rct(0, 0, 10, 10), this));
 		}
 
-		public void Run()
+        
+
+        public void Run()
 		{
-			m_uiBlocks.Clear();
+			UiBlocks.Clear();
 			World.LetItBeeee(m_gameProvider.GetLanguageProcessors().First());
 			m_mainUiBlock = new MainUiBlock(m_gameProvider.Width / Constants.TILE_SIZE, m_gameProvider.Height / Constants.TILE_SIZE);
-			m_uiBlocks.Push(m_mainUiBlock);
+			UiBlocks.Push(m_mainUiBlock);
 
 			World.TheWorld.UpdateDPoint();
 
@@ -200,15 +207,15 @@ namespace GameUi
 
 			if (m_pressed.Count > 0)
 			{
-				if (m_uiBlocks.Peek() != m_mainUiBlock || World.TheWorld.Avatar.NextAct == null)
+				if (UiBlocks.Peek() != m_mainUiBlock || World.TheWorld.Avatar.NextAct == null)
 				{
 					var tuple = m_pressed.Dequeue();
-					m_uiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
+					UiBlocks.Peek().KeysPressed(tuple.Item1, tuple.Item2);
 					MessageManager.SendMessage(this,WorldMessage.JustRedraw);
 				}
 			}
 
-			if (m_uiBlocks.Peek() == m_mainUiBlock)
+			if (UiBlocks.Peek() == m_mainUiBlock)
 			{
 				if (!m_mainUiBlock.NeedWait)
 				{
@@ -227,7 +234,7 @@ namespace GameUi
 
 		public void Draw()
 		{
-			foreach (var uiBlock in m_uiBlocks.Reverse())
+			foreach (var uiBlock in UiBlocks.Reverse())
 			{
 				uiBlock.DrawBackground();
 				uiBlock.DrawContent();
@@ -240,7 +247,7 @@ namespace GameUi
 			if (m_lastMousePos == _pnt) return;
 
 			m_lastMousePos = _pnt;
-			var uiBlock = m_uiBlocks.Peek();
+			var uiBlock = UiBlocks.Peek();
 
 			if (!uiBlock.Rct.Contains(_pnt)) return;
 			var pnt = _pnt - uiBlock.Rct.LeftTop;
@@ -249,7 +256,7 @@ namespace GameUi
 
 		public void MouseButtonDown(Point _pnt, EMouseButton _button)
 		{
-			var uiBlock = m_uiBlocks.Peek();
+			var uiBlock = UiBlocks.Peek();
 			if (uiBlock.Rct.Contains(_pnt))
 			{
 				var pnt = _pnt - uiBlock.Rct.LeftTop;
@@ -259,7 +266,7 @@ namespace GameUi
 
 		public void MouseButtonUp(Point _pnt, EMouseButton _button)
 		{
-			var uiBlock = m_uiBlocks.Peek();
+			var uiBlock = UiBlocks.Peek();
 			if (uiBlock.Rct.Contains(_pnt))
 			{
 				var pnt = _pnt - uiBlock.Rct.LeftTop;

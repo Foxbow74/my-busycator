@@ -175,11 +175,12 @@ namespace GameCore.Mapping
 		{
 			get
 			{
-				var surface = World.TheWorld.Avatar.GeoInfo.Layer as Surface;
-				if (surface == null || surface.City==null) return null;
-				var blockId = MapBlockId;
-				var building = surface.City.Buildings.FirstOrDefault(_building => _building.BlockId == blockId && _building.Room.RoomRectangle.Contains(InBlockCoords));
-				return building;
+			    return null;
+                //var surface = World.TheWorld.Avatar.GeoInfo.Layer as Surface;
+                //if (surface == null || surface.City==null) return null;
+                //var blockId = MapBlockId;
+                //var building = surface.City.Buildings.FirstOrDefault(_building => _building.BlockId == blockId && _building.Room.RoomRectangle.Contains(InBlockCoords));
+                //return building;
 			}
 		}
 

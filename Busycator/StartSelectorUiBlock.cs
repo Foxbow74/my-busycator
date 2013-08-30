@@ -23,27 +23,27 @@ namespace GameUi.UIBlocks
 					Constants.WORLD_MAP_SIZE = 32;
 					Constants.WORLD_SEED = new Random().Next(10000);
 					//Constants.WORLD_SEED = 2;
-					m_game.Run();
+                    m_game.Run();
 					break;
 				case ConsoleKey.B:
 					Constants.WORLD_MAP_SIZE = 100;
 					Constants.WORLD_SEED = new Random().Next(10000);
-					m_game.Run();
+                    m_game.Run();
 					break;
 				case ConsoleKey.C:
 					Constants.WORLD_MAP_SIZE = 1;
 					Constants.WORLD_SEED = 1;
-					m_game.Run();
+                    m_game.Run();
 					break;
 				case ConsoleKey.D:
 					Constants.WORLD_MAP_SIZE = 1;
 					Constants.WORLD_SEED = 2;
-					m_game.Run();
+                    m_game.Run();
 					break;
 				case ConsoleKey.E:
 					Constants.WORLD_MAP_SIZE = 1;
 					Constants.WORLD_SEED = 0;
-					m_game.Run();
+                    m_game.Run();
 					break;
 			}
 		}

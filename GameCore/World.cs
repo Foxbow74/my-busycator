@@ -25,14 +25,20 @@ namespace GameCore
 		private readonly List<WorldLayer> m_layers = new List<WorldLayer>();
 
 		private readonly Dictionary<uint, Tuple<IRemoteActivation, Point>> m_remoteActivation = new Dictionary<uint, Tuple<IRemoteActivation, Point>>();
+        private static Type m_startingLayerType;
 
-		static World() 
+	    static World() 
 		{
             if (!File.Exists(Constants.RESOURCES_DB_FILE))
             {
                 throw new ApplicationException("Не найдена база ресурсов " + Path.GetFullPath(Constants.RESOURCES_DB_FILE));
             }
 		}
+
+	    public static void SetStartingLayerType<TWorldLayer>() where TWorldLayer : WorldLayer
+	    {
+	        m_startingLayerType = typeof (TWorldLayer);
+	    }
 
 		public World()
 		{
@@ -42,7 +48,13 @@ namespace GameCore
 			CreatureManager = new CreatureManager();
 
 			LiveMap = new LiveMap();
-			m_layers.Add(Surface = new Surface());
+
+		    if (m_startingLayerType == null)
+		    {
+		        throw new ApplicationException("Нужно задать тип стартового уровня");
+		    }
+            m_layers.Add(CurrentLayer = (WorldLayer)Activator.CreateInstance(m_startingLayerType));
+
 			WorldTick = 0;
 		}
 
@@ -83,15 +95,15 @@ namespace GameCore
 
 		public static Random Rnd { get; private set; }
 
-		public Surface Surface { get; private set; }
+        public WorldLayer CurrentLayer { get; private set; }
 
 		public LiveMap LiveMap { get; private set; }
 
 		private void BornAvatar()
 		{
-			Avatar = new Avatar(Surface);
-			AvatarBlockId = Surface.City==null?new Point(-1,-1): Surface.City.CityBlockIds[0];
-			CreatureManager.AddCreature(Avatar, AvatarBlockId * Constants.MAP_BLOCK_SIZE, Point.Zero, Surface);
+			Avatar = new Avatar(CurrentLayer);
+            AvatarBlockId = CurrentLayer.GetAvatarStartingBlockId();
+			CreatureManager.AddCreature(Avatar, AvatarBlockId * Constants.MAP_BLOCK_SIZE, Point.Zero, CurrentLayer);
 			LiveMap.Actualize();
 		}
 

@@ -4,7 +4,7 @@ using GameCore.Creatures;
 
 namespace GameCore.Essences
 {
-	internal class Ring : Item
+	public class Ring : Item
 	{
 		public Ring(Material _material) : base(EALNouns.Ring, _material) { }
 

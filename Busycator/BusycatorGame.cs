@@ -5,29 +5,36 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+using Busycator.Layers;
+using Busycator.Storage;
 using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
+using GameCore.Storage;
+using GameCore.Storage.XResourceEssences;
+using GameCore.Storeable;
 using GameUi;
+using GameUi.UIBlocks;
 using LanguagePack;
 using MagickSetting;
 using OpenTK;
 using OpenTKUi;
-using UnsafeUtils;
+using XTransport.Client;
 
 namespace Busycator
 {
-	public class GameProvider : OpenTKGameProvider
+	public class BusycatorGame : OpenTKGameProvider
 	{
 		const int FPS = 60;
 		private readonly TheGame m_game;
-		private readonly HiResTimer m_hrs = new HiResTimer();
+        private readonly Stopwatch m_stopwatch = new Stopwatch();
 
-		public GameProvider()
+		public BusycatorGame()
 			: base(200, 200)
 		{
-			Title = "Busycator";
+            World.SetStartingLayerType<Surface>();
 
+			Title = "Busycator";
 			m_game = new TheGame(this);
 		}
 
@@ -45,7 +52,8 @@ namespace Busycator
 		protected override void OnLoad(EventArgs _e)
 		{
 			base.OnLoad(_e);
-			m_game.LoadContent(ResourceProvider);
+            m_game.LoadContent(ResourceProvider);
+            m_game.UiBlocks.Push(new StartSelectorUiBlock(new Rct(0, 0, 10, 10), m_game));
 
 			MessageManager.NewWorldMessage += MessageManagerOnNewWorldMessage;
 			OnLoadFinished();
@@ -79,10 +87,12 @@ namespace Busycator
 		private Int64 m_sum = 16;
 		private Int64 m_cnt = 1;
 		private bool m_needRedraw;
+	    private static XResourceClient m_resourceCli;
 
-		protected override void OnRenderFrame(FrameEventArgs _e)
+	    protected override void OnRenderFrame(FrameEventArgs _e)
 		{
-			var now = m_hrs.Value;
+            m_stopwatch.Restart();
+            //m_stopwatch.Start();
 			if (IsActive)
 			{
 				if (World.TheWorld != null)
@@ -106,12 +116,12 @@ namespace Busycator
 					}
 				}
 			}
-			var milliseconds = (int)m_hrs.GetMilliseconds(now);
-			m_sum += milliseconds;
+            m_stopwatch.Stop();
+            m_sum += m_stopwatch.ElapsedMilliseconds;
 			m_cnt++;
-			if (milliseconds < 1000 / FPS)
+            if (m_stopwatch.ElapsedMilliseconds < 1000 / FPS)
 			{
-				Thread.Sleep(1000 / FPS - milliseconds);
+                Thread.Sleep(1000 / FPS - (int)m_stopwatch.ElapsedMilliseconds);
 			}
 
 		}
@@ -123,7 +133,7 @@ namespace Busycator
 				MagicSettingProvider.Init();
 				try
 				{
-					using (var game = new GameProvider {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
+					using (var game = new BusycatorGame {Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location)})
 					{
 						game.Run(0, FPS);
 					}
@@ -139,6 +149,25 @@ namespace Busycator
 			}
 		}
 
+        private static XResourceClient XClient
+        {
+            get
+            {
+                if (m_resourceCli == null)
+                {
+                    m_resourceCli = new XResourceClient();
+                }
 
+                return m_resourceCli;
+            }
+        }
+
+        internal static XResourceRoot XResourceRoot
+        {
+            get
+            {
+                return XClient.GetRoot<XResourceRoot>();
+            }
+        } 
 	}
 }

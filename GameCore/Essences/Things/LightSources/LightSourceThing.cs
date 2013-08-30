@@ -4,7 +4,7 @@ using GameCore.Misc;
 
 namespace GameCore.Essences.Things.LightSources
 {
-	internal abstract class LightSourceThing : Thing, ILightSource
+	public abstract class LightSourceThing : Thing, ILightSource
 	{
 		private readonly LightSource m_lightSource;
 
