@@ -13,6 +13,7 @@ using LanguagePack;
 using MagickSetting;
 using OpenTK;
 using OpenTKUi;
+using TheHall.Layers;
 
 namespace TheHall
 {
@@ -25,7 +26,7 @@ namespace TheHall
         public TheHallGame()
             : base(200, 200)
         {
-            World.SetStartingLayerType<StartLayer>();
+            World.SetStartingLayerType<TheHallLayer>();
             Title = "The Hall";
             m_game = new TheGame(this);
         }
