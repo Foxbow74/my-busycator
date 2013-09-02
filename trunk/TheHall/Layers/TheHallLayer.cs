@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Mapping.Layers;
 using GameCore.Misc;
 
-namespace TheHall
+namespace TheHall.Layers
 {
-    class StartLayer:WorldLayer
+    class TheHallLayer:WorldLayer
     {
         public override IEnumerable<ETerrains> DefaultEmptySpaces
         {
@@ -30,7 +27,15 @@ namespace TheHall
         protected override MapBlock GenerateBlock(Point _blockId)
         {
             var block = new MapBlock(_blockId);
-            block.Clear(World.Rnd, this, DefaultEmptySpaces);
+            if (_blockId.Y == 0)
+            {
+                block.Clear(World.Rnd, this, DefaultWalls);
+                block.Fill(World.Rnd, this, DefaultEmptySpaces, new Rct(0, 0, Constants.MAP_BLOCK_SIZE, 13));
+            }
+            else
+            {
+                block.Clear(World.Rnd, this, DefaultWalls);
+            }
             return block;
         }
 
