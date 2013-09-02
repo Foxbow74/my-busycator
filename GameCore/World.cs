@@ -49,12 +49,14 @@ namespace GameCore
 
 			LiveMap = new LiveMap();
 
-		    if (m_startingLayerType == null)
-		    {
-		        throw new ApplicationException("Нужно задать тип стартового уровня");
-		    }
-            m_layers.Add(CurrentLayer = (WorldLayer)Activator.CreateInstance(m_startingLayerType));
-
+			if (Constants.GAME_MODE)
+			{
+				if (m_startingLayerType == null)
+				{
+					throw new ApplicationException("Нужно задать тип стартового уровня");
+				}
+				m_layers.Add(CurrentLayer = (WorldLayer) Activator.CreateInstance(m_startingLayerType));
+			}
 			WorldTick = 0;
 		}
 
@@ -101,10 +103,13 @@ namespace GameCore
 
 		private void BornAvatar()
 		{
-			Avatar = new Avatar(CurrentLayer);
-            AvatarBlockId = CurrentLayer.GetAvatarStartingBlockId();
-			CreatureManager.AddCreature(Avatar, AvatarBlockId * Constants.MAP_BLOCK_SIZE, Point.Zero, CurrentLayer);
-			LiveMap.Actualize();
+			if (Constants.GAME_MODE)
+			{
+				Avatar = new Avatar(CurrentLayer);
+				AvatarBlockId = CurrentLayer.GetAvatarStartingBlockId();
+				CreatureManager.AddCreature(Avatar, AvatarBlockId*Constants.MAP_BLOCK_SIZE, Point.Zero, CurrentLayer);
+				LiveMap.Actualize();
+			}
 		}
 
 		public void GameUpdated()
