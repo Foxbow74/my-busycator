@@ -14,7 +14,7 @@ namespace GameCore.Mapping
 		//3 - border
 		public const int ACTIVE_QRADIUS = 3;
 		private const int SIZE_IN_BLOCKS = (2 * ACTIVE_QRADIUS + 1);
-		public const int AVATAR_SIGHT = 25;
+		public const int AVATAR_SIGHT = 55;
 		public const int SIZE_IN_CELLS = SIZE_IN_BLOCKS*Constants.MAP_BLOCK_SIZE;
 
 		public static readonly Point ActiveQpoint = new Point(ACTIVE_QRADIUS, ACTIVE_QRADIUS);

@@ -128,8 +128,7 @@ namespace GameCore.Mapping
 			{
                 if (m_transparentColor == null)
                 {
-                    var attr = TerrainAttribute;
-                    var opacity = attr.Opacity;
+					var opacity = TerrainAttribute.Opacity;
                     if (opacity < 1 && Thing != null)
                     {
                         opacity += Thing.Opacity;
@@ -148,7 +147,16 @@ namespace GameCore.Mapping
                     }
                     var trancparence = 1f - Math.Min(1f, opacity);
 
-                    m_transparentColor = new FColor(trancparence, 1f, 1f, 1f);
+
+	                if (Terrain == ETerrains.RED_BRICK_WINDOW)
+	                {
+						m_transparentColor = new FColor(trancparence, 1f, 0.1f, 0.1f);
+	                }
+	                else
+	                {
+						m_transparentColor = new FColor(trancparence, 1f, 1f, 1f);
+
+	                }
                 }
 			    return m_transparentColor.Value;
 			}
