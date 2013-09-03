@@ -80,6 +80,16 @@
     </Compile>
     <Compile Include="Vector.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QuickFont\QuickFont.csproj">
+      <Project>{bbece6fc-ef63-40f8-a734-a500d1dfc1af}</Project>
+      <Name>QuickFont</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
+      <Project>{8da672ad-628d-45bc-a1fb-5ad9541397a1}</Project>
+      <Name>UnsafeUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,10 +1,12 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Windows.Forms;
+using QuickFont;
 
 namespace Shader
 {
@@ -16,7 +18,7 @@ namespace Shader
 		
         const float SZ = 3;
 
-	    private const float LIGHTRADIUS = 20 * SZ;
+	    private const float LIGHTRADIUS = Map.SIZE/2*SZ;
 
 		private readonly List<Edge> m_allEdges = new List<Edge>(Map.SIZE * Map.SIZE);
         
@@ -24,29 +26,19 @@ namespace Shader
 
 	    private static PointF _pnt;
 
-        private readonly Bitmap m_buf = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppRgb);
+		private readonly Bitmap m_buf0 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
+		private readonly Bitmap m_buf1 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
+		private readonly Bitmap m_buf2 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
+		private readonly Bitmap m_buf3 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
+
+		private QBitmap m_qb;
 			
 		public Form1()
 		{
 			InitializeComponent();
 			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			SetStyle(ControlStyles.DoubleBuffer, true);
-			
-		}
-
-		/// <summary>
-		/// Сортировка по удаленности от источника света
-		/// </summary>
-		private class EdgeComparer:IComparer<Edge>
-		{
-			public int Compare(Edge _a, Edge _b)
-			{
-				var dista = (_pnt.X - _a.P1.X) * (_pnt.X - _a.P1.X) + (_pnt.Y - _a.P1.Y) * (_pnt.Y - _a.P1.Y);
-				dista += (_pnt.X - _a.P2.X) * (_pnt.X - _a.P2.X) + (_pnt.Y - _a.P2.Y) * (_pnt.Y - _a.P2.Y);
-				var distb = (_pnt.X - _b.P1.X) * (_pnt.X - _b.P1.X) + (_pnt.Y - _b.P1.Y) * (_pnt.Y - _b.P1.Y);
-				distb += (_pnt.X - _b.P2.X) * (_pnt.X - _b.P2.X) + (_pnt.Y - _b.P2.Y) * (_pnt.Y - _b.P2.Y);
-				return (int)((dista - distb)*1000);
-			}
+			//m_qb = new QBitmap(m_buf3);
 		}
 
 		private void Form1_Paint(object _sender, PaintEventArgs _e)
@@ -78,31 +70,57 @@ namespace Shader
                     }
                 }
             }
-            using (var g = Graphics.FromImage(m_buf))
-		    {
-                g.CompositingQuality=CompositingQuality.GammaCorrected;
 
-                //g.SmoothingMode = SmoothingMode.HighQuality;
-                //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                
-                g.SetClip(new Rectangle(0, 0, Map.SIZE * (int)SZ, Map.SIZE * (int)SZ));
-		        g.Clear(Color.Empty);
+			#region зона видимости
 
-		        //for (int i = 0; i < 5; ++i)
-		        {
-                    Draw(_e, new PointF(_mousePnt.X * SZ, _mousePnt.Y * SZ), Color.FromArgb(255, 255, 255, 255), 0, g);
-                    //Draw(_e, new PointF(_mousePnt.X, _mousePnt.Y), Color.FromArgb(255, 255, 180, 100), 0, g);
-                }
-                //Draw(_e, new PointF(_mousePnt.Y * SZ - m_offset.Y, _mousePnt.X * SZ - m_offset.X), Color.FromArgb(0, 255, 0), 0, g);
-                //Draw(_e, new PointF(_mousePnt.Y * SZ - m_offset.Y, _mousePnt.Y * SZ - m_offset.Y), Color.FromArgb(0, 0, 255), 0, g);
+			using (var g = Graphics.FromImage(m_buf3))
+			{
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.Clear(Color.Empty);
 
-                _e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
-                _e.Graphics.CompositingMode = CompositingMode.SourceCopy;
-                _e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                _e.Graphics.DrawImage(m_buf, new RectangleF(0, 0, Map.SIZE, Map.SIZE), new RectangleF(0, 0, Map.SIZE * SZ, Map.SIZE * SZ), GraphicsUnit.Pixel);
-                //_e.Graphics.DrawImageUnscaled(m_buf, 0,0);
-            }
-		    //Draw(_e, new PointF(_mousePnt.Y - m_offset.Y, _mousePnt.X - m_offset.X), Color.FromArgb(180, 255, 0), Map.SIZE);
+				Draw(_e, new PointF(Map.SIZE * SZ / 2 , Map.SIZE * SZ / 2 ), Color.White, 0, g);
+			}
+
+			#endregion
+
+
+			using (var g = Graphics.FromImage(m_buf1))
+			{
+				//g.CompositingQuality = CompositingQuality.GammaCorrected;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.Clear(Color.Empty);
+
+				Draw(_e, new PointF(_mousePnt.X * SZ, _mousePnt.Y * SZ), Color.FromArgb(255, 255, 0, 0), 0, g);
+			}
+			using (var g = Graphics.FromImage(m_buf2))
+			{
+				//g.CompositingQuality = CompositingQuality.GammaCorrected;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.Clear(Color.Empty);
+
+				Draw(_e, new PointF(_mousePnt.Y * SZ, _mousePnt.X * SZ), Color.FromArgb(255, 0, 0, 255), 0, g);
+			}
+			using (var g = Graphics.FromImage(m_buf0))
+			{
+				//g.CompositingQuality = CompositingQuality.GammaCorrected;
+				g.SmoothingMode = SmoothingMode.AntiAlias;
+				g.Clear(Color.Empty);
+
+				Draw(_e, new PointF(_mousePnt.Y * SZ, _mousePnt.Y * SZ), Color.FromArgb(255, 0, 255, 0), 0, g);
+			}
+			//DrawWalls(m_buf2);
+
+			using (var t= new QBitmap(m_buf3))
+			{
+				//t.ApplyLightMaps(new[] { m_buf0, m_buf1, m_buf2 });
+			}
+
+			//_e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+			_e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+			//_e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
+			//_e.Graphics.DrawImage(m_buf3, new RectangleF(0, 0, Map.SIZE , Map.SIZE ), new RectangleF(0, 0, Map.SIZE * SZ, Map.SIZE * SZ), GraphicsUnit.Pixel);
+			
+			//Draw(_e, new PointF(_mousePnt.Y - m_offset.Y, _mousePnt.X - m_offset.X), Color.FromArgb(180, 255, 0), Map.SIZE);
             //Draw(_e, new PointF(_mousePnt.X - m_offset.X, _mousePnt.Y - m_offset.Y), Color.FromArgb(255, 180, 0), Map.SIZE * 2);
         }
 
@@ -125,9 +143,9 @@ namespace Shader
 
 	            _pnt = p;
 	            DrawShadows(g);
-	            DrawWalls(g, m_buf);
-	        
 	    }
+
+		private SolidBrush brush = new SolidBrush(Color.FromArgb(255, Color.Black));
 
 	    private void DrawShadows(Graphics g)
 	    {
@@ -147,66 +165,25 @@ namespace Shader
 
 	        foreach (var edge in edges)
 	        {
-	            if (!edge.Valid)
+				//if (!edge.Valid)
+				//{
+				//	continue;
+				//}
+
+				//edge.Valid = false;
+
+				var pnt = new[] { edge.P2, edge.P1, GetFarPnt(edge.P1), GetFarPnt(edge.P2) };
+
 	            {
-	                continue;
-	            }
-
-	            edge.Valid = false;
-
-	            #region Рассчитываем теневую трапецию
-
-	            var pnt = new List<PointF>(new[] {edge.P2, edge.P1});
-	            //bool flg;
-	            //do
-	            //{
-	            //    flg = false;
-	            //    foreach (var edge1 in edges)
-	            //    {
-	            //        if (!edge1.Valid)
-	            //        {
-	            //            continue;
-	            //        }
-	            //        if (edge1.P1 == edge.P2)
-	            //        {
-	            //            pnt.Insert(0, edge1.P2);
-	            //            edge.P2 = edge1.P2;
-	            //            edge1.Valid = false;
-	            //            flg = true;
-	            //        }
-	            //        else if (edge1.P2 == edge.P1)
-	            //        {
-	            //            pnt.Add(edge1.P1);
-	            //            edge.P1 = edge1.P1;
-	            //            edge1.Valid = false;
-	            //            flg = true;
-	            //        }
-	            //    }
-	            //} while (flg);
-
-
-	            var pntFar = new List<PointF>(pnt.Count);
-	            for (var i = 0; i < pnt.Count; i++)
-	            {
-	                var f = pnt[pnt.Count - i - 1];
-	                pntFar.Add(GetFarPnt(f));
-	            }
-
-	            pnt.AddRange(pntFar);
-
-	            #endregion
-
-                using (var brush = new SolidBrush(Color.FromArgb(edge.Opacity, Color.Black)))
-	            {
-	                g.FillPolygon(brush, pnt.ToArray());
+					g.FillPolygon(brush, pnt);
 	            }
 
 	            #region Отбрасываем все грани вошедшие внутрь теневой трапеции
 
-	            var shadowEdges = new Edge[pnt.Count];
-	            for (var i = 0; i < pnt.Count; ++i)
+				var shadowEdges = new Edge[4];
+				for (var i = 0; i <4; ++i)
 	            {
-	                shadowEdges[i] = new Edge(pnt[i], pnt[(i + 1)%pnt.Count]);
+					shadowEdges[i] = new Edge(pnt[i], pnt[(i + 1) % 4]);
 	            }
 
 	            foreach (var edge1 in edges.ToArray())
@@ -246,12 +223,11 @@ namespace Shader
 			return v * md;
 		}
 
-	    /// <summary>
-	    /// Subj
-	    /// </summary>
-	    /// <param name="g"></param>
-	    /// <param name="_bitmap"></param>
-	    private void DrawWalls(Graphics g, Bitmap _bitmap)
+		/// <summary>
+		/// Subj
+		/// </summary>
+		/// <param name="_bitmap"></param>
+		private void DrawWalls(Bitmap _bitmap)
 		{
 			for (int i = 0; i < Map.SIZE; ++i)
 			{
@@ -296,10 +272,7 @@ namespace Shader
 			}
 		}
 
-		private void timer1_Tick(object sender, EventArgs e)
-		{
-			//Invalidate();
-		}
+		
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -307,7 +280,9 @@ namespace Shader
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            int s = DateTime.Now.Second;
+			var sw = new Stopwatch();
+	        sw.Start();
+			int s = sw.Elapsed.Seconds;
             int fps = 0;
 
             for (; ; )
@@ -317,9 +292,9 @@ namespace Shader
                     return;
                 }
                 fps++;
-                if(s != DateTime.Now.Second)
+				if (s != sw.Elapsed.Seconds)
                 {
-                    s = DateTime.Now.Second;
+					s = sw.Elapsed.Seconds;
                     label1.Text = string.Format("fps: {0}", fps);
                     fps = 0;
                 }
