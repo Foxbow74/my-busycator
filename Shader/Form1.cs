@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -9,24 +10,21 @@ namespace Shader
 {
 	public partial class Form1 : Form
 	{
-		private readonly Map _map = new Map();
+		private readonly Map m_map = new Map();
 		
-        private static Point _mousePnt = new Point();
+        private static Point _mousePnt;
 		
-        const int SZ = 5;
-		
-        private const float WV = SZ/10;
-		
-        private const int LIGHTRADIUS = 20 * SZ;
+        const float SZ = 3;
 
-		private readonly List<Edge> _allEdges = new List<Edge>(Map.SIZE * Map.SIZE);
+	    private const float LIGHTRADIUS = 20 * SZ;
+
+		private readonly List<Edge> m_allEdges = new List<Edge>(Map.SIZE * Map.SIZE);
         
         // —мещение картинки на форме
-        private readonly Point OFFSET = new Point(30, 30);
 
-        private static PointF _pnt;
+	    private static PointF _pnt;
 
-        private readonly Bitmap _buf = new Bitmap(SZ * Map.SIZE, SZ * Map.SIZE, PixelFormat.Format32bppRgb);
+        private readonly Bitmap m_buf = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppRgb);
 			
 		public Form1()
 		{
@@ -34,32 +32,6 @@ namespace Shader
 			SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			SetStyle(ControlStyles.DoubleBuffer, true);
 			
-			for (int i = 0; i < Map.SIZE; ++i)
-			{
-				for (int j = 0; j < Map.SIZE; ++j)
-				{
-					if (_map[i, j] > 0)
-					{
-						Edge[] rectEdges = GetRectEdges(new Rectangle(i*SZ, j*SZ, SZ, SZ));
-						if (j > 0 && _map[i, j - 1] == 0)
-						{
-							_allEdges.Add(rectEdges[0]);
-						}
-						if (i < (Map.SIZE-1) && _map[i + 1, j] == 0)
-						{
-							_allEdges.Add(rectEdges[1]);
-						}
-						if (j < (Map.SIZE-1) && _map[i, j + 1] == 0)
-						{
-							_allEdges.Add(rectEdges[2]);
-						}
-						if (i > 0 && _map[i - 1, j] == 0)
-						{
-							_allEdges.Add(rectEdges[3]);
-						}
-					}
-				}
-			}
 		}
 
 		/// <summary>
@@ -67,185 +39,226 @@ namespace Shader
 		/// </summary>
 		private class EdgeComparer:IComparer<Edge>
 		{
-			public int Compare(Edge a, Edge b)
+			public int Compare(Edge _a, Edge _b)
 			{
-				float dista = (_pnt.X - a.P1.X) * (_pnt.X - a.P1.X) + (_pnt.Y - a.P1.Y) * (_pnt.Y - a.P1.Y);
-				dista += (_pnt.X - a.P2.X) * (_pnt.X - a.P2.X) + (_pnt.Y - a.P2.Y) * (_pnt.Y - a.P2.Y);
-				float distb = (_pnt.X - b.P1.X) * (_pnt.X - b.P1.X) + (_pnt.Y - b.P1.Y) * (_pnt.Y - b.P1.Y);
-				distb += (_pnt.X - b.P2.X) * (_pnt.X - b.P2.X) + (_pnt.Y - b.P2.Y) * (_pnt.Y - b.P2.Y);
+				var dista = (_pnt.X - _a.P1.X) * (_pnt.X - _a.P1.X) + (_pnt.Y - _a.P1.Y) * (_pnt.Y - _a.P1.Y);
+				dista += (_pnt.X - _a.P2.X) * (_pnt.X - _a.P2.X) + (_pnt.Y - _a.P2.Y) * (_pnt.Y - _a.P2.Y);
+				var distb = (_pnt.X - _b.P1.X) * (_pnt.X - _b.P1.X) + (_pnt.Y - _b.P1.Y) * (_pnt.Y - _b.P1.Y);
+				distb += (_pnt.X - _b.P2.X) * (_pnt.X - _b.P2.X) + (_pnt.Y - _b.P2.Y) * (_pnt.Y - _b.P2.Y);
 				return (int)((dista - distb)*1000);
 			}
 		}
 
-        private float _alfa = 0;
-
-		private void Form1_Paint(object sender, PaintEventArgs e)
+		private void Form1_Paint(object _sender, PaintEventArgs _e)
 		{
-            using (Graphics g = Graphics.FromImage(_buf))
+            m_allEdges.Clear();
+            for (var i = 0; i < Map.SIZE; ++i)
             {
-                g.SetClip(new Rectangle(0, 0, SZ*Map.SIZE, SZ*Map.SIZE));
-                g.Clear(Color.Black);
-                g.SmoothingMode = SmoothingMode.HighQuality;
-
-                float d = (float)Map.rnd.NextDouble();
-                float salfa = (float)Math.Sin(_alfa)*d;
-                float calfa = (float)Math.Cos(_alfa)*d;
-                _alfa += d;
-
-                PointF p =
-                    new PointF(_mousePnt.X - OFFSET.X + salfa * WV,
-                               _mousePnt.Y - OFFSET.Y + calfa * WV);
-
-                GraphicsPath gp = new GraphicsPath();
-                float tl = LIGHTRADIUS * (1 - calfa / 30);
-                RectangleF rectOfLight = new RectangleF(p.X - tl, p.Y - tl, tl * 2, tl * 2);
-                gp.AddEllipse(rectOfLight);
-                using (PathGradientBrush brush = new PathGradientBrush(gp))
+                for (var j = 0; j < Map.SIZE; ++j)
                 {
-                    brush.CenterColor = Color.FromArgb(255, 180 - (int)(salfa*10), 0);
-                    brush.SurroundColors = new Color[] { Color.Black };
-                    g.FillEllipse(brush, rectOfLight);
+                    if (m_map[i, j] > 0)
+                    {
+                        var rectEdges = GetRectEdges(new Rectangle((int)(i * SZ), (int)(j * SZ), (int)SZ, (int)SZ), m_map[i, j]);
+                        if (j > 0 && m_map[i, j - 1] == 0)
+                        {
+                            m_allEdges.Add(rectEdges[0]);
+                        }
+                        if (i < (Map.SIZE - 1) && m_map[i + 1, j] == 0)
+                        {
+                            m_allEdges.Add(rectEdges[1]);
+                        }
+                        if (j < (Map.SIZE - 1) && m_map[i, j + 1] == 0)
+                        {
+                            m_allEdges.Add(rectEdges[2]);
+                        }
+                        if (i > 0 && m_map[i - 1, j] == 0)
+                        {
+                            m_allEdges.Add(rectEdges[3]);
+                        }
+                    }
                 }
-
-                _pnt = p;
-                DrawShadows(g);
-                DrawWalls(g);
             }
-            e.Graphics.DrawImageUnscaled(_buf, OFFSET);
-		}
+            using (var g = Graphics.FromImage(m_buf))
+		    {
+                g.CompositingQuality=CompositingQuality.GammaCorrected;
 
-		private void DrawShadows(Graphics g)
-		{
-			List<Edge> edges = new List<Edge>(Map.SIZE*Map.SIZE);
+                //g.SmoothingMode = SmoothingMode.HighQuality;
+                //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                
+                g.SetClip(new Rectangle(0, 0, Map.SIZE * (int)SZ, Map.SIZE * (int)SZ));
+		        g.Clear(Color.Empty);
 
-			#region —обираем все грани лицевые дл€ источника освещени€ и попадающие в круг света
+		        //for (int i = 0; i < 5; ++i)
+		        {
+                    Draw(_e, new PointF(_mousePnt.X * SZ, _mousePnt.Y * SZ), Color.FromArgb(255, 255, 255, 255), 0, g);
+                    //Draw(_e, new PointF(_mousePnt.X, _mousePnt.Y), Color.FromArgb(255, 255, 180, 100), 0, g);
+                }
+                //Draw(_e, new PointF(_mousePnt.Y * SZ - m_offset.Y, _mousePnt.X * SZ - m_offset.X), Color.FromArgb(0, 255, 0), 0, g);
+                //Draw(_e, new PointF(_mousePnt.Y * SZ - m_offset.Y, _mousePnt.Y * SZ - m_offset.Y), Color.FromArgb(0, 0, 255), 0, g);
 
-			foreach (Edge edge in _allEdges)
-			{
-				if (Edge.Distant(edge.P1, _pnt) < LIGHTRADIUS && edge.Orient(_pnt) < 0)
-				{
-					edges.Add(new Edge(edge.P1, edge.P2));
-				}
-			}
+                _e.Graphics.SmoothingMode = SmoothingMode.HighQuality;
+                _e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+                _e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                _e.Graphics.DrawImage(m_buf, new RectangleF(0, 0, Map.SIZE, Map.SIZE), new RectangleF(0, 0, Map.SIZE * SZ, Map.SIZE * SZ), GraphicsUnit.Pixel);
+                //_e.Graphics.DrawImageUnscaled(m_buf, 0,0);
+            }
+		    //Draw(_e, new PointF(_mousePnt.Y - m_offset.Y, _mousePnt.X - m_offset.X), Color.FromArgb(180, 255, 0), Map.SIZE);
+            //Draw(_e, new PointF(_mousePnt.X - m_offset.X, _mousePnt.Y - m_offset.Y), Color.FromArgb(255, 180, 0), Map.SIZE * 2);
+        }
 
-			#endregion
-
-			// —ортировка по удаленности от источника света
-			edges.Sort(new EdgeComparer());
-
-			using (SolidBrush brush = new SolidBrush(Color.FromArgb(255, Color.Black)))
-			{
-				foreach (Edge edge in edges)
-				{
-					if (!edge.Valid)
-					{
-						continue;
-					}
-
-					edge.Valid = false;
-
-					#region –ассчитываем теневую трапецию
-
-					List<PointF> pnt = new List<PointF>(new PointF[] {edge.P2, edge.P1});
-					bool flg;
-					do
-					{
-						flg = false;
-						foreach (Edge edge1 in edges)
-						{
-							if (!edge1.Valid)
-							{
-								continue;
-							}
-							if (edge1.P1 == edge.P2)
-							{
-								pnt.Insert(0, edge1.P2);
-								edge.P2 = edge1.P2;
-								edge1.Valid = false;
-								flg = true;
-							}
-							else if (edge1.P2 == edge.P1)
-							{
-								pnt.Add(edge1.P1);
-								edge.P1 = edge1.P1;
-								edge1.Valid = false;
-								flg = true;
-							}
-						}
-					} while (flg);
+	    private void Draw(PaintEventArgs _e, PointF p, Color lightColor, int o, Graphics g)
+	    {
+	            //g.SmoothingMode = SmoothingMode.HighQuality;
+	            //g.InterpolationMode=InterpolationMode.HighQualityBicubic;
 
 
-					List<PointF> pntFar = new List<PointF>(pnt.Count);
-					for (int i = 0; i < pnt.Count; i++)
-					{
-						PointF f = pnt[pnt.Count - i - 1];
-						pntFar.Add(GetFarPnt(f));
-					}
+	            var gp = new GraphicsPath();
+	            var tl = LIGHTRADIUS;
+	            var rectOfLight = new RectangleF(p.X - tl, p.Y - tl, tl*2, tl*2);
+	            gp.AddEllipse(rectOfLight);
+	            using (var brush = new PathGradientBrush(gp))
+	            {
+	                brush.CenterColor = lightColor;
+	                brush.SurroundColors = new[] {Color.Empty};
+	                g.FillEllipse(brush, rectOfLight);
+	            }
 
-					pnt.AddRange(pntFar);
+	            _pnt = p;
+	            DrawShadows(g);
+	            DrawWalls(g, m_buf);
+	        
+	    }
 
-					#endregion
+	    private void DrawShadows(Graphics g)
+	    {
+	        var edges = new List<Edge>(Map.SIZE*Map.SIZE);
 
-					g.FillPolygon(brush, pnt.ToArray());
+	        #region —обираем все грани лицевые дл€ источника освещени€ и попадающие в круг света
 
-					#region ќтбрасываем все грани вошедшие внутрь теневой трапеции
+	        edges.AddRange(from edge in m_allEdges
+	            where Edge.Distant(edge.P1, _pnt) < LIGHTRADIUS*2 && edge.Orient(_pnt) >= 0
+	            select new Edge(edge.P1, edge.P2) {Opacity = edge.Opacity});
 
-					Edge[] shadowEdges = new Edge[pnt.Count];
-					for (int i = 0; i < pnt.Count; ++i)
-					{
-						shadowEdges[i]=new Edge(pnt[i], pnt[(i + 1) % pnt.Count]);
-					}
+	        #endregion
 
-					foreach (Edge edge1 in edges.ToArray())
-					{
-						if (!edge1.Valid)
-						{
-							continue;
-						}
-						bool flag = true;
-						foreach (Edge shadowEdge in shadowEdges)
-						{
-							if (shadowEdge.Orient(edge1.P1) > 0 || shadowEdge.Orient(edge1.P2) > 0)
-							{
-								flag = false;
-								break;
-							}
-						}
-						if (flag)
-						{
-							edge1.Valid = false;
-						}
-					}
+	        // —ортировка по удаленности от источника света
+	        //edges.Sort(new EdgeComparer());
 
-					#endregion
-				}
-			}
-		}
 
-		/// <summary>
+	        foreach (var edge in edges)
+	        {
+	            if (!edge.Valid)
+	            {
+	                continue;
+	            }
+
+	            edge.Valid = false;
+
+	            #region –ассчитываем теневую трапецию
+
+	            var pnt = new List<PointF>(new[] {edge.P2, edge.P1});
+	            //bool flg;
+	            //do
+	            //{
+	            //    flg = false;
+	            //    foreach (var edge1 in edges)
+	            //    {
+	            //        if (!edge1.Valid)
+	            //        {
+	            //            continue;
+	            //        }
+	            //        if (edge1.P1 == edge.P2)
+	            //        {
+	            //            pnt.Insert(0, edge1.P2);
+	            //            edge.P2 = edge1.P2;
+	            //            edge1.Valid = false;
+	            //            flg = true;
+	            //        }
+	            //        else if (edge1.P2 == edge.P1)
+	            //        {
+	            //            pnt.Add(edge1.P1);
+	            //            edge.P1 = edge1.P1;
+	            //            edge1.Valid = false;
+	            //            flg = true;
+	            //        }
+	            //    }
+	            //} while (flg);
+
+
+	            var pntFar = new List<PointF>(pnt.Count);
+	            for (var i = 0; i < pnt.Count; i++)
+	            {
+	                var f = pnt[pnt.Count - i - 1];
+	                pntFar.Add(GetFarPnt(f));
+	            }
+
+	            pnt.AddRange(pntFar);
+
+	            #endregion
+
+                using (var brush = new SolidBrush(Color.FromArgb(edge.Opacity, Color.Black)))
+	            {
+	                g.FillPolygon(brush, pnt.ToArray());
+	            }
+
+	            #region ќтбрасываем все грани вошедшие внутрь теневой трапеции
+
+	            var shadowEdges = new Edge[pnt.Count];
+	            for (var i = 0; i < pnt.Count; ++i)
+	            {
+	                shadowEdges[i] = new Edge(pnt[i], pnt[(i + 1)%pnt.Count]);
+	            }
+
+	            foreach (var edge1 in edges.ToArray())
+	            {
+	                if (!edge1.Valid)
+	                {
+	                    continue;
+	                }
+	                var flag = true;
+	                foreach (var shadowEdge in shadowEdges)
+	                {
+	                    if (!(shadowEdge.Orient(edge1.P1) > 0) && !(shadowEdge.Orient(edge1.P2) > 0)) continue;
+	                    flag = false;
+	                    break;
+	                }
+	                if (flag)
+	                {
+	                    edge1.Valid = false;
+	                }
+	            }
+
+	            #endregion
+	        }
+
+	    }
+
+	    /// <summary>
 		/// ѕолучить точку на продолжении луча от источника света до аргумента
 		/// </summary>
 		/// <param name="p"></param>
 		/// <returns></returns>
 		private static PointF GetFarPnt(PointF p)
 		{
-			Vector v = new Vector(_pnt, p);
-			float md = LIGHTRADIUS * SZ * SZ / v.Length;
+			var v = new Vector(_pnt, p);
+            var md = LIGHTRADIUS * LIGHTRADIUS / v.Length;
+            //var md = LIGHTRADIUS / v.Length;
 			return v * md;
 		}
 
-		/// <summary>
-		/// Subj
-		/// </summary>
-		/// <param name="g"></param>
-		private void DrawWalls(Graphics g)
+	    /// <summary>
+	    /// Subj
+	    /// </summary>
+	    /// <param name="g"></param>
+	    /// <param name="_bitmap"></param>
+	    private void DrawWalls(Graphics g, Bitmap _bitmap)
 		{
 			for (int i = 0; i < Map.SIZE; ++i)
 			{
 				for (int j = 0; j < Map.SIZE; ++j)
 				{
 					float mod = Edge.Distant(_pnt, new PointF(i*SZ + SZ/2, j*SZ + SZ/2));
-					if (_map[i, j] > 0 && mod < LIGHTRADIUS*1.1)
+					if (m_map[i, j] > 0 && mod < LIGHTRADIUS*1.1)
 					{
 						int alpha = 255 - (int)((float)255/LIGHTRADIUS * mod);
                         if (mod < 100)
@@ -257,27 +270,23 @@ namespace Shader
 						}
                         if (alpha > 0)
                         {
-                            using (Brush br = new SolidBrush(Color.FromArgb(alpha, Color.FromArgb(100, 60, 0))))
-                            {
-                                Rectangle rect = new Rectangle(i * SZ, j * SZ, SZ, SZ);
-                                g.FillRectangle(br, rect);
-                            }
+                            _bitmap.SetPixel(i,j,Color.Black);
                         }
 					}
 				}
 			}
 		}
 
-		private static Edge[] GetRectEdges(Rectangle rect)
-		{
-			return new Edge[]
-				{
-					new Edge(new PointF(rect.Left,rect.Top), new PointF(rect.Right, rect.Top) ), 
-					new Edge(new PointF(rect.Right,rect.Top), new PointF(rect.Right, rect.Bottom) ), 
-					new Edge(new PointF(rect.Right,rect.Bottom), new PointF(rect.Left, rect.Bottom) ), 
-					new Edge(new PointF(rect.Left,rect.Bottom), new PointF(rect.Left, rect.Top) ), 
-				};
-		}
+        private static Edge[] GetRectEdges(Rectangle rect, int _opacity)
+        {
+            return new[]
+            {
+                new Edge(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Top)) {Opacity = _opacity},
+                new Edge(new PointF(rect.Right, rect.Top), new PointF(rect.Right, rect.Bottom)) {Opacity = _opacity},
+                new Edge(new PointF(rect.Right, rect.Bottom), new PointF(rect.Left, rect.Bottom)) {Opacity = _opacity},
+                new Edge(new PointF(rect.Left, rect.Bottom), new PointF(rect.Left, rect.Top)) {Opacity = _opacity},
+            };
+        }
 
 		private void Form1_MouseMove(object sender, MouseEventArgs e)
 		{
