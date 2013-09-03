@@ -24,7 +24,7 @@ namespace QuickFont
         public TexturePage(string filePath)
         {
             var bitmap = new QBitmap(filePath);
-            CreateTexture(bitmap.bitmapData);
+            CreateTexture(bitmap.BitmapData);
             bitmap.Free();
         }
 

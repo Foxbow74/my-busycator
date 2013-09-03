@@ -427,9 +427,9 @@ namespace QuickFont
                         {
                             //add to page
                             if(sourceBitmaps[sourceGlyphs[i].page].PixelFormat == PixelFormat.Format32bppArgb)
-                                QBitmap.Blit(sourceBitmaps[sourceGlyphs[i].page], currentPage.bitmapData, rect.X, rect.Y, rect.Width, rect.Height, xPos + destMargin, yPos + destMargin);
+                                QBitmap.Blit(sourceBitmaps[sourceGlyphs[i].page], currentPage.BitmapData, rect.X, rect.Y, rect.Width, rect.Height, xPos + destMargin, yPos + destMargin);
                             else
-                                QBitmap.BlitMask(sourceBitmaps[sourceGlyphs[i].page], currentPage.bitmapData, rect.X, rect.Y, rect.Width, rect.Height, xPos + destMargin, yPos + destMargin);
+                                QBitmap.BlitMask(sourceBitmaps[sourceGlyphs[i].page], currentPage.BitmapData, rect.X, rect.Y, rect.Width, rect.Height, xPos + destMargin, yPos + destMargin);
 
                             destGlyphs[i] = new QFontGlyph(pages.Count - 1, new Rectangle(xPos + destMargin, yPos + destMargin, rect.Width, rect.Height), sourceGlyphs[i].yOffset, sourceGlyphs[i].character);
                         }
@@ -540,7 +540,7 @@ namespace QuickFont
             //create list of texture pages
             var pages = new List<TexturePage>();
             foreach (var page in bitmapPages)
-                pages.Add(new TexturePage(page.bitmapData));
+                pages.Add(new TexturePage(page.BitmapData));
 
             var fontData = new QFontData();
             fontData.CharSetMapping = CreateCharGlyphMapping(glyphs);
@@ -592,7 +592,7 @@ namespace QuickFont
 
             var sourceBitmapData = new List<BitmapData>();
             foreach(var sourceSheet in sourceFontSheets)
-                sourceBitmapData.Add(sourceSheet.bitmapData);
+                sourceBitmapData.Add(sourceSheet.BitmapData);
             
 
             //GenerateBitmapSheetsAndRepack(QFontGlyph[] sourceGlyphs, BitmapData[] sourceBitmaps, int destSheetWidth, int destSheetHeight, out QFontGlyph[] destGlyphs, int destMargin, bool usePowerOfTwo)
@@ -621,7 +621,7 @@ namespace QuickFont
             //create list of texture pages
             var newTextureSheets = new List<TexturePage>();
             foreach (var page in bitmapSheets)
-                newTextureSheets.Add(new TexturePage(page.bitmapData));
+                newTextureSheets.Add(new TexturePage(page.BitmapData));
 
 
             var fontData = new QFontData();
@@ -660,7 +660,7 @@ namespace QuickFont
         private static void RetargetAllGlyphs(List<QBitmap> pages, QFontGlyph[] glyphs, byte alphaTolerance)
         {
             foreach (var glyph in glyphs)
-                RetargetGlyphRectangleOutwards(pages[glyph.page].bitmapData, glyph, false, alphaTolerance);
+                RetargetGlyphRectangleOutwards(pages[glyph.page].BitmapData, glyph, false, alphaTolerance);
         }
 
 
@@ -687,7 +687,7 @@ namespace QuickFont
                 var sg = sourceGlyphs[i];
                 destGlyphs[i] = new QFontGlyph(i,new Rectangle(0,0,sg.rect.Width,sg.rect.Height),sg.yOffset,sg.character);
                 destBitmaps[i] = new QBitmap(new Bitmap(sg.rect.Width,sg.rect.Height,PixelFormat.Format32bppArgb));
-                QBitmap.Blit(sourceBitmaps[sg.page].bitmapData,destBitmaps[i].bitmapData,sg.rect,0,0);
+                QBitmap.Blit(sourceBitmaps[sg.page].BitmapData,destBitmaps[i].BitmapData,sg.rect,0,0);
             }
         }
 
@@ -725,7 +725,7 @@ namespace QuickFont
 
 
             foreach (var glyph in data.CharSetMapping.Values)
-                RetargetGlyphRectangleOutwards(bitmapPages[glyph.page].bitmapData, glyph, false, loaderConfig.KerningConfig.alphaEmptyPixelTolerance);
+                RetargetGlyphRectangleOutwards(bitmapPages[glyph.page].BitmapData, glyph, false, loaderConfig.KerningConfig.alphaEmptyPixelTolerance);
  
             var intercept = FirstIntercept(data.CharSetMapping);
             if (intercept != null)
@@ -768,7 +768,7 @@ namespace QuickFont
 
                 var shrunkBitmapData = new BitmapData[shrunkBitmapsPerGlyph.Length];
                 for(int i = 0; i < shrunkBitmapsPerGlyph.Length; i ++ ){
-                    shrunkBitmapData[i] = shrunkBitmapsPerGlyph[i].bitmapData;
+                    shrunkBitmapData[i] = shrunkBitmapsPerGlyph[i].BitmapData;
                 }
 
                 //use roughly the same number of pages as before..
@@ -792,13 +792,13 @@ namespace QuickFont
 
             data.Pages = new TexturePage[pageCount];
             for(int i = 0; i < pageCount; i ++ )
-                data.Pages[i] = new TexturePage(bitmapPages[i].bitmapData);
+                data.Pages[i] = new TexturePage(bitmapPages[i].BitmapData);
 
 
             if (downSampleFactor != 1.0f)
             {
                 foreach (var glyph in data.CharSetMapping.Values)
-                    RetargetGlyphRectangleOutwards(bitmapPages[glyph.page].bitmapData, glyph, false, loaderConfig.KerningConfig.alphaEmptyPixelTolerance);
+                    RetargetGlyphRectangleOutwards(bitmapPages[glyph.page].BitmapData, glyph, false, loaderConfig.KerningConfig.alphaEmptyPixelTolerance);
  
 
                 intercept = FirstIntercept(data.CharSetMapping);

@@ -1,16 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel;
+using System.Linq;
 using System.Drawing;
-using System.Drawing.Text;
 using System.Drawing.Imaging;
 
 namespace QuickFont
 {
-    public class QBitmap
+    public class QBitmap:IDisposable
     {
         public Bitmap bitmap;
-        public BitmapData bitmapData;
+	    private BitmapData m_bitmapData;
 
 
         public QBitmap(string filePath)
@@ -23,33 +22,38 @@ namespace QuickFont
             LockBits(bitmap);
         }
 
+	    public BitmapData BitmapData
+	    {
+		    get { return m_bitmapData; }
+	    }
 
-        private void LockBits(Bitmap bitmap)
+
+	    private void LockBits(Bitmap bitmap)
         {
             this.bitmap = bitmap;
-            bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            m_bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
         }
 
 
 
-        public void Clear32(byte r, byte g, byte b, byte a)
+        public void Clear32(byte _r, byte _g, byte _b, byte _a)
         {
             unsafe
             {
-                byte* sourcePtr = (byte*)(bitmapData.Scan0);
+                var sourcePtr = (byte*)(m_bitmapData.Scan0);
 
-                for (int i = 0; i < bitmapData.Height; i++)
+                for (var i = 0; i < m_bitmapData.Height; i++)
                 {
-                    for (int j = 0; j < bitmapData.Width; j++)
+                    for (var j = 0; j < m_bitmapData.Width; j++)
                     {
-                        *(sourcePtr) = b;
-                        *(sourcePtr + 1) = g;
-                        *(sourcePtr + 2) = r;
-                        *(sourcePtr + 3) = a;
+                        *(sourcePtr) = _b;
+                        *(sourcePtr + 1) = _g;
+                        *(sourcePtr + 2) = _r;
+                        *(sourcePtr + 3) = _a;
 
                         sourcePtr += 4;
                     }
-                    sourcePtr += bitmapData.Stride - bitmapData.Width * 4; //move to the end of the line (past unused space)
+                    sourcePtr += m_bitmapData.Stride - m_bitmapData.Width * 4; //move to the end of the line (past unused space)
                 }
             }
         }
@@ -63,7 +67,7 @@ namespace QuickFont
         public static unsafe bool EmptyPixel(BitmapData bitmapData, int px, int py)
         {
 
-            byte* addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 3;
+            var addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 3;
             return (*addr == 0 && *(addr + 1) == 0 && *(addr + 2) == 0);
 
         }
@@ -74,7 +78,7 @@ namespace QuickFont
         public static unsafe bool EmptyAlphaPixel(BitmapData bitmapData, int px, int py, byte alphaEmptyPixelTolerance)
         {
 
-            byte* addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4;
+            var addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4;
             return (*(addr + 3) <= alphaEmptyPixelTolerance);
 
         }
@@ -83,24 +87,20 @@ namespace QuickFont
         /// Blits a block of a bitmap data from source to destination, using the luminance of the source to determine the 
         /// alpha of the target. Source must be 24-bit, target must be 32-bit.
         /// </summary>
-        public static void BlitMask(BitmapData source, BitmapData target, int srcPx, int srcPy, int srcW, int srcH, int px, int py)
+        public static void BlitMask(BitmapData _source, BitmapData _target, int _srcPx, int _srcPy, int _srcW, int _srcH, int _px, int _py)
         {
 
-            int sourceBpp = 3;
-            int targetBpp = 4;
+            const int sourceBpp = 3;
+            const int targetBpp = 4;
 
-            int targetStartX, targetEndX;
-            int targetStartY, targetEndY;
-            int copyW, copyH;
+	        var targetStartX = Math.Max(_px, 0);
+            var targetEndX = Math.Min(_px + _srcW, _target.Width);
 
-            targetStartX = Math.Max(px, 0);
-            targetEndX = Math.Min(px + srcW, target.Width);
+            var targetStartY = Math.Max(_py, 0);
+            var targetEndY = Math.Min(_py + _srcH, _target.Height);
 
-            targetStartY = Math.Max(py, 0);
-            targetEndY = Math.Min(py + srcH, target.Height);
-
-            copyW = targetEndX - targetStartX;
-            copyH = targetEndY - targetStartY;
+            var copyW = targetEndX - targetStartX;
+            var copyH = targetEndY - targetStartY;
 
             if (copyW < 0)
             {
@@ -112,26 +112,26 @@ namespace QuickFont
                 return;
             }
 
-            int sourceStartX = srcPx + targetStartX - px;
-            int sourceStartY = srcPy + targetStartY - py;
+            var sourceStartX = _srcPx + targetStartX - _px;
+            var sourceStartY = _srcPy + targetStartY - _py;
 
 
             unsafe
             {
-                byte* sourcePtr = (byte*)(source.Scan0);
-                byte* targetPtr = (byte*)(target.Scan0);
+                var sourcePtr = (byte*)(_source.Scan0);
+                var targetPtr = (byte*)(_target.Scan0);
 
 
-                byte* targetY = targetPtr + targetStartY * target.Stride;
-                byte* sourceY = sourcePtr + sourceStartY * source.Stride;
-                for (int y = 0; y < copyH; y++, targetY += target.Stride, sourceY += source.Stride)
+                var targetY = targetPtr + targetStartY * _target.Stride;
+                var sourceY = sourcePtr + sourceStartY * _source.Stride;
+                for (var y = 0; y < copyH; y++, targetY += _target.Stride, sourceY += _source.Stride)
                 {
 
-                    byte* targetOffset = targetY + targetStartX * targetBpp;
-                    byte* sourceOffset = sourceY + sourceStartX * sourceBpp;
-                    for (int x = 0; x < copyW; x++, targetOffset += targetBpp, sourceOffset += sourceBpp)
+                    var targetOffset = targetY + targetStartX * targetBpp;
+                    var sourceOffset = sourceY + sourceStartX * sourceBpp;
+                    for (var x = 0; x < copyW; x++, targetOffset += targetBpp, sourceOffset += sourceBpp)
                     {
-                        int lume = *(sourceOffset) + *(sourceOffset + 1) + *(sourceOffset + 2);
+                        var lume = *(sourceOffset) + *(sourceOffset + 1) + *(sourceOffset + 2);
 
                         lume /= 3;
 
@@ -160,7 +160,7 @@ namespace QuickFont
         public static void Blit(BitmapData source, BitmapData target, int srcPx, int srcPy, int srcW, int srcH, int destX, int destY)
         {
 
-            int bpp = 4;
+            var bpp = 4;
 
             int targetStartX, targetEndX;
             int targetStartY, targetEndY;
@@ -185,24 +185,24 @@ namespace QuickFont
                 return;
             }
 
-            int sourceStartX = srcPx + targetStartX - destX;
-            int sourceStartY = srcPy + targetStartY - destY;
+            var sourceStartX = srcPx + targetStartX - destX;
+            var sourceStartY = srcPy + targetStartY - destY;
 
 
             unsafe
             {
-                byte* sourcePtr = (byte*)(source.Scan0);
-                byte* targetPtr = (byte*)(target.Scan0);
+                var sourcePtr = (byte*)(source.Scan0);
+                var targetPtr = (byte*)(target.Scan0);
 
 
-                byte* targetY = targetPtr + targetStartY * target.Stride;
-                byte* sourceY = sourcePtr + sourceStartY * source.Stride;
-                for (int y = 0; y < copyH; y++, targetY += target.Stride, sourceY += source.Stride)
+                var targetY = targetPtr + targetStartY * target.Stride;
+                var sourceY = sourcePtr + sourceStartY * source.Stride;
+                for (var y = 0; y < copyH; y++, targetY += target.Stride, sourceY += source.Stride)
                 {
 
-                    byte* targetOffset = targetY + targetStartX * bpp;
-                    byte* sourceOffset = sourceY + sourceStartX * bpp;
-                    for (int x = 0; x < copyW*bpp; x++, targetOffset ++, sourceOffset ++)
+                    var targetOffset = targetY + targetStartX * bpp;
+                    var sourceOffset = sourceY + sourceStartX * bpp;
+                    for (var x = 0; x < copyW*bpp; x++, targetOffset ++, sourceOffset ++)
                         *(targetOffset) = *(sourceOffset);
 
                 }
@@ -212,7 +212,7 @@ namespace QuickFont
 
         public unsafe void PutPixel32(int px, int py, byte r, byte g, byte b, byte a)
         {
-            byte* addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4;
+            var addr = (byte*)(m_bitmapData.Scan0) + m_bitmapData.Stride * py + px * 4;
        
             *addr = b;
             *(addr + 1) = g;
@@ -222,7 +222,7 @@ namespace QuickFont
 
         public unsafe void GetPixel32(int px, int py, ref byte r, ref byte g, ref byte b, ref byte a)
         {
-            byte* addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4;
+            var addr = (byte*)(m_bitmapData.Scan0) + m_bitmapData.Stride * py + px * 4;
         
             b = *addr;
             g = *(addr + 1);
@@ -233,31 +233,31 @@ namespace QuickFont
 
         public unsafe void PutAlpha32(int px, int py, byte a)
         {
-            *((byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4 + 3) = a;
+            *((byte*)(m_bitmapData.Scan0) + m_bitmapData.Stride * py + px * 4 + 3) = a;
         }
 
         public unsafe void GetAlpha32(int px, int py, ref byte a)
         {
-            a = *((byte*)(bitmapData.Scan0) + bitmapData.Stride * py + px * 4 + 3);
+            a = *((byte*)(m_bitmapData.Scan0) + m_bitmapData.Stride * py + px * 4 + 3);
         }
 
         public void DownScale32(int newWidth, int newHeight)
         {
             
 
-            QBitmap newBitmap = new QBitmap(new Bitmap(newWidth, newHeight, bitmap.PixelFormat));
+            var newBitmap = new QBitmap(new Bitmap(newWidth, newHeight, bitmap.PixelFormat));
 
             if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
                 throw new Exception("DownsScale32 only works on 32 bit images");
 
-            float xscale = (float)bitmapData.Width / newWidth;
-            float yscale = (float)bitmapData.Height / newHeight;
+            var xscale = (float)m_bitmapData.Width / newWidth;
+            var yscale = (float)m_bitmapData.Height / newHeight;
 
             byte r = 0, g = 0, b = 0, a = 0;
-            float summedR = 0f;
-            float summedG = 0f;
-            float summedB = 0f;
-            float summedA = 0f;
+            var summedR = 0f;
+            var summedG = 0f;
+            var summedB = 0f;
+            var summedA = 0f;
 
             int left, right, top, bottom;  //the area of old pixels covered by the new bitmap
 
@@ -267,12 +267,12 @@ namespace QuickFont
 
             float leftF, rightF, topF, bottomF; //edges of new pixel in old pixel coords
             float weight;
-            float weightScale = xscale * yscale;
-            float totalColourWeight = 0f;
+            var weightScale = xscale * yscale;
+            var totalColourWeight = 0f;
 
-            for (int m = 0; m < newHeight; m++)
+            for (var m = 0; m < newHeight; m++)
             {
-                for (int n = 0; n < newWidth; n++)
+                for (var n = 0; n < newWidth; n++)
                 {
 
                     leftF = n * xscale;
@@ -289,8 +289,8 @@ namespace QuickFont
 
                     if (left < 0) left = 0;
                     if (top < 0) top = 0;
-                    if (right >= bitmapData.Width) right = bitmapData.Width - 1;
-                    if (bottom >= bitmapData.Height) bottom = bitmapData.Height - 1;
+                    if (right >= m_bitmapData.Width) right = m_bitmapData.Width - 1;
+                    if (bottom >= m_bitmapData.Height) bottom = m_bitmapData.Height - 1;
 
                     summedR = 0f;
                     summedG = 0f;
@@ -298,9 +298,9 @@ namespace QuickFont
                     summedA = 0f;
                     totalColourWeight = 0f;
 
-                    for (int j = top; j <= bottom; j++)
+                    for (var j = top; j <= bottom; j++)
                     {
-                        for (int i = left; i <= right; i++)
+                        for (var i = left; i <= right; i++)
                         {
                             targetStartX = Math.Max(leftF, i);
                             targetEndX = Math.Min(rightF, i + 1);
@@ -349,7 +349,7 @@ namespace QuickFont
             this.Free();
             
             this.bitmap = newBitmap.bitmap;
-            this.bitmapData = newBitmap.bitmapData;
+            this.m_bitmapData = newBitmap.m_bitmapData;
         }
 
 
@@ -367,11 +367,11 @@ namespace QuickFont
             unsafe
             {
                 byte* addr;
-                for (int i = 0; i < bitmapData.Width; i++)
+                for (var i = 0; i < m_bitmapData.Width; i++)
                 {
-                    for (int j = 0; j < bitmapData.Height; j++)
+                    for (var j = 0; j < m_bitmapData.Height; j++)
                     {
-                        addr = (byte*)(bitmapData.Scan0) + bitmapData.Stride * j + i * 4;
+                        addr = (byte*)(m_bitmapData.Scan0) + m_bitmapData.Stride * j + i * 4;
                         *addr = b;
                         *(addr + 1) = g;
                         *(addr + 2) = r;
@@ -473,16 +473,16 @@ namespace QuickFont
 
         public void BlurAlpha(int radius, int passes)
         {
-            QBitmap tmp = new QBitmap(new Bitmap(this.bitmap.Width, this.bitmap.Height, bitmap.PixelFormat));
+            var tmp = new QBitmap(new Bitmap(this.bitmap.Width, this.bitmap.Height, bitmap.PixelFormat));
 
             byte a = 0;
             int summedA;
-            int weight = 0;
+            var weight = 0;
             int xpos, ypos, x, y, kx, ky;
-            int width = bitmap.Width;
-            int height = bitmap.Height;
+            var width = bitmap.Width;
+            var height = bitmap.Height;
 
-            for (int pass = 0; pass < passes; pass++)
+            for (var pass = 0; pass < passes; pass++)
             {
 
                 //horizontal pass
@@ -547,9 +547,82 @@ namespace QuickFont
 
         public void Free()
         {
-            bitmap.UnlockBits(bitmapData);
+            bitmap.UnlockBits(m_bitmapData);
             bitmap.Dispose();
         }
 
+	    public void Dispose()
+	    {
+			bitmap.UnlockBits(m_bitmapData);
+	    }
+
+	    public void ApplyLightMaps(Bitmap[] _lightmaps)
+	    {
+
+			
+			unsafe
+			{
+
+				var lightQMaps = new QBitmap[_lightmaps.Length];
+				var ptrs = new byte*[_lightmaps.Length];
+				for (var index = 0; index < _lightmaps.Length; index++)
+				{
+					lightQMaps[index] = new QBitmap(_lightmaps[index]);
+					ptrs[index] = (byte*)(lightQMaps[index].m_bitmapData.Scan0);
+				}
+
+				var sourcePtr = (byte*)(m_bitmapData.Scan0);
+
+				byte r, g, b;
+				byte vr, vg, vb;
+				for (var i = 0; i < m_bitmapData.Height; i++)
+				{
+					for (var j = 0; j < m_bitmapData.Width; j++)
+					{
+						vr = *(sourcePtr + 2);
+						vg = *(sourcePtr + 1);
+						vb = *(sourcePtr + 0);
+
+						r = 0;
+						g = 0;
+						b = 0;
+						for (var index = 0; index < _lightmaps.Length; index++)
+						{
+							r = Math.Max(r, *(ptrs[index] + 2));
+							g = Math.Max(g,*(ptrs[index] + 1));
+							b = Math.Max(b,*(ptrs[index] + 0));
+							ptrs[index] += 4;
+						}
+
+						r = (byte)(r * vr / 255);
+						g = (byte)(g*vg/255);
+						b = (byte)(b*vb/255);
+
+
+						//if (vr > 0 && r>0)
+						//{
+						//	vr += 1;
+						//}
+
+						*(sourcePtr) = b;
+						*(sourcePtr + 1) = g;
+						*(sourcePtr + 2) = r;
+						//*(sourcePtr + 3) = _a;
+
+						sourcePtr += 4;
+					}
+					sourcePtr += m_bitmapData.Stride - m_bitmapData.Width * 4; //move to the end of the line (past unused space)
+					for (var index = 0; index < _lightmaps.Length; index++)
+					{
+						ptrs[index] += m_bitmapData.Stride - m_bitmapData.Width * 4; //move to the end of the line (past unused space)
+					}
+				}
+
+				for (var index = 0; index < _lightmaps.Length; index++)
+				{
+					lightQMaps[index].Dispose();
+				}
+			}
+		}
     }
 }
