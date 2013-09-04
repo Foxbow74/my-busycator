@@ -24,7 +24,7 @@ namespace Shader
         
         // Смещение картинки на форме
 
-	    private static PointF _pnt;
+	    private static PointF m_pnt;
 
 		private readonly Bitmap m_buf0 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
 		private readonly Bitmap m_buf1 = new Bitmap(Map.SIZE * (int)SZ, Map.SIZE * (int)SZ, PixelFormat.Format32bppPArgb);
@@ -112,13 +112,13 @@ namespace Shader
 
 			using (var t= new QBitmap(m_buf3))
 			{
-				//t.ApplyLightMaps(new[] { m_buf0, m_buf1, m_buf2 });
+				t.ApplyLightMaps(new[] { m_buf0, m_buf1, m_buf2 });
 			}
 
 			//_e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
 			_e.Graphics.CompositingMode = CompositingMode.SourceCopy;
 			//_e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
-			//_e.Graphics.DrawImage(m_buf3, new RectangleF(0, 0, Map.SIZE , Map.SIZE ), new RectangleF(0, 0, Map.SIZE * SZ, Map.SIZE * SZ), GraphicsUnit.Pixel);
+			_e.Graphics.DrawImage(m_buf3, new RectangleF(0, 0, Map.SIZE , Map.SIZE ), new RectangleF(0, 0, Map.SIZE * SZ, Map.SIZE * SZ), GraphicsUnit.Pixel);
 			
 			//Draw(_e, new PointF(_mousePnt.Y - m_offset.Y, _mousePnt.X - m_offset.X), Color.FromArgb(180, 255, 0), Map.SIZE);
             //Draw(_e, new PointF(_mousePnt.X - m_offset.X, _mousePnt.Y - m_offset.Y), Color.FromArgb(255, 180, 0), Map.SIZE * 2);
@@ -130,18 +130,18 @@ namespace Shader
 	            //g.InterpolationMode=InterpolationMode.HighQualityBicubic;
 
 
-	            var gp = new GraphicsPath();
-	            var tl = LIGHTRADIUS;
-	            var rectOfLight = new RectangleF(p.X - tl, p.Y - tl, tl*2, tl*2);
-	            gp.AddEllipse(rectOfLight);
-	            using (var brush = new PathGradientBrush(gp))
-	            {
-	                brush.CenterColor = lightColor;
-	                brush.SurroundColors = new[] {Color.Empty};
-	                g.FillEllipse(brush, rectOfLight);
-	            }
+            var gp = new GraphicsPath();
+            var tl = LIGHTRADIUS;
+            var rectOfLight = new RectangleF(p.X - tl, p.Y - tl, tl * 2, tl * 2);
+            gp.AddEllipse(rectOfLight);
+            using (var brush = new PathGradientBrush(gp))
+            {
+                brush.CenterColor = lightColor;
+                brush.SurroundColors = new[] { Color.Empty };
+                g.FillEllipse(brush, rectOfLight);
+            }
 
-	            _pnt = p;
+	            m_pnt = p;
 	            DrawShadows(g);
 	    }
 
@@ -154,7 +154,7 @@ namespace Shader
 	        #region Собираем все грани лицевые для источника освещения и попадающие в круг света
 
 	        edges.AddRange(from edge in m_allEdges
-	            where Edge.Distant(edge.P1, _pnt) < LIGHTRADIUS*2 && edge.Orient(_pnt) >= 0
+	            where Edge.Distant(edge.P1, m_pnt) < LIGHTRADIUS*2 && edge.Orient(m_pnt) >= 0
 	            select new Edge(edge.P1, edge.P2) {Opacity = edge.Opacity});
 
 	        #endregion
@@ -217,7 +217,7 @@ namespace Shader
 		/// <returns></returns>
 		private static PointF GetFarPnt(PointF p)
 		{
-			var v = new Vector(_pnt, p);
+			var v = new Vector(m_pnt, p);
             var md = LIGHTRADIUS * LIGHTRADIUS / v.Length;
             //var md = LIGHTRADIUS / v.Length;
 			return v * md;
@@ -233,7 +233,7 @@ namespace Shader
 			{
 				for (int j = 0; j < Map.SIZE; ++j)
 				{
-					float mod = Edge.Distant(_pnt, new PointF(i*SZ + SZ/2, j*SZ + SZ/2));
+					float mod = Edge.Distant(m_pnt, new PointF(i*SZ + SZ/2, j*SZ + SZ/2));
 					if (m_map[i, j] > 0 && mod < LIGHTRADIUS*1.1)
 					{
 						int alpha = 255 - (int)((float)255/LIGHTRADIUS * mod);
