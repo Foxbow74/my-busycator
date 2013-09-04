@@ -7,9 +7,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace QuickFont
 {
-
-
-
     public class QFont
     {
 
