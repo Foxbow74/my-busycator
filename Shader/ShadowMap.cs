@@ -37,7 +37,7 @@ void main(void)
     vec4 s0 = texture2D( Shadow0, xy );
 
       
-    gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
+    //gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
     gl_FragColor = vec4(c.r*s0.r,c.g*s0.g,c.b*s0.b,1);
 }";
 
@@ -49,8 +49,6 @@ void main(void)
 			m_t1 = m_fboWrapper.AddTextureBuffer();
             m_t2 = m_fboWrapper.AddTextureBuffer();
             m_fboWrapper.Check();
-
-            VSync = VSyncMode.Adaptive;
         }
 
         private static Edge[] GetRectEdges(Rectangle _rect, int _opacity)
