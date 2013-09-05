@@ -41,7 +41,8 @@ void main(void)
     gl_FragColor = vec4(c.r*s0.r,c.g*s0.g,c.b*s0.b,1);
 }";
 
-        public ShadowMap() : base(512, 512, new GraphicsMode(32, 1, 1, 4))
+        public ShadowMap()
+            : base(Map.SIZE, Map.SIZE, new GraphicsMode(32, 1, 1, 4))
         {
             CreateShaders();
 
@@ -115,10 +116,6 @@ void main(void)
                     }
                 }
             }
-
-            
-
-
         }
 
 	    protected override void OnRenderFrame(FrameEventArgs _e)
@@ -174,8 +171,8 @@ void main(void)
 			    
 
                 dfbo.BeginDrawIn(1);
-                //DrawShadows(new PointF(Mouse.X * SZ, Mouse.Y * SZ));
-                DrawShadows(new PointF(Mouse.X, Mouse.Y));
+                DrawShadows(new PointF(Mouse.X * SZ, Mouse.Y * SZ));
+                //DrawShadows(new PointF(Mouse.X*2, Mouse.Y*2));
 			    #endregion
 			}
 
@@ -186,8 +183,8 @@ void main(void)
 
             GL.Color3(1f, 1f, 1f);
 
-	        const float sz = 512f;//Map.SIZE; //512f / SZ;
-	        const float to = 1f;// ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
+            const float sz = Map.SIZE;//Map.SIZE; //512f / SZ;
+	        const float to = ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
 
             GL.Begin(BeginMode.Quads);
             {
