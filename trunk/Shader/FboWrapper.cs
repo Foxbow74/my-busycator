@@ -8,7 +8,7 @@ namespace Shader
     {
         public const int SIZE = 512;
         private int m_fboId;
-        private readonly List<TextureBuffer> m_buffers=new List<TextureBuffer>();
+        private readonly List<ColorBuffer> m_buffers=new List<ColorBuffer>();
 
         public FboWrapper()
         {
@@ -18,7 +18,7 @@ namespace Shader
 
         public int AddTextureBuffer()
         {
-            var t = new TextureBuffer();
+            var t = new ColorBuffer();
             GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboId);
             GL.Ext.FramebufferTexture2D(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0 + m_buffers.Count, TextureTarget.Texture2D, t.TextureId, 0);
             GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
@@ -127,15 +127,12 @@ namespace Shader
             }
         }
 
-        class TextureBuffer
+        class ColorBuffer
         {
             private readonly int m_textureId;
 
-            public TextureBuffer()
+            public ColorBuffer()
             {
-                //uint DepthRenderbuffer;
-
-                // Create Color Texture
                 GL.GenTextures(1, out m_textureId);
                 GL.BindTexture(TextureTarget.Texture2D, TextureId);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -143,7 +140,6 @@ namespace Shader
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb8, SIZE, SIZE, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
-                //GL.BindTexture(TextureTarget.Texture2D, 0);
             }
 
             public int TextureId
