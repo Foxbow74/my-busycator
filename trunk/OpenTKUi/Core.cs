@@ -13,9 +13,9 @@ namespace OpenTKUi
 
 			GL.MatrixMode(MatrixMode.Projection);
 			GL.PushMatrix();
-			GL.LoadIdentity();
-
+            GL.LoadIdentity();
 			GL.Ortho(viewPort[0], viewPort[0] + viewPort[2], viewPort[1] + viewPort[3], viewPort[1], -1, 1);
+
 			GL.MatrixMode(MatrixMode.Modelview);
 			GL.PushMatrix();
 			GL.LoadIdentity();
