@@ -2,8 +2,6 @@
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-
 using System.Drawing;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -13,13 +11,13 @@ using System.Text;
 
 namespace Shader
 {
-    class FrameBuffer:IDisposable
+    class FboWrapper:IDisposable
     {
 	    public const int SIZE = 512;
         private int m_fboId;
         private readonly List<TextureBuffer> m_buffers=new List<TextureBuffer>();
 
-        public FrameBuffer()
+        public FboWrapper()
         {
             // Create a FBO and attach the textures
             GL.Ext.GenFramebuffers(1, out m_fboId);
@@ -93,45 +91,64 @@ namespace Shader
             }
         }
 
-       public class DrawFBO:IDisposable
+        public class DrawHelper : IDisposable
         {
-            private readonly FrameBuffer m_frameBuffer;
+            private readonly FboWrapper m_fboWrapper;
+            private readonly int[] m_savedViewport = new int[4];
 
-            public DrawFBO(FrameBuffer _frameBuffer)
+            public DrawHelper(FboWrapper _fboWrapper)
             {
-                m_frameBuffer = _frameBuffer;
+                m_fboWrapper = _fboWrapper;
 
-				GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_frameBuffer.m_fboId);
+                GL.Flush();
+                GL.GetInteger(GetPName.Viewport, m_savedViewport);
+                GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboWrapper.m_fboId);
 
-				GL.PushAttrib(AttribMask.ViewportBit); // stores GL.Viewport() parameters
-				GL.Viewport(100, 0, SIZE, SIZE);
+                
+
+                //GL.Viewport(0, 0, SIZE, SIZE);
+                m_fboWrapper.Check();
+
+
+                //GL.PushMatrix();
+
+                //GL.MatrixMode(MatrixMode.Projection);
+                //GL.PushMatrix();
+                //GL.LoadIdentity();
+
+                ////GL.LoadIdentity();
+                //GL.MatrixMode(MatrixMode.Modelview);
+                //GL.PushMatrix();
+                //GL.LoadIdentity();
             }
 
-			public void BeginDrawIn(int _i)
-			{
-				//GL.DrawBuffer((DrawBufferMode)FramebufferAttachment.ColorAttachment0 + _i);
-				GL.BindTexture(TextureTarget.Texture2D, m_frameBuffer.m_buffers[_i].TextureId);
+            public void BeginDrawIn(int _i)
+            {
+                GL.DrawBuffer((DrawBufferMode)FramebufferAttachment.ColorAttachment0 + _i);
+                GL.BindTexture(TextureTarget.Texture2D, m_fboWrapper.m_buffers[_i].TextureId);
 
-				//GL.PushMatrix();
-				//GL.Ortho(0, SIZE, SIZE, 0, -1, 1);
-				//GL.Translate(-1, 0, 0);
-			}
+                //GL.PushMatrix();
+                //GL.MatrixMode(MatrixMode.Texture);
+                //GL.LoadIdentity();
+                //GL.Ortho(0,SIZE,SIZE,0,-1,1);
+            }
 
-			public void EndDrawIn()
-			{
-				//GL.PopMatrix();
-				//GL.LoadIdentity();
-				
-				//GL.BindTexture(TextureTarget.Texture2D, 0);
-			}
+            public void EndDrawIn()
+            {
+                //GL.PopMatrix();
+                //GL.PopMatrix();
+
+
+                //GL.BindTexture(TextureTarget.Texture2D, 0);
+            }
 
             public void Dispose()
             {
-				GL.PopAttrib();
-				
-				GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0); // return to visible framebuffer
-				//GL.DrawBuffer(DrawBufferMode.Back);
-			}
+                GL.Flush();
+                GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
+                GL.Viewport(m_savedViewport[0], m_savedViewport[1], m_savedViewport[2], m_savedViewport[3]);
+                GL.BindTexture(TextureTarget.Texture2D, 0);
+            }
         }
 
         class TextureBuffer
@@ -182,15 +199,15 @@ namespace Shader
         private readonly List<Edge> m_allEdges = new List<Edge>(Map.SIZE*Map.SIZE);
         private readonly Map m_map = new Map();
 
-        private readonly FrameBuffer m_frameBuffer;
+        private readonly FboWrapper m_fboWrapper;
         private readonly int m_t1, m_t2;
 
-	    public ShadowMap() : base(Map.SIZE*SZ*2, Map.SIZE*SZ*2, new GraphicsMode(32, 1, 1, 4))
+	    public ShadowMap() : base(512, 512, new GraphicsMode(32, 1, 1, 4))
         {
-            m_frameBuffer = new FrameBuffer();
-			m_t1 = m_frameBuffer.AddTextureBuffer();
-			m_t2 = m_frameBuffer.AddTextureBuffer();
-            m_frameBuffer.Check();
+            m_fboWrapper = new FboWrapper();
+			m_t1 = m_fboWrapper.AddTextureBuffer();
+			m_t2 = m_fboWrapper.AddTextureBuffer();
+            m_fboWrapper.Check();
         }
 
         private static Edge[] GetRectEdges(Rectangle rect, int _opacity)
@@ -262,98 +279,85 @@ namespace Shader
 	    protected override void OnRenderFrame(FrameEventArgs _e)
 	    {
 		    base.OnRenderFrame(_e);
-		    GL.ClearColor(0.9f, 1f, 1f, 1f);
+		    GL.ClearColor(1f, 1f, 1f, 1f);
 		    GL.Clear(ClearBufferMask.ColorBufferBit);
-			//{
-
-			//	GL.Ext.BindFramebuffer(FramebufferTarget.DrawFramebuffer, m_fbo1);
-			//	GL.BindTexture(TextureTarget.Texture2D, m_txt1);
-			//	GL.ClearColor(0f, 0f, 0f, 0f);
-			//	GL.Clear(ClearBufferMask.ColorBufferBit);
-			//	GL.Begin(BeginMode.Polygon);
-			//	{
-
-			//		GL.Color3(0f, 1f, 1f);
-			//		GL.Vertex2(Mouse.X, Mouse.Y);
-			//		GL.Color3(0, 0, 0);
-			//		const float step = (float)Math.PI / 10f;
-			//		for (float f = 0; f < Math.PI * 2 + step; f += step)
-			//		{
-			//			var x = Math.Sin(f) * 100 + Mouse.X;
-			//			var y = Math.Cos(f) * 100 + Mouse.Y;
-			//			GL.Vertex2(x, y);
-			//		}
-			//		GL.Color3(1f, 1f, 1f);
-			//		GL.Vertex2(Mouse.X, Mouse.Y);
-			//	}
-			//	GL.End();
-			//	GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
-			//}
-
-			using (var dfbo = new FrameBuffer.DrawFBO(m_frameBuffer))
+			using (var dfbo = new FboWrapper.DrawHelper(m_fboWrapper))
 			{
-				dfbo.BeginDrawIn(0);
-				GL.ClearColor(0f, 0f, 0f, 0f);
-				GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-				GL.Disable(EnableCap.Texture2D);
+			    #region #1
+
+			    dfbo.BeginDrawIn(0);
+			    GL.ClearColor(1f, 1f, 1f, 0f);
+			    GL.Clear(ClearBufferMask.ColorBufferBit);
+			    GL.Disable(EnableCap.Texture2D);
 
 
-				GL.Begin(BeginMode.Polygon);
-				{
+			    GL.Begin(BeginMode.Polygon);
+			    {
 
-					GL.Color3(1f, 1f, 0.7f);
-					//GL.Vertex2(Mouse.X, Mouse.Y);
-					GL.Vertex2(FrameBuffer.SIZE / 2, FrameBuffer.SIZE / 2);
-					//GL.Color3(0, 0, 0);
-					const float step = (float)Math.PI / 10f;
-					for (float f = 0; f < Math.PI * 2 + step; f += step)
-					{
-						var x = Math.Sin(f) * LIGHTRADIUS + FrameBuffer.SIZE / 2;
-						var y = Math.Cos(f) * LIGHTRADIUS + FrameBuffer.SIZE / 2;
-						GL.Vertex2(x, y);
-					}
-					GL.Color3(1f, 1f, 1f);
-					//GL.Vertex2(Mouse.X, Mouse.Y);
-					GL.Vertex2(FrameBuffer.SIZE / 2, FrameBuffer.SIZE / 2);
-					
-				}
-				GL.End();
-				//dfbo.EndDrawIn();
+			        GL.Color3(1f, 1f, 0.7f);
+			        //GL.Vertex2(Mouse.X, Mouse.Y);
+			        GL.Vertex2(FboWrapper.SIZE/2, FboWrapper.SIZE/2);
+			        GL.Color3(1f, 1f, 1f);
+			        const float step = (float) Math.PI/10f;
+			        for (float f = 0; f < Math.PI*2 + step; f += step)
+			        {
+			            var x = Math.Sin(f)*LIGHTRADIUS + FboWrapper.SIZE/2;
+			            var y = Math.Cos(f)*LIGHTRADIUS + FboWrapper.SIZE/2;
+			            GL.Vertex2(x, y);
+			        }
+			        GL.Color3(1f, 1f, 1f);
+			        //GL.Vertex2(Mouse.X, Mouse.Y);
+			        GL.Vertex2(FboWrapper.SIZE/2, FboWrapper.SIZE/2);
 
-				//dfbo.BeginDrawIn(1);
-				GL.Color3(1f, 0f, 0f);
-				GL.Begin(BeginMode.Lines);
-				{
-					GL.Vertex2(1f, 1f);
-					GL.Color3(0f, 1f, 0f);
-					GL.Vertex2(511f, 511f);
-				}
-				GL.End();
+			    }
+			    GL.End();
+			    dfbo.EndDrawIn();
 
-				dfbo.EndDrawIn();
+			    #endregion
 
-				//dfbo.BeginDrawIn(1);
-				//GL.ClearColor(0f, 0f, 0f, 0f);
-				//GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
-				//GL.Disable(EnableCap.Texture2D);
-				//GL.Color3(1f, 0, 1f);
-				//GL.Begin(BeginMode.Quads);
-				//{
-				//	DrawShadows(new PointF(Mouse.X, Mouse.Y));
-				//	DrawShadows(new PointF(Mouse.Y, Mouse.Y));
-				//	DrawShadows(new PointF(Mouse.X, Mouse.X));
-				//}
-				//GL.End();
+			    #region #2
+
+			    dfbo.BeginDrawIn(1);
+
+			    GL.ClearColor(1f, 1f, 1f, 0f);
+			    GL.Clear(ClearBufferMask.ColorBufferBit);
+			    GL.Color3(1f, 0f, 0f);
+			    GL.Begin(BeginMode.Lines);
+			    {
+			        GL.Vertex2(10f, 10f);
+			        GL.Color3(0f, 0f, 1f);
+			        GL.Vertex2(502f, 502f);
+			    }
+			    GL.End();
+
+			    dfbo.EndDrawIn();
+
+			    #endregion
+
+                #region DrawShadows
+
+                //dfbo.BeginDrawIn(1);
+			    //GL.ClearColor(0f, 0f, 0f, 0f);
+			    //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
+			    //GL.Disable(EnableCap.Texture2D);
+			    //GL.Color3(1f, 0, 1f);
+			    //GL.Begin(BeginMode.Quads);
+			    //{
+			    //	DrawShadows(new PointF(Mouse.X, Mouse.Y));
+			    //	DrawShadows(new PointF(Mouse.Y, Mouse.Y));
+			    //	DrawShadows(new PointF(Mouse.X, Mouse.X));
+			    //}
+			    //GL.End();
+
+			    #endregion
+
 			}
-			
-			GL.Color3(1f, 1f, 1f);
+            
+            GL.BindTexture(TextureTarget.Texture2D, m_t1);
+            GL.Color3(1f, 1f, 1f);
 			GL.Enable(EnableCap.Texture2D);
             GL.Begin(BeginMode.Quads);
             {
-				//GL.BindTexture(TextureTarget.ProxyTexture2D, m_txt1);
-				GL.BindTexture(TextureTarget.Texture2D, m_t1);
-				//GL.BindTexture(TextureTarget.ProxyTexture2D, m_t1);
-   
                 GL.TexCoord2(0f, 0f);
                 GL.Vertex2(0f, 0f);
 
@@ -366,50 +370,20 @@ namespace Shader
                 GL.TexCoord2(0f, 1f);
                 GL.Vertex2(0f, 512f);
 
-				//GL.BindTexture(TextureTarget.ProxyTexture2D, 0);
 				GL.BindTexture(TextureTarget.Texture2D, 0);
             }
             GL.End();
             GL.Disable(EnableCap.Texture2D);
 
-			GL.Color3(1f, 1f, 0f);
+			GL.Color3(0f, 0f, 0f);
 			GL.Begin(BeginMode.Lines);
 			{
-				GL.Vertex2(1f, 1f);
+				GL.Vertex2(10f, 10f);
 				GL.Color3(0f, 1f, 1f);
-				GL.Vertex2(511f, 511f);
+				GL.Vertex2(502f, 502f);
 			}
 			GL.End();
-
             GL.Flush();
-            //{
-            //    GL.Begin(BeginMode.Polygon);
-            //    {
-            //        GL.Color3(1f, 1f, 1f);
-            //        GL.Vertex2(Mouse.X, Mouse.Y);
-            //        GL.Color3(0, 0, 0);
-            //        const float step = (float) Math.PI/10f;
-            //        for (float f = 0; f < Math.PI*2 + step; f += step)
-            //        {
-            //            var x = Math.Sin(f)*100 + Mouse.X;
-            //            var y = Math.Cos(f)*100 + Mouse.Y;
-            //            GL.Vertex2(x, y);
-            //        }
-            //        GL.Color3(1f, 1f, 1f);
-            //        GL.Vertex2(Mouse.X, Mouse.Y);
-            //    }
-            //    GL.End();
-
-            //    GL.Color3(0, 0, 0);
-            //    GL.Begin(BeginMode.Quads);
-            //    {
-            //        DrawShadows(new PointF(Mouse.X, Mouse.Y));
-            //        DrawShadows(new PointF(Mouse.Y, Mouse.Y));
-            //        DrawShadows(new PointF(Mouse.X, Mouse.X));
-            //    }
-            //    GL.End();
-            //}
-            //GL.Flush();
 
             SwapBuffers();
             Title = string.Format("fps:{0} per frame", Math.Round(1/_e.Time));
@@ -484,7 +458,7 @@ namespace Shader
         protected override void OnUnload(EventArgs e)
         {
             base.OnUnload(e);
-            m_frameBuffer.Dispose();
+            m_fboWrapper.Dispose();
         }
 
         [STAThread]
