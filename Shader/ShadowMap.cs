@@ -31,15 +31,17 @@ namespace Shader
     uniform sampler2D Shadow1;
 void main(void)
 {
-    vec4 c = texture2D( Spot, gl_TexCoord[0].st );
-    vec4 s0 = texture2D( Shadow0, gl_TexCoord[0].st );
+    vec2 xy = gl_TexCoord[0].st;
+
+    vec4 c = texture2D( Spot, xy );
+    vec4 s0 = texture2D( Shadow0, xy );
 
       
-    //gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
+    gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
     gl_FragColor = vec4(c.r*s0.r,c.g*s0.g,c.b*s0.b,1);
 }";
 
-        public ShadowMap() : base(512*2, 512, new GraphicsMode(32, 1, 1, 4))
+        public ShadowMap() : base(512, 512, new GraphicsMode(32, 1, 1, 4))
         {
             CreateShaders();
 
@@ -138,19 +140,20 @@ void main(void)
 
 			    GL.Begin(BeginMode.Polygon);
 			    {
+                    const int center = Map.SIZE * SZ / 2;
 
 			        GL.Color3(1f, 1f, 0.7f);
-			        GL.Vertex2(FboWrapper.SIZE/2, FboWrapper.SIZE/2);
+			        GL.Vertex2(center, center);
 			        GL.Color3(0f, 0f, 0f);
 			        const float step = (float) Math.PI/10f;
 			        for (float f = 0; f < Math.PI*2 + step; f += step)
 			        {
-			            var x = Math.Sin(f)*LIGHTRADIUS + FboWrapper.SIZE/2;
-			            var y = Math.Cos(f)*LIGHTRADIUS + FboWrapper.SIZE/2;
+			            var x = Math.Sin(f)*LIGHTRADIUS + center;
+			            var y = Math.Cos(f)*LIGHTRADIUS + center;
 			            GL.Vertex2(x, y);
 			        }
                     GL.Color3(1f, 1f, 0.7f);
-			        GL.Vertex2(FboWrapper.SIZE/2, FboWrapper.SIZE/2);
+			        GL.Vertex2(center, center);
 
 			    }
 			    GL.End();
@@ -173,6 +176,7 @@ void main(void)
 			    
 
                 dfbo.BeginDrawIn(1);
+                //DrawShadows(new PointF(Mouse.X * SZ, Mouse.Y * SZ));
                 DrawShadows(new PointF(Mouse.X, Mouse.Y));
 			    #endregion
 			}
@@ -184,20 +188,21 @@ void main(void)
 
             GL.Color3(1f, 1f, 1f);
 
-            float sz = 512f/3f;
+	        const float sz = 512f;//Map.SIZE; //512f / SZ;
+	        const float to = 1f;// ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
 
             GL.Begin(BeginMode.Quads);
             {
                 GL.TexCoord2(0f, 0f);
                 GL.Vertex2(0f, 0f);
 
-                GL.TexCoord2(1f, 0f);
+                GL.TexCoord2(to, 0f);
                 GL.Vertex2(sz, 0f);
 
-                GL.TexCoord2(1f, 1f);
+                GL.TexCoord2(to, to);
                 GL.Vertex2(sz, sz);
 
-                GL.TexCoord2(0f, 1f);
+                GL.TexCoord2(0f, to);
                 GL.Vertex2(0f, sz);
 
             }
@@ -270,9 +275,12 @@ void main(void)
 
             #endregion
 
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
             GL.Begin(BeginMode.Quads);
             {
-                GL.Color3(0f, 0f, 0f);
+                GL.Color4(0f, 0f, 0f,0.1f);
                 foreach (var edge in edges)
                 {
                     if (!edge.Valid) continue;
@@ -315,6 +323,7 @@ void main(void)
                 }
             }
             GL.End();
+            GL.Disable(EnableCap.Blend);
         }
 
         /// <summary>
