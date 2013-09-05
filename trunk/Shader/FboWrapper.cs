@@ -99,15 +99,22 @@ namespace Shader
                 GL.GetInteger(GetPName.Viewport, m_savedViewport);
                 GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboWrapper.m_fboId);
 
+                
 
                 var viewPort = new int[4];
                 GL.GetInteger(GetPName.Viewport, viewPort);
 
-                m_fboWrapper.Check();
-                GL.PushMatrix();
-                GL.Scale(1f, -1f, 1f);
-                GL.Translate(0f, -512f, 0f);
+                GL.PushAttrib(AttribMask.ViewportBit);
+                GL.Viewport(0,0,SIZE,SIZE);
 
+                GL.MatrixMode(MatrixMode.Projection);
+                GL.PushMatrix(); 
+                GL.LoadIdentity();
+                GL.Ortho(0, SIZE, SIZE, 0, -1, 1);
+                GL.Scale(1f, -1f, 1f);
+                GL.Translate(0f, -SIZE, 0f);
+
+                m_fboWrapper.Check();
             }
 
             public void BeginDrawIn(int _i)
@@ -119,8 +126,10 @@ namespace Shader
             public void Dispose()
             {
                 GL.Flush();
-                //GL.Scale(1, 1, 1);
+                GL.MatrixMode(MatrixMode.Projection);
                 GL.PopMatrix();
+                GL.PopAttrib();
+
                 GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
                 GL.Viewport(m_savedViewport[0], m_savedViewport[1], m_savedViewport[2], m_savedViewport[3]);
                 GL.BindTexture(TextureTarget.Texture2D, 0);
