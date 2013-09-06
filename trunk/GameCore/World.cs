@@ -188,7 +188,10 @@ namespace GameCore
 			}
 		}
 
-		public void UpdateDPoint() { DPoint = TheWorld.LiveMap.GetData(); }
+	    public void UpdateDPoint()
+	    {
+	        DPoint = TheWorld.LiveMap.GetData();
+	    }
 
 		public Point DPoint { get; private set; }
 

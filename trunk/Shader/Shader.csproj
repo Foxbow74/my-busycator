@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,6 +60,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="LosManagerEx.cs" />
     <Compile Include="ShadowMap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />
@@ -90,6 +92,10 @@
     <Compile Include="Vector.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GameCore\GameCore.csproj">
+      <Project>{7ed7d31c-ad6b-4df5-8756-4ca130d451c2}</Project>
+      <Name>GameCore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\QuickFont\QuickFont.csproj">
       <Project>{bbece6fc-ef63-40f8-a734-a500d1dfc1af}</Project>
       <Name>QuickFont</Name>

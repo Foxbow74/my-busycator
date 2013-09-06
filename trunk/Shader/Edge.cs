@@ -6,7 +6,7 @@ namespace Shader
     public class Edge
     {
         public bool Valid = true;
-        public int Opacity { get; set; }
+        public float Opacity { get; set; }
         private PointF _p1;
         private PointF _p2;
 

@@ -35,7 +35,13 @@ namespace GameCore.Mapping
 
 		public UInt32[] SeenCells { get; private set; }
 
-		public IEnumerable<Tuple<ILightSource, Point>> LightSources
+        public struct LightSourcesInfo
+        {
+            public ILightSource Source;
+            public Point Point;
+        }
+
+        public IEnumerable<LightSourcesInfo> LightSources
 		{
 			get
 			{
@@ -43,11 +49,11 @@ namespace GameCore.Mapping
 				{
 					if (tuple.Item1 is ILightSource)
 					{
-						yield return new Tuple<ILightSource, Point>((ILightSource)tuple.Item1, tuple.Item2);
+                        yield return new LightSourcesInfo(){Point = tuple.Item2, Source = (ILightSource)tuple.Item1};
 					}
 					else if (tuple.Item1.Light != null)
 					{
-						yield return new Tuple<ILightSource, Point>(tuple.Item1.Light, tuple.Item2);
+                        yield return new LightSourcesInfo() { Point = tuple.Item2, Source = tuple.Item1.Light };
 					}
 				}
 			}

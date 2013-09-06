@@ -96,6 +96,10 @@
       <Project>{bcad98eb-0c52-4186-b8b0-92ab47947796}</Project>
       <Name>OpenTKUi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shader\Shader.csproj">
+      <Project>{8d87a1e3-a119-415b-a35a-d08d45a467a3}</Project>
+      <Name>Shader</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UnsafeUtils\UnsafeUtils.csproj">
       <Project>{8da672ad-628d-45bc-a1fb-5ad9541397a1}</Project>
       <Name>UnsafeUtils</Name>

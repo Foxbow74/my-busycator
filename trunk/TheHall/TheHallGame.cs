@@ -13,6 +13,7 @@ using LanguagePack;
 using MagickSetting;
 using OpenTK;
 using OpenTKUi;
+using Shader;
 using TheHall.Layers;
 
 namespace TheHall
