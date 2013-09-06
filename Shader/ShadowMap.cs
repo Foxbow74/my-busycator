@@ -1,6 +1,5 @@
 ﻿using System;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.Diagnostics;
@@ -13,12 +12,16 @@ namespace Shader
 {
     internal class ShadowMap : GameWindow
     {
-        private const int SZ = 3;
-	    private const float LIGHTRADIUS = 100;// Map.SIZE/2*SZ;
+        private const int VSZ = 1;
+        private const int SZ = 1;
+	    private const float LIGHTRADIUS = 100*SZ;// Map.SIZE/2*SZ;
         private readonly List<Edge> m_allEdges = new List<Edge>(Map.SIZE*Map.SIZE);
+        private readonly List<Point> m_allWalls = new List<Point>(Map.SIZE * Map.SIZE);
         private readonly Map m_map = new Map();
 
+        private readonly FboWrapper m_fboWrapperBlit;
         private readonly FboWrapper m_fboWrapper;
+
         private readonly int m_t1, m_t2;
         private int m_shaderProgramHandle;
         private int m_fragmentShaderHandle;
@@ -39,16 +42,26 @@ void main(void)
       
     //gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
     gl_FragColor = vec4(c.r*s0.r,c.g*s0.g,c.b*s0.b,1);
+//gl_FragColor = s0;
 }";
 
         public ShadowMap()
-            : base(Map.SIZE, Map.SIZE, new GraphicsMode(32, 1, 1, 4))
+            : base(Map.SIZE * VSZ, Map.SIZE * VSZ)//, new GraphicsMode(32, 1, 1, 4))
         {
+            if (SZ*Map.SIZE > FboWrapper.SIZE)
+            {
+                throw new ApplicationException();
+            }
+
             CreateShaders();
 
+            m_fboWrapperBlit = new FboWrapper();
+			m_t1 = m_fboWrapperBlit.AddTextureBuffer();
+            m_t2 = m_fboWrapperBlit.AddTextureBuffer();
+            m_fboWrapperBlit.Check();
+
             m_fboWrapper = new FboWrapper();
-			m_t1 = m_fboWrapper.AddTextureBuffer();
-            m_t2 = m_fboWrapper.AddTextureBuffer();
+			m_fboWrapper.AddRenderBuffer();
             m_fboWrapper.Check();
         }
 
@@ -96,6 +109,7 @@ void main(void)
                 {
                     if (m_map[i, j] > 0)
                     {
+                        m_allWalls.Add(new Point(i,j));
                         var rectEdges = GetRectEdges(new Rectangle(i*SZ, j*SZ, SZ, SZ), m_map[i, j]);
                         if (j > 0 && m_map[i, j - 1] == 0)
                         {
@@ -123,68 +137,75 @@ void main(void)
 		    base.OnRenderFrame(_e);
 		    GL.ClearColor(0f, 0f, 0f, 0f);
 		    GL.Clear(ClearBufferMask.ColorBufferBit);
-			using (var dfbo = new FboWrapper.DrawHelper(m_fboWrapper))
-			{
-			    #region #1
+            using (new FboWrapper.DrawHelper(m_fboWrapper))
+            {
+                #region #1
 
-			    dfbo.BeginDrawIn(0);
-			    GL.ClearColor(0f, 0f, 0f, 0f);
-			    GL.Clear(ClearBufferMask.ColorBufferBit);
-			    GL.Disable(EnableCap.Texture2D);
+	            //dfbo.BeginDrawIn(0);
+	            GL.ClearColor(0f, 0f, 0f, 0f);
+	            GL.Clear(ClearBufferMask.ColorBufferBit);
+	            GL.Disable(EnableCap.Texture2D);
 
 
-			    GL.Begin(BeginMode.Polygon);
-			    {
-                    const int center = Map.SIZE * SZ / 2;
+	            GL.Begin(BeginMode.Polygon);
+	            {
+	                const int center = Map.SIZE*SZ/2;
 
-			        GL.Color3(1f, 1f, 0.7f);
-			        GL.Vertex2(center, center);
-			        GL.Color3(0f, 0f, 0f);
-			        const float step = (float) Math.PI/10f;
-			        for (float f = 0; f < Math.PI*2 + step; f += step)
-			        {
-			            var x = Math.Sin(f)*LIGHTRADIUS + center;
-			            var y = Math.Cos(f)*LIGHTRADIUS + center;
-			            GL.Vertex2(x, y);
-			        }
-                    GL.Color3(1f, 1f, 0.7f);
-			        GL.Vertex2(center, center);
+	                GL.Color3(1f, 1f, 0.7f);
+	                GL.Vertex2(center, center);
+	                GL.Color3(0f, 0f, 0f);
+	                const float step = (float) Math.PI/10f;
+	                for (float f = 0; f < Math.PI*2 + step; f += step)
+	                {
+	                    var x = Math.Sin(f)*LIGHTRADIUS + center;
+	                    var y = Math.Cos(f)*LIGHTRADIUS + center;
+	                    GL.Vertex2(x, y);
+	                }
+	                GL.Color3(1f, 1f, 0.7f);
+	                GL.Vertex2(center, center);
+	            }
+	            GL.End();
 
-			    }
-			    GL.End();
-
-                GL.Color3(0.95f, 0.95f, 1f);
-                GL.Begin(BeginMode.Lines);
+	            
+                if (SZ > 1)
                 {
-                    foreach (var edge in m_allEdges)
+                    GL.Color3(0.95f, 0.95f, 1f);
+                    GL.Begin(BeginMode.Lines);
                     {
-                        GL.Vertex2(edge.P1.X, edge.P1.Y);
-                        GL.Vertex2(edge.P2.X, edge.P2.Y);
+                        foreach (var edge in m_allEdges)
+                        {
+                            GL.Vertex2(edge.P1.X, edge.P1.Y);
+                            GL.Vertex2(edge.P2.X, edge.P2.Y);
+                        }
                     }
+                    GL.End();
                 }
-                GL.End();
 
-			    #endregion
+	            #endregion
+                m_fboWrapper.BlitTo(m_fboWrapperBlit, 0);
+            }
 
-			    #region #2
+	        using (new FboWrapper.DrawHelper(m_fboWrapper))
+	        {
 
-			    
+                DrawShadows(new PointF(Mouse.X * SZ / VSZ, Mouse.Y * SZ / VSZ));
+	            m_fboWrapper.BlitTo(m_fboWrapperBlit, 1);
+	        }
 
-                dfbo.BeginDrawIn(1);
-                DrawShadows(new PointF(Mouse.X * SZ, Mouse.Y * SZ));
-                //DrawShadows(new PointF(Mouse.X*2, Mouse.Y*2));
-			    #endregion
-			}
 
-            GL.UseProgram(m_shaderProgramHandle);
+	        GL.UseProgram(m_shaderProgramHandle);
 
-            BindTexture(m_t1, TextureUnit.Texture0, "Spot");
             BindTexture(m_t2, TextureUnit.Texture1, "Shadow0");
+            BindTexture(m_t1, TextureUnit.Texture0, "Spot");
 
             GL.Color3(1f, 1f, 1f);
 
-            const float sz = Map.SIZE;//Map.SIZE; //512f / SZ;
+            const float sz = Map.SIZE * VSZ;//Map.SIZE; //512f / SZ;
 	        const float to = ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
+
+            //GL.Enable(EnableCap.PolygonSmooth);
+            //GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
+            //GL.ShadeModel(ShadingModel.Smooth);
 
             GL.Begin(BeginMode.Quads);
             {
@@ -199,15 +220,27 @@ void main(void)
 
                 GL.TexCoord2(0f, to);
                 GL.Vertex2(0f, sz);
-
             }
             GL.End();
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Disable(EnableCap.Texture2D);
 
+
+            //GL.Disable(EnableCap.PolygonSmooth);
+            //GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Fastest);
+            //GL.ShadeModel(ShadingModel.Flat);
+            
             GL.UseProgram(0);
 
-            
+            //GL.Color3(0.95f, 0.95f, 1f);
+            //GL.Begin(BeginMode.Points);
+            //{
+            //    foreach (var point in m_allWalls)
+            //    {
+            //        GL.Vertex2(point.X, point.Y+1);
+            //    }
+            //}
+            //GL.End();
 
             GL.Flush();
 
@@ -247,7 +280,8 @@ void main(void)
             GL.Begin(BeginMode.Polygon);
             {
 
-                GL.Color3(1f, 0.7f, 1f);
+                GL.Color3(1f, 0.7f, 0.7f);
+                
                 GL.Vertex2(_pnt.X, _pnt.Y);
                 GL.Color3(0f, 0f, 0f);
                 const float step = (float) Math.PI/10f;
@@ -275,7 +309,8 @@ void main(void)
 
             GL.Begin(BeginMode.Quads);
             {
-                GL.Color4(0f, 0f, 0f,0.1f);
+                GL.Color3(0f, 0f, 0f);
+                //GL.Color4(0f, 0f, 0f,0.1f);
                 foreach (var edge in edges)
                 {
                     if (!edge.Valid) continue;
@@ -338,7 +373,7 @@ void main(void)
         protected override void OnUnload(EventArgs _e)
         {
             base.OnUnload(_e);
-            m_fboWrapper.Dispose();
+            m_fboWrapperBlit.Dispose();
         }
 
         [STAThread]

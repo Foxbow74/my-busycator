@@ -7,7 +7,6 @@ using GameCore.Creatures.Dummies;
 using GameCore.Essences;
 using GameCore.Essences.Faked;
 using GameCore.Essences.Things;
-using GameCore.Mapping.Layers;
 using GameCore.Mapping.Layers.SurfaceObjects;
 using GameCore.Misc;
 
@@ -128,27 +127,8 @@ namespace GameCore.Mapping
 			{
                 if (m_transparentColor == null)
                 {
-					var opacity = TerrainAttribute.Opacity;
-                    if (opacity < 1 && Thing != null)
-                    {
-                        opacity += Thing.Opacity;
-                    }
-                    if (opacity < 1 && Creature != null)
-                    {
-                        opacity += Creature.Opacity;
-                    }
-					//if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
-					//{
-					//    opacity += World.TheWorld.Avatar.Opacity;
-					//}
-                    if (opacity < 1)
-                    {
-                        opacity += Items.Sum(_item => _item.Opacity);
-                    }
-                    var trancparence = 1f - Math.Min(1f, opacity);
-
-
-	                if (Terrain == ETerrains.RED_BRICK_WINDOW)
+                    var trancparence = 1f - Math.Min(1f, CalcOpacity());
+                    if (Terrain == ETerrains.RED_BRICK_WINDOW)
 	                {
 						m_transparentColor = new FColor(trancparence, 1f, 0.1f, 0.1f);
 	                }
@@ -162,7 +142,29 @@ namespace GameCore.Mapping
 			}
 		}
 
-		public LiveMapBlock LiveMapBlock { get; private set; }
+	    public float CalcOpacity()
+	    {
+	        var opacity = TerrainAttribute.Opacity;
+	        if (opacity < 1 && Thing != null)
+	        {
+	            opacity += Thing.Opacity;
+	        }
+	        if (opacity < 1 && Creature != null)
+	        {
+	            opacity += Creature.Opacity;
+	        }
+	        //if (opacity < 1 && LiveCoords == World.TheWorld.Avatar.LiveCoords)
+	        //{
+	        //    opacity += World.TheWorld.Avatar.Opacity;
+	        //}
+	        if (opacity < 1)
+	        {
+	            opacity += Items.Sum(_item => _item.Opacity);
+	        }
+	        return opacity;
+	    }
+
+	    public LiveMapBlock LiveMapBlock { get; private set; }
 
 		public Point WorldCoords { get { return LiveMapBlock.WorldCoords + InBlockCoords; } }
 

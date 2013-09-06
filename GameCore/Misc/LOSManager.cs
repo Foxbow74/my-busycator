@@ -173,7 +173,7 @@ namespace GameCore.Misc
 				{
 					var losCell = m_inOrder[index];
 
-					var powerCoeff = power[index];
+                    var powerCoeff = power[index];
 
 					if (powerCoeff < LIGHT_THRESHOLD) continue;
 

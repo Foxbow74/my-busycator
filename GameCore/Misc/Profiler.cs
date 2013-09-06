@@ -76,16 +76,16 @@ namespace GameCore.Misc
 
 		private static void ReportIt(string _name, long _total, int _indent = 0)
 		{
-			var _spanSum = m_infos.Values.Where(_info => _info.In == _name).Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Stopwatch.Elapsed).Ticks;
+			var spanSum = m_infos.Values.Where(_info => _info.In == _name).Aggregate(TimeSpan.Zero, (_current, _info) => _current + _info.Stopwatch.Elapsed).Ticks;
 			var mains = m_infos.Values.Where(_info => _info.In == _name).OrderByDescending(_info => _info.Stopwatch.Elapsed);
 			foreach (var info in mains)
 			{
 				var percents = 100 * info.Stopwatch.ElapsedTicks / _total;
 				if(percents==0)
 				{
-					continue;
+					//continue;
 				}
-				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Stopwatch.ElapsedTicks / _spanSum, info.Stopwatch.Elapsed.TotalSeconds, info.Count, percents));
+				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Stopwatch.ElapsedTicks / spanSum, info.Stopwatch.Elapsed.TotalSeconds, info.Count, percents));
 				ReportIt(info.Key, _total, _indent + 1);
 			}
 		}

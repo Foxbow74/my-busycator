@@ -271,11 +271,17 @@ namespace GameCore.Creatures
 			}
 		}
 
-		public IEnumerable<Tuple<ILightSource, CreatureGeoInfo>> LightSources()
+        public struct LightSourcesInfo
+        {
+            public ILightSource Source;
+            public CreatureGeoInfo CreatureGeoInfo;
+        }
+
+		public IEnumerable<LightSourcesInfo> LightSources()
 		{
 			foreach (var pair in InfoByCreature)
 			{
-				if (pair.Key.Light != null) yield return new Tuple<ILightSource, CreatureGeoInfo>(pair.Key.Light, pair.Value);
+                if (pair.Key.Light != null) yield return new LightSourcesInfo(){Source = pair.Key.Light, CreatureGeoInfo = pair.Value};
 			}
 
 		}

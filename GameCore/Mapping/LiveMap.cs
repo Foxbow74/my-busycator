@@ -22,9 +22,8 @@ namespace GameCore.Mapping
 		private readonly Point[] m_blockIds;
 
 		private readonly LosManager m_visibilityManager;
-		private Point m_vieportSize;
 
-		public LiveMap()
+	    public LiveMap()
 		{
 			m_visibilityManager = new LosManager(AVATAR_SIGHT);
 
@@ -50,19 +49,21 @@ namespace GameCore.Mapping
 
 		public PathFinder PathFinder { get; private set; }
 
-		internal LiveMapBlock[,] Blocks { get; private set; }
+		public LiveMapBlock[,] Blocks { get; private set; }
 
 		public LiveMapCell[,] Cells { get; private set; }
 
 		public Point CenterLiveBlock { get; private set; }
 
-		private Point GetCenterLiveCell()
+	    public Point VieportSize { get; private set; }
+
+	    private Point GetCenterLiveCell()
 		{
 			var inBlock = BaseMapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.WorldCoords);
 			return CenterLiveBlock*Constants.MAP_BLOCK_SIZE + inBlock;
 		}
 
-		public void SetViewPortSize(Point _size) { m_vieportSize = _size; }
+		public void SetViewPortSize(Point _size) { VieportSize = _size; }
 
 		public void Actualize()
 		{
@@ -130,7 +131,47 @@ namespace GameCore.Mapping
 			return 0;
 		}
 
-		public Point GetData()
+	    public Point[,] GetLightedLiveBlocks()
+	    {
+#if DEBUG
+            using (new Profiler("GetLightedLiveBlocks"))
+#endif
+	        {
+	            var dlts = new[]
+	            {
+	                new Point(- 1, - 1),
+	                new Point(- 1, 0),
+	                new Point(- 1, 1),
+	                new Point(1, - 1),
+	                new Point(1, 0),
+                    new Point(1,  1),
+	                new Point(0,  -1),
+                    new Point(0, 0),
+	                new Point(0, 1),
+	            };
+
+	            var result = new Point[9, 2];
+	            for (int i = 0; i < 9; i++)
+	            {
+                    result[i, 0] = dlts[i];
+                    result[i, 1] = Wrap(dlts[i] + CenterLiveBlock);
+	            }
+                return result;
+
+	            //return dlts.ToDictionary(_p => _p, _p =>Wrap(_p + CenterLiveBlock));
+	        }
+	    }
+
+        /// <summary>
+        /// Возвращает смещение левой верхней ячейки, видимой на экране, относительно центральной точки где рисуется аватар
+        /// </summary>
+        /// <returns></returns>
+	    public Point GetDPoint()
+	    {
+            return GetCenterLiveCell() - VieportSize / 2;
+	    }
+
+	    public Point GetData()
 		{
 #if DEBUG
 			using (new Profiler())
@@ -156,8 +197,8 @@ namespace GameCore.Mapping
 
 					foreach (var tuple in liveMapBlock.MapBlock.LightSources)
 					{
-						var lightSource = tuple.Item1;
-						var point = liveCellZero + tuple.Item2;
+						var lightSource = tuple.Source;
+						var point = liveCellZero + tuple.Point;
 
 						if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(Cells[point.X, point.Y].WorldCoords))
 						{
@@ -168,8 +209,8 @@ namespace GameCore.Mapping
 
 				foreach (var tuple in World.TheWorld.CreatureManager.LightSources())
 				{
-					var lightSource = tuple.Item1;
-					var info = tuple.Item2;
+					var lightSource = tuple.Source;
+					var info = tuple.CreatureGeoInfo;
 
 					if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(info.WorldCoords))
 					{
@@ -194,8 +235,7 @@ namespace GameCore.Mapping
 
 				World.TheWorld.Avatar[0,0].UpdateAvatarCellVisibility();
 
-				var zeroLiveCell = centerLiveCell - m_vieportSize/2;
-				return zeroLiveCell;
+                return GetDPoint();
 			}
 		}
 

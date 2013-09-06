@@ -3,6 +3,7 @@ using GameCore;
 using GameCore.Mapping;
 using GameCore.Messages;
 using GameCore.Misc;
+using Shader;
 
 namespace GameUi.UIBlocks
 {
@@ -36,6 +37,12 @@ namespace GameUi.UIBlocks
 				case WorldMessage.EType.TURN:
 					World.TheWorld.UpdateDPoint();
 					Redraw();
+
+                   var lm = new LosManagerEx();
+                    lm.Recalc(World.TheWorld.LiveMap);
+
+
+
 					break;
 				case WorldMessage.EType.JUST_REDRAW:
 					Redraw();
