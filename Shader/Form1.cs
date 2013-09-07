@@ -155,7 +155,7 @@ namespace Shader
 
 	        edges.AddRange(from edge in m_allEdges
 	            where Edge.Distant(edge.P1, m_pnt) < LIGHTRADIUS*2 && edge.Orient(m_pnt) >= 0
-	            select new Edge(edge.P1, edge.P2) {Opacity = edge.Opacity});
+				select new Edge(edge.P1, edge.P2) { Opacity = edge.Opacity, Distance = Edge.Distant(edge.P1, m_pnt) });
 
 	        #endregion
 

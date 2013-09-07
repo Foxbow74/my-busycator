@@ -1,19 +1,26 @@
 using System;
 using System.Drawing;
+using GameCore;
 
 namespace Shader
 {
     public class Edge
     {
-        public bool Valid = true;
-        public float Opacity { get; set; }
+	    public bool Valid;
+	    public float Distance;
+
+	    public float Opacity;
         private PointF _p1;
         private PointF _p2;
 
         public Edge(PointF p1, PointF p2)
         {
+	        Valid = true;
             _p1 = p1;
             _p2 = p2;
+	        Distance = 0;
+	        Opacity = 0;
+	        TransparentColor = FColor.Empty;
         }
 
         public PointF AB
@@ -43,7 +50,9 @@ namespace Shader
             get { return new Vector(_p1, _p2); }
         }
 
-        public override string ToString()
+	    public FColor TransparentColor;
+
+	    public override string ToString()
         {
             return string.Format("{2}[{0};{1}]", P1, P2, Valid ? "+" : "-");
         }
