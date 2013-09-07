@@ -9,6 +9,8 @@ namespace GameUi.UIBlocks
 {
 	internal class MapUiBlock : UIBlock
 	{
+		readonly LosManagerEx m_lm = new LosManagerEx();
+
 		public MapUiBlock(Rct _rct)
 			: base(_rct, null, FColor.Black)
 		{
@@ -38,8 +40,7 @@ namespace GameUi.UIBlocks
 					World.TheWorld.UpdateDPoint();
 					Redraw();
 
-                   var lm = new LosManagerEx();
-                    lm.Recalc(World.TheWorld.LiveMap);
+                    m_lm.Recalc(World.TheWorld.LiveMap);
 
 
 

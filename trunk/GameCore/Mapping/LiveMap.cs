@@ -151,7 +151,7 @@ namespace GameCore.Mapping
 	            };
 
 	            var result = new Point[9, 2];
-	            for (int i = 0; i < 9; i++)
+	            for (var i = 0; i < 9; i++)
 	            {
                     result[i, 0] = dlts[i];
                     result[i, 1] = Wrap(dlts[i] + CenterLiveBlock);

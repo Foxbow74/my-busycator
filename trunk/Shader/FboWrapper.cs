@@ -6,27 +6,29 @@ namespace Shader
 {
     class FboWrapper:IDisposable
     {
-        public const int SIZE = 1024;
+        public const int SIZE = 128;
         private int m_fboId;
         private readonly List<ColorBuffer> m_buffers=new List<ColorBuffer>();
-        private int m_color_rb;
+        private int m_renderBuffer;
         private const int SAMPLES=4;
 
-        public FboWrapper()
+        public FboWrapper(bool _addRenderBuffer)
         {
             GL.Ext.GenFramebuffers(1, out m_fboId);
-            Check();
-        }
 
-        public void AddRenderBuffer()
-        {
-            GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboId);
-            GL.Ext.GenRenderbuffers(1, out m_color_rb);
-            GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, m_color_rb);
-            GL.Ext.RenderbufferStorageMultisample((ExtFramebufferMultisample)(int)RenderbufferTarget.RenderbufferExt, SAMPLES, (ExtFramebufferMultisample)(int)PixelFormat.Rgba, SIZE, SIZE);
-            GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0, RenderbufferTarget.RenderbufferExt, m_color_rb);
-            GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
-            Check();
+	        if (_addRenderBuffer)
+	        {
+		        GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboId);
+		        GL.Ext.GenRenderbuffers(1, out m_renderBuffer);
+		        GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, m_renderBuffer);
+		        GL.Ext.RenderbufferStorageMultisample((ExtFramebufferMultisample) (int) RenderbufferTarget.RenderbufferExt,
+			        SAMPLES, (ExtFramebufferMultisample) (int) PixelFormat.Rgba, SIZE, SIZE);
+		        GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0,
+			        RenderbufferTarget.RenderbufferExt, m_renderBuffer);
+		        GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
+	        }
+
+	        Check();
         }
 
         public int AddTextureBuffer()
@@ -41,13 +43,20 @@ namespace Shader
             return t.TextureId;
         }
 
+	    public int CountOfBuffers
+	    {
+		    get
+		    {
+			    return m_buffers.Count;
+		    }
+	    }
+
         public void Check()
         {
             switch (GL.Ext.CheckFramebufferStatus(FramebufferTarget.FramebufferExt))
             {
                 case FramebufferErrorCode.FramebufferCompleteExt:
                 {
-                   // Console.WriteLine("FBO: The framebuffer is complete and valid for rendering.");
                     break;
                 }
                 case FramebufferErrorCode.FramebufferIncompleteAttachmentExt:
@@ -60,11 +69,6 @@ namespace Shader
                     Console.WriteLine("FBO: There are no attachments.");
                     break;
                 }
-                    /* case  FramebufferErrorCode.GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT: 
-                     {
-                         Console.WriteLine("FBO: An object has been attached to more than one attachment point.");
-                         break;
-                     }*/
                 case FramebufferErrorCode.FramebufferIncompleteDimensionsExt:
                 {
                     Console.WriteLine("FBO: Attachments are of different size. All attachments must have the same width and height.");
@@ -98,33 +102,17 @@ namespace Shader
             }
         }
 
-        public void BeginDrawIn(int _i)
-        {
-            //GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0Ext + _i, RenderbufferTarget.RenderbufferExt, m_fboWrapper.m_color_rb);
-            //GL.ActiveTexture(TextureUnit.Texture0+_i);
-            GL.DrawBuffer((DrawBufferMode)FramebufferAttachment.ColorAttachment0Ext + _i);
-            GL.BindTexture(TextureTarget.Texture2D, m_buffers[_i].TextureId);
-        }
-
         public class DrawHelper : IDisposable
         {
-            private readonly FboWrapper m_fboWrapper;
-            private readonly int[] m_savedViewport = new int[4];
+	        private readonly int[] m_savedViewport = new int[4];
 
             public DrawHelper(FboWrapper _fboWrapper)
             {
-                m_fboWrapper = _fboWrapper;
+	            var fboWrapper = _fboWrapper;
                 
-                
-
                 GL.Flush();
                 GL.GetInteger(GetPName.Viewport, m_savedViewport);
-                GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboWrapper.m_fboId);
-
-                
-
-                var viewPort = new int[4];
-                GL.GetInteger(GetPName.Viewport, viewPort);
+                GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, fboWrapper.m_fboId);
 
                 GL.PushAttrib(AttribMask.ViewportBit);
                 GL.Viewport(0,0,SIZE,SIZE);
@@ -136,11 +124,8 @@ namespace Shader
                 GL.Scale(1f, -1f, 1f);
                 GL.Translate(0f, -SIZE, 0f);
 
-                //m_fboWrapper.Check();
-                GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, m_fboWrapper.m_color_rb);
-            }
-
-           
+                GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, fboWrapper.m_renderBuffer);
+           }
 
             public void Dispose()
             {
@@ -184,44 +169,23 @@ namespace Shader
                 var id = buffer.TextureId;
                 GL.DeleteTextures(1, ref id);    
             }
-            GL.Ext.DeleteRenderbuffers(1, ref m_color_rb);
+            GL.Ext.DeleteRenderbuffers(1, ref m_renderBuffer);
             GL.Ext.DeleteFramebuffers(1, ref m_fboId);
         }
 
         public void BlitTo(FboWrapper _fboWrapperBlit, int _attachment)
         {
-
-            //blitting
             GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, _fboWrapperBlit.m_fboId);
-            _fboWrapperBlit.BeginDrawIn(_attachment);
+
+			GL.DrawBuffer((DrawBufferMode)FramebufferAttachment.ColorAttachment0Ext + _attachment);
+			GL.BindTexture(TextureTarget.Texture2D, _fboWrapperBlit.m_buffers[_attachment].TextureId);
 
             GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, m_fboId);
-
-            //_fboWrapperBlit.
             GL.BlitFramebuffer(0, 0, SIZE, SIZE, 0, 0, SIZE, SIZE, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
 
             GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, 0);
             GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, 0);
 
-            ////glBindFramebuffer(GL_FRAMEBUFFER,m_frameBuffer);
-            //glBindBuffer(GL_PIXEL_PACK_BUFFER,m_subImageBuffer[i]);
-            //glPixelStorei(GL_PACK_ALIGNMENT,1);
-
-            //glBindFramebuffer(GL_FRAMEBUFFER,m_frameBufferBlit);
-            ////注意：以BGR的顺序读取
-            //glReadPixels(0,0,m_subImageWidth,m_subImageHeight,
-            //    GL_BGR,GL_UNSIGNED_BYTE,bufferOffset(0));
-            //int temp4 = GLUtils::checkForOpenGLError(__FILE__,__LINE__);
-            //m_subPixels[i] = static_cast<GLubyte*>(glMapBuffer(GL_PIXEL_PACK_BUFFER,GL_READ_ONLY));
-            //if (m_subPixels[i] == NULL)
-            //{
-            //    cout << "NULL pointer" << endl;
-            //}
-            //gltGenBMP(subImageFile[i],GLT_BGR,m_subImageWidth,m_subImageHeight,m_subPixels[i]);
-            //glUnmapBuffer(GL_PIXEL_PACK_BUFFER);
-            //glBindBuffer(GL_PIXEL_PACK_BUFFER,0);
-
-            //glBindFramebuffer(GL_FRAMEBUFFER,0);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing.Imaging;
+using GameCore;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
@@ -7,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace Shader
 {
@@ -14,7 +17,7 @@ namespace Shader
     {
         private const int VSZ = 1;
         private const int SZ = 1;
-	    private const float LIGHTRADIUS = 100*SZ;// Map.SIZE/2*SZ;
+	    private const float LIGHTRADIUS = Map.SIZE/3;// Map.SIZE/2*SZ;
         private readonly List<Edge> m_allEdges = new List<Edge>(Map.SIZE*Map.SIZE);
         private readonly List<Point> m_allWalls = new List<Point>(Map.SIZE * Map.SIZE);
         private readonly Map m_map = new Map();
@@ -35,18 +38,13 @@ namespace Shader
 void main(void)
 {
     vec2 xy = gl_TexCoord[0].st;
-
     vec4 c = texture2D( Spot, xy );
     vec4 s0 = texture2D( Shadow0, xy );
-
-      
-    //gl_FragColor = vec4(min(c.r,s0.r),min(c.g,s0.g),min(c.b,s0.b),1);
-    gl_FragColor = vec4(c.r*s0.r,c.g*s0.g,c.b*s0.b,1);
-//gl_FragColor = s0;
+	gl_FragColor = c*s0;
 }";
 
         public ShadowMap()
-            : base(Map.SIZE * VSZ, Map.SIZE * VSZ)//, new GraphicsMode(32, 1, 1, 4))
+            : base(Map.SIZE * VSZ, Map.SIZE * VSZ)
         {
             if (SZ*Map.SIZE > FboWrapper.SIZE)
             {
@@ -55,14 +53,15 @@ void main(void)
 
             CreateShaders();
 
-            m_fboWrapperBlit = new FboWrapper();
+            m_fboWrapperBlit = new FboWrapper(false);
 			m_t1 = m_fboWrapperBlit.AddTextureBuffer();
             m_t2 = m_fboWrapperBlit.AddTextureBuffer();
             m_fboWrapperBlit.Check();
 
-            m_fboWrapper = new FboWrapper();
-			m_fboWrapper.AddRenderBuffer();
-            m_fboWrapper.Check();
+            m_fboWrapper = new FboWrapper(true);
+			//m_fboWrapper.AddTextureBuffer();
+
+			VSync=VSyncMode.Off;
         }
 
         private static Edge[] GetRectEdges(Rectangle _rect, int _opacity)
@@ -244,7 +243,22 @@ void main(void)
 
             GL.Flush();
 
+			
+			//var arr = new FColor[Map.SIZE, Map.SIZE];
+			//GL.ReadPixels(0, 0, Map.SIZE, Map.SIZE, PixelFormat.Rgba, PixelType.Float, arr);
+
+			//var bmp = new Bitmap(Map.SIZE, Map.SIZE, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+			//for (int i = 0; i < Map.SIZE; i++)
+			//{
+			//	for (int j = 0; j < Map.SIZE; j++)
+			//	{
+			//		bmp.SetPixel(j, i, Color.FromArgb((int)(arr[i, j].A * 255), (int)(arr[i, j].R * 255), (int)(arr[i, j].G * 255), (int)(arr[i, j].B * 255)));
+			//	}
+			//}
+			//bmp.Save("d:\\aaa.png",ImageFormat.Png);
+
             SwapBuffers();
+
             Title = string.Format("fps:{0} per frame", Math.Round(1/_e.Time));
         }
 
@@ -300,13 +314,15 @@ void main(void)
 
             var edges = (from edge in m_allEdges
                 where Edge.Distant(edge.P1, _pnt) < LIGHTRADIUS*2 && edge.Orient(_pnt) >= 0
-                select new Edge(edge.P1, edge.P2) {Opacity = edge.Opacity}).ToArray();
+				orderby Edge.Distant(edge.P1, _pnt)
+                select new Edge(edge.P1, edge.P2) {Opacity = edge.Opacity,Distance = Edge.Distant(edge.P1, _pnt)}
+				
+				).ToArray();
 
             #endregion
 
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
             GL.Begin(BeginMode.Quads);
             {
                 GL.Color3(0f, 0f, 0f);
@@ -324,30 +340,20 @@ void main(void)
 
                     #region Отбрасываем все грани вошедшие внутрь теневой трапеции
 
-                    var shadowEdges = new Edge[4];
-                    for (var i = 0; i < 4; ++i)
-                    {
-                        shadowEdges[i] = new Edge(pnt[i], pnt[(i + 1)%4]);
-                    }
+					var e1 = new Edge(pnt[2], pnt[0]);
+					var e2 = new Edge(pnt[0], pnt[3]);
 
-                    foreach (var edge1 in edges.ToArray())
-                    {
-                        if (!edge1.Valid)
-                        {
-                            continue;
-                        }
-                        var flag = true;
-                        foreach (var shadowEdge in shadowEdges)
-                        {
-                            if (!(shadowEdge.Orient(edge1.P1) > 0) && !(shadowEdge.Orient(edge1.P2) > 0)) continue;
-                            flag = false;
-                            break;
-                        }
-                        if (flag)
-                        {
-                            edge1.Valid = false;
-                        }
-                    }
+					foreach (var edge1 in edges)
+					{
+						if (!edge1.Valid)
+						{
+							continue;
+						}
+						if (e1.Orient(edge1.P1) < 0 && e2.Orient(edge1.P1) < 0)
+						{
+							edge1.Valid = false;
+						}
+					}
 
                     #endregion
                 }

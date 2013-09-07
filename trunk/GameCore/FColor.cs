@@ -1555,10 +1555,10 @@ namespace GameCore
 
 		#endregion
 
-		public float A;
-		public float B;
-		public float G;
 		public float R;
+		public float G;
+		public float B;
+		public float A;
 
 		public FColor(float _a, float _r, float _g, float _b)
 		{
