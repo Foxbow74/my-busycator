@@ -134,7 +134,7 @@ namespace GameCore.Mapping
 	                }
 	                else
 	                {
-						m_transparentColor = new FColor(trancparence, 1f, 1f, 1f);
+						m_transparentColor = new FColor(trancparence, 0f, 0f, 0f);
 
 	                }
                 }
