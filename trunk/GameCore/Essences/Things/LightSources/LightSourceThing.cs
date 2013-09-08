@@ -30,6 +30,11 @@ namespace GameCore.Essences.Things.LightSources
 
 		public void LightCells(LiveMap _liveMap, Point _point) { m_lightSource.LightCells(_liveMap, _point); }
 
+		public FColor Color
+		{
+			get { return m_lightSource.Color; }
+		}
+
 		public int Radius { get { return m_lightSource.Radius; } }
 
 		#endregion

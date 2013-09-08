@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using GameCore;
 using GameCore.Mapping;
 using GameCore.Misc;
 using OpenTK.Graphics.OpenGL;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using Point = GameCore.Misc.Point;
 
 namespace Shader
@@ -25,6 +28,7 @@ namespace Shader
 	{
 		public PointF Point;
 		public ILightSource LightSource;
+		public LiveMapCell LiveMapCell;
 
 		public override string ToString()
 		{
@@ -47,8 +51,8 @@ namespace Shader
 		private readonly ShadowCaster[,] m_shadowCasters = new ShadowCaster[MAP_SIZE, MAP_SIZE];
 		private int m_edgesCount;
 		private int m_lightsCount;
-		private FboWrapper m_fbo;
-		private FboWrapper m_fboBlit;
+		private readonly FboWrapper m_fbo;
+		private readonly FboWrapper m_fboBlit;
 		
 		public LosManagerEx()
 	    {
@@ -96,6 +100,7 @@ namespace Shader
 
 	                    var tempPoint = dlt + blockPoint;
 	                    m_lights[m_lightsCount].Point = new PointF(tempPoint.X,tempPoint.Y);
+						m_lights[m_lightsCount].LiveMapCell = liveMapCell;
 	                    m_lights[m_lightsCount++].LightSource = creature.Light;
 
 	                    #endregion
@@ -107,6 +112,7 @@ namespace Shader
 	                {
 						var tempPoint = dlt + info.Point;
 		                m_lights[m_lightsCount].Point = new PointF(tempPoint.X,tempPoint.Y);
+						//m_lights[m_lightsCount].LiveMapCell = liveMapCell;
 		                m_lights[m_lightsCount++].LightSource = info.Source;
 	                }
 
@@ -117,85 +123,223 @@ namespace Shader
 
                 m_edgesCount = 0;
 
-                for (var i = 0; i < MAP_SIZE; ++i)
-                {
-                    for (var j = 0; j < MAP_SIZE; ++j)
-                    {
-						var lmc = m_shadowCasters[i, j].LiveMapCell;
-	                    if (lmc == null) continue;
+	            for (var i = 1; i < MAP_SIZE - 1; ++i)
+	            {
+		            for (var j = 1; j < MAP_SIZE - 1; ++j)
+		            {
+			            var lmc = m_shadowCasters[i, j].LiveMapCell;
+			            if (lmc == null) continue;
 
-	                    var opacity = m_shadowCasters[i, j].Opacity;
-	                    var rect = new RectangleF(i, j, 1, 1);
-	                    if (j > 0 && m_shadowCasters[i, j - 1].LiveMapCell == null)
-	                    {
-		                    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Top)) { Opacity = opacity, TransparentColor = lmc.TransparentColor };
-	                    }
-	                    if (i < (MAP_SIZE - 1) && m_shadowCasters[i + 1, j].LiveMapCell == null)
-	                    {
-		                    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top), new PointF(rect.Right, rect.Bottom)) { Opacity = opacity, TransparentColor = lmc.TransparentColor };
-	                    }
-	                    if (j < (MAP_SIZE - 1) && m_shadowCasters[i, j + 1].LiveMapCell == null)
-	                    {
-		                    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom), new PointF(rect.Left, rect.Bottom)) { Opacity = opacity, TransparentColor = lmc.TransparentColor };
-	                    }
-	                    if (i > 0 && m_shadowCasters[i - 1, j].LiveMapCell == null)
-	                    {
-		                    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom), new PointF(rect.Left, rect.Top)) { Opacity = opacity, TransparentColor = lmc.TransparentColor };
-	                    }
-                    }
-                }
+			            var opacity = m_shadowCasters[i, j].Opacity;
 
-				var dPoint = _liveMap.GetDPoint();
+			            if (opacity > 0)
+			            {
+
+				            var rect = new RectangleF(i, j, 1, 1);
+							//var t = m_shadowCasters[i, j - 1].Opacity != opacity;
+							//var b = m_shadowCasters[i, j + 1].Opacity != opacity;
+							//var l = m_shadowCasters[i - 1, j].Opacity != opacity;
+							//var r = m_shadowCasters[i + 1, j].Opacity != opacity;
+
+
+				            if (m_shadowCasters[i, j - 1].Opacity != opacity
+				                || m_shadowCasters[i - 1, j - 1].Opacity != opacity
+				                || m_shadowCasters[i + 1, j - 1].Opacity != opacity
+				                || m_shadowCasters[i, j + 1].Opacity != opacity
+				                || m_shadowCasters[i - 1, j + 1].Opacity != opacity
+				                || m_shadowCasters[i + 1, j + 1].Opacity != opacity
+				                || m_shadowCasters[i, j].Opacity != opacity
+				                || m_shadowCasters[i - 1, j].Opacity != opacity
+				                || m_shadowCasters[i + 1, j].Opacity != opacity
+					            )
+				            {
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top),
+						            new PointF(rect.Right, rect.Top))
+					                                         {
+						                                         Opacity = opacity,
+						                                         TransparentColor = lmc.TransparentColor,
+						                                         LiveMapCell = lmc
+					                                         };
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom),
+						            new PointF(rect.Left, rect.Bottom))
+					                                         {
+						                                         Opacity = opacity,
+						                                         TransparentColor = lmc.TransparentColor,
+						                                         LiveMapCell = lmc
+					                                         };
+
+								m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top),
+						            new PointF(rect.Right, rect.Bottom))
+					                                         {
+						                                         Opacity = opacity,
+						                                         TransparentColor = lmc.TransparentColor,
+						                                         LiveMapCell = lmc
+					                                         };
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom),
+						            new PointF(rect.Left, rect.Top))
+					                                         {
+						                                         Opacity = opacity,
+						                                         TransparentColor = lmc.TransparentColor,
+						                                         LiveMapCell = lmc
+					                                         };
+				            }
+			            }
+		            }
+	            }
+
+	            var dPoint = _liveMap.GetDPoint();
                 var viewportSize = _liveMap.VieportSize;
 
-	            while (m_fboBlit.CountOfBuffers<m_lightsCount)
+	            #region нарисовать зону видимости героя
+
+	            if (m_fboBlit.CountOfBuffers == 0)
+	            {
+					m_fboBlit.AddTextureBuffer();
+		            using (new FboWrapper.DrawHelper(m_fbo))
+		            {
+						GL.Color4(1f, 0f, 1f, 1f);
+			            GL.ClearColor(0f, 0f, 0f, 0f);
+			            GL.Clear(ClearBufferMask.ColorBufferBit);
+						GL.Disable(EnableCap.Texture2D);
+
+			            GL.Begin(BeginMode.Polygon);
+			            {
+				            const int radius = MAP_SIZE/2;
+
+				            GL.Color3(1f, 1f, 1f);
+				            GL.Vertex2(radius, radius);
+				            GL.Color4(0f, 0f, 0f, 0f);
+				            const float step = (float) Math.PI/100f;
+				            for (float f = 0; f < Math.PI*2 + step; f += step)
+				            {
+					            var x = Math.Sin(f)*radius + radius;
+					            var y = Math.Cos(f)*radius + radius;
+					            GL.Vertex2(x, y);
+				            }
+				            GL.Color3(1f, 1f, 1f);
+				            GL.Vertex2(radius, radius);
+			            }
+			            GL.End();
+			            m_fbo.BlitTo(m_fboBlit, 0);
+		            }
+	            }
+
+	            #endregion
+
+	            while (m_fboBlit.CountOfBuffers<(m_lightsCount+2))
 	            {
 		            m_fboBlit.AddTextureBuffer();
 	            }
 
+
 	            for (var i = 0; i < m_lightsCount; i++)
 	            {
-		            DrawShadows(m_lights[i]);
+		            using (new FboWrapper.DrawHelper(m_fbo))
+		            {
+						DrawShadows(m_lights[i]);
+						m_fbo.BlitTo(m_fboBlit, i + 1);
+		            }
 	            }
+				m_fbo.BlitTo(m_fboBlit, m_lightsCount + 1);
+
+	            for(int a=0;a<m_lightsCount+1;++a)
+	            using (new FboWrapper.DrawHelper(m_fboBlit))
+	            {
+		            GL.Color4(1f, 1f, 1f, 1f);
+					GL.Clear(ClearBufferMask.ColorBufferBit);
+
+		            const float sz = MAP_SIZE;
+		            const float to = ((float) MAP_SIZE)/FboWrapper.SIZE;
+
+					//GL.Enable(EnableCap.Texture2D);
+					//m_fboBlit.BindTexture(0);
+
+					//GL.Begin(BeginMode.Quads);
+					//{
+					//	//GL.TexCoord2(0f, 0f);
+					//	GL.Vertex2(0f, 0f);
+
+					//	//GL.TexCoord2(to, 0f);
+					//	GL.Vertex2(sz, 0f);
+
+					//	//GL.TexCoord2(to, to);
+					//	GL.Vertex2(sz, sz);
+
+					//	//GL.TexCoord2(0f, to);
+					//	GL.Vertex2(0f, sz);
+					//}
+					//GL.End();
+
+					//GL.BindTexture(TextureTarget.ProxyTexture2D, 0);
+					////GL.Disable(EnableCap.Texture2D);
+
+		            if (true)
+		            {
+						GL.ReadBuffer(ReadBufferMode.ColorAttachment0+a);
+						//GL.ReadBuffer(ReadBufferMode.None);
+			            var arr = new FColor[Map.SIZE, Map.SIZE];
+			            GL.ReadPixels(0, 0, Map.SIZE, Map.SIZE, PixelFormat.Rgba, PixelType.Float, arr);
+
+			            var bmp = new Bitmap(Map.SIZE, Map.SIZE, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+			            for (var i = 0; i < Map.SIZE; i++)
+			            {
+				            for (var j = 0; j < Map.SIZE; j++)
+				            {
+					            bmp.SetPixel(j, i,
+						            Color.FromArgb((int) (arr[i, j].A*255), (int) (arr[i, j].R*255), (int) (arr[i, j].G*255),
+							            (int) (arr[i, j].B*255)));
+				            }
+			            }
+			            bmp.Save("d:\\bba" + a + ".png", ImageFormat.Png);
+		            }
+	            }
+
             }
         }
 
 		private void DrawShadows(Light _light)
 		{
-			GL.ClearColor(0f, 0f, 0f, 0f);
+			GL.ClearColor(0.0f, 0f, 0f, 1.0f);
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+
+			var lp = new PointF(_light.Point.X + 0.5f, _light.Point.Y + 0.5f);
 
 			GL.Begin(BeginMode.Polygon);
 			{
+				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B,1f);
 
-				GL.Color3(1f, 0.7f, 0.7f);
-
-				GL.Vertex2(_light.Point.X, _light.Point.Y);
-				GL.Color3(0f, 0f, 0f);
+				GL.Vertex2(lp.X, lp.Y);
+				GL.Color4(0f, 0f, 0f, 0f);
 				const float step = (float)Math.PI / 10f;
 				for (float f = 0; f < Math.PI * 2 + step; f += step)
 				{
-					var x = Math.Sin(f) * _light.LightSource.Radius + _light.Point.X;
-					var y = Math.Cos(f) * _light.LightSource.Radius + _light.Point.Y;
+					var x = Math.Sin(f) * _light.LightSource.Radius + lp.X + 0.5f;
+					var y = Math.Cos(f) * _light.LightSource.Radius + lp.Y + 0.5f;
 					GL.Vertex2(x, y);
 				}
-				GL.Color3(1f, 0.7f, 1f);
-				GL.Vertex2(_light.Point.X, _light.Point.Y);
+				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B,1f);
+				GL.Vertex2(lp.X, lp.Y);
 			}
 			GL.End();
 
-			#region Собираем все грани лицевые для источника освещения и попадающие в круг света
+			//return;
 
+			#region Собираем все грани лицевые для источника освещения и попадающие в круг света
 
 			var edges = new EdgeEx[MAP_SIZE * MAP_SIZE * 4];
 			var edgesCount = 0;
 			for (var i = 0; i < m_edgesCount; i++)
 			{
-				var edge = m_allEdges[i];
-				if (!(EdgeEx.Distant(edge.P1, _light.Point) < _light.LightSource.Radius*2) || !(edge.Orient(_light.Point) >= 0)) continue;
-
-				edges[edgesCount] = edge;
-				edges[edgesCount].Distance = Edge.Distant(edge.P1, _light.Point);
+				if (_light.LiveMapCell!=null && m_allEdges[i].LiveMapCell == _light.LiveMapCell) continue;
+				//if (EdgeEx.Distant(m_allEdges[i].P1, lp) >= _light.LightSource.Radius)continue;
+				if (m_allEdges[i].Orient(lp) < 0) continue;
+				edges[edgesCount] = m_allEdges[i];
+				edges[edgesCount].Distance = Edge.Distant(m_allEdges[i].P1, lp);
+				edges[edgesCount].Valid = true;
+				//if (!edges[edgesCount].Valid)
+				//{
+					
+				//}
 				edgesCount++;
 			}
 
@@ -203,16 +347,26 @@ namespace Shader
 
 			#endregion
 
-			GL.Enable(EnableCap.Blend);
-			GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			//GL.Color4(0f, 0f, 0f, 1f);
+
+			var ii = (float)edgesCount;
+			var jj = 0;
+
 			GL.Begin(BeginMode.Quads);
 			{
-				GL.Color3(0f, 0f, 0f);
-
 				for (var i = 0; i < edgesCount; i++)
 				{
 					if (!edges[i].Valid) continue;
-					var pnt = new[] { edges[i].P2, edges[i].P1, GetFarPnt(_light.Point, edges[i].P1), GetFarPnt(_light.Point, edges[i].P2) };
+
+					GL.Color4(edges[i].TransparentColor.R, edges[i].TransparentColor.G, edges[i].TransparentColor.B, edges[i].Opacity);
+
+					var pnt = new[]
+					          {
+						          edges[i].P2, 
+								  edges[i].P1, 
+								  GetFarPnt(lp, edges[i].P1), 
+								  GetFarPnt(lp, edges[i].P2)
+					          };
 					{
 						GL.Vertex2(pnt[0].X, pnt[0].Y);
 						GL.Vertex2(pnt[1].X, pnt[1].Y);
@@ -220,20 +374,23 @@ namespace Shader
 						GL.Vertex2(pnt[3].X, pnt[3].Y);
 					}
 
+					//continue;
 					#region Отбрасываем все грани вошедшие внутрь теневой трапеции
 
-					var e1 = new EdgeEx(pnt[2], pnt[0]);
-					var e2 = new EdgeEx(pnt[0], pnt[3]);
+					var e1 = new EdgeEx(pnt[0], pnt[3]);
+					var e2 = new EdgeEx(pnt[2], pnt[1]);
 
 					for (var j = i+1; j < edgesCount; j++)
 					{
-						if (!edges[j].Valid)
+						//continue;
+						if (!edges[j].Valid || edges[i].Opacity != edges[j].Opacity)
 						{
 							continue;
 						}
-						if (e1.Orient(edges[j].P1) < 0 && e2.Orient(edges[j].P1) < 0)
+						if (e1.Orient(edges[j].P2) < float.Epsilon && e2.Orient(edges[j].P1) < float.Epsilon)
 						{
 							edges[j].Valid = false;
+							jj++;
 						}
 					}
 
@@ -241,14 +398,18 @@ namespace Shader
 				}
 			}
 			GL.End();
-			GL.Disable(EnableCap.Blend);
+			Debug.WriteLine(jj/ii*100);
+			//GL.Color4(1f, 1f, 1f, 1f);
+			//GL.Disable(EnableCap.Blend);
 		}
 
 		public class DistanceComparer : IComparer<EdgeEx>
 		{
 			public int Compare(EdgeEx _x, EdgeEx _y)
 			{
-				return _y.Distance.CompareTo(_x.Distance);
+				return _x.Distance.CompareTo(_y.Distance);
+				var tmp = _y.Opacity.CompareTo(_x.Opacity);
+				return tmp == 0 ? _y.Distance.CompareTo(_x.Distance) : tmp;
 			}
 		}
 
@@ -275,6 +436,8 @@ namespace Shader
 		public bool Valid;
 		public float Distance;
 		public float Opacity;
+
+		public LiveMapCell LiveMapCell;
 
 		public EdgeEx(PointF _p1, PointF _p2) 
 		{

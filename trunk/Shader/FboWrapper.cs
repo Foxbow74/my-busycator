@@ -125,19 +125,23 @@ namespace Shader
                 GL.Translate(0f, -SIZE, 0f);
 
                 GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, fboWrapper.m_renderBuffer);
+				GL.BindTexture(TextureTarget.Texture2D, 0);
+
+				//GL.Enable(EnableCap.Blend);
+				//GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+			
            }
 
             public void Dispose()
             {
-                GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, 0);
                 GL.Flush();
                 GL.MatrixMode(MatrixMode.Projection);
                 GL.PopMatrix();
                 GL.PopAttrib();
 
-                GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
+				GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, 0);
+				GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
                 GL.Viewport(m_savedViewport[0], m_savedViewport[1], m_savedViewport[2], m_savedViewport[3]);
-                GL.BindTexture(TextureTarget.Texture2D, 0);
             }
         }
 
@@ -153,7 +157,8 @@ namespace Shader
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb8, SIZE, SIZE, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, SIZE, SIZE, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+				GL.BindTexture(TextureTarget.Texture2D, 0);
             }
 
             public int TextureId
@@ -176,16 +181,20 @@ namespace Shader
         public void BlitTo(FboWrapper _fboWrapperBlit, int _attachment)
         {
             GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, _fboWrapperBlit.m_fboId);
-
+			GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, m_fboId);
+			
 			GL.DrawBuffer((DrawBufferMode)FramebufferAttachment.ColorAttachment0Ext + _attachment);
 			GL.BindTexture(TextureTarget.Texture2D, _fboWrapperBlit.m_buffers[_attachment].TextureId);
 
-            GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, m_fboId);
-            GL.BlitFramebuffer(0, 0, SIZE, SIZE, 0, 0, SIZE, SIZE, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
+			GL.BlitFramebuffer(0, 0, SIZE, SIZE, 0, 0, SIZE, SIZE, ClearBufferMask.ColorBufferBit, BlitFramebufferFilter.Linear);
 
             GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, 0);
             GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, 0);
-
         }
+
+		public void BindTexture(int _attachment)
+	    {
+			GL.BindTexture(TextureTarget.Texture2D, m_buffers[_attachment].TextureId);
+	    }
     }
 }

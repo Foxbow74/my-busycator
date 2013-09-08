@@ -165,21 +165,6 @@ void main(void)
 	            }
 	            GL.End();
 
-	            
-                if (SZ > 1)
-                {
-                    GL.Color3(0.95f, 0.95f, 1f);
-                    GL.Begin(BeginMode.Lines);
-                    {
-                        foreach (var edge in m_allEdges)
-                        {
-                            GL.Vertex2(edge.P1.X, edge.P1.Y);
-                            GL.Vertex2(edge.P2.X, edge.P2.Y);
-                        }
-                    }
-                    GL.End();
-                }
-
 	            #endregion
                 m_fboWrapper.BlitTo(m_fboWrapperBlit, 0);
             }
@@ -191,20 +176,63 @@ void main(void)
 	            m_fboWrapper.BlitTo(m_fboWrapperBlit, 1);
 	        }
 
+			const float sz = Map.SIZE * VSZ;//Map.SIZE; //512f / SZ;
+			const float to = ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
+
+
+			if (true)
+			{
+				using (new FboWrapper.DrawHelper(m_fboWrapper))
+				{
+					GL.Color4(1f, 1f, 1f, 1f);
+					GL.Enable(EnableCap.Texture2D);
+					m_fboWrapperBlit.BindTexture(1);
+
+					GL.Begin(BeginMode.Quads);
+					{
+						GL.TexCoord2(0f, 0f);
+						GL.Vertex2(0f, 0f);
+
+						GL.TexCoord2(to, 0f);
+						GL.Vertex2(sz, 0f);
+
+						GL.TexCoord2(to, to);
+						GL.Vertex2(sz, sz);
+
+						GL.TexCoord2(0f, to);
+						GL.Vertex2(0f, sz);
+					}
+					GL.End();
+
+					GL.BindTexture(TextureTarget.ProxyTexture2D, 0);
+					GL.Disable(EnableCap.Texture2D);
+
+
+					var arr = new FColor[Map.SIZE, Map.SIZE];
+					GL.ReadPixels(0, 0, Map.SIZE, Map.SIZE, PixelFormat.Rgba, PixelType.Float, arr);
+
+					var bmp = new Bitmap(Map.SIZE, Map.SIZE, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+					for (int i = 0; i < Map.SIZE; i++)
+					{
+						for (int j = 0; j < Map.SIZE; j++)
+						{
+							bmp.SetPixel(j, i,
+								Color.FromArgb((int) (arr[i, j].A*255), (int) (arr[i, j].R*255), (int) (arr[i, j].G*255),
+									(int) (arr[i, j].B*255)));
+						}
+					}
+					bmp.Save("d:\\eee.png", ImageFormat.Png);
+				}
+			}
+
 
 	        GL.UseProgram(m_shaderProgramHandle);
 
             BindTexture(m_t2, TextureUnit.Texture1, "Shadow0");
             BindTexture(m_t1, TextureUnit.Texture0, "Spot");
 
+
             GL.Color3(1f, 1f, 1f);
-
-            const float sz = Map.SIZE * VSZ;//Map.SIZE; //512f / SZ;
-	        const float to = ((float)Map.SIZE * SZ) / FboWrapper.SIZE;
-
-            //GL.Enable(EnableCap.PolygonSmooth);
-            //GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
-            //GL.ShadeModel(ShadingModel.Smooth);
 
             GL.Begin(BeginMode.Quads);
             {
@@ -223,23 +251,8 @@ void main(void)
             GL.End();
             GL.BindTexture(TextureTarget.Texture2D, 0);
             GL.Disable(EnableCap.Texture2D);
-
-
-            //GL.Disable(EnableCap.PolygonSmooth);
-            //GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Fastest);
-            //GL.ShadeModel(ShadingModel.Flat);
             
             GL.UseProgram(0);
-
-            //GL.Color3(0.95f, 0.95f, 1f);
-            //GL.Begin(BeginMode.Points);
-            //{
-            //    foreach (var point in m_allWalls)
-            //    {
-            //        GL.Vertex2(point.X, point.Y+1);
-            //    }
-            //}
-            //GL.End();
 
             GL.Flush();
 

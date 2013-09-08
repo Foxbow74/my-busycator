@@ -7,6 +7,7 @@ namespace GameCore.Misc
 	{
 		int Radius { get; }
 		void LightCells(LiveMap _liveMap, Point _point);
+		FColor Color { get; }
 	}
 
 	public class LightSource : ILightSource
