@@ -62,6 +62,10 @@ namespace Shader
 
 	    public void Recalc(LiveMap _liveMap)
         {
+            //GL.Disable(EnableCap.Blend);
+            //GL.Disable(EnableCap.Texture2D);
+            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+
 			m_lightsCount = 0;
 			m_edgesCount = 0;
 			using (new Profiler("LosManagerEx.Recalc"))
@@ -83,7 +87,7 @@ namespace Shader
 
                         //var opacity = liveMapCell.CalcOpacity();
 
-                        m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].Opacity = 0;
+                        m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].Opacity = liveMapCell.CalcOpacity();
                         m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].LiveMapCell = liveMapCell;
 
 	                    #region источники света от существ
@@ -314,7 +318,7 @@ namespace Shader
                     {
                         for (var j = 0; j < MAP_SIZE; j++)
                         {
-                            m_shadowCasters[j, i].LiveMapCell.Visibility = FColor.White;
+                            m_shadowCasters[j, i].LiveMapCell.Visibility = m_lightMap[i, j];
                             m_shadowCasters[j, i].LiveMapCell.Lighted = m_lightMap[i, j];
                             //m_shadowCasters[j, i].LiveMapCell.FinalLighted = FColor.White;// m_lightMap[i, j];
                             //m_shadowCasters[j, i].LiveMapCell.Lighted = 
