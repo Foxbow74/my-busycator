@@ -38,12 +38,8 @@ namespace GameUi.UIBlocks
 			{
 				case WorldMessage.EType.TURN:
 					World.TheWorld.UpdateDPoint();
-					Redraw();
-
                     m_lm.Recalc(World.TheWorld.LiveMap);
-
-
-
+					Redraw();
 					break;
 				case WorldMessage.EType.JUST_REDRAW:
 					Redraw();

@@ -12,7 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Tests
 {
 	[TestClass]
-	public abstract class AbstractGameTestX
+    public abstract class AbstractGameTestX : AbstractTest
 	{
 		static AbstractGameTestX()
 		{

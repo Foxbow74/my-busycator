@@ -22,7 +22,7 @@ namespace Shader
 		        GL.Ext.GenRenderbuffers(1, out m_renderBuffer);
 		        GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, m_renderBuffer);
 		        GL.Ext.RenderbufferStorageMultisample((ExtFramebufferMultisample) (int) RenderbufferTarget.RenderbufferExt,
-			        SAMPLES, (ExtFramebufferMultisample) (int) PixelFormat.Rgba, SIZE, SIZE);
+			        SAMPLES, (ExtFramebufferMultisample) (int) PixelFormat.Rgb, SIZE, SIZE);
 		        GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0,
 			        RenderbufferTarget.RenderbufferExt, m_renderBuffer);
 		        GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
@@ -157,7 +157,7 @@ namespace Shader
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Clamp);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Clamp);
-                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba8, SIZE, SIZE, 0, PixelFormat.Rgba, PixelType.UnsignedByte, IntPtr.Zero);
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb8, SIZE, SIZE, 0, PixelFormat.Rgb, PixelType.UnsignedByte, IntPtr.Zero);
 				GL.BindTexture(TextureTarget.Texture2D, 0);
             }
 
