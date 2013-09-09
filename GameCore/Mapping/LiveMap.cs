@@ -162,80 +162,71 @@ namespace GameCore.Mapping
 	        }
 	    }
 
-        /// <summary>
-        /// Возвращает смещение левой верхней ячейки, видимой на экране, относительно центральной точки где рисуется аватар
-        /// </summary>
-        /// <returns></returns>
-	    public Point GetDPoint()
-	    {
-            return GetCenterLiveCell() - VieportSize / 2;
-	    }
-
 	    public Point GetData()
 		{
 #if DEBUG
 			using (new Profiler())
 #endif
 			{
-				var centerLiveCell = GetCenterLiveCell();
+                //var centerLiveCell = GetCenterLiveCell();
 
-				var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
+                //var lighted = CenterLiveBlock.NearestPoints.Select(Wrap).ToList();
 
-				lighted.Add(CenterLiveBlock);
+                //lighted.Add(CenterLiveBlock);
 
-				foreach (var blockId in lighted)
-				{
-					Blocks[blockId.X, blockId.Y].ClearTemp();
-				}
+                //foreach (var blockId in lighted)
+                //{
+                //    Blocks[blockId.X, blockId.Y].ClearTemp();
+                //}
 
-				m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
+                //m_visibilityManager.SetVisibleCelss(this, centerLiveCell, FColor.White);
 
-				foreach (var blockId in lighted)
-				{
-					var liveCellZero = blockId*Constants.MAP_BLOCK_SIZE;
-					var liveMapBlock = Blocks[blockId.X, blockId.Y];
+                //foreach (var blockId in lighted)
+                //{
+                //    var liveCellZero = blockId*Constants.MAP_BLOCK_SIZE;
+                //    var liveMapBlock = Blocks[blockId.X, blockId.Y];
 
-					foreach (var tuple in liveMapBlock.MapBlock.LightSources)
-					{
-						var lightSource = tuple.Source;
-						var point = liveCellZero + tuple.Point;
+                //    foreach (var tuple in liveMapBlock.MapBlock.LightSources)
+                //    {
+                //        var lightSource = tuple.Source;
+                //        var point = liveCellZero + tuple.Point;
 
-						if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(Cells[point.X, point.Y].WorldCoords))
-						{
-							lightSource.LightCells(this, point);
-						}
-					}
-				}
+                //        if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(Cells[point.X, point.Y].WorldCoords))
+                //        {
+                //            lightSource.LightCells(this, point);
+                //        }
+                //    }
+                //}
 
-				foreach (var tuple in World.TheWorld.CreatureManager.LightSources())
-				{
-					var lightSource = tuple.Source;
-					var info = tuple.CreatureGeoInfo;
+                //foreach (var tuple in World.TheWorld.CreatureManager.LightSources())
+                //{
+                //    var lightSource = tuple.Source;
+                //    var info = tuple.CreatureGeoInfo;
 
-					if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(info.WorldCoords))
-					{
-						lightSource.LightCells(this, info.LiveCoords);
-					}
-				}
+                //    if ((lightSource.Radius + AVATAR_SIGHT) >= World.TheWorld.Avatar[0, 0].WorldCoords.GetDistTill(info.WorldCoords))
+                //    {
+                //        lightSource.LightCells(this, info.LiveCoords);
+                //    }
+                //}
 
 
-				if (World.TheWorld.Avatar.Light != null)
-				{
-					World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
-				}
+                //if (World.TheWorld.Avatar.Light != null)
+                //{
+                //    World.TheWorld.Avatar.Light.LightCells(this, centerLiveCell);
+                //}
 
-				var layer = World.TheWorld.Avatar.GeoInfo.Layer;
-				var ambient = layer.Ambient;
-				var fogLightness = layer.FogLightness;
+                //var layer = World.TheWorld.Avatar.GeoInfo.Layer;
+                //var ambient = layer.Ambient;
+                //var fogLightness = layer.FogLightness;
 
-				foreach (var blockId in lighted)
-				{
-					Blocks[blockId.X, blockId.Y].UpdateVisibility(fogLightness, ambient);
-				}
+                //foreach (var blockId in lighted)
+                //{
+                //    Blocks[blockId.X, blockId.Y].UpdateVisibility(fogLightness, ambient);
+                //}
 
-				World.TheWorld.Avatar[0,0].UpdateAvatarCellVisibility();
+                //World.TheWorld.Avatar[0,0].UpdateAvatarCellVisibility();
 
-                return GetDPoint();
+                return GetCenterLiveCell() - VieportSize / 2;
 			}
 		}
 

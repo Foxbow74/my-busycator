@@ -216,7 +216,7 @@ namespace GameCore.Mapping
 
 		public bool IsVisibleNow { get; private set; }
 
-		public FColor FinalLighted { get; private set; }
+		public FColor FinalLighted { get; set; }
 
 		public void SetMapCell(MapBlock _mapBlock, Point _inBlockCoords, float _rnd, Point _onLiveMapCoords, LiveMap _liveMap)
 		{
