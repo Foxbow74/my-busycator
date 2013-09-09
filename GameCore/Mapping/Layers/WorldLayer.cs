@@ -11,7 +11,7 @@ namespace GameCore.Mapping.Layers
 		{
 			Blocks = new Dictionary<Point, MapBlock>();
 			FogColor = FColor.FromArgb(255, 60, 60, 60);
-			FogLightness = FogColor.Lightness();
+			FogLightness = FogColor.Lightness()/3;
 		}
 
 		public FColor FogColor { get; protected set; }
