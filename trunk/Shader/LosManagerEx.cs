@@ -35,9 +35,21 @@ namespace Shader
 		}
 	}
 
+	class AvatarSight : ILightSource
+	{
+		public int Radius { get { return LosManagerEx.MAP_SIZE/2; } }
+
+		public void LightCells(LiveMap _liveMap, Point _point)
+		{
+			throw new NotImplementedException();
+		}
+
+		public FColor Color { get { return FColor.White; } }
+	}
+
     public class LosManagerEx
     {
-        private const int MAP_SIZE = Constants.MAP_BLOCK_SIZE * 3;
+        public const int MAP_SIZE = Constants.MAP_BLOCK_SIZE * 3;
         private static readonly Point[] m_allBlockPoints;
 	    private static readonly EdgeEx[] m_allEdges = new EdgeEx[MAP_SIZE * MAP_SIZE * 4];
         private static readonly Light[] m_lights = new Light[100];
@@ -68,6 +80,10 @@ namespace Shader
 
 			m_lightsCount = 0;
 			m_edgesCount = 0;
+
+			var center = BaseMapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.LiveCoords) + new Point(32, 32);
+			m_lights[m_lightsCount++] = new Light { LightSource = new AvatarSight(), Point = new PointF(center.X, center.Y), LiveMapCell = World.TheWorld.Avatar[0,0] };
+
 			using (new Profiler("LosManagerEx.Recalc"))
             {
                 #region подготовка карты
@@ -118,7 +134,9 @@ namespace Shader
 
                 #endregion
 
-                m_edgesCount = 0;
+	            #region сформировать массив граней
+
+	            m_edgesCount = 0;
 
 	            for (var i = 1; i < MAP_SIZE - 1; ++i)
 	            {
@@ -132,8 +150,6 @@ namespace Shader
 			            if (opacity > 0)
 			            {
 
-				            var rect = new RectangleF(i, j, 1, 1);
-
 				            if (m_shadowCasters[i, j - 1].Opacity != opacity
 				                || m_shadowCasters[i - 1, j - 1].Opacity != opacity
 				                || m_shadowCasters[i + 1, j - 1].Opacity != opacity
@@ -145,30 +161,29 @@ namespace Shader
 				                || m_shadowCasters[i + 1, j].Opacity != opacity
 					            )
 				            {
-					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top),
-						            new PointF(rect.Right, rect.Top))
+					            //const float d = 0.2f;
+								var rect = new RectangleF(i, j, 1, 1);
+								
+								m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top), new PointF(rect.Right, rect.Top))
 					                                         {
 						                                         Opacity = opacity,
 						                                         TransparentColor = lmc.TransparentColor,
 						                                         LiveMapCell = lmc
 					                                         };
-					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom),
-						            new PointF(rect.Left, rect.Bottom))
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom), new PointF(rect.Left, rect.Bottom))
 					                                         {
 						                                         Opacity = opacity,
 						                                         TransparentColor = lmc.TransparentColor,
 						                                         LiveMapCell = lmc
 					                                         };
 
-								m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top),
-						            new PointF(rect.Right, rect.Bottom))
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top), new PointF(rect.Right, rect.Bottom))
 					                                         {
 						                                         Opacity = opacity,
 						                                         TransparentColor = lmc.TransparentColor,
 						                                         LiveMapCell = lmc
 					                                         };
-					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom),
-						            new PointF(rect.Left, rect.Top))
+					            m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom), new PointF(rect.Left, rect.Top))
 					                                         {
 						                                         Opacity = opacity,
 						                                         TransparentColor = lmc.TransparentColor,
@@ -178,6 +193,9 @@ namespace Shader
 			            }
 		            }
 	            }
+
+	            #endregion
+
 
 	            //var dPoint = _liveMap.GetDPoint();
                 //var viewportSize = _liveMap.VieportSize;
@@ -190,49 +208,52 @@ namespace Shader
 	            #region нарисовать зону видимости героя
 
 	            //if (m_fboBlit.CountOfBuffers == 0)
-	            {
-					//m_fboBlit.AddTextureBuffer();
-		            using (new FboWrapper.DrawHelper(m_fbo))
-		            {
-						GL.Color4(1f, 0f, 1f, 1f);
-			            GL.ClearColor(0f, 0f, 0f, 0f);
-			            GL.Clear(ClearBufferMask.ColorBufferBit);
-						GL.Disable(EnableCap.Texture2D);
+				//{
+				//	//m_fboBlit.AddTextureBuffer();
+				//	using (new FboWrapper.DrawHelper(m_fbo))
+				//	{
+				//		GL.Color4(1f, 0f, 1f, 1f);
+				//		GL.ClearColor(0f, 0f, 0f, 0f);
+				//		GL.Clear(ClearBufferMask.ColorBufferBit);
+				//		GL.Disable(EnableCap.Texture2D);
 
-			            GL.Begin(BeginMode.Polygon);
-			            {
-				            const int radius = MAP_SIZE/2;
-                            var center = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.LiveCoords) + new Point(32, 32);
+				//		GL.Begin(BeginMode.Polygon);
+				//		{
+				//			const int radius = MAP_SIZE/2;
+				//			var center = MapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.LiveCoords) + new Point(32, 32);
                             
-				            GL.Color3(1f, 1f, 1f);
-                            GL.Vertex2(center.X, center.Y);
-				            GL.Color4(0f, 0f, 0f, 0f);
-				            const float step = (float) Math.PI/20f;
-				            for (float f = 0; f < Math.PI*2 + step; f += step)
-				            {
-                                var x = Math.Sin(f) * radius + center.X;
-                                var y = Math.Cos(f) * radius + center.Y;
-					            GL.Vertex2(x, y);
-				            }
-				            GL.Color3(1f, 1f, 1f);
-                            GL.Vertex2(center.X, center.Y);
-			            }
-			            GL.End();
-			            m_fbo.BlitTo(m_fboBlit, 0);
-		            }
-	            }
+				//			GL.Color3(1f, 1f, 1f);
+				//			GL.Vertex2(center.X, center.Y);
+				//			GL.Color4(0f, 0f, 0f, 0f);
+				//			const float step = (float) Math.PI/20f;
+				//			for (float f = 0; f < Math.PI*2 + step; f += step)
+				//			{
+				//				var x = Math.Sin(f) * radius + center.X;
+				//				var y = Math.Cos(f) * radius + center.Y;
+				//				GL.Vertex2(x, y);
+				//			}
+				//			GL.Color3(1f, 1f, 1f);
+				//			GL.Vertex2(center.X, center.Y);
+				//		}
+				//		GL.End();
+				//		m_fbo.BlitTo(m_fboBlit, 0);
+				//	}
+				//}
 
 	            #endregion
 
-	            
 
 
-	            for (var i = 0; i < m_lightsCount; i++)
+
+				var t = World.TheWorld.Avatar.GeoInfo.Layer.Ambient;
+				for (var i = 0; i < m_lightsCount; i++)
 	            {
 		            using (new FboWrapper.DrawHelper(m_fbo))
 		            {
+						GL.ClearColor(t.R, t.G, t.B, 1.0f);
+						GL.Clear(ClearBufferMask.ColorBufferBit);
 						DrawShadows(m_lights[i]);
-						m_fbo.BlitTo(m_fboBlit, i + 1);
+						m_fbo.BlitTo(m_fboBlit, i);
 		            }
 	            }
 				m_fbo.BlitTo(m_fboBlit, m_lightsCount + 1);
@@ -245,7 +266,7 @@ namespace Shader
                         using (new FboWrapper.DrawHelper(m_fboBlit))
                         {
                             GL.ReadBuffer(ReadBufferMode.ColorAttachment0 + a);
-                            Screenshot("e:\\bba" + a + ".png");
+                            Screenshot("d:\\bba" + a + ".png");
                         }
                     }
                 }
@@ -254,21 +275,16 @@ namespace Shader
                 {
                     GL.ClearColor(0f, 0f, 0f, 0f);
                     GL.Clear(ClearBufferMask.ColorBufferBit);
+					GL.Color3(1f, 1f, 1f);
+					GL.Enable(EnableCap.Texture2D);
 
                     GL.Enable(EnableCap.Blend);
                     GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcColor);
 
-                    GL.Disable(EnableCap.Texture2D);
-
                     const float sz = MAP_SIZE;
                     const float to = ((float)MAP_SIZE) / FboWrapper.SIZE;
 
-
-                    GL.Color3(1f, 1f, 1f);
-                    GL.Enable(EnableCap.Texture2D);
-
-
-                    for (var a = 1; a < m_lightsCount + 1; ++a)
+                    for (var a = 1; a < m_lightsCount; ++a)
                     {
                         m_fboBlit.BindTexture(a);
                         GL.Begin(BeginMode.Quads);
@@ -312,7 +328,7 @@ namespace Shader
                 {
                     GL.ReadBuffer(ReadBufferMode.ColorAttachment1);
                     GL.ReadPixels(0, 0, MAP_SIZE, MAP_SIZE, PixelFormat.Rgba, PixelType.Float, m_lightMap);
-                    //Screenshot("e:\\scr.png");
+                    //Screenshot("d:\\scr.png");
 
                     for (var i = 0; i < MAP_SIZE; i++)
                     {
@@ -329,7 +345,7 @@ namespace Shader
                     }
 
                     var layer = World.TheWorld.Avatar.GeoInfo.Layer;
-                    var ambient = layer.Ambient;
+	                var ambient = FColor.Black;// layer.Ambient;
                     var fogLightness = layer.FogLightness;
 
                     for (var i = 0; i < 9; i++)
@@ -366,25 +382,22 @@ namespace Shader
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-			GL.ClearColor(0.0f, 0f, 0f, 1.0f);
-			GL.Clear(ClearBufferMask.ColorBufferBit);
-
 			var lp = new PointF(_light.Point.X + 0.5f, _light.Point.Y + 0.5f);
 
 			GL.Begin(BeginMode.Polygon);
 			{
-				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B,1f);
+				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B, 1f);
 
 				GL.Vertex2(lp.X, lp.Y);
 				GL.Color4(0f, 0f, 0f, 0f);
 				const float step = (float)Math.PI / 10f;
 				for (float f = 0; f < Math.PI * 2 + step; f += step)
 				{
-					var x = Math.Sin(f) * _light.LightSource.Radius + lp.X + 0.5f;
-					var y = Math.Cos(f) * _light.LightSource.Radius + lp.Y + 0.5f;
+					var x = Math.Sin(f) * _light.LightSource.Radius + lp.X;
+					var y = Math.Cos(f) * _light.LightSource.Radius + lp.Y;
 					GL.Vertex2(x, y);
 				}
-				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B,1f);
+				GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B, 1f);
 				GL.Vertex2(lp.X, lp.Y);
 			}
 			GL.End();
@@ -410,9 +423,7 @@ namespace Shader
 
 			#endregion
 
-			//GL.Color4(0f, 0f, 0f, 1f);
-
-            GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
+			GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
 
 			GL.Begin(BeginMode.Quads);
 			{
@@ -429,12 +440,12 @@ namespace Shader
 								  GetFarPnt(lp, edges[i].P1), 
 								  GetFarPnt(lp, edges[i].P2)
 					          };
-					{
-						GL.Vertex2(pnt[0].X, pnt[0].Y);
-						GL.Vertex2(pnt[1].X, pnt[1].Y);
-						GL.Vertex2(pnt[2].X, pnt[2].Y);
-						GL.Vertex2(pnt[3].X, pnt[3].Y);
-					}
+					
+					GL.Vertex2(pnt[0].X, pnt[0].Y);
+					GL.Vertex2(pnt[1].X, pnt[1].Y);
+					GL.Vertex2(pnt[2].X, pnt[2].Y);
+					GL.Vertex2(pnt[3].X, pnt[3].Y);
+					
 
 					//continue;
 					#region Отбрасываем все грани вошедшие внутрь теневой трапеции

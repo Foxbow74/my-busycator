@@ -30,7 +30,7 @@ namespace Busycator
         private readonly Stopwatch m_stopwatch = new Stopwatch();
 
 		public BusycatorGame()
-			: base(200, 200)
+			: base(1000, 800)
 		{
             World.SetStartingLayerType<Surface>();
 

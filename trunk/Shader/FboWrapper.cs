@@ -21,10 +21,8 @@ namespace Shader
 		        GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, m_fboId);
 		        GL.Ext.GenRenderbuffers(1, out m_renderBuffer);
 		        GL.Ext.BindRenderbuffer(RenderbufferTarget.RenderbufferExt, m_renderBuffer);
-		        GL.Ext.RenderbufferStorageMultisample((ExtFramebufferMultisample) (int) RenderbufferTarget.RenderbufferExt,
-			        SAMPLES, (ExtFramebufferMultisample) (int) PixelFormat.Rgb, SIZE, SIZE);
-		        GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0,
-			        RenderbufferTarget.RenderbufferExt, m_renderBuffer);
+		        GL.Ext.RenderbufferStorageMultisample((ExtFramebufferMultisample) (int) RenderbufferTarget.RenderbufferExt, SAMPLES, (ExtFramebufferMultisample) (int) PixelFormat.Rgba, SIZE, SIZE);
+		        GL.Ext.FramebufferRenderbuffer(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0, RenderbufferTarget.RenderbufferExt, m_renderBuffer);
 		        GL.Ext.BindFramebuffer(FramebufferTarget.FramebufferExt, 0);
 	        }
 
