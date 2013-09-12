@@ -218,7 +218,7 @@ void main(void)
 				    m_fbo.BlitTo(m_fboBlit, m_lightsCount + 1);
 			    }
 
-			    if (true)
+			    if (false)
 			    {
 				    for (var a = 0; a < m_lightsCount + 1; ++a)
 				    {
@@ -297,7 +297,7 @@ void main(void)
 				    GL.ReadBuffer(ReadBufferMode.ColorAttachment1);
 				    GL.ReadPixels(0, 0, MAP_SIZE, MAP_SIZE, PixelFormat.Rgba, PixelType.Float, m_lightMap);
 
-					Screenshot("d:\\1\\scr.png");
+					//Screenshot("d:\\1\\scr.png");
 
 				    var layer = World.TheWorld.Avatar.GeoInfo.Layer;
 				    var fogLightness = layer.FogLightness;
