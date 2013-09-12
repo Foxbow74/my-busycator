@@ -9,6 +9,7 @@ namespace Shader
     {
         public PointF P1;
         public PointF P2;
+		public PointF CellCenter;
 
         public bool Valid;
         public float Distance;

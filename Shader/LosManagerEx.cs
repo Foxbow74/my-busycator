@@ -123,7 +123,6 @@ void main(void)
 				    {
 					    var tempPoint = dlt + info.Point;
 					    m_lights[m_lightsCount].Point = new PointF(tempPoint.X, tempPoint.Y);
-					    //m_lights[m_lightsCount].LiveMapCell = liveMapCell;
 					    m_lights[m_lightsCount++].LightSource = info.Source;
 				    }
 
@@ -136,11 +135,15 @@ void main(void)
 
 			    m_edgesCount = 0;
 
+				var dPoint = _liveMap.GetData();//.GetDPoint();
+				var viewportSize = _liveMap.VieportSize;
+
 			    for (var i = 1; i < MAP_SIZE - 1; ++i)
 			    {
 				    for (var j = 1; j < MAP_SIZE - 1; ++j)
 				    {
 					    var lmc = m_shadowCasters[i, j].LiveMapCell;
+					    lmc.FinalLighted = FColor.Empty;
 					    if (lmc == null) continue;
 
 					    var opacity = m_shadowCasters[i, j].Opacity;
@@ -155,8 +158,7 @@ void main(void)
 						        || m_shadowCasters[i + 1, j + 1].Opacity != opacity
 						        || m_shadowCasters[i, j].Opacity != opacity
 						        || m_shadowCasters[i - 1, j].Opacity != opacity
-						        || m_shadowCasters[i + 1, j].Opacity != opacity
-							    )
+						        || m_shadowCasters[i + 1, j].Opacity != opacity)
 						    {
 							    //const float d = 0.2f;
 							    var rect = new RectangleF(i, j, 1, 1);
@@ -166,14 +168,16 @@ void main(void)
 							                                 {
 								                                 Opacity = opacity,
 								                                 TransparentColor = lmc.TransparentColor,
-								                                 LiveMapCell = lmc
+								                                 LiveMapCell = lmc,
+																 CellCenter = new PointF(i+0.5f,j+0.5f)
 							                                 };
 							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom),
 								    new PointF(rect.Left, rect.Bottom))
 							                                 {
 								                                 Opacity = opacity,
 								                                 TransparentColor = lmc.TransparentColor,
-								                                 LiveMapCell = lmc
+								                                 LiveMapCell = lmc,
+																 CellCenter = new PointF(i + 0.5f, j + 0.5f)
 							                                 };
 
 							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top),
@@ -181,14 +185,16 @@ void main(void)
 							                                 {
 								                                 Opacity = opacity,
 								                                 TransparentColor = lmc.TransparentColor,
-								                                 LiveMapCell = lmc
+								                                 LiveMapCell = lmc,
+																 CellCenter = new PointF(i + 0.5f, j + 0.5f)
 							                                 };
 							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom),
 								    new PointF(rect.Left, rect.Top))
 							                                 {
 								                                 Opacity = opacity,
 								                                 TransparentColor = lmc.TransparentColor,
-								                                 LiveMapCell = lmc
+								                                 LiveMapCell = lmc,
+																 CellCenter = new PointF(i + 0.5f, j + 0.5f)
 							                                 };
 						    }
 					    }
@@ -196,9 +202,6 @@ void main(void)
 			    }
 
 			    #endregion
-
-			    //var dPoint = _liveMap.GetDPoint();
-			    //var viewportSize = _liveMap.VieportSize;
 
 			    while (m_fboBlit.CountOfBuffers < (m_lightsCount + 2))
 			    {
@@ -344,30 +347,6 @@ void main(void)
             
             GL.Enable(EnableCap.Blend);
 
-            //GL.Enable(EnableCap.Blend);
-            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-
-            
-            //GL.Begin(BeginMode.Polygon);
-            //{
-            //    GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B, 1f);
-
-            //    GL.Vertex2(lp.X, lp.Y);
-            //    GL.Color4(0f, 0f, 0f, 0f);
-            //    const float step = (float)Math.PI / 10f;
-            //    for (float f = 0; f < Math.PI * 2 + step; f += step)
-            //    {
-            //        var x = Math.Sin(f) * _light.LightSource.Radius + lp.X;
-            //        var y = Math.Cos(f) * _light.LightSource.Radius + lp.Y;
-            //        GL.Vertex2(x, y);
-            //    }
-            //    GL.Color4(_light.LightSource.Color.R, _light.LightSource.Color.G, _light.LightSource.Color.B, 1f);
-            //    GL.Vertex2(lp.X, lp.Y);
-            //}
-            //GL.End();
-
-			//return;
-
 			#region Собираем все грани лицевые для источника освещения и попадающие в круг света
 
 			var edges = new EdgeEx[MAP_SIZE * MAP_SIZE * 4];
@@ -378,7 +357,7 @@ void main(void)
 				if (EdgeEx.Distant(m_allEdges[i].P1, lp) >= _light.LightSource.Radius)continue;
 				if (m_allEdges[i].Orient(lp) < 0) continue;
 				edges[edgesCount] = m_allEdges[i];
-				edges[edgesCount].Distance = Edge.Distant(m_allEdges[i].P1, lp);
+				edges[edgesCount].Distance = Edge.Distant(m_allEdges[i].CellCenter, lp);
 				edges[edgesCount].Valid = true;
 				edgesCount++;
 			}
@@ -398,8 +377,8 @@ void main(void)
 
 					var color = edges[i].TransparentColor * _light.LightSource.Color * (1f-edges[i].Opacity);
 					GL.Color4(color.R, color.G, color.B, 1f);
-				    
-                    var pnt = new[]
+
+					var pnt = new[]
 				    {
 				        edges[i].P2,
 				        edges[i].P1,
@@ -412,8 +391,7 @@ void main(void)
 				    GL.Vertex2(pnt[2].X, pnt[2].Y);
 				    GL.Vertex2(pnt[3].X, pnt[3].Y);
 
-
-				    //continue;
+					//continue;
 
 				    #region Отбрасываем все грани вошедшие внутрь теневой трапеции
 
