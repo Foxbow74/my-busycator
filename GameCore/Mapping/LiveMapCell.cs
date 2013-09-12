@@ -387,6 +387,20 @@ namespace GameCore.Mapping
 			}
 		}
 
+        public void UpdateVisibility(float _fogLightness)
+        {
+            FinalLighted = Lighted;
+            if (FinalLighted.Lightness() > _fogLightness)
+            {
+                IsVisibleNow = true;
+                if (!IsSeenBefore)
+                {
+                    IsSeenBefore = true;
+                    m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
+                }
+            }
+        }
+
 		public void UpdateAvatarCellVisibility()
 		{
 			//FinalLighted = FinalLighted.Screen(FColor.White.Multiply(0.5f));

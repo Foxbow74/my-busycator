@@ -52,7 +52,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvatarSight.cs" />
     <Compile Include="Edge.cs" />
+    <Compile Include="EdgeEx.cs" />
     <Compile Include="FboWrapper.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -60,7 +62,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Light.cs" />
     <Compile Include="LosManagerEx.cs" />
+    <Compile Include="ShaderWrapper.cs" />
+    <Compile Include="ShadowCaster.cs" />
     <Compile Include="ShadowMap.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Program.cs" />
