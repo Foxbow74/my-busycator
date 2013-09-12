@@ -1676,6 +1676,9 @@ namespace GameCore
 
 		public static FColor FromHex(int _hex) { return FromArgb(255, _hex/256/256 & 0xff, _hex/256 & 0xff, _hex & 0xff); }
 
+		public static FColor operator *(FColor _a, float _c) { return new FColor(_a.A, _a.R * _c, _a.G * _c, _a.B * _c); }
+		public static FColor operator *(FColor _a, FColor _b) { return new FColor(_a.A*_b.A, _a.R * _b.R, _a.G * _b.G, _a.B * _b.B); }
+
 		public FColor UpdateAlfa(float _f)
 		{
 			return new FColor(_f,R,G,B);
