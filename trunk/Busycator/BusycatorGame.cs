@@ -11,15 +11,12 @@ using GameCore;
 using GameCore.Messages;
 using GameCore.Misc;
 using GameCore.Storage;
-using GameCore.Storage.XResourceEssences;
-using GameCore.Storeable;
 using GameUi;
 using GameUi.UIBlocks;
 using LanguagePack;
 using MagickSetting;
 using OpenTK;
 using OpenTKUi;
-using XTransport.Client;
 
 namespace Busycator
 {
@@ -30,7 +27,7 @@ namespace Busycator
         private readonly Stopwatch m_stopwatch = new Stopwatch();
 
 		public BusycatorGame()
-			: base(1000, 800)
+            : base(200, 200)
 		{
             World.SetStartingLayerType<Surface>();
 

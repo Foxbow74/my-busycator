@@ -29,6 +29,14 @@ namespace Shader
 	        Check();
         }
 
+        public int this[int _index]
+        {
+            get
+            {
+                return m_buffers[_index].TextureId;
+            }
+        }
+
         public int AddTextureBuffer()
         {
             var t = new ColorBuffer();

@@ -13,9 +13,14 @@ namespace TheHall.Layers
 {
     class TheHallLayer:WorldLayer
     {
+        public TheHallLayer()
+        {
+            Ambient = FColor.Black;
+        }
+
         public override IEnumerable<ETerrains> DefaultEmptySpaces
         {
-            get { yield return ETerrains.STONE_FLOOR; }
+            get { yield return ETerrains.WOOD_FLOOR_MAPPLE; }
         }
 
         public override IEnumerable<ETerrains> DefaultWalls
@@ -37,8 +42,8 @@ namespace TheHall.Layers
             {
 				//block.Fill(World.Rnd, this, DefaultEmptySpaces, new Rct(0, 0, Constants.MAP_BLOCK_SIZE, 13));
 
-				block.AddEssence(new IndoorLight(new LightSource(38, new FColor(1f, 1f, 1f, 1f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(2, 0));
-				block.Map[3, 0] = ETerrains.RED_BRICK_WINDOW;
+				block.AddEssence(new IndoorLight(new LightSource(38, new FColor(1f, 1f, 1f, 1f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(2, 4));
+				block.Map[1, 0] = ETerrains.RED_BRICK_WINDOW;
 				//block.Map[3, 1] = ETerrains.STONE_WALL;
 				//block.Map[3, 2] = ETerrains.YELLOW_BRICK_WINDOW;
 				//block.AddEssence(new IndoorLight(new LightSource(18, new FColor(1f, 1f, 1f, 0f)), EssenceHelper.GetFirstFoundedMaterial<MetalMaterial>()), new Point(10, 10));
