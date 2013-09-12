@@ -399,6 +399,10 @@ namespace GameCore.Mapping
                     m_mapBlock.SeenCells[InBlockCoords.Y] |= m_seenMask;
                 }
             }
+            else
+            {
+	            IsVisibleNow = false;
+            }
         }
 
 		public void UpdateAvatarCellVisibility()

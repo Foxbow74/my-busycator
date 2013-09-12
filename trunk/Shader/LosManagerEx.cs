@@ -21,7 +21,7 @@ void main(void)
 {
     vec2 xy = gl_FragCoord.xy;
     float d = distance(xy,_position)+0.1;
-    vec3 c = texture2D( _light, gl_TexCoord[0].st).rgb * min(1.0,320.0/d/d);
+    vec3 c = texture2D( _light, gl_TexCoord[0].st).rgb * min(1.0,160.0/d/d);
     gl_FragColor = vec4(c[0],c[1],c[2],1.0);
 }";
 
@@ -32,7 +32,7 @@ void main(void)
 {
     vec2 xy = gl_FragCoord.xy;
     float d = distance(xy,_position);
-    vec3 c = texture2D( _sight, gl_TexCoord[0].st).rgb * (1.0- d/ 32.0);
+    vec3 c = texture2D( _sight, gl_TexCoord[0].st).rgb * (1.0- d/ 16.0);
     gl_FragColor = vec4(c[0],c[1],c[2],1.0);
 }";
 
@@ -65,273 +65,258 @@ void main(void)
 			m_fboBlit = new FboWrapper(false);
 	    }
 
-        public void Recalc(LiveMap _liveMap)
-        {
-            //GL.Disable(EnableCap.Blend);
-            //GL.Disable(EnableCap.Texture2D);
-            //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+	    public void Recalc(LiveMap _liveMap)
+	    {
+		    //GL.Disable(EnableCap.Blend);
+		    //GL.Disable(EnableCap.Texture2D);
+		    //GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
 
-            m_lightsCount = 0;
-            m_edgesCount = 0;
+		    m_lightsCount = 0;
+		    m_edgesCount = 0;
 
-            var center = BaseMapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.LiveCoords) + new Point(32, 32);
-            m_lights[m_lightsCount++] = new Light
-            {
-                LightSource = new AvatarSight(),
-                Point = new PointF(center.X, center.Y),
-                LiveMapCell = World.TheWorld.Avatar[0, 0]
-            };
+		    var center = BaseMapBlock.GetInBlockCoords(World.TheWorld.Avatar.GeoInfo.LiveCoords) + new Point(32, 32);
+		    m_lights[m_lightsCount++] = new Light
+		                                {
+			                                LightSource = new AvatarSight(),
+			                                Point = new PointF(center.X, center.Y),
+			                                LiveMapCell = World.TheWorld.Avatar[0, 0]
+		                                };
 
-            using (new Profiler("LosManagerEx.Recalc"))
-            {
-                #region подготовка карты
+		    using (new Profiler("LosManagerEx.Recalc"))
+		    {
+			    #region подготовка карты
 
-                var liveBlocks = _liveMap.GetLightedLiveBlocks();
-                var point = new Point(1, 1);
+			    var liveBlocks = _liveMap.GetLightedLiveBlocks();
+			    var point = new Point(1, 1);
 
-                for (var i = 0; i < 9; i++)
-                {
-                    var dlt = (liveBlocks[i, 0] + point)*Constants.MAP_BLOCK_SIZE;
-                    var livBlockXY = liveBlocks[i, 1];
-                    for (var index = 0; index < m_allBlockPoints.Length; index++)
-                    {
-                        var blockPoint = m_allBlockPoints[index];
-                        var liveCellXY = livBlockXY*Constants.MAP_BLOCK_SIZE + blockPoint;
-                        var liveMapCell = _liveMap.Cells[liveCellXY.X, liveCellXY.Y];
+			    for (var i = 0; i < 9; i++)
+			    {
+				    var dlt = (liveBlocks[i, 0] + point)*Constants.MAP_BLOCK_SIZE;
+				    var livBlockXY = liveBlocks[i, 1];
+				    for (var index = 0; index < m_allBlockPoints.Length; index++)
+				    {
+					    var blockPoint = m_allBlockPoints[index];
+					    var liveCellXY = livBlockXY*Constants.MAP_BLOCK_SIZE + blockPoint;
+					    var liveMapCell = _liveMap.Cells[liveCellXY.X, liveCellXY.Y];
 
-                        //var opacity = liveMapCell.CalcOpacity();
+					    //var opacity = liveMapCell.CalcOpacity();
 
-                        m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].Opacity = liveMapCell.CalcOpacity();
-                        m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].LiveMapCell = liveMapCell;
+					    m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].Opacity = liveMapCell.CalcOpacity();
+					    m_shadowCasters[dlt.X + blockPoint.X, dlt.Y + blockPoint.Y].LiveMapCell = liveMapCell;
 
-                        #region источники света от существ
+					    #region источники света от существ
 
-                        var creature = liveMapCell.Creature;
-                        if (creature == null || creature.Light == null) continue;
+					    var creature = liveMapCell.Creature;
+					    if (creature == null || creature.Light == null) continue;
 
-                        var tempPoint = dlt + blockPoint;
-                        m_lights[m_lightsCount].Point = new PointF(tempPoint.X, tempPoint.Y);
-                        m_lights[m_lightsCount].LiveMapCell = liveMapCell;
-                        m_lights[m_lightsCount++].LightSource = creature.Light;
+					    var tempPoint = dlt + blockPoint;
+					    m_lights[m_lightsCount].Point = new PointF(tempPoint.X, tempPoint.Y);
+					    m_lights[m_lightsCount].LiveMapCell = liveMapCell;
+					    m_lights[m_lightsCount++].LightSource = creature.Light;
 
-                        #endregion
-                    }
+					    #endregion
+				    }
 
-                    #region остальные источники света
+				    #region остальные источники света
 
-                    foreach (var info in _liveMap.Blocks[livBlockXY.X, livBlockXY.Y].MapBlock.LightSources)
-                    {
-                        var tempPoint = dlt + info.Point;
-                        m_lights[m_lightsCount].Point = new PointF(tempPoint.X, tempPoint.Y);
-                        //m_lights[m_lightsCount].LiveMapCell = liveMapCell;
-                        m_lights[m_lightsCount++].LightSource = info.Source;
-                    }
+				    foreach (var info in _liveMap.Blocks[livBlockXY.X, livBlockXY.Y].MapBlock.LightSources)
+				    {
+					    var tempPoint = dlt + info.Point;
+					    m_lights[m_lightsCount].Point = new PointF(tempPoint.X, tempPoint.Y);
+					    //m_lights[m_lightsCount].LiveMapCell = liveMapCell;
+					    m_lights[m_lightsCount++].LightSource = info.Source;
+				    }
 
-                    #endregion
-                }
+				    #endregion
+			    }
 
-                #endregion
+			    #endregion
 
-                #region сформировать массив граней
+			    #region сформировать массив граней
 
-                m_edgesCount = 0;
+			    m_edgesCount = 0;
 
-                for (var i = 1; i < MAP_SIZE - 1; ++i)
-                {
-                    for (var j = 1; j < MAP_SIZE - 1; ++j)
-                    {
-                        var lmc = m_shadowCasters[i, j].LiveMapCell;
-                        if (lmc == null) continue;
+			    for (var i = 1; i < MAP_SIZE - 1; ++i)
+			    {
+				    for (var j = 1; j < MAP_SIZE - 1; ++j)
+				    {
+					    var lmc = m_shadowCasters[i, j].LiveMapCell;
+					    if (lmc == null) continue;
 
-                        var opacity = m_shadowCasters[i, j].Opacity;
+					    var opacity = m_shadowCasters[i, j].Opacity;
 
-                        if (opacity > 0)
-                        {
-                            if (m_shadowCasters[i, j - 1].Opacity != opacity
-                                || m_shadowCasters[i - 1, j - 1].Opacity != opacity
-                                || m_shadowCasters[i + 1, j - 1].Opacity != opacity
-                                || m_shadowCasters[i, j + 1].Opacity != opacity
-                                || m_shadowCasters[i - 1, j + 1].Opacity != opacity
-                                || m_shadowCasters[i + 1, j + 1].Opacity != opacity
-                                || m_shadowCasters[i, j].Opacity != opacity
-                                || m_shadowCasters[i - 1, j].Opacity != opacity
-                                || m_shadowCasters[i + 1, j].Opacity != opacity
-                                )
-                            {
-                                //const float d = 0.2f;
-                                var rect = new RectangleF(i, j, 1, 1);
+					    if (opacity > 0)
+					    {
+						    if (m_shadowCasters[i, j - 1].Opacity != opacity
+						        || m_shadowCasters[i - 1, j - 1].Opacity != opacity
+						        || m_shadowCasters[i + 1, j - 1].Opacity != opacity
+						        || m_shadowCasters[i, j + 1].Opacity != opacity
+						        || m_shadowCasters[i - 1, j + 1].Opacity != opacity
+						        || m_shadowCasters[i + 1, j + 1].Opacity != opacity
+						        || m_shadowCasters[i, j].Opacity != opacity
+						        || m_shadowCasters[i - 1, j].Opacity != opacity
+						        || m_shadowCasters[i + 1, j].Opacity != opacity
+							    )
+						    {
+							    //const float d = 0.2f;
+							    var rect = new RectangleF(i, j, 1, 1);
 
-                                m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top),
-                                    new PointF(rect.Right, rect.Top))
-                                {
-                                    Opacity = opacity,
-                                    TransparentColor = lmc.TransparentColor,
-                                    LiveMapCell = lmc
-                                };
-                                m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom),
-                                    new PointF(rect.Left, rect.Bottom))
-                                {
-                                    Opacity = opacity,
-                                    TransparentColor = lmc.TransparentColor,
-                                    LiveMapCell = lmc
-                                };
+							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Top),
+								    new PointF(rect.Right, rect.Top))
+							                                 {
+								                                 Opacity = opacity,
+								                                 TransparentColor = lmc.TransparentColor,
+								                                 LiveMapCell = lmc
+							                                 };
+							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Bottom),
+								    new PointF(rect.Left, rect.Bottom))
+							                                 {
+								                                 Opacity = opacity,
+								                                 TransparentColor = lmc.TransparentColor,
+								                                 LiveMapCell = lmc
+							                                 };
 
-                                m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top),
-                                    new PointF(rect.Right, rect.Bottom))
-                                {
-                                    Opacity = opacity,
-                                    TransparentColor = lmc.TransparentColor,
-                                    LiveMapCell = lmc
-                                };
-                                m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom),
-                                    new PointF(rect.Left, rect.Top))
-                                {
-                                    Opacity = opacity,
-                                    TransparentColor = lmc.TransparentColor,
-                                    LiveMapCell = lmc
-                                };
-                            }
-                        }
-                    }
-                }
+							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Right, rect.Top),
+								    new PointF(rect.Right, rect.Bottom))
+							                                 {
+								                                 Opacity = opacity,
+								                                 TransparentColor = lmc.TransparentColor,
+								                                 LiveMapCell = lmc
+							                                 };
+							    m_allEdges[m_edgesCount++] = new EdgeEx(new PointF(rect.Left, rect.Bottom),
+								    new PointF(rect.Left, rect.Top))
+							                                 {
+								                                 Opacity = opacity,
+								                                 TransparentColor = lmc.TransparentColor,
+								                                 LiveMapCell = lmc
+							                                 };
+						    }
+					    }
+				    }
+			    }
 
-                #endregion
+			    #endregion
 
-                //var dPoint = _liveMap.GetDPoint();
-                //var viewportSize = _liveMap.VieportSize;
+			    //var dPoint = _liveMap.GetDPoint();
+			    //var viewportSize = _liveMap.VieportSize;
 
-                while (m_fboBlit.CountOfBuffers < (m_lightsCount + 2))
-                {
-                    m_fboBlit.AddTextureBuffer();
-                }
+			    while (m_fboBlit.CountOfBuffers < (m_lightsCount + 2))
+			    {
+				    m_fboBlit.AddTextureBuffer();
+			    }
 
-                using (new Profiler("LosManagerEx.Recalc.Draw"))
-                {
-                    for (var i = 0; i < m_lightsCount; i++)
-                    {
-                        using (new FboWrapper.DrawHelper(m_fbo))
-                        {
-                            DrawShadows(m_lights[i]);
-                            m_fbo.BlitTo(m_fboBlit, i);
-                        }
-                    }
-                    m_fbo.BlitTo(m_fboBlit, m_lightsCount + 1);
-                }
+			    using (new Profiler("LosManagerEx.Recalc.Draw"))
+			    {
+				    for (var i = 0; i < m_lightsCount; i++)
+				    {
+					    using (new FboWrapper.DrawHelper(m_fbo))
+					    {
+						    DrawShadows(m_lights[i]);
+						    m_fbo.BlitTo(m_fboBlit, i);
+					    }
+				    }
+				    m_fbo.BlitTo(m_fboBlit, m_lightsCount + 1);
+			    }
 
-                if (false)
-                {
-                    for (var a = 0; a < m_lightsCount + 1; ++a)
-                    {
-                        using (new FboWrapper.DrawHelper(m_fboBlit))
-                        {
-                            GL.ReadBuffer(ReadBufferMode.ColorAttachment0 + a);
-                            Screenshot("e:\\1\\a" + a + ".png");
-                        }
-                    }
-                }
-                using (new FboWrapper.DrawHelper(m_fbo))
-                {
-                    var ambient = World.TheWorld.Avatar.GeoInfo.Layer.Ambient;
-                    GL.ClearColor(ambient.R, ambient.G, ambient.B, 1f);
-                    GL.Clear(ClearBufferMask.ColorBufferBit);
-                    GL.Color3(1f, 1f, 1f);
-                    GL.Enable(EnableCap.Texture2D);
+			    if (true)
+			    {
+				    for (var a = 0; a < m_lightsCount + 1; ++a)
+				    {
+					    using (new FboWrapper.DrawHelper(m_fboBlit))
+					    {
+						    GL.ReadBuffer(ReadBufferMode.ColorAttachment0 + a);
+						    Screenshot("d:\\1\\a" + a + ".png");
+					    }
+				    }
+			    }
+			    using (new FboWrapper.DrawHelper(m_fbo))
+			    {
+				    var ambient = World.TheWorld.Avatar.GeoInfo.Layer.Ambient;
+				    GL.ClearColor(ambient.R, ambient.G, ambient.B, 1f);
+				    GL.Clear(ClearBufferMask.ColorBufferBit);
+				    GL.Color3(1f, 1f, 1f);
+				    GL.Enable(EnableCap.Texture2D);
 
-                    GL.Enable(EnableCap.Blend);
-                    GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcColor);
+				    GL.Enable(EnableCap.Blend);
+				    GL.BlendFunc(BlendingFactorSrc.One, BlendingFactorDest.OneMinusSrcColor);
 
-                    const float sz = MAP_SIZE;
-                    const float to = ((float) MAP_SIZE)/FboWrapper.SIZE;
+				    const float sz = MAP_SIZE;
+				    const float to = ((float) MAP_SIZE)/FboWrapper.SIZE;
 
-                    using (var sh = new ShaderWrapper.DrawHelper(m_lightShader))
-                    {
-                        for (var a = 1; a < m_lightsCount; ++a)
-                        {
-                            sh.BindTexture(m_fboBlit[a], TextureUnit.Texture0, "_light");
-                            sh.BindVec2(m_lights[a].Point, "_position");
-                            //m_fboBlit.BindTexture(a);
-                            GL.Begin(BeginMode.Quads);
-                            {
-                                GL.TexCoord2(0f, 0f);
-                                GL.Vertex2(0f, 0f);
+				    using (var sh = new ShaderWrapper.DrawHelper(m_lightShader))
+				    {
+					    for (var a = 1; a < m_lightsCount; ++a)
+					    {
+						    sh.BindTexture(m_fboBlit[a], TextureUnit.Texture0, "_light");
+						    sh.BindVec2(m_lights[a].Point, "_position");
+						    GL.Begin(BeginMode.Quads);
+						    {
+							    GL.TexCoord2(0f, 0f);
+							    GL.Vertex2(0f, 0f);
 
-                                GL.TexCoord2(to, 0f);
-                                GL.Vertex2(sz, 0f);
+							    GL.TexCoord2(to, 0f);
+							    GL.Vertex2(sz, 0f);
 
-                                GL.TexCoord2(to, to);
-                                GL.Vertex2(sz, sz);
+							    GL.TexCoord2(to, to);
+							    GL.Vertex2(sz, sz);
 
-                                GL.TexCoord2(0f, to);
-                                GL.Vertex2(0f, sz);
-                            }
-                            GL.End();
-                        }
-                    }
+							    GL.TexCoord2(0f, to);
+							    GL.Vertex2(0f, sz);
+						    }
+						    GL.End();
+					    }
+				    }
 
-                    using (var sh = new ShaderWrapper.DrawHelper(m_sightShader))
-                    {
-                        sh.BindTexture(m_fboBlit[0], TextureUnit.Texture0, "_sight");
-                        sh.BindVec2(m_lights[0].Point, "_position");
-                        //GL.Disable(EnableCap.Blend);
-                        GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
-                        //m_fboBlit.BindTexture(0);
-                        GL.Begin(BeginMode.Quads);
-                        {
-                            GL.TexCoord2(0f, 0f);
-                            GL.Vertex2(0f, 0f);
+				    using (var sh = new ShaderWrapper.DrawHelper(m_sightShader))
+				    {
+					    sh.BindTexture(m_fboBlit[0], TextureUnit.Texture0, "_sight");
+					    sh.BindVec2(m_lights[0].Point, "_position");
+					    GL.BlendFunc(BlendingFactorSrc.DstColor, BlendingFactorDest.OneMinusSrcAlpha);
+					    GL.Begin(BeginMode.Quads);
+					    {
+						    GL.TexCoord2(0f, 0f);
+						    GL.Vertex2(0f, 0f);
 
-                            GL.TexCoord2(to, 0f);
-                            GL.Vertex2(sz, 0f);
+						    GL.TexCoord2(to, 0f);
+						    GL.Vertex2(sz, 0f);
 
-                            GL.TexCoord2(to, to);
-                            GL.Vertex2(sz, sz);
+						    GL.TexCoord2(to, to);
+						    GL.Vertex2(sz, sz);
 
-                            GL.TexCoord2(0f, to);
-                            GL.Vertex2(0f, sz);
-                        }
-                        GL.End();
-                    }
+						    GL.TexCoord2(0f, to);
+						    GL.Vertex2(0f, sz);
+					    }
+					    GL.End();
+				    }
 
-                    m_fbo.BlitTo(m_fboBlit, 1);
-                }
+				    m_fbo.BlitTo(m_fboBlit, 1);
+			    }
 
-                    using (new FboWrapper.DrawHelper(m_fboBlit))
-                    {
-                        GL.ReadBuffer(ReadBufferMode.ColorAttachment1);
-                        GL.ReadPixels(0, 0, MAP_SIZE, MAP_SIZE, PixelFormat.Rgba, PixelType.Float, m_lightMap);
+			    using (new FboWrapper.DrawHelper(m_fboBlit))
+			    {
+				    GL.ReadBuffer(ReadBufferMode.ColorAttachment1);
+				    GL.ReadPixels(0, 0, MAP_SIZE, MAP_SIZE, PixelFormat.Rgba, PixelType.Float, m_lightMap);
 
-                        var layer = World.TheWorld.Avatar.GeoInfo.Layer;
-                        var fogLightness = layer.FogLightness;
-                        for (var i = 0; i < MAP_SIZE; i++)
-                        {
-                            for (var j = 0; j < MAP_SIZE; j++)
-                            {
-                                //m_shadowCasters[j, i].LiveMapCell.Visibility = m_lightMap[i, j];
-                                var lc = m_shadowCasters[j, i].LiveMapCell;
-                                lc.Lighted = m_lightMap[i, j];
-                                lc.UpdateVisibility(fogLightness);
-                                
-                            }
-                        }
+					Screenshot("d:\\1\\scr.png");
 
-                        //using (new Profiler("UpdateLiveBlocks"))
-                        //{
-                        //    var layer = World.TheWorld.Avatar.GeoInfo.Layer;
-                        //    var ambient = FColor.Black;
-                        //    var fogLightness = layer.FogLightness;
+				    var layer = World.TheWorld.Avatar.GeoInfo.Layer;
+				    var fogLightness = layer.FogLightness;
+				    for (var i = 0; i < MAP_SIZE; i++)
+				    {
+					    for (var j = 0; j < MAP_SIZE; j++)
+					    {
+						    var lc = m_shadowCasters[j, i].LiveMapCell;
+						    lc.Lighted = m_lightMap[i, j];
+						    lc.UpdateVisibility(fogLightness);
+					    }
+				    }
+			    }
+		    }
+		    GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+		    GL.Enable(EnableCap.Texture2D);
+	    }
 
-                        //    for (var i = 0; i < 9; i++)
-                        //    {
-                        //        var livBlockXY = liveBlocks[i, 1];
-                        //        _liveMap.Blocks[livBlockXY.X, livBlockXY.Y].UpdateVisibility(fogLightness, ambient);
-                        //    }
-                        //}
-                    }
-                }
-                GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-        }
-
-        private static void Screenshot(string _filename)
+	    private static void Screenshot(string _filename)
         {
             var arr = new FColor[MAP_SIZE, MAP_SIZE];
             GL.ReadPixels(0, 0, MAP_SIZE, MAP_SIZE, PixelFormat.Rgba, PixelType.Float, arr);
@@ -411,7 +396,8 @@ void main(void)
 				{
 				    if (!edges[i].Valid) continue;
 
-                    GL.Color4(_light.LightSource.Color.R * edges[i].TransparentColor.R, _light.LightSource.Color.G * edges[i].TransparentColor.G, _light.LightSource.Color.B * edges[i].TransparentColor.B, 1); // edges[i].Opacity);
+					var color = edges[i].TransparentColor * _light.LightSource.Color * (1f-edges[i].Opacity);
+					GL.Color4(color.R, color.G, color.B, 1f);
 				    
                     var pnt = new[]
 				    {

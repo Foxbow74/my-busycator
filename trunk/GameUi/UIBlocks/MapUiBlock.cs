@@ -68,20 +68,20 @@ namespace GameUi.UIBlocks
 					var liveCellCoords = LiveMap.WrapCellCoords(xy + World.TheWorld.DPoint);
 					var liveCell = World.TheWorld.LiveMap.Cells[liveCellCoords.X, liveCellCoords.Y];
 					var screenPoint = xy + ContentRct.LeftTop;
-					var visibility = liveCell.Visibility;
+					var visibilityA = 1f;// liveCell.Visibility.A;
 					var finalLighted = liveCell.FinalLighted;
 
 					if (liveCell.IsVisibleNow)
 					{
 						var eTerrains = liveCell.Terrain;
 						var terrainTile = eTerrains.GetTile((int)Math.Abs((liveCell.LiveCoords.GetHashCode() * liveCell.Rnd)));
-						var tcolor = terrainTile.Color.Multiply(finalLighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f - visibility.A);
+						var tcolor = terrainTile.Color.Multiply(finalLighted).Clamp().Lerp(terrainTile.Color.Multiply(0.7f), 1f -visibilityA);
 						terrainTile.Draw(screenPoint, tcolor);
 
 						foreach (var tileInfoProvider in liveCell.TileInfoProviders)
 						{
 							var tile = tileInfoProvider.Tileset.GetTile(tileInfoProvider.TileIndex);
-							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(finalLighted).Clamp().UpdateAlfa(visibility.A);
+							var color = tile.Color.LerpColorsOnly(tileInfoProvider.LerpColor, tileInfoProvider.LerpColor.A).Multiply(finalLighted).Clamp().UpdateAlfa(visibilityA);
 							tile.Draw(screenPoint, color, tileInfoProvider.Direction, tileInfoProvider.IsCorpse);
 						}
 					}
