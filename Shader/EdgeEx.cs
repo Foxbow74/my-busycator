@@ -17,6 +17,8 @@ namespace Shader
 
         public LiveMapCell LiveMapCell;
 
+        private readonly int m_hc;
+
         public EdgeEx(PointF _p1, PointF _p2) 
         {
             Valid = true;
@@ -24,7 +26,23 @@ namespace Shader
             P2 = _p2;
             Distance = 0;
             Opacity = 0;
-            TransparentColor = FColor.Empty;
+            if (P1.X < P2.X)
+            {
+                m_hc = ((int)P1.X) ^ ((int)P1.Y) << 8 ^ ((int)P2.X) << 16 ^ ((int)P2.Y) << 24;
+            }
+            else if (P1.X > P2.X)
+            {
+                m_hc = ((int)P2.X) ^ ((int)P2.Y) << 8 ^ ((int)P1.X) << 16 ^ ((int)P1.Y) << 24;
+            }
+            else if (P1.Y > P2.Y)
+            {
+                m_hc = ((int)P1.X) ^ ((int)P1.Y) << 8 ^ ((int)P2.X) << 16 ^ ((int)P2.Y) << 24;
+            }
+            else
+            {
+                m_hc = ((int)P2.X) ^ ((int)P2.Y) << 8 ^ ((int)P1.X) << 16 ^ ((int)P1.Y) << 24;
+            }
+
         }
 
         public Vector Vector
@@ -53,6 +71,11 @@ namespace Shader
         public float Orient(PointF p)
         {
             return (P1.X - p.X) * (P2.Y - p.Y) - (P1.Y - p.Y) * (P2.X - p.X);
+        }
+
+        public override int GetHashCode()
+        {
+            return m_hc;
         }
     }
 }
