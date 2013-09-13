@@ -123,24 +123,43 @@ namespace GameCore.Mapping
 
 		public FColor TransparentColor
 		{
-			get
-			{
+			get 
+            {
                 if (m_transparentColor == null)
                 {
                     var trancparence = 1f - Math.Min(1f, CalcOpacity());
                     if (Terrain == ETerrains.RED_BRICK_WINDOW)
-	                {
-						m_transparentColor = new FColor(trancparence, 1f, 0.1f, 0.1f);
-	                }
-	                else
-	                {
-						m_transparentColor = new FColor(trancparence, 0f, 0f, 0f);
-
-	                }
+                    {
+                        m_transparentColor = new FColor(trancparence, 1f, 0.1f, 0.1f);
+                    }
+                    else
+                    {
+                        m_transparentColor = new FColor(trancparence, 0f, 0f, 0f);
+                    }
                 }
-			    return m_transparentColor.Value;
+                return m_transparentColor.Value;
 			}
 		}
+
+	    public FColor GetTransparentColor()
+	    {
+	        if (m_transparentColor == null)
+	        {
+	            switch (Terrain)
+	            {
+                    case ETerrains.RED_BRICK_WINDOW:
+                        m_transparentColor = FColor.Red;
+                        break;
+                    case ETerrains.YELLOW_BRICK_WINDOW:
+                        m_transparentColor = FColor.Yellow;
+                        break;
+                    default:
+                        m_transparentColor = FColor.White;
+	                    break;
+	            }
+	        }
+	        return m_transparentColor.Value;
+	    }
 
 	    public float CalcOpacity()
 	    {

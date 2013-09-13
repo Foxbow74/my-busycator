@@ -6,16 +6,15 @@ namespace Shader
 {
     class ShaderWrapper
     {
-        private int m_fragmentShaderHandle;
         private readonly int m_shaderProgramHandle;
 
         public ShaderWrapper(string _text)
         {
-            m_fragmentShaderHandle = GL.CreateShader(ShaderType.FragmentShader);
-            GL.ShaderSource(m_fragmentShaderHandle, _text);
-            GL.CompileShader(m_fragmentShaderHandle);
+            var shaderHandle = GL.CreateShader(ShaderType.FragmentShader);
+            GL.ShaderSource(shaderHandle, _text);
+            GL.CompileShader(shaderHandle);
             m_shaderProgramHandle = GL.CreateProgram();
-            GL.AttachShader(m_shaderProgramHandle, m_fragmentShaderHandle);
+            GL.AttachShader(m_shaderProgramHandle, shaderHandle);
             GL.LinkProgram(m_shaderProgramHandle);
             var programInfoLog = GL.GetProgramInfoLog(m_shaderProgramHandle);
             if (!string.IsNullOrEmpty(programInfoLog))

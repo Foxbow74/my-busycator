@@ -83,7 +83,7 @@ namespace GameCore.Misc
 				var percents = 100 * info.Stopwatch.ElapsedTicks / _total;
 				if(percents==0)
 				{
-					//continue;
+					continue;
 				}
 				Debug.WriteLine(new string('\t', _indent) + string.Format("***\t{0}\ttakes\t{1:N0}% ({2} sec)\tcalled\t{3}\t({4:N0}% in total)", info.Name, 100 * info.Stopwatch.ElapsedTicks / spanSum, info.Stopwatch.Elapsed.TotalSeconds, info.Count, percents));
 				ReportIt(info.Key, _total, _indent + 1);
